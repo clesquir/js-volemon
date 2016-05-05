@@ -1,0 +1,25 @@
+@import "{}/client/scss/variables.scss";
+
+.button {
+	background: $border-color;
+	color: $text-color;
+	display: inline-block;
+	border: 0;
+	cursor: pointer;
+	letter-spacing: inherit;
+	outline: none;
+	font-family: inherit;
+	font-size: 15px;
+	font-weight: 600;
+	padding: .75em 1.25em;
+	border-radius: 3px;
+	transition: transform 100ms linear;
+
+	&:active {
+		transform: translateY(1px) translateX(1px);
+	}
+
+	&:hover {
+		background: $border-color-light;
+	}
+}

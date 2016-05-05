@@ -1,0 +1,50 @@
+@import "{}/client/scss/variables.scss";
+
+.login {
+	text-align: center;
+
+	form {
+		animation: appear 1s linear both;
+	}
+
+	h1 {
+		margin-bottom: 30px;
+	}
+
+	p {
+		margin: 10px 0;
+	}
+
+	.button {
+		display: block;
+		margin: 15px auto 0;
+	}
+
+	.form-switch-link {
+		margin-top: 25px;
+
+		a {
+			cursor: pointer;
+			font-size: 14px;
+		}
+	}
+
+	input.field-in-error {
+		animation: shake 2s linear both;
+		box-shadow: 0 0 0 1px $negative;
+	}
+
+	.error-label-container {
+		margin: 15px 0 0;
+		animation: shake 2s linear both;
+		color: $negative;
+	}
+}
+
+#login-form {
+	display: block;
+}
+
+#create-account-form {
+	display: none;
+}

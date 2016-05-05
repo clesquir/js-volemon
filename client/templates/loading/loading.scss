@@ -1,0 +1,17 @@
+@import "{}/client/scss/variables.scss";
+
+.loading-app-mask {
+	background: rgba($background-color, .95);
+	flex: 1 0 auto;
+	flex-direction: row;
+	display: flex;
+	justify-content: center;
+	overflow: auto;
+	box-sizing: border-box;
+	text-align: center;
+	align-items: center;
+
+	.loading-app-text {
+		color: $text-color;
+	}
+}

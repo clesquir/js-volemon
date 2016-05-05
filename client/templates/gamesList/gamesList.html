@@ -1,0 +1,34 @@
+<template name="gamesList">
+
+	<div class="app-section app-section-center">
+
+		<div class="app-section-inner">
+
+			<h1>Games list</h1>
+			<p>You can join a game in Registration status if the game has not all its players yet.</p>
+
+			<div class="table-list" style="margin: 0 auto;">
+				<div class="table-list-row table-list-header">
+					<div class="table-list-cell" style="flex: 0 0 45px;">#</div>
+					<div class="table-list-cell">Creator</div>
+					<div class="table-list-cell" style="flex: 0 0 125px;">Status</div>
+				</div>
+
+				{{#each games}}
+					<div class="table-list-row">
+						<div class="table-list-cell" style="flex: 0 0 45px;"><a href="{{urlFor 'game' _id=this._id}}">{{_id}}</a></div>
+						<div class="table-list-cell"><a href="{{urlFor 'game' _id=this._id}}">{{createdByPlayerName}}</a></div>
+						<div class="table-list-cell" style="flex: 0 0 125px;"><a href="{{urlFor 'game' _id=this._id}}">{{gameStatus}}</a></div>
+					</div>
+				{{else}}
+					<div class="table-list-row">
+						<div class="table-list-cell">There are no games...</div>
+					</div>
+				{{/each}}
+			</div>
+
+		</div>
+
+	</div>
+
+</template>

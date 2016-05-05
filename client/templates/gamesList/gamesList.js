@@ -1,0 +1,22 @@
+Template.gamesList.helpers({
+	createdByPlayerName: function() {
+		var player = Players.findOne({gameId: this._id, userId: this.createdBy});
+
+		if (player) {
+			return player.name;
+		} else {
+			return '-';
+		}
+	},
+
+	gameStatus: function() {
+		switch (this.status) {
+			case Constants.GAME_STATUS_REGISTRATION:
+				return 'Registration';
+			case Constants.GAME_STATUS_STARTED:
+				return 'Started';
+		}
+
+		return '-';
+	}
+});

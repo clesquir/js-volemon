@@ -1,0 +1,55 @@
+<template name="app">
+
+	{{> lightbox}}
+
+	<div class="app">
+
+		<div class="app-header">
+
+			<div class="app-header-section app-header-section-button app-header-section-button-home" title="Home">
+				<a href="{{pathFor 'home'}}"><i class="fa fa-home"></i>Home</a>
+			</div>
+
+			<div class="app-header-section app-header-section-button app-header-section-button-create-game" title="Create a game">
+				<a data-action="create-game"><i class="fa fa-plus-circle"></i>Create game</a>
+			</div>
+
+			<div class="app-header-section app-header-section-button app-header-section-button-games-list" title="View the games list">
+				<a href="{{pathFor 'games-list'}}"><i class="fa fa-list"></i>Games list</a>
+			</div>
+
+			<div class="app-header-section app-header-section-button app-header-section-button-view-rank" title="View rank">
+				<a href="{{pathFor 'rank'}}"><i class="fa fa-line-chart"></i>View rank</a>
+			</div>
+
+			<div class="app-header-section app-header-empty-section"></div>
+
+			<div class="app-header-section">
+				<div class="username-header">
+					{{#if currentUser}}
+						<div class="username-header-menu">
+							<a id="username-header-menu-open" class="username-header-menu-open">{{currentUser.profile.name}} <i class="fa fa-caret-down small-icon"></i></a>
+							<div id="username-dialog-dropdown-list" class="username-dialog">
+								<div data-action="user-edit-name" class="username-dialog-button">Edit name</div>
+								<div data-action="user-logout" class="username-dialog-button">Log out</div>
+							</div>
+						</div>
+					{{else}}
+						<a data-action="user-log-in">Log in</a>
+					{{/if}}
+				</div>
+			</div>
+
+			<div class="app-title">Volemon</div>
+
+		</div>
+
+		<div class="app-main">
+
+			{{> yield}}
+
+		</div>
+
+	</div>
+
+</template>

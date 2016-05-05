@@ -1,0 +1,12 @@
+<template name="eloRatingChange">
+	{{#if displayEloRatingLastChange}}
+		<div class="elo-rating-change-container">
+			{{#if isEloRatingLastChangePositive}}
+				<div class="elo-rating-positive"><i class="fa fa-arrow-up"></i> {{{eloRatingLastChange}}}</div>
+			{{/if}}
+			{{#if isEloRatingLastChangeNegative}}
+				<div class="elo-rating-negative"><i class="fa fa-arrow-down"></i> {{{eloRatingLastChange}}}</div>
+			{{/if}}
+		</div>
+	{{/if}}
+</template>

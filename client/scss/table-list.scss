@@ -1,0 +1,51 @@
+@import "{}/client/scss/variables.scss";
+
+$table-list-radius: 3px;
+
+.table-list {
+	width: 400px;
+	border: 1px solid $border-color;
+	text-align: left;
+	border-radius: $table-list-radius;
+}
+
+.table-list-row {
+	display: flex;
+
+	& + & {
+		.table-list-cell {
+			border-top: 1px solid $border-color;
+		}
+	}
+
+	&.highlighted-row {
+		background-color: rgba(255, 230, 175, 0.25);
+	}
+
+	&.table-list-header .table-list-cell {
+		background-color: $table-header-color;
+		font-weight: bold;
+
+		&:first-of-type {
+			border-top-left-radius: $table-list-radius;
+		}
+
+		&:last-of-type {
+			border-top-right-radius: $table-list-radius;
+		}
+	}
+}
+
+.table-list-cell {
+	display: block;
+	flex: 1;
+	overflow-x: hidden;
+	text-overflow: ellipsis;
+	vertical-align: middle;
+	box-sizing: border-box;
+	padding: 10px;
+
+	&.center-aligned-cell {
+		text-align: center;
+	}
+}

@@ -1,0 +1,66 @@
+@import "{}/client/scss/variables.scss";
+
+.clickable-link {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.button + .button {
+	margin-left: 5px;
+}
+
+.profile-information-container {
+	border-bottom: 1px solid $border-color;
+	padding-bottom: 5px;
+	display: flex;
+	justify-content: flex-end;
+	width: 100%;
+	min-width: 650px;
+
+	.profile-information-statistic {
+		padding: 10px 15px;
+		margin: 0;
+		text-align: center;
+
+		& > div > div:first-of-type {
+			font-size: 25px;
+		}
+
+		& > div > div:last-of-type {
+			font-size: 10px;
+		}
+	}
+
+	.elo-rating-change-container {
+		margin-left: 5px;
+		font-size: 10px;
+	}
+}
+
+.profile-information-header {
+	flex: 1;
+	position: relative;
+
+	& > div {
+		position: absolute;
+		bottom: 10px;
+		font-size: 19px;
+		font-weight: bold;
+	}
+}
+
+.profile-information-statistic + .profile-information-statistic {
+	border-left: 1px solid $border-color;
+}
+
+.profile-information-statistic:last-of-type {
+	padding-right: 0;
+}
+
+.winning-score {
+	color: $positive;
+}
+
+.loosing-score {
+	color: $negative;
+}

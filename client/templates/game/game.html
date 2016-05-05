@@ -1,0 +1,87 @@
+<template name="game">
+
+	<div class="app-section app-section-center">
+
+		<div class="app-section-inner">
+
+			{{#if isPlaying}}
+
+				{{#if isUserNotPlaying}}
+
+					<p>The game has already started and you are not in it...</p>
+					<p>Please start your own...</p>
+
+				{{else}}
+
+					<div class="game-container">
+
+						{{! Names and Points }}
+
+						<div class="players-container">
+							<p class="players-names"><div>{{hostName}}</div><div>{{clientName}}</div></p>
+							<p class="players-points">{{hostPoints}} | {{clientPoints}}</p>
+						</div>
+
+						{{! Phaser container }}
+
+						<div id="gameContainer" class="page game"></div>
+
+					</div>
+
+				{{/if}}
+
+			{{else}}
+
+				{{! Share URL }}
+
+				{{#if isHost}}
+					<h1>Creating a game</h1>
+
+					<p>Share this link with someone</p>
+					<p><input type="text" value="{{urlFor 'game' _id=game._id}}" readonly="readonly" name="url"></p>
+				{{else}}
+					<h1>Joining a game</h1>
+				{{/if}}
+
+				{{! Players list }}
+
+				<div class="table-list">
+					<div class="table-list-row table-list-header">
+						<div class="table-list-cell">Players</div>
+					</div>
+
+					{{#each players}}
+					<div class="table-list-row">
+						<div class="table-list-cell">{{name}}</div>
+					</div>
+					{{/each}}
+				</div>
+
+				<br/>
+
+				{{! Buttons }}
+
+				{{#if isHost}}
+					{{#if canStart}}
+						<a href="#" data-action="start" class="button">Start game</a>
+					{{else}}
+						<p>Waiting for a player to join the game...</p>
+					{{/if}}
+				{{/if}}
+
+				{{#if canLeave}}
+					<p>Waiting for the host to start the game...</p>
+					<a href="#" data-action="leave" class="button">Leave</a>
+				{{/if}}
+
+				{{#if canJoin}}
+					<a href="#" data-action="join" class="button">Join</a>
+				{{/if}}
+
+			{{/if}}
+
+		</div>
+
+	</div>
+
+</template>

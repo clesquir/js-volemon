@@ -1,0 +1,64 @@
+<template name="home">
+
+	<div class="app-section app-section-top">
+
+		<div class="app-section-inner">
+
+			{{#if currentUser}}
+
+				<div class="profile-information-container">
+					<div class="profile-information-header"><div>Statistics:</div></div>
+					<div class="profile-information-statistic">
+						<div>
+							<div>{{numberOfGamesPlayed}}</div>
+							<div>games played</div>
+						</div>
+					</div>
+					<div class="profile-information-statistic">
+						<div>
+							<div>{{winRate}}</div>
+							<div>win rate</div>
+						</div>
+					</div>
+					<div class="profile-information-statistic elo-rating-statistic">
+						<div>
+							<div>{{profile.eloRating}}</div>
+							<div>ELO</div>
+						</div>
+						{{> eloRatingChange this.profile}}
+					</div>
+				</div>
+
+				<h1 style="margin-top: 25px;">Recent games</h1>
+
+				<div class="table-list" style="margin: 0 auto; width: 475px;">
+					<div class="table-list-row table-list-header">
+						<div class="table-list-cell" style="flex: 0 0 120px;">Date</div>
+						<div class="table-list-cell center-aligned-cell" style="flex: 0 0 100px;">Score</div>
+						<div class="table-list-cell">Opponent</div>
+					</div>
+
+					{{#each games}}
+						<div class="table-list-row">
+							<div class="table-list-cell" style="flex: 0 0 120px;">{{{getDate}}}</div>
+							<div class="table-list-cell center-aligned-cell" style="flex: 0 0 100px;">{{{getScore}}}</div>
+							<div class="table-list-cell">{{getOpponent ../players}}</div>
+						</div>
+					{{else}}
+						<div class="table-list-row">
+							<div class="table-list-cell">You haven't played any games yet...</div>
+						</div>
+					{{/each}}
+				</div>
+
+			{{else}}
+
+				<p>Please <a class="clickable-link" data-action="user-log-in">log in</a> to get statistics on your profile!</p>
+
+			{{/if}}
+
+		</div>
+
+	</div>
+
+</template>

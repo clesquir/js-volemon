@@ -1,0 +1,52 @@
+.rank-display-selection {
+	margin-bottom: 10px;
+	text-align: right;
+
+	i {
+		cursor: pointer;
+		opacity: .25;
+
+		& + & {
+			margin-left: 10px;
+		}
+
+		&:hover {
+			opacity: 1;
+		}
+	}
+}
+
+.rank-cell {
+	font-weight: bolder;
+	font-size: 20px;
+	line-height: 20px;
+}
+
+.spinner {
+	display: flex;
+	width: 650px;
+
+	& > div {
+		flex: 1 1 auto;
+	}
+
+	&.spinner-table-display {
+		#rank-table-display {
+			display: block;
+		}
+
+		#rank-line-chart-display {
+			display: none;
+		}
+	}
+
+	&.spinner-line-chart-display {
+		#rank-table-display {
+			display: none;
+		}
+
+		#rank-line-chart-display {
+			display: block;
+		}
+	}
+}

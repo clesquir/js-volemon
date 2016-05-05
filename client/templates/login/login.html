@@ -1,0 +1,49 @@
+<template name="login">
+
+	<div class="login">
+
+		<form id="login-form" name="login">
+
+			<h1>Log in</h1>
+
+			<p><label for="login-email-field">Email</label></p>
+			<input id="login-email-field" type="text" autofocus="autofocus" autocomplete="off" name="email" size="32" value="" />
+
+			<p><label for="login-password-field">Password</label></p>
+			<input id="login-password-field" type="password" autofocus="autofocus" autocomplete="off" name="password" size="32" value="" />
+
+			<p id="login-error-label-container" class="error-label-container"></p>
+
+			<input type="submit" class="button" value="Log in">
+
+			<p class="form-switch-link"><a data-action="switch-for-create-account">Don't have an account? Sign up!</a></p>
+
+		</form>
+
+		<form id="create-account-form" name="createAccount">
+
+			<h1>Create an account</h1>
+
+			<p><label for="create-account-email-field">Email</label></p>
+			<input id="create-account-email-field" type="text" autofocus="autofocus" autocomplete="off" name="email" size="32" value="" />
+
+			<p><label for="create-account-password-field">Password</label></p>
+			<input id="create-account-password-field" type="password" autofocus="autofocus" autocomplete="off" name="password" size="32" value="" />
+
+			<p><label for="create-account-password-confirmation-field">Password confirmation</label></p>
+			<input id="create-account-password-confirmation-field" type="password" autofocus="autofocus" autocomplete="off" size="32" value="" />
+
+			<p><label for="create-account-name-field">Name</label></p>
+			<input id="create-account-name-field" type="text" autofocus="autofocus" autocomplete="off" name="name" size="32" maxlength="20" value="" />
+
+			<p id="create-account-error-label-container" class="error-label-container"></p>
+
+			<input type="submit" class="button" value="Sign up">
+
+			<p class="form-switch-link"><a data-action="switch-for-log-in">Already have an account? Log in!</a></p>
+
+		</form>
+
+	</div>
+
+</template>

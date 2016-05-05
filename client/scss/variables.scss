@@ -1,0 +1,22 @@
+/** Application color **/
+
+$background-color: #c9c9c9;
+$background-color-dark: darken($background-color, 5%);
+$background-color-darker: darken($background-color, 12%);
+$border-color: #e3e3e3;
+$border-color-light: lighten($background-color, 7%);
+$table-header-color: #9ad3de;
+$text-color: invert($background-color);
+
+$positive: #34a034;
+$negative: #c94141;
+
+/** Header color **/
+
+$header-background-color: #ffffff;
+$header-username-dialog-background-color: #dedede;
+$header-username-dialog-background-color-hover: darken($header-username-dialog-background-color, 5%);
+$header-text-color: darken($background-color, 30%);
+$header-text-color-light: darken($background-color, 10%);
+$header-border-color: $border-color;
+$header-border-bottom-color: #89bdd3;

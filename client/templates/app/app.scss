@@ -1,0 +1,161 @@
+@import "{}/client/scss/variables.scss";
+
+.app {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.app-header {
+	background: $header-background-color;
+	color: $header-text-color;
+	width: 100%;
+	box-sizing: border-box;
+	flex: 0 0 auto;
+	top: 0;
+	display: flex;
+	align-items: center;
+	border-bottom: 4px solid $header-border-bottom-color;
+	position: relative;
+
+	.app-title {
+		position: absolute;
+		right: 0;
+		left: 0;
+		padding: 15px 0;
+		text-align: center;
+		font-weight: bolder;
+	}
+}
+
+.app-header-section {
+	display: block;
+	text-align: center;
+	box-sizing: border-box;
+	padding: 15px 20px;
+	min-height: 50px;
+	z-index: 1;
+
+	&.app-header-section-button {
+		padding: 8px 15px;
+		font-size: 8px;
+		width: 85px;
+		white-space: nowrap;
+		text-align: center;
+		background-color: #ffffff;
+		transition: 0.75s ease-in-out;
+
+		i.fa {
+			font-size: 22px;
+			display: block;
+			margin-bottom: 2px;
+		}
+	}
+
+	a {
+		cursor: pointer;
+
+		&:hover {
+			color: $header-text-color-light;
+		}
+	}
+
+	&.app-header-empty-section {
+		flex: 1 1 auto;
+	}
+
+	& + &, &:first-of-type {
+		border-right: 1px solid $header-border-color;
+	}
+
+	&:last-of-type {
+		border-right: 0;
+	}
+}
+
+.app-header-section-button-home {
+	z-index: 4;
+}
+
+.app-header-section-button-create-game {
+	z-index: 3;
+	transform: translateX(-80px);
+}
+
+.app-header-section-button-games-list {
+	z-index: 2;
+	transform: translateX(-160px);
+}
+
+.app-header-section-button-view-rank {
+	z-index: 1;
+	transform: translateX(-240px);
+}
+
+.app-header:hover {
+	.app-header-section-button {
+		transform: translateX(0);
+	}
+}
+
+.app-main {
+	flex: 1 1 auto;
+	display: flex;
+	align-content: stretch;
+	flex-direction: column;
+}
+
+.app-section {
+	flex: 1 0 auto;
+	flex-direction: row;
+	display: flex;
+	justify-content: center;
+	overflow: auto;
+	box-sizing: border-box;
+	text-align: center;
+	padding: 0 20px;
+
+	&.app-section-center {
+		align-items: center;
+	}
+
+	&.app-section-top {
+		align-items: flex-start;
+	}
+}
+
+.app-section-top .app-section-inner {
+	margin-top: 10px;
+}
+
+.small-icon {
+	font-size: 12px;
+	line-height: 20px;
+	vertical-align: top;
+}
+
+.username-header-menu {
+	position: relative;
+}
+
+.username-header-menu .username-dialog {
+	display: none;
+	position: absolute;
+	right: -10px;
+	background: $header-username-dialog-background-color;
+	color: $text-color;
+	padding: 5px 0;
+	top: 35px;
+	box-shadow: $background-color-darker 0 3px 5px 0;
+}
+
+.username-dialog .username-dialog-button {
+	cursor: pointer;
+	text-align: right;
+	padding: 5px 15px;
+	white-space: nowrap;
+
+	&:hover {
+		background: $header-username-dialog-background-color-hover;
+	}
+}

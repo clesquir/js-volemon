@@ -1,0 +1,50 @@
+<template name="rank">
+
+	<div class="app-section app-section-top">
+
+		<div class="app-section-inner">
+
+			<h1>Rank</h1>
+
+			<div class="rank-display-selection">
+				<i class="fa fa-table" data-action="view-table-display"></i>
+				<i class="fa fa-line-chart" data-action="view-line-chart-display"></i>
+			</div>
+
+			<div id="rank-display" class="spinner spinner-table-display">
+				<div id="rank-table-display" class="table-list" style="margin: 0 auto;">
+					<div class="table-list-row table-list-header">
+						<div class="table-list-cell center-aligned-cell" style="flex: 1;">Rank</div>
+						<div class="table-list-cell" style="flex: 4;">Name</div>
+						<div class="table-list-cell center-aligned-cell" style="flex: 1;">Won</div>
+						<div class="table-list-cell center-aligned-cell" style="flex: 1;">Lost</div>
+						<div class="table-list-cell center-aligned-cell" style="flex: 1;">Elo</div>
+						<div class="table-list-cell center-aligned-cell" style="flex: 1;">Change</div>
+					</div>
+
+					{{#each profiles}}
+						<div class="table-list-row {{getHighlightedClassIfCurrentUser}}">
+							<div class="table-list-cell center-aligned-cell rank-cell" style="flex: 1;">{{getRank @index}}</div>
+							<div class="table-list-cell" style="flex: 4;">{{getUserName ../users}}</div>
+							<div class="table-list-cell center-aligned-cell" style="flex: 1;">{{numberOfWin}}</div>
+							<div class="table-list-cell center-aligned-cell" style="flex: 1;">{{numberOfLost}}</div>
+							<div class="table-list-cell center-aligned-cell" style="flex: 1;">{{eloRating}}</div>
+							<div class="table-list-cell center-aligned-cell" style="flex: 1;">{{> eloRatingChange}}</div>
+						</div>
+					{{else}}
+						<div class="table-list-row">
+							<div class="table-list-cell">There is no data to show...</div>
+						</div>
+					{{/each}}
+				</div>
+
+				<div id="rank-line-chart-display">
+					<canvas id="rank-line-chart" width="650" height="400"></canvas>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+</template>

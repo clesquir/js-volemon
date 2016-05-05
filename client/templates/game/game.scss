@@ -1,0 +1,32 @@
+@import "{}/client/scss/variables.scss";
+
+.game-container {
+	position: relative;
+}
+
+.players-container {
+	position: absolute;
+	width: 100%;
+	margin: 10px 0 0;
+}
+
+.players-names {
+	display: flex;
+	flex-direction: row;
+	margin: 0 0 -20px 0;
+}
+
+.players-names > div {
+	flex: 1 1 auto;
+	flex-basis: 0;
+	text-align: center;
+}
+
+.players-points {
+	margin: 0;
+	font-family: 'Oxygen Mono', sans-serif;
+}
+
+.gameContainer canvas {
+	margin: 10px auto;
+}
