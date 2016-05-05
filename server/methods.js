@@ -221,13 +221,14 @@ Meteor.methods({
 
 	updateBallPosition: function(gameId, ballData) {
 		var game = Games.findOne(gameId),
-			data = {
-				ballData: ballData
-			};
+			data = {};
 
 		if (!game) {
 			throw new Meteor.Error(404, 'Game not found');
 		}
+
+		ballData['timestamp'] = new Date().getTime();
+		data['ballData'] = ballData;
 
 		Games.update({_id: game._id}, {$set: data});
 	},
@@ -247,6 +248,7 @@ Meteor.methods({
 			);
 		}
 
+		playerData['timestamp'] = new Date().getTime();
 		data[playerColumn] = playerData;
 
 		Games.update({_id: game._id}, {$set: data});

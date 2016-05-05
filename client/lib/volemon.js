@@ -3,7 +3,11 @@ Volemon = class Volemon {
 	constructor() {
 		this.lastBallPositionData = {};
 		this.lastPlayerPositionData = {};
-		this.lastKeepAlive = 0;
+		this.lastKeepAliveUpdate = 0;
+		this.lastBallUpdate = 0;
+		this.lastPlayerUpdate = 0;
+		this.lastBallTimestampRead = 0;
+		this.lastPlayerTimestampRead = 0;
 	}
 
 	getPlayer() {
@@ -402,7 +406,13 @@ Volemon = class Volemon {
 	}
 
 	updateGame() {
-		this.keepPlayerAlive();
+		let player = this.getPlayer();
+
+		if (player) {
+			this.lastKeepAliveUpdate = this.callMeteorMethodAtFrequence(
+				this.lastKeepAliveUpdate, Config.keepAliveInterval, 'keepPlayerAlive', [player._id]
+			);
+		}
 
 		if (this.isGameOnGoing()) {
 			this.inputs();
@@ -430,8 +440,15 @@ Volemon = class Volemon {
 			if (this.isUserHost()) {
 				let ballPositionData = this.getBallPositionData();
 				if (JSON.stringify(this.lastBallPositionData) !== JSON.stringify(ballPositionData)) {
-					Meteor.call('updateBallPosition', Session.get('game'), ballPositionData);
-					this.lastBallPositionData = ballPositionData;
+					let lastBallUpdateBefore = this.lastBallUpdate;
+					this.lastBallUpdate = this.callMeteorMethodAtFrequence(
+						this.lastBallUpdate, Config.ballInterval, 'updateBallPosition', [Session.get('game'), ballPositionData]
+					);
+
+					//The position has been sent to the server
+					if (lastBallUpdateBefore != this.lastBallUpdate) {
+						this.lastBallPositionData = ballPositionData;
+					}
 				}
 			} else {
 				this.moveClientBall();
@@ -448,16 +465,14 @@ Volemon = class Volemon {
 		}
 	}
 
-	keepPlayerAlive() {
-		if (this.game.time.time - this.lastKeepAlive >= Config.keepAliveInterval) {
-			let player = this.getPlayer();
+	callMeteorMethodAtFrequence(lastCallTime, frequenceTime, methodToCall, argumentsToCallWith) {
+		if (this.game.time.time - lastCallTime >= frequenceTime) {
+			Meteor.apply(methodToCall, argumentsToCallWith);
 
-			if (player) {
-				Meteor.call('keepPlayerAlive', player._id);
-			}
-
-			this.lastKeepAlive = this.game.time.time;
+			lastCallTime = this.game.time.time;
 		}
+
+		return lastCallTime;
 	}
 
 	hitBall(ball, player) {
@@ -530,13 +545,22 @@ Volemon = class Volemon {
 		//Send player position to database only if it has changed
 		let playerPositionData = this.getPlayerPositionData(player);
 		if (JSON.stringify(this.lastPlayerPositionData) !== JSON.stringify(playerPositionData)) {
-			Meteor.call(
+			let lastPlayerUpdateBefore = this.lastPlayerUpdate;
+			this.lastPlayerUpdate = this.callMeteorMethodAtFrequence(
+				this.lastPlayerUpdate,
+				Config.playerInterval,
 				'updatePlayerPosition',
-				Session.get('game'),
-				(this.isUserHost() ? Constants.HOST_PLAYER_DATA_COLUMN : Constants.CLIENT_PLAYER_DATA_COLUMN),
-				playerPositionData
+				[
+					Session.get('game'),
+					(this.isUserHost() ? Constants.HOST_PLAYER_DATA_COLUMN : Constants.CLIENT_PLAYER_DATA_COLUMN),
+					playerPositionData
+				]
 			);
-			this.lastPlayerPositionData = playerPositionData;
+
+			//The position has been sent to the server
+			if (lastPlayerUpdateBefore != this.lastPlayerUpdate) {
+				this.lastPlayerPositionData = playerPositionData;
+			}
 		}
 	}
 
@@ -560,11 +584,14 @@ Volemon = class Volemon {
 		}
 
 		let data = this.getGamePlayerData(playerColumn);
-		if (data) {
+		if (data && data.timestamp != this.lastPlayerTimestampRead) {
 			player.body.x = data.x;
 			player.body.y = data.y;
 			player.body.velocity.x = data.velocityX;
 			player.body.velocity.y = data.velocityY;
+
+			//This is used for interpolation in addition with velocities
+			this.lastPlayerTimestampRead = data.timestamp;
 		}
 	}
 
@@ -574,11 +601,14 @@ Volemon = class Volemon {
 		}
 
 		let data = this.getGameBallData();
-		if (data) {
+		if (data && data.timestamp != this.lastBallTimestampRead) {
 			this.ball.body.x = data.x;
 			this.ball.body.y = data.y;
 			this.ball.body.velocity.x = data.velocityX;
 			this.ball.body.velocity.y = data.velocityY;
+
+			//This is used for interpolation in addition with velocities
+			this.lastBallTimestampRead = data.timestamp;
 		}
 	}
 
