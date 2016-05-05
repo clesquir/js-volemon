@@ -27,6 +27,13 @@
 	font-family: 'Oxygen Mono', sans-serif;
 }
 
-.gameContainer canvas {
+#gameContainer canvas {
 	margin: 10px auto;
+}
+
+@media (max-width: 850px) {
+	#gameContainer canvas {
+		width: 699px !important;
+		height: 466px !important;
+	}
 }
