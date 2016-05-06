@@ -16,9 +16,9 @@
 
 				{{#each games}}
 					<div class="table-list-row">
-						<div class="table-list-cell" style="flex: 0 0 45px;"><a href="{{urlFor 'game' _id=this._id}}">{{_id}}</a></div>
-						<div class="table-list-cell"><a href="{{urlFor 'game' _id=this._id}}">{{createdByPlayerName}}</a></div>
-						<div class="table-list-cell" style="flex: 0 0 125px;"><a href="{{urlFor 'game' _id=this._id}}">{{gameStatus}}</a></div>
+						<div class="table-list-cell" style="flex: 0 0 45px;">{{#linkTo route="game" _id=this._id}}{{_id}}{{/linkTo}}</div>
+						<div class="table-list-cell">{{#linkTo route="game" _id=this._id}}{{createdByPlayerName}}{{/linkTo}}</div>
+						<div class="table-list-cell" style="flex: 0 0 125px;">{{#linkTo route="game" _id=this._id}}{{gameStatus}}{{/linkTo}}</div>
 					</div>
 				{{else}}
 					<div class="table-list-row">
