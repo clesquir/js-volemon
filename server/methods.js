@@ -188,6 +188,10 @@ Meteor.methods({
 			throw new Meteor.Error(404, 'Game not found');
 		}
 
+		if (game.status != Constants.GAME_STATUS_STARTED) {
+			throw new Meteor.Error('not-allowed', 'Only active games can be updated');
+		}
+
 		if ([Constants.HOST_POINTS_COLUMN, Constants.CLIENT_POINTS_COLUMN].indexOf(columnName) === -1) {
 			throw new Meteor.Error(
 				'not-allowed',
@@ -264,6 +268,10 @@ Meteor.methods({
 
 		if (!game) {
 			throw new Meteor.Error(404, 'Game not found');
+		}
+
+		if (game.status != Constants.GAME_STATUS_FINISHED) {
+			throw new Meteor.Error('not-allowed', 'Only finished games can be used for Elo calculations');
 		}
 
 		let hostProfile = Profiles.findOne({userId: game.createdBy});
