@@ -219,7 +219,7 @@ Meteor.methods({
 		Games.update({_id: game._id}, {$set: data});
 
 		if (isGameFinished) {
-			Meteor.call('_updateProfilesOnGameFinish', game._id, columnName);
+			updateProfilesOnGameFinish(game._id, columnName);
 		}
 	},
 
@@ -256,87 +256,5 @@ Meteor.methods({
 		data[playerColumn] = playerData;
 
 		Games.update({_id: game._id}, {$set: data});
-	},
-
-	/**
-	 * @param gameId
-	 * @param highestPointsColumn
-	 * @private
-	 */
-	_updateProfilesOnGameFinish: function(gameId, highestPointsColumn) {
-		var game = Games.findOne(gameId);
-
-		if (!game) {
-			throw new Meteor.Error(404, 'Game not found');
-		}
-
-		if (game.status != Constants.GAME_STATUS_FINISHED) {
-			throw new Meteor.Error('not-allowed', 'Only finished games can be used for Elo calculations');
-		}
-
-		let hostProfile = Profiles.findOne({userId: game.createdBy});
-		let hostProfileData = {};
-
-		let clientPlayer = Players.findOne({gameId: game._id, userId: {$ne: game.createdBy}});
-		let clientProfile = Profiles.findOne({userId: clientPlayer.userId});
-		let clientProfileData = {};
-
-		let hostEloScore = Meteor.call('_getEloScore', hostProfile.eloRating, clientProfile.eloRating);
-		let hostScore = 0;
-		let clientEloScore = Meteor.call('_getEloScore', clientProfile.eloRating, hostProfile.eloRating);
-		let clientScore = 0;
-
-		if (highestPointsColumn === Constants.HOST_POINTS_COLUMN) {
-			hostScore = 1;
-			hostProfileData['numberOfWin'] = hostProfile.numberOfWin + 1;
-			clientProfileData['numberOfLost'] = clientProfile.numberOfLost + 1;
-		} else {
-			clientScore = 1;
-			hostProfileData['numberOfLost'] = hostProfile.numberOfLost + 1;
-			clientProfileData['numberOfWin'] = clientProfile.numberOfWin + 1;
-		}
-
-		hostProfileData['eloRating'] = Meteor.call('_getEloRating', hostProfile.eloRating, hostEloScore, hostScore);
-		hostProfileData['eloRatingLastChange'] = hostProfileData['eloRating'] - hostProfile.eloRating;
-		clientProfileData['eloRating'] = Meteor.call('_getEloRating', clientProfile.eloRating, clientEloScore, clientScore);
-		clientProfileData['eloRatingLastChange'] = clientProfileData['eloRating'] - clientProfile.eloRating;
-
-		Profiles.update({_id: hostProfile._id}, {$set: hostProfileData});
-		Profiles.update({_id: clientProfile._id}, {$set: clientProfileData});
-
-		let eloScoreTimestamp = new Date().getTime();
-
-		EloScores.insert({
-			timestamp: eloScoreTimestamp,
-			userId: hostProfile.userId,
-			eloRating: hostProfileData['eloRating']
-		});
-		EloScores.insert({
-			timestamp: eloScoreTimestamp,
-			userId: clientProfile.userId,
-			eloRating: clientProfileData['eloRating']
-		});
-	},
-
-	/**
-	 * @param currentElo
-	 * @param opponentElo
-	 * @returns {number}
-	 * @private
-	 */
-	_getEloScore: function(currentElo, opponentElo) {
-		return 1 / (1 + Math.pow(10, (opponentElo - currentElo) / 400));
-	},
-
-	/**
-	 * @param previousEloRating
-	 * @param eloScore
-	 * @param score
-	 * @param K
-	 * @returns {number}
-	 * @private
-	 */
-	_getEloRating: function(previousEloRating, eloScore, score, K = 32) {
-		return previousEloRating + Math.round(K * (score - eloScore));
 	}
 });
