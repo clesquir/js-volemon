@@ -31,7 +31,7 @@ Meteor.publish('ranks', function() {
 
 Meteor.publish('games', function() {
 	return [
-		Games.find(),
+		Games.find({isPrivate: 0}),
 		Players.find()
 	];
 });
