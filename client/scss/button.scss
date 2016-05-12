@@ -23,3 +23,55 @@
 		background: $border-color-light;
 	}
 }
+
+$switch-button-width: 30px;
+$switch-button-height: 16px;
+
+.switch-button {
+	position: relative;
+	display: inline-block;
+	vertical-align: bottom;
+	margin-left: 5px;
+	width: $switch-button-width;
+	height: $switch-button-height + 2;
+	line-height: $switch-button-height + 2;
+	border-radius: 11px;
+	box-shadow: 0 0 1px rgba(0, 0, 0, 0.2) inset;
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	overflow: hidden;
+	cursor: pointer;
+	transition: all 0.3s linear;
+
+	&.off-value {
+		background-color: $negative;
+
+		span {
+			right: $switch-button-width - $switch-button-height - 1;
+		}
+	}
+
+	&.on-value {
+		background-color: $positive;
+
+		span {
+			right: 1px;
+		}
+	}
+
+	span {
+		position: absolute;
+		background: $header-background-color;
+		border-radius: 9px;
+		height: $switch-button-height;
+		width: $switch-button-height;
+		top: 1px;
+		box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+		transition: all 0.2s linear;
+	}
+}
+
+.switch-button:focus {
+	border-color: rgba($header-border-bottom-color, 0.6);
+	outline: 0;
+	box-shadow: 0 0 10px rgba($table-header-color, 0.75);
+}

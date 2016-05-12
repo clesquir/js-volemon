@@ -74,10 +74,23 @@ Template.game.helpers({
 			this.game.createdBy === Meteor.userId() &&
 			Config.possibleNoPlayers.indexOf(players.count()) !== -1
 		);
+	},
+
+	isPrivateGame: function() {
+		return this.game.isPrivate ? true : false;
 	}
 });
 
 Template.game.events({
+	'click [data-action="update-privacy"]': function(e) {
+		var game = Games.findOne(Session.get('game')),
+			isPrivate = !game.isPrivate;
+
+		switchTargetButton(e, isPrivate);
+
+		Meteor.call('updateGamePrivacy', Session.get('game'), isPrivate ? 1 : 0);
+	},
+	
 	'click [data-action="start"]': function(e) {
 		Meteor.call('startGame', Session.get('game'));
 	},

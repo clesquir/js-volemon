@@ -40,6 +40,7 @@ Meteor.methods({
 			status: Constants.GAME_STATUS_REGISTRATION,
 			createdAt: new Date().getTime(),
 			createdBy: user._id,
+			isPrivate: 0,
 			hostPoints: 0,
 			clientPoints: 0,
 			lastPointTaken: null,
@@ -53,6 +54,21 @@ Meteor.methods({
 		Meteor.call('joinGame', id);
 
 		return id;
+	},
+
+	updateGamePrivacy: function(gameId, isPrivate) {
+		var game = Games.findOne(gameId),
+			user = Meteor.user();
+
+		if (!game) {
+			throw new Meteor.Error(404, 'Game not found');
+		}
+
+		if (game.createdBy != user._id) {
+			throw new Meteor.Error('not-allowed', 'Only the creator can update this game privacy');
+		}
+
+		Games.update({_id: game._id}, {$set: {isPrivate: isPrivate ? 1 : 0}});
 	},
 
 	joinGame: function(gameId) {

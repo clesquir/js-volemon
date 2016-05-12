@@ -39,6 +39,10 @@
 
 					<p>Share this link with someone</p>
 					<p><input type="text" value="{{urlFor 'game' _id=game._id}}" readonly="readonly" name="url"></p>
+
+					<p style="text-align: left; margin-top: 30px;">
+						{{> switchButton label="Private" dataAction="update-privacy" onOffMethod=isPrivateGame}}
+					</p>
 				{{else}}
 					<h1>Joining a game</h1>
 				{{/if}}
