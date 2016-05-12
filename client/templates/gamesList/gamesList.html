@@ -9,14 +9,14 @@
 
 			<div class="table-list" style="margin: 0 auto;">
 				<div class="table-list-row table-list-header">
-					<div class="table-list-cell" style="flex: 0 0 45px;">#</div>
+					<div class="table-list-cell" style="flex: 0 0 75px;">#</div>
 					<div class="table-list-cell">Creator</div>
 					<div class="table-list-cell" style="flex: 0 0 125px;">Status</div>
 				</div>
 
 				{{#each games}}
 					<div class="table-list-row">
-						<div class="table-list-cell" style="flex: 0 0 45px;">{{#linkTo route="game" _id=this._id}}{{_id}}{{/linkTo}}</div>
+						<div class="table-list-cell" style="flex: 0 0 75px;">{{#linkTo route="game" _id=this._id}}{{_id}}{{/linkTo}}</div>
 						<div class="table-list-cell">{{#linkTo route="game" _id=this._id}}{{createdByPlayerName}}{{/linkTo}}</div>
 						<div class="table-list-cell" style="flex: 0 0 125px;">{{#linkTo route="game" _id=this._id}}{{gameStatus}}{{/linkTo}}</div>
 					</div>

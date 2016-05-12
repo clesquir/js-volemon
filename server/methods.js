@@ -35,8 +35,8 @@ Meteor.methods({
 			throw new Meteor.Error(401, 'You need to login to create a game');
 		}
 
-		var game = {
-			_id: Random.id(2),
+		let id = Games.insert({
+			_id: Random.id(5),
 			status: Constants.GAME_STATUS_REGISTRATION,
 			createdAt: new Date().getTime(),
 			createdBy: user._id,
@@ -47,9 +47,7 @@ Meteor.methods({
 			ballData: null,
 			hostPlayerData: null,
 			clientPlayerData: null
-		};
-
-		var id = Games.insert(game);
+		});
 
 		Meteor.call('joinGame', id);
 
