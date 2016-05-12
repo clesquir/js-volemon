@@ -112,13 +112,11 @@ createRankLineChart = function() {
 				backgroundColor: color,
 				tension: 0.2,
 				pointHitRadius: 0,
+				pointBorderWidth: 0,
 				pointHoverRadius: 3,
-				pointBorderWidth: 1,
-				pointBackgroundColor: 'rgba(100, 100, 100, 0.5)',
-				pointBorderColor: 'rgba(100, 100, 100, 0.5)',
 				pointHoverBorderWidth: 2,
 				pointHoverBackgroundColor: color,
-				pointHoverBorderColor: 'rgba(100, 100, 100, 0.5)',
+				pointHoverBorderColor: 'rgba(100, 100, 100, 0.25)',
 				data: data
 			});
 		}
