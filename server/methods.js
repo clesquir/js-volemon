@@ -29,25 +29,35 @@ Meteor.methods({
 	},
 
 	createGame: function() {
-		var user = Meteor.user();
+		var user = Meteor.user(),
+			id = null;
 
 		if (!user) {
 			throw new Meteor.Error(401, 'You need to login to create a game');
 		}
 
-		let id = Games.insert({
-			_id: Random.id(5),
-			status: Constants.GAME_STATUS_REGISTRATION,
-			createdAt: new Date().getTime(),
-			createdBy: user._id,
-			isPrivate: 0,
-			hostPoints: 0,
-			clientPoints: 0,
-			lastPointTaken: null,
-			ballData: null,
-			hostPlayerData: null,
-			clientPlayerData: null
-		});
+		do {
+			try {
+				id = Games.insert({
+					_id: Random.id(5),
+					status: Constants.GAME_STATUS_REGISTRATION,
+					createdAt: new Date().getTime(),
+					createdBy: user._id,
+					isPrivate: 0,
+					hostPoints: 0,
+					clientPoints: 0,
+					lastPointTaken: null,
+					ballData: null,
+					hostPlayerData: null,
+					clientPlayerData: null
+				});
+			} catch (e) {
+				//If the id is already taken loop until it finds a unique id
+				if (e.code != 11000) {
+					throw e;
+				}
+			}
+		} while (id == null);
 
 		Meteor.call('joinGame', id);
 
