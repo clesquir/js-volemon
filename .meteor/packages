@@ -24,8 +24,8 @@ fourseven:scss
 accounts-password
 random
 check
-snowypowers:meteor-phaser
 standard-minifier-css
 standard-minifier-js
 accounts-ui-unstyled
 fortawesome:fontawesome
+clesquir:meteor-phaser

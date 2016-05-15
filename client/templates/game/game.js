@@ -105,6 +105,10 @@ Template.game.events({
 		};
 
 		if (!Meteor.userId()) {
+			actionOnLighboxClose = function() {
+				actionAfterLoginCreateUser = null;
+			};
+
 			return Session.set('lightbox', 'login');
 		}
 
