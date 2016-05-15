@@ -16,6 +16,7 @@ caching-compiler@1.0.4
 caching-html-compiler@1.0.6
 callback-hook@1.0.8
 check@1.2.1
+clesquir:meteor-phaser@2.4.7
 ddp@1.2.5
 ddp-client@1.2.7
 ddp-common@1.2.5
@@ -78,7 +79,6 @@ routepolicy@1.0.10
 service-configuration@1.0.9
 session@1.1.5
 sha@1.0.7
-snowypowers:meteor-phaser@2.4.6
 spacebars@1.0.11
 spacebars-compiler@1.0.11
 srp@1.0.8

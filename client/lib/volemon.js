@@ -239,9 +239,11 @@ Volemon = class Volemon {
 		this.ball = this.game.add.sprite(Config.playerInitialLocation, Config.ySize - Config.groundHeight - Config.ballDistanceFromGround, 'ball');
 
 		this.game.physics.p2.enable(this.ball);
-		this.ball.body.setCircle(Config.ballRadius);
+		this.ball.body.clearShapes();
+		this.ball.body.loadPolygon('physicsData', 'ball');
+		this.ball.body.fixedRotation = true;
 		this.ball.body.data.gravityScale = Config.ballGravityScale;
-		this.ball.body.damping = 0;
+		this.ball.body.damping = 0.1;
 		this.ball.body.setMaterial(this.ballMaterial);
 		this.ball.body.setCollisionGroup(this.ballCollisionGroup);
 
@@ -478,14 +480,15 @@ Volemon = class Volemon {
 	hitBall(ball, player) {
 		var key = player.sprite.key;
 
+		//Player is jumping forward and ball is in front of him (smash)
 		if (
 			Math.round(player.velocity.y) < 0 &&
 			(
-				(key === 'player1' && player.velocity.x > 0) ||
-				(key === 'player2' && player.velocity.x < 0)
+				(key === 'player1' && Math.round(player.velocity.x) > 0 && player.x < ball.x) ||
+				(key === 'player2' && Math.round(player.velocity.x) < 0 && ball.x < player.x
+				)
 			)
 		) {
-			//Player is jumping forward (smashing)
 			//Ball should go faster and down
 			ball.velocity.x *= 2;
 			ball.velocity.y /= 4;
@@ -494,8 +497,25 @@ Volemon = class Volemon {
 			if (ball.velocity.y < 0) {
 				ball.velocity.y = -ball.velocity.y;
 			}
+
+			this.constrainVelocity(ball, 1000);
 		} else {
+			//Ball rebounds on player
 			ball.velocity.y = -Config.ballVelocityYOnPlayerHit;
+		}
+	}
+
+	constrainVelocity(body, maxVelocity) {
+		var angle, currVelocitySqr, vx, vy;
+		vx = body.velocity.x;
+		vy = body.velocity.y;
+		currVelocitySqr = vx * vx + vy * vy;
+		if (currVelocitySqr > maxVelocity * maxVelocity) {
+			angle = Math.atan2(vy, vx);
+			vx = Math.cos(angle) * maxVelocity;
+			vy = Math.sin(angle) * maxVelocity;
+			body.velocity.x = vx;
+			body.velocity.y = vy;
 		}
 	}
 
