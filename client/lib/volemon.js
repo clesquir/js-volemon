@@ -8,6 +8,7 @@ Volemon = class Volemon {
 		this.lastPlayerUpdate = 0;
 		this.lastBallTimestampRead = 0;
 		this.lastPlayerTimestampRead = 0;
+		this.ballRespawn = false;
 	}
 
 	getPlayer() {
@@ -405,6 +406,8 @@ Volemon = class Volemon {
 			xBallPosition,
 			Config.ySize - Config.groundHeight - Config.ballDistanceFromGround
 		);
+
+		this.ballRespawn = true;
 	}
 
 	updateGame() {
@@ -520,7 +523,7 @@ Volemon = class Volemon {
 	}
 
 	hitGround(ball, ground) {
-		if (this.isUserHost()) {
+		if (this.isUserHost() && this.ballRespawn == true) {
 			let pointSide;
 
 			if (ball.x < Config.xSize / 2) {
@@ -529,6 +532,7 @@ Volemon = class Volemon {
 				pointSide = Constants.HOST_POINTS_COLUMN;
 			}
 
+			this.ballRespawn = false;
 			Meteor.call('addGamePoints', Session.get('game'), pointSide, () => {
 				this.shakeLevel();
 				this.resumeOnTimerEnd();
