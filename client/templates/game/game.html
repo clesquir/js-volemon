@@ -38,7 +38,12 @@
 					<h1>Creating a game</h1>
 
 					<p>Share this link with someone</p>
-					<p><input type="text" value="{{urlFor 'game' _id=game._id}}" readonly="readonly" name="url"></p>
+					<p>
+						<div class="copyable-url-input">
+							<input type="text" value="{{urlFor 'game' _id=game._id}}" readonly="readonly" name="url" />
+							<i class="fa fa-clipboard" data-action="copy-url" data-tooltip="Copy to clipboard" data-tooltip-direction="s"></i>
+						</div>
+					</p>
 
 					<p style="text-align: right; margin-top: 30px;">
 						{{> switchButton label="Private" dataAction="update-privacy" onOffMethod=isPrivateGame}}
