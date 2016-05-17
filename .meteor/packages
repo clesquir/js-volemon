@@ -29,3 +29,4 @@ standard-minifier-js
 accounts-ui-unstyled
 fortawesome:fontawesome
 clesquir:meteor-phaser
+lookback:tooltips

@@ -17,6 +17,7 @@ caching-html-compiler@1.0.6
 callback-hook@1.0.8
 check@1.2.1
 clesquir:meteor-phaser@2.4.7
+coffeescript@1.0.17
 ddp@1.2.5
 ddp-client@1.2.7
 ddp-common@1.2.5
@@ -53,6 +54,7 @@ less@2.6.0
 livedata@1.0.18
 localstorage@1.0.9
 logging@1.0.12
+lookback:tooltips@0.5.2
 meteor@1.1.14
 meteor-base@1.0.4
 minifier-css@1.1.11

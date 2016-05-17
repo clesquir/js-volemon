@@ -82,6 +82,23 @@ Template.game.helpers({
 });
 
 Template.game.events({
+	'click [data-action="copy-url"]': function(e) {
+		var url = Router.routes['game'].url({_id: Session.get('game')}),
+			temporaryInput = $('<input>');
+
+		$('body').append(temporaryInput);
+		temporaryInput.val(url).select();
+		document.execCommand('copy');
+		temporaryInput.remove();
+
+		$(e.target).attr('data-tooltip', 'Copied!');
+		$(e.target).trigger('mouseover');
+
+		$(e.target).mouseout(function() {
+			$(e.target).attr('data-tooltip', 'Copy to clipboard');
+		});
+	},
+
 	'click [data-action="update-privacy"]': function(e) {
 		var game = Games.findOne(Session.get('game')),
 			isPrivate = !game.isPrivate;

@@ -37,3 +37,21 @@
 		height: 466px !important;
 	}
 }
+
+.copyable-url-input {
+	position: relative;
+
+	.fa-clipboard {
+		margin-left: -30px;
+		cursor: pointer;
+		opacity: 0.5;
+
+		&:hover {
+			opacity: 1;
+		}
+
+		&:active {
+			color: $header-text-color;
+		}
+	}
+}
