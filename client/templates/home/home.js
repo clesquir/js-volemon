@@ -62,5 +62,15 @@ Template.home.helpers({
 		}
 
 		return '<span class="' + scoreClass + '">' + padPoints(userPoints) + '</span>' + ' - ' + padPoints(opponentPoints);
+	},
+
+	hasMoreGames: function() {
+		return !(Games.find({}, {sort: [['createdAt', 'desc']]}).count() < Session.get('gamesLimitOnHomePage'));
+	}
+});
+
+Template.home.events({
+	'click [data-action="show-more-games"]': function(e) {
+		Session.set('gamesLimitOnHomePage', Session.get('gamesLimitOnHomePage') + Config.gamesLimitOnHomePage);
 	}
 });
