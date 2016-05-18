@@ -13,7 +13,7 @@ HomeController = RouteController.extend({
 		return this.state.get('gamesLimit') || this.gamesIncrement();
 	},
 	gamesCount: function() {
-		return Games.find({}, {sort: [['createdAt', 'desc']]}).count();
+		return Games.find({}, {sort: [['startedAt', 'desc']]}).count();
 	},
 	action: function () {
 		Meteor.subscribe('recentProfileGames', this.gamesLimit());
@@ -27,7 +27,7 @@ HomeController = RouteController.extend({
 	data: function() {
 		return {
 			profile: Profiles.findOne({userId: Meteor.userId()}),
-			games: Games.find({}, {sort: [['createdAt', 'desc']]}),
+			games: Games.find({}, {sort: [['startedAt', 'desc']]}),
 			players: Players.find()
 		};
 	}

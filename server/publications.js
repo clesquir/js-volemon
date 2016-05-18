@@ -16,7 +16,7 @@ Meteor.publish('recentProfileGames', function(limit) {
 	});
 
 	return [
-		Games.find({_id: {$in: gamesIds}, status: Constants.GAME_STATUS_FINISHED}, {sort: [['createdAt', 'desc']], limit: limit}),
+		Games.find({_id: {$in: gamesIds}, status: Constants.GAME_STATUS_FINISHED}, {sort: [['startedAt', 'desc']], limit: limit}),
 		Players.find({userId: {$ne:this.userId}, gameId: {$in: gamesIds}})
 	];
 });
