@@ -62,5 +62,20 @@ Template.home.helpers({
 		}
 
 		return '<span class="' + scoreClass + '">' + padPoints(userPoints) + '</span>' + ' - ' + padPoints(opponentPoints);
+	},
+
+	hasMoreGames: function() {
+		var controller = Iron.controller();
+
+		return controller.gamesCount() >= controller.state.get('gamesLimit');
+	}
+});
+
+Template.home.events({
+	'click [data-action="show-more-games"]': function(e) {
+		var controller = Iron.controller();
+
+		e.preventDefault();
+		controller.state.set('gamesLimit', controller.state.get('gamesLimit') + controller.gamesIncrement());
 	}
 });

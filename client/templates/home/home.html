@@ -51,6 +51,10 @@
 					{{/each}}
 				</div>
 
+				{{#if hasMoreGames}}
+					<div class="button show-more" style="margin: 10px auto 0; width: 475px;" data-action="show-more-games">Show more games</div>
+				{{/if}}
+
 			{{else}}
 
 				<p>Please <a class="clickable-link" data-action="user-log-in">log in</a> to get statistics on your profile!</p>
