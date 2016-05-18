@@ -65,12 +65,17 @@ Template.home.helpers({
 	},
 
 	hasMoreGames: function() {
-		return !(Games.find({}, {sort: [['createdAt', 'desc']]}).count() < Session.get('gamesLimitOnHomePage'));
+		var controller = Iron.controller();
+
+		return controller.gamesCount() >= controller.state.get('gamesLimit');
 	}
 });
 
 Template.home.events({
 	'click [data-action="show-more-games"]': function(e) {
-		Session.set('gamesLimitOnHomePage', Session.get('gamesLimitOnHomePage') + Config.gamesLimitOnHomePage);
+		var controller = Iron.controller();
+
+		e.preventDefault();
+		controller.state.set('gamesLimit', controller.state.get('gamesLimit') + controller.gamesIncrement());
 	}
 });

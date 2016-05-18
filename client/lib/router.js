@@ -9,21 +9,7 @@ Router.configure({
 Router.map(function() {
 	this.route('home', {
 		path: '/',
-		waitOn: function() {
-			Session.setDefault('gamesLimitOnHomePage', Config.gamesLimitOnHomePage);
-
-			return [
-				Meteor.subscribe('profileData'),
-				Meteor.subscribe('recentProfileGames', Session.get('gamesLimitOnHomePage'))
-			];
-		},
-		data: function() {
-			return {
-				profile: Profiles.findOne({userId: Meteor.userId()}),
-				games: Games.find({}, {sort: [['createdAt', 'desc']]}),
-				players: Players.find()
-			};
-		}
+		controller: 'HomeController'
 	});
 
 	this.route('games-list', {
