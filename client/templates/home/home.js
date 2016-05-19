@@ -4,13 +4,7 @@ Template.home.helpers({
 	},
 
 	winRate: function() {
-		if (this.profile.numberOfWin + this.profile.numberOfLost == 0) {
-			return 'N/A';
-		} else if (this.profile.numberOfLost == 0) {
-			return '100%';
-		} else {
-			return Math.round(this.profile.numberOfWin / (this.profile.numberOfWin + this.profile.numberOfLost) * 100) + '%';
-		}
+		return getWinRate(this.profile);
 	},
 
 	getDate: function() {
