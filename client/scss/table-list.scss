@@ -24,7 +24,7 @@ $table-list-radius: 3px;
 
 	&.table-list-header .table-list-cell {
 		background-color: $table-header-color;
-		font-weight: bold;
+		font-weight: 700;
 
 		&:first-of-type {
 			border-top-left-radius: $table-list-radius;
@@ -48,5 +48,9 @@ $table-list-radius: 3px;
 
 	&.center-aligned-cell {
 		text-align: center;
+	}
+
+	&.right-aligned-cell {
+		text-align: end;
 	}
 }

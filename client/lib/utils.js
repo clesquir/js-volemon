@@ -45,3 +45,13 @@ getRainbowColor = function(numOfSteps, step) {
 	var c = "#" + ("00" + (~ ~(r * 255)).toString(16)).slice(-2) + ("00" + (~ ~(g * 255)).toString(16)).slice(-2) + ("00" + (~ ~(b * 255)).toString(16)).slice(-2);
 	return (c);
 };
+
+getWinRate = function(profile) {
+	if (profile.numberOfWin + profile.numberOfLost == 0) {
+		return 'N/A';
+	} else if (profile.numberOfLost == 0) {
+		return '100%';
+	} else {
+		return Math.round(profile.numberOfWin / (profile.numberOfWin + profile.numberOfLost) * 100) + '%';
+	}
+};

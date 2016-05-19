@@ -16,10 +16,16 @@
 	}
 }
 
-.rank-cell {
-	font-weight: bolder;
-	font-size: 20px;
-	line-height: 20px;
+#rank-table-display {
+	.rank-cell {
+		font-weight: 900;
+		font-size: 20px;
+		line-height: 20px;
+	}
+
+	.elo-rating-cell {
+		display: flex;
+	}
 }
 
 .spinner {

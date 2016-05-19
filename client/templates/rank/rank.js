@@ -21,6 +21,10 @@ Template.rank.helpers({
 		});
 
 		return userName;
+	},
+
+	getWinRate: function() {
+		return getWinRate(this);
 	}
 });
 

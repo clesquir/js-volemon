@@ -14,22 +14,22 @@
 			<div id="rank-display" class="spinner spinner-table-display">
 				<div id="rank-table-display" class="table-list" style="margin: 0 auto;">
 					<div class="table-list-row table-list-header">
-						<div class="table-list-cell center-aligned-cell" style="flex: 1;">Rank</div>
-						<div class="table-list-cell" style="flex: 4;">Name</div>
-						<div class="table-list-cell center-aligned-cell" style="flex: 1;">Won</div>
-						<div class="table-list-cell center-aligned-cell" style="flex: 1;">Lost</div>
-						<div class="table-list-cell center-aligned-cell" style="flex: 1;">Elo</div>
-						<div class="table-list-cell center-aligned-cell" style="flex: 1;">Change</div>
+						<div class="table-list-cell center-aligned-cell" style="flex: 0 0 65px;">Rank</div>
+						<div class="table-list-cell">Name</div>
+						<div class="table-list-cell right-aligned-cell" style="flex: 0 0 75px;">Won</div>
+						<div class="table-list-cell right-aligned-cell" style="flex: 0 0 75px;">Lost</div>
+						<div class="table-list-cell right-aligned-cell" style="flex: 0 0 75px;">Win %</div>
+						<div class="table-list-cell" style="flex: 0 0 95px;">Elo</div>
 					</div>
 
 					{{#each profiles}}
 						<div class="table-list-row {{getHighlightedClassIfCurrentUser}}">
-							<div class="table-list-cell center-aligned-cell rank-cell" style="flex: 1;">{{getRank @index}}</div>
-							<div class="table-list-cell" style="flex: 4;">{{getUserName ../users}}</div>
-							<div class="table-list-cell center-aligned-cell" style="flex: 1;">{{numberOfWin}}</div>
-							<div class="table-list-cell center-aligned-cell" style="flex: 1;">{{numberOfLost}}</div>
-							<div class="table-list-cell center-aligned-cell" style="flex: 1;">{{eloRating}}</div>
-							<div class="table-list-cell center-aligned-cell" style="flex: 1;">{{> eloRatingChange}}</div>
+							<div class="table-list-cell center-aligned-cell rank-cell" style="flex: 0 0 65px;">{{getRank @index}}</div>
+							<div class="table-list-cell">{{getUserName ../users}}</div>
+							<div class="table-list-cell right-aligned-cell" style="flex: 0 0 75px;">{{numberOfWin}}</div>
+							<div class="table-list-cell right-aligned-cell" style="flex: 0 0 75px;">{{numberOfLost}}</div>
+							<div class="table-list-cell right-aligned-cell" style="flex: 0 0 75px;">{{getWinRate}}</div>
+							<div class="table-list-cell elo-rating-cell" style="flex: 0 0 95px;"><div>{{eloRating}}</div> {{> eloRatingChange}}</div>
 						</div>
 					{{else}}
 						<div class="table-list-row">
