@@ -167,6 +167,7 @@ Template.game.rendered = function() {
 Template.game.destroyed = function() {
 	if (currentGame) {
 		currentGame.stop();
+		currentGame = null;
 	}
 };
 
@@ -198,5 +199,29 @@ GameStream.on('shakeLevelAndResumeOnTimerEnd', function(gameId) {
 	if (game && player && game.createdBy !== Meteor.userId() && currentGame) {
 		currentGame.shakeLevel();
 		currentGame.resumeOnTimerEnd();
+	}
+});
+
+GameStream.on('moveClientBall', function(gameId, ballData) {
+	var game = Games.findOne(gameId),
+		player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
+
+	//Player is in game and is not the creator
+	if (game && player && game.createdBy !== Meteor.userId() && currentGame) {
+		currentGame.moveClientBall(ballData);
+	}
+});
+
+GameStream.on('moveOppositePlayer', function(gameId, isUserHost, playerData) {
+	var game = Games.findOne(gameId),
+		player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
+
+	//Player is in game and sent data is for opposite player
+	if (
+		game && player &&
+		((isUserHost && game.createdBy !== Meteor.userId()) || (!isUserHost && game.createdBy === Meteor.userId())) &&
+		currentGame
+	) {
+		currentGame.moveOppositePlayer(playerData);
 	}
 });

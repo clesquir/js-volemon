@@ -46,10 +46,7 @@ Meteor.methods({
 					isPrivate: 0,
 					hostPoints: 0,
 					clientPoints: 0,
-					lastPointTaken: null,
-					ballData: null,
-					hostPlayerData: null,
-					clientPlayerData: null
+					lastPointTaken: null
 				});
 			} catch (e) {
 				//If the id is already taken loop until it finds a unique id
@@ -245,40 +242,5 @@ Meteor.methods({
 		if (isGameFinished) {
 			updateProfilesOnGameFinish(game._id, columnName);
 		}
-	},
-
-	updateBallPosition: function(gameId, ballData) {
-		var game = Games.findOne(gameId),
-			data = {};
-
-		if (!game) {
-			throw new Meteor.Error(404, 'Game not found');
-		}
-
-		ballData['timestamp'] = new Date().getTime();
-		data['ballData'] = ballData;
-
-		Games.update({_id: game._id}, {$set: data});
-	},
-
-	updatePlayerPosition: function(gameId, playerColumn, playerData) {
-		var game = Games.findOne(gameId),
-			data = {};
-
-		if (!game) {
-			throw new Meteor.Error(404, 'Game not found');
-		}
-
-		if ([Constants.HOST_PLAYER_DATA_COLUMN, Constants.CLIENT_PLAYER_DATA_COLUMN].indexOf(playerColumn) === -1) {
-			throw new Meteor.Error(
-				'not-allowed',
-				'Only ' + Constants.HOST_PLAYER_DATA_COLUMN + ' and ' + Constants.CLIENT_PLAYER_DATA_COLUMN + ' are allowed'
-			);
-		}
-
-		playerData['timestamp'] = new Date().getTime();
-		data[playerColumn] = playerData;
-
-		Games.update({_id: game._id}, {$set: data});
 	}
 });

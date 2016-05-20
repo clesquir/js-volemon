@@ -45,18 +45,6 @@ Volemon = class Volemon {
 		return (game && game.lastPointTaken);
 	}
 
-	getGameBallData() {
-		var game = Games.findOne({_id: Session.get('game')});
-
-		return (game && game.ballData);
-	}
-
-	getGamePlayerData(playerColumn) {
-		var game = Games.findOne({_id: Session.get('game')});
-
-		return (game && game[playerColumn]);
-	}
-
 	getWinnerName() {
 		var game = Games.findOne({_id: Session.get('game')}),
 			winnerName = 'Nobody',
@@ -421,7 +409,6 @@ Volemon = class Volemon {
 
 		if (this.isGameOnGoing()) {
 			this.inputs();
-			this.moveOppositePlayer();
 
 			/**
 			 * Update timer
@@ -446,8 +433,13 @@ Volemon = class Volemon {
 				let ballPositionData = this.getBallPositionData();
 				if (JSON.stringify(this.lastBallPositionData) !== JSON.stringify(ballPositionData)) {
 					let lastBallUpdateBefore = this.lastBallUpdate;
-					this.lastBallUpdate = this.callMeteorMethodAtFrequence(
-						this.lastBallUpdate, Config.ballInterval, 'updateBallPosition', [Session.get('game'), ballPositionData]
+					let ballData = jQuery.extend({}, ballPositionData);
+					ballData.timestamp = new Date().getTime();
+					this.lastBallUpdate = this.emitGameStreamAtFrequence(
+						this.lastBallUpdate,
+						Config.ballInterval,
+						'moveClientBall',
+						[Session.get('game'), ballData]
 					);
 
 					//The position has been sent to the server
@@ -455,8 +447,6 @@ Volemon = class Volemon {
 						this.lastBallPositionData = ballPositionData;
 					}
 				}
-			} else {
-				this.moveClientBall();
 			}
 		} else if (this.isGameTimeOut()) {
 			this.player1.body.setZeroVelocity();
@@ -468,16 +458,6 @@ Volemon = class Volemon {
 
 			this.setInformationText('The game has timed out...');
 		}
-	}
-
-	callMeteorMethodAtFrequence(lastCallTime, frequenceTime, methodToCall, argumentsToCallWith) {
-		if (this.game.time.time - lastCallTime >= frequenceTime) {
-			Meteor.apply(methodToCall, argumentsToCallWith);
-
-			lastCallTime = this.game.time.time;
-		}
-
-		return lastCallTime;
 	}
 
 	hitBall(ball, player) {
@@ -570,15 +550,14 @@ Volemon = class Volemon {
 		let playerPositionData = this.getPlayerPositionData(player);
 		if (JSON.stringify(this.lastPlayerPositionData) !== JSON.stringify(playerPositionData)) {
 			let lastPlayerUpdateBefore = this.lastPlayerUpdate;
-			this.lastPlayerUpdate = this.callMeteorMethodAtFrequence(
+			let playerData = jQuery.extend({}, playerPositionData);
+			playerData.timestamp = new Date().getTime();
+
+			this.lastPlayerUpdate = this.emitGameStreamAtFrequence(
 				this.lastPlayerUpdate,
 				Config.playerInterval,
-				'updatePlayerPosition',
-				[
-					Session.get('game'),
-					(this.isUserHost() ? Constants.HOST_PLAYER_DATA_COLUMN : Constants.CLIENT_PLAYER_DATA_COLUMN),
-					playerPositionData
-				]
+				'moveOppositePlayer',
+				[Session.get('game'), this.isUserHost(), playerData]
 			);
 
 			//The position has been sent to the server
@@ -592,22 +571,19 @@ Volemon = class Volemon {
 		return (player.y + (Config.playerHeight / 2) >= Config.ySize - Config.groundHeight);
 	}
 
-	moveOppositePlayer() {
-		var player, playerColumn;
+	moveOppositePlayer(data) {
+		var player;
 
 		if (this.isUserHost()) {
 			player = this.player2;
-			playerColumn = Constants.CLIENT_PLAYER_DATA_COLUMN;
 		} else {
 			player = this.player1;
-			playerColumn = Constants.HOST_PLAYER_DATA_COLUMN;
 		}
 
 		if (!player || !player.body) {
 			return;
 		}
 
-		let data = this.getGamePlayerData(playerColumn);
 		if (data && data.timestamp != this.lastPlayerTimestampRead) {
 			player.body.x = data.x;
 			player.body.y = data.y;
@@ -619,12 +595,11 @@ Volemon = class Volemon {
 		}
 	}
 
-	moveClientBall() {
+	moveClientBall(data) {
 		if (!this.ball || !this.ball.body) {
 			return;
 		}
 
-		let data = this.getGameBallData();
 		if (data && data.timestamp != this.lastBallTimestampRead) {
 			this.ball.body.x = data.x;
 			this.ball.body.y = data.y;
@@ -693,5 +668,25 @@ Volemon = class Volemon {
 		multilineText = multilineText.map(line => {return '    ' + line + '    ';});
 
 		this.informationText.text = multilineText.join('\n');
+	}
+
+	callMeteorMethodAtFrequence(lastCallTime, frequenceTime, methodToCall, argumentsToCallWith) {
+		if (this.game.time.time - lastCallTime >= frequenceTime) {
+			Meteor.apply(methodToCall, argumentsToCallWith);
+
+			lastCallTime = this.game.time.time;
+		}
+
+		return lastCallTime;
+	}
+
+	emitGameStreamAtFrequence(lastCallTime, frequenceTime, streamToEmit, argumentsToEmitWith) {
+		if (this.game.time.time - lastCallTime >= frequenceTime) {
+			GameStream.emit.apply(this, [streamToEmit].concat(argumentsToEmitWith));
+
+			lastCallTime = this.game.time.time;
+		}
+
+		return lastCallTime;
 	}
 };
