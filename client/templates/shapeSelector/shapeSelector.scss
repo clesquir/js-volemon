@@ -1,0 +1,42 @@
+.shape-selector-container {
+	display: inline-block;
+	cursor: pointer;
+	position: relative;
+	overflow: hidden;
+	width: 32px;
+	height: 16px;
+
+	.shape-content-scroller {
+		background-image: url("/assets/player-shapes-small.png");
+		transition: 0.5s ease-in-out;
+		height: 79px;
+		width: 32px;
+	}
+
+	&.shape-half-circle .shape-content-scroller {
+		transform: translateY(0px);
+	}
+
+	&.shape-triangle .shape-content-scroller {
+		transform: translateY(-21px);
+	}
+
+	&.shape-rectangle .shape-content-scroller {
+		transform: translateY(-42px);
+	}
+
+	&.shape-hexagon .shape-content-scroller {
+		transform: translateY(-63px);
+	}
+}
+
+.shape-selector-carets {
+	display: inline-block;
+	margin-left: 2px;
+
+	i {
+		display: block;
+		cursor: pointer;
+		font-size: 10px;
+	}
+}

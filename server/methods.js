@@ -111,7 +111,8 @@ Meteor.methods({
 			name: user.profile.name,
 			gameId: gameId,
 			joinedAt: new Date().getTime(),
-			lastKeepAlive: new Date().getTime()
+			lastKeepAlive: new Date().getTime(),
+			shape: Constants.PLAYER_DEFAULT_SHAPE
 		};
 
 		var playerId = Players.insert(player);
@@ -119,6 +120,35 @@ Meteor.methods({
 		return {
 			_id: playerId
 		};
+	},
+
+	updatePlayerShape: function(gameId, shape) {
+		check(this.userId, String);
+
+		var game = Games.findOne(gameId),
+			user = Meteor.user(),
+			player = Players.findOne({gameId: gameId, userId: user._id});
+
+		if (!game) {
+			throw new Meteor.Error(404, 'Game not found');
+		}
+
+		if (game.status !== Constants.GAME_STATUS_REGISTRATION) {
+			throw new Meteor.Error('not-allowed', 'Game already started');
+		}
+
+		if (!player) {
+			throw new Meteor.Error(404, 'Player not found');
+		}
+
+		if (Constants.PLAYER_LIST_OF_SHAPES.indexOf(shape) === -1) {
+			throw new Meteor.Error(
+				'not-allowed',
+				'The requested shape is not allowed'
+			);
+		}
+
+		Players.update({_id: player._id}, {$set: {shape: shape}});
 	},
 
 	leaveGame: function(gameId) {

@@ -78,6 +78,10 @@ Template.game.helpers({
 
 	isPrivateGame: function() {
 		return this.game.isPrivate ? true : false;
+	},
+
+	isCurentPlayer: function() {
+		return this.userId === Meteor.userId();
 	}
 });
 

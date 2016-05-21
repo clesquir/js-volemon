@@ -15,6 +15,31 @@ Volemon = class Volemon {
 		return Players.findOne({gameId: Session.get('game'), userId: Meteor.userId()});
 	}
 
+	/**
+	 * @param playerKey
+	 * @returns string Returns the player shape or 'half-circle' if no game nor player is found
+	 */
+	getPlayerShapeFromKey(playerKey) {
+		var game = Games.findOne({_id: Session.get('game')}),
+			player;
+
+		if (!game) {
+			return Constants.PLAYER_DEFAULT_SHAPE;
+		}
+
+		if (playerKey == 'player1') {
+			player = Players.findOne({gameId: game._id, userId: game.createdBy});
+		} else {
+			player = Players.findOne({gameId: game._id, userId: {$ne: game.createdBy}});
+		}
+
+		if (!player) {
+			return Constants.PLAYER_DEFAULT_SHAPE;
+		}
+
+		return player.shape;
+	}
+
 	isUserHost() {
 		var game = Games.findOne({_id: Session.get('game')});
 
@@ -111,8 +136,8 @@ Volemon = class Volemon {
 		this.game.stage.backgroundColor = '#9ad3de';
 		this.game.stage.disableVisibilityChange = true;
 
-		this.game.load.image('player1', 'assets/player.png');
-		this.game.load.image('player2', 'assets/player.png');
+		this.game.load.image('player1', 'assets/player-' + this.getPlayerShapeFromKey('player1') + '.png');
+		this.game.load.image('player2', 'assets/player-' + this.getPlayerShapeFromKey('player2') + '.png');
 		this.game.load.image('ball', 'assets/ball.png');
 		this.game.load.image('net', 'assets/net.png');
 		this.game.load.image('ground', 'assets/ground.png');
@@ -151,14 +176,14 @@ Volemon = class Volemon {
 		 * Player 1
 		 */
 		this.player1 = this.game.add.sprite(initialXLocation, initialYLocation, 'player1');
-		this.createPlayer(this.player1, initialXLocation, initialYLocation);
+		this.createPlayer(this.player1, initialXLocation, initialYLocation, 'player1');
 
 		/**
 		 * Player 2
 		 */
 		initialXLocation = Config.xSize - Config.playerInitialLocation;
 		this.player2 = this.game.add.sprite(initialXLocation, initialYLocation, 'player2');
-		this.createPlayer(this.player2, initialXLocation, initialYLocation);
+		this.createPlayer(this.player2, initialXLocation, initialYLocation, 'player2');
 
 		/**
 		 * Ball
@@ -207,13 +232,13 @@ Volemon = class Volemon {
 		this.resumeOnTimerEnd();
 	}
 
-	createPlayer(player, initialXLocation, initialYLocation) {
+	createPlayer(player, initialXLocation, initialYLocation, playerKey) {
 		player.initialXLocation = initialXLocation;
 		player.initialYLocation = initialYLocation;
 
 		this.game.physics.p2.enable(player);
 		player.body.clearShapes();
-		player.body.loadPolygon('physicsData', 'player');
+		player.body.loadPolygon('physicsData', 'player-' + this.getPlayerShapeFromKey(playerKey));
 		player.body.fixedRotation = true;
 		player.body.mass = 200;
 		player.body.data.gravityScale = Config.playerGravityScale;
