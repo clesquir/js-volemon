@@ -9,7 +9,7 @@
 	.shape-content-scroller {
 		background-image: url("/assets/player-shapes-small.png");
 		transition: 0.5s ease-in-out;
-		height: 79px;
+		height: 100px;
 		width: 32px;
 	}
 
@@ -25,8 +25,12 @@
 		transform: translateY(-42px);
 	}
 
-	&.shape-hexagon .shape-content-scroller {
+	&.shape-rhombus .shape-content-scroller {
 		transform: translateY(-63px);
+	}
+
+	&.shape-hexagon .shape-content-scroller {
+		transform: translateY(-84px);
 	}
 }
 

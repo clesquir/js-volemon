@@ -58,6 +58,23 @@
       ]
     }
   ],
+  "player-rhombus": [
+    {
+      "density": 20,
+      "friction": 0,
+      "bounce": 0,
+      "filter": {
+        "categoryBits": 1,
+        "maskBits": 65535
+      },
+      "shape": [
+        0, 24.5,
+        49, 0,
+        98, 24.5,
+        49, 49
+      ]
+    }
+  ],
   "player-hexagon": [
     {
       "density": 20,
