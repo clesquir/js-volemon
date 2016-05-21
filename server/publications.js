@@ -31,7 +31,7 @@ Meteor.publish('ranks', function() {
 
 Meteor.publish('games', function() {
 	return [
-		Games.find({isPrivate: 0}),
+		Games.find({isPrivate: 0, status: {$in: [Constants.GAME_STATUS_REGISTRATION, Constants.GAME_STATUS_STARTED]}}),
 		Players.find()
 	];
 });

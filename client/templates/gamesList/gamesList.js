@@ -20,3 +20,9 @@ Template.gamesList.helpers({
 		return '-';
 	}
 });
+
+Template.gamesList.events({
+	'click [data-action="go-to-game"]': function(e) {
+		Router.go(Router.routes['game'].url({_id: this._id}));
+	}
+});

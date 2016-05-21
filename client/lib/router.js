@@ -19,7 +19,7 @@ Router.map(function() {
 		},
 		data: function() {
 			return {
-				games: Games.find({status: {$in: [Constants.GAME_STATUS_REGISTRATION, Constants.GAME_STATUS_STARTED]}})
+				games: Games.find({}, {sort: ['createdAt']})
 			};
 		}
 	});
@@ -45,7 +45,7 @@ Router.map(function() {
 		data: function() {
 			return {
 				game: Games.findOne(this.params._id),
-				players: Players.find({gameId: this.params._id})
+				players: Players.find({gameId: this.params._id}, {sort: ['joinedAt']})
 			};
 		},
 		onBeforeAction: function() {

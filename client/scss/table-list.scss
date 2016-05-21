@@ -18,6 +18,10 @@ $table-list-radius: 3px;
 		}
 	}
 
+	&.clickable-row {
+		cursor: pointer;
+	}
+
 	&.highlighted-row {
 		background-color: rgba(255, 230, 175, 0.25);
 	}
