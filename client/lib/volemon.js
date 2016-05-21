@@ -17,7 +17,7 @@ Volemon = class Volemon {
 
 	/**
 	 * @param playerKey
-	 * @returns string Returns the player shape or 'half-circle' if no game nor player is found
+	 * @returns string Returns the player shape or PLAYER_DEFAULT_SHAPE if no game nor player is found
 	 */
 	getPlayerShapeFromKey(playerKey) {
 		var game = Games.findOne({_id: Session.get('game')}),
