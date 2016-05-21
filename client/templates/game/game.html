@@ -57,34 +57,59 @@
 				<div class="table-list">
 					<div class="table-list-row table-list-header">
 						<div class="table-list-cell">Players</div>
+						<div class="table-list-cell" style="flex: 0 0 75px;">Shape</div>
 					</div>
 
 					{{#each players}}
 					<div class="table-list-row">
 						<div class="table-list-cell">{{name}}</div>
+						<div class="table-list-cell" style="flex: 0 0 75px;">
+							{{#if isCurentPlayer}}
+								{{> shapeSelector player=this shape=shape}}
+							{{else}}
+								<img src="/assets/player-{{shape}}-small.png" />
+							{{/if}}
+						</div>
 					</div>
 					{{/each}}
 				</div>
 
-				<br/>
+				<br />
 
 				{{! Buttons }}
 
 				{{#if isHost}}
-					{{#if canStart}}
-						<a href="#" data-action="start" class="button">Start game</a>
+
+					{{#if hasEnoughPlayers}}
+
+						{{#if allPlayersAreReady}}
+							<a href="#" data-action="start" class="button">Start game</a>
+						{{else}}
+							<p>Waiting for all players to be ready...</p>
+						{{/if}}
+
 					{{else}}
 						<p>Waiting for a player to join the game...</p>
 					{{/if}}
-				{{/if}}
 
-				{{#if canLeave}}
-					<p>Waiting for the host to start the game...</p>
-					<a href="#" data-action="leave" class="button">Leave</a>
-				{{/if}}
+				{{else}}
 
-				{{#if canJoin}}
-					<a href="#" data-action="join" class="button">Join</a>
+					<div class="game-client-buttons">
+						{{#if canSetReadyOrLeave}}
+							<a href="#" data-action="set-player-is-ready" class="button ready-button">Ready!</a>
+							<a href="#" data-action="leave" class="button">Leave</a>
+						{{/if}}
+
+						{{#if canJoin}}
+							<a href="#" data-action="join" class="button">Join</a>
+						{{/if}}
+
+						{{#if waitingForGameToStart}}
+							<p>Waiting for the host to start the game...</p>
+						{{/if}}
+
+					</div>
+
 				{{/if}}
 
 			{{/if}}
