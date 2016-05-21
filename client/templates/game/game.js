@@ -54,12 +54,30 @@ Template.game.helpers({
 		return Players.find({gameId: Session.get('game'), userId: {$ne: Meteor.userId()}});
 	},
 
-	canLeave: function() {
+	/**
+	 * The player can set ready or leave only if he has joined and he is ready yet
+	 * @returns {boolean}
+	 */
+	canSetReadyOrLeave: function() {
 		var player = Players.findOne({gameId: Session.get('game'), userId: Meteor.userId()});
 
-		return (player && this.game.createdBy !== player.userId);
+		return player && player.isReady === false;
 	},
 
+	/**
+	 * The player has joined and is ready
+	 * @returns {boolean}
+	 */
+	waitingForGameToStart: function() {
+		var player = Players.findOne({gameId: Session.get('game'), userId: Meteor.userId()});
+
+		return player && player.isReady === true;
+	},
+
+	/**
+	 * The user can join if the game has not all its players yet and if the user is not a player of the game yet
+	 * @returns {boolean}
+	 */
 	canJoin: function() {
 		var player = Players.findOne({gameId: Session.get('game'), userId: Meteor.userId()}),
 			players = Players.find({gameId: Session.get('game')});
@@ -67,13 +85,33 @@ Template.game.helpers({
 		return (!player && Config.possibleNoPlayers.indexOf(players.count() + 1) !== -1);
 	},
 
-	canStart: function() {
+	/**
+	 * The possible no of players is reached
+	 * @returns {boolean}
+	 */
+	hasEnoughPlayers: function() {
 		var players = Players.find({gameId: Session.get('game')});
 
 		return (
-			this.game.createdBy === Meteor.userId() &&
 			Config.possibleNoPlayers.indexOf(players.count()) !== -1
 		);
+	},
+
+	/**
+	 * All players are ready
+	 * @returns {boolean}
+	 */
+	allPlayersAreReady: function() {
+		var players = Players.find({gameId: Session.get('game')});
+
+		let havePlayersNotReady = false;
+		players.forEach(function(player) {
+			if (player.isReady === false) {
+				havePlayersNotReady = true;
+			}
+		});
+
+		return !havePlayersNotReady;
 	},
 
 	isPrivateGame: function() {
@@ -110,6 +148,10 @@ Template.game.events({
 		switchTargetButton(e, isPrivate);
 
 		Meteor.call('updateGamePrivacy', Session.get('game'), isPrivate ? 1 : 0);
+	},
+
+	'click [data-action="set-player-is-ready"]': function(e) {
+		Meteor.call('setPlayerIsReady', Session.get('game'));
 	},
 	
 	'click [data-action="start"]': function(e) {

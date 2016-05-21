@@ -56,7 +56,7 @@ Meteor.methods({
 			}
 		} while (id == null);
 
-		Meteor.call('joinGame', id);
+		Meteor.call('joinGame', id, true);
 
 		return id;
 	},
@@ -76,12 +76,12 @@ Meteor.methods({
 		Games.update({_id: game._id}, {$set: {isPrivate: isPrivate ? 1 : 0}});
 	},
 
-	joinGame: function(gameId) {
+	joinGame: function(gameId, isReady) {
 		check(this.userId, String);
 
-		var user = Meteor.user();
-		var game = Games.findOne(gameId);
-		var player = Players.findOne({gameId: gameId, userId: user._id});
+		var user = Meteor.user(),
+			game = Games.findOne(gameId),
+			player = Players.findOne({gameId: gameId, userId: user._id});
 
 		if (!game) {
 			throw new Meteor.Error(404, 'Game not found');
@@ -91,12 +91,12 @@ Meteor.methods({
 			throw new Meteor.Error('not-allowed', 'Already joined');
 		}
 
-		return Meteor.call('addPlayerToGame', gameId);
+		return Meteor.call('addPlayerToGame', gameId, isReady);
 	},
 
-	addPlayerToGame: function(gameId) {
-		var user = Meteor.user();
-		var game = Games.findOne(gameId);
+	addPlayerToGame: function(gameId, isReady) {
+		var user = Meteor.user(),
+			game = Games.findOne(gameId);
 
 		if (!user) {
 			throw new Meteor.Error(401, 'You need to login to join a game');
@@ -106,16 +106,19 @@ Meteor.methods({
 			throw new Meteor.Error(404, 'Game not found');
 		}
 
-		var player = {
+		if (isReady === undefined) {
+			isReady = false;
+		}
+
+		let playerId = Players.insert({
 			userId: user._id,
 			name: user.profile.name,
 			gameId: gameId,
 			joinedAt: new Date().getTime(),
+			isReady: isReady,
 			lastKeepAlive: new Date().getTime(),
 			shape: Constants.PLAYER_DEFAULT_SHAPE
-		};
-
-		var playerId = Players.insert(player);
+		});
 
 		return {
 			_id: playerId
@@ -149,6 +152,24 @@ Meteor.methods({
 		}
 
 		Players.update({_id: player._id}, {$set: {shape: shape}});
+	},
+
+	setPlayerIsReady: function(gameId) {
+		check(this.userId, String);
+
+		var game = Games.findOne(gameId),
+			user = Meteor.user(),
+			player = Players.findOne({gameId: gameId, userId: user._id});
+
+		if (!game) {
+			throw new Meteor.Error(404, 'Game not found');
+		}
+
+		if (!player) {
+			throw new Meteor.Error(404, 'Player not found');
+		}
+
+		Players.update({_id: player._id}, {$set: {isReady: true}});
 	},
 
 	leaveGame: function(gameId) {
