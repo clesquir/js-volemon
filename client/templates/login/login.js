@@ -63,8 +63,8 @@ Template.login.events({
 			nameValue = nameField.val(),
 			errorLabelContainer = $(e.target).find('.error-label-container'),
 			invalidEmailErrorMessage = 'Invalid email',
-			tooShortPasswordErrorMessage = 'Password must be at least 6 characters long',
-			confirmationMatchPasswordErrorMessage = 'The password confirmation must match the password',
+			tooShortPasswordErrorMessage = Constants.TOO_SHORT_PASSWORD_ERROR_MESSAGE,
+			confirmationMatchPasswordErrorMessage = Constants.CONFIRMATION_MATCH_PASSWORD_ERROR_MESSAGE,
 			hasErrors;
 
 		removeErrorLabelContainer(errorLabelContainer);
@@ -122,41 +122,6 @@ Template.login.events({
 
 Template.login.rendered = function() {
 	this.find('#login-email-field').focus();
-};
-
-removeFieldInvalidMark = function(field) {
-	field.removeClass('field-in-error');
-	field.prop('title', '');
-};
-
-removeErrorLabelContainer = function(errorLabelContainer) {
-	errorLabelContainer.hide();
-	errorLabelContainer.html();
-};
-
-validateFieldsPresenceAndMarkInvalid = function(form, fields) {
-	var errorLabelContainer = form.find('.error-label-container'),
-		fieldRequiredErrorMessage = 'The field is required',
-		hasRequiredErrors = false;
-
-	for (let field of fields) {
-		let value = field.val();
-
-		removeFieldInvalidMark(field);
-
-		if (value === '') {
-			field.addClass('field-in-error');
-			field.prop('title', fieldRequiredErrorMessage);
-			hasRequiredErrors = true;
-		}
-	}
-
-	if (hasRequiredErrors) {
-		errorLabelContainer.show();
-		errorLabelContainer.html(fieldRequiredErrorMessage);
-	}
-
-	return hasRequiredErrors;
 };
 
 removeFieldsInvalidMarkAndSwitchForm = function(formToShow, formToHide) {

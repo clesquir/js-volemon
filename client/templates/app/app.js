@@ -34,6 +34,10 @@ Template.app.events({
 		Session.set('lightbox', 'username');
 	},
 
+	'click [data-action=user-password-change]': function(e) {
+		Session.set('lightbox', 'passwordChange');
+	},
+
 	'click [data-action=user-logout]': function() {
 		Meteor.logout(function() {});
 	},

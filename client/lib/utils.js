@@ -1,6 +1,3 @@
-actionAfterLoginCreateUser = null;
-actionOnLighboxClose = null;
-
 padPoints = function(points) {
 	var result = String(points),
 		character = '0',
