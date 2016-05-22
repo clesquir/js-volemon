@@ -12,7 +12,7 @@ Accounts.onCreateUser((options, user) => {
 	
 	user.profile = options.profile;
 
-	Meteor.call('createProfile', user);
+	createProfile(user);
 
 	return user;
 });

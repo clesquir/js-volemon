@@ -1,33 +1,4 @@
 Meteor.methods({
-	createProfile: function(user) {
-		var profile = {
-			userId: user._id,
-			numberOfWin: 0,
-			numberOfLost: 0,
-			eloRating: 1000,
-			eloRatingLastChange: 0
-		};
-
-		Profiles.insert(profile);
-
-		EloScores.insert({
-			timestamp: new Date().getTime(),
-			userId: user._id,
-			eloRating: profile['eloRating']
-		});
-	},
-
-	updateUserName: function(name) {
-		check(this.userId, String);
-
-		Meteor.users.update({_id: this.userId}, {$set: {'profile.name': name}});
-
-		let players = Players.find({userId: this.userId});
-		if (players.count()) {
-			Players.update({userId: this.userId}, {$set: {name: name}}, {multi: true});
-		}
-	},
-
 	createGame: function() {
 		var user = Meteor.user(),
 			id = null;
