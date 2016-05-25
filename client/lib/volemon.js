@@ -338,9 +338,9 @@ Volemon = class Volemon {
 		//Net
 		groupItem = this.game.add.tileSprite(
 			(Config.xSize / 2),
-			(Config.ySize - Config.groundHeight) / 2,
+			(Config.ySize / 2),
 			Config.netThickness,
-			Config.ySize - Config.groundHeight,
+			Config.ySize,
 			'delimiter'
 		);
 
