@@ -1,6 +1,6 @@
 import BonusFactory from '/client/lib/game/BonusFactory.js';
 
-Volemon = class Volemon {
+export default class Game {
 
 	constructor() {
 		this.lastBallPositionData = {};

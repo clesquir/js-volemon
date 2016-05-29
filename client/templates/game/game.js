@@ -1,5 +1,7 @@
+import Game from '/client/lib/Game.js';
+
 /**
- * @type {Volemon}
+ * @type {Game}
  */
 currentGame = null;
 
@@ -205,7 +207,7 @@ Template.game.rendered = function() {
 
 	//Player is in game and this game is already started
 	if (player && isGameStatusOnGoing(game.status)) {
-		currentGame = new Volemon();
+		currentGame = new Game();
 		currentGame.start();
 	}
 
@@ -241,7 +243,7 @@ GameStream.on('play', function(gameId) {
 		//Wait for gameContainer creation before starting game
 		loopUntilGameContainerIsCreated = function() {
 			if (document.getElementById('gameContainer')) {
-				currentGame = new Volemon();
+				currentGame = new Game();
 				currentGame.start();
 			} else {
 				window.setTimeout(loopUntilGameContainerIsCreated, 1);
