@@ -118,6 +118,10 @@ Template.game.helpers({
 		return this.game.isPrivate ? true : false;
 	},
 
+	hasBonusesGame: function() {
+		return this.game.hasBonuses ? true : false;
+	},
+
 	isCurentPlayer: function() {
 		return this.userId === Meteor.userId();
 	}
@@ -148,6 +152,17 @@ Template.game.events({
 		switchTargetButton(e, isPrivate);
 
 		Meteor.call('updateGamePrivacy', Session.get('game'), isPrivate ? 1 : 0);
+	},
+
+	'click [data-action="update-has-bonuses"]': function(e) {
+		var game = Games.findOne(Session.get('game')),
+			hasBonuses = !game.hasBonuses;
+
+		if (game.createdBy === Meteor.userId()) {
+			switchTargetButton(e, hasBonuses);
+
+			Meteor.call('updateGameHasBonuses', Session.get('game'), hasBonuses ? 1 : 0);
+		}
 	},
 
 	'click [data-action="set-player-is-ready"]': function(e) {

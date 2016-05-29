@@ -46,9 +46,10 @@ $switch-button-height: 16px;
 	overflow: hidden;
 	cursor: pointer;
 	transition: all 0.3s linear;
+	outline: 0;
 
 	&.off-value {
-		background-color: $negative;
+		background-color: $background-color-dark;
 
 		span {
 			right: $switch-button-width - $switch-button-height - 1;
@@ -75,7 +76,11 @@ $switch-button-height: 16px;
 	}
 }
 
-.switch-button:focus {
+.not-editable .switch-button {
+	cursor: auto;
+}
+
+p:not(.not-editable) .switch-button:focus {
 	border-color: rgba($header-border-bottom-color, 0.6);
 	outline: 0;
 	box-shadow: 0 0 10px rgba($table-header-color, 0.75);

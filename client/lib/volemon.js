@@ -77,6 +77,12 @@ Volemon = class Volemon {
 		return (game && game.lastPointTaken);
 	}
 
+	hasGameBonuses() {
+		var game = Games.findOne({_id: Session.get('game')});
+
+		return (game && game.hasBonuses);
+	}
+
 	getWinnerName() {
 		var game = Games.findOne({_id: Session.get('game')}),
 			winnerName = 'Nobody',
@@ -604,18 +610,20 @@ Volemon = class Volemon {
 					}
 				}
 
-				this.createBonusIfTimeHasElapsed();
+				if (this.hasGameBonuses()) {
+					this.createBonusIfTimeHasElapsed();
 
-				if (this.bonus) {
-					let bonusPositionData = this.getBodyPositionData(this.bonus.body);
-					let bonusData = jQuery.extend({}, bonusPositionData);
-					bonusData.timestamp = new Date().getTime();
-					this.lastBonusUpdate = this.emitGameStreamAtFrequence(
-						this.lastBonusUpdate,
-						Config.bonusInterval,
-						'moveClientBonus',
-						[Session.get('game'), bonusData]
-					);
+					if (this.bonus) {
+						let bonusPositionData = this.getBodyPositionData(this.bonus.body);
+						let bonusData = jQuery.extend({}, bonusPositionData);
+						bonusData.timestamp = new Date().getTime();
+						this.lastBonusUpdate = this.emitGameStreamAtFrequence(
+							this.lastBonusUpdate,
+							Config.bonusInterval,
+							'moveClientBonus',
+							[Session.get('game'), bonusData]
+						);
+					}
 				}
 			}
 		} else if (this.isGameTimeOut()) {
