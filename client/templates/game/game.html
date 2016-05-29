@@ -45,11 +45,19 @@
 						</div>
 					</p>
 
-					<p style="text-align: right; margin-top: 30px;">
+					<p style="text-align: right;">
 						{{> switchButton label="Private" dataAction="update-privacy" onOffMethod=isPrivateGame}}
+					</p>
+
+					<p style="text-align: right;">
+						{{> switchButton label="Bonus" dataAction="update-has-bonuses" onOffMethod=hasBonusesGame}}
 					</p>
 				{{else}}
 					<h1>Joining a game</h1>
+
+					<p class="not-editable" style="text-align: right;">
+						{{> switchButton label="Bonus" dataAction="update-has-bonuses" onOffMethod=hasBonusesGame}}
+					</p>
 				{{/if}}
 
 				{{! Players list }}

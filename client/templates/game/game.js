@@ -118,6 +118,10 @@ Template.game.helpers({
 		return this.game.isPrivate ? true : false;
 	},
 
+	hasBonusesGame: function() {
+		return this.game.hasBonuses ? true : false;
+	},
+
 	isCurentPlayer: function() {
 		return this.userId === Meteor.userId();
 	}
@@ -148,6 +152,17 @@ Template.game.events({
 		switchTargetButton(e, isPrivate);
 
 		Meteor.call('updateGamePrivacy', Session.get('game'), isPrivate ? 1 : 0);
+	},
+
+	'click [data-action="update-has-bonuses"]': function(e) {
+		var game = Games.findOne(Session.get('game')),
+			hasBonuses = !game.hasBonuses;
+
+		if (game.createdBy === Meteor.userId()) {
+			switchTargetButton(e, hasBonuses);
+
+			Meteor.call('updateGameHasBonuses', Session.get('game'), hasBonuses ? 1 : 0);
+		}
 	},
 
 	'click [data-action="set-player-is-ready"]': function(e) {
@@ -269,5 +284,35 @@ GameStream.on('moveOppositePlayer', function(gameId, isUserHost, playerData) {
 		currentGame
 	) {
 		currentGame.moveOppositePlayer(playerData);
+	}
+});
+
+GameStream.on('createBonus', function(gameId, bonusData) {
+	var game = Games.findOne(gameId),
+		player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
+
+	//Player is in game and is not the creator
+	if (game && player && game.createdBy !== Meteor.userId() && currentGame) {
+		currentGame.createBonus(bonusData);
+	}
+});
+
+GameStream.on('activateBonus', function(gameId, playerKey) {
+	var game = Games.findOne(gameId),
+		player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
+
+	//Player is in game and is not the creator
+	if (game && player && game.createdBy !== Meteor.userId() && currentGame) {
+		currentGame.activateBonus(playerKey);
+	}
+});
+
+GameStream.on('moveClientBonus', function(gameId, bonusData) {
+	var game = Games.findOne(gameId),
+		player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
+
+	//Player is in game and is not the creator
+	if (game && player && game.createdBy !== Meteor.userId() && currentGame) {
+		currentGame.moveClientBonus(bonusData);
 	}
 });

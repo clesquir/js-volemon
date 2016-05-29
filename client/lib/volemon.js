@@ -1,3 +1,5 @@
+import BonusFactory from '/client/lib/game/BonusFactory.js';
+
 Volemon = class Volemon {
 
 	constructor() {
@@ -6,9 +8,14 @@ Volemon = class Volemon {
 		this.lastKeepAliveUpdate = 0;
 		this.lastBallUpdate = 0;
 		this.lastPlayerUpdate = 0;
+		this.lastBonusUpdate = 0;
 		this.lastBallTimestampRead = 0;
 		this.lastPlayerTimestampRead = 0;
+		this.lastBonusTimestampRead = 0;
 		this.ballRespawn = false;
+		this.lastBonusActivated = 0;
+		this.bonus = null;
+		this.bonuses = [];
 	}
 
 	getPlayer() {
@@ -70,6 +77,12 @@ Volemon = class Volemon {
 		return (game && game.lastPointTaken);
 	}
 
+	hasGameBonuses() {
+		var game = Games.findOne({_id: Session.get('game')});
+
+		return (game && game.hasBonuses);
+	}
+
 	getWinnerName() {
 		var game = Games.findOne({_id: Session.get('game')}),
 			winnerName = 'Nobody',
@@ -112,6 +125,16 @@ Volemon = class Volemon {
 		return player;
 	}
 
+	getPlayerFromKey(playerKey) {
+		if (playerKey == 'player1') {
+			return this.player1;
+		} else if (playerKey == 'player2') {
+			return this.player2;
+		} else {
+			return null;
+		}
+	}
+
 	start() {
 		this.game = new Phaser.Game({
 			width: Config.xSize,
@@ -143,12 +166,40 @@ Volemon = class Volemon {
 		this.game.load.image('ground', 'assets/ground.png');
 
 		this.game.load.image('delimiter', 'assets/clear.png');
-		this.game.load.physics('physicsData', 'assets/physicsData.json');
+		this.game.load.physics(Constants.NORMAL_SCALE_PHYSICS_DATA, 'assets/physicsData.json');
+	}
+
+	loadScaledPhysics(originalPhysicsKey, newPhysicsKey, shapeKey, scale) {
+		var newData = [],
+			data = this.game.cache.getPhysicsData(originalPhysicsKey, shapeKey);
+
+		for (let i = 0; i < data.length; i++) {
+			let vertices = [];
+			for (let j = 0; j < data[i].shape.length; j += 2) {
+				vertices[j] = data[i].shape[j] * scale;
+				vertices[j + 1] = data[i].shape[j + 1] * scale;
+			}
+			newData.push({shape: vertices});
+		}
+
+		let item = {};
+		if (this.game.cache.checkKey(Phaser.Cache.PHYSICS, newPhysicsKey)) {
+			item = this.game.cache.getPhysicsData(newPhysicsKey);
+		}
+
+		item[shapeKey] = newData;
+		this.game.load.physics(newPhysicsKey, '', item);
 	}
 
 	createGame() {
 		var initialXLocation = Config.playerInitialLocation,
 			initialYLocation = Config.ySize - Config.groundHeight - (Config.playerHeight / 2);
+
+		this.loadScaledPhysics(Constants.NORMAL_SCALE_PHYSICS_DATA, Constants.SMALL_SCALE_PHYSICS_DATA, 'player-' + this.getPlayerShapeFromKey('player1'), Constants.SMALL_SCALE_BONUS);
+		this.loadScaledPhysics(Constants.NORMAL_SCALE_PHYSICS_DATA, Constants.SMALL_SCALE_PHYSICS_DATA, 'player-' + this.getPlayerShapeFromKey('player2'), Constants.SMALL_SCALE_BONUS);
+		this.loadScaledPhysics(Constants.NORMAL_SCALE_PHYSICS_DATA, Constants.BIG_SCALE_PHYSICS_DATA, 'player-' + this.getPlayerShapeFromKey('player1'), Constants.BIG_SCALE_BONUS);
+		this.loadScaledPhysics(Constants.NORMAL_SCALE_PHYSICS_DATA, Constants.BIG_SCALE_PHYSICS_DATA, 'player-' + this.getPlayerShapeFromKey('player2'), Constants.BIG_SCALE_BONUS);
+		this.loadScaledPhysics(Constants.NORMAL_SCALE_PHYSICS_DATA, Constants.BIG_SCALE_PHYSICS_DATA, 'ball', Constants.BIG_SCALE_BONUS);
 
 		this.game.physics.startSystem(Phaser.Physics.P2JS);
 		this.game.physics.p2.setImpactEvents(true);
@@ -159,6 +210,7 @@ Volemon = class Volemon {
 
 		this.playerCollisionGroup = this.game.physics.p2.createCollisionGroup();
 		this.ballCollisionGroup = this.game.physics.p2.createCollisionGroup();
+		this.bonusCollisionGroup = this.game.physics.p2.createCollisionGroup();
 		this.playerDelimiterCollisionGroup = this.game.physics.p2.createCollisionGroup();
 		this.netHitDelimiterCollisionGroup = this.game.physics.p2.createCollisionGroup();
 		this.groundHitDelimiterCollisionGroup = this.game.physics.p2.createCollisionGroup();
@@ -168,7 +220,10 @@ Volemon = class Volemon {
 		this.worldMaterial = this.game.physics.p2.createMaterial('world');
 		this.playerMaterial = this.game.physics.p2.createMaterial('player');
 		this.ballMaterial = this.game.physics.p2.createMaterial('ball');
-		this.netPlayerDelimiterMaterial = this.game.physics.p2.createMaterial('netPlayerDelimiter');
+		this.bonusMaterial = this.game.physics.p2.createMaterial('bonus');
+		this.playerDelimiterMaterial = this.game.physics.p2.createMaterial('netPlayerDelimiter');
+		this.netDelimiterMaterial = this.game.physics.p2.createMaterial('netDelimiter');
+		this.groundDelimiterMaterial = this.game.physics.p2.createMaterial('groundDelimiter');
 
 		this.game.physics.p2.setWorldMaterial(this.worldMaterial);
 
@@ -194,13 +249,14 @@ Volemon = class Volemon {
 		 * Contact materials
 		 */
 		this.game.physics.p2.createContactMaterial(this.ballMaterial, this.worldMaterial, {restitution: 1});
+		this.game.physics.p2.createContactMaterial(this.ballMaterial, this.groundDelimiterMaterial, {restitution: 1});
 
-		this.game.physics.p2.createContactMaterial(this.playerMaterial, this.worldMaterial, {
-			restitution: 0, stiffness: 1e20, relaxation: 1000, friction: 0
-		});
-		this.game.physics.p2.createContactMaterial(this.playerMaterial, this.netPlayerDelimiterMaterial, {
-			restitution: 0, stiffness: 1e20, relaxation: 1000, friction: 0
-		});
+		this.game.physics.p2.createContactMaterial(this.bonusMaterial, this.worldMaterial, {restitution: 1});
+		this.game.physics.p2.createContactMaterial(this.bonusMaterial, this.netDelimiterMaterial, {restitution: 0.75});
+		this.game.physics.p2.createContactMaterial(this.bonusMaterial, this.groundDelimiterMaterial, {restitution: 1});
+
+		this.game.physics.p2.createContactMaterial(this.playerMaterial, this.worldMaterial, {stiffness: 1e20, relaxation: 3, friction: 0});
+		this.game.physics.p2.createContactMaterial(this.playerMaterial, this.playerDelimiterMaterial, {stiffness: 1e20, relaxation: 3, friction: 0});
 
 		this.loadLevel();
 
@@ -237,24 +293,74 @@ Volemon = class Volemon {
 		player.initialYLocation = initialYLocation;
 
 		this.game.physics.p2.enable(player);
+		player.polygonObject = 'player-' + this.getPlayerShapeFromKey(playerKey);
 		player.body.clearShapes();
-		player.body.loadPolygon('physicsData', 'player-' + this.getPlayerShapeFromKey(playerKey));
+		player.body.loadPolygon(Constants.NORMAL_SCALE_PHYSICS_DATA, player.polygonObject);
+
+		this.setupPlayerBody(player);
+	}
+
+	setupPlayerBody(player) {
 		player.body.fixedRotation = true;
 		player.body.mass = 200;
 		player.body.data.gravityScale = Config.playerGravityScale;
+
 		player.body.setMaterial(this.playerMaterial);
 		player.body.setCollisionGroup(this.playerCollisionGroup);
 
 		player.body.collides(this.playerDelimiterCollisionGroup);
 		player.body.collides(this.ballCollisionGroup);
+		player.body.collides(this.bonusCollisionGroup);
+	}
+
+	scalePlayer(playerKey, scale) {
+		var player = this.getPlayerFromKey(playerKey),
+			polygonKey;
+
+		if (!player) {
+			return;
+		}
+
+		switch (scale) {
+			case Constants.NORMAL_SCALE_BONUS:
+				polygonKey = Constants.NORMAL_SCALE_PHYSICS_DATA;
+				break;
+			case Constants.SMALL_SCALE_BONUS:
+				polygonKey = Constants.SMALL_SCALE_PHYSICS_DATA;
+				break;
+			case Constants.BIG_SCALE_BONUS:
+				polygonKey = Constants.BIG_SCALE_PHYSICS_DATA;
+				break;
+		}
+
+		player.scale.setTo(scale, scale);
+		player.body.clearShapes();
+		player.body.loadPolygon(polygonKey, player.polygonObject);
+		this.setupPlayerBody(player);
+	}
+
+	resetPlayerScale(playerKey) {
+		var player = this.getPlayerFromKey(playerKey);
+
+		if (!player) {
+			return;
+		}
+
+		this.scalePlayer(playerKey, 1);
 	}
 
 	createBall() {
 		this.ball = this.game.add.sprite(Config.playerInitialLocation, Config.ySize - Config.groundHeight - Config.ballDistanceFromGround, 'ball');
 
 		this.game.physics.p2.enable(this.ball);
+		this.ball.polygonObject = 'ball';
 		this.ball.body.clearShapes();
-		this.ball.body.loadPolygon('physicsData', 'ball');
+		this.ball.body.loadPolygon(Constants.NORMAL_SCALE_PHYSICS_DATA, 'ball');
+
+		this.setupBallBody();
+	}
+
+	setupBallBody() {
 		this.ball.body.fixedRotation = true;
 		this.ball.body.data.gravityScale = Config.ballGravityScale;
 		this.ball.body.damping = 0.1;
@@ -264,9 +370,33 @@ Volemon = class Volemon {
 		this.ball.body.collides(this.playerCollisionGroup, this.hitBall, this);
 		this.ball.body.collides(this.netHitDelimiterCollisionGroup);
 		this.ball.body.collides(this.groundHitDelimiterCollisionGroup, this.hitGround, this);
+		this.ball.body.collides(this.bonusCollisionGroup);
+	}
+
+	scaleBall(scale) {
+		var polygonKey;
+
+		switch (scale) {
+			case Constants.NORMAL_SCALE_BONUS:
+				polygonKey = Constants.NORMAL_SCALE_PHYSICS_DATA;
+				break;
+			case Constants.BIG_SCALE_BONUS:
+				polygonKey = Constants.BIG_SCALE_PHYSICS_DATA;
+				break;
+		}
+
+		this.ball.scale.setTo(scale, scale);
+		this.ball.body.clearShapes();
+		this.ball.body.loadPolygon(polygonKey, this.ball.polygonObject);
+		this.setupBallBody();
+	}
+
+	resetBallScale() {
+		this.scaleBall(Constants.NORMAL_SCALE_BONUS);
 	}
 
 	resumeOnTimerEnd() {
+		this.resetAllBonuses();
 		this.pauseGame();
 
 		this.spawnPlayer(this.player1);
@@ -279,6 +409,7 @@ Volemon = class Volemon {
 			this.countdownTimer = this.game.time.create();
 			this.countdownTimer.add(Phaser.Timer.SECOND * 3, this.resumeGame, this);
 			this.countdownTimer.start();
+			this.lastBonusActivated = new Date().getTime();
 		}
 	}
 
@@ -329,6 +460,7 @@ Volemon = class Volemon {
 
 		this.game.physics.p2.enable(groupItem);
 		groupItem.body.static = true;
+		groupItem.body.setMaterial(this.playerDelimiterMaterial);
 		groupItem.body.setCollisionGroup(this.playerDelimiterCollisionGroup);
 		groupItem.body.collides(this.playerCollisionGroup);
 
@@ -346,7 +478,7 @@ Volemon = class Volemon {
 
 		this.game.physics.p2.enable(groupItem);
 		groupItem.body.static = true;
-		groupItem.body.setMaterial(this.netPlayerDelimiterMaterial);
+		groupItem.body.setMaterial(this.playerDelimiterMaterial);
 		groupItem.body.setCollisionGroup(this.playerDelimiterCollisionGroup);
 		groupItem.body.collides(this.playerCollisionGroup);
 
@@ -364,8 +496,10 @@ Volemon = class Volemon {
 
 		this.game.physics.p2.enable(groupItem);
 		groupItem.body.static = true;
+		groupItem.body.setMaterial(this.netDelimiterMaterial);
 		groupItem.body.setCollisionGroup(this.netHitDelimiterCollisionGroup);
 		groupItem.body.collides(this.ballCollisionGroup);
+		groupItem.body.collides(this.bonusCollisionGroup);
 
 		/**
 		 * Ball Ground hit delimiter
@@ -381,8 +515,10 @@ Volemon = class Volemon {
 
 		this.game.physics.p2.enable(groupItem);
 		groupItem.body.static = true;
+		groupItem.body.setMaterial(this.groundDelimiterMaterial);
 		groupItem.body.setCollisionGroup(this.groundHitDelimiterCollisionGroup);
 		groupItem.body.collides(this.ballCollisionGroup);
+		groupItem.body.collides(this.bonusCollisionGroup);
 	}
 
 	spawnPlayer(player) {
@@ -434,6 +570,7 @@ Volemon = class Volemon {
 
 		if (this.isGameOnGoing()) {
 			this.inputs();
+			this.checkBonuses();
 
 			/**
 			 * Update timer
@@ -455,7 +592,7 @@ Volemon = class Volemon {
 
 			//Send ball position to database only if it has changed
 			if (this.isUserHost()) {
-				let ballPositionData = this.getBallPositionData();
+				let ballPositionData = this.getBodyPositionData(this.ball.body);
 				if (JSON.stringify(this.lastBallPositionData) !== JSON.stringify(ballPositionData)) {
 					let lastBallUpdateBefore = this.lastBallUpdate;
 					let ballData = jQuery.extend({}, ballPositionData);
@@ -470,6 +607,22 @@ Volemon = class Volemon {
 					//The position has been sent to the server
 					if (lastBallUpdateBefore != this.lastBallUpdate) {
 						this.lastBallPositionData = ballPositionData;
+					}
+				}
+
+				if (this.hasGameBonuses()) {
+					this.createBonusIfTimeHasElapsed();
+
+					if (this.bonus) {
+						let bonusPositionData = this.getBodyPositionData(this.bonus.body);
+						let bonusData = jQuery.extend({}, bonusPositionData);
+						bonusData.timestamp = new Date().getTime();
+						this.lastBonusUpdate = this.emitGameStreamAtFrequence(
+							this.lastBonusUpdate,
+							Config.bonusInterval,
+							'moveClientBonus',
+							[Session.get('game'), bonusData]
+						);
 					}
 				}
 			}
@@ -572,7 +725,7 @@ Volemon = class Volemon {
 		}
 
 		//Send player position to database only if it has changed
-		let playerPositionData = this.getPlayerPositionData(player);
+		let playerPositionData = this.getBodyPositionData(player.body);
 		if (JSON.stringify(this.lastPlayerPositionData) !== JSON.stringify(playerPositionData)) {
 			let lastPlayerUpdateBefore = this.lastPlayerUpdate;
 			let playerData = jQuery.extend({}, playerPositionData);
@@ -593,7 +746,16 @@ Volemon = class Volemon {
 	}
 
 	isPlayerAtGroundLevel(player) {
-		return (player.y + (Config.playerHeight / 2) >= Config.ySize - Config.groundHeight);
+		return (player.bottom >= Config.ySize - Config.groundHeight);
+	}
+
+	getBodyPositionData(body) {
+		return {
+			x: body.x,
+			y: body.y,
+			velocityX: body.velocity.x,
+			velocityY: body.velocity.y
+		};
 	}
 
 	moveOppositePlayer(data) {
@@ -636,22 +798,20 @@ Volemon = class Volemon {
 		}
 	}
 
-	getBallPositionData() {
-		return {
-			x: this.ball.body.x,
-			y: this.ball.body.y,
-			velocityX: this.ball.body.velocity.x,
-			velocityY: this.ball.body.velocity.y
-		};
-	}
+	moveClientBonus(data) {
+		if (!this.bonus || !this.bonus.body) {
+			return;
+		}
 
-	getPlayerPositionData(player) {
-		return {
-			x: player.body.x,
-			y: player.body.y,
-			velocityX: player.body.velocity.x,
-			velocityY: player.body.velocity.y
-		};
+		if (data && data.timestamp != this.lastBonusTimestampRead) {
+			this.bonus.body.x = data.x;
+			this.bonus.body.y = data.y;
+			this.bonus.body.velocity.x = data.velocityX;
+			this.bonus.body.velocity.y = data.velocityY;
+
+			//This is used for interpolation in addition with velocities
+			this.lastBonusTimestampRead = data.timestamp;
+		}
 	}
 
 	shakeLevel() {
@@ -714,4 +874,121 @@ Volemon = class Volemon {
 
 		return lastCallTime;
 	}
+
+	createBonusIfTimeHasElapsed() {
+		var frequenceTime = getRandomInt(Config.bonusMinimumInterval, Config.bonusMaximumInterval);
+
+		//Only one bonus sprite at the same time
+		if (this.bonus === null && this.game.time.time - this.lastBonusActivated >= frequenceTime) {
+			//Host choose position and bonusCls
+			let data = {
+				initialX: Config.xSize / 2 + Random.choice([-5, +5]),
+				bonusKey: Random.choice([
+					Constants.BONUS_BIG_BALL,
+					Constants.BONUS_BIG_MONSTER,
+					Constants.BONUS_SMALL_MONSTER
+				])
+			};
+
+			//Create the bonus the host
+			this.createBonus(data);
+			//Send to client
+			GameStream.emit('createBonus', Session.get('game'), data);
+		}
+	}
+
+	createBonus(data) {
+		var bonus = BonusFactory.getInstance(data.bonusKey, this);
+
+		this.bonus = this.game.add.sprite(data.initialX, 0, 'delimiter');
+
+		let bonusGraphics = this.game.add.graphics(0, 0);
+
+		bonusGraphics.beginFill(bonus.getColor());
+		bonusGraphics.drawCircle(0, 0, 30);
+		bonusGraphics.endFill();
+
+		bonusGraphics.beginFill(0xFFFFFF);
+		bonusGraphics.drawCircle(0, 0, 20);
+		bonusGraphics.endFill();
+
+		let bonusText = this.game.add.text(0, 2, bonus.getLetter(), {
+			font: "17px 'Oxygen', sans-serif",
+			fill: '#363636',
+			align: 'center'
+		});
+		bonusText.anchor.set(0.5);
+
+		this.game.physics.p2.enable(this.bonus);
+		this.bonus.body.clearShapes();
+		this.bonus.body.addCircle(15);
+		this.bonus.body.fixedRotation = false;
+		this.bonus.body.data.gravityScale = Config.bonusGravityScale;
+		this.bonus.body.damping = 0;
+		this.bonus.body.setMaterial(this.bonusMaterial);
+		this.bonus.body.setCollisionGroup(this.bonusCollisionGroup);
+		this.bonus.bonus = bonus;
+
+		this.bonus.addChild(bonusGraphics);
+		this.bonus.addChild(bonusText);
+
+		this.bonus.body.collides(this.playerCollisionGroup, (bonusItem, player) => {
+			if (this.isUserHost()) {
+				//Activate bonus
+				this.activateBonus(player.sprite.key);
+				this.lastBonusActivated = this.game.time.time;
+				//Send to client
+				GameStream.emit('activateBonus', Session.get('game'), player.sprite.key);
+			}
+		}, this);
+		this.bonus.body.collides(this.netHitDelimiterCollisionGroup);
+		this.bonus.body.collides(this.groundHitDelimiterCollisionGroup);
+		this.bonus.body.collides(this.ballCollisionGroup);
+	}
+
+	activateBonus(playerKey) {
+		this.deactivateSimilarBonusForPlayerKey(this.bonus.bonus, playerKey);
+
+		this.bonus.bonus.activate(playerKey);
+		this.bonus.bonus.start();
+
+		this.bonuses.push(this.bonus.bonus);
+
+		this.bonus.destroy();
+		this.bonus = null;
+	}
+
+	deactivateSimilarBonusForPlayerKey(newBonus, playerKey) {
+		for (let bonus of this.bonuses) {
+			if (bonus.isSimilarBonusForPlayerKey(newBonus, playerKey)) {
+				bonus.deactivate();
+			}
+		}
+	}
+
+	checkBonuses() {
+		var stillActiveBonuses = [];
+
+		for (let bonus of this.bonuses) {
+			if (bonus.check()) {
+				stillActiveBonuses.push(bonus);
+			}
+		}
+
+		this.bonuses = stillActiveBonuses;
+	}
+
+	resetAllBonuses() {
+		if (this.bonus !== null) {
+			this.bonus.destroy();
+			this.bonus = null;
+		}
+
+		for (let bonus of this.bonuses) {
+			bonus.stop();
+		}
+
+		this.bonuses = [];
+	}
+
 };

@@ -1,27 +1,25 @@
-GameStream.permissions.write(function(eventName) {
-	var userId = this.userId,
-		hasRight = false;
+hasRight = function(eventName) {
+	var hasRight = false;
 
 	switch (eventName) {
 		case 'play':
 		case 'shakeLevelAndResumeOnTimerEnd':
 		case 'moveClientBall':
-			//Only host can send those event
-			let game = Games.findOne({createdBy: userId});
-
-			if (game) {
-				hasRight = true;
-			}
-			break;
 		case 'moveOppositePlayer':
+		case 'createBonus':
+		case 'activateBonus':
+		case 'moveClientBonus':
 			hasRight = true;
 			break;
 	}
 
 	return hasRight;
+};
+
+GameStream.permissions.write(function(eventName) {
+	return hasRight(eventName);
 });
 
 GameStream.permissions.read(function(eventName) {
-	//Everybody can read
-	return true;
+	return hasRight(eventName);
 });
