@@ -271,3 +271,33 @@ GameStream.on('moveOppositePlayer', function(gameId, isUserHost, playerData) {
 		currentGame.moveOppositePlayer(playerData);
 	}
 });
+
+GameStream.on('createBonus', function(gameId, bonusData) {
+	var game = Games.findOne(gameId),
+		player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
+
+	//Player is in game and is not the creator
+	if (game && player && game.createdBy !== Meteor.userId() && currentGame) {
+		currentGame.createBonus(bonusData);
+	}
+});
+
+GameStream.on('activateBonus', function(gameId, playerKey) {
+	var game = Games.findOne(gameId),
+		player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
+
+	//Player is in game and is not the creator
+	if (game && player && game.createdBy !== Meteor.userId() && currentGame) {
+		currentGame.activateBonus(playerKey);
+	}
+});
+
+GameStream.on('moveClientBonus', function(gameId, bonusData) {
+	var game = Games.findOne(gameId),
+		player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
+
+	//Player is in game and is not the creator
+	if (game && player && game.createdBy !== Meteor.userId() && currentGame) {
+		currentGame.moveClientBonus(bonusData);
+	}
+});
