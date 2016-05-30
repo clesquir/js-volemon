@@ -636,6 +636,12 @@ export default class Game {
 			this.ball.body.setZeroVelocity();
 			this.ball.body.data.gravityScale = 0;
 
+			if (this.bonus) {
+				this.bonus.body.setZeroRotation();
+				this.bonus.body.setZeroVelocity();
+				this.bonus.body.data.gravityScale = 0;
+			}
+
 			this.setInformationText('The game has timed out...');
 		}
 	}
