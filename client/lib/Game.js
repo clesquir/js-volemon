@@ -135,6 +135,24 @@ export default class Game {
 		}
 	}
 
+	getPolygonKeyFromScale(scale) {
+		var polygonKey = null;
+
+		switch (scale) {
+			case Constants.NORMAL_SCALE_BONUS:
+				polygonKey = Constants.NORMAL_SCALE_PHYSICS_DATA;
+				break;
+			case Constants.SMALL_SCALE_BONUS:
+				polygonKey = Constants.SMALL_SCALE_PHYSICS_DATA;
+				break;
+			case Constants.BIG_SCALE_BONUS:
+				polygonKey = Constants.BIG_SCALE_PHYSICS_DATA;
+				break;
+		}
+
+		return polygonKey;
+	}
+
 	start() {
 		this.game = new Phaser.Game({
 			width: Config.xSize,
@@ -199,6 +217,7 @@ export default class Game {
 		this.loadScaledPhysics(Constants.NORMAL_SCALE_PHYSICS_DATA, Constants.SMALL_SCALE_PHYSICS_DATA, 'player-' + this.getPlayerShapeFromKey('player2'), Constants.SMALL_SCALE_BONUS);
 		this.loadScaledPhysics(Constants.NORMAL_SCALE_PHYSICS_DATA, Constants.BIG_SCALE_PHYSICS_DATA, 'player-' + this.getPlayerShapeFromKey('player1'), Constants.BIG_SCALE_BONUS);
 		this.loadScaledPhysics(Constants.NORMAL_SCALE_PHYSICS_DATA, Constants.BIG_SCALE_PHYSICS_DATA, 'player-' + this.getPlayerShapeFromKey('player2'), Constants.BIG_SCALE_BONUS);
+		this.loadScaledPhysics(Constants.NORMAL_SCALE_PHYSICS_DATA, Constants.SMALL_SCALE_PHYSICS_DATA, 'ball', Constants.SMALL_SCALE_BONUS);
 		this.loadScaledPhysics(Constants.NORMAL_SCALE_PHYSICS_DATA, Constants.BIG_SCALE_PHYSICS_DATA, 'ball', Constants.BIG_SCALE_BONUS);
 
 		this.game.physics.startSystem(Phaser.Physics.P2JS);
@@ -315,22 +334,10 @@ export default class Game {
 
 	scalePlayer(playerKey, scale) {
 		var player = this.getPlayerFromKey(playerKey),
-			polygonKey;
+			polygonKey = this.getPolygonKeyFromScale(scale);
 
-		if (!player) {
+		if (!player || !polygonKey) {
 			return;
-		}
-
-		switch (scale) {
-			case Constants.NORMAL_SCALE_BONUS:
-				polygonKey = Constants.NORMAL_SCALE_PHYSICS_DATA;
-				break;
-			case Constants.SMALL_SCALE_BONUS:
-				polygonKey = Constants.SMALL_SCALE_PHYSICS_DATA;
-				break;
-			case Constants.BIG_SCALE_BONUS:
-				polygonKey = Constants.BIG_SCALE_PHYSICS_DATA;
-				break;
 		}
 
 		player.scale.setTo(scale, scale);
@@ -374,15 +381,10 @@ export default class Game {
 	}
 
 	scaleBall(scale) {
-		var polygonKey;
+		var polygonKey = this.getPolygonKeyFromScale(scale);
 
-		switch (scale) {
-			case Constants.NORMAL_SCALE_BONUS:
-				polygonKey = Constants.NORMAL_SCALE_PHYSICS_DATA;
-				break;
-			case Constants.BIG_SCALE_BONUS:
-				polygonKey = Constants.BIG_SCALE_PHYSICS_DATA;
-				break;
+		if (!polygonKey) {
+			return;
 		}
 
 		this.ball.scale.setTo(scale, scale);
@@ -884,6 +886,7 @@ export default class Game {
 			let data = {
 				initialX: Config.xSize / 2 + Random.choice([-5, +5]),
 				bonusKey: Random.choice([
+					Constants.BONUS_SMALL_BALL,
 					Constants.BONUS_BIG_BALL,
 					Constants.BONUS_BIG_MONSTER,
 					Constants.BONUS_SMALL_MONSTER
