@@ -1,24 +1,14 @@
-import MonsterBonus from '/client/lib/game/bonus/MonsterBonus.js';
+import MovementMonsterBonus from '/client/lib/game/bonus/MovementMonsterBonus.js';
 
-export default class FastMonsterBonus extends MonsterBonus {
+export default class FastMonsterBonus extends MovementMonsterBonus {
 
 	constructor(game) {
 		super(game);
 		this.letter = 'F';
 	}
 
-	isSimilarBonusForPlayerKey(bonus, playerKey) {
-		return bonus instanceof FastMonsterBonus && playerKey == this.activatorPlayerKey;
-	}
-
 	start() {
 		this.game.changePlayerProperty.call(this.game, this.activatorPlayerKey, 'velocityXOnMove', Config.playerVelocityXOnMove * 2);
-	}
-
-	stop() {
-		this.game.changePlayerProperty.call(this.game, this.activatorPlayerKey, 'velocityXOnMove', Config.playerVelocityXOnMove);
-
-		this.deactivate();
 	}
 
 };

@@ -921,6 +921,7 @@ export default class Game {
 					Constants.BONUS_SMALL_MONSTER,
 					Constants.BONUS_BIG_MONSTER,
 					Constants.BONUS_BIG_JUMP_MONSTER,
+					Constants.BONUS_SLOW_MONSTER,
 					Constants.BONUS_FAST_MONSTER
 				])
 			};
