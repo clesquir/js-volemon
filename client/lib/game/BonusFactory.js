@@ -1,7 +1,9 @@
 import SmallBallBonus from '/client/lib/game/bonus/SmallBallBonus.js';
 import BigBallBonus from '/client/lib/game/bonus/BigBallBonus.js';
-import BigMonsterBonus from '/client/lib/game/bonus/BigMonsterBonus.js';
 import SmallMonsterBonus from '/client/lib/game/bonus/SmallMonsterBonus.js';
+import BigMonsterBonus from '/client/lib/game/bonus/BigMonsterBonus.js';
+import BigJumpMonsterBonus from '/client/lib/game/bonus/BigJumpMonsterBonus.js';
+import FastMonsterBonus from '/client/lib/game/bonus/FastMonsterBonus.js';
 
 export default class BonusFactory {
 
@@ -16,10 +18,14 @@ export default class BonusFactory {
 				return new SmallBallBonus(game);
 			case Constants.BONUS_BIG_BALL:
 				return new BigBallBonus(game);
-			case Constants.BONUS_BIG_MONSTER:
-				return new BigMonsterBonus(game);
 			case Constants.BONUS_SMALL_MONSTER:
 				return new SmallMonsterBonus(game);
+			case Constants.BONUS_BIG_MONSTER:
+				return new BigMonsterBonus(game);
+			case Constants.BONUS_BIG_JUMP_MONSTER:
+				return new BigJumpMonsterBonus(game);
+			case Constants.BONUS_FAST_MONSTER:
+				return new FastMonsterBonus(game);
 		}
 
 		throw 'Inexistent bonus';

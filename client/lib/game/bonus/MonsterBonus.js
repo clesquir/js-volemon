@@ -7,10 +7,4 @@ export default class MonsterBonus extends BaseBonus {
 		this.color = 0xFF0000;
 	}
 
-	stop() {
-		this.game.resetPlayerScale.call(this.game, this.activatorPlayerKey);
-
-		this.deactivate();
-	}
-
 };

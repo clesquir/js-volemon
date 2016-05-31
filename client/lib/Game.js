@@ -312,6 +312,8 @@ export default class Game {
 	createPlayer(player, initialXLocation, initialYLocation, playerKey) {
 		player.initialXLocation = initialXLocation;
 		player.initialYLocation = initialYLocation;
+		player.velocityXOnMove = Config.playerVelocityXOnMove;
+		player.velocityYOnJump = Config.playerVelocityYOnJump;
 
 		this.game.physics.p2.enable(player);
 		player.polygonObject = 'player-' + this.getPlayerShapeFromKey(playerKey);
@@ -356,6 +358,16 @@ export default class Game {
 		}
 
 		this.scalePlayer(playerKey, 1);
+	}
+
+	changePlayerProperty(playerKey, property, value) {
+		var player = this.getPlayerFromKey(playerKey);
+
+		if (!player) {
+			return;
+		}
+
+		player[property] = value;
 	}
 
 	createBall() {
@@ -720,16 +732,16 @@ export default class Game {
 		}
 
 		if (this.cursor.left.isDown) {
-			player.body.velocity.x = -Config.playerVelocityXOnMove;
+			player.body.velocity.x = -player.velocityXOnMove;
 		} else if (this.cursor.right.isDown) {
-			player.body.velocity.x = Config.playerVelocityXOnMove;
+			player.body.velocity.x = player.velocityXOnMove;
 		} else {
 			player.body.velocity.x = 0;
 		}
 
 		if (this.isPlayerAtGroundLevel(player)) {
 			if (this.cursor.up.isDown) {
-				player.body.velocity.y = -Config.playerVelocityYOnJump;
+				player.body.velocity.y = -player.velocityYOnJump;
 			} else {
 				player.body.velocity.y = 0;
 			}
@@ -906,8 +918,10 @@ export default class Game {
 				bonusKey: Random.choice([
 					Constants.BONUS_SMALL_BALL,
 					Constants.BONUS_BIG_BALL,
+					Constants.BONUS_SMALL_MONSTER,
 					Constants.BONUS_BIG_MONSTER,
-					Constants.BONUS_SMALL_MONSTER
+					Constants.BONUS_BIG_JUMP_MONSTER,
+					Constants.BONUS_FAST_MONSTER
 				])
 			};
 

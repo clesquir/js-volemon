@@ -6,4 +6,10 @@ export default class MonsterScaleBonus extends MonsterBonus {
 		return bonus instanceof MonsterScaleBonus && playerKey == this.activatorPlayerKey;
 	}
 
+	stop() {
+		this.game.resetPlayerScale.call(this.game, this.activatorPlayerKey);
+
+		this.deactivate();
+	}
+
 };

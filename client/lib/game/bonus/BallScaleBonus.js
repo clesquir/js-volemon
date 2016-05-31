@@ -6,4 +6,10 @@ export default class BallScaleBonus extends BallBonus {
 		return bonus instanceof BallScaleBonus;
 	}
 
+	stop() {
+		this.game.resetBallScale.call(this.game);
+
+		this.deactivate();
+	}
+
 };

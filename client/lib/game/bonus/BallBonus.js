@@ -7,10 +7,4 @@ export default class BallBonus extends BaseBonus {
 		this.color = 0x0000FF;
 	}
 
-	stop() {
-		this.game.resetBallScale.call(this.game);
-
-		this.deactivate();
-	}
-
 };
