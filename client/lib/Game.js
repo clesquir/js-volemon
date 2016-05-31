@@ -14,6 +14,8 @@ export default class Game {
 		this.lastBonusTimestampRead = 0;
 		this.ballRespawn = false;
 		this.lastBonusActivated = 0;
+		this.bonusFrequenceTime = 0;
+		this.lastGameRespawn = 0;
 		this.bonus = null;
 		this.bonuses = [];
 	}
@@ -411,7 +413,8 @@ export default class Game {
 			this.countdownTimer = this.game.time.create();
 			this.countdownTimer.add(Phaser.Timer.SECOND * 3, this.resumeGame, this);
 			this.countdownTimer.start();
-			this.lastBonusActivated = new Date().getTime();
+			this.generateBonusActivationAndFrequenceTime();
+			this.lastGameRespawn = this.game.time.time;
 		}
 	}
 
@@ -883,8 +886,17 @@ export default class Game {
 		return lastCallTime;
 	}
 
+	generateBonusActivationAndFrequenceTime() {
+		this.lastBonusActivated = this.game.time.time;
+		this.bonusFrequenceTime = getRandomInt(Config.bonusMinimumInterval, Config.bonusMaximumInterval);
+	}
+
 	createBonusIfTimeHasElapsed() {
-		var frequenceTime = getRandomInt(Config.bonusMinimumInterval, Config.bonusMaximumInterval);
+		var frequenceTime = this.bonusFrequenceTime - Math.round((this.game.time.time - this.lastGameRespawn) / 25);
+
+		if (frequenceTime < 0) {
+			frequenceTime = 0;
+		}
 
 		//Only one bonus sprite at the same time
 		if (this.bonus === null && this.game.time.time - this.lastBonusActivated >= frequenceTime) {
@@ -945,7 +957,7 @@ export default class Game {
 			if (this.isUserHost()) {
 				//Activate bonus
 				this.activateBonus(player.sprite.key);
-				this.lastBonusActivated = this.game.time.time;
+				this.generateBonusActivationAndFrequenceTime();
 				//Send to client
 				GameStream.emit('activateBonus', Session.get('game'), player.sprite.key);
 			}
