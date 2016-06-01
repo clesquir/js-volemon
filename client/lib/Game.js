@@ -314,6 +314,7 @@ export default class Game {
 		player.initialYLocation = initialYLocation;
 		player.velocityXOnMove = Config.playerVelocityXOnMove;
 		player.velocityYOnJump = Config.playerVelocityYOnJump;
+		player.canMove = true;
 
 		this.game.physics.p2.enable(player);
 		player.polygonObject = 'player-' + this.getPlayerShapeFromKey(playerKey);
@@ -325,7 +326,7 @@ export default class Game {
 
 	setupPlayerBody(player) {
 		player.body.fixedRotation = true;
-		player.body.mass = 200;
+		player.body.mass = Config.playerMass;
 		player.body.data.gravityScale = Config.playerGravityScale;
 
 		player.body.setMaterial(this.playerMaterial);
@@ -370,6 +371,28 @@ export default class Game {
 		player[property] = value;
 	}
 
+	freezePlayer(playerKey) {
+		var player = this.getPlayerFromKey(playerKey);
+
+		if (!player) {
+			return;
+		}
+
+		player.body.mass = 2000;
+		this.freezeBody(player.body);
+	}
+
+	unFreezePlayer(playerKey) {
+		var player = this.getPlayerFromKey(playerKey);
+
+		if (!player) {
+			return;
+		}
+
+		player.body.mass = Config.playerMass;
+		player.body.data.gravityScale = Config.playerGravityScale;
+	}
+
 	createBall() {
 		this.ball = this.game.add.sprite(Config.playerInitialLocation, Config.ySize - Config.groundHeight - Config.ballDistanceFromGround, 'ball');
 
@@ -409,6 +432,12 @@ export default class Game {
 
 	resetBallScale() {
 		this.scaleBall(Constants.NORMAL_SCALE_BONUS);
+	}
+
+	freezeBody(body) {
+		body.setZeroRotation();
+		body.setZeroVelocity();
+		body.data.gravityScale = 0;
 	}
 
 	resumeOnTimerEnd() {
@@ -644,17 +673,12 @@ export default class Game {
 				}
 			}
 		} else if (this.isGameTimeOut()) {
-			this.player1.body.setZeroVelocity();
-			this.player1.body.data.gravityScale = 0;
-			this.player2.body.setZeroVelocity();
-			this.player2.body.data.gravityScale = 0;
-			this.ball.body.setZeroVelocity();
-			this.ball.body.data.gravityScale = 0;
+			this.freezeBody(this.player1.body);
+			this.freezeBody(this.player2.body);
+			this.freezeBody(this.ball.body);
 
 			if (this.bonus) {
-				this.bonus.body.setZeroRotation();
-				this.bonus.body.setZeroVelocity();
-				this.bonus.body.data.gravityScale = 0;
+				this.freezeBody(this.bonus.body);
 			}
 
 			this.setInformationText('The game has timed out...');
@@ -727,7 +751,7 @@ export default class Game {
 	inputs() {
 		var player = this.getCurrentPlayer();
 
-		if (!player) {
+		if (!player || !player.canMove) {
 			return;
 		}
 
@@ -856,7 +880,7 @@ export default class Game {
 
 	pauseGame() {
 		//Freeze ball
-		this.ball.body.data.gravityScale = 0;
+		this.freezeBody(this.ball.body);
 	}
 
 	resumeGame() {
@@ -922,7 +946,8 @@ export default class Game {
 					Constants.BONUS_BIG_MONSTER,
 					Constants.BONUS_BIG_JUMP_MONSTER,
 					Constants.BONUS_SLOW_MONSTER,
-					Constants.BONUS_FAST_MONSTER
+					Constants.BONUS_FAST_MONSTER,
+					Constants.BONUS_FREEZE_MONSTER
 				])
 			};
 
