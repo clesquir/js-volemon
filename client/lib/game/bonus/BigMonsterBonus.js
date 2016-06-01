@@ -4,7 +4,7 @@ export default class BigMonsterBonus extends MonsterScaleBonus {
 
 	constructor(game) {
 		super(game);
-		this.letter = 'B';
+		this.letter = '\uf065';
 	}
 
 	start() {

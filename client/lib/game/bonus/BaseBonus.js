@@ -5,9 +5,9 @@ export default class BaseBonus {
 		this.durationMilliseconds = Config.bonusDuration;
 		this.isActive = false;
 		this.activatorPlayerKey = null;
-		this.activedAt = null;
+		this.activatedAt = null;
 		this.color = 0x000000;
-		this.letter = 'X';
+		this.letter = '\uf005';
 	}
 
 	getColor() {

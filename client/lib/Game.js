@@ -945,11 +945,13 @@ export default class Game {
 		bonusGraphics.endFill();
 
 		bonusGraphics.beginFill(0xFFFFFF);
-		bonusGraphics.drawCircle(0, 0, 20);
+		bonusGraphics.drawCircle(0, 0, 27);
 		bonusGraphics.endFill();
 
-		let bonusText = this.game.add.text(0, 2, bonus.getLetter(), {
-			font: "17px 'Oxygen', sans-serif",
+		let bonusText = this.game.add.text(0, 3, bonus.getLetter(), {
+			font: 'FontAwesome',
+			fontWeight: 'normal',
+			fontSize: '16px',
 			fill: '#363636',
 			align: 'center'
 		});

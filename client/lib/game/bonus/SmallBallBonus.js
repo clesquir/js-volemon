@@ -4,7 +4,7 @@ export default class SmallBallBonus extends BallScaleBonus {
 
 	constructor(game) {
 		super(game);
-		this.letter = 'S';
+		this.letter = '\uf066';
 	}
 
 	start() {

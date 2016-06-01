@@ -4,7 +4,7 @@ export default class FastMonsterBonus extends MovementMonsterBonus {
 
 	constructor(game) {
 		super(game);
-		this.letter = 'F';
+		this.letter = '\uf0e7';
 	}
 
 	start() {

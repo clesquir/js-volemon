@@ -4,7 +4,7 @@ export default class BigJumpMonsterBonus extends MonsterBonus {
 
 	constructor(game) {
 		super(game);
-		this.letter = 'J';
+		this.letter = '\uf093';
 	}
 
 	isSimilarBonusForPlayerKey(bonus, playerKey) {
