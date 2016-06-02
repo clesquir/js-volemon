@@ -144,7 +144,8 @@ export default class Game {
 			case Constants.NORMAL_SCALE_BONUS:
 				polygonKey = Constants.NORMAL_SCALE_PHYSICS_DATA;
 				break;
-			case Constants.SMALL_SCALE_BONUS:
+			case Constants.SMALL_SCALE_PLAYER_BONUS:
+			case Constants.SMALL_SCALE_BALL_BONUS:
 				polygonKey = Constants.SMALL_SCALE_PHYSICS_DATA;
 				break;
 			case Constants.BIG_SCALE_BONUS:
@@ -215,11 +216,11 @@ export default class Game {
 		var initialXLocation = Config.playerInitialLocation,
 			initialYLocation = Config.ySize - Config.groundHeight - (Config.playerHeight / 2);
 
-		this.loadScaledPhysics(Constants.NORMAL_SCALE_PHYSICS_DATA, Constants.SMALL_SCALE_PHYSICS_DATA, 'player-' + this.getPlayerShapeFromKey('player1'), Constants.SMALL_SCALE_BONUS);
-		this.loadScaledPhysics(Constants.NORMAL_SCALE_PHYSICS_DATA, Constants.SMALL_SCALE_PHYSICS_DATA, 'player-' + this.getPlayerShapeFromKey('player2'), Constants.SMALL_SCALE_BONUS);
+		this.loadScaledPhysics(Constants.NORMAL_SCALE_PHYSICS_DATA, Constants.SMALL_SCALE_PHYSICS_DATA, 'player-' + this.getPlayerShapeFromKey('player1'), Constants.SMALL_SCALE_PLAYER_BONUS);
+		this.loadScaledPhysics(Constants.NORMAL_SCALE_PHYSICS_DATA, Constants.SMALL_SCALE_PHYSICS_DATA, 'player-' + this.getPlayerShapeFromKey('player2'), Constants.SMALL_SCALE_PLAYER_BONUS);
 		this.loadScaledPhysics(Constants.NORMAL_SCALE_PHYSICS_DATA, Constants.BIG_SCALE_PHYSICS_DATA, 'player-' + this.getPlayerShapeFromKey('player1'), Constants.BIG_SCALE_BONUS);
 		this.loadScaledPhysics(Constants.NORMAL_SCALE_PHYSICS_DATA, Constants.BIG_SCALE_PHYSICS_DATA, 'player-' + this.getPlayerShapeFromKey('player2'), Constants.BIG_SCALE_BONUS);
-		this.loadScaledPhysics(Constants.NORMAL_SCALE_PHYSICS_DATA, Constants.SMALL_SCALE_PHYSICS_DATA, 'ball', Constants.SMALL_SCALE_BONUS);
+		this.loadScaledPhysics(Constants.NORMAL_SCALE_PHYSICS_DATA, Constants.SMALL_SCALE_PHYSICS_DATA, 'ball', Constants.SMALL_SCALE_BALL_BONUS);
 		this.loadScaledPhysics(Constants.NORMAL_SCALE_PHYSICS_DATA, Constants.BIG_SCALE_PHYSICS_DATA, 'ball', Constants.BIG_SCALE_BONUS);
 
 		this.game.physics.startSystem(Phaser.Physics.P2JS);

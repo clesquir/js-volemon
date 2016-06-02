@@ -4,7 +4,7 @@ export default class FreezeMonsterBonus extends MonsterBonus {
 
 	constructor(game) {
 		super(game);
-		this.durationMilliseconds = 1500;
+		this.durationMilliseconds = 5000;
 		this.letter = '\uf04c';
 	}
 

@@ -8,7 +8,7 @@ export default class SmallMonsterBonus extends MonsterScaleBonus {
 	}
 
 	start() {
-		this.game.scalePlayer.call(this.game, this.activatorPlayerKey, Constants.SMALL_SCALE_BONUS);
+		this.game.scalePlayer.call(this.game, this.activatorPlayerKey, Constants.SMALL_SCALE_PLAYER_BONUS);
 	}
 
 };
