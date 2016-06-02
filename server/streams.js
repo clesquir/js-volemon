@@ -1,19 +1,21 @@
 hasRight = function(eventName) {
-	var hasRight = false;
+	var allowedEvents = [
+		'play',
+		'shakeLevelAndResumeOnTimerEnd',
+		'moveClientBall',
+		'moveOppositePlayer',
+		'createBonus',
+		'activateBonus',
+		'moveClientBonus'
+	];
 
-	switch (eventName) {
-		case 'play':
-		case 'shakeLevelAndResumeOnTimerEnd':
-		case 'moveClientBall':
-		case 'moveOppositePlayer':
-		case 'createBonus':
-		case 'activateBonus':
-		case 'moveClientBonus':
-			hasRight = true;
-			break;
+	for (let event of allowedEvents) {
+		if (eventName.indexOf(event) === 0) {
+			return true;
+		}
 	}
 
-	return hasRight;
+	return false;
 };
 
 GameStream.permissions.write(function(eventName) {

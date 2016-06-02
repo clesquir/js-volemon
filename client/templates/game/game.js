@@ -1,9 +1,4 @@
-import Game from '/client/lib/Game.js';
-
-/**
- * @type {Game}
- */
-currentGame = null;
+import GameInitiator from '/client/lib/game/GameInitiator.js';
 
 Template.game.helpers({
 	isHost: function() {
@@ -201,15 +196,10 @@ Template.game.events({
 	}
 });
 
-Template.game.rendered = function() {
-	var player = Players.findOne({gameId: Session.get('game'), userId: Meteor.userId()}),
-		game = Games.findOne(Session.get('game'));
+var gameInitiator = new GameInitiator();
 
-	//Player is in game and this game is already started
-	if (player && isGameStatusOnGoing(game.status)) {
-		currentGame = new Game();
-		currentGame.start();
-	}
+Template.game.rendered = function() {
+	gameInitiator.init(Session.get('game'));
 
 	keepAliveRegistrationFunction = Meteor.setInterval(function() {
 		var game = Games.findOne(Session.get('game')),
@@ -228,93 +218,5 @@ Template.game.rendered = function() {
 };
 
 Template.game.destroyed = function() {
-	if (currentGame) {
-		currentGame.stop();
-		currentGame = null;
-	}
+	gameInitiator.stop();
 };
-
-GameStream.on('play', function(gameId) {
-	var player = Players.findOne({gameId: gameId, userId: Meteor.userId()}),
-		loopUntilGameContainerIsCreated;
-
-	//Player is in game and this is the current game being started
-	if (player && gameId == Session.get('game')) {
-		//Wait for gameContainer creation before starting game
-		loopUntilGameContainerIsCreated = function() {
-			if (document.getElementById('gameContainer')) {
-				currentGame = new Game();
-				currentGame.start();
-			} else {
-				window.setTimeout(loopUntilGameContainerIsCreated, 1);
-			}
-		};
-
-		loopUntilGameContainerIsCreated();
-	}
-});
-
-GameStream.on('shakeLevelAndResumeOnTimerEnd', function(gameId) {
-	var game = Games.findOne(gameId),
-		player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
-
-	//Player is in game and is not the creator
-	if (game && player && game.createdBy !== Meteor.userId() && currentGame) {
-		currentGame.shakeLevel();
-		currentGame.resumeOnTimerEnd();
-	}
-});
-
-GameStream.on('moveClientBall', function(gameId, ballData) {
-	var game = Games.findOne(gameId),
-		player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
-
-	//Player is in game and is not the creator
-	if (game && player && game.createdBy !== Meteor.userId() && currentGame) {
-		currentGame.moveClientBall(ballData);
-	}
-});
-
-GameStream.on('moveOppositePlayer', function(gameId, isUserHost, playerData) {
-	var game = Games.findOne(gameId),
-		player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
-
-	//Player is in game and sent data is for opposite player
-	if (
-		game && player &&
-		((isUserHost && game.createdBy !== Meteor.userId()) || (!isUserHost && game.createdBy === Meteor.userId())) &&
-		currentGame
-	) {
-		currentGame.moveOppositePlayer(playerData);
-	}
-});
-
-GameStream.on('createBonus', function(gameId, bonusData) {
-	var game = Games.findOne(gameId),
-		player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
-
-	//Player is in game and is not the creator
-	if (game && player && game.createdBy !== Meteor.userId() && currentGame) {
-		currentGame.createBonus(bonusData);
-	}
-});
-
-GameStream.on('activateBonus', function(gameId, playerKey) {
-	var game = Games.findOne(gameId),
-		player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
-
-	//Player is in game and is not the creator
-	if (game && player && game.createdBy !== Meteor.userId() && currentGame) {
-		currentGame.activateBonus(playerKey);
-	}
-});
-
-GameStream.on('moveClientBonus', function(gameId, bonusData) {
-	var game = Games.findOne(gameId),
-		player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
-
-	//Player is in game and is not the creator
-	if (game && player && game.createdBy !== Meteor.userId() && currentGame) {
-		currentGame.moveClientBonus(bonusData);
-	}
-});

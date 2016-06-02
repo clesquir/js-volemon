@@ -646,8 +646,8 @@ export default class Game {
 					this.lastBallUpdate = this.emitGameStreamAtFrequence(
 						this.lastBallUpdate,
 						Config.ballInterval,
-						'moveClientBall',
-						[Session.get('game'), ballData]
+						'moveClientBall-' + Session.get('game'),
+						[ballData]
 					);
 
 					//The position has been sent to the server
@@ -666,8 +666,8 @@ export default class Game {
 						this.lastBonusUpdate = this.emitGameStreamAtFrequence(
 							this.lastBonusUpdate,
 							Config.bonusInterval,
-							'moveClientBonus',
-							[Session.get('game'), bonusData]
+							'moveClientBonus-' + Session.get('game'),
+							[bonusData]
 						);
 					}
 				}
@@ -743,7 +743,7 @@ export default class Game {
 				this.resumeOnTimerEnd();
 
 				//The socket will tell the client when to shake and respawn to resume in sync
-				GameStream.emit('shakeLevelAndResumeOnTimerEnd', Session.get('game'));
+				GameStream.emit('shakeLevelAndResumeOnTimerEnd-' + Session.get('game'));
 			});
 		}
 	}
@@ -781,8 +781,8 @@ export default class Game {
 			this.lastPlayerUpdate = this.emitGameStreamAtFrequence(
 				this.lastPlayerUpdate,
 				Config.playerInterval,
-				'moveOppositePlayer',
-				[Session.get('game'), this.isUserHost(), playerData]
+				'moveOppositePlayer-' + Session.get('game'),
+				[this.isUserHost(), playerData]
 			);
 
 			//The position has been sent to the server
@@ -954,7 +954,7 @@ export default class Game {
 			//Create the bonus the host
 			this.createBonus(data);
 			//Send to client
-			GameStream.emit('createBonus', Session.get('game'), data);
+			GameStream.emit('createBonus-' + Session.get('game'), data);
 		}
 	}
 
@@ -1001,7 +1001,7 @@ export default class Game {
 				this.activateBonus(player.sprite.key);
 				this.generateBonusActivationAndFrequenceTime();
 				//Send to client
-				GameStream.emit('activateBonus', Session.get('game'), player.sprite.key);
+				GameStream.emit('activateBonus-' + Session.get('game'), player.sprite.key);
 			}
 		}, this);
 		this.bonus.body.collides(this.netHitDelimiterCollisionGroup);
@@ -1010,6 +1010,10 @@ export default class Game {
 	}
 
 	activateBonus(playerKey) {
+		if (!this.bonus || !this.bonus.bonus) {
+			return;
+		}
+
 		this.deactivateSimilarBonusForPlayerKey(this.bonus.bonus, playerKey);
 
 		this.bonus.bonus.activate(playerKey);

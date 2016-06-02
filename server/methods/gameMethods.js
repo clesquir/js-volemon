@@ -191,7 +191,7 @@ Meteor.methods({
 
 		Games.update({_id: game._id}, {$set: data});
 
-		GameStream.emit('play', game._id);
+		GameStream.emit('play-' + game._id);
 	},
 
 	keepPlayerAlive: function(playerId) {
