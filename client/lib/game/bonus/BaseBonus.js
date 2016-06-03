@@ -28,6 +28,10 @@ export default class BaseBonus {
 		this.activatedAt = new Date();
 	}
 
+	deactivateFromSimilar(bonus) {
+		this.deactivate();
+	}
+
 	deactivate() {
 		this.isActive = false;
 	}

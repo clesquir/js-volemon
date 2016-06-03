@@ -316,6 +316,7 @@ export default class Game {
 		player.velocityXOnMove = Config.playerVelocityXOnMove;
 		player.velocityYOnJump = Config.playerVelocityYOnJump;
 		player.canMove = true;
+		player.canJump = true;
 
 		this.game.physics.p2.enable(player);
 		player.polygonObject = 'player-' + this.getPlayerShapeFromKey(playerKey);
@@ -765,7 +766,7 @@ export default class Game {
 		}
 
 		if (this.isPlayerAtGroundLevel(player)) {
-			if (this.cursor.up.isDown) {
+			if (this.cursor.up.isDown && player.canJump) {
 				player.body.velocity.y = -player.velocityYOnJump;
 			} else {
 				player.body.velocity.y = 0;
@@ -1029,7 +1030,7 @@ export default class Game {
 	deactivateSimilarBonusForPlayerKey(newBonus, playerKey) {
 		for (let bonus of this.bonuses) {
 			if (bonus.isSimilarBonusForPlayerKey(newBonus, playerKey)) {
-				bonus.deactivate();
+				bonus.deactivateFromSimilar(newBonus);
 			}
 		}
 	}
