@@ -313,6 +313,8 @@ export default class Game {
 	createPlayer(player, initialXLocation, initialYLocation, playerKey) {
 		player.initialXLocation = initialXLocation;
 		player.initialYLocation = initialYLocation;
+		player.leftMoveModifier = -1;
+		player.rightMoveModifier = 1;
 		player.velocityXOnMove = Config.playerVelocityXOnMove;
 		player.velocityYOnJump = Config.playerVelocityYOnJump;
 		player.canMove = true;
@@ -758,9 +760,9 @@ export default class Game {
 		}
 
 		if (this.cursor.left.isDown) {
-			player.body.velocity.x = -player.velocityXOnMove;
+			player.body.velocity.x = player.leftMoveModifier * player.velocityXOnMove;
 		} else if (this.cursor.right.isDown) {
-			player.body.velocity.x = player.velocityXOnMove;
+			player.body.velocity.x = player.rightMoveModifier * player.velocityXOnMove;
 		} else {
 			player.body.velocity.x = 0;
 		}
@@ -949,7 +951,8 @@ export default class Game {
 					Constants.BONUS_BIG_JUMP_MONSTER,
 					Constants.BONUS_SLOW_MONSTER,
 					Constants.BONUS_FAST_MONSTER,
-					Constants.BONUS_FREEZE_MONSTER
+					Constants.BONUS_FREEZE_MONSTER,
+					Constants.BONUS_REVERSE_MOVE_MONSTER
 				])
 			};
 

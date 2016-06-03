@@ -6,6 +6,7 @@ import BigJumpMonsterBonus from '/client/lib/game/bonus/BigJumpMonsterBonus.js';
 import SlowMonsterBonus from '/client/lib/game/bonus/SlowMonsterBonus.js';
 import FastMonsterBonus from '/client/lib/game/bonus/FastMonsterBonus.js';
 import FreezeMonsterBonus from '/client/lib/game/bonus/FreezeMonsterBonus.js';
+import ReverseMoveMonsterBonus from '/client/lib/game/bonus/ReverseMoveMonsterBonus.js';
 
 export default class BonusFactory {
 
@@ -32,6 +33,8 @@ export default class BonusFactory {
 				return new FastMonsterBonus(game);
 			case Constants.BONUS_FREEZE_MONSTER:
 				return new FreezeMonsterBonus(game);
+			case Constants.BONUS_REVERSE_MOVE_MONSTER:
+				return new ReverseMoveMonsterBonus(game);
 		}
 
 		throw 'Inexistent bonus';
