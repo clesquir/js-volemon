@@ -9,9 +9,6 @@ export default class Game {
 		this.lastBallUpdate = 0;
 		this.lastPlayerUpdate = 0;
 		this.lastBonusUpdate = 0;
-		this.lastBallTimestampRead = 0;
-		this.lastPlayerTimestampRead = 0;
-		this.lastBonusTimestampRead = 0;
 		this.ballRespawn = false;
 		this.lastBonusActivated = 0;
 		this.bonusFrequenceTime = 0;
@@ -455,6 +452,8 @@ export default class Game {
 		if (this.isGameFinished()) {
 			this.setInformationText(this.getWinnerName() + ' wins!');
 		} else if (this.isGameOnGoing()) {
+			this.lastBallPositionData = {};
+			this.lastPlayerPositionData = {};
 			this.countdownTimer = this.game.time.create();
 			this.countdownTimer.add(Phaser.Timer.SECOND * 3, this.resumeGame, this);
 			this.countdownTimer.start();
@@ -645,13 +644,12 @@ export default class Game {
 				let ballPositionData = this.getBodyPositionData(this.ball.body);
 				if (JSON.stringify(this.lastBallPositionData) !== JSON.stringify(ballPositionData)) {
 					let lastBallUpdateBefore = this.lastBallUpdate;
-					let ballData = jQuery.extend({}, ballPositionData);
-					ballData.timestamp = new Date().getTime();
+
 					this.lastBallUpdate = this.emitGameStreamAtFrequence(
 						this.lastBallUpdate,
 						Config.ballInterval,
 						'moveClientBall-' + Session.get('game'),
-						[ballData]
+						[ballPositionData]
 					);
 
 					//The position has been sent to the server
@@ -665,13 +663,12 @@ export default class Game {
 
 					if (this.bonus) {
 						let bonusPositionData = this.getBodyPositionData(this.bonus.body);
-						let bonusData = jQuery.extend({}, bonusPositionData);
-						bonusData.timestamp = new Date().getTime();
+
 						this.lastBonusUpdate = this.emitGameStreamAtFrequence(
 							this.lastBonusUpdate,
 							Config.bonusInterval,
 							'moveClientBonus-' + Session.get('game'),
-							[bonusData]
+							[bonusPositionData]
 						);
 					}
 				}
@@ -779,14 +776,12 @@ export default class Game {
 		let playerPositionData = this.getBodyPositionData(player.body);
 		if (JSON.stringify(this.lastPlayerPositionData) !== JSON.stringify(playerPositionData)) {
 			let lastPlayerUpdateBefore = this.lastPlayerUpdate;
-			let playerData = jQuery.extend({}, playerPositionData);
-			playerData.timestamp = new Date().getTime();
 
 			this.lastPlayerUpdate = this.emitGameStreamAtFrequence(
 				this.lastPlayerUpdate,
 				Config.playerInterval,
 				'moveOppositePlayer-' + Session.get('game'),
-				[this.isUserHost(), playerData]
+				[this.isUserHost(), playerPositionData]
 			);
 
 			//The position has been sent to the server
@@ -822,15 +817,10 @@ export default class Game {
 			return;
 		}
 
-		if (data && data.timestamp != this.lastPlayerTimestampRead) {
-			player.body.x = data.x;
-			player.body.y = data.y;
-			player.body.velocity.x = data.velocityX;
-			player.body.velocity.y = data.velocityY;
-
-			//This is used for interpolation in addition with velocities
-			this.lastPlayerTimestampRead = data.timestamp;
-		}
+		player.body.x = data.x;
+		player.body.y = data.y;
+		player.body.velocity.x = data.velocityX;
+		player.body.velocity.y = data.velocityY;
 	}
 
 	moveClientBall(data) {
@@ -838,15 +828,10 @@ export default class Game {
 			return;
 		}
 
-		if (data && data.timestamp != this.lastBallTimestampRead) {
-			this.ball.body.x = data.x;
-			this.ball.body.y = data.y;
-			this.ball.body.velocity.x = data.velocityX;
-			this.ball.body.velocity.y = data.velocityY;
-
-			//This is used for interpolation in addition with velocities
-			this.lastBallTimestampRead = data.timestamp;
-		}
+		this.ball.body.x = data.x;
+		this.ball.body.y = data.y;
+		this.ball.body.velocity.x = data.velocityX;
+		this.ball.body.velocity.y = data.velocityY;
 	}
 
 	moveClientBonus(data) {
@@ -854,15 +839,10 @@ export default class Game {
 			return;
 		}
 
-		if (data && data.timestamp != this.lastBonusTimestampRead) {
-			this.bonus.body.x = data.x;
-			this.bonus.body.y = data.y;
-			this.bonus.body.velocity.x = data.velocityX;
-			this.bonus.body.velocity.y = data.velocityY;
-
-			//This is used for interpolation in addition with velocities
-			this.lastBonusTimestampRead = data.timestamp;
-		}
+		this.bonus.body.x = data.x;
+		this.bonus.body.y = data.y;
+		this.bonus.body.velocity.x = data.velocityX;
+		this.bonus.body.velocity.y = data.velocityY;
 	}
 
 	shakeLevel() {
