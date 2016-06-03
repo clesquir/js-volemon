@@ -3,7 +3,6 @@ import BonusFactory from '/client/lib/game/BonusFactory.js';
 export default class Game {
 
 	constructor() {
-		this.lastBallPositionData = {};
 		this.lastPlayerPositionData = {};
 		this.lastKeepAliveUpdate = 0;
 		this.lastBallUpdate = 0;
@@ -452,7 +451,6 @@ export default class Game {
 		if (this.isGameFinished()) {
 			this.setInformationText(this.getWinnerName() + ' wins!');
 		} else if (this.isGameOnGoing()) {
-			this.lastBallPositionData = {};
 			this.lastPlayerPositionData = {};
 			this.countdownTimer = this.game.time.create();
 			this.countdownTimer.add(Phaser.Timer.SECOND * 3, this.resumeGame, this);
@@ -642,21 +640,13 @@ export default class Game {
 			//Send ball position to database only if it has changed
 			if (this.isUserHost()) {
 				let ballPositionData = this.getBodyPositionData(this.ball.body);
-				if (JSON.stringify(this.lastBallPositionData) !== JSON.stringify(ballPositionData)) {
-					let lastBallUpdateBefore = this.lastBallUpdate;
 
-					this.lastBallUpdate = this.emitGameStreamAtFrequence(
-						this.lastBallUpdate,
-						Config.ballInterval,
-						'moveClientBall-' + Session.get('game'),
-						[ballPositionData]
-					);
-
-					//The position has been sent to the server
-					if (lastBallUpdateBefore != this.lastBallUpdate) {
-						this.lastBallPositionData = ballPositionData;
-					}
-				}
+				this.lastBallUpdate = this.emitGameStreamAtFrequence(
+					this.lastBallUpdate,
+					Config.ballInterval,
+					'moveClientBall-' + Session.get('game'),
+					[ballPositionData]
+				);
 
 				if (this.hasGameBonuses()) {
 					this.createBonusIfTimeHasElapsed();
