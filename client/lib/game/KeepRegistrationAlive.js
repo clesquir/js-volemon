@@ -1,9 +1,13 @@
 export default class KeepRegistrationAlive {
 
-	start(gameId) {
+	constructor(gameId) {
+		this.gameId = gameId;
+	}
+
+	start() {
 		this.intervalFn = Meteor.setInterval(() => {
-			var game = Games.findOne(gameId),
-				player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
+			var game = Games.findOne(this.gameId),
+				player = Players.findOne({gameId: this.gameId, userId: Meteor.userId()});
 
 			if (game && player && game.status === Constants.GAME_STATUS_REGISTRATION) {
 				Meteor.call('keepPlayerAlive', player._id, (error) => {

@@ -3,18 +3,17 @@ import StreamInitiator from '/client/lib/game/StreamInitiator.js';
 
 export default class GameInitiator {
 
-	constructor() {
+	constructor(gameId) {
+		this.gameId = gameId;
 		this.streamInitiator = new StreamInitiator(this);
 		this.currentGame = null;
-		this.gameId = null;
 	}
 
-	init(gameId) {
-		var player = Players.findOne({gameId: gameId, userId: Meteor.userId()}),
-			game = Games.findOne(gameId);
+	init() {
+		var player = Players.findOne({gameId: this.gameId, userId: Meteor.userId()}),
+			game = Games.findOne(this.gameId);
 
 		this.currentGame = null;
-		this.gameId = gameId;
 
 		//Player is in game and this game is already started
 		if (player && isGameStatusOnGoing(game.status)) {

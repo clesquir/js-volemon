@@ -28,6 +28,21 @@
 	}
 }
 
+#rank-line-chart-display {
+	.display-chart-period {
+		margin-bottom: 10px;
+		font-size: 14px;
+
+		& > span {
+			cursor: pointer;
+
+			&.active {
+				font-weight: bold;
+			}
+		}
+	}
+}
+
 .spinner {
 	display: flex;
 	width: 650px;

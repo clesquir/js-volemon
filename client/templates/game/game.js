@@ -197,15 +197,23 @@ Template.game.events({
 	}
 });
 
-var gameInitiator = new GameInitiator();
-var keepRegistrationAlive = new KeepRegistrationAlive();
+/** @type {GameInitiator}|null */
+var gameInitiator = null;
+/** @type {KeepRegistrationAlive}|null */
+var keepRegistrationAlive = null;
 
 Template.game.rendered = function() {
-	gameInitiator.init(Session.get('game'));
-	keepRegistrationAlive.start(Session.get('game'));
+	gameInitiator = new GameInitiator(Session.get('game'));
+	gameInitiator.init();
+	keepRegistrationAlive = new KeepRegistrationAlive(Session.get('game'));
+	keepRegistrationAlive.start();
 };
 
 Template.game.destroyed = function() {
-	gameInitiator.stop();
-	keepRegistrationAlive.stop();
+	if (gameInitiator) {
+		gameInitiator.stop();
+	}
+	if (keepRegistrationAlive) {
+		keepRegistrationAlive.stop();
+	}
 };

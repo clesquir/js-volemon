@@ -1,3 +1,5 @@
+import RankChart from '/client/lib/RankChart.js';
+
 Template.rank.helpers({
 	getHighlightedClassIfCurrentUser: function() {
 		if (this.userId == Meteor.userId()) {
@@ -28,6 +30,9 @@ Template.rank.helpers({
 	}
 });
 
+/** @type {RankChart}|null */
+var rankChart = null;
+
 Template.rank.events({
 	'click [data-action=view-table-display]': function(e) {
 		var rankDisplay = document.getElementById('rank-display');
@@ -45,103 +50,66 @@ Template.rank.events({
 			$(rankDisplay).addClass('spinner-line-chart-display');
 			$(rankDisplay).removeClass('spinner-table-display');
 
-			createRankLineChart();
+			let minDate = new Date();
+			minDate.setDate(minDate.getDate() - 7);
+
+			rankChart.update('7 days ago', minDate);
 		}
+	},
+
+	'click [data-action=display-chart-all-time]': function(e) {
+		highlightSelectedChartPeriodItem(e);
+		rankChart.update('Oldest');
+	},
+
+	'click [data-action=display-chart-60-days]': function(e) {
+		var minDate = new Date();
+		minDate.setDate(minDate.getDate() - 60);
+
+		highlightSelectedChartPeriodItem(e);
+		rankChart.update('60 days ago', minDate);
+	},
+
+	'click [data-action=display-chart-30-days]': function(e) {
+		var minDate = new Date();
+		minDate.setDate(minDate.getDate() - 30);
+
+		highlightSelectedChartPeriodItem(e);
+		rankChart.update('30 days ago', minDate);
+	},
+
+	'click [data-action=display-chart-14-days]': function(e) {
+		var minDate = new Date();
+		minDate.setDate(minDate.getDate() - 14);
+
+		highlightSelectedChartPeriodItem(e);
+		rankChart.update('14 days ago', minDate);
+	},
+
+	'click [data-action=display-chart-7-days]': function(e) {
+		var minDate = new Date();
+		minDate.setDate(minDate.getDate() - 7);
+
+		highlightSelectedChartPeriodItem(e);
+		rankChart.update('7 days ago', minDate);
 	}
 });
 
-Template.rank.destroyed = function() {
-	rankLineChart = undefined;
+var highlightSelectedChartPeriodItem = function(e) {
+	var parent = $(e.target).parents('.display-chart-period')[0],
+		displayChartPeriodItems = $(parent).find('span');
+
+	displayChartPeriodItems.each(function(index, field) {
+		$(field).removeClass('active');
+	});
+
+	$(e.target).addClass('active');
 };
 
-rankLineChart = undefined;
-createRankLineChart = function() {
-	if (rankLineChart === undefined) {
-		var eloScores = EloScores.find(),
-			users = Meteor.users.find({}, {sort: ['profile.name']}),
-			usersList = [],
-			labels = [],
-			timestamps = [],
-			datasets = [];
+Template.rank.rendered = function() {
+	rankChart = new RankChart('rank-line-chart', EloScores.find(), Meteor.users.find({}, {sort: ['profile.name']}, Meteor.userId()));
+};
 
-		eloScores.forEach(function(eloScore) {
-			labels.push(new Date(eloScore.timestamp).toISOString());
-			timestamps.push(eloScore.timestamp);
-		});
-
-		labels = Array.from(new Set(labels));
-		labels.sort();
-
-		//Clear all labels between oldest and most recent
-		labels[0] = 'Oldest';
-		labels[labels.length - 1] = 'Most recent';
-		if (labels.length > 2) {
-			for (let i = 1; i < labels.length - 1; i++) {
-				labels[i] = '';
-			}
-		}
-
-		timestamps = Array.from(new Set(timestamps));
-		timestamps.sort();
-
-		//Sort the connected user first
-		users.forEach(function(user) {
-			if (user._id == Meteor.userId()) {
-				usersList.unshift(user);
-			} else {
-				usersList.push(user);
-			}
-		});
-
-		for (let i = 0; i < usersList.length; i++) {
-			let user = usersList[i];
-			let data = [];
-			let timestampData = null;
-
-			for (let timestamp of timestamps) {
-				eloScores.forEach(function(eloScore) {
-					if (eloScore.userId == user._id && timestamp == eloScore.timestamp) {
-						timestampData = eloScore.eloRating;
-					}
-				});
-				data.push(timestampData);
-			}
-
-			let color = getRainbowColor(users.count(), i + 1);
-
-			datasets.push({
-				label: user.profile.name,
-				borderColor: color,
-				fill: false,
-				backgroundColor: color,
-				tension: 0.2,
-				pointHitRadius: 0,
-				pointBorderWidth: 0,
-				pointHoverRadius: 3,
-				pointHoverBorderWidth: 2,
-				pointHoverBackgroundColor: color,
-				pointHoverBorderColor: 'rgba(100, 100, 100, 0.25)',
-				data: data
-			});
-		}
-
-		rankLineChart = new Chart(document.getElementById('rank-line-chart'), {
-			type: 'line',
-			data: {
-				labels: labels,
-				datasets: datasets
-			},
-			options: {
-				responsive: true,
-				elements: {
-					point: {
-						radius: 1
-					}
-				},
-				legend: {
-					position: 'bottom'
-				}
-			}
-		});
-	}
+Template.rank.destroyed = function() {
+	rankChart = null;
 };
