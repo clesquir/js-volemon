@@ -11,13 +11,23 @@ export default class RankChart {
 
 	update(minDateLabel, minDate) {
 		var eloScores = this.eloScores,
+			eloScoresByUsersByTimestamps = {},
 			users = this.users,
 			usersList = [],
 			labels = [],
 			timestamps = [],
 			datasets = [];
 
+		//Gather eloScores by users and timestamps for faster references
 		eloScores.forEach(function(eloScore) {
+			if (eloScoresByUsersByTimestamps[eloScore.userId] === undefined) {
+				eloScoresByUsersByTimestamps[eloScore.userId] = {};
+			}
+
+			if (eloScoresByUsersByTimestamps[eloScore.userId][eloScore.timestamp] === undefined) {
+				eloScoresByUsersByTimestamps[eloScore.userId][eloScore.timestamp] = eloScore.eloRating;
+			}
+
 			if (!minDate || eloScore.timestamp >= minDate.getTime()) {
 				labels.push(new Date(eloScore.timestamp).toISOString());
 				timestamps.push(eloScore.timestamp);
@@ -50,30 +60,47 @@ export default class RankChart {
 
 		for (let i = 0; i < usersList.length; i++) {
 			let user = usersList[i];
+			let lastTimestampDataNotInPeriod = null;
 			let data = [];
 			let timestampData = null;
-			let hasData = false;
+			let hasPeriodData = false;
 
 			/**
 			 * Gather data for player
 			 */
-			for (let timestamp of timestamps) {
-				eloScores.forEach(function(eloScore) {
-					if (
-						eloScore.userId == user._id &&
-						(
-							(!hasData && eloScore.timestamp < timestamp) ||
-							(eloScore.timestamp == timestamp)
-						)
-					) {
-						timestampData = eloScore.eloRating;
-						hasData = true;
+			if (eloScoresByUsersByTimestamps[user._id]) {
+				//Get last eloScore before first timestamp of this period
+				if (timestamps.length) {
+					let firstTimestamp = timestamps[0];
+
+					for (let userTimestamp in eloScoresByUsersByTimestamps[user._id]) {
+						if (eloScoresByUsersByTimestamps[user._id].hasOwnProperty(userTimestamp)) {
+							let eloRating = eloScoresByUsersByTimestamps[user._id][userTimestamp];
+
+							if (userTimestamp <= firstTimestamp) {
+								lastTimestampDataNotInPeriod = eloRating;
+							} else {
+								break;
+							}
+						}
 					}
-				});
-				data.push(timestampData);
+				}
+
+				//Get the eloScore for each timestamp in continuum and starting with the lastTimestampDataNotInPeriod
+				for (let timestamp of timestamps) {
+					if (eloScoresByUsersByTimestamps[user._id][timestamp] !== undefined) {
+						timestampData = eloScoresByUsersByTimestamps[user._id][timestamp];
+						hasPeriodData = true;
+					} else if (timestampData === null) {
+						timestampData = lastTimestampDataNotInPeriod;
+						hasPeriodData = true;
+					}
+
+					data.push(timestampData);
+				}
 			}
 
-			if (hasData) {
+			if (hasPeriodData) {
 				let color = getRainbowColor(users.count(), i + 1);
 
 				datasets.push({

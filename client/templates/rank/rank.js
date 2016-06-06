@@ -107,7 +107,7 @@ var highlightSelectedChartPeriodItem = function(e) {
 };
 
 Template.rank.rendered = function() {
-	rankChart = new RankChart('rank-line-chart', EloScores.find(), Meteor.users.find({}, {sort: ['profile.name']}, Meteor.userId()));
+	rankChart = new RankChart('rank-line-chart', EloScores.find({}, {sort: ['timestamp']}), Meteor.users.find({}, {sort: ['profile.name']}, Meteor.userId()));
 };
 
 Template.rank.destroyed = function() {
