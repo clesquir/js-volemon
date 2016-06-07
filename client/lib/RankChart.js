@@ -1,9 +1,10 @@
 export default class RankChart {
 
-	constructor(documentElementId, eloScores, users, currentUser) {
+	constructor(documentElementId, eloScores, users, profiles, currentUser) {
 		this.documentElementId = documentElementId;
 		this.eloScores = eloScores;
 		this.users = users;
+		this.profiles = profiles;
 		this.currentUser = currentUser;
 
 		this.chart = null;
@@ -13,6 +14,7 @@ export default class RankChart {
 		var eloScores = this.eloScores,
 			eloScoresByUsersByTimestamps = {},
 			users = this.users,
+			profiles = this.profiles,
 			usersList = [],
 			labels = [],
 			timestamps = [],
@@ -64,6 +66,13 @@ export default class RankChart {
 			let data = [];
 			let timestampData = null;
 			let hasPeriodData = false;
+			let retiredAt = null;
+
+			profiles.forEach(function(profile) {
+				if (user._id == profile.userId) {
+					retiredAt = profile.retiredAt;
+				}
+			});
 
 			/**
 			 * Gather data for player
@@ -94,6 +103,8 @@ export default class RankChart {
 					} else if (timestampData === null) {
 						timestampData = lastTimestampDataNotInPeriod;
 						hasPeriodData = true;
+					} else if (retiredAt && timestamp > retiredAt) {
+						timestampData = null;
 					}
 
 					data.push(timestampData);

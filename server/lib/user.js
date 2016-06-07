@@ -1,6 +1,7 @@
 createProfile = function(user) {
 	var profile = {
 		userId: user._id,
+		retiredAt: null,
 		numberOfWin: 0,
 		numberOfLost: 0,
 		eloRating: 1000,
