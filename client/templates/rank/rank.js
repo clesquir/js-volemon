@@ -50,10 +50,8 @@ Template.rank.events({
 			$(rankDisplay).addClass('spinner-line-chart-display');
 			$(rankDisplay).removeClass('spinner-table-display');
 
-			let minDate = new Date();
-			minDate.setDate(minDate.getDate() - 7);
-
-			rankChart.update('7 days ago', minDate);
+			//Select the 7 days by default
+			$('span[data-action="display-chart-7-days"]').first().trigger('click');
 		}
 	},
 
