@@ -51,6 +51,13 @@ export default class Game {
 		return (game && game.createdBy === Meteor.userId());
 	}
 
+	isUserClient() {
+		var game = Games.findOne({_id: Session.get('game')}),
+			player = Players.findOne({userId: Meteor.userId()});
+
+		return (game && game.createdBy !== Meteor.userId() && player);
+	}
+
 	isGameOnGoing() {
 		var game = Games.findOne({_id: Session.get('game')});
 
@@ -369,6 +376,17 @@ export default class Game {
 		}
 
 		player[property] = value;
+	}
+
+	hidePlayingPlayer(playerKey) {
+		if (
+			(this.isUserHost() && playerKey == 'player1') ||
+			(this.isUserClient() && playerKey == 'player2')
+		) {
+			this.changePlayerProperty(playerKey, 'alpha', 0);
+		} else {
+			this.changePlayerProperty(playerKey, 'alpha', 0.5);
+		}
 	}
 
 	freezePlayer(playerKey) {
@@ -922,7 +940,8 @@ export default class Game {
 					Constants.BONUS_SLOW_MONSTER,
 					Constants.BONUS_FAST_MONSTER,
 					Constants.BONUS_FREEZE_MONSTER,
-					Constants.BONUS_REVERSE_MOVE_MONSTER
+					Constants.BONUS_REVERSE_MOVE_MONSTER,
+					Constants.BONUS_INVISIBILITY_MONSTER
 				])
 			};
 
