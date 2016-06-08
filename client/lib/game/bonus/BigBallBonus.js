@@ -5,7 +5,7 @@ export default class BigBallBonus extends BallScaleBonus {
 	constructor(game) {
 		super(game);
 		this.spriteKey = 'bonus-environment-positive';
-		this.letter = '\uf065';
+		this.letter = '\uf111';
 	}
 
 	start() {
