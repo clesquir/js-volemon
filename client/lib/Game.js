@@ -283,7 +283,7 @@ export default class Game {
 		this.game.physics.p2.createContactMaterial(this.ballMaterial, this.groundDelimiterMaterial, {restitution: 1});
 
 		this.game.physics.p2.createContactMaterial(this.bonusMaterial, this.worldMaterial, {restitution: 1});
-		this.game.physics.p2.createContactMaterial(this.bonusMaterial, this.netDelimiterMaterial, {restitution: 0.75});
+		this.game.physics.p2.createContactMaterial(this.bonusMaterial, this.netDelimiterMaterial, {restitution: 0.7});
 		this.game.physics.p2.createContactMaterial(this.bonusMaterial, this.groundDelimiterMaterial, {restitution: 1});
 
 		this.game.physics.p2.createContactMaterial(this.playerMaterial, this.worldMaterial, {stiffness: 1e20, relaxation: 3, friction: 0});
@@ -936,7 +936,7 @@ export default class Game {
 		if (this.bonus === null && this.game.time.time - this.lastBonusActivated >= frequenceTime) {
 			//Host choose position and bonusCls
 			let data = {
-				initialX: Config.xSize / 2 + Random.choice([-5, +5]),
+				initialX: Config.xSize / 2 + Random.choice([-6, +6]),
 				bonusKey: Random.choice([
 					Constants.BONUS_SMALL_BALL,
 					Constants.BONUS_BIG_BALL,
