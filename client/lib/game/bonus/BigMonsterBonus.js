@@ -4,6 +4,7 @@ export default class BigMonsterBonus extends MonsterScaleBonus {
 
 	constructor(game) {
 		super(game);
+		this.spriteKey = 'bonus-target-positive';
 		this.letter = '\uf065';
 	}
 

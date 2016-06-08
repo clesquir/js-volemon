@@ -190,6 +190,12 @@ export default class Game {
 		this.game.load.image('ground', 'assets/ground.png');
 
 		this.game.load.image('delimiter', 'assets/clear.png');
+		this.game.load.image('bonus-environment', 'assets/bonus-environment.png');
+		this.game.load.image('bonus-environment-positive', 'assets/bonus-environment-positive.png');
+		this.game.load.image('bonus-environment-negative', 'assets/bonus-environment-negative.png');
+		this.game.load.image('bonus-target', 'assets/bonus-target.png');
+		this.game.load.image('bonus-target-positive', 'assets/bonus-target-positive.png');
+		this.game.load.image('bonus-target-negative', 'assets/bonus-target-negative.png');
 		this.game.load.physics(Constants.NORMAL_SCALE_PHYSICS_DATA, 'assets/physicsData.json');
 	}
 
@@ -959,12 +965,8 @@ export default class Game {
 
 		let bonusGraphics = this.game.add.graphics(0, 0);
 
-		bonusGraphics.beginFill(bonus.getColor());
-		bonusGraphics.drawCircle(0, 0, 30);
-		bonusGraphics.endFill();
-
 		bonusGraphics.beginFill(0xFFFFFF);
-		bonusGraphics.drawCircle(0, 0, 27);
+		bonusGraphics.drawCircle(0, 0, 30);
 		bonusGraphics.endFill();
 
 		let bonusText = this.game.add.text(0, 3, bonus.getLetter(), {
@@ -975,6 +977,9 @@ export default class Game {
 			align: 'center'
 		});
 		bonusText.anchor.set(0.5);
+
+		let bonusBorder = this.game.add.sprite(0, 0, bonus.getSpriteKey());
+		bonusBorder.anchor.set(0.5);
 
 		this.game.physics.p2.enable(this.bonus);
 		this.bonus.body.clearShapes();
@@ -988,6 +993,7 @@ export default class Game {
 
 		this.bonus.addChild(bonusGraphics);
 		this.bonus.addChild(bonusText);
+		this.bonus.addChild(bonusBorder);
 
 		this.bonus.body.collides(this.playerCollisionGroup, (bonusItem, player) => {
 			if (this.isUserHost()) {

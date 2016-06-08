@@ -4,7 +4,7 @@ export default class MonsterBonus extends BaseBonus {
 
 	constructor(game) {
 		super(game);
-		this.color = 0xFF0000;
+		this.spriteKey = 'bonus-target';
 	}
 
 };

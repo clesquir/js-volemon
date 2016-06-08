@@ -4,6 +4,7 @@ export default class SlowMonsterBonus extends MovementMonsterBonus {
 
 	constructor(game) {
 		super(game);
+		this.spriteKey = 'bonus-target-negative';
 		this.letter = '\uf252';
 	}
 

@@ -4,6 +4,7 @@ export default class ReverseMoveMonsterBonus extends MonsterBonus {
 
 	constructor(game) {
 		super(game);
+		this.spriteKey = 'bonus-target-negative';
 		this.letter = '\uf0ec';
 	}
 

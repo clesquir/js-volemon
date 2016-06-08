@@ -6,12 +6,12 @@ export default class BaseBonus {
 		this.isActive = false;
 		this.activatorPlayerKey = null;
 		this.activatedAt = null;
-		this.color = 0x000000;
+		this.spriteKey = 'bonus-environment';
 		this.letter = '\uf005';
 	}
 
-	getColor() {
-		return this.color;
+	getSpriteKey() {
+		return this.spriteKey;
 	}
 
 	getLetter() {
