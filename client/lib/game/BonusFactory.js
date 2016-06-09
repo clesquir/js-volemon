@@ -8,6 +8,7 @@ import FastMonsterBonus from '/client/lib/game/bonus/FastMonsterBonus.js';
 import FreezeMonsterBonus from '/client/lib/game/bonus/FreezeMonsterBonus.js';
 import ReverseMoveMonsterBonus from '/client/lib/game/bonus/ReverseMoveMonsterBonus.js';
 import InvisibilityMonsterBonus from '/client/lib/game/bonus/InvisibilityMonsterBonus.js';
+import CloudBonus from '/client/lib/game/bonus/CloudBonus.js';
 
 export default class BonusFactory {
 
@@ -38,6 +39,8 @@ export default class BonusFactory {
 				return new ReverseMoveMonsterBonus(game);
 			case Constants.BONUS_INVISIBILITY_MONSTER:
 				return new InvisibilityMonsterBonus(game);
+			case Constants.BONUS_CLOUD:
+				return new CloudBonus(game);
 		}
 
 		throw 'Inexistent bonus';

@@ -188,6 +188,7 @@ export default class Game {
 		this.game.load.image('ball', 'assets/ball.png');
 		this.game.load.image('net', 'assets/net.png');
 		this.game.load.image('ground', 'assets/ground.png');
+		this.game.load.image('cloud', 'assets/cloud.png');
 
 		this.game.load.image('delimiter', 'assets/clear.png');
 		this.game.load.image('bonus-environment', 'assets/bonus-environment.png');
@@ -456,6 +457,22 @@ export default class Game {
 
 	resetBallScale() {
 		this.scaleBall(Constants.NORMAL_SCALE_BONUS);
+	}
+
+	drawCloud() {
+		if (!this.cloudBonus) {
+			this.cloudBonus = this.game.add.sprite(Config.xSize / 2, Config.ySize / 2, 'cloud');
+			this.game.physics.p2.enable(this.cloudBonus);
+			this.cloudBonus.body.static = true;
+		}
+
+		this.cloudBonus.alpha = 0;
+		this.game.add.tween(this.cloudBonus).to({alpha: 1}, 250).start();
+	}
+
+	hideCloud() {
+		this.cloudBonus.alpha = 1;
+		this.game.add.tween(this.cloudBonus).to({alpha: 0}, 250).start();
 	}
 
 	freezeBody(body) {
@@ -947,7 +964,8 @@ export default class Game {
 					Constants.BONUS_FAST_MONSTER,
 					Constants.BONUS_FREEZE_MONSTER,
 					Constants.BONUS_REVERSE_MOVE_MONSTER,
-					Constants.BONUS_INVISIBILITY_MONSTER
+					Constants.BONUS_INVISIBILITY_MONSTER,
+					Constants.BONUS_CLOUD
 				])
 			};
 
@@ -962,6 +980,7 @@ export default class Game {
 		var bonus = BonusFactory.getInstance(data.bonusKey, this);
 
 		this.bonus = this.game.add.sprite(data.initialX, 0, 'delimiter');
+		this.bonus.sendToBack();
 
 		let bonusGraphics = this.game.add.graphics(0, 0);
 
