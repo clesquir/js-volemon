@@ -4,7 +4,7 @@ export default class SmallBallBonus extends BallScaleBonus {
 
 	constructor(game) {
 		super(game);
-		this.spriteKey = 'bonus-environment-negative';
+		this.spriteBorderKey = 'bonus-environment-negative';
 		this.letter = '\uf192';
 	}
 

@@ -997,7 +997,7 @@ export default class Game {
 		});
 		bonusText.anchor.set(0.5);
 
-		let bonusBorder = this.game.add.sprite(0, 0, bonus.getSpriteKey());
+		let bonusBorder = this.game.add.sprite(0, 0, bonus.getSpriteBorderKey());
 		bonusBorder.anchor.set(0.5);
 
 		this.game.physics.p2.enable(this.bonus);

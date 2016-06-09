@@ -5,7 +5,7 @@ export default class FreezeMonsterBonus extends MonsterBonus {
 	constructor(game) {
 		super(game);
 		this.durationMilliseconds = 5000;
-		this.spriteKey = 'bonus-target-negative';
+		this.spriteBorderKey = 'bonus-target-negative';
 		this.letter = '\uf04c';
 	}
 

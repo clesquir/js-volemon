@@ -6,12 +6,12 @@ export default class BaseBonus {
 		this.isActive = false;
 		this.activatorPlayerKey = null;
 		this.activatedAt = null;
-		this.spriteKey = 'bonus-environment';
+		this.spriteBorderKey = 'bonus-environment';
 		this.letter = '\uf005';
 	}
 
-	getSpriteKey() {
-		return this.spriteKey;
+	getSpriteBorderKey() {
+		return this.spriteBorderKey;
 	}
 
 	getLetter() {

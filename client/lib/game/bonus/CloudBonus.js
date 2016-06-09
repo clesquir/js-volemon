@@ -4,7 +4,7 @@ export default class CloudBonus extends BaseBonus {
 
 	constructor(game) {
 		super(game);
-		this.spriteKey = 'bonus-environment-negative';
+		this.spriteBorderKey = 'bonus-environment-negative';
 		this.letter = '\uf0c2';
 	}
 
