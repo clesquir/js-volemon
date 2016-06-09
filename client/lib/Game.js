@@ -954,19 +954,7 @@ export default class Game {
 			//Host choose position and bonusCls
 			let data = {
 				initialX: Config.xSize / 2 + Random.choice([-6, +6]),
-				bonusKey: Random.choice([
-					Constants.BONUS_SMALL_BALL,
-					Constants.BONUS_BIG_BALL,
-					Constants.BONUS_SMALL_MONSTER,
-					Constants.BONUS_BIG_MONSTER,
-					Constants.BONUS_BIG_JUMP_MONSTER,
-					Constants.BONUS_SLOW_MONSTER,
-					Constants.BONUS_FAST_MONSTER,
-					Constants.BONUS_FREEZE_MONSTER,
-					Constants.BONUS_REVERSE_MOVE_MONSTER,
-					Constants.BONUS_INVISIBILITY_MONSTER,
-					Constants.BONUS_CLOUD
-				])
+				bonusKey: BonusFactory.getRandomBonusKey()
 			};
 
 			//Create the bonus the host

@@ -11,6 +11,22 @@ import InvisibilityMonsterBonus from '/client/lib/game/bonus/InvisibilityMonster
 import CloudBonus from '/client/lib/game/bonus/CloudBonus.js';
 
 export default class BonusFactory {
+	
+	static getRandomBonusKey() {
+		return Random.choice([
+			Constants.BONUS_SMALL_BALL,
+			Constants.BONUS_BIG_BALL,
+			Constants.BONUS_SMALL_MONSTER,
+			Constants.BONUS_BIG_MONSTER,
+			Constants.BONUS_BIG_JUMP_MONSTER,
+			Constants.BONUS_SLOW_MONSTER,
+			Constants.BONUS_FAST_MONSTER,
+			Constants.BONUS_FREEZE_MONSTER,
+			Constants.BONUS_REVERSE_MOVE_MONSTER,
+			Constants.BONUS_INVISIBILITY_MONSTER,
+			Constants.BONUS_CLOUD
+		]);
+	}
 
 	/**
 	 * @param value
