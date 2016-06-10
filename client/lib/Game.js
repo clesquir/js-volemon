@@ -979,7 +979,7 @@ export default class Game {
 		let bonusText = this.game.add.text(0, 3, bonus.getLetter(), {
 			font: 'FontAwesome',
 			fontWeight: 'normal',
-			fontSize: '16px',
+			fontSize: bonus.getFontSize(),
 			fill: '#363636',
 			align: 'center'
 		});

@@ -8,6 +8,7 @@ export default class BaseBonus {
 		this.activatedAt = null;
 		this.spriteBorderKey = 'bonus-environment';
 		this.letter = '\uf005';
+		this.fontSize = '16px';
 	}
 
 	getSpriteBorderKey() {
@@ -16,6 +17,10 @@ export default class BaseBonus {
 
 	getLetter() {
 		return this.letter;
+	}
+
+	getFontSize() {
+		return this.fontSize;
 	}
 
 	/**
