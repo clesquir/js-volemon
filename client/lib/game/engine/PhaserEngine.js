@@ -310,6 +310,10 @@ export default class PhaserEngine {
 		}
 	}
 
+	getOpacity(sprite) {
+		return sprite.alpha;
+	}
+
 	setOpacity(sprite, opacity) {
 		sprite.alpha = opacity;
 	}

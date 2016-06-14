@@ -417,9 +417,10 @@ export default class Game {
 		if (!this.cloudBonus) {
 			this.cloudBonus = this.engine.addSprite(Config.xSize / 2, Config.ySize / 2, 'cloud');
 			this.engine.setStatic(this.cloudBonus, true);
+			this.engine.setOpacity(this.cloudBonus, 0);
 		}
 
-		this.engine.animateSetOpacity(this.cloudBonus, 1, 0, 250);
+		this.engine.animateSetOpacity(this.cloudBonus, 1, this.engine.getOpacity(this.cloudBonus), 250);
 	}
 
 	hideCloud() {
