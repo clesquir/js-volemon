@@ -4,7 +4,6 @@ import BonusFactory from '/client/lib/game/BonusFactory.js';
 export default class Game {
 
 	constructor() {
-		this.lastPlayerPositionData = {};
 		this.lastKeepAliveUpdate = 0;
 		this.lastBallUpdate = 0;
 		this.lastPlayerUpdate = 0;
@@ -438,7 +437,6 @@ export default class Game {
 		if (this.isGameFinished()) {
 			this.setInformationText(this.getWinnerName() + ' wins!');
 		} else if (this.isGameOnGoing()) {
-			this.lastPlayerPositionData = {};
 			this.countdownTimer = this.engine.createTimer(3, this.resumeGame, this);
 			this.countdownTimer.start();
 			this.generateBonusActivationAndFrequenceTime();
@@ -643,24 +641,14 @@ export default class Game {
 	}
 
 	sendPlayerPosition(player) {
-		//Send player position to database only if it has changed
 		var playerPositionData = this.engine.getPositionData(player);
 
-		if (JSON.stringify(this.lastPlayerPositionData) !== JSON.stringify(playerPositionData)) {
-			let lastPlayerUpdateBefore = this.lastPlayerUpdate;
-
-			this.lastPlayerUpdate = this.emitGameStreamAtFrequence(
-				this.lastPlayerUpdate,
-				Config.playerInterval,
-				'moveOppositePlayer-' + Session.get('game'),
-				[this.isUserHost(), playerPositionData]
-			);
-
-			//The position has been sent to the server
-			if (lastPlayerUpdateBefore != this.lastPlayerUpdate) {
-				this.lastPlayerPositionData = playerPositionData;
-			}
-		}
+		this.lastPlayerUpdate = this.emitGameStreamAtFrequence(
+			this.lastPlayerUpdate,
+			Config.playerInterval,
+			'moveOppositePlayer-' + Session.get('game'),
+			[this.isUserHost(), playerPositionData]
+		);
 	}
 
 	sendBonusPosition() {
@@ -709,22 +697,21 @@ export default class Game {
 		if (!player.canMove) {
 			this.engine.setHorizontalSpeed(player, 0);
 			this.engine.setVerticalSpeed(player, 0);
-			return;
-		}
-
-		if (this.engine.isKeyLeftDown()) {
-			this.engine.setHorizontalSpeed(player, player.leftMoveModifier * player.velocityXOnMove);
-		} else if (this.engine.isKeyRightDown()) {
-			this.engine.setHorizontalSpeed(player, player.rightMoveModifier * player.velocityXOnMove);
 		} else {
-			this.engine.setHorizontalSpeed(player, 0);
-		}
-
-		if (this.isPlayerAtGroundLevel(player)) {
-			if (this.engine.isKeyUpDown() && player.canJump) {
-				this.engine.setVerticalSpeed(player, -player.velocityYOnJump);
+			if (this.engine.isKeyLeftDown()) {
+				this.engine.setHorizontalSpeed(player, player.leftMoveModifier * player.velocityXOnMove);
+			} else if (this.engine.isKeyRightDown()) {
+				this.engine.setHorizontalSpeed(player, player.rightMoveModifier * player.velocityXOnMove);
 			} else {
-				this.engine.setVerticalSpeed(player, 0);
+				this.engine.setHorizontalSpeed(player, 0);
+			}
+
+			if (this.isPlayerAtGroundLevel(player)) {
+				if (this.engine.isKeyUpDown() && player.canJump) {
+					this.engine.setVerticalSpeed(player, -player.velocityYOnJump);
+				} else {
+					this.engine.setVerticalSpeed(player, 0);
+				}
 			}
 		}
 
