@@ -18,7 +18,7 @@ export default class InvisibilityMonsterBonus extends MonsterBonus {
 	}
 
 	stop() {
-		this.game.changePlayerProperty.call(this.game, this.activatorPlayerKey, 'alpha', 1);
+		this.game.showPlayingPlayer.call(this.game, this.activatorPlayerKey);
 
 		this.deactivate();
 	}
