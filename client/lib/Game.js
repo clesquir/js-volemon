@@ -100,6 +100,20 @@ export default class Game {
 		return (game && game.hasBonuses);
 	}
 
+	isGamePoint() {
+		var game = this.getGame(),
+			gamePoint = Config.maximumPoints - 1;
+
+		if (game) {
+			return (
+				game.hostPoints == gamePoint ||
+				game.clientPoints == gamePoint
+			);
+		}
+
+		return false;
+	}
+
 	getWinnerName() {
 		var game = this.getGame(),
 			winnerName = 'Nobody',
@@ -257,7 +271,7 @@ export default class Game {
 		 * Countdown text
 		 */
 		this.countdownText = this.engine.addText(this.engine.getCenterX(), this.engine.getCenterY(), '', {
-			font: "125px 'Oxygen Mono', sans-serif",
+			font: "75px 'Oxygen Mono', sans-serif",
 			fill: '#363636',
 			align: 'center'
 		});
@@ -427,11 +441,22 @@ export default class Game {
 		if (this.isGameFinished()) {
 			this.engine.updateInformationText(this.getWinnerName() + ' wins!');
 		} else if (this.isGameOnGoing()) {
-			this.countdownTimer = this.engine.createTimer(3, this.resumeGame, this);
-			this.countdownTimer.start();
+			this.startCountdownTimer();
 			this.generateBonusActivationAndFrequenceTime();
 			this.lastGameRespawn = this.engine.getTime();
 		}
+	}
+
+	startCountdownTimer() {
+		var timerDuration = 3;
+
+		if (this.isGamePoint()) {
+			//Add one second to show 'GAME POINT'
+			timerDuration = 4;
+		}
+
+		this.countdownTimer = this.engine.createTimer(timerDuration, this.resumeGame, this);
+		this.countdownTimer.start();
 	}
 
 	respawnSprites() {
@@ -508,15 +533,23 @@ export default class Game {
 
 	updateCountdown() {
 		if (this.countdownTimer && this.engine.isTimerRunning(this.countdownTimer)) {
-			this.countdownText.text = Math.ceil(this.engine.getTimerRemainingDuration(this.countdownTimer) / 1000);
+			let countdownText = Math.ceil(this.engine.getTimerRemainingDuration(this.countdownTimer) / 1000),
+				scaleTo = 7;
+
+			if (countdownText == 4 && this.isGamePoint()) {
+				countdownText = 'GAME POINT';
+				scaleTo = 3;
+			}
+
+			this.countdownText.text = countdownText;
 
 			//Zoom numbers
-			if (this.countdownText.text != this.lastCountdownNumber) {
-				this.engine.animateScale(this.countdownText, 5, 5, 1, 1, 500);
+			if (countdownText != this.lastCountdownNumber) {
+				this.engine.animateScale(this.countdownText, scaleTo, scaleTo, 1, 1, 500);
 				this.engine.animateSetOpacity(this.countdownText, 0, 1, 500);
 			}
 
-			this.lastCountdownNumber = this.countdownText.text;
+			this.lastCountdownNumber = countdownText;
 		}
 	}
 
