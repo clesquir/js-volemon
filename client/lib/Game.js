@@ -16,8 +16,20 @@ export default class Game {
 		this.bonuses = [];
 	}
 
+	getGame() {
+		return Games.findOne({_id: Session.get('game')});
+	}
+
 	getPlayer() {
 		return Players.findOne({gameId: Session.get('game'), userId: Meteor.userId()});
+	}
+
+	getHostPlayer(game) {
+		return Players.findOne({gameId: game._id, userId: game.createdBy});
+	}
+
+	getClientPlayer(game) {
+		return Players.findOne({gameId: game._id, userId: {$ne: game.createdBy}});
 	}
 
 	/**
@@ -25,7 +37,7 @@ export default class Game {
 	 * @returns string Returns the player shape or PLAYER_DEFAULT_SHAPE if no game nor player is found
 	 */
 	getPlayerShapeFromKey(playerKey) {
-		var game = Games.findOne({_id: Session.get('game')}),
+		var game = this.getGame(),
 			player;
 
 		if (!game) {
@@ -33,9 +45,9 @@ export default class Game {
 		}
 
 		if (playerKey == 'player1') {
-			player = Players.findOne({gameId: game._id, userId: game.createdBy});
+			player = this.getHostPlayer(game);
 		} else {
-			player = Players.findOne({gameId: game._id, userId: {$ne: game.createdBy}});
+			player = this.getClientPlayer(game);
 		}
 
 		if (!player) {
@@ -46,56 +58,56 @@ export default class Game {
 	}
 
 	isUserHost() {
-		var game = Games.findOne({_id: Session.get('game')});
+		var game = this.getGame();
 
 		return (game && game.createdBy === Meteor.userId());
 	}
 
 	isUserClient() {
-		var game = Games.findOne({_id: Session.get('game')}),
-			player = Players.findOne({userId: Meteor.userId()});
+		var game = this.getGame(),
+			player = this.getPlayer();
 
 		return (game && game.createdBy !== Meteor.userId() && player);
 	}
 
 	isGameOnGoing() {
-		var game = Games.findOne({_id: Session.get('game')});
+		var game = this.getGame();
 
 		return (game && game.status === Constants.GAME_STATUS_STARTED);
 	}
 
 	isGameTimeOut() {
-		var game = Games.findOne({_id: Session.get('game')});
+		var game = this.getGame();
 
 		return (game && game.status === Constants.GAME_STATUS_TIMEOUT);
 	}
 
 	isGameFinished() {
-		var game = Games.findOne({_id: Session.get('game')});
+		var game = this.getGame();
 
 		return (game && game.status === Constants.GAME_STATUS_FINISHED);
 	}
 
 	getGameLastPointTaken() {
-		var game = Games.findOne({_id: Session.get('game')});
+		var game = this.getGame();
 
 		return (game && game.lastPointTaken);
 	}
 
 	hasGameBonuses() {
-		var game = Games.findOne({_id: Session.get('game')});
+		var game = this.getGame();
 
 		return (game && game.hasBonuses);
 	}
 
 	getWinnerName() {
-		var game = Games.findOne({_id: Session.get('game')}),
+		var game = this.getGame(),
 			winnerName = 'Nobody',
 			winner;
 
 		if (game) {
 			if (game.hostPoints >= Config.maximumPoints) {
-				winner = Players.findOne({gameId: Session.get('game'), userId: game.createdBy});
+				winner = this.getHostPlayer(game);
 
 				if (winner) {
 					winnerName = winner.name;
@@ -103,7 +115,7 @@ export default class Game {
 					winnerName = 'Player 1';
 				}
 			} else if (game.clientPoints >= Config.maximumPoints) {
-				winner = Players.findOne({gameId: Session.get('game'), userId: {$ne: game.createdBy}});
+				winner = this.getClientPlayer(game);
 
 				if (winner) {
 					winnerName = winner.name;
@@ -117,13 +129,11 @@ export default class Game {
 	}
 
 	getCurrentPlayer() {
-		var game = Games.findOne({_id: Session.get('game')}),
-			currentPlayerPosition = (game && game.createdBy === Meteor.userId()) ? 1 : 2,
-			player = null;
+		var player;
 
-		if (currentPlayerPosition == 1) {
+		if (this.isUserHost()) {
 			player = this.player1;
-		} else if (currentPlayerPosition == 2) {
+		} else if (this.isUserClient()) {
 			player = this.player2;
 		}
 
@@ -198,6 +208,9 @@ export default class Game {
 
 		this.engine.createGame();
 
+		/**
+		 * Collision groups and materials
+		 */
 		this.playerCollisionGroup = this.engine.createCollisionGroup();
 		this.ballCollisionGroup = this.engine.createCollisionGroup();
 		this.bonusCollisionGroup = this.engine.createCollisionGroup();
@@ -212,9 +225,6 @@ export default class Game {
 		this.netDelimiterMaterial = this.engine.createMaterial('netDelimiter');
 		this.groundDelimiterMaterial = this.engine.createMaterial('groundDelimiter');
 
-		/**
-		 * Contact materials
-		 */
 		this.engine.updateContactMaterials(
 			this.ballMaterial, this.playerMaterial, this.playerDelimiterMaterial,
 			this.bonusMaterial, this.netDelimiterMaterial, this.groundDelimiterMaterial
@@ -238,16 +248,10 @@ export default class Game {
 		 */
 		this.createBall();
 
-		this.loadLevel();
-
 		/**
-		 * Winner text
+		 * Level
 		 */
-		this.informationText = this.engine.addText(this.engine.getCenterX(), this.engine.getCenterY(), '', {
-			font: '40px Oxygen, sans-serif',
-			fill: '#363636',
-			align: 'center'
-		});
+		this.loadLevel();
 
 		/**
 		 * Countdown text
@@ -266,6 +270,7 @@ export default class Game {
 	createPlayer(player, initialXLocation, initialYLocation, playerKey) {
 		player.initialXLocation = initialXLocation;
 		player.initialYLocation = initialYLocation;
+		player.initialGravity = Config.playerGravityScale;
 		player.leftMoveModifier = -1;
 		player.rightMoveModifier = 1;
 		player.velocityXOnMove = Config.playerVelocityXOnMove;
@@ -282,7 +287,7 @@ export default class Game {
 	setupPlayerBody(player) {
 		this.engine.setFixedRotation(player, true);
 		this.engine.setMass(player, Config.playerMass);
-		this.engine.setGravity(player, Config.playerGravityScale);
+		this.engine.setGravity(player, player.initialGravity);
 
 		this.engine.setMaterial(player, this.playerMaterial);
 		this.engine.setCollisionGroup(player, this.playerCollisionGroup);
@@ -292,91 +297,10 @@ export default class Game {
 		this.engine.collidesWith(player, this.bonusCollisionGroup);
 	}
 
-	scalePlayer(playerKey, scale) {
-		var player = this.getPlayerFromKey(playerKey),
-			polygonKey = this.getPolygonKeyFromScale(scale);
-
-		if (!player || !polygonKey) {
-			return;
-		}
-
-		this.engine.scale(player, scale, scale);
-		this.engine.loadPolygon(player, polygonKey, player.polygonObject);
-		this.setupPlayerBody(player);
-	}
-
-	resetPlayerScale(playerKey) {
-		var player = this.getPlayerFromKey(playerKey);
-
-		if (!player) {
-			return;
-		}
-
-		this.scalePlayer(playerKey, 1);
-	}
-
-	changePlayerProperty(playerKey, property, value) {
-		var player = this.getPlayerFromKey(playerKey);
-
-		if (!player) {
-			return;
-		}
-
-		player[property] = value;
-	}
-
-	hidePlayingPlayer(playerKey) {
-		var player = this.getPlayerFromKey(playerKey);
-
-		if (!player) {
-			return;
-		}
-
-		if (
-			(this.isUserHost() && playerKey == 'player1') ||
-			(this.isUserClient() && playerKey == 'player2')
-		) {
-			this.engine.setOpacity(player, 0);
-		} else {
-			this.engine.setOpacity(player, 0.5);
-		}
-	}
-
-	showPlayingPlayer(playerKey) {
-		var player = this.getPlayerFromKey(playerKey);
-
-		if (!player) {
-			return;
-		}
-
-		this.engine.setOpacity(player, 1);
-	}
-
-	freezePlayer(playerKey) {
-		var player = this.getPlayerFromKey(playerKey);
-
-		if (!player) {
-			return;
-		}
-
-		this.engine.setMass(player, 2000);
-		this.engine.freeze(player);
-	}
-
-	unFreezePlayer(playerKey) {
-		var player = this.getPlayerFromKey(playerKey);
-
-		if (!player) {
-			return;
-		}
-
-		this.engine.setMass(player, Config.playerMass);
-		this.engine.setGravity(player, Config.playerGravityScale);
-	}
-
 	createBall() {
 		this.ball = this.engine.addSprite(Config.playerInitialLocation, Config.ySize - Config.groundHeight - Config.ballDistanceFromGround, 'ball');
 
+		this.ball.initialGravity = Config.ballGravityScale;
 		this.ball.polygonObject = 'ball';
 		this.engine.loadPolygon(this.ball, Constants.NORMAL_SCALE_PHYSICS_DATA, 'ball');
 
@@ -385,7 +309,7 @@ export default class Game {
 
 	setupBallBody() {
 		this.engine.setFixedRotation(this.ball, true);
-		this.engine.setGravity(this.ball, Config.ballGravityScale);
+		this.engine.setGravity(this.ball, this.ball.initialGravity);
 		this.engine.setDamping(this.ball, 0.1);
 		this.engine.setMaterial(this.ball, this.ballMaterial);
 		this.engine.setCollisionGroup(this.ball, this.ballCollisionGroup);
@@ -394,54 +318,6 @@ export default class Game {
 		this.engine.collidesWith(this.ball, this.netHitDelimiterCollisionGroup);
 		this.engine.collidesWith(this.ball, this.groundHitDelimiterCollisionGroup, this.hitGround, this);
 		this.engine.collidesWith(this.ball, this.bonusCollisionGroup);
-	}
-
-	scaleBall(scale) {
-		var polygonKey = this.getPolygonKeyFromScale(scale);
-
-		if (!polygonKey) {
-			return;
-		}
-
-		this.engine.scale(this.ball, scale, scale);
-		this.engine.loadPolygon(this.ball, polygonKey, this.ball.polygonObject);
-		this.setupBallBody();
-	}
-
-	resetBallScale() {
-		this.scaleBall(Constants.NORMAL_SCALE_BONUS);
-	}
-
-	drawCloud() {
-		if (!this.cloudBonus) {
-			this.cloudBonus = this.engine.addSprite(Config.xSize / 2, Config.ySize / 2, 'cloud');
-			this.engine.setStatic(this.cloudBonus, true);
-			this.engine.setOpacity(this.cloudBonus, 0);
-		}
-
-		this.engine.animateSetOpacity(this.cloudBonus, 1, this.engine.getOpacity(this.cloudBonus), 250);
-	}
-
-	hideCloud() {
-		this.engine.animateSetOpacity(this.cloudBonus, 0, 1, 250);
-	}
-
-	resumeOnTimerEnd() {
-		this.resetAllBonuses();
-		this.pauseGame();
-
-		this.spawnPlayer(this.player1);
-		this.spawnPlayer(this.player2);
-		this.spawnBall();
-
-		if (this.isGameFinished()) {
-			this.setInformationText(this.getWinnerName() + ' wins!');
-		} else if (this.isGameOnGoing()) {
-			this.countdownTimer = this.engine.createTimer(3, this.resumeGame, this);
-			this.countdownTimer.start();
-			this.generateBonusActivationAndFrequenceTime();
-			this.lastGameRespawn = this.engine.getTime();
-		}
 	}
 
 	loadLevel() {
@@ -543,6 +419,27 @@ export default class Game {
 		this.engine.collidesWith(groupItem, this.bonusCollisionGroup);
 	}
 
+	resumeOnTimerEnd() {
+		this.resetAllBonuses();
+		this.pauseGame();
+		this.respawnSprites();
+
+		if (this.isGameFinished()) {
+			this.engine.updateInformationText(this.getWinnerName() + ' wins!');
+		} else if (this.isGameOnGoing()) {
+			this.countdownTimer = this.engine.createTimer(3, this.resumeGame, this);
+			this.countdownTimer.start();
+			this.generateBonusActivationAndFrequenceTime();
+			this.lastGameRespawn = this.engine.getTime();
+		}
+	}
+
+	respawnSprites() {
+		this.spawnPlayer(this.player1);
+		this.spawnPlayer(this.player2);
+		this.spawnBall();
+	}
+
 	spawnPlayer(player) {
 		this.engine.animateScale(player, 1, 1, 0, 0, 300);
 		this.engine.spawn(player, player.initialXLocation, player.initialYLocation);
@@ -603,15 +500,9 @@ export default class Game {
 				}
 			}
 		} else if (this.isGameTimeOut()) {
-			this.engine.freeze(this.player1);
-			this.engine.freeze(this.player2);
-			this.engine.freeze(this.ball);
+			this.stopGame();
 
-			if (this.bonus) {
-				this.engine.freeze(this.bonus);
-			}
-
-			this.setInformationText('The game has timed out...');
+			this.engine.updateInformationText('The game has timed out...');
 		}
 	}
 
@@ -727,7 +618,7 @@ export default class Game {
 
 		if (this.isUserHost()) {
 			player = this.player2;
-		} else {
+		} else if (this.isUserClient()) {
 			player = this.player1;
 		}
 
@@ -754,31 +645,25 @@ export default class Game {
 		this.engine.move(this.bonus, data);
 	}
 
-	shakeLevel() {
-		this.engine.shake(this.level, 5, 20);
-	}
-
 	pauseGame() {
 		this.engine.freeze(this.ball);
 	}
 
+	stopGame() {
+		this.engine.freeze(this.player1);
+		this.engine.freeze(this.player2);
+		this.engine.freeze(this.ball);
+
+		if (this.bonus) {
+			this.engine.freeze(this.bonus);
+		}
+	}
+
 	resumeGame() {
-		this.engine.setGravity(this.ball, Config.ballGravityScale);
+		this.engine.unfreeze(this.ball);
 
 		this.countdownText.text = '';
 		this.countdownTimer.stop();
-	}
-
-	setInformationText(text) {
-		var multilineText = text;
-
-		if (!Array.isArray(multilineText)) {
-			multilineText = [multilineText];
-		}
-
-		multilineText = multilineText.map(line => {return '    ' + line + '    ';});
-
-		this.informationText.text = multilineText.join('\n');
 	}
 
 	callMeteorMethodAtFrequence(lastCallTime, frequenceTime, methodToCall, argumentsToCallWith) {
@@ -799,6 +684,122 @@ export default class Game {
 		}
 
 		return lastCallTime;
+	}
+
+	scalePlayer(playerKey, scale) {
+		var player = this.getPlayerFromKey(playerKey),
+			polygonKey = this.getPolygonKeyFromScale(scale);
+
+		if (!player || !polygonKey) {
+			return;
+		}
+
+		this.engine.scale(player, scale, scale);
+		this.engine.loadPolygon(player, polygonKey, player.polygonObject);
+		this.setupPlayerBody(player);
+	}
+
+	resetPlayerScale(playerKey) {
+		var player = this.getPlayerFromKey(playerKey);
+
+		if (!player) {
+			return;
+		}
+
+		this.scalePlayer(playerKey, 1);
+	}
+
+	scaleBall(scale) {
+		var polygonKey = this.getPolygonKeyFromScale(scale);
+
+		if (!polygonKey) {
+			return;
+		}
+
+		this.engine.scale(this.ball, scale, scale);
+		this.engine.loadPolygon(this.ball, polygonKey, this.ball.polygonObject);
+		this.setupBallBody();
+	}
+
+	resetBallScale() {
+		this.scaleBall(Constants.NORMAL_SCALE_BONUS);
+	}
+
+	changePlayerProperty(playerKey, property, value) {
+		var player = this.getPlayerFromKey(playerKey);
+
+		if (!player) {
+			return;
+		}
+
+		player[property] = value;
+	}
+
+	hidePlayingPlayer(playerKey) {
+		var player = this.getPlayerFromKey(playerKey);
+
+		if (!player) {
+			return;
+		}
+
+		if (
+			(this.isUserHost() && playerKey == 'player1') ||
+			(this.isUserClient() && playerKey == 'player2')
+		) {
+			this.engine.setOpacity(player, 0);
+		} else {
+			this.engine.setOpacity(player, 0.5);
+		}
+	}
+
+	showPlayingPlayer(playerKey) {
+		var player = this.getPlayerFromKey(playerKey);
+
+		if (!player) {
+			return;
+		}
+
+		this.engine.setOpacity(player, 1);
+	}
+
+	freezePlayer(playerKey) {
+		var player = this.getPlayerFromKey(playerKey);
+
+		if (!player) {
+			return;
+		}
+
+		this.engine.setMass(player, 2000);
+		this.engine.freeze(player);
+	}
+
+	unFreezePlayer(playerKey) {
+		var player = this.getPlayerFromKey(playerKey);
+
+		if (!player) {
+			return;
+		}
+
+		this.engine.setMass(player, Config.playerMass);
+		this.engine.unfreeze(player);
+	}
+
+	drawCloud() {
+		if (!this.cloudBonus) {
+			this.cloudBonus = this.engine.addSprite(Config.xSize / 2, Config.ySize / 2, 'cloud');
+			this.engine.setStatic(this.cloudBonus, true);
+			this.engine.setOpacity(this.cloudBonus, 0);
+		}
+
+		this.engine.animateSetOpacity(this.cloudBonus, 1, this.engine.getOpacity(this.cloudBonus), 250);
+	}
+
+	hideCloud() {
+		this.engine.animateSetOpacity(this.cloudBonus, 0, 1, 250);
+	}
+
+	shakeLevel() {
+		this.engine.shake(this.level, 5, 20);
 	}
 
 	generateBonusActivationAndFrequenceTime() {
@@ -832,7 +833,7 @@ export default class Game {
 		var bonus = BonusFactory.getInstance(data.bonusKey, this);
 
 		this.bonus = this.engine.addBonus(
-			data.initialX, this.bonusMaterial, this.bonusCollisionGroup,
+			data.initialX, Config.bonusGravityScale, this.bonusMaterial, this.bonusCollisionGroup,
 			bonus.getLetter(), bonus.getFontSize(), bonus.getSpriteBorderKey()
 		);
 		this.bonus.bonus = bonus;

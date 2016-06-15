@@ -40,6 +40,15 @@ export default class PhaserEngine {
 		this.game.physics.p2.world.defaultContactMaterial.friction = 0;
 		this.game.physics.p2.world.setGlobalStiffness(1e10);
 		this.game.physics.p2.restitution = 0;
+
+		/**
+		 * Information text
+		 */
+		this.informationText = this.addText(this.getCenterX(), this.getCenterY(), '', {
+			font: '40px Oxygen, sans-serif',
+			fill: '#363636',
+			align: 'center'
+		});
 	}
 
 	loadScaledPhysics(originalPhysicsKey, newPhysicsKey, shapeKey, scale) {
@@ -243,6 +252,10 @@ export default class PhaserEngine {
 		body.setZeroVelocity();
 		this.setGravity(sprite, 0);
 	}
+	
+	unfreeze(sprite) {
+		this.setGravity(sprite, sprite.initialGravity);
+	}
 
 	spawn(sprite, x, y) {
 		sprite.body.setZeroRotation();
@@ -332,6 +345,18 @@ export default class PhaserEngine {
 		this.game.add.tween(sprite.scale).to({x: xTo, y: yTo}, duration).start();
 	}
 
+	updateInformationText(text) {
+		var multilineText = text;
+
+		if (!Array.isArray(multilineText)) {
+			multilineText = [multilineText];
+		}
+
+		multilineText = multilineText.map(line => {return '    ' + line + '    ';});
+
+		this.informationText.text = multilineText.join('\n');
+	}
+
 	reboundOrSmashOnPlayerHitBall(ball, player, ballVelocityYOnPlayerHit) {
 		var key = player.sprite.key;
 
@@ -373,9 +398,12 @@ export default class PhaserEngine {
 			.start();
 	}
 
-	addBonus(x, bonusMaterial, bonusCollisionGroup, bonusLetter, bonusFontSize, bonusSpriteBorderKey) {
+	addBonus(x, bonusGravityScale, bonusMaterial, bonusCollisionGroup,
+		bonusLetter, bonusFontSize, bonusSpriteBorderKey) {
 		var bonusSprite = this.addSprite(x, 0, 'delimiter'),
 			bonusGraphics, bonusText, bonusBorder;
+
+		bonusSprite.initialGravity = bonusGravityScale;
 		bonusSprite.sendToBack();
 
 		bonusGraphics = this.addGraphics(0, 0);
@@ -398,7 +426,7 @@ export default class PhaserEngine {
 		bonusSprite.body.clearShapes();
 		bonusSprite.body.addCircle(15);
 		this.setFixedRotation(bonusSprite, false);
-		this.setGravity(bonusSprite, Config.bonusGravityScale);
+		this.setGravity(bonusSprite, bonusSprite.initialGravity);
 		this.setDamping(bonusSprite, 0);
 		this.setMaterial(bonusSprite, bonusMaterial);
 		this.setCollisionGroup(bonusSprite, bonusCollisionGroup);
