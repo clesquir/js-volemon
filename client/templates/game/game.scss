@@ -42,6 +42,13 @@
 	}
 }
 
+@media (min-width: 1325px) and (min-height: 910px) {
+	#gameContainer canvas {
+		width: 1260px !important;
+		height: 840px !important;
+	}
+}
+
 .copyable-url-input {
 	position: relative;
 
