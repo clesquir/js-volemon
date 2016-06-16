@@ -100,14 +100,28 @@ export default class Game {
 		return (game && game.hasBonuses);
 	}
 
-	isGamePoint() {
+	isMatchPoint() {
 		var game = this.getGame(),
-			gamePoint = Config.maximumPoints - 1;
+			matchPoint = Config.maximumPoints - 1;
 
 		if (game) {
 			return (
-				game.hostPoints == gamePoint ||
-				game.clientPoints == gamePoint
+				game.hostPoints == matchPoint ||
+				game.clientPoints == matchPoint
+			);
+		}
+
+		return false;
+	}
+
+	isDeucePoint() {
+		var game = this.getGame(),
+			matchPoint = Config.maximumPoints - 1;
+
+		if (game) {
+			return (
+				game.hostPoints == matchPoint &&
+				game.clientPoints == matchPoint
 			);
 		}
 
@@ -276,6 +290,15 @@ export default class Game {
 			align: 'center'
 		});
 
+		/**
+		 * Information text
+		 */
+		this.informationText = this.engine.addText(this.engine.getCenterX(), this.engine.getCenterY(), '', {
+			font: '40px Oxygen, sans-serif',
+			fill: '#363636',
+			align: 'center'
+		});
+
 		this.engine.addKeyControllers();
 
 		this.resumeOnTimerEnd();
@@ -439,7 +462,7 @@ export default class Game {
 		this.respawnSprites();
 
 		if (this.isGameFinished()) {
-			this.engine.updateInformationText(this.getWinnerName() + ' wins!');
+			this.engine.updateText(this.informationText, this.getWinnerName() + ' wins!');
 		} else if (this.isGameOnGoing()) {
 			this.startCountdownTimer();
 			this.generateBonusActivationAndFrequenceTime();
@@ -450,8 +473,8 @@ export default class Game {
 	startCountdownTimer() {
 		var timerDuration = 3;
 
-		if (this.isGamePoint()) {
-			//Add one second to show 'GAME POINT'
+		if (this.isMatchPoint()) {
+			//Add one second to show text
 			timerDuration = 4;
 		}
 
@@ -527,7 +550,7 @@ export default class Game {
 		} else if (this.isGameTimeOut()) {
 			this.stopGame();
 
-			this.engine.updateInformationText('The game has timed out...');
+			this.engine.updateText(this.informationText, 'The game has timed out...');
 		}
 	}
 
@@ -536,12 +559,16 @@ export default class Game {
 			let countdownText = Math.ceil(this.engine.getTimerRemainingDuration(this.countdownTimer) / 1000),
 				scaleTo = 7;
 
-			if (countdownText == 4 && this.isGamePoint()) {
-				countdownText = 'GAME POINT';
+			if (countdownText == 4 && this.isMatchPoint()) {
+				countdownText = 'MATCH POINT';
 				scaleTo = 3;
+
+				if (this.isDeucePoint()) {
+					countdownText = 'DEUCE';
+				}
 			}
 
-			this.countdownText.text = countdownText;
+			countdownText = this.engine.updateText(this.countdownText, countdownText);
 
 			//Zoom numbers
 			if (countdownText != this.lastCountdownNumber) {

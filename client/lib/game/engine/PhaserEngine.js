@@ -40,15 +40,6 @@ export default class PhaserEngine {
 		this.game.physics.p2.world.defaultContactMaterial.friction = 0;
 		this.game.physics.p2.world.setGlobalStiffness(1e10);
 		this.game.physics.p2.restitution = 0;
-
-		/**
-		 * Information text
-		 */
-		this.informationText = this.addText(this.getCenterX(), this.getCenterY(), '', {
-			font: '40px Oxygen, sans-serif',
-			fill: '#363636',
-			align: 'center'
-		});
 	}
 
 	loadScaledPhysics(originalPhysicsKey, newPhysicsKey, shapeKey, scale) {
@@ -345,7 +336,7 @@ export default class PhaserEngine {
 		this.game.add.tween(sprite.scale).to({x: xTo, y: yTo}, duration).start();
 	}
 
-	updateInformationText(text) {
+	updateText(textComponent, text) {
 		var multilineText = text;
 
 		if (!Array.isArray(multilineText)) {
@@ -354,7 +345,7 @@ export default class PhaserEngine {
 
 		multilineText = multilineText.map(line => {return '    ' + line + '    ';});
 
-		this.informationText.text = multilineText.join('\n');
+		return textComponent.text = multilineText.join('\n');
 	}
 
 	reboundOrSmashOnPlayerHitBall(ball, player, ballVelocityYOnPlayerHit) {
