@@ -25,12 +25,55 @@
 		right: 0;
 		left: 0;
 		padding: 5px 0;
-		text-align: center;
-		font-weight: 900;
 
-		img {
+		.logo-shifter {
+			position: relative;
+			overflow: hidden;
 			height: 40px;
-			width: 40px;
+			text-align: center;
+
+			em {
+				position: absolute;
+				height: 40px;
+				transition: 0.25s ease-in-out;
+				left: 0;
+				right: 0;
+			}
+
+			& > :first-child {
+				top: 0;
+
+				.volemon-logo {
+					height: 40px;
+					width: 40px;
+				}
+			}
+
+			& > :last-child {
+				top: 40px;
+				font-weight: 900;
+				font-style: normal;
+				line-height: 45px;
+				color: $header-logo-color;
+
+				.v-logo {
+					height: 20px;
+					width: 20px;
+				}
+			}
+		}
+	}
+}
+
+.app-header:hover {
+	.app-title {
+		.logo-shifter {
+			& > :first-child {
+				top: -40px;
+			}
+			& > :last-child {
+				top: 0;
+			}
 		}
 	}
 }
