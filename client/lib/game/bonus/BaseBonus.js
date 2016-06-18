@@ -30,7 +30,7 @@ export default class BaseBonus {
 	activate(playerKey) {
 		this.isActive = true;
 		this.activatorPlayerKey = playerKey;
-		this.activatedAt = new Date();
+		this.activatedAt = getUTCNow();
 	}
 
 	deactivateFromSimilar(bonus) {
@@ -54,7 +54,7 @@ export default class BaseBonus {
 			return false;
 		}
 
-		if (new Date().getTime() - this.activatedAt.getTime() >= this.durationMilliseconds) {
+		if (getUTCTimeStamp() - this.activatedAt.getTime() >= this.durationMilliseconds) {
 			this.stop();
 			return false;
 		}

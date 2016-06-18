@@ -55,7 +55,7 @@ Template.home.helpers({
 			scoreClass = 'winning-score';
 		}
 
-		return '<span class="' + scoreClass + '">' + padPoints(userPoints) + '</span>' + ' - ' + padPoints(opponentPoints);
+		return '<span class="' + scoreClass + '">' + padNumber(userPoints) + '</span>' + ' - ' + padNumber(opponentPoints);
 	},
 
 	hasMoreGames: function() {

@@ -12,23 +12,40 @@
 	position: absolute;
 	width: 100%;
 	margin: 10px 0 0;
+
+	.players-names {
+		display: flex;
+		flex-direction: row;
+		margin: 0 0 -20px 0;
+	}
+
+	.players-names > div {
+		flex: 1 1 auto;
+		flex-basis: 0;
+		text-align: center;
+	}
+
+	.players-points {
+		margin: 0;
+		font-family: 'Oxygen Mono', sans-serif;
+	}
 }
 
-.players-names {
-	display: flex;
-	flex-direction: row;
-	margin: 0 0 -20px 0;
-}
-
-.players-names > div {
-	flex: 1 1 auto;
-	flex-basis: 0;
-	text-align: center;
-}
-
-.players-points {
-	margin: 0;
+.timers-container {
+	position: absolute;
+	width: 100%;
+	margin: 35px 0 0;
 	font-family: 'Oxygen Mono', sans-serif;
+	text-align: center;
+
+	& > div {
+		left: 0;
+		right: 0;
+	}
+
+	.point-timer {
+		font-size: 10px;
+	}
 }
 
 #gameContainer canvas {

@@ -3,7 +3,7 @@ Meteor.methods({
 		var player = Players.findOne(playerId);
 
 		if (player) {
-			Players.update({_id: playerId}, {$set: {lastKeepAlive: new Date().getTime()}});
+			Players.update({_id: playerId}, {$set: {lastKeepAlive: getUTCTimeStamp()}});
 		}
 	},
 
@@ -25,6 +25,8 @@ Meteor.methods({
 					data['lastPointTaken'] = Constants.LAST_POINT_TAKEN_CLIENT;
 					break;
 			}
+
+			data['lastPointAt'] = getUTCTimeStamp();
 
 			if (data[columnName] >= Config.maximumPoints) {
 				data['status'] = Constants.GAME_STATUS_FINISHED;

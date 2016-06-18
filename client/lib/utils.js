@@ -1,7 +1,6 @@
-padPoints = function(points) {
-	var result = String(points),
-		character = '0',
-		size = 2;
+padNumber = function(number, size = 2) {
+	var result = String(number),
+		character = '0';
 
 	while (result.length < size) {
 		result = character + result;
@@ -10,15 +9,26 @@ padPoints = function(points) {
 	return result;
 };
 
-isGameStatusOnGoing = function(gameStatus) {
-	return [Constants.GAME_STATUS_STARTED, Constants.GAME_STATUS_FINISHED, Constants.GAME_STATUS_TIMEOUT].indexOf(gameStatus) !== -1;
+getTimerFormatted = function(ms) {
+	var seconds = Math.floor((ms % 6e4) / 1e3),
+		minutes = Math.floor((ms % 3.6e6) / 6e4),
+		hours = (ms % 8.64e7)/ 3.6e6 | 0,
+		days = ms / 8.64e7 | 0,
+		time = padNumber(minutes) + ':' + padNumber(seconds);
+
+	if (hours > 0) {
+		time = padNumber(hours) + ':' + time;
+	}
+
+	if (days > 0) {
+		time = padNumber(days) + ':' + time;
+	}
+
+	return time;
 };
 
-getUTCTimeStamp = function() {
-	var now = new Date(),
-		UtcNow = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),  now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
-
-	return UtcNow.getTime();
+isGameStatusOnGoing = function(gameStatus) {
+	return [Constants.GAME_STATUS_STARTED, Constants.GAME_STATUS_FINISHED, Constants.GAME_STATUS_TIMEOUT].indexOf(gameStatus) !== -1;
 };
 
 getRandomInt = function(min, max) {

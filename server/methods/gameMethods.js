@@ -12,7 +12,7 @@ Meteor.methods({
 				id = Games.insert({
 					_id: Random.id(5),
 					status: Constants.GAME_STATUS_REGISTRATION,
-					createdAt: new Date().getTime(),
+					createdAt: getUTCTimeStamp(),
 					createdBy: user._id,
 					isPrivate: 0,
 					hasBonuses: 1,
@@ -101,9 +101,9 @@ Meteor.methods({
 			userId: user._id,
 			name: user.profile.name,
 			gameId: gameId,
-			joinedAt: new Date().getTime(),
+			joinedAt: getUTCTimeStamp(),
 			isReady: isReady,
-			lastKeepAlive: new Date().getTime(),
+			lastKeepAlive: getUTCTimeStamp(),
 			shape: Constants.PLAYER_DEFAULT_SHAPE
 		});
 
@@ -186,7 +186,9 @@ Meteor.methods({
 
 		var data = {
 			status: Constants.GAME_STATUS_STARTED,
-			startedAt: new Date().getTime()
+			startedAt: getUTCTimeStamp(),
+			lastPointAt: getUTCTimeStamp(),
+			pointsDuration: []
 		};
 
 		Games.update({_id: game._id}, {$set: data});
@@ -201,12 +203,12 @@ Meteor.methods({
 			throw new Meteor.Error(404, 'Player not found');
 		}
 
-		Players.update({_id: playerId}, {$set: {lastKeepAlive: new Date().getTime()}});
+		Players.update({_id: playerId}, {$set: {lastKeepAlive: getUTCTimeStamp()}});
 	},
 
 	removeTimeoutPlayersAndGames: function() {
 		var games = Games.find({status: {$nin: [Constants.GAME_STATUS_FINISHED]}}),
-			timedOutPlayers = Players.find({lastKeepAlive: {$lt: (new Date().getTime() - Config.keepAliveElapsedForTimeOut)}}),
+			timedOutPlayers = Players.find({lastKeepAlive: {$lt: (getUTCTimeStamp() - Config.keepAliveElapsedForTimeOut)}}),
 			timedOutPlayersByGameId = {};
 
 		//Gather players ids and player object by ids
@@ -269,9 +271,14 @@ Meteor.methods({
 				break;
 		}
 
+		data['lastPointAt'] = getUTCTimeStamp();
+		data['pointsDuration'] = [].concat(game.pointsDuration).concat([data['lastPointAt'] - game.lastPointAt]);
+
 		let isGameFinished = false;
 		if (data[columnName] >= Config.maximumPoints) {
 			data['status'] = Constants.GAME_STATUS_FINISHED;
+			data['finishedAt'] = getUTCTimeStamp();
+			data['gameDuration'] = data['finishedAt'] - game.startedAt;
 			isGameFinished = true;
 		}
 
