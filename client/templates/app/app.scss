@@ -65,14 +65,16 @@
 	}
 }
 
-.app-header:hover {
-	.app-title {
-		.logo-shifter {
-			& > :first-child {
-				top: -40px;
-			}
-			& > :last-child {
-				top: 0;
+@media (min-width: 765px) {
+	.app-header:hover {
+		.app-title {
+			.logo-shifter {
+				& > :first-child {
+					top: -40px;
+				}
+				& > :last-child {
+					top: 0;
+				}
 			}
 		}
 	}
@@ -87,9 +89,9 @@
 	z-index: 1;
 
 	&.app-header-section-button {
-		padding: 8px 15px;
+		padding: 8px 8px;
 		font-size: 8px;
-		width: 85px;
+		width: 80px;
 		white-space: nowrap;
 		text-align: center;
 		background-color: #ffffff;
@@ -129,22 +131,37 @@
 
 .app-header-section-button-create-game {
 	z-index: 3;
-	transform: translateX(-80px);
 }
 
 .app-header-section-button-games-list {
 	z-index: 2;
-	transform: translateX(-160px);
 }
 
 .app-header-section-button-view-rank {
 	z-index: 1;
-	transform: translateX(-240px);
 }
 
-.app-header:hover {
-	.app-header-section-button {
+@media (max-width: 765px) {
+	.app-header-section-button-home {
 		transform: translateX(0);
+	}
+
+	.app-header-section-button-create-game {
+		transform: translateX(-75px);
+	}
+
+	.app-header-section-button-games-list {
+		transform: translateX(-150px);
+	}
+
+	.app-header-section-button-view-rank {
+		transform: translateX(-225px);
+	}
+
+	.app-header:hover {
+		.app-header-section-button {
+			transform: translateX(0);
+		}
 	}
 }
 
