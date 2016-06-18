@@ -43,7 +43,7 @@ updateProfilesOnGameFinish = function(gameId, highestPointsColumn) {
 	Profiles.update({_id: hostProfile._id}, {$set: hostProfileData});
 	Profiles.update({_id: clientProfile._id}, {$set: clientProfileData});
 
-	let eloScoreTimestamp = new Date().getTime();
+	let eloScoreTimestamp = getUTCTimeStamp();
 
 	EloScores.insert({
 		timestamp: eloScoreTimestamp,

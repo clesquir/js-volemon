@@ -11,7 +11,7 @@ createProfile = function(user) {
 	Profiles.insert(profile);
 
 	EloScores.insert({
-		timestamp: new Date().getTime(),
+		timestamp: getUTCTimeStamp(),
 		userId: user._id,
 		eloRating: profile['eloRating']
 	});

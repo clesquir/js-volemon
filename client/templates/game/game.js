@@ -17,7 +17,7 @@ Template.game.helpers({
 	},
 
 	hostPoints: function() {
-		return padPoints(this.game.hostPoints);
+		return padNumber(this.game.hostPoints);
 	},
 
 	hostName: function() {
@@ -31,7 +31,7 @@ Template.game.helpers({
 	},
 
 	clientPoints: function() {
-		return padPoints(this.game.clientPoints);
+		return padNumber(this.game.clientPoints);
 	},
 
 	clientName: function() {
@@ -42,6 +42,14 @@ Template.game.helpers({
 		} else {
 			return 'Player 2';
 		}
+	},
+
+	matchTimer: function() {
+		return Session.get('matchTimer');
+	},
+
+	pointTimer: function() {
+		return Session.get('pointTimer');
 	},
 
 	loggedPlayer: function() {
