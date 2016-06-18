@@ -738,7 +738,7 @@ export default class Game {
 
 	emitGameStreamAtFrequence(lastCallTime, frequenceTime, streamToEmit, argumentsToEmitWith) {
 		if (this.engine.getTime() - lastCallTime >= frequenceTime) {
-			GameStream.emit.apply(this, [streamToEmit].concat(argumentsToEmitWith));
+			GameStream.emit.apply(GameStream, [streamToEmit].concat(argumentsToEmitWith));
 
 			lastCallTime = this.engine.getTime();
 		}
