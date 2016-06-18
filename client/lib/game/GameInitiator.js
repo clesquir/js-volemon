@@ -21,7 +21,7 @@ export default class GameInitiator {
 			this.createNewGame();
 		}
 		
-		this.setupTimer();
+		this.initTimer();
 
 		this.streamInitiator.init();
 	}
@@ -42,7 +42,7 @@ export default class GameInitiator {
 		this.currentGame.start();
 	}
 
-	setupTimer() {
+	initTimer() {
 		this.timerUpdater = Meteor.setInterval(() => {
 			var game = Games.findOne(this.gameId);
 
