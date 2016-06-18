@@ -271,8 +271,8 @@ Meteor.methods({
 				break;
 		}
 
-		data['pointsDuration'] = [].concat(game.pointsDuration).concat([getUTCTimeStamp() - game.lastPointAt]);
 		data['lastPointAt'] = getUTCTimeStamp();
+		data['pointsDuration'] = [].concat(game.pointsDuration).concat([data['lastPointAt'] - game.lastPointAt]);
 
 		let isGameFinished = false;
 		if (data[columnName] >= Config.maximumPoints) {
