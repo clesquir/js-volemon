@@ -7,20 +7,12 @@ Template.home.helpers({
 		return getWinRate(this.profile);
 	},
 
-	getDate: function() {
-		var date = new Date(this.startedAt),
-			month = date.getMonth() + 1,
-			day = date.getDate();
+	getStartedAtDate: function() {
+		return moment(this.startedAt).format('YYYY-MM-DD');
+	},
 
-		if (month < 10) {
-			month = '0' + month;
-		}
-
-		if (day < 10) {
-			day = '0' + day;
-		}
-
-		return date.getFullYear() + '-' + month + '-' + day;
+	getStartedAtDateTime: function() {
+		return moment(this.startedAt).format('YYYY-MM-DD HH:mm');
 	},
 
 	getOpponent: function(players) {

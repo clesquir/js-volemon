@@ -47,16 +47,16 @@ export default class GameInitiator {
 			var game = Games.findOne(this.gameId);
 
 			if (game && game.status === Constants.GAME_STATUS_STARTED) {
-				Session.set('matchTimer', getTimerFormatted(getUTCTimeStamp() - game.startedAt));
-				Session.set('pointTimer', getTimerFormatted(getUTCTimeStamp() - game.lastPointAt));
+				Session.set('matchTimer', moment(getUTCTimeStamp() - game.startedAt).format('mm:ss'));
+				Session.set('pointTimer', moment(getUTCTimeStamp() - game.lastPointAt).format('mm:ss'));
 			}
 		}, 1000);
 	}
 
 	clearTimer() {
 		Meteor.clearInterval(this.timerUpdater);
-		Session.set('matchTimer', getTimerFormatted(0));
-		Session.set('pointTimer', getTimerFormatted(0));
+		Session.set('matchTimer', '00:00');
+		Session.set('pointTimer', '00:00');
 	}
 
 	hasActiveGame() {

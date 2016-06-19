@@ -9,24 +9,6 @@ padNumber = function(number, size = 2) {
 	return result;
 };
 
-getTimerFormatted = function(ms) {
-	var seconds = Math.floor((ms % 6e4) / 1e3),
-		minutes = Math.floor((ms % 3.6e6) / 6e4),
-		hours = (ms % 8.64e7)/ 3.6e6 | 0,
-		days = ms / 8.64e7 | 0,
-		time = padNumber(minutes) + ':' + padNumber(seconds);
-
-	if (hours > 0) {
-		time = padNumber(hours) + ':' + time;
-	}
-
-	if (days > 0) {
-		time = padNumber(days) + ':' + time;
-	}
-
-	return time;
-};
-
 isGameStatusOnGoing = function(gameStatus) {
 	return [Constants.GAME_STATUS_STARTED, Constants.GAME_STATUS_FINISHED, Constants.GAME_STATUS_TIMEOUT].indexOf(gameStatus) !== -1;
 };

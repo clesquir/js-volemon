@@ -31,7 +31,7 @@
 
 				<h1 style="margin-top: 25px;">Recent games</h1>
 
-				<div class="table-list" style="margin: 0 auto; width: 475px;">
+				<div class="table-list" style="margin: 0 auto 10px; width: 475px;">
 					<div class="table-list-row table-list-header">
 						<div class="table-list-cell" style="flex: 0 0 120px;">Date</div>
 						<div class="table-list-cell center-aligned-cell" style="flex: 0 0 100px;">Score</div>
@@ -40,7 +40,7 @@
 
 					{{#each games}}
 						<div class="table-list-row">
-							<div class="table-list-cell" style="flex: 0 0 120px;">{{{getDate}}}</div>
+							<div class="table-list-cell" style="flex: 0 0 120px;"><span data-tooltip="{{getStartedAtDateTime}}">{{{getStartedAtDate}}}</span></div>
 							<div class="table-list-cell center-aligned-cell" style="flex: 0 0 100px;">{{{getScore}}}</div>
 							<div class="table-list-cell">{{getOpponent ../players}}</div>
 						</div>
@@ -52,7 +52,7 @@
 				</div>
 
 				{{#if hasMoreGames}}
-					<div class="button show-more" style="margin: 10px auto 0; width: 475px;" data-action="show-more-games">Show more games</div>
+					<div class="button show-more" style="margin: 0 auto 10px; width: 475px;" data-action="show-more-games">Show more games</div>
 				{{/if}}
 
 			{{else}}
