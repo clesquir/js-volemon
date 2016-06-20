@@ -8,6 +8,7 @@ export default class GameInitiator {
 		this.streamInitiator = new StreamInitiator(this);
 		this.currentGame = null;
 		this.timerUpdater = null;
+		this.serverOffset = Tracker.nonreactive(TimeSync.serverOffset);
 	}
 
 	init() {
@@ -47,8 +48,8 @@ export default class GameInitiator {
 			var game = Games.findOne(this.gameId);
 
 			if (game && game.status === Constants.GAME_STATUS_STARTED) {
-				Session.set('matchTimer', moment(getUTCTimeStamp() - game.startedAt).format('mm:ss'));
-				Session.set('pointTimer', moment(getUTCTimeStamp() - game.lastPointAt).format('mm:ss'));
+				Session.set('matchTimer', moment(getUTCTimeStamp() + this.serverOffset - game.startedAt).format('mm:ss'));
+				Session.set('pointTimer', moment(getUTCTimeStamp() + this.serverOffset - game.lastPointAt).format('mm:ss'));
 			}
 		}, 1000);
 	}
