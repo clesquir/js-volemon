@@ -3,7 +3,8 @@ import BonusFactory from '/client/lib/game/BonusFactory.js';
 
 export default class Game {
 
-	constructor() {
+	constructor(gameId) {
+		this.gameId = gameId;
 		this.lastKeepAliveUpdate = 0;
 		this.lastBallUpdate = 0;
 		this.lastPlayerUpdate = 0;
@@ -17,11 +18,11 @@ export default class Game {
 	}
 
 	getGame() {
-		return Games.findOne({_id: Session.get('game')});
+		return Games.findOne({_id: this.gameId});
 	}
 
 	getPlayer() {
-		return Players.findOne({gameId: Session.get('game'), userId: Meteor.userId()});
+		return Players.findOne({gameId: this.gameId, userId: Meteor.userId()});
 	}
 
 	getHostPlayer(game) {
@@ -585,7 +586,7 @@ export default class Game {
 		this.lastBallUpdate = this.emitGameStreamAtFrequence(
 			this.lastBallUpdate,
 			Config.ballInterval,
-			'moveClientBall-' + Session.get('game'),
+			'moveClientBall-' + this.gameId,
 			[ballPositionData]
 		);
 	}
@@ -596,7 +597,7 @@ export default class Game {
 		this.lastPlayerUpdate = this.emitGameStreamAtFrequence(
 			this.lastPlayerUpdate,
 			Config.playerInterval,
-			'moveOppositePlayer-' + Session.get('game'),
+			'moveOppositePlayer-' + this.gameId,
 			[this.isUserHost(), playerPositionData]
 		);
 	}
@@ -607,7 +608,7 @@ export default class Game {
 		this.lastBonusUpdate = this.emitGameStreamAtFrequence(
 			this.lastBonusUpdate,
 			Config.bonusInterval,
-			'moveClientBonus-' + Session.get('game'),
+			'moveClientBonus-' + this.gameId,
 			[bonusPositionData]
 		);
 	}
@@ -627,7 +628,7 @@ export default class Game {
 			}
 
 			this.gameResumed = false;
-			Meteor.apply('addGamePoints', [Session.get('game'), pointSide], {noRetry: true}, () => {});
+			Meteor.apply('addGamePoints', [this.gameId, pointSide], {noRetry: true}, () => {});
 		}
 	}
 
@@ -879,7 +880,7 @@ export default class Game {
 			//Create the bonus the host
 			this.createBonus(data);
 			//Send to client
-			GameStream.emit('createBonus-' + Session.get('game'), data);
+			GameStream.emit('createBonus-' + this.gameId, data);
 		}
 	}
 
@@ -898,7 +899,7 @@ export default class Game {
 				this.activateBonus(this.engine.getKey(player));
 				this.generateBonusActivationAndFrequenceTime();
 				//Send to client
-				GameStream.emit('activateBonus-' + Session.get('game'), this.engine.getKey(player));
+				GameStream.emit('activateBonus-' + this.gameId, this.engine.getKey(player));
 			}
 		}, this);
 		this.engine.collidesWith(this.bonus, this.netHitDelimiterCollisionGroup);

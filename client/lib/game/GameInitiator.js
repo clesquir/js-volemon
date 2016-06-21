@@ -39,7 +39,7 @@ export default class GameInitiator {
 	}
 
 	createNewGame() {
-		this.currentGame = new Game();
+		this.currentGame = new Game(this.gameId);
 		this.currentGame.start();
 	}
 
