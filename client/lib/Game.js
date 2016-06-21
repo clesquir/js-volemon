@@ -627,7 +627,7 @@ export default class Game {
 			}
 
 			this.gameResumed = false;
-			Meteor.call('addGamePoints', Session.get('game'), pointSide, () => {});
+			Meteor.apply('addGamePoints', [Session.get('game'), pointSide], {noRetry: true}, () => {});
 		}
 	}
 
