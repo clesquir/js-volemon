@@ -9,7 +9,7 @@ Accounts.onCreateUser((options, user) => {
 	if (options.profile === undefined || options.profile.name === undefined) {
 		throw new Error('Must set options.profile.name');
 	}
-	
+
 	user.profile = options.profile;
 
 	createProfile(user);

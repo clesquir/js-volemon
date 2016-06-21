@@ -3,6 +3,7 @@ export default class StreamInitiator {
 	constructor(gameInitiator = null) {
 		/** @type {GameInitiator} */
 		this.gameInitiator = gameInitiator;
+		this.gamePointsTracker = null;
 	}
 
 	init() {
@@ -28,14 +29,21 @@ export default class StreamInitiator {
 			}
 		});
 
-		GameStream.on('shakeLevelAndResumeOnTimerEnd-' + gameId, function() {
-			var game = Games.findOne(gameId),
-				player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
+		this.gamePointsTracker = Games.find({_id: gameId}).observeChanges({
+			changed: (id, fields) => {
+				if (
+					fields.hasOwnProperty(Constants.HOST_POINTS_COLUMN) ||
+					fields.hasOwnProperty(Constants.CLIENT_POINTS_COLUMN)
+				) {
+					let game = Games.findOne(gameId);
+					let player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
 
-			//Player is in game and is not the creator
-			if (game && player && game.createdBy !== Meteor.userId() && gameInitiator.hasActiveGame()) {
-				gameInitiator.currentGame.shakeLevel();
-				gameInitiator.currentGame.resumeOnTimerEnd();
+					//Player is in game
+					if (game && player && gameInitiator.hasActiveGame()) {
+						gameInitiator.currentGame.shakeLevel();
+						gameInitiator.currentGame.resumeOnTimerEnd();
+					}
+				}
 			}
 		});
 
@@ -98,12 +106,15 @@ export default class StreamInitiator {
 		var gameId = this.gameInitiator.gameId;
 
 		GameStream.removeAllListeners('play-' + gameId);
-		GameStream.removeAllListeners('shakeLevelAndResumeOnTimerEnd-' + gameId);
 		GameStream.removeAllListeners('moveClientBall-' + gameId);
 		GameStream.removeAllListeners('moveOppositePlayer-' + gameId);
 		GameStream.removeAllListeners('createBonus-' + gameId);
 		GameStream.removeAllListeners('activateBonus-' + gameId);
 		GameStream.removeAllListeners('moveClientBonus-' + gameId);
+
+		if (this.gamePointsTracker) {
+			this.gamePointsTracker.stop();
+		}
 	}
 
 }

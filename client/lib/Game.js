@@ -8,7 +8,7 @@ export default class Game {
 		this.lastBallUpdate = 0;
 		this.lastPlayerUpdate = 0;
 		this.lastBonusUpdate = 0;
-		this.ballRespawn = false;
+		this.gameResumed = false;
 		this.lastBonusActivated = 0;
 		this.bonusFrequenceTime = 0;
 		this.lastGameRespawn = 0;
@@ -517,7 +517,6 @@ export default class Game {
 		}
 
 		this.engine.spawn(this.ball, xBallPosition, Config.ySize - Config.groundHeight - Config.ballDistanceFromGround);
-		this.ballRespawn = true;
 	}
 
 	updateGame() {
@@ -618,7 +617,7 @@ export default class Game {
 	}
 
 	hitGround(ball, ground) {
-		if (this.isUserHost() && this.ballRespawn == true) {
+		if (this.isUserHost() && this.gameResumed == true) {
 			let pointSide;
 
 			if (ball.x < Config.xSize / 2) {
@@ -627,14 +626,8 @@ export default class Game {
 				pointSide = Constants.HOST_POINTS_COLUMN;
 			}
 
-			this.ballRespawn = false;
-			Meteor.call('addGamePoints', Session.get('game'), pointSide, () => {
-				this.shakeLevel();
-				this.resumeOnTimerEnd();
-
-				//The socket will tell the client when to shake and respawn to resume in sync
-				GameStream.emit('shakeLevelAndResumeOnTimerEnd-' + Session.get('game'));
-			});
+			this.gameResumed = false;
+			Meteor.call('addGamePoints', Session.get('game'), pointSide, () => {});
 		}
 	}
 
@@ -721,6 +714,7 @@ export default class Game {
 
 	resumeGame() {
 		this.engine.unfreeze(this.ball);
+		this.gameResumed = true;
 
 		this.countdownText.text = '';
 		this.countdownTimer.stop();
