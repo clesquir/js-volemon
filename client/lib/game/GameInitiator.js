@@ -8,7 +8,7 @@ export default class GameInitiator {
 		this.streamInitiator = new StreamInitiator(this);
 		this.currentGame = null;
 		this.timerUpdater = null;
-		this.serverOffset = Tracker.nonreactive(TimeSync.serverOffset);
+		this.serverOffset = TimeSync.serverOffset();
 	}
 
 	init() {
