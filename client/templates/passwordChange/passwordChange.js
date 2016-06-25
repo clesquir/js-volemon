@@ -1,3 +1,5 @@
+import { Constants } from '/lib/constants.js';
+
 Template.passwordChange.events({
 	'focus input.field-in-error': function(e) {
 		removeFieldInvalidMark($(e.target));

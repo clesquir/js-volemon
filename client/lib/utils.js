@@ -1,3 +1,5 @@
+import { Constants } from '/lib/constants.js';
+
 padNumber = function(number, size = 2) {
 	var result = String(number),
 		character = '0';

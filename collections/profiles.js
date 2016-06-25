@@ -1,1 +1,1 @@
-Profiles = new Mongo.Collection('profiles');
+export const Profiles = new Mongo.Collection('profiles');

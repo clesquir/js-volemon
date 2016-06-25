@@ -1,3 +1,5 @@
+import { Constants } from '/lib/constants.js';
+
 var incrementShape = function(increment) {
 	var listOfShapes = Constants.PLAYER_LIST_OF_SHAPES,
 		index = listOfShapes.indexOf(this.shape);

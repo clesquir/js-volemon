@@ -1,3 +1,7 @@
+import { Games } from '/collections/games.js';
+import { Players } from '/collections/players.js';
+import { Profiles } from '/collections/profiles.js';
+
 Router.configure({
 	layoutTemplate: 'app',
 	loadingTemplate: 'loading',

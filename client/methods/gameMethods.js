@@ -1,3 +1,7 @@
+import { Games } from '/collections/games.js';
+import { Players } from '/collections/players.js';
+import { Constants } from '/lib/constants.js';
+
 Meteor.methods({
 	keepPlayerAlive: function(playerId) {
 		var player = Players.findOne(playerId);
@@ -28,7 +32,7 @@ Meteor.methods({
 
 			data['lastPointAt'] = getUTCTimeStamp();
 
-			if (data[columnName] >= Config.maximumPoints) {
+			if (data[columnName] >= Constants.MAXIMUM_POINTS) {
 				data['status'] = Constants.GAME_STATUS_FINISHED;
 			}
 

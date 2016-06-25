@@ -1,3 +1,6 @@
+import { Players } from '/collections/players.js';
+import { Constants } from '/lib/constants.js';
+
 Template.gamesList.helpers({
 	createdByPlayerName: function() {
 		var player = Players.findOne({gameId: this._id, userId: this.createdBy});

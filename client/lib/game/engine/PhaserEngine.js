@@ -1,3 +1,5 @@
+import { Constants } from '/lib/constants.js';
+
 export default class PhaserEngine {
 
 	start(width, height, parent, preloadGame, createGame, updateGame, scope) {

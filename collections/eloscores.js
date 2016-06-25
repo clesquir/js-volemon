@@ -1,1 +1,1 @@
-EloScores = new Mongo.Collection('eloscores');
+export const EloScores = new Mongo.Collection('eloscores');
