@@ -54,7 +54,6 @@ describe('Game Profile Update', function() {
 		updateProfilesOnGameFinish(gameId, Constants.HOST_POINTS_COLUMN);
 
 		let hostProfile = Profiles.findOne({_id: hostProfileId});
-		console.log(hostProfile);
 		chai.assert.isObject(hostProfile);
 		chai.assert.propertyVal(hostProfile, 'numberOfWin', 1);
 		chai.assert.propertyVal(hostProfile, 'numberOfLost', 0);
