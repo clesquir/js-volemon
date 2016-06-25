@@ -1,3 +1,6 @@
+import { Games } from '/collections/games.js';
+import { Players } from '/collections/players.js';
+import { Constants } from '/lib/constants.js';
 import PhaserEngine from '/client/lib/game/engine/PhaserEngine.js';
 import BonusFactory from '/client/lib/game/BonusFactory.js';
 
@@ -103,7 +106,7 @@ export default class Game {
 
 	isMatchPoint() {
 		var game = this.getGame(),
-			matchPoint = Config.maximumPoints - 1;
+			matchPoint = Constants.MAXIMUM_POINTS - 1;
 
 		if (game) {
 			return (
@@ -117,7 +120,7 @@ export default class Game {
 
 	isDeucePoint() {
 		var game = this.getGame(),
-			matchPoint = Config.maximumPoints - 1;
+			matchPoint = Constants.MAXIMUM_POINTS - 1;
 
 		if (game) {
 			return (
@@ -134,8 +137,8 @@ export default class Game {
 			winnerName = 'Nobody',
 			winner;
 
-		if (game) {
-			if (game.hostPoints >= Config.maximumPoints) {
+		if (game && this.isGameFinished()) {
+			if (game.hostPoints >= Constants.MAXIMUM_POINTS) {
 				winner = this.getHostPlayer(game);
 
 				if (winner) {
@@ -143,7 +146,7 @@ export default class Game {
 				} else {
 					winnerName = 'Player 1';
 				}
-			} else if (game.clientPoints >= Config.maximumPoints) {
+			} else if (game.clientPoints >= Constants.MAXIMUM_POINTS) {
 				winner = this.getClientPlayer(game);
 
 				if (winner) {
@@ -636,7 +639,7 @@ export default class Game {
 		var player = this.getCurrentPlayer();
 
 		if (!player) {
-			return;
+			return false;
 		}
 
 		if (!player.canMove) {
@@ -661,6 +664,8 @@ export default class Game {
 		}
 
 		this.sendPlayerPosition(player);
+
+		return true;
 	}
 
 	isPlayerAtGroundLevel(player) {

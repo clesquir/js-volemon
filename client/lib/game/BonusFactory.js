@@ -9,6 +9,7 @@ import FreezeMonsterBonus from '/client/lib/game/bonus/FreezeMonsterBonus.js';
 import ReverseMoveMonsterBonus from '/client/lib/game/bonus/ReverseMoveMonsterBonus.js';
 import InvisibilityMonsterBonus from '/client/lib/game/bonus/InvisibilityMonsterBonus.js';
 import CloudBonus from '/client/lib/game/bonus/CloudBonus.js';
+import { Constants } from '/lib/constants.js';
 
 export default class BonusFactory {
 	

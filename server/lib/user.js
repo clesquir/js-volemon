@@ -1,3 +1,6 @@
+import { EloScores } from '/collections/eloscores.js';
+import { Profiles } from '/collections/profiles.js';
+
 createProfile = function(user) {
 	var profile = {
 		userId: user._id,

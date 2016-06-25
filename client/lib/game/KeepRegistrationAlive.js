@@ -1,3 +1,7 @@
+import { Games } from '/collections/games.js';
+import { Players } from '/collections/players.js';
+import { Constants } from '/lib/constants.js';
+
 export default class KeepRegistrationAlive {
 
 	constructor(gameId) {

@@ -1,4 +1,5 @@
 import BallScaleBonus from '/client/lib/game/bonus/BallScaleBonus.js';
+import { Constants } from '/lib/constants.js';
 
 export default class SmallBallBonus extends BallScaleBonus {
 

@@ -32,3 +32,8 @@ lookback:tooltips
 rocketchat:streamer
 momentjs:moment
 mizzao:timesync
+practicalmeteor:mocha
+practicalmeteor:chai
+hwillson:stub-collections
+practicalmeteor:sinon
+xolvio:cleaner

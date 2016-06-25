@@ -1,3 +1,5 @@
+import { Constants } from '/lib/constants.js';
+
 Template.login.events({
 	'click [data-action=switch-for-create-account]': function(e) {
 		var loginForm = document.getElementById('login-form'),

@@ -1,3 +1,7 @@
+import { Games } from '/collections/games.js';
+import { Players } from '/collections/players.js';
+import { Constants } from '/lib/constants.js';
+
 Meteor.methods({
 	createGame: function() {
 		var user = Meteor.user(),
@@ -275,7 +279,7 @@ Meteor.methods({
 		data['pointsDuration'] = [].concat(game.pointsDuration).concat([data['lastPointAt'] - game.lastPointAt]);
 
 		let isGameFinished = false;
-		if (data[columnName] >= Config.maximumPoints) {
+		if (data[columnName] >= Constants.MAXIMUM_POINTS) {
 			data['status'] = Constants.GAME_STATUS_FINISHED;
 			data['finishedAt'] = getUTCTimeStamp();
 			data['gameDuration'] = data['finishedAt'] - game.startedAt;

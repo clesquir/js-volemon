@@ -1,3 +1,5 @@
+import { Players } from '/collections/players.js';
+
 Meteor.methods({
 	updateUserName: function(name) {
 		check(this.userId, String);
