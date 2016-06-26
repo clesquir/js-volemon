@@ -8,6 +8,10 @@ export default class Game {
 
 	constructor(gameId) {
 		this.gameId = gameId;
+		this.engine = new PhaserEngine();
+		this.xSize = Constants.GAME_X_SIZE;
+		this.ySize = Constants.GAME_Y_SIZE;
+		this.groundHeight = Constants.GAME_GROUND_HEIGHT;
 		this.lastKeepAliveUpdate = 0;
 		this.lastBallUpdate = 0;
 		this.lastPlayerUpdate = 0;
@@ -202,9 +206,8 @@ export default class Game {
 	}
 
 	start() {
-		this.engine = new PhaserEngine();
 		this.engine.start(
-			Config.xSize, Config.ySize, 'gameContainer',
+			this.xSize, this.ySize, 'gameContainer',
 			this.preloadGame, this.createGame, this.updateGame,
 			this
 		);
@@ -236,31 +239,14 @@ export default class Game {
 
 	createGame() {
 		var initialXLocation = Config.playerInitialLocation,
-			initialYLocation = Config.ySize - Config.groundHeight - (Config.playerHeight / 2);
+			initialYLocation = this.ySize - this.groundHeight - (Config.playerHeight / 2);
 
 		this.engine.createGame();
 
 		/**
 		 * Collision groups and materials
 		 */
-		this.playerCollisionGroup = this.engine.createCollisionGroup();
-		this.ballCollisionGroup = this.engine.createCollisionGroup();
-		this.bonusCollisionGroup = this.engine.createCollisionGroup();
-		this.playerDelimiterCollisionGroup = this.engine.createCollisionGroup();
-		this.netHitDelimiterCollisionGroup = this.engine.createCollisionGroup();
-		this.groundHitDelimiterCollisionGroup = this.engine.createCollisionGroup();
-
-		this.playerMaterial = this.engine.createMaterial('player');
-		this.ballMaterial = this.engine.createMaterial('ball');
-		this.bonusMaterial = this.engine.createMaterial('bonus');
-		this.playerDelimiterMaterial = this.engine.createMaterial('netPlayerDelimiter');
-		this.netDelimiterMaterial = this.engine.createMaterial('netDelimiter');
-		this.groundDelimiterMaterial = this.engine.createMaterial('groundDelimiter');
-
-		this.engine.updateContactMaterials(
-			this.ballMaterial, this.playerMaterial, this.playerDelimiterMaterial,
-			this.bonusMaterial, this.netDelimiterMaterial, this.groundDelimiterMaterial
-		);
+		this.createCollisionGroupsAndMaterials();
 
 		/**
 		 * Player 1
@@ -271,14 +257,14 @@ export default class Game {
 		/**
 		 * Player 2
 		 */
-		initialXLocation = Config.xSize - Config.playerInitialLocation;
+		initialXLocation = this.xSize - Config.playerInitialLocation;
 		this.player2 = this.engine.addSprite(initialXLocation, initialYLocation, 'player2');
 		this.createPlayer(this.player2, initialXLocation, initialYLocation, 'player2');
 
 		/**
 		 * Ball
 		 */
-		this.createBall();
+		this.createBall(Config.playerInitialLocation, this.ySize - this.groundHeight - Config.ballDistanceFromGround);
 
 		/**
 		 * Level
@@ -306,6 +292,27 @@ export default class Game {
 		this.engine.addKeyControllers();
 
 		this.resumeOnTimerEnd();
+	}
+
+	createCollisionGroupsAndMaterials() {
+		this.playerCollisionGroup = this.engine.createCollisionGroup();
+		this.ballCollisionGroup = this.engine.createCollisionGroup();
+		this.bonusCollisionGroup = this.engine.createCollisionGroup();
+		this.playerDelimiterCollisionGroup = this.engine.createCollisionGroup();
+		this.netHitDelimiterCollisionGroup = this.engine.createCollisionGroup();
+		this.groundHitDelimiterCollisionGroup = this.engine.createCollisionGroup();
+
+		this.playerMaterial = this.engine.createMaterial('player');
+		this.ballMaterial = this.engine.createMaterial('ball');
+		this.bonusMaterial = this.engine.createMaterial('bonus');
+		this.playerDelimiterMaterial = this.engine.createMaterial('netPlayerDelimiter');
+		this.netDelimiterMaterial = this.engine.createMaterial('netDelimiter');
+		this.groundDelimiterMaterial = this.engine.createMaterial('groundDelimiter');
+
+		this.engine.updateContactMaterials(
+			this.ballMaterial, this.playerMaterial, this.playerDelimiterMaterial,
+			this.bonusMaterial, this.netDelimiterMaterial, this.groundDelimiterMaterial
+		);
 	}
 
 	createPlayer(player, initialXLocation, initialYLocation, playerKey) {
@@ -338,8 +345,8 @@ export default class Game {
 		this.engine.collidesWith(player, this.bonusCollisionGroup);
 	}
 
-	createBall() {
-		this.ball = this.engine.addSprite(Config.playerInitialLocation, Config.ySize - Config.groundHeight - Config.ballDistanceFromGround, 'ball');
+	createBall(initialXLocation, initialYLocation) {
+		this.ball = this.engine.addSprite(initialXLocation, initialYLocation, 'ball');
 
 		this.ball.initialGravity = Config.ballGravityScale;
 		this.ball.polygonObject = 'ball';
@@ -362,27 +369,71 @@ export default class Game {
 	}
 
 	loadLevel() {
+		this.level = this.engine.addGroup();
+
+		this.loadGroundLevel();
+
+		this.loadNetLevel();
+	}
+
+	loadGroundLevel() {
 		var groupItem;
 
 		/**
-		 * Level look
+		 * Look
 		 */
-		this.level = this.engine.addGroup();
-
-		//Ground
 		this.engine.addTileSprite(
 			0,
-			Config.ySize - Config.groundHeight,
-			Config.xSize,
-			Config.groundHeight,
+			this.ySize - this.groundHeight,
+			this.xSize,
+			this.groundHeight,
 			'ground',
 			this.level
 		);
 
-		//Net
+		/**
+		 * Player delimiter
+		 */
+		groupItem = this.engine.addTileSprite(
+			this.xSize / 2,
+			this.ySize - (this.groundHeight / 2),
+			this.xSize,
+			this.groundHeight,
+			'delimiter'
+		);
+
+		this.engine.setStatic(groupItem, true);
+		this.engine.setMaterial(groupItem, this.playerDelimiterMaterial);
+		this.engine.setCollisionGroup(groupItem, this.playerDelimiterCollisionGroup);
+		this.engine.collidesWith(groupItem, this.playerCollisionGroup);
+
+		/**
+		 * Ball hit delimiter
+		 */
+		groupItem = this.engine.addTileSprite(
+			this.xSize / 2,
+			this.ySize - (this.groundHeight / 2),
+			this.xSize,
+			this.groundHeight,
+			'delimiter'
+		);
+
+		this.engine.setStatic(groupItem, true);
+		this.engine.setMaterial(groupItem, this.groundDelimiterMaterial);
+		this.engine.setCollisionGroup(groupItem, this.groundHitDelimiterCollisionGroup);
+		this.engine.collidesWith(groupItem, this.ballCollisionGroup);
+		this.engine.collidesWith(groupItem, this.bonusCollisionGroup);
+	}
+
+	loadNetLevel() {
+		var groupItem;
+
+		/**
+		 * Look
+		 */
 		this.engine.addTileSprite(
-			(Config.xSize / 2) - (Config.netThickness / 2),
-			Config.ySize - Config.groundHeight - Config.netHeight,
+			(this.xSize / 2) - (Config.netThickness / 2),
+			this.ySize - this.groundHeight - Config.netHeight,
 			Config.netThickness,
 			Config.netHeight,
 			'net',
@@ -390,31 +441,13 @@ export default class Game {
 		);
 
 		/**
-		 * Player ground delimiter
+		 * Player delimiter
 		 */
-		//Ground
 		groupItem = this.engine.addTileSprite(
-			Config.xSize / 2,
-			Config.ySize - (Config.groundHeight / 2),
-			Config.xSize,
-			Config.groundHeight,
-			'delimiter'
-		);
-
-		this.engine.setStatic(groupItem, true);
-		this.engine.setMaterial(groupItem, this.playerDelimiterMaterial);
-		this.engine.setCollisionGroup(groupItem, this.playerDelimiterCollisionGroup);
-		this.engine.collidesWith(groupItem, this.playerCollisionGroup);
-
-		/**
-		 * Player net delimiter
-		 */
-		//Net
-		groupItem = this.engine.addTileSprite(
-			(Config.xSize / 2),
-			(Config.ySize / 2),
+			(this.xSize / 2),
+			(this.ySize / 2),
 			Config.netThickness,
-			Config.ySize,
+			this.ySize,
 			'delimiter'
 		);
 
@@ -424,12 +457,11 @@ export default class Game {
 		this.engine.collidesWith(groupItem, this.playerCollisionGroup);
 
 		/**
-		 * Ball Net hit delimiter
+		 * Ball hit delimiter
 		 */
-		//Net
 		groupItem = this.engine.addTileSprite(
-			(Config.xSize / 2),
-			Config.ySize - Config.groundHeight - (Config.netHeight / 2),
+			(this.xSize / 2),
+			this.ySize - this.groundHeight - (Config.netHeight / 2),
 			Config.netThickness,
 			Config.netHeight,
 			'delimiter'
@@ -438,24 +470,6 @@ export default class Game {
 		this.engine.setStatic(groupItem, true);
 		this.engine.setMaterial(groupItem, this.netDelimiterMaterial);
 		this.engine.setCollisionGroup(groupItem, this.netHitDelimiterCollisionGroup);
-		this.engine.collidesWith(groupItem, this.ballCollisionGroup);
-		this.engine.collidesWith(groupItem, this.bonusCollisionGroup);
-
-		/**
-		 * Ball Ground hit delimiter
-		 */
-		//Ground
-		groupItem = this.engine.addTileSprite(
-			Config.xSize / 2,
-			Config.ySize - (Config.groundHeight / 2),
-			Config.xSize,
-			Config.groundHeight,
-			'delimiter'
-		);
-
-		this.engine.setStatic(groupItem, true);
-		this.engine.setMaterial(groupItem, this.groundDelimiterMaterial);
-		this.engine.setCollisionGroup(groupItem, this.groundHitDelimiterCollisionGroup);
 		this.engine.collidesWith(groupItem, this.ballCollisionGroup);
 		this.engine.collidesWith(groupItem, this.bonusCollisionGroup);
 	}
@@ -499,7 +513,7 @@ export default class Game {
 
 	spawnBall() {
 		var xBallPositionHostSide = Config.playerInitialLocation + (Config.playerWidth / 4) + (Config.ballRadius),
-			xBallPositionClientSide = Config.xSize - Config.playerInitialLocation - (Config.playerWidth / 4) - (Config.ballRadius),
+			xBallPositionClientSide = this.xSize - Config.playerInitialLocation - (Config.playerWidth / 4) - (Config.ballRadius),
 			xBallPosition;
 
 		switch (this.getGameLastPointTaken()) {
@@ -520,7 +534,7 @@ export default class Game {
 				break;
 		}
 
-		this.engine.spawn(this.ball, xBallPosition, Config.ySize - Config.groundHeight - Config.ballDistanceFromGround);
+		this.engine.spawn(this.ball, xBallPosition, this.ySize - this.groundHeight - Config.ballDistanceFromGround);
 	}
 
 	updateGame() {
@@ -624,7 +638,7 @@ export default class Game {
 		if (this.isUserHost() && this.gameResumed == true) {
 			let pointSide;
 
-			if (ball.x < Config.xSize / 2) {
+			if (ball.x < this.xSize / 2) {
 				pointSide = Constants.CLIENT_POINTS_COLUMN;
 			} else {
 				pointSide = Constants.HOST_POINTS_COLUMN;
@@ -669,7 +683,7 @@ export default class Game {
 	}
 
 	isPlayerAtGroundLevel(player) {
-		return (player.bottom >= Config.ySize - Config.groundHeight);
+		return (player.bottom >= this.ySize - this.groundHeight);
 	}
 
 	moveOppositePlayer(data) {
@@ -846,7 +860,7 @@ export default class Game {
 
 	drawCloud() {
 		if (!this.cloudBonus) {
-			this.cloudBonus = this.engine.addSprite(Config.xSize / 2, Config.ySize / 2, 'cloud');
+			this.cloudBonus = this.engine.addSprite(this.xSize / 2, this.ySize / 2, 'cloud');
 			this.engine.setStatic(this.cloudBonus, true);
 			this.engine.setOpacity(this.cloudBonus, 0);
 		}
@@ -878,7 +892,7 @@ export default class Game {
 		if (this.bonus === null && this.engine.getTime() - this.lastBonusActivated >= frequenceTime) {
 			//Host choose position and bonusCls
 			let data = {
-				initialX: Config.xSize / 2 + Random.choice([-6, +6]),
+				initialX: this.xSize / 2 + Random.choice([-6, +6]),
 				bonusKey: BonusFactory.getRandomBonusKey()
 			};
 
