@@ -36,6 +36,8 @@ export default class TestEnvironment {
 	}
 
 	createGame() {
+		this.overrideGame();
+
 		this.game.engine.createGame();
 
 		this.game.createCollisionGroupsAndMaterials();
@@ -49,14 +51,24 @@ export default class TestEnvironment {
 
 		this.game.engine.addKeyControllers();
 
-		/**
-		 * Override game methods
-		 */
+		this.resumeOnTimerEnd();
+	}
+
+	overrideGame() {
 		this.game.getCurrentPlayer = () => {
 			return this.game.player1;
 		};
 
 		this.game.sendPlayerPosition = () => {};
+
+		this.game.hitGround = () => {
+			if (this.game.gameResumed == true) {
+				this.game.shakeLevel();
+				this.resumeOnTimerEnd();
+
+				this.game.gameResumed = false;
+			}
+		};
 	}
 
 	loadLevel() {
@@ -67,6 +79,27 @@ export default class TestEnvironment {
 
 	updateGame() {
 		this.game.inputs();
+	}
+
+	resumeOnTimerEnd() {
+		this.game.pauseGame();
+		this.respawnSprites();
+		this.startCountdownTimer();
+	}
+
+	respawnSprites() {
+		this.game.spawnPlayer(this.game.player1);
+		this.game.spawnBall();
+	}
+
+	startCountdownTimer() {
+		this.countdownTimer = this.game.engine.createTimer(3, this.resumeGame, this);
+		this.countdownTimer.start();
+	}
+
+	resumeGame() {
+		this.game.engine.unfreeze(this.game.ball);
+		this.game.gameResumed = true;
 	}
 
 }

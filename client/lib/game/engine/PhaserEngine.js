@@ -276,12 +276,28 @@ export default class PhaserEngine {
 		sprite.body.static = isStatic;
 	}
 
+	getHorizontalSpeed(sprite) {
+		return sprite.body.velocity.x;
+	}
+
 	setHorizontalSpeed(sprite, velocityX) {
 		sprite.body.velocity.x = velocityX;
 	}
 
+	getVerticalSpeed(sprite) {
+		return sprite.body.velocity.y;
+	}
+
 	setVerticalSpeed(sprite, velocityY) {
 		sprite.body.velocity.y = velocityY;
+	}
+
+	getXPosition(sprite) {
+		return sprite.body.x;
+	}
+
+	getYPosition(sprite) {
+		return sprite.body.y;
 	}
 
 	setAnchor(sprite, anchor) {
@@ -300,8 +316,9 @@ export default class PhaserEngine {
 		sprite.body.collides(collisionGroup, callback, scope);
 	}
 
-	constrainVelocity(body, maxVelocity) {
-		var angle, currVelocitySqr, vx, vy;
+	constrainVelocity(sprite, maxVelocity) {
+		var body = sprite.body,
+			angle, currVelocitySqr, vx, vy;
 
 		vx = body.velocity.x;
 		vy = body.velocity.y;
@@ -348,33 +365,6 @@ export default class PhaserEngine {
 		multilineText = multilineText.map(line => {return '    ' + line + '    ';});
 
 		return textComponent.text = multilineText.join('\n');
-	}
-
-	reboundOrSmashOnPlayerHitBall(ball, player, ballVelocityYOnPlayerHit) {
-		var key = player.sprite.key;
-
-		//Player is jumping forward and ball is in front of him (smash)
-		if (
-			Math.round(player.velocity.y) < 0 &&
-			(
-				(key === 'player1' && Math.round(player.velocity.x) > 0 && player.x < ball.x) ||
-				(key === 'player2' && Math.round(player.velocity.x) < 0 && ball.x < player.x)
-			)
-		) {
-			//Ball should go faster and down
-			ball.velocity.x *= 2;
-			ball.velocity.y /= 4;
-
-			//Ball should always go down
-			if (ball.velocity.y < 0) {
-				ball.velocity.y = -ball.velocity.y;
-			}
-
-			this.constrainVelocity(ball, 1000);
-		} else {
-			//Ball rebounds on player
-			ball.velocity.y = ballVelocityYOnPlayerHit;
-		}
 	}
 
 	shake(sprite, move, time) {

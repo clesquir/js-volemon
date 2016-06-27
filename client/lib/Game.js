@@ -239,7 +239,7 @@ export default class Game {
 
 	createGame() {
 		var initialXLocation = Config.playerInitialLocation,
-			initialYLocation = this.ySize - this.groundHeight - (Config.playerHeight / 2);
+			initialYLocation = this.ySize - this.groundHeight - (Constants.PLAYER_HEIGHT / 2);
 
 		this.engine.createGame();
 
@@ -512,8 +512,8 @@ export default class Game {
 	}
 
 	spawnBall() {
-		var xBallPositionHostSide = Config.playerInitialLocation + (Config.playerWidth / 4) + (Config.ballRadius),
-			xBallPositionClientSide = this.xSize - Config.playerInitialLocation - (Config.playerWidth / 4) - (Config.ballRadius),
+		var xBallPositionHostSide = Config.playerInitialLocation + (Constants.PLAYER_WIDTH / 4) + (Constants.BALL_RADIUS),
+			xBallPositionClientSide = this.xSize - Config.playerInitialLocation - (Constants.PLAYER_WIDTH / 4) - (Constants.BALL_RADIUS),
 			xBallPosition;
 
 		switch (this.getGameLastPointTaken()) {
@@ -631,7 +631,42 @@ export default class Game {
 	}
 
 	hitBall(ball, player) {
-		this.engine.reboundOrSmashOnPlayerHitBall(ball, player, Config.ballVelocityYOnPlayerHit);
+		this.reboundOrSmashOnPlayerHitBall(ball.sprite, player.sprite, this.engine.getKey(player));
+	}
+
+	reboundOrSmashOnPlayerHitBall(ball, player, playerKey) {
+		//Player is jumping forward and ball is in front of him (smash)
+		if (
+			Math.round(this.engine.getVerticalSpeed(player)) < 0 &&
+			(
+				(playerKey === 'player1' && Math.round(this.engine.getHorizontalSpeed(player)) > 0 && this.engine.getXPosition(player) < this.engine.getXPosition(ball)) ||
+				(playerKey === 'player2' && Math.round(this.engine.getHorizontalSpeed(player)) < 0 && this.engine.getXPosition(ball) < this.engine.getXPosition(player))
+			)
+		) {
+			//Ball direction should change if smashed the opposite way
+			if (
+				(playerKey === 'player1' && this.engine.getHorizontalSpeed(ball) < 0) ||
+				(playerKey === 'player2' && this.engine.getHorizontalSpeed(ball) > 0)
+			) {
+				this.engine.setHorizontalSpeed(ball, -this.engine.getHorizontalSpeed(ball));
+			}
+
+			//Ball should go faster and down
+			this.engine.setHorizontalSpeed(ball, this.engine.getHorizontalSpeed(ball) * 2);
+			this.engine.setVerticalSpeed(ball, this.engine.getVerticalSpeed(ball) / 4);
+
+			//Ball should always go down
+			if (this.engine.getVerticalSpeed(ball) < 0) {
+				this.engine.setVerticalSpeed(ball, -this.engine.getVerticalSpeed(ball));
+			}
+		} else {
+			//Ball rebounds on player only if not below
+			if (this.engine.getYPosition(ball) <= this.engine.getYPosition(player) + (Constants.PLAYER_HEIGHT / 2)) {
+				this.engine.setVerticalSpeed(ball, Constants.BALL_VERTICAL_SPEED_ON_PLAYER_HIT);
+			}
+		}
+
+		this.engine.constrainVelocity(ball, 1000);
 	}
 
 	hitGround(ball, ground) {
