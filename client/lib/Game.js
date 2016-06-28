@@ -325,6 +325,7 @@ export default class Game {
 		player.velocityYOnJump = Config.playerVelocityYOnJump;
 		player.canMove = true;
 		player.canJump = true;
+		player.doingDropShot = false;
 
 		player.polygonObject = 'player-' + this.getPlayerShapeFromKey(playerKey);
 		this.engine.loadPolygon(player, Constants.NORMAL_SCALE_PHYSICS_DATA, player.polygonObject);
@@ -611,6 +612,8 @@ export default class Game {
 	sendPlayerPosition(player) {
 		var playerPositionData = this.engine.getPositionData(player);
 
+		playerPositionData.doingDropShot = player.doingDropShot;
+
 		this.lastPlayerUpdate = this.emitGameStreamAtFrequence(
 			this.lastPlayerUpdate,
 			Config.playerInterval,
@@ -631,42 +634,78 @@ export default class Game {
 	}
 
 	hitBall(ball, player) {
-		this.reboundOrSmashOnPlayerHitBall(ball.sprite, player.sprite, this.engine.getKey(player));
+		this.onBallHitPlayer(ball.sprite, player.sprite, this.engine.getKey(player));
 	}
 
-	reboundOrSmashOnPlayerHitBall(ball, player, playerKey) {
-		//Player is jumping forward and ball is in front of him (smash)
-		if (
-			Math.round(this.engine.getVerticalSpeed(player)) < 0 &&
-			(
-				(playerKey === 'player1' && Math.round(this.engine.getHorizontalSpeed(player)) > 0 && this.engine.getXPosition(player) < this.engine.getXPosition(ball)) ||
-				(playerKey === 'player2' && Math.round(this.engine.getHorizontalSpeed(player)) < 0 && this.engine.getXPosition(ball) < this.engine.getXPosition(player))
-			)
-		) {
-			//Ball direction should change if smashed the opposite way
-			if (
-				(playerKey === 'player1' && this.engine.getHorizontalSpeed(ball) < 0) ||
-				(playerKey === 'player2' && this.engine.getHorizontalSpeed(ball) > 0)
-			) {
-				this.engine.setHorizontalSpeed(ball, -this.engine.getHorizontalSpeed(ball));
-			}
-
-			//Ball should go faster and down
-			this.engine.setHorizontalSpeed(ball, this.engine.getHorizontalSpeed(ball) * 2);
-			this.engine.setVerticalSpeed(ball, this.engine.getVerticalSpeed(ball) / 4);
-
-			//Ball should always go down
-			if (this.engine.getVerticalSpeed(ball) < 0) {
-				this.engine.setVerticalSpeed(ball, -this.engine.getVerticalSpeed(ball));
+	onBallHitPlayer(ball, player, playerKey) {
+		if (this.isPlayerJumpingForward(player, playerKey) && this.isBallInFrontOfPlayer(ball, player, playerKey)) {
+			if (player.doingDropShot) {
+				this.dropShotBallOnPlayerHit(ball);
+			} else {
+				this.smashBallOnPlayerHit(ball, playerKey);
 			}
 		} else {
-			//Ball rebounds on player only if not below
-			if (this.engine.getYPosition(ball) <= this.engine.getYPosition(player) + (Constants.PLAYER_HEIGHT / 2)) {
-				this.engine.setVerticalSpeed(ball, Constants.BALL_VERTICAL_SPEED_ON_PLAYER_HIT);
+			if (!this.isBallBelowPlayer(ball, player)) {
+				if (player.doingDropShot && this.isBallInFrontOfPlayer(ball, player, playerKey)) {
+					this.dropShotBallOnPlayerHit(ball);
+				} else {
+					this.reboundBallOnPlayerHit(ball);
+				}
 			}
 		}
 
 		this.engine.constrainVelocity(ball, 1000);
+	}
+
+	isPlayerJumpingForward(player, playerKey) {
+		return (
+			Math.round(this.engine.getVerticalSpeed(player)) < 0 &&
+			(
+				(playerKey === 'player1' && Math.round(this.engine.getHorizontalSpeed(player)) > 0) ||
+				(playerKey === 'player2' && Math.round(this.engine.getHorizontalSpeed(player)) < 0)
+			)
+		);
+	}
+
+	isBallInFrontOfPlayer(ball, player, playerKey) {
+		return (
+			(playerKey === 'player1' && this.engine.getXPosition(player) < this.engine.getXPosition(ball)) ||
+			(playerKey === 'player2' && this.engine.getXPosition(ball) < this.engine.getXPosition(player))
+		);
+	}
+
+	isBallBelowPlayer(ball, player) {
+		return (
+			this.engine.getYPosition(ball) > this.engine.getYPosition(player) + (Constants.PLAYER_HEIGHT / 2)
+		);
+	}
+
+	dropShotBallOnPlayerHit(ball) {
+		this.engine.setHorizontalSpeed(ball, 0);
+		this.engine.setVerticalSpeed(ball, 0);
+	}
+
+	smashBallOnPlayerHit(ball, playerKey) {
+		//Ball direction should change if smashed the opposite way
+		if (
+			(playerKey === 'player1' && this.engine.getHorizontalSpeed(ball) < 0) ||
+			(playerKey === 'player2' && this.engine.getHorizontalSpeed(ball) > 0)
+		) {
+			this.engine.setHorizontalSpeed(ball, -this.engine.getHorizontalSpeed(ball));
+		}
+
+		//Ball should go faster and down
+		this.engine.setHorizontalSpeed(ball, this.engine.getHorizontalSpeed(ball) * 2);
+		this.engine.setVerticalSpeed(ball, this.engine.getVerticalSpeed(ball) / 4);
+
+		//Ball should always go down
+		if (this.engine.getVerticalSpeed(ball) < 0) {
+			this.engine.setVerticalSpeed(ball, -this.engine.getVerticalSpeed(ball));
+		}
+	}
+
+	reboundBallOnPlayerHit(ball) {
+		this.engine.setVerticalSpeed(ball, Constants.BALL_VERTICAL_SPEED_ON_PLAYER_HIT);
 	}
 
 	hitGround(ball, ground) {
@@ -691,6 +730,8 @@ export default class Game {
 			return false;
 		}
 
+		player.doingDropShot = false;
+
 		if (!player.canMove) {
 			this.engine.setHorizontalSpeed(player, 0);
 			this.engine.setVerticalSpeed(player, 0);
@@ -709,6 +750,8 @@ export default class Game {
 				} else {
 					this.engine.setVerticalSpeed(player, 0);
 				}
+			} else {
+				player.doingDropShot = (this.engine.isKeyDownDown());
 			}
 		}
 
@@ -733,6 +776,8 @@ export default class Game {
 		if (!player) {
 			return;
 		}
+
+		player.doingDropShot = data.doingDropShot;
 
 		this.engine.move(player, data);
 	}

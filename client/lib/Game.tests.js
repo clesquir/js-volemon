@@ -289,7 +289,328 @@ describe('Game', function() {
 		StubCollections.restore();
 	});
 
-	it('reboundOrSmashOnPlayerHitBall player1 is not going up, ball rebounds on player', function() {
+	it('isPlayerJumpingForward returns false if vertical speed is 0', function() {
+		let game = new Game(Random.id(5));
+
+		chai.assert.isFalse(game.isPlayerJumpingForward(
+			{
+				body: {
+					x: 200,
+					y: 400,
+					velocity: {
+						x: 0,
+						y: 0
+					}
+				}
+			},
+			'player1'
+		));
+	});
+
+	it('isPlayerJumpingForward returns false if vertical speed is positive', function() {
+		let game = new Game(Random.id(5));
+
+		chai.assert.isFalse(game.isPlayerJumpingForward(
+			{
+				body: {
+					x: 200,
+					y: 400,
+					velocity: {
+						x: 0,
+						y: 25
+					}
+				}
+			},
+			'player1'
+		));
+	});
+
+	it('isPlayerJumpingForward returns false if player1 vertical speed is negative but horizontal speed is 0', function() {
+		let game = new Game(Random.id(5));
+
+		chai.assert.isFalse(game.isPlayerJumpingForward(
+			{
+				body: {
+					x: 200,
+					y: 400,
+					velocity: {
+						x: 0,
+						y: -25
+					}
+				}
+			},
+			'player1'
+		));
+	});
+
+	it('isPlayerJumpingForward returns false if player1 vertical speed is negative but horizontal speed is negative', function() {
+		let game = new Game(Random.id(5));
+
+		chai.assert.isFalse(game.isPlayerJumpingForward(
+			{
+				body: {
+					x: 200,
+					y: 400,
+					velocity: {
+						x: -25,
+						y: -25
+					}
+				}
+			},
+			'player1'
+		));
+	});
+
+	it('isPlayerJumpingForward returns true if player1 vertical speed is negative but horizontal speed is positive', function() {
+		let game = new Game(Random.id(5));
+
+		chai.assert.isTrue(game.isPlayerJumpingForward(
+			{
+				body: {
+					x: 200,
+					y: 400,
+					velocity: {
+						x: 25,
+						y: -25
+					}
+				}
+			},
+			'player1'
+		));
+	});
+
+	it('isPlayerJumpingForward returns false if player2 vertical speed is negative but horizontal speed is 0', function() {
+		let game = new Game(Random.id(5));
+
+		chai.assert.isFalse(game.isPlayerJumpingForward(
+			{
+				body: {
+					x: 200,
+					y: 400,
+					velocity: {
+						x: 0,
+						y: -25
+					}
+				}
+			},
+			'player2'
+		));
+	});
+
+	it('isPlayerJumpingForward returns false if player2 vertical speed is negative but horizontal speed is positive', function() {
+		let game = new Game(Random.id(5));
+
+		chai.assert.isFalse(game.isPlayerJumpingForward(
+			{
+				body: {
+					x: 200,
+					y: 400,
+					velocity: {
+						x: 25,
+						y: -25
+					}
+				}
+			},
+			'player2'
+		));
+	});
+
+	it('isPlayerJumpingForward returns true if player2 vertical speed is negative and horizontal speed is negative', function() {
+		let game = new Game(Random.id(5));
+
+		chai.assert.isTrue(game.isPlayerJumpingForward(
+			{
+				body: {
+					x: 200,
+					y: 400,
+					velocity: {
+						x: -25,
+						y: -25
+					}
+				}
+			},
+			'player2'
+		));
+	});
+
+	it('isBallInFrontOfPlayer returns false if player1 x position is equal to ball x position', function() {
+		let game = new Game(Random.id(5));
+
+		chai.assert.isFalse(game.isBallInFrontOfPlayer(
+			{
+				body: {
+					x: 200,
+					y: 400
+				}
+			},
+			{
+				body: {
+					x: 200,
+					y: 400
+				}
+			},
+			'player1'
+		));
+	});
+
+	it('isBallInFrontOfPlayer returns false if player1 x position is greater than to ball x position', function() {
+		let game = new Game(Random.id(5));
+
+		chai.assert.isFalse(game.isBallInFrontOfPlayer(
+			{
+				body: {
+					x: 198,
+					y: 400
+				}
+			},
+			{
+				body: {
+					x: 200,
+					y: 400
+				}
+			},
+			'player1'
+		));
+	});
+
+	it('isBallInFrontOfPlayer returns true if player1 x position is lower than to ball x position', function() {
+		let game = new Game(Random.id(5));
+
+		chai.assert.isTrue(game.isBallInFrontOfPlayer(
+			{
+				body: {
+					x: 202,
+					y: 400
+				}
+			},
+			{
+				body: {
+					x: 200,
+					y: 400
+				}
+			},
+			'player1'
+		));
+	});
+
+	it('isBallInFrontOfPlayer returns false if player2 x position is equal to ball x position', function() {
+		let game = new Game(Random.id(5));
+
+		chai.assert.isFalse(game.isBallInFrontOfPlayer(
+			{
+				body: {
+					x: 200,
+					y: 400
+				}
+			},
+			{
+				body: {
+					x: 200,
+					y: 400
+				}
+			},
+			'player2'
+		));
+	});
+
+	it('isBallInFrontOfPlayer returns false if player2 x position is lower than to ball x position', function() {
+		let game = new Game(Random.id(5));
+
+		chai.assert.isFalse(game.isBallInFrontOfPlayer(
+			{
+				body: {
+					x: 202,
+					y: 400
+				}
+			},
+			{
+				body: {
+					x: 200,
+					y: 400
+				}
+			},
+			'player2'
+		));
+	});
+
+	it('isBallInFrontOfPlayer returns true if player2 x position is greater than to ball x position', function() {
+		let game = new Game(Random.id(5));
+
+		chai.assert.isTrue(game.isBallInFrontOfPlayer(
+			{
+				body: {
+					x: 198,
+					y: 400
+				}
+			},
+			{
+				body: {
+					x: 200,
+					y: 400
+				}
+			},
+			'player2'
+		));
+	});
+
+	it('isBallBelowPlayer returns false if ball y position is lower than player y position + half its height', function() {
+		let game = new Game(Random.id(5));
+
+		chai.assert.isFalse(game.isBallBelowPlayer(
+			{
+				body: {
+					x: 200,
+					y: 400
+				}
+			},
+			{
+				body: {
+					x: 200,
+					y: 400
+				}
+			}
+		));
+	});
+
+	it('isBallBelowPlayer returns false if ball y position is equal than player y position + half its height', function() {
+		let game = new Game(Random.id(5));
+
+		chai.assert.isFalse(game.isBallBelowPlayer(
+			{
+				body: {
+					x: 200,
+					y: 400 + (Constants.PLAYER_HEIGHT / 2)
+				}
+			},
+			{
+				body: {
+					x: 200,
+					y: 400
+				}
+			}
+		));
+	});
+
+	it('isBallBelowPlayer returns true if ball y position is greater than player y position + half its height', function() {
+		let game = new Game(Random.id(5));
+
+		chai.assert.isTrue(game.isBallBelowPlayer(
+			{
+				body: {
+					x: 200,
+					y: 400 + (Constants.PLAYER_HEIGHT / 2) + 0.1
+				}
+			},
+			{
+				body: {
+					x: 200,
+					y: 400
+				}
+			}
+		));
+	});
+
+	it('dropShotBallOnPlayerHit removes all speed velocity from ball object', function() {
 		let game = new Game(Random.id(5));
 
 		let ball = {
@@ -303,35 +624,147 @@ describe('Game', function() {
 			}
 		};
 
-		game.reboundOrSmashOnPlayerHitBall(
-			ball,
-			{
-				body: {
-					x: 200,
-					y: 400,
-					velocity: {
-						x: 200,
-						y: 0
-					}
-				}
-			},
-			'player1'
-		);
+		game.dropShotBallOnPlayerHit(ball);
 
-		chai.assert.equal(300, ball.body.velocity.x);
+		chai.assert.equal(0, ball.body.velocity.x);
+		chai.assert.equal(0, ball.body.velocity.y);
+	});
+
+	it('reboundBallOnPlayerHit adds the constant vertical speed velocity to ball object', function() {
+		let game = new Game(Random.id(5));
+
+		let horizontalVelocity = 300;
+		let ball = {
+			body: {
+				x: 200,
+				y: 400,
+				velocity: {
+					x: horizontalVelocity,
+					y: 200
+				}
+			}
+		};
+
+		game.reboundBallOnPlayerHit(ball);
+
+		chai.assert.equal(horizontalVelocity, ball.body.velocity.x);
 		chai.assert.equal(Constants.BALL_VERTICAL_SPEED_ON_PLAYER_HIT, ball.body.velocity.y);
 	});
 
-	it('reboundOrSmashOnPlayerHitBall does not rebound if below player', function() {
+	it('onBallHitPlayer reboundBallOnPlayerHit is called', function() {
 		let game = new Game(Random.id(5));
 
-		let playerY = 500;
+		sinon.stub(game, 'isPlayerJumpingForward', function() {return false;});
+		sinon.stub(game, 'isBallBelowPlayer', function() {return false;});
+		sinon.stub(game.engine, 'constrainVelocity');
+
+		let reboundBallOnPlayerHit = sinon.stub(game, 'reboundBallOnPlayerHit');
+
+		game.onBallHitPlayer({}, {doingDropShot: false});
+
+		chai.assert.isTrue(reboundBallOnPlayerHit.called);
+	});
+
+	it('onBallHitPlayer reboundBallOnPlayerHit is not called if player is doing drop shot and ball is in front of the player', function() {
+		let game = new Game(Random.id(5));
+
+		sinon.stub(game, 'isPlayerJumpingForward', function() {return false;});
+		sinon.stub(game, 'isBallBelowPlayer', function() {return false;});
+		sinon.stub(game, 'isBallInFrontOfPlayer', function() {return true;});
+		sinon.stub(game.engine, 'constrainVelocity');
+
+		let dropShotBallOnPlayerHit = sinon.stub(game, 'dropShotBallOnPlayerHit');
+		let reboundBallOnPlayerHit = sinon.stub(game, 'reboundBallOnPlayerHit');
+
+		game.onBallHitPlayer({}, {doingDropShot: true});
+
+		chai.assert.isFalse(reboundBallOnPlayerHit.called);
+		chai.assert.isTrue(dropShotBallOnPlayerHit.called);
+	});
+
+	it('onBallHitPlayer reboundBallOnPlayerHit is called if player is doing drop shot but ball is not in front of the player', function() {
+		let game = new Game(Random.id(5));
+
+		sinon.stub(game, 'isPlayerJumpingForward', function() {return false;});
+		sinon.stub(game, 'isBallBelowPlayer', function() {return false;});
+		sinon.stub(game, 'isBallInFrontOfPlayer', function() {return false;});
+		sinon.stub(game.engine, 'constrainVelocity');
+
+		let dropShotBallOnPlayerHit = sinon.stub(game, 'dropShotBallOnPlayerHit');
+		let reboundBallOnPlayerHit = sinon.stub(game, 'reboundBallOnPlayerHit');
+
+		game.onBallHitPlayer({}, {doingDropShot: true});
+
+		chai.assert.isTrue(reboundBallOnPlayerHit.called);
+		chai.assert.isFalse(dropShotBallOnPlayerHit.called);
+	});
+
+	it('onBallHitPlayer reboundBallOnPlayerHit is not called if the player is not jumping forward and the ball is below the player', function() {
+		let game = new Game(Random.id(5));
+
+		sinon.stub(game, 'isPlayerJumpingForward', function() {return false;});
+		sinon.stub(game, 'isBallBelowPlayer', function() {return true;});
+		sinon.stub(game.engine, 'constrainVelocity');
+
+		let reboundBallOnPlayerHit = sinon.stub(game, 'reboundBallOnPlayerHit');
+
+		game.onBallHitPlayer({}, {doingDropShot: false});
+
+		chai.assert.isFalse(reboundBallOnPlayerHit.called);
+	});
+
+	it('onBallHitPlayer reboundBallOnPlayerHit is called if the ball is not in front of the player', function() {
+		let game = new Game(Random.id(5));
+
+		sinon.stub(game, 'isPlayerJumpingForward', function() {return true;});
+		sinon.stub(game, 'isBallInFrontOfPlayer', function() {return false;});
+		sinon.stub(game, 'isBallBelowPlayer', function() {return false;});
+		sinon.stub(game.engine, 'constrainVelocity');
+
+		let reboundBallOnPlayerHit = sinon.stub(game, 'reboundBallOnPlayerHit');
+
+		game.onBallHitPlayer({}, {doingDropShot: false});
+
+		chai.assert.isTrue(reboundBallOnPlayerHit.called);
+	});
+
+	it('onBallHitPlayer smashBallOnPlayerHit is called', function() {
+		let game = new Game(Random.id(5));
+
+		sinon.stub(game, 'isPlayerJumpingForward', function() {return true;});
+		sinon.stub(game, 'isBallInFrontOfPlayer', function() {return true;});
+		sinon.stub(game.engine, 'constrainVelocity');
+
+		let smashBallOnPlayerHit = sinon.stub(game, 'smashBallOnPlayerHit');
+
+		game.onBallHitPlayer({}, {doingDropShot: false});
+
+		chai.assert.isTrue(smashBallOnPlayerHit.called);
+	});
+
+	it('onBallHitPlayer smashBallOnPlayerHit is not called if player is doing a drop shot', function() {
+		let game = new Game(Random.id(5));
+
+		sinon.stub(game, 'isPlayerJumpingForward', function() {return true;});
+		sinon.stub(game, 'isBallInFrontOfPlayer', function() {return true;});
+		sinon.stub(game.engine, 'constrainVelocity');
+
+		let dropShotBallOnPlayerHit = sinon.stub(game, 'dropShotBallOnPlayerHit');
+		let smashBallOnPlayerHit = sinon.stub(game, 'smashBallOnPlayerHit');
+
+		game.onBallHitPlayer({}, {doingDropShot: true});
+
+		chai.assert.isFalse(smashBallOnPlayerHit.called);
+		chai.assert.isTrue(dropShotBallOnPlayerHit.called);
+	});
+
+	it('smashBallOnPlayerHit normal smash calculations', function() {
+		let game = new Game(Random.id(5));
+
 		let horizontalSpeed = 300;
 		let verticalSpeed = 200;
 		let ball = {
 			body: {
-				x: 200,
-				y: playerY + (Constants.PLAYER_HEIGHT / 2) + 1,
 				velocity: {
 					x: horizontalSpeed,
 					y: verticalSpeed
@@ -339,218 +772,8 @@ describe('Game', function() {
 			}
 		};
 
-		game.reboundOrSmashOnPlayerHitBall(
+		game.smashBallOnPlayerHit(
 			ball,
-			{
-				body: {
-					x: 200,
-					y: playerY,
-					velocity: {
-						x: 200,
-						y: 0
-					}
-				}
-			},
-			'player1'
-		);
-
-		chai.assert.equal(horizontalSpeed, ball.body.velocity.x);
-		chai.assert.equal(verticalSpeed, ball.body.velocity.y);
-	});
-
-	it('reboundOrSmashOnPlayerHitBall player2 is not going up, ball rebounds on player', function() {
-		let game = new Game(Random.id(5));
-
-		let ball = {
-			body: {
-				x: 200,
-				y: 400,
-				velocity: {
-					x: 300,
-					y: 200
-				}
-			}
-		};
-
-		game.reboundOrSmashOnPlayerHitBall(
-			ball,
-			{
-				body: {
-					x: 200,
-					y: 400,
-					velocity: {
-						x: -200,
-						y: 0
-					}
-				}
-			},
-			'player2'
-		);
-
-		chai.assert.equal(300, ball.body.velocity.x);
-		chai.assert.equal(Constants.BALL_VERTICAL_SPEED_ON_PLAYER_HIT, ball.body.velocity.y);
-	});
-
-	it('reboundOrSmashOnPlayerHitBall player1 is going up but ball is behind him, ball rebounds on player', function() {
-		let game = new Game(Random.id(5));
-
-		let ball = {
-			body: {
-				x: 198,
-				y: 400,
-				velocity: {
-					x: 300,
-					y: 200
-				}
-			}
-		};
-
-		game.reboundOrSmashOnPlayerHitBall(
-			ball,
-			{
-				body: {
-					x: 200,
-					y: 400,
-					velocity: {
-						x: 200,
-						y: -100
-					}
-				}
-			},
-			'player1'
-		);
-
-		chai.assert.equal(300, ball.body.velocity.x);
-		chai.assert.equal(Constants.BALL_VERTICAL_SPEED_ON_PLAYER_HIT, ball.body.velocity.y);
-	});
-
-	it('reboundOrSmashOnPlayerHitBall player2 is going up but ball is behind him, ball rebounds on player', function() {
-		let game = new Game(Random.id(5));
-
-		let ball = {
-			body: {
-				x: 202,
-				y: 400,
-				velocity: {
-					x: 300,
-					y: 200
-				}
-			}
-		};
-
-		game.reboundOrSmashOnPlayerHitBall(
-			ball,
-			{
-				body: {
-					x: 200,
-					y: 400,
-					velocity: {
-						x: -200,
-						y: -100
-					}
-				}
-			},
-			'player2'
-		);
-
-		chai.assert.equal(300, ball.body.velocity.x);
-		chai.assert.equal(Constants.BALL_VERTICAL_SPEED_ON_PLAYER_HIT, ball.body.velocity.y);
-	});
-
-	it('reboundOrSmashOnPlayerHitBall player1 is going up but not moving forward, ball rebounds on player', function() {
-		let game = new Game(Random.id(5));
-
-		let ball = {
-			body: {
-				x: 198,
-				y: 400,
-				velocity: {
-					x: 300,
-					y: 200
-				}
-			}
-		};
-
-		game.reboundOrSmashOnPlayerHitBall(
-			ball,
-			{
-				body: {
-					x: 200,
-					y: 400,
-					velocity: {
-						x: 0,
-						y: -100
-					}
-				}
-			},
-			'player1'
-		);
-
-		chai.assert.equal(300, ball.body.velocity.x);
-		chai.assert.equal(Constants.BALL_VERTICAL_SPEED_ON_PLAYER_HIT, ball.body.velocity.y);
-	});
-
-	it('reboundOrSmashOnPlayerHitBall player2 is going up but ball is behind him, ball rebounds on player', function() {
-		let game = new Game(Random.id(5));
-
-		let ball = {
-			body: {
-				x: 202,
-				y: 400,
-				velocity: {
-					x: 300,
-					y: 200
-				}
-			}
-		};
-
-		game.reboundOrSmashOnPlayerHitBall(
-			ball,
-			{
-				body: {
-					x: 200,
-					y: 400,
-					velocity: {
-						x: 0,
-						y: -100
-					}
-				}
-			},
-			'player2'
-		);
-
-		chai.assert.equal(300, ball.body.velocity.x);
-		chai.assert.equal(Constants.BALL_VERTICAL_SPEED_ON_PLAYER_HIT, ball.body.velocity.y);
-	});
-
-	it('reboundOrSmashOnPlayerHitBall player1 is going up and ball is in front of him, ball is smashed', function() {
-		let game = new Game(Random.id(5));
-
-		let horizontalSpeed = 300;
-		let verticalSpeed = 200;
-		let ball = {
-			body: {
-				x: 202,
-				y: 400,
-				velocity: {
-					x: horizontalSpeed,
-					y: verticalSpeed
-				}
-			}
-		};
-
-		game.reboundOrSmashOnPlayerHitBall(
-			ball,
-			{
-				body: {
-					x: 200,
-					y: 400,
-					velocity: {
-						x: 200,
-						y: -100
-					}
-				}
-			},
 			'player1'
 		);
 
@@ -558,50 +781,13 @@ describe('Game', function() {
 		chai.assert.equal(verticalSpeed / 4, ball.body.velocity.y);
 	});
 
-	it('reboundOrSmashOnPlayerHitBall player2 is going up and ball is in front of him, ball is smashed', function() {
-		let game = new Game(Random.id(5));
-
-		let horizontalSpeed = -300;
-		let verticalSpeed = 200;
-		let ball = {
-			body: {
-				x: 198,
-				y: 400,
-				velocity: {
-					x: horizontalSpeed,
-					y: verticalSpeed
-				}
-			}
-		};
-
-		game.reboundOrSmashOnPlayerHitBall(
-			ball,
-			{
-				body: {
-					x: 200,
-					y: 400,
-					velocity: {
-						x: -200,
-						y: -100
-					}
-				}
-			},
-			'player2'
-		);
-
-		chai.assert.equal(horizontalSpeed * 2, ball.body.velocity.x);
-		chai.assert.equal(verticalSpeed / 4, ball.body.velocity.y);
-	});
-
-	it('reboundOrSmashOnPlayerHitBall for player1, ball is smashed towards ground if its vertical speed was negative', function() {
+	it('smashBallOnPlayerHit ball is smashed towards ground if its vertical speed was negative', function() {
 		let game = new Game(Random.id(5));
 
 		let horizontalSpeed = 300;
 		let verticalSpeed = -200;
 		let ball = {
 			body: {
-				x: 202,
-				y: 400,
 				velocity: {
 					x: horizontalSpeed,
 					y: verticalSpeed
@@ -609,18 +795,8 @@ describe('Game', function() {
 			}
 		};
 
-		game.reboundOrSmashOnPlayerHitBall(
+		game.smashBallOnPlayerHit(
 			ball,
-			{
-				body: {
-					x: 200,
-					y: 400,
-					velocity: {
-						x: 200,
-						y: -100
-					}
-				}
-			},
 			'player1'
 		);
 
@@ -628,15 +804,13 @@ describe('Game', function() {
 		chai.assert.equal(-verticalSpeed / 4, ball.body.velocity.y);
 	});
 
-	it('reboundOrSmashOnPlayerHitBall for player2, ball is smashed towards ground if its vertical speed was negative', function() {
+	it('smashBallOnPlayerHit for player1, ball direction is reversed if it is smashed', function() {
 		let game = new Game(Random.id(5));
 
 		let horizontalSpeed = -300;
 		let verticalSpeed = -200;
 		let ball = {
 			body: {
-				x: 198,
-				y: 400,
 				velocity: {
 					x: horizontalSpeed,
 					y: verticalSpeed
@@ -644,53 +818,8 @@ describe('Game', function() {
 			}
 		};
 
-		game.reboundOrSmashOnPlayerHitBall(
+		game.smashBallOnPlayerHit(
 			ball,
-			{
-				body: {
-					x: 200,
-					y: 400,
-					velocity: {
-						x: -200,
-						y: -100
-					}
-				}
-			},
-			'player2'
-		);
-
-		chai.assert.equal(horizontalSpeed * 2, ball.body.velocity.x);
-		chai.assert.equal(-verticalSpeed / 4, ball.body.velocity.y);
-	});
-
-	it('reboundOrSmashOnPlayerHitBall for player1, ball direction is reversed if it is smashed', function() {
-		let game = new Game(Random.id(5));
-
-		let horizontalSpeed = -300;
-		let verticalSpeed = -200;
-		let ball = {
-			body: {
-				x: 202,
-				y: 400,
-				velocity: {
-					x: horizontalSpeed,
-					y: verticalSpeed
-				}
-			}
-		};
-
-		game.reboundOrSmashOnPlayerHitBall(
-			ball,
-			{
-				body: {
-					x: 200,
-					y: 400,
-					velocity: {
-						x: 200,
-						y: -100
-					}
-				}
-			},
 			'player1'
 		);
 
@@ -698,15 +827,13 @@ describe('Game', function() {
 		chai.assert.equal(-verticalSpeed / 4, ball.body.velocity.y);
 	});
 
-	it('reboundOrSmashOnPlayerHitBall for player2, ball direction is reversed if it is smashed', function() {
+	it('smashBallOnPlayerHit for player2, ball direction is reversed if it is smashed', function() {
 		let game = new Game(Random.id(5));
 
 		let horizontalSpeed = 300;
 		let verticalSpeed = -200;
 		let ball = {
 			body: {
-				x: 198,
-				y: 400,
 				velocity: {
 					x: horizontalSpeed,
 					y: verticalSpeed
@@ -714,97 +841,13 @@ describe('Game', function() {
 			}
 		};
 
-		game.reboundOrSmashOnPlayerHitBall(
+		game.smashBallOnPlayerHit(
 			ball,
-			{
-				body: {
-					x: 200,
-					y: 400,
-					velocity: {
-						x: -200,
-						y: -100
-					}
-				}
-			},
 			'player2'
 		);
 
 		chai.assert.equal(-horizontalSpeed * 2, ball.body.velocity.x);
 		chai.assert.equal(-verticalSpeed / 4, ball.body.velocity.y);
-	});
-
-	it('reboundOrSmashOnPlayerHitBall for player1, ball is smashed but constraint', function() {
-		let game = new Game(Random.id(5));
-
-		let horizontalSpeed = 600;
-		let verticalSpeed = 500;
-		let ball = {
-			body: {
-				x: 202,
-				y: 400,
-				velocity: {
-					x: horizontalSpeed,
-					y: verticalSpeed
-				}
-			}
-		};
-
-		game.reboundOrSmashOnPlayerHitBall(
-			ball,
-			{
-				body: {
-					x: 200,
-					y: 400,
-					velocity: {
-						x: 200,
-						y: -100
-					}
-				}
-			},
-			'player1'
-		);
-
-		chai.assert.notEqual(horizontalSpeed * 2, ball.body.velocity.x);
-		chai.assert.isBelow(ball.body.velocity.x, 1000);
-		chai.assert.notEqual(verticalSpeed / 4, ball.body.velocity.y);
-		chai.assert.isBelow(ball.body.velocity.y, 1000);
-	});
-
-	it('reboundOrSmashOnPlayerHitBall for player2, ball is smashed but constraint', function() {
-		let game = new Game(Random.id(5));
-
-		let horizontalSpeed = 600;
-		let verticalSpeed = 500;
-		let ball = {
-			body: {
-				x: 198,
-				y: 400,
-				velocity: {
-					x: horizontalSpeed,
-					y: verticalSpeed
-				}
-			}
-		};
-
-		game.reboundOrSmashOnPlayerHitBall(
-			ball,
-			{
-				body: {
-					x: 200,
-					y: 400,
-					velocity: {
-						x: -200,
-						y: -100
-					}
-				}
-			},
-			'player2'
-		);
-
-		chai.assert.notEqual(horizontalSpeed * 2, ball.body.velocity.x);
-		chai.assert.isBelow(ball.body.velocity.x, 1000);
-		chai.assert.notEqual(verticalSpeed / 4, ball.body.velocity.y);
-		chai.assert.isBelow(ball.body.velocity.y, 1000);
 	});
 
 	it('inputs returns false if there is no currentPlayer', function() {
@@ -876,6 +919,9 @@ describe('Game', function() {
 			isKeyUpDown: function() {
 				return false;
 			},
+			isKeyDownDown: function() {
+				return false;
+			},
 			setHorizontalSpeed(player, value) {
 				horizontalSpeedValue = value;
 			},
@@ -920,6 +966,9 @@ describe('Game', function() {
 				return true;
 			},
 			isKeyUpDown: function() {
+				return false;
+			},
+			isKeyDownDown: function() {
 				return false;
 			},
 			setHorizontalSpeed(player, value) {
@@ -968,6 +1017,9 @@ describe('Game', function() {
 			isKeyUpDown: function() {
 				return false;
 			},
+			isKeyDownDown: function() {
+				return false;
+			},
 			setHorizontalSpeed(player, value) {
 				horizontalSpeedValue = value;
 			},
@@ -1013,6 +1065,9 @@ describe('Game', function() {
 			},
 			isKeyUpDown: function() {
 				return true;
+			},
+			isKeyDownDown: function() {
+				return false;
 			},
 			setHorizontalSpeed(player, value) {
 				horizontalSpeedValue = value;
@@ -1060,6 +1115,9 @@ describe('Game', function() {
 			isKeyUpDown: function() {
 				return true;
 			},
+			isKeyDownDown: function() {
+				return false;
+			},
 			setHorizontalSpeed(player, value) {
 				horizontalSpeedValue = value;
 			},
@@ -1106,6 +1164,9 @@ describe('Game', function() {
 			isKeyUpDown: function() {
 				return false;
 			},
+			isKeyDownDown: function() {
+				return false;
+			},
 			setHorizontalSpeed(player, value) {
 				horizontalSpeedValue = value;
 			},
@@ -1149,6 +1210,9 @@ describe('Game', function() {
 				return false;
 			},
 			isKeyUpDown: function() {
+				return false;
+			},
+			isKeyDownDown: function() {
 				return false;
 			},
 			setHorizontalSpeed(player, value) {
