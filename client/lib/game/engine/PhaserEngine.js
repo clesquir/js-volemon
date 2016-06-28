@@ -158,6 +158,10 @@ export default class PhaserEngine {
 		return this.cursor.up.isDown;
 	}
 
+	isKeyDownDown() {
+		return this.cursor.down.isDown;
+	}
+
 	getCenterX() {
 		return this.game.world.centerX;
 	}
