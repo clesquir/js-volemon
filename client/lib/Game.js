@@ -638,7 +638,6 @@ export default class Game {
 	}
 
 	onBallHitPlayer(ball, player, playerKey) {
-		//Player is jumping forward and ball is in front of him
 		if (this.isPlayerJumpingForward(player, playerKey) && this.isBallInFrontOfPlayer(ball, player, playerKey)) {
 			if (player.doingDropShot) {
 				this.dropShotBallOnPlayerHit(ball);
@@ -646,8 +645,7 @@ export default class Game {
 				this.smashBallOnPlayerHit(ball, playerKey);
 			}
 		} else {
-			//Ball rebounds on player only if not below
-			if (this.engine.getYPosition(ball) <= this.engine.getYPosition(player) + (Constants.PLAYER_HEIGHT / 2)) {
+			if (!this.isBallBelowPlayer(ball, player)) {
 				if (player.doingDropShot && this.isBallInFrontOfPlayer(ball, player, playerKey)) {
 					this.dropShotBallOnPlayerHit(ball);
 				} else {
@@ -673,6 +671,12 @@ export default class Game {
 		return (
 			(playerKey === 'player1' && this.engine.getXPosition(player) < this.engine.getXPosition(ball)) ||
 			(playerKey === 'player2' && this.engine.getXPosition(ball) < this.engine.getXPosition(player))
+		);
+	}
+
+	isBallBelowPlayer(ball, player) {
+		return (
+			this.engine.getYPosition(ball) > this.engine.getYPosition(player) + (Constants.PLAYER_HEIGHT / 2)
 		);
 	}
 
