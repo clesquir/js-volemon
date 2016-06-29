@@ -639,14 +639,14 @@ export default class Game {
 
 	onBallHitPlayer(ball, player, playerKey) {
 		if (this.isPlayerJumpingForward(player, playerKey) && this.isBallInFrontOfPlayer(ball, player, playerKey)) {
-			if (player.doingDropShot) {
+			if (this.isPlayerDoingDropShot(ball, player, playerKey)) {
 				this.dropShotBallOnPlayerHit(ball);
 			} else {
 				this.smashBallOnPlayerHit(ball, playerKey);
 			}
 		} else {
 			if (!this.isBallBelowPlayer(ball, player)) {
-				if (player.doingDropShot && this.isBallInFrontOfPlayer(ball, player, playerKey)) {
+				if (this.isPlayerDoingDropShot(ball, player, playerKey)) {
 					this.dropShotBallOnPlayerHit(ball);
 				} else {
 					this.reboundBallOnPlayerHit(ball);
@@ -658,8 +658,11 @@ export default class Game {
 	}
 
 	isPlayerJumpingForward(player, playerKey) {
+		//Player can be at ground level if pushed by ball
+
 		return (
 			Math.round(this.engine.getVerticalSpeed(player)) < 0 &&
+			!this.isPlayerAtGroundLevel(player) &&
 			(
 				(playerKey === 'player1' && Math.round(this.engine.getHorizontalSpeed(player)) > 0) ||
 				(playerKey === 'player2' && Math.round(this.engine.getHorizontalSpeed(player)) < 0)
@@ -677,6 +680,12 @@ export default class Game {
 	isBallBelowPlayer(ball, player) {
 		return (
 			this.engine.getYPosition(ball) > this.engine.getYPosition(player) + (Constants.PLAYER_HEIGHT / 2)
+		);
+	}
+
+	isPlayerDoingDropShot(ball, player, playerKey) {
+		return (
+			player.doingDropShot && this.isBallInFrontOfPlayer(ball, player, playerKey) && !this.isPlayerAtGroundLevel(player)
 		);
 	}
 

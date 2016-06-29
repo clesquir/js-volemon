@@ -298,7 +298,7 @@ describe('Game', function() {
 					x: 200,
 					y: 400,
 					velocity: {
-						x: 0,
+						x: 25,
 						y: 0
 					}
 				}
@@ -316,8 +316,28 @@ describe('Game', function() {
 					x: 200,
 					y: 400,
 					velocity: {
-						x: 0,
+						x: 25,
 						y: 25
+					}
+				}
+			},
+			'player1'
+		));
+	});
+
+	it('isPlayerJumpingForward returns false if vertical speed is negative but player is at ground level', function() {
+		let game = new Game(Random.id(5));
+
+		sinon.stub(game, 'isPlayerAtGroundLevel', function() {return true;});
+
+		chai.assert.isFalse(game.isPlayerJumpingForward(
+			{
+				body: {
+					x: 200,
+					y: 0,
+					velocity: {
+						x: 25,
+						y: -25
 					}
 				}
 			},
@@ -610,6 +630,58 @@ describe('Game', function() {
 		));
 	});
 
+	it('isPlayerDoingDropShot returns true', function() {
+		let game = new Game(Random.id(5));
+
+		sinon.stub(game, 'isBallInFrontOfPlayer', function() {return true;});
+		sinon.stub(game, 'isPlayerAtGroundLevel', function() {return false;});
+
+		chai.assert.isTrue(game.isPlayerDoingDropShot(
+			{},
+			{doingDropShot: true},
+			'player1'
+		));
+	});
+
+	it('isPlayerDoingDropShot returns false if player is not doing a drop shot', function() {
+		let game = new Game(Random.id(5));
+
+		sinon.stub(game, 'isBallInFrontOfPlayer', function() {return true;});
+		sinon.stub(game, 'isPlayerAtGroundLevel', function() {return false;});
+
+		chai.assert.isFalse(game.isPlayerDoingDropShot(
+			{},
+			{doingDropShot: false},
+			'player1'
+		));
+	});
+
+	it('isPlayerDoingDropShot returns false if ball is not in front of player', function() {
+		let game = new Game(Random.id(5));
+
+		sinon.stub(game, 'isBallInFrontOfPlayer', function() {return false;});
+		sinon.stub(game, 'isPlayerAtGroundLevel', function() {return false;});
+
+		chai.assert.isFalse(game.isPlayerDoingDropShot(
+			{},
+			{doingDropShot: true},
+			'player1'
+		));
+	});
+
+	it('isPlayerDoingDropShot returns false if player is at ground level', function() {
+		let game = new Game(Random.id(5));
+
+		sinon.stub(game, 'isBallInFrontOfPlayer', function() {return true;});
+		sinon.stub(game, 'isPlayerAtGroundLevel', function() {return true;});
+
+		chai.assert.isFalse(game.isPlayerDoingDropShot(
+			{},
+			{doingDropShot: true},
+			'player1'
+		));
+	});
+
 	it('dropShotBallOnPlayerHit removes all speed velocity from ball object', function() {
 		let game = new Game(Random.id(5));
 
@@ -656,11 +728,12 @@ describe('Game', function() {
 
 		sinon.stub(game, 'isPlayerJumpingForward', function() {return false;});
 		sinon.stub(game, 'isBallBelowPlayer', function() {return false;});
+		sinon.stub(game, 'isPlayerDoingDropShot', function() {return false;});
 		sinon.stub(game.engine, 'constrainVelocity');
 
 		let reboundBallOnPlayerHit = sinon.stub(game, 'reboundBallOnPlayerHit');
 
-		game.onBallHitPlayer({}, {doingDropShot: false});
+		game.onBallHitPlayer({}, {}, 'player1');
 
 		chai.assert.isTrue(reboundBallOnPlayerHit.called);
 	});
@@ -670,33 +743,17 @@ describe('Game', function() {
 
 		sinon.stub(game, 'isPlayerJumpingForward', function() {return false;});
 		sinon.stub(game, 'isBallBelowPlayer', function() {return false;});
+		sinon.stub(game, 'isPlayerDoingDropShot', function() {return true;});
 		sinon.stub(game, 'isBallInFrontOfPlayer', function() {return true;});
 		sinon.stub(game.engine, 'constrainVelocity');
 
 		let dropShotBallOnPlayerHit = sinon.stub(game, 'dropShotBallOnPlayerHit');
 		let reboundBallOnPlayerHit = sinon.stub(game, 'reboundBallOnPlayerHit');
 
-		game.onBallHitPlayer({}, {doingDropShot: true});
+		game.onBallHitPlayer({}, {}, 'player1');
 
 		chai.assert.isFalse(reboundBallOnPlayerHit.called);
 		chai.assert.isTrue(dropShotBallOnPlayerHit.called);
-	});
-
-	it('onBallHitPlayer reboundBallOnPlayerHit is called if player is doing drop shot but ball is not in front of the player', function() {
-		let game = new Game(Random.id(5));
-
-		sinon.stub(game, 'isPlayerJumpingForward', function() {return false;});
-		sinon.stub(game, 'isBallBelowPlayer', function() {return false;});
-		sinon.stub(game, 'isBallInFrontOfPlayer', function() {return false;});
-		sinon.stub(game.engine, 'constrainVelocity');
-
-		let dropShotBallOnPlayerHit = sinon.stub(game, 'dropShotBallOnPlayerHit');
-		let reboundBallOnPlayerHit = sinon.stub(game, 'reboundBallOnPlayerHit');
-
-		game.onBallHitPlayer({}, {doingDropShot: true});
-
-		chai.assert.isTrue(reboundBallOnPlayerHit.called);
-		chai.assert.isFalse(dropShotBallOnPlayerHit.called);
 	});
 
 	it('onBallHitPlayer reboundBallOnPlayerHit is not called if the player is not jumping forward and the ball is below the player', function() {
@@ -704,11 +761,12 @@ describe('Game', function() {
 
 		sinon.stub(game, 'isPlayerJumpingForward', function() {return false;});
 		sinon.stub(game, 'isBallBelowPlayer', function() {return true;});
+		sinon.stub(game, 'isPlayerDoingDropShot', function() {return false;});
 		sinon.stub(game.engine, 'constrainVelocity');
 
 		let reboundBallOnPlayerHit = sinon.stub(game, 'reboundBallOnPlayerHit');
 
-		game.onBallHitPlayer({}, {doingDropShot: false});
+		game.onBallHitPlayer({}, {}, 'player1');
 
 		chai.assert.isFalse(reboundBallOnPlayerHit.called);
 	});
@@ -719,11 +777,12 @@ describe('Game', function() {
 		sinon.stub(game, 'isPlayerJumpingForward', function() {return true;});
 		sinon.stub(game, 'isBallInFrontOfPlayer', function() {return false;});
 		sinon.stub(game, 'isBallBelowPlayer', function() {return false;});
+		sinon.stub(game, 'isPlayerDoingDropShot', function() {return false;});
 		sinon.stub(game.engine, 'constrainVelocity');
 
 		let reboundBallOnPlayerHit = sinon.stub(game, 'reboundBallOnPlayerHit');
 
-		game.onBallHitPlayer({}, {doingDropShot: false});
+		game.onBallHitPlayer({}, {}, 'player1');
 
 		chai.assert.isTrue(reboundBallOnPlayerHit.called);
 	});
@@ -733,11 +792,12 @@ describe('Game', function() {
 
 		sinon.stub(game, 'isPlayerJumpingForward', function() {return true;});
 		sinon.stub(game, 'isBallInFrontOfPlayer', function() {return true;});
+		sinon.stub(game, 'isPlayerDoingDropShot', function() {return false;});
 		sinon.stub(game.engine, 'constrainVelocity');
 
 		let smashBallOnPlayerHit = sinon.stub(game, 'smashBallOnPlayerHit');
 
-		game.onBallHitPlayer({}, {doingDropShot: false});
+		game.onBallHitPlayer({}, {}, 'player1');
 
 		chai.assert.isTrue(smashBallOnPlayerHit.called);
 	});
@@ -747,12 +807,13 @@ describe('Game', function() {
 
 		sinon.stub(game, 'isPlayerJumpingForward', function() {return true;});
 		sinon.stub(game, 'isBallInFrontOfPlayer', function() {return true;});
+		sinon.stub(game, 'isPlayerDoingDropShot', function() {return true;});
 		sinon.stub(game.engine, 'constrainVelocity');
 
 		let dropShotBallOnPlayerHit = sinon.stub(game, 'dropShotBallOnPlayerHit');
 		let smashBallOnPlayerHit = sinon.stub(game, 'smashBallOnPlayerHit');
 
-		game.onBallHitPlayer({}, {doingDropShot: true});
+		game.onBallHitPlayer({}, {}, 'player1');
 
 		chai.assert.isFalse(smashBallOnPlayerHit.called);
 		chai.assert.isTrue(dropShotBallOnPlayerHit.called);
