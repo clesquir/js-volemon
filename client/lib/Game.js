@@ -217,6 +217,10 @@ export default class Game {
 		this.engine.stop();
 	}
 
+	onGameEnd() {
+		this.engine.onGameEnd();
+	}
+
 	preloadGame() {
 		this.engine.preloadGame();
 
@@ -482,6 +486,7 @@ export default class Game {
 
 		if (this.isGameFinished()) {
 			this.engine.updateText(this.informationText, this.getWinnerName() + ' wins!');
+			this.onGameEnd();
 		} else if (this.isGameOnGoing()) {
 			this.startCountdownTimer();
 			this.generateBonusActivationAndFrequenceTime();
@@ -567,8 +572,8 @@ export default class Game {
 			}
 		} else if (this.isGameTimeOut()) {
 			this.stopGame();
-
 			this.engine.updateText(this.informationText, 'The game has timed out...');
+			this.onGameEnd();
 		}
 	}
 
@@ -760,13 +765,19 @@ export default class Game {
 					this.engine.setVerticalSpeed(player, 0);
 				}
 			} else {
-				player.doingDropShot = (this.engine.isKeyDownDown());
+				player.doingDropShot = (this.isDropShotKeyDown());
 			}
 		}
 
 		this.sendPlayerPosition(player);
 
 		return true;
+	}
+
+	isDropShotKeyDown() {
+		return (
+			this.engine.isKeyDownDown() || this.engine.isKeyDDown()
+		);
 	}
 
 	isPlayerAtGroundLevel(player) {

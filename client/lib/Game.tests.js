@@ -965,9 +965,8 @@ describe('Game', function() {
 				velocityYOnJump: velocity
 			};
 		});
-		sinon.stub(game, 'isPlayerAtGroundLevel', function() {
-			return true;
-		});
+		sinon.stub(game, 'isDropShotKeyDown', function() {return false;});
+		sinon.stub(game, 'isPlayerAtGroundLevel', function() {return true;});
 		let sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
 
 		game.engine = {
@@ -978,9 +977,6 @@ describe('Game', function() {
 				return false;
 			},
 			isKeyUpDown: function() {
-				return false;
-			},
-			isKeyDownDown: function() {
 				return false;
 			},
 			setHorizontalSpeed(player, value) {
@@ -1014,9 +1010,8 @@ describe('Game', function() {
 				velocityYOnJump: velocity
 			};
 		});
-		sinon.stub(game, 'isPlayerAtGroundLevel', function() {
-			return true;
-		});
+		sinon.stub(game, 'isDropShotKeyDown', function() {return false;});
+		sinon.stub(game, 'isPlayerAtGroundLevel', function() {return true;});
 		let sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
 
 		game.engine = {
@@ -1027,9 +1022,6 @@ describe('Game', function() {
 				return true;
 			},
 			isKeyUpDown: function() {
-				return false;
-			},
-			isKeyDownDown: function() {
 				return false;
 			},
 			setHorizontalSpeed(player, value) {
@@ -1063,9 +1055,8 @@ describe('Game', function() {
 				velocityYOnJump: velocity
 			};
 		});
-		sinon.stub(game, 'isPlayerAtGroundLevel', function() {
-			return true;
-		});
+		sinon.stub(game, 'isDropShotKeyDown', function() {return false;});
+		sinon.stub(game, 'isPlayerAtGroundLevel', function() {return true;});
 		let sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
 
 		game.engine = {
@@ -1076,9 +1067,6 @@ describe('Game', function() {
 				return false;
 			},
 			isKeyUpDown: function() {
-				return false;
-			},
-			isKeyDownDown: function() {
 				return false;
 			},
 			setHorizontalSpeed(player, value) {
@@ -1112,9 +1100,8 @@ describe('Game', function() {
 				velocityYOnJump: velocity
 			};
 		});
-		sinon.stub(game, 'isPlayerAtGroundLevel', function() {
-			return true;
-		});
+		sinon.stub(game, 'isDropShotKeyDown', function() {return false;});
+		sinon.stub(game, 'isPlayerAtGroundLevel', function() {return true;});
 		let sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
 
 		game.engine = {
@@ -1126,9 +1113,6 @@ describe('Game', function() {
 			},
 			isKeyUpDown: function() {
 				return true;
-			},
-			isKeyDownDown: function() {
-				return false;
 			},
 			setHorizontalSpeed(player, value) {
 				horizontalSpeedValue = value;
@@ -1161,9 +1145,8 @@ describe('Game', function() {
 				velocityYOnJump: velocity
 			};
 		});
-		sinon.stub(game, 'isPlayerAtGroundLevel', function() {
-			return true;
-		});
+		sinon.stub(game, 'isDropShotKeyDown', function() {return false;});
+		sinon.stub(game, 'isPlayerAtGroundLevel', function() {return true;});
 		let sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
 
 		game.engine = {
@@ -1175,9 +1158,6 @@ describe('Game', function() {
 			},
 			isKeyUpDown: function() {
 				return true;
-			},
-			isKeyDownDown: function() {
-				return false;
 			},
 			setHorizontalSpeed(player, value) {
 				horizontalSpeedValue = value;
@@ -1210,9 +1190,8 @@ describe('Game', function() {
 				velocityYOnJump: velocity
 			};
 		});
-		sinon.stub(game, 'isPlayerAtGroundLevel', function() {
-			return true;
-		});
+		sinon.stub(game, 'isDropShotKeyDown', function() {return false;});
+		sinon.stub(game, 'isPlayerAtGroundLevel', function() {return true;});
 		let sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
 
 		game.engine = {
@@ -1223,9 +1202,6 @@ describe('Game', function() {
 				return false;
 			},
 			isKeyUpDown: function() {
-				return false;
-			},
-			isKeyDownDown: function() {
 				return false;
 			},
 			setHorizontalSpeed(player, value) {
@@ -1258,9 +1234,8 @@ describe('Game', function() {
 				velocityYOnJump: velocity
 			};
 		});
-		sinon.stub(game, 'isPlayerAtGroundLevel', function() {
-			return false;
-		});
+		sinon.stub(game, 'isDropShotKeyDown', function() {return false;});
+		sinon.stub(game, 'isPlayerAtGroundLevel', function() {return false;});
 		let sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
 
 		game.engine = {
@@ -1271,9 +1246,6 @@ describe('Game', function() {
 				return false;
 			},
 			isKeyUpDown: function() {
-				return false;
-			},
-			isKeyDownDown: function() {
 				return false;
 			},
 			setHorizontalSpeed(player, value) {

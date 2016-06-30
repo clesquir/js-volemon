@@ -20,7 +20,12 @@ export default class PhaserEngine {
 	}
 
 	stop() {
+		this.removeKeyControllers();
 		this.game.state.destroy();
+	}
+
+	onGameEnd() {
+		this.removeKeyControllers();
 	}
 
 	preloadGame() {
@@ -76,9 +81,11 @@ export default class PhaserEngine {
 
 	addKeyControllers() {
 		this.cursor = this.game.input.keyboard.createCursorKeys();
-		this.game.input.keyboard.addKeyCapture([
-			Phaser.Keyboard.UP, Phaser.Keyboard.DOWN, Phaser.Keyboard.RIGHT, Phaser.Keyboard.LEFT
-		]);
+		this.cursor['d'] = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
+	}
+
+	removeKeyControllers() {
+		this.game.input.keyboard.clearCaptures();
 	}
 
 	addGroup() {
@@ -160,6 +167,10 @@ export default class PhaserEngine {
 
 	isKeyDownDown() {
 		return this.cursor.down.isDown;
+	}
+
+	isKeyDDown() {
+		return this.cursor.d.isDown;
 	}
 
 	getCenterX() {
