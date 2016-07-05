@@ -3,12 +3,21 @@ export default class BaseBonus {
 	constructor(game) {
 		this.game = game;
 		this.durationMilliseconds = Config.bonusDuration;
+		this.createdAt = getUTCTimeStamp();
 		this.isActive = false;
 		this.activatorPlayerKey = null;
 		this.activatedAt = null;
 		this.spriteBorderKey = 'bonus-environment';
 		this.letter = '\uf005';
 		this.fontSize = '16px';
+	}
+
+	getIdentifier() {
+		return this.constructor.name + '_' + this.createdAt;
+	}
+
+	getClass() {
+		return this.constructor.name;
 	}
 
 	getSpriteBorderKey() {
@@ -23,6 +32,18 @@ export default class BaseBonus {
 		return this.fontSize;
 	}
 
+	getActivatedAt() {
+		return this.activatedAt;
+	}
+
+	getDuration() {
+		return this.durationMilliseconds;
+	}
+
+	getTargetPlayerKey() {
+		return this.activatorPlayerKey;
+	}
+
 	/**
 	 * Sets the bonus active and keep reference of the activator player and date
 	 * @param playerKey
@@ -30,7 +51,7 @@ export default class BaseBonus {
 	activate(playerKey) {
 		this.isActive = true;
 		this.activatorPlayerKey = playerKey;
-		this.activatedAt = getUTCNow();
+		this.activatedAt = getUTCTimeStamp();
 	}
 
 	deactivateFromSimilar(bonus) {
@@ -54,7 +75,7 @@ export default class BaseBonus {
 			return false;
 		}
 
-		if (getUTCTimeStamp() - this.activatedAt.getTime() >= this.durationMilliseconds) {
+		if (getUTCTimeStamp() - this.activatedAt >= this.durationMilliseconds) {
 			this.stop();
 			return false;
 		}

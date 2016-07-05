@@ -293,6 +293,8 @@ export default class Game {
 			align: 'center'
 		});
 
+		this.bonusesGroup = this.engine.addGroup();
+
 		this.engine.addKeyControllers();
 
 		this.resumeOnTimerEnd();
@@ -555,6 +557,7 @@ export default class Game {
 		if (this.isGameOnGoing()) {
 			this.inputs();
 			this.checkBonuses();
+			this.updatePlayerBonuses();
 
 			this.updateCountdown();
 
@@ -574,6 +577,43 @@ export default class Game {
 			this.stopGame();
 			this.engine.updateText(this.informationText, 'The game has timed out...');
 			this.onGameEnd();
+		}
+	}
+
+	updatePlayerBonuses() {
+		var game = this.getGame();
+
+		if (game) {
+			this.bonusesGroup.removeAll(true);
+
+			let padding = 5,
+				player1Count = 0,
+				player2Count = 0;
+
+			for (let activeBonus of game.activeBonuses) {
+				let bonus = BonusFactory.getInstance(activeBonus.bonusClass, this);
+
+				switch (activeBonus.targetPlayerKey) {
+					case 'player1':
+						player1Count++;
+						this.bonusesGroup.add(this.engine.drawBonus(
+							padding + (player1Count * ((Config.bonusRadius * 2) + padding)),
+							this.ySize - (this.groundHeight / 2),
+							bonus.getLetter(), bonus.getFontSize(), bonus.getSpriteBorderKey(),
+							activeBonus.activatedAt, bonus.getDuration()
+						));
+						break;
+					case 'player2':
+						player2Count++;
+						this.bonusesGroup.add(this.engine.drawBonus(
+							(this.xSize / 2) + padding + (player2Count * ((Config.bonusRadius * 2) + padding)),
+							this.ySize - (this.groundHeight / 2),
+							bonus.getLetter(), bonus.getFontSize(), bonus.getSpriteBorderKey(),
+							activeBonus.activatedAt, bonus.getDuration()
+						));
+						break;
+				}
+			}
 		}
 	}
 
@@ -1031,12 +1071,24 @@ export default class Game {
 			return;
 		}
 
-		this.deactivateSimilarBonusForPlayerKey(this.bonus.bonus, playerKey);
+		let bonus = this.bonus.bonus;
 
-		this.bonus.bonus.activate(playerKey);
-		this.bonus.bonus.start();
+		this.deactivateSimilarBonusForPlayerKey(bonus, playerKey);
 
-		this.bonuses.push(this.bonus.bonus);
+		bonus.activate(playerKey);
+		bonus.start();
+
+		this.bonuses.push(bonus);
+		if (this.isUserHost()) {
+			Meteor.call(
+				'addActiveBonusToGame',
+				this.gameId,
+				bonus.getIdentifier(),
+				bonus.getClass(),
+				bonus.getActivatedAt(),
+				bonus.getTargetPlayerKey()
+			);
+		}
 
 		this.bonus.destroy();
 		this.bonus = null;
@@ -1056,6 +1108,8 @@ export default class Game {
 		for (let bonus of this.bonuses) {
 			if (bonus.check()) {
 				stillActiveBonuses.push(bonus);
+			} else if (this.isUserHost()) {
+				Meteor.call('removeActiveBonusFromGame', this.gameId, bonus.getIdentifier());
 			}
 		}
 

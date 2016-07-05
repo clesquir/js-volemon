@@ -396,18 +396,61 @@ export default class PhaserEngine {
 			.start();
 	}
 
+	drawBonus(x, y, bonusLetter, bonusFontSize, bonusSpriteBorderKey, bonusActivatedAt, bonusDuration) {
+		var bonusSprite = this.getBonusSprite(x, y, bonusLetter, bonusFontSize, bonusSpriteBorderKey);
+
+		//Add pie progress
+		let radius = 14;
+		let pieProgress = this.game.add.bitmapData(radius * 2, radius * 2);
+
+		//Calculate progress
+		let progress = 1 - ((getUTCTimeStamp() - bonusActivatedAt) / bonusDuration);
+		progress = Phaser.Math.clamp(progress, 0.00001, 0.99999);
+
+		pieProgress.ctx.fillStyle = '#000000';
+		pieProgress.ctx.beginPath();
+		pieProgress.ctx.arc(radius, radius, radius, 0, (Math.PI * 2) * progress, true);
+		pieProgress.ctx.lineTo(radius, radius);
+		pieProgress.ctx.closePath();
+		pieProgress.ctx.fill();
+
+		let pieProgressSprite = this.game.add.sprite(0, 0, pieProgress);
+		this.setAnchor(pieProgressSprite, 0.5);
+		this.setOpacity(pieProgressSprite, 0.25);
+		pieProgressSprite.angle = -90;
+
+		bonusSprite.addChild(pieProgressSprite);
+
+		bonusSprite.bringToTop();
+		this.setStatic(bonusSprite, true);
+
+		return bonusSprite;
+	}
+
 	addBonus(x, bonusGravityScale, bonusMaterial, bonusCollisionGroup,
 		bonusLetter, bonusFontSize, bonusSpriteBorderKey) {
-		var bonusSprite = this.addSprite(x, 0, 'delimiter'),
-			bonusGraphics, bonusText, bonusBorder;
+		var bonusSprite = this.getBonusSprite(x, 0, bonusLetter, bonusFontSize, bonusSpriteBorderKey);
 
 		bonusSprite.initialGravity = bonusGravityScale;
 		bonusSprite.sendToBack();
 
+		this.setFixedRotation(bonusSprite, false);
+		this.setGravity(bonusSprite, bonusSprite.initialGravity);
+		this.setDamping(bonusSprite, 0);
+		this.setMaterial(bonusSprite, bonusMaterial);
+		this.setCollisionGroup(bonusSprite, bonusCollisionGroup);
+
+		return bonusSprite;
+	}
+
+	getBonusSprite(x, y, bonusLetter, bonusFontSize, bonusSpriteBorderKey) {
+		var bonusSprite = this.addSprite(x, y, 'delimiter'),
+			bonusGraphics, bonusText, bonusBorder;
+
 		bonusGraphics = this.addGraphics(0, 0);
 
 		bonusGraphics.beginFill(0xFFFFFF);
-		bonusGraphics.drawCircle(0, 0, 30);
+		bonusGraphics.drawCircle(0, 0, 28);
 		bonusGraphics.endFill();
 
 		bonusText = this.addText(0, 3, bonusLetter, {
@@ -422,12 +465,7 @@ export default class PhaserEngine {
 		this.setAnchor(bonusBorder, 0.5);
 
 		bonusSprite.body.clearShapes();
-		bonusSprite.body.addCircle(15);
-		this.setFixedRotation(bonusSprite, false);
-		this.setGravity(bonusSprite, bonusSprite.initialGravity);
-		this.setDamping(bonusSprite, 0);
-		this.setMaterial(bonusSprite, bonusMaterial);
-		this.setCollisionGroup(bonusSprite, bonusCollisionGroup);
+		bonusSprite.body.addCircle(Config.bonusRadius);
 
 		bonusSprite.addChild(bonusGraphics);
 		bonusSprite.addChild(bonusText);

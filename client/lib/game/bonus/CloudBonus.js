@@ -9,6 +9,10 @@ export default class CloudBonus extends BaseBonus {
 		this.letter = '\uf0c2';
 	}
 
+	getTargetPlayerKey() {
+		return null;
+	}
+
 	isSimilarBonusForPlayerKey(bonus, playerKey) {
 		return bonus instanceof CloudBonus;
 	}
