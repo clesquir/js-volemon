@@ -22,7 +22,8 @@ Meteor.methods({
 					hasBonuses: 1,
 					hostPoints: 0,
 					clientPoints: 0,
-					lastPointTaken: null
+					lastPointTaken: null,
+					activeBonuses: []
 				});
 			} catch (e) {
 				//If the id is already taken loop until it finds a unique id
@@ -275,6 +276,7 @@ Meteor.methods({
 				break;
 		}
 
+		data['activeBonuses'] = [];
 		data['lastPointAt'] = getUTCTimeStamp();
 		data['pointsDuration'] = [].concat(game.pointsDuration).concat([data['lastPointAt'] - game.lastPointAt]);
 
@@ -291,5 +293,47 @@ Meteor.methods({
 		if (isGameFinished) {
 			updateProfilesOnGameFinish(game._id, columnName);
 		}
+	},
+
+	addActiveBonusToGame: function(gameId, bonusIdentifier, bonusClass, activatedAt, targetPlayerKey) {
+		var game = Games.findOne(gameId),
+			data = {};
+
+		if (!game) {
+			throw new Meteor.Error(404, 'Game not found');
+		}
+
+		if (game.status != Constants.GAME_STATUS_STARTED) {
+			throw new Meteor.Error('not-allowed', 'Only active games can have active bonus added to');
+		}
+
+		data['activeBonuses'] = [].concat(game.activeBonuses).concat([{
+			bonusIdentifier: bonusIdentifier,
+			bonusClass: bonusClass,
+			activatedAt: activatedAt,
+			targetPlayerKey: targetPlayerKey
+		}]);
+
+		Games.update({_id: game._id}, {$set: data});
+	},
+
+	removeActiveBonusFromGame: function(gameId, bonusIdentifier) {
+		var game = Games.findOne(gameId),
+			data = {
+				activeBonuses: []
+			};
+
+		if (!game) {
+			throw new Meteor.Error(404, 'Game not found');
+		}
+
+		//Remove the bonus/targetPlayerKey from the list
+		for (let activeBonus of game.activeBonuses) {
+			if (activeBonus.bonusIdentifier != bonusIdentifier) {
+				data.activeBonuses.push(activeBonus);
+			}
+		}
+
+		Games.update({_id: game._id}, {$set: data});
 	}
 });
