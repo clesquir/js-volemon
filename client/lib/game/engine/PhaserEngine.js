@@ -406,7 +406,13 @@ export default class PhaserEngine {
 		//Calculate progress
 		let progress = Phaser.Math.clamp(bonusProgress, 0.00001, 0.99999);
 
-		pieProgress.ctx.fillStyle = '#000000';
+		let color = '#000000';
+		let opacity = 0.25;
+		if (progress <= 0.1) {
+			color = '#c94141';
+			opacity = 0.5;
+		}
+		pieProgress.ctx.fillStyle = color;
 		pieProgress.ctx.beginPath();
 		pieProgress.ctx.arc(radius, radius, radius, 0, (Math.PI * 2) * progress, true);
 		pieProgress.ctx.lineTo(radius, radius);
@@ -415,7 +421,7 @@ export default class PhaserEngine {
 
 		let pieProgressSprite = this.game.add.sprite(0, 0, pieProgress);
 		this.setAnchor(pieProgressSprite, 0.5);
-		this.setOpacity(pieProgressSprite, 0.25);
+		this.setOpacity(pieProgressSprite, opacity);
 		pieProgressSprite.angle = -90;
 
 		bonusSprite.addChild(pieProgressSprite);
