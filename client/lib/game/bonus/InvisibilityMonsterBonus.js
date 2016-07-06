@@ -4,7 +4,6 @@ export default class InvisibilityMonsterBonus extends MonsterBonus {
 
 	constructor(...args) {
 		super(...args);
-		this.durationMilliseconds = 5000;
 		this.spriteBorderKey = 'bonus-target-negative';
 		this.letter = '\uf070';
 	}
