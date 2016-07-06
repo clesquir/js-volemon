@@ -1,7 +1,8 @@
 export default class BaseBonus {
 
-	constructor(game) {
+	constructor(game, className) {
 		this.game = game;
+		this.className = className;
 		this.durationMilliseconds = Config.bonusDuration;
 		this.createdAt = getUTCTimeStamp();
 		this.isActive = false;
@@ -13,11 +14,11 @@ export default class BaseBonus {
 	}
 
 	getIdentifier() {
-		return this.constructor.name + '_' + this.createdAt;
+		return this.className + '_' + this.createdAt;
 	}
 
-	getClass() {
-		return this.constructor.name;
+	getClassName() {
+		return this.className;
 	}
 
 	getSpriteBorderKey() {

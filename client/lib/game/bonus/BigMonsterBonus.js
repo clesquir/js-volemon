@@ -3,8 +3,8 @@ import { Constants } from '/lib/constants.js';
 
 export default class BigMonsterBonus extends MonsterScaleBonus {
 
-	constructor(game) {
-		super(game);
+	constructor(...args) {
+		super(...args);
 		this.spriteBorderKey = 'bonus-target-positive';
 		this.letter = '\uf065';
 	}

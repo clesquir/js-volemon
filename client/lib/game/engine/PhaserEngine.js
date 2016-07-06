@@ -396,7 +396,7 @@ export default class PhaserEngine {
 			.start();
 	}
 
-	drawBonus(x, y, bonusLetter, bonusFontSize, bonusSpriteBorderKey, bonusActivatedAt, bonusDuration) {
+	drawBonus(x, y, bonusLetter, bonusFontSize, bonusSpriteBorderKey, bonusProgress) {
 		var bonusSprite = this.getBonusSprite(x, y, bonusLetter, bonusFontSize, bonusSpriteBorderKey);
 
 		//Add pie progress
@@ -404,8 +404,7 @@ export default class PhaserEngine {
 		let pieProgress = this.game.add.bitmapData(radius * 2, radius * 2);
 
 		//Calculate progress
-		let progress = 1 - ((getUTCTimeStamp() - bonusActivatedAt) / bonusDuration);
-		progress = Phaser.Math.clamp(progress, 0.00001, 0.99999);
+		let progress = Phaser.Math.clamp(bonusProgress, 0.00001, 0.99999);
 
 		pieProgress.ctx.fillStyle = '#000000';
 		pieProgress.ctx.beginPath();

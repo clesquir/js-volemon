@@ -2,8 +2,8 @@ import MonsterBonus from '/client/lib/game/bonus/MonsterBonus.js';
 
 export default class ReverseMoveMonsterBonus extends MonsterBonus {
 
-	constructor(game) {
-		super(game);
+	constructor(...args) {
+		super(...args);
 		this.spriteBorderKey = 'bonus-target-negative';
 		this.letter = '\uf0ec';
 	}

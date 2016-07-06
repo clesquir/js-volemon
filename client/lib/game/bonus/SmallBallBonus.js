@@ -3,8 +3,8 @@ import { Constants } from '/lib/constants.js';
 
 export default class SmallBallBonus extends BallScaleBonus {
 
-	constructor(game) {
-		super(game);
+	constructor(...args) {
+		super(...args);
 		this.spriteBorderKey = 'bonus-environment-negative';
 		this.letter = '\uf111';
 		this.fontSize = '8px';
