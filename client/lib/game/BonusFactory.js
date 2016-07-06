@@ -30,34 +30,34 @@ export default class BonusFactory {
 	}
 
 	/**
-	 * @param value
+	 * @param bonusClass
 	 * @param game
 	 * @returns {BaseBonus}
 	 */
-	static getInstance(value, game) {
-		switch (value) {
+	static getInstance(bonusClass, game) {
+		switch (bonusClass) {
 			case Constants.BONUS_SMALL_BALL:
-				return new SmallBallBonus(game);
+				return new SmallBallBonus(game, bonusClass);
 			case Constants.BONUS_BIG_BALL:
-				return new BigBallBonus(game);
+				return new BigBallBonus(game, bonusClass);
 			case Constants.BONUS_SMALL_MONSTER:
-				return new SmallMonsterBonus(game);
+				return new SmallMonsterBonus(game, bonusClass);
 			case Constants.BONUS_BIG_MONSTER:
-				return new BigMonsterBonus(game);
+				return new BigMonsterBonus(game, bonusClass);
 			case Constants.BONUS_BIG_JUMP_MONSTER:
-				return new BigJumpMonsterBonus(game);
+				return new BigJumpMonsterBonus(game, bonusClass);
 			case Constants.BONUS_SLOW_MONSTER:
-				return new SlowMonsterBonus(game);
+				return new SlowMonsterBonus(game, bonusClass);
 			case Constants.BONUS_FAST_MONSTER:
-				return new FastMonsterBonus(game);
+				return new FastMonsterBonus(game, bonusClass);
 			case Constants.BONUS_FREEZE_MONSTER:
-				return new FreezeMonsterBonus(game);
+				return new FreezeMonsterBonus(game, bonusClass);
 			case Constants.BONUS_REVERSE_MOVE_MONSTER:
-				return new ReverseMoveMonsterBonus(game);
+				return new ReverseMoveMonsterBonus(game, bonusClass);
 			case Constants.BONUS_INVISIBILITY_MONSTER:
-				return new InvisibilityMonsterBonus(game);
+				return new InvisibilityMonsterBonus(game, bonusClass);
 			case Constants.BONUS_CLOUD:
-				return new CloudBonus(game);
+				return new CloudBonus(game, bonusClass);
 		}
 
 		throw 'Inexistent bonus';

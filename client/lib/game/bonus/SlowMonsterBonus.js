@@ -2,8 +2,8 @@ import MovementMonsterBonus from '/client/lib/game/bonus/MovementMonsterBonus.js
 
 export default class SlowMonsterBonus extends MovementMonsterBonus {
 
-	constructor(game) {
-		super(game);
+	constructor(...args) {
+		super(...args);
 		this.spriteBorderKey = 'bonus-target-negative';
 		this.letter = '\uf252';
 	}

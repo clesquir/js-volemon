@@ -2,8 +2,8 @@ import MonsterBonus from '/client/lib/game/bonus/MonsterBonus.js';
 
 export default class InvisibilityMonsterBonus extends MonsterBonus {
 
-	constructor(game) {
-		super(game);
+	constructor(...args) {
+		super(...args);
 		this.durationMilliseconds = 5000;
 		this.spriteBorderKey = 'bonus-target-negative';
 		this.letter = '\uf070';

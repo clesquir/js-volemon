@@ -1089,7 +1089,7 @@ export default class Game {
 				'addActiveBonusToGame',
 				this.gameId,
 				bonus.getIdentifier(),
-				bonus.getClass(),
+				bonus.getClassName(),
 				bonus.getActivatedAt() + this.serverOffset,
 				bonus.getTargetPlayerKey()
 			);
