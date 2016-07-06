@@ -1027,7 +1027,7 @@ export default class Game {
 	}
 
 	createBonusIfTimeHasElapsed() {
-		var frequenceTime = this.bonusFrequenceTime - Math.round((this.engine.getTime() - this.lastGameRespawn) / 25);
+		var frequenceTime = this.bonusFrequenceTime - Math.round((this.engine.getTime() - this.lastGameRespawn) / 10);
 
 		if (frequenceTime < 0) {
 			frequenceTime = 0;
