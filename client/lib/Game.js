@@ -22,6 +22,7 @@ export default class Game {
 		this.lastGameRespawn = 0;
 		this.bonus = null;
 		this.bonuses = [];
+		this.serverOffset = TimeSync.serverOffset();
 	}
 
 	getGame() {
@@ -600,7 +601,7 @@ export default class Game {
 							padding + (player1Count * ((Config.bonusRadius * 2) + padding)),
 							this.ySize - (this.groundHeight / 2),
 							bonus.getLetter(), bonus.getFontSize(), bonus.getSpriteBorderKey(),
-							activeBonus.activatedAt, bonus.getDuration()
+							this.getBonusProgress(activeBonus, bonus)
 						));
 						break;
 					case 'player2':
@@ -609,12 +610,16 @@ export default class Game {
 							(this.xSize / 2) + padding + (player2Count * ((Config.bonusRadius * 2) + padding)),
 							this.ySize - (this.groundHeight / 2),
 							bonus.getLetter(), bonus.getFontSize(), bonus.getSpriteBorderKey(),
-							activeBonus.activatedAt, bonus.getDuration()
+							this.getBonusProgress(activeBonus, bonus)
 						));
 						break;
 				}
 			}
 		}
+	}
+
+	getBonusProgress(activeBonus, bonus) {
+		return 1 - ((getUTCTimeStamp() + this.serverOffset - activeBonus.activatedAt) / bonus.getDuration());
 	}
 
 	updateCountdown() {
@@ -1085,7 +1090,7 @@ export default class Game {
 				this.gameId,
 				bonus.getIdentifier(),
 				bonus.getClass(),
-				bonus.getActivatedAt(),
+				bonus.getActivatedAt() + this.serverOffset,
 				bonus.getTargetPlayerKey()
 			);
 		}
