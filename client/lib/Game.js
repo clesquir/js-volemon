@@ -356,7 +356,7 @@ export default class Game {
 	createBall(initialXLocation, initialYLocation) {
 		this.ball = this.engine.addSprite(initialXLocation, initialYLocation, 'ball');
 
-		this.ball.initialGravity = Config.ballGravityScale;
+		this.ball.initialGravity = Constants.BALL_GRAVITY_SCALE;
 		this.ball.polygonObject = 'ball';
 		this.engine.loadPolygon(this.ball, Constants.NORMAL_SCALE_PHYSICS_DATA, 'ball');
 
@@ -942,6 +942,14 @@ export default class Game {
 
 	resetBallScale() {
 		this.scaleBall(Constants.NORMAL_SCALE_BONUS);
+	}
+
+	setBallGravity(gravity) {
+		this.engine.setGravity(this.ball, gravity);
+	}
+
+	resetBallGravity() {
+		this.setBallGravity(this.ball.initialGravity);
 	}
 
 	changePlayerProperty(playerKey, property, value) {
