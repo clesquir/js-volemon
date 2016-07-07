@@ -11,6 +11,7 @@ export default class BigBallBonus extends BallScaleBonus {
 
 	start() {
 		this.game.scaleBall.call(this.game, Constants.BIG_SCALE_BONUS);
+		this.game.setBallGravity.call(this.game, Constants.BALL_BIG_GRAVITY_SCALE);
 	}
 
 };

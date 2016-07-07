@@ -12,6 +12,7 @@ export default class SmallBallBonus extends BallScaleBonus {
 
 	start() {
 		this.game.scaleBall.call(this.game, Constants.SMALL_SCALE_BALL_BONUS);
+		this.game.setBallGravity.call(this.game, Constants.BALL_SMALL_GRAVITY_SCALE);
 	}
 
 };

@@ -8,6 +8,7 @@ export default class BallScaleBonus extends BallBonus {
 
 	stop() {
 		this.game.resetBallScale.call(this.game);
+		this.game.resetBallGravity.call(this.game);
 
 		this.deactivate();
 	}
