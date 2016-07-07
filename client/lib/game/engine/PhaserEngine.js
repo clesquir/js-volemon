@@ -81,7 +81,11 @@ export default class PhaserEngine {
 
 	addKeyControllers() {
 		this.cursor = this.game.input.keyboard.createCursorKeys();
+		this.cursor['a'] = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
+		this.cursor['w'] = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
 		this.cursor['d'] = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
+		this.cursor['s'] = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
+		this.cursor['spacebar'] = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 	}
 
 	removeKeyControllers() {
@@ -153,24 +157,40 @@ export default class PhaserEngine {
 		return this.game.physics.p2.createMaterial(material);
 	}
 
-	isKeyLeftDown() {
+	isLeftKeyDown() {
 		return this.cursor.left.isDown;
 	}
 
-	isKeyRightDown() {
+	isRightKeyDown() {
 		return this.cursor.right.isDown;
 	}
 
-	isKeyUpDown() {
+	isUpKeyDown() {
 		return this.cursor.up.isDown;
 	}
 
-	isKeyDownDown() {
+	isDownKeyDown() {
 		return this.cursor.down.isDown;
 	}
 
-	isKeyDDown() {
+	isAKeyDown() {
+		return this.cursor.a.isDown;
+	}
+
+	isWKeyDown() {
+		return this.cursor.w.isDown;
+	}
+
+	isDKeyDown() {
 		return this.cursor.d.isDown;
+	}
+
+	isSKeyDown() {
+		return this.cursor.s.isDown;
+	}
+
+	isSpacebarKeyDown() {
+		return this.cursor.spacebar.isDown;
 	}
 
 	getCenterX() {

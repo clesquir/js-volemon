@@ -795,22 +795,22 @@ export default class Game {
 			this.engine.setHorizontalSpeed(player, 0);
 			this.engine.setVerticalSpeed(player, 0);
 		} else {
-			if (this.engine.isKeyLeftDown()) {
+			if (this.isLeftKeyDown()) {
 				this.engine.setHorizontalSpeed(player, player.leftMoveModifier * player.velocityXOnMove);
-			} else if (this.engine.isKeyRightDown()) {
+			} else if (this.isRightKeyDown()) {
 				this.engine.setHorizontalSpeed(player, player.rightMoveModifier * player.velocityXOnMove);
 			} else {
 				this.engine.setHorizontalSpeed(player, 0);
 			}
 
 			if (this.isPlayerAtGroundLevel(player)) {
-				if (this.engine.isKeyUpDown() && player.canJump) {
+				if (this.isUpKeyDown() && player.canJump) {
 					this.engine.setVerticalSpeed(player, -player.velocityYOnJump);
 				} else {
 					this.engine.setVerticalSpeed(player, 0);
 				}
 			} else {
-				player.doingDropShot = (this.isDropShotKeyDown());
+				player.doingDropShot = this.isDropShotKeyDown();
 			}
 		}
 
@@ -819,9 +819,27 @@ export default class Game {
 		return true;
 	}
 
+	isLeftKeyDown() {
+		return (
+			this.engine.isLeftKeyDown() || this.engine.isAKeyDown()
+		);
+	}
+
+	isRightKeyDown() {
+		return (
+			this.engine.isRightKeyDown() || this.engine.isDKeyDown()
+		);
+	}
+
+	isUpKeyDown() {
+		return (
+			this.engine.isUpKeyDown() || this.engine.isWKeyDown()
+		);
+	}
+
 	isDropShotKeyDown() {
 		return (
-			this.engine.isKeyDownDown() || this.engine.isKeyDDown()
+			this.engine.isDownKeyDown() || this.engine.isSKeyDown() || this.engine.isSpacebarKeyDown()
 		);
 	}
 
