@@ -923,13 +923,13 @@ describe('Game', function() {
 		chai.assert.isFalse(sendPlayerPositionStub.called);
 	});
 
-	it('inputs sets engine Horizontal and Vertical speed to 0 if player cannot move and sends player position', function() {
+	it('inputs sets engine Horizontal and Vertical speed to 0 if player is frozen and sends player position', function() {
 		var game = new Game(Random.id(5)),
 			horizontalSpeedValue = null,
 			verticalSpeedValue = null;
 
 		sinon.stub(game, 'getCurrentPlayer', function() {
-			return {canMove: false, canJump: false};
+			return {isFrozen: true};
 		});
 		let sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
 
@@ -957,8 +957,7 @@ describe('Game', function() {
 
 		sinon.stub(game, 'getCurrentPlayer', function() {
 			return {
-				canMove: true,
-				canJump: true,
+				isFrozen: false,
 				leftMoveModifier: -moveModifier,
 				rightMoveModifier: moveModifier,
 				velocityXOnMove: velocity,
@@ -996,8 +995,7 @@ describe('Game', function() {
 
 		sinon.stub(game, 'getCurrentPlayer', function() {
 			return {
-				canMove: true,
-				canJump: true,
+				isFrozen: false,
 				leftMoveModifier: -moveModifier,
 				rightMoveModifier: moveModifier,
 				velocityXOnMove: velocity,
@@ -1035,8 +1033,7 @@ describe('Game', function() {
 
 		sinon.stub(game, 'getCurrentPlayer', function() {
 			return {
-				canMove: true,
-				canJump: true,
+				isFrozen: false,
 				leftMoveModifier: -moveModifier,
 				rightMoveModifier: moveModifier,
 				velocityXOnMove: velocity,
@@ -1074,8 +1071,7 @@ describe('Game', function() {
 
 		sinon.stub(game, 'getCurrentPlayer', function() {
 			return {
-				canMove: true,
-				canJump: true,
+				isFrozen: false,
 				leftMoveModifier: -moveModifier,
 				rightMoveModifier: moveModifier,
 				velocityXOnMove: velocity,
@@ -1104,45 +1100,6 @@ describe('Game', function() {
 		chai.assert.isTrue(sendPlayerPositionStub.called);
 	});
 
-	it('inputs sets engine Vertical speed to 0 if up is pressed and the player cannot jump and sends player position', function() {
-		var game = new Game(Random.id(5)),
-			moveModifier = 100,
-			velocity = 100,
-			horizontalSpeedValue = null,
-			verticalSpeedValue = null;
-
-		sinon.stub(game, 'getCurrentPlayer', function() {
-			return {
-				canMove: true,
-				canJump: false,
-				leftMoveModifier: -moveModifier,
-				rightMoveModifier: moveModifier,
-				velocityXOnMove: velocity,
-				velocityYOnJump: velocity
-			};
-		});
-		sinon.stub(game, 'isLeftKeyDown', function() {return false;});
-		sinon.stub(game, 'isRightKeyDown', function() {return false;});
-		sinon.stub(game, 'isUpKeyDown', function() {return true;});
-		sinon.stub(game, 'isDropShotKeyDown', function() {return false;});
-		sinon.stub(game, 'isPlayerAtGroundLevel', function() {return true;});
-		let sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
-
-		game.engine = {
-			setHorizontalSpeed(player, value) {
-				horizontalSpeedValue = value;
-			},
-			setVerticalSpeed(player, value) {
-				verticalSpeedValue = value;
-			}
-		};
-
-		chai.assert.isTrue(game.inputs());
-		chai.assert.equal(0, horizontalSpeedValue);
-		chai.assert.equal(0, verticalSpeedValue);
-		chai.assert.isTrue(sendPlayerPositionStub.called);
-	});
-
 	it('inputs sets engine Vertical speed to 0 if up is not pressed and sends player position', function() {
 		var game = new Game(Random.id(5)),
 			moveModifier = 100,
@@ -1152,8 +1109,7 @@ describe('Game', function() {
 
 		sinon.stub(game, 'getCurrentPlayer', function() {
 			return {
-				canMove: true,
-				canJump: true,
+				isFrozen: false,
 				leftMoveModifier: -moveModifier,
 				rightMoveModifier: moveModifier,
 				velocityXOnMove: velocity,
@@ -1190,8 +1146,7 @@ describe('Game', function() {
 
 		sinon.stub(game, 'getCurrentPlayer', function() {
 			return {
-				canMove: true,
-				canJump: true,
+				isFrozen: false,
 				leftMoveModifier: -moveModifier,
 				rightMoveModifier: moveModifier,
 				velocityXOnMove: velocity,
@@ -1218,5 +1173,129 @@ describe('Game', function() {
 		chai.assert.equal(0, horizontalSpeedValue);
 		chai.assert.isFalse(setVerticalSpeedStub.called);
 		chai.assert.isTrue(sendPlayerPositionStub.called);
+	});
+
+	it('setPlayerGravity sets gravity if player is not frozen', function() {
+		var game = new Game(Random.id(5)),
+			gravity = 2;
+
+		game.player1 = {
+			isFrozen: false,
+			body: {
+				data: {
+					gravityScale: 1
+				}
+			}
+		};
+
+		game.setPlayerGravity('player1', gravity);
+
+		chai.assert.equal(gravity, game.player1.body.data.gravityScale);
+	});
+
+	it('setPlayerGravity does not set gravity if player is frozen', function() {
+		var game = new Game(Random.id(5)),
+			initialGravity = 1,
+			gravity = 2;
+
+		game.player1 = {
+			isFrozen: true,
+			body: {
+				data: {
+					gravityScale: initialGravity
+				}
+			}
+		};
+
+		game.setPlayerGravity('player1', gravity);
+
+		chai.assert.equal(initialGravity, game.player1.body.data.gravityScale);
+	});
+
+	it('resetPlayerGravity resets gravity if player is frozen', function() {
+		var game = new Game(Random.id(5)),
+			initialGravity = 1,
+			actualGravity = 2;
+
+		game.player1 = {
+			isFrozen: false,
+			initialGravity: initialGravity,
+			body: {
+				data: {
+					gravityScale: actualGravity
+				}
+			}
+		};
+
+		game.resetPlayerGravity('player1');
+
+		chai.assert.equal(initialGravity, game.player1.body.data.gravityScale);
+	});
+
+	it('resetPlayerGravity does not reset gravity if player is frozen', function() {
+		var game = new Game(Random.id(5)),
+			initialGravity = 1,
+			actualGravity = 2;
+
+		game.player1 = {
+			isFrozen: true,
+			initialGravity: initialGravity,
+			body: {
+				data: {
+					gravityScale: actualGravity
+				}
+			}
+		};
+
+		game.resetPlayerGravity('player1');
+
+		chai.assert.equal(actualGravity, game.player1.body.data.gravityScale);
+	});
+
+	it('unFreezePlayer restores initial player mass and restores initial player gravity if active gravity is not set', function() {
+		var game = new Game(Random.id(5)),
+			initialMass = 200,
+			initialGravity = 1;
+
+		game.player1 = {
+			initialMass: initialMass,
+			initialGravity: initialGravity,
+			activeGravity: null,
+			body: {
+				mass: 0,
+				data: {
+					gravityScale: 0
+				}
+			}
+		};
+
+		game.unFreezePlayer('player1');
+
+		chai.assert.equal(initialMass, game.player1.body.mass);
+		chai.assert.equal(initialGravity, game.player1.body.data.gravityScale);
+	});
+
+	it('unFreezePlayer restores initial player mass and restores active player gravity if set', function() {
+		var game = new Game(Random.id(5)),
+			initialMass = 200,
+			initialGravity = 1,
+			activeGravity = 2;
+
+		game.player1 = {
+			initialMass: initialMass,
+			initialGravity: initialGravity,
+			activeGravity: activeGravity,
+			body: {
+				mass: 0,
+				data: {
+					gravityScale: 0
+				}
+			}
+		};
+
+		game.unFreezePlayer('player1');
+
+		chai.assert.equal(initialMass, game.player1.body.mass);
+		chai.assert.equal(activeGravity, game.player1.body.data.gravityScale);
 	});
 });

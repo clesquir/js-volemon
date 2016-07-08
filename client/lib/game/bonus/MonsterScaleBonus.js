@@ -8,6 +8,8 @@ export default class MonsterScaleBonus extends MonsterBonus {
 
 	stop() {
 		this.game.resetPlayerScale.call(this.game, this.activatorPlayerKey);
+		this.game.resetPlayerGravity.call(this.game, this.activatorPlayerKey);
+		this.game.changePlayerProperty.call(this.game, this.activatorPlayerKey, 'activeGravity', null);
 
 		this.deactivate();
 	}
