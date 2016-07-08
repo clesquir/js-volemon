@@ -15,12 +15,10 @@ export default class FreezeMonsterBonus extends MonsterBonus {
 
 	start() {
 		this.game.freezePlayer.call(this.game, this.activatorPlayerKey);
-		this.game.changePlayerProperty.call(this.game, this.activatorPlayerKey, 'canMove', false);
 	}
 
 	stop() {
 		this.game.unFreezePlayer.call(this.game, this.activatorPlayerKey);
-		this.game.changePlayerProperty.call(this.game, this.activatorPlayerKey, 'canMove', true);
 
 		this.deactivate();
 	}

@@ -325,13 +325,14 @@ export default class Game {
 	createPlayer(player, initialXLocation, initialYLocation, playerKey) {
 		player.initialXLocation = initialXLocation;
 		player.initialYLocation = initialYLocation;
-		player.initialGravity = Config.playerGravityScale;
+		player.initialMass = Constants.PLAYER_MASS;
+		player.initialGravity = Constants.PLAYER_GRAVITY_SCALE;
+		player.activeGravity = null;
 		player.leftMoveModifier = -1;
 		player.rightMoveModifier = 1;
 		player.velocityXOnMove = Config.playerVelocityXOnMove;
 		player.velocityYOnJump = Config.playerVelocityYOnJump;
-		player.canMove = true;
-		player.canJump = true;
+		player.isFrozen = false;
 		player.doingDropShot = false;
 
 		player.polygonObject = 'player-' + this.getPlayerShapeFromKey(playerKey);
@@ -342,8 +343,13 @@ export default class Game {
 
 	setupPlayerBody(player) {
 		this.engine.setFixedRotation(player, true);
-		this.engine.setMass(player, Config.playerMass);
-		this.engine.setGravity(player, player.initialGravity);
+		this.engine.setMass(player, player.initialMass);
+
+		if (player.isFrozen) {
+			this.engine.setGravity(player, 0);
+		} else {
+			this.engine.setGravity(player, player.initialGravity);
+		}
 
 		this.engine.setMaterial(player, this.playerMaterial);
 		this.engine.setCollisionGroup(player, this.playerCollisionGroup);
@@ -791,7 +797,7 @@ export default class Game {
 
 		player.doingDropShot = false;
 
-		if (!player.canMove) {
+		if (player.isFrozen) {
 			this.engine.setHorizontalSpeed(player, 0);
 			this.engine.setVerticalSpeed(player, 0);
 		} else {
@@ -804,7 +810,7 @@ export default class Game {
 			}
 
 			if (this.isPlayerAtGroundLevel(player)) {
-				if (this.isUpKeyDown() && player.canJump) {
+				if (this.isUpKeyDown()) {
 					this.engine.setVerticalSpeed(player, -player.velocityYOnJump);
 				} else {
 					this.engine.setVerticalSpeed(player, 0);
@@ -946,6 +952,30 @@ export default class Game {
 		this.scalePlayer(playerKey, 1);
 	}
 
+	setPlayerGravity(playerKey, gravity) {
+		var player = this.getPlayerFromKey(playerKey);
+
+		if (!player) {
+			return;
+		}
+
+		if (!player.isFrozen) {
+			this.engine.setGravity(player, gravity);
+		}
+	}
+
+	resetPlayerGravity(playerKey) {
+		var player = this.getPlayerFromKey(playerKey);
+
+		if (!player) {
+			return;
+		}
+
+		if (!player.isFrozen) {
+			this.engine.setGravity(player, player.initialGravity);
+		}
+	}
+
 	scaleBall(scale) {
 		var polygonKey = this.getPolygonKeyFromScale(scale);
 
@@ -1016,6 +1046,7 @@ export default class Game {
 
 		this.engine.setMass(player, 2000);
 		this.engine.freeze(player);
+		player.isFrozen = true;
 	}
 
 	unFreezePlayer(playerKey) {
@@ -1025,8 +1056,13 @@ export default class Game {
 			return;
 		}
 
-		this.engine.setMass(player, Config.playerMass);
-		this.engine.unfreeze(player);
+		this.engine.setMass(player, player.initialMass);
+		if (player.activeGravity !== null) {
+			this.engine.setGravity(player, player.activeGravity);
+		} else {
+			this.engine.setGravity(player, player.initialGravity);
+		}
+		player.isFrozen = false;
 	}
 
 	drawCloud() {
