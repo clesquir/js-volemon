@@ -1,13 +1,15 @@
 import StubCollections from 'meteor/hwillson:stub-collections';
 import { chai } from 'meteor/practicalmeteor:chai';
 import { sinon } from 'meteor/practicalmeteor:sinon';
+import BaseBonus from '/client/lib/game/bonus/BaseBonus.js';
+import { Constants } from '/lib/constants.js';
 import Game from '/client/lib/Game.js';
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
-import { Constants } from '/lib/constants.js';
+import { GameStream } from '/lib/streams.js';
 
-describe('Game', function() {
-	it('getPlayerShapeFromKey returns default shape when games does not exist', function() {
+describe('Game#getPlayerShapeFromKey', function() {
+	it('returns default shape when games does not exist', function() {
 		StubCollections.stub(Games);
 
 		let game = new Game(Random.id(5));
@@ -16,7 +18,7 @@ describe('Game', function() {
 		StubCollections.restore();
 	});
 
-	it('getPlayerShapeFromKey returns default shape when player 1 does not exist', function() {
+	it('returns default shape when player 1 does not exist', function() {
 		StubCollections.add([Games, Players]);
 		StubCollections.stub();
 
@@ -29,7 +31,7 @@ describe('Game', function() {
 		StubCollections.restore();
 	});
 
-	it('getPlayerShapeFromKey returns default shape when player 2 does not exist', function() {
+	it('returns default shape when player 2 does not exist', function() {
 		StubCollections.add([Games, Players]);
 		StubCollections.stub();
 
@@ -42,7 +44,7 @@ describe('Game', function() {
 		StubCollections.restore();
 	});
 
-	it('getPlayerShapeFromKey returns player1 shape', function() {
+	it('returns player1 shape', function() {
 		StubCollections.add([Games, Players]);
 		StubCollections.stub();
 
@@ -62,7 +64,7 @@ describe('Game', function() {
 		StubCollections.restore();
 	});
 
-	it('getPlayerShapeFromKey returns player2 shape', function() {
+	it('returns player2 shape', function() {
 		StubCollections.add([Games, Players]);
 		StubCollections.stub();
 
@@ -75,8 +77,10 @@ describe('Game', function() {
 
 		StubCollections.restore();
 	});
+});
 
-	it('isMatchPoint returns false if game does not exist', function() {
+describe('Game#isMatchPoint', function() {
+	it('returns false if game does not exist', function() {
 		StubCollections.stub(Games);
 
 		let game = new Game(Random.id(5));
@@ -85,7 +89,7 @@ describe('Game', function() {
 		StubCollections.restore();
 	});
 
-	it('isMatchPoint returns false if no players are at one point from maximum', function() {
+	it('returns false if no players are at one point from maximum', function() {
 		StubCollections.stub(Games);
 
 		let gameId = Random.id(5);
@@ -97,7 +101,7 @@ describe('Game', function() {
 		StubCollections.restore();
 	});
 
-	it('isMatchPoint returns true if hostPoints is at one point from maximum', function() {
+	it('returns true if hostPoints is at one point from maximum', function() {
 		StubCollections.stub(Games);
 
 		let gameId = Random.id(5);
@@ -109,7 +113,7 @@ describe('Game', function() {
 		StubCollections.restore();
 	});
 
-	it('isMatchPoint returns true if clientPoints is at one point from maximum', function() {
+	it('returns true if clientPoints is at one point from maximum', function() {
 		StubCollections.stub(Games);
 
 		let gameId = Random.id(5);
@@ -121,7 +125,7 @@ describe('Game', function() {
 		StubCollections.restore();
 	});
 
-	it('isMatchPoint returns true if both players are at one point from maximum', function() {
+	it('returns true if both players are at one point from maximum', function() {
 		StubCollections.stub(Games);
 
 		let gameId = Random.id(5);
@@ -136,8 +140,10 @@ describe('Game', function() {
 
 		StubCollections.restore();
 	});
+});
 
-	it('isDeuce returns false if game does not exist', function() {
+describe('Game#isDeuce', function() {
+	it('returns false if game does not exist', function() {
 		StubCollections.stub(Games);
 
 		let game = new Game(Random.id(5));
@@ -146,7 +152,7 @@ describe('Game', function() {
 		StubCollections.restore();
 	});
 
-	it('isDeuce returns false if not both players are at one point from maximum', function() {
+	it('returns false if not both players are at one point from maximum', function() {
 		StubCollections.stub(Games);
 
 		let gameId = Random.id(5);
@@ -158,7 +164,7 @@ describe('Game', function() {
 		StubCollections.restore();
 	});
 
-	it('isDeuce returns true if both players are at one point from maximum', function() {
+	it('returns true if both players are at one point from maximum', function() {
 		StubCollections.stub(Games);
 
 		let gameId = Random.id(5);
@@ -173,8 +179,10 @@ describe('Game', function() {
 
 		StubCollections.restore();
 	});
+});
 
-	it('getWinnerName returns Nobody if game does not exist', function() {
+describe('Game#getWinnerName', function() {
+	it('returns Nobody if game does not exist', function() {
 		StubCollections.stub(Games);
 
 		let game = new Game(Random.id(5));
@@ -183,7 +191,7 @@ describe('Game', function() {
 		StubCollections.restore();
 	});
 
-	it('getWinnerName returns Nobody if game is not finished', function() {
+	it('returns Nobody if game is not finished', function() {
 		StubCollections.stub(Games);
 
 		let gameId = Random.id(5);
@@ -200,7 +208,7 @@ describe('Game', function() {
 		StubCollections.restore();
 	});
 
-	it('getWinnerName returns Nobody if none of the players are at maximum points', function() {
+	it('returns Nobody if none of the players are at maximum points', function() {
 		StubCollections.stub(Games);
 
 		let gameId = Random.id(5);
@@ -212,7 +220,7 @@ describe('Game', function() {
 		StubCollections.restore();
 	});
 
-	it('getWinnerName returns Player 1 if hostPoints is at maximum points but there is no players anymore set for the host', function() {
+	it('returns Player 1 if hostPoints is at maximum points but there is no players anymore set for the host', function() {
 		StubCollections.stub(Games);
 
 		let gameId = Random.id(5);
@@ -229,7 +237,7 @@ describe('Game', function() {
 		StubCollections.restore();
 	});
 
-	it('getWinnerName returns host player name if hostPoints is at maximum points', function() {
+	it('returns host player name if hostPoints is at maximum points', function() {
 		StubCollections.add([Games, Players]);
 		StubCollections.stub();
 
@@ -251,7 +259,7 @@ describe('Game', function() {
 		StubCollections.restore();
 	});
 
-	it('getWinnerName returns Player 2 if clientPoints is at maximum points but there is no players anymore set for the client', function() {
+	it('returns Player 2 if clientPoints is at maximum points but there is no players anymore set for the client', function() {
 		StubCollections.stub(Games);
 
 		let gameId = Random.id(5);
@@ -268,7 +276,7 @@ describe('Game', function() {
 		StubCollections.restore();
 	});
 
-	it('getWinnerName returns client player name if clientPoints is at maximum points', function() {
+	it('returns client player name if clientPoints is at maximum points', function() {
 		StubCollections.add([Games, Players]);
 		StubCollections.stub();
 
@@ -288,8 +296,41 @@ describe('Game', function() {
 
 		StubCollections.restore();
 	});
+});
 
-	it('isPlayerJumpingForward returns false if vertical speed is 0', function() {
+describe('Game#getBonusFromIdentifier', function() {
+	it('returns null if the bonusIdentifier matches nothing', function() {
+		var game = new Game(Random.id(5));
+
+		game.bonuses = [
+			{identifier: 'a'},
+			{identifier: 'b'},
+			{identifier: 'c'}
+		];
+
+		let bonus = game.getBonusFromIdentifier('d');
+
+		chai.assert.isNull(bonus);
+	});
+
+	it('returns the matching bonus', function() {
+		var game = new Game(Random.id(5)),
+			bBonus = {identifier: 'b'};
+
+		game.bonuses = [
+			{identifier: 'a'},
+			bBonus,
+			{identifier: 'c'}
+		];
+
+		let bonus = game.getBonusFromIdentifier('b');
+
+		chai.assert.equal(bBonus, bonus);
+	});
+});
+
+describe('Game#isPlayerJumpingForward', function() {
+	it('returns false if vertical speed is 0', function() {
 		let game = new Game(Random.id(5));
 
 		chai.assert.isFalse(game.isPlayerJumpingForward(
@@ -307,7 +348,7 @@ describe('Game', function() {
 		));
 	});
 
-	it('isPlayerJumpingForward returns false if vertical speed is positive', function() {
+	it('returns false if vertical speed is positive', function() {
 		let game = new Game(Random.id(5));
 
 		chai.assert.isFalse(game.isPlayerJumpingForward(
@@ -325,7 +366,7 @@ describe('Game', function() {
 		));
 	});
 
-	it('isPlayerJumpingForward returns false if vertical speed is negative but player is at ground level', function() {
+	it('returns false if vertical speed is negative but player is at ground level', function() {
 		let game = new Game(Random.id(5));
 
 		sinon.stub(game, 'isPlayerAtGroundLevel', function() {return true;});
@@ -345,7 +386,7 @@ describe('Game', function() {
 		));
 	});
 
-	it('isPlayerJumpingForward returns false if player1 vertical speed is negative but horizontal speed is 0', function() {
+	it('returns false if player1 vertical speed is negative but horizontal speed is 0', function() {
 		let game = new Game(Random.id(5));
 
 		chai.assert.isFalse(game.isPlayerJumpingForward(
@@ -363,7 +404,7 @@ describe('Game', function() {
 		));
 	});
 
-	it('isPlayerJumpingForward returns false if player1 vertical speed is negative but horizontal speed is negative', function() {
+	it('returns false if player1 vertical speed is negative but horizontal speed is negative', function() {
 		let game = new Game(Random.id(5));
 
 		chai.assert.isFalse(game.isPlayerJumpingForward(
@@ -381,7 +422,7 @@ describe('Game', function() {
 		));
 	});
 
-	it('isPlayerJumpingForward returns true if player1 vertical speed is negative but horizontal speed is positive', function() {
+	it('returns true if player1 vertical speed is negative but horizontal speed is positive', function() {
 		let game = new Game(Random.id(5));
 
 		chai.assert.isTrue(game.isPlayerJumpingForward(
@@ -399,7 +440,7 @@ describe('Game', function() {
 		));
 	});
 
-	it('isPlayerJumpingForward returns false if player2 vertical speed is negative but horizontal speed is 0', function() {
+	it('returns false if player2 vertical speed is negative but horizontal speed is 0', function() {
 		let game = new Game(Random.id(5));
 
 		chai.assert.isFalse(game.isPlayerJumpingForward(
@@ -417,7 +458,7 @@ describe('Game', function() {
 		));
 	});
 
-	it('isPlayerJumpingForward returns false if player2 vertical speed is negative but horizontal speed is positive', function() {
+	it('returns false if player2 vertical speed is negative but horizontal speed is positive', function() {
 		let game = new Game(Random.id(5));
 
 		chai.assert.isFalse(game.isPlayerJumpingForward(
@@ -435,7 +476,7 @@ describe('Game', function() {
 		));
 	});
 
-	it('isPlayerJumpingForward returns true if player2 vertical speed is negative and horizontal speed is negative', function() {
+	it('returns true if player2 vertical speed is negative and horizontal speed is negative', function() {
 		let game = new Game(Random.id(5));
 
 		chai.assert.isTrue(game.isPlayerJumpingForward(
@@ -452,8 +493,10 @@ describe('Game', function() {
 			'player2'
 		));
 	});
+});
 
-	it('isBallInFrontOfPlayer returns false if player1 x position is equal to ball x position', function() {
+describe('Game#isBallInFrontOfPlayer', function() {
+	it('returns false if player1 x position is equal to ball x position', function() {
 		let game = new Game(Random.id(5));
 
 		chai.assert.isFalse(game.isBallInFrontOfPlayer(
@@ -473,7 +516,7 @@ describe('Game', function() {
 		));
 	});
 
-	it('isBallInFrontOfPlayer returns false if player1 x position is greater than to ball x position', function() {
+	it('returns false if player1 x position is greater than to ball x position', function() {
 		let game = new Game(Random.id(5));
 
 		chai.assert.isFalse(game.isBallInFrontOfPlayer(
@@ -493,7 +536,7 @@ describe('Game', function() {
 		));
 	});
 
-	it('isBallInFrontOfPlayer returns true if player1 x position is lower than to ball x position', function() {
+	it('returns true if player1 x position is lower than to ball x position', function() {
 		let game = new Game(Random.id(5));
 
 		chai.assert.isTrue(game.isBallInFrontOfPlayer(
@@ -513,7 +556,7 @@ describe('Game', function() {
 		));
 	});
 
-	it('isBallInFrontOfPlayer returns false if player2 x position is equal to ball x position', function() {
+	it('returns false if player2 x position is equal to ball x position', function() {
 		let game = new Game(Random.id(5));
 
 		chai.assert.isFalse(game.isBallInFrontOfPlayer(
@@ -533,7 +576,7 @@ describe('Game', function() {
 		));
 	});
 
-	it('isBallInFrontOfPlayer returns false if player2 x position is lower than to ball x position', function() {
+	it('returns false if player2 x position is lower than to ball x position', function() {
 		let game = new Game(Random.id(5));
 
 		chai.assert.isFalse(game.isBallInFrontOfPlayer(
@@ -553,7 +596,7 @@ describe('Game', function() {
 		));
 	});
 
-	it('isBallInFrontOfPlayer returns true if player2 x position is greater than to ball x position', function() {
+	it('returns true if player2 x position is greater than to ball x position', function() {
 		let game = new Game(Random.id(5));
 
 		chai.assert.isTrue(game.isBallInFrontOfPlayer(
@@ -572,8 +615,10 @@ describe('Game', function() {
 			'player2'
 		));
 	});
+});
 
-	it('isBallBelowPlayer returns false if ball y position is lower than player y position + half its height', function() {
+describe('Game#isBallBelowPlayer', function() {
+	it('returns false if ball y position is lower than player y position + half its height', function() {
 		let game = new Game(Random.id(5));
 
 		chai.assert.isFalse(game.isBallBelowPlayer(
@@ -592,7 +637,7 @@ describe('Game', function() {
 		));
 	});
 
-	it('isBallBelowPlayer returns false if ball y position is equal than player y position + half its height', function() {
+	it('returns false if ball y position is equal than player y position + half its height', function() {
 		let game = new Game(Random.id(5));
 
 		chai.assert.isFalse(game.isBallBelowPlayer(
@@ -611,7 +656,7 @@ describe('Game', function() {
 		));
 	});
 
-	it('isBallBelowPlayer returns true if ball y position is greater than player y position + half its height', function() {
+	it('returns true if ball y position is greater than player y position + half its height', function() {
 		let game = new Game(Random.id(5));
 
 		chai.assert.isTrue(game.isBallBelowPlayer(
@@ -629,8 +674,10 @@ describe('Game', function() {
 			}
 		));
 	});
+});
 
-	it('isPlayerDoingDropShot returns true', function() {
+describe('Game#isPlayerDoingDropShot', function() {
+	it('returns true', function() {
 		let game = new Game(Random.id(5));
 
 		sinon.stub(game, 'isBallInFrontOfPlayer', function() {return true;});
@@ -643,7 +690,7 @@ describe('Game', function() {
 		));
 	});
 
-	it('isPlayerDoingDropShot returns false if player is not doing a drop shot', function() {
+	it('returns false if player is not doing a drop shot', function() {
 		let game = new Game(Random.id(5));
 
 		sinon.stub(game, 'isBallInFrontOfPlayer', function() {return true;});
@@ -656,7 +703,7 @@ describe('Game', function() {
 		));
 	});
 
-	it('isPlayerDoingDropShot returns false if ball is not in front of player', function() {
+	it('returns false if ball is not in front of player', function() {
 		let game = new Game(Random.id(5));
 
 		sinon.stub(game, 'isBallInFrontOfPlayer', function() {return false;});
@@ -669,7 +716,7 @@ describe('Game', function() {
 		));
 	});
 
-	it('isPlayerDoingDropShot returns false if player is at ground level', function() {
+	it('returns false if player is at ground level', function() {
 		let game = new Game(Random.id(5));
 
 		sinon.stub(game, 'isBallInFrontOfPlayer', function() {return true;});
@@ -681,8 +728,10 @@ describe('Game', function() {
 			'player1'
 		));
 	});
+});
 
-	it('dropShotBallOnPlayerHit removes all speed velocity from ball object', function() {
+describe('Game#dropShotBallOnPlayerHit', function() {
+	it('removes all speed velocity from ball object', function() {
 		let game = new Game(Random.id(5));
 
 		let ball = {
@@ -701,8 +750,10 @@ describe('Game', function() {
 		chai.assert.equal(0, ball.body.velocity.x);
 		chai.assert.equal(0, ball.body.velocity.y);
 	});
+});
 
-	it('reboundBallOnPlayerHit adds the constant vertical speed velocity to ball object', function() {
+describe('Game#reboundBallOnPlayerHit', function() {
+	it('adds the constant vertical speed velocity to ball object', function() {
 		let game = new Game(Random.id(5));
 
 		let horizontalVelocity = 300;
@@ -722,8 +773,10 @@ describe('Game', function() {
 		chai.assert.equal(horizontalVelocity, ball.body.velocity.x);
 		chai.assert.equal(Constants.BALL_VERTICAL_SPEED_ON_PLAYER_HIT, ball.body.velocity.y);
 	});
+});
 
-	it('onBallHitPlayer reboundBallOnPlayerHit is called', function() {
+describe('Game#onBallHitPlayer', function() {
+	it('reboundBallOnPlayerHit is called', function() {
 		let game = new Game(Random.id(5));
 
 		sinon.stub(game, 'isPlayerJumpingForward', function() {return false;});
@@ -738,7 +791,7 @@ describe('Game', function() {
 		chai.assert.isTrue(reboundBallOnPlayerHit.called);
 	});
 
-	it('onBallHitPlayer reboundBallOnPlayerHit is not called if player is doing drop shot and ball is in front of the player', function() {
+	it('reboundBallOnPlayerHit is not called if player is doing drop shot and ball is in front of the player', function() {
 		let game = new Game(Random.id(5));
 
 		sinon.stub(game, 'isPlayerJumpingForward', function() {return false;});
@@ -756,7 +809,7 @@ describe('Game', function() {
 		chai.assert.isTrue(dropShotBallOnPlayerHit.called);
 	});
 
-	it('onBallHitPlayer reboundBallOnPlayerHit is not called if the player is not jumping forward and the ball is below the player', function() {
+	it('reboundBallOnPlayerHit is not called if the player is not jumping forward and the ball is below the player', function() {
 		let game = new Game(Random.id(5));
 
 		sinon.stub(game, 'isPlayerJumpingForward', function() {return false;});
@@ -771,7 +824,7 @@ describe('Game', function() {
 		chai.assert.isFalse(reboundBallOnPlayerHit.called);
 	});
 
-	it('onBallHitPlayer reboundBallOnPlayerHit is called if the ball is not in front of the player', function() {
+	it('reboundBallOnPlayerHit is called if the ball is not in front of the player', function() {
 		let game = new Game(Random.id(5));
 
 		sinon.stub(game, 'isPlayerJumpingForward', function() {return true;});
@@ -787,7 +840,7 @@ describe('Game', function() {
 		chai.assert.isTrue(reboundBallOnPlayerHit.called);
 	});
 
-	it('onBallHitPlayer smashBallOnPlayerHit is called', function() {
+	it('smashBallOnPlayerHit is called', function() {
 		let game = new Game(Random.id(5));
 
 		sinon.stub(game, 'isPlayerJumpingForward', function() {return true;});
@@ -802,7 +855,7 @@ describe('Game', function() {
 		chai.assert.isTrue(smashBallOnPlayerHit.called);
 	});
 
-	it('onBallHitPlayer smashBallOnPlayerHit is not called if player is doing a drop shot', function() {
+	it('smashBallOnPlayerHit is not called if player is doing a drop shot', function() {
 		let game = new Game(Random.id(5));
 
 		sinon.stub(game, 'isPlayerJumpingForward', function() {return true;});
@@ -818,8 +871,10 @@ describe('Game', function() {
 		chai.assert.isFalse(smashBallOnPlayerHit.called);
 		chai.assert.isTrue(dropShotBallOnPlayerHit.called);
 	});
+});
 
-	it('smashBallOnPlayerHit normal smash calculations', function() {
+describe('Game#smashBallOnPlayerHit', function() {
+	it('normal smash calculations', function() {
 		let game = new Game(Random.id(5));
 
 		let horizontalSpeed = 300;
@@ -842,7 +897,7 @@ describe('Game', function() {
 		chai.assert.equal(verticalSpeed / 4, ball.body.velocity.y);
 	});
 
-	it('smashBallOnPlayerHit ball is smashed towards ground if its vertical speed was negative', function() {
+	it('ball is smashed towards ground if its vertical speed was negative', function() {
 		let game = new Game(Random.id(5));
 
 		let horizontalSpeed = 300;
@@ -865,7 +920,7 @@ describe('Game', function() {
 		chai.assert.equal(-verticalSpeed / 4, ball.body.velocity.y);
 	});
 
-	it('smashBallOnPlayerHit for player1, ball direction is reversed if it is smashed', function() {
+	it('for player1, ball direction is reversed if it is smashed', function() {
 		let game = new Game(Random.id(5));
 
 		let horizontalSpeed = -300;
@@ -888,7 +943,7 @@ describe('Game', function() {
 		chai.assert.equal(-verticalSpeed / 4, ball.body.velocity.y);
 	});
 
-	it('smashBallOnPlayerHit for player2, ball direction is reversed if it is smashed', function() {
+	it('for player2, ball direction is reversed if it is smashed', function() {
 		let game = new Game(Random.id(5));
 
 		let horizontalSpeed = 300;
@@ -910,8 +965,10 @@ describe('Game', function() {
 		chai.assert.equal(-horizontalSpeed * 2, ball.body.velocity.x);
 		chai.assert.equal(-verticalSpeed / 4, ball.body.velocity.y);
 	});
+});
 
-	it('inputs returns false if there is no currentPlayer', function() {
+describe('Game#inputs', function() {
+	it('returns false if there is no currentPlayer', function() {
 		let game = new Game(Random.id(5));
 
 		sinon.stub(game, 'getCurrentPlayer', function() {
@@ -923,7 +980,7 @@ describe('Game', function() {
 		chai.assert.isFalse(sendPlayerPositionStub.called);
 	});
 
-	it('inputs sets engine Horizontal and Vertical speed to 0 if player is frozen and sends player position', function() {
+	it('sets engine Horizontal and Vertical speed to 0 if player is frozen and sends player position', function() {
 		var game = new Game(Random.id(5)),
 			horizontalSpeedValue = null,
 			verticalSpeedValue = null;
@@ -948,7 +1005,7 @@ describe('Game', function() {
 		chai.assert.isTrue(sendPlayerPositionStub.called);
 	});
 
-	it('inputs sets engine Horizontal speed if left is pressed and sends player position', function() {
+	it('sets engine Horizontal speed if left is pressed and sends player position', function() {
 		var game = new Game(Random.id(5)),
 			moveModifier = 100,
 			velocity = 100,
@@ -986,7 +1043,7 @@ describe('Game', function() {
 		chai.assert.isTrue(sendPlayerPositionStub.called);
 	});
 
-	it('inputs sets engine Horizontal speed if right is pressed and sends player position', function() {
+	it('sets engine Horizontal speed if right is pressed and sends player position', function() {
 		var game = new Game(Random.id(5)),
 			moveModifier = 100,
 			velocity = 100,
@@ -1024,7 +1081,7 @@ describe('Game', function() {
 		chai.assert.isTrue(sendPlayerPositionStub.called);
 	});
 
-	it('inputs sets engine Horizontal speed to 0 if neither left or right is pressed and sends player position', function() {
+	it('sets engine Horizontal speed to 0 if neither left or right is pressed and sends player position', function() {
 		var game = new Game(Random.id(5)),
 			moveModifier = 100,
 			velocity = 100,
@@ -1062,7 +1119,7 @@ describe('Game', function() {
 		chai.assert.isTrue(sendPlayerPositionStub.called);
 	});
 
-	it('inputs sets engine Vertical speed if up is pressed and sends player position', function() {
+	it('sets engine Vertical speed if up is pressed and sends player position', function() {
 		var game = new Game(Random.id(5)),
 			moveModifier = 100,
 			velocity = 100,
@@ -1100,7 +1157,7 @@ describe('Game', function() {
 		chai.assert.isTrue(sendPlayerPositionStub.called);
 	});
 
-	it('inputs sets engine Vertical speed to 0 if up is not pressed and sends player position', function() {
+	it('sets engine Vertical speed to 0 if up is not pressed and sends player position', function() {
 		var game = new Game(Random.id(5)),
 			moveModifier = 100,
 			velocity = 100,
@@ -1138,7 +1195,7 @@ describe('Game', function() {
 		chai.assert.isTrue(sendPlayerPositionStub.called);
 	});
 
-	it('inputs does not increase engine Vertical speed if player is not at ground level and sends player position', function() {
+	it('does not increase engine Vertical speed if player is not at ground level and sends player position', function() {
 		var game = new Game(Random.id(5)),
 			moveModifier = 100,
 			velocity = 100,
@@ -1174,8 +1231,10 @@ describe('Game', function() {
 		chai.assert.isFalse(setVerticalSpeedStub.called);
 		chai.assert.isTrue(sendPlayerPositionStub.called);
 	});
+});
 
-	it('setPlayerGravity sets gravity if player is not frozen', function() {
+describe('Game#setPlayerGravity', function() {
+	it('sets gravity if player is not frozen', function() {
 		var game = new Game(Random.id(5)),
 			gravity = 2;
 
@@ -1193,7 +1252,7 @@ describe('Game', function() {
 		chai.assert.equal(gravity, game.player1.body.data.gravityScale);
 	});
 
-	it('setPlayerGravity does not set gravity if player is frozen', function() {
+	it('does not set gravity if player is frozen', function() {
 		var game = new Game(Random.id(5)),
 			initialGravity = 1,
 			gravity = 2;
@@ -1211,8 +1270,10 @@ describe('Game', function() {
 
 		chai.assert.equal(initialGravity, game.player1.body.data.gravityScale);
 	});
+});
 
-	it('resetPlayerGravity resets gravity if player is frozen', function() {
+describe('Game#resetPlayerGravity', function() {
+	it('resets gravity if player is frozen', function() {
 		var game = new Game(Random.id(5)),
 			initialGravity = 1,
 			actualGravity = 2;
@@ -1232,7 +1293,7 @@ describe('Game', function() {
 		chai.assert.equal(initialGravity, game.player1.body.data.gravityScale);
 	});
 
-	it('resetPlayerGravity does not reset gravity if player is frozen', function() {
+	it('does not reset gravity if player is frozen', function() {
 		var game = new Game(Random.id(5)),
 			initialGravity = 1,
 			actualGravity = 2;
@@ -1251,8 +1312,10 @@ describe('Game', function() {
 
 		chai.assert.equal(actualGravity, game.player1.body.data.gravityScale);
 	});
+});
 
-	it('unFreezePlayer restores initial player mass and restores initial player gravity if active gravity is not set', function() {
+describe('Game#unFreezePlayer', function() {
+	it('restores initial player mass and restores initial player gravity if active gravity is not set', function() {
 		var game = new Game(Random.id(5)),
 			initialMass = 200,
 			initialGravity = 1;
@@ -1275,7 +1338,7 @@ describe('Game', function() {
 		chai.assert.equal(initialGravity, game.player1.body.data.gravityScale);
 	});
 
-	it('unFreezePlayer restores initial player mass and restores active player gravity if set', function() {
+	it('restores initial player mass and restores active player gravity if set', function() {
 		var game = new Game(Random.id(5)),
 			initialMass = 200,
 			initialGravity = 1,
@@ -1297,5 +1360,163 @@ describe('Game', function() {
 
 		chai.assert.equal(initialMass, game.player1.body.mass);
 		chai.assert.equal(activeGravity, game.player1.body.data.gravityScale);
+	});
+});
+
+describe('Game#createBonusIfTimeHasElapsed', function() {
+	beforeEach(function(){
+		if (GameStream.emit.restore) {
+			GameStream.emit.restore();
+		}
+	});
+
+	it('creates bonus if time has elapsed', function() {
+		var gameId = Random.id(5),
+			game = new Game(gameId);
+
+		game.bonusFrequenceTime = 5000;
+		game.lastGameRespawn = 10000;
+
+		game.engine = {
+			getTime: function() {
+				return 18000;
+			},
+			addBonus: function() {
+				return new BaseBonus();
+			},
+			collidesWith: function() {
+			}
+		};
+
+		//Create spies
+		let createBonusSpy = sinon.spy(game, 'createBonus');
+		let regenerateLastBonusCreatedAndFrequenceTimeSpy = sinon.spy(game, 'regenerateLastBonusCreatedAndFrequenceTime');
+		let gameStreamSpy = sinon.spy(GameStream, 'emit');
+
+		game.createBonusIfTimeHasElapsed();
+
+		chai.assert.isTrue(createBonusSpy.calledOnce);
+		chai.assert.isTrue(regenerateLastBonusCreatedAndFrequenceTimeSpy.calledOnce);
+		chai.assert.isTrue(gameStreamSpy.calledOnce);
+		chai.assert.isTrue(gameStreamSpy.alwaysCalledWith('createBonus-' + gameId));
+	});
+
+	it('does not create bonus if time has not elapsed', function() {
+		var gameId = Random.id(5),
+			game = new Game(gameId);
+
+		game.bonusFrequenceTime = 5000;
+		game.lastBonusCreated = 10000;
+		game.lastGameRespawn = 10000;
+
+		game.engine = {
+			getTime: function() {
+				return 14500;
+			},
+			addBonus: function() {
+				return new BaseBonus();
+			},
+			collidesWith: function() {
+			}
+		};
+
+		//Create spies
+		let createBonusSpy = sinon.spy(game, 'createBonus');
+		let regenerateLastBonusCreatedAndFrequenceTimeSpy = sinon.spy(game, 'regenerateLastBonusCreatedAndFrequenceTime');
+		let gameStreamSpy = sinon.spy(GameStream, 'emit');
+
+		game.createBonusIfTimeHasElapsed();
+
+		sinon.assert.notCalled(createBonusSpy);
+		sinon.assert.notCalled(regenerateLastBonusCreatedAndFrequenceTimeSpy);
+		sinon.assert.notCalled(gameStreamSpy);
+	});
+
+	it('does not create bonus if time is too short since last creation depending on bonusMinimumFrequence', function() {
+		var gameId = Random.id(5),
+			game = new Game(gameId);
+
+		game.bonusFrequenceTime = 0;
+		game.lastBonusCreated = 10000;
+		game.lastGameRespawn = 10000;
+
+		game.engine = {
+			getTime: function() {
+				return 10001;
+			},
+			addBonus: function() {
+				return new BaseBonus();
+			},
+			collidesWith: function() {
+			}
+		};
+
+		//Create spies
+		let createBonusSpy = sinon.spy(game, 'createBonus');
+		let regenerateLastBonusCreatedAndFrequenceTimeSpy = sinon.spy(game, 'regenerateLastBonusCreatedAndFrequenceTime');
+		let gameStreamSpy = sinon.spy(GameStream, 'emit');
+
+		game.createBonusIfTimeHasElapsed();
+
+		sinon.assert.notCalled(createBonusSpy);
+		sinon.assert.notCalled(regenerateLastBonusCreatedAndFrequenceTimeSpy);
+		sinon.assert.notCalled(gameStreamSpy);
+	});
+});
+
+describe('Game#removeBonusSprite', function() {
+	it ('removes and destroys the matching bonusIdentifier bonus from bonuses', function() {
+		var game = new Game(Random.id(5)),
+			aBonus = {identifier: 'a', destroy: function() {}},
+			bBonus = {identifier: 'b', destroy: function() {}},
+			cBonus = {identifier: 'c', destroy: function() {}};
+
+		game.bonuses = [
+			aBonus,
+			bBonus,
+			cBonus
+		];
+
+		let aSpy = sinon.spy(aBonus, 'destroy');
+		let bSpy = sinon.spy(bBonus, 'destroy');
+		let cSpy = sinon.spy(cBonus, 'destroy');
+
+		game.removeBonusSprite('b');
+
+		sinon.assert.notCalled(aSpy);
+		sinon.assert.calledOnce(bSpy);
+		sinon.assert.notCalled(cSpy);
+
+		chai.assert.lengthOf(game.bonuses, 2);
+		chai.assert.equal(game.bonuses[0], aBonus);
+		chai.assert.equal(game.bonuses[1], cBonus);
+	});
+
+	it ('does not remove anything if nothing matches the bonusIdentifier in bonuses', function() {
+		var game = new Game(Random.id(5)),
+			aBonus = {identifier: 'a', destroy: function() {}},
+			bBonus = {identifier: 'b', destroy: function() {}},
+			cBonus = {identifier: 'c', destroy: function() {}};
+
+		game.bonuses = [
+			aBonus,
+			bBonus,
+			cBonus
+		];
+
+		let aSpy = sinon.spy(aBonus, 'destroy');
+		let bSpy = sinon.spy(bBonus, 'destroy');
+		let cSpy = sinon.spy(cBonus, 'destroy');
+
+		game.removeBonusSprite('d');
+
+		sinon.assert.notCalled(aSpy);
+		sinon.assert.notCalled(bSpy);
+		sinon.assert.notCalled(cSpy);
+
+		chai.assert.lengthOf(game.bonuses, 3);
+		chai.assert.equal(game.bonuses[0], aBonus);
+		chai.assert.equal(game.bonuses[1], bBonus);
+		chai.assert.equal(game.bonuses[2], cBonus);
 	});
 });

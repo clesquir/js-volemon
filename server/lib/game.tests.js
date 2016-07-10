@@ -7,14 +7,14 @@ import { Profiles } from '/collections/profiles.js';
 import { Constants } from '/lib/constants.js';
 import { game } from '/server/lib/game.js';
 
-describe('Game Profile Update', function() {
-	it('updateProfilesOnGameFinish throws 404 if game does not exist', function() {
+describe('Game#updateProfilesOnGameFinish', function() {
+	it('throws 404 if game does not exist', function() {
 		chai.expect(() => {
 			updateProfilesOnGameFinish(Random.id(5));
 		}).to.throw('Game not found');
 	});
 
-	it('updateProfilesOnGameFinish throws not-allowed if game status is not finished', function() {
+	it('throws not-allowed if game status is not finished', function() {
 		let gameId = Random.id(5);
 		Games.insert({_id: gameId, status: Constants.GAME_STATUS_STARTED});
 
@@ -23,7 +23,7 @@ describe('Game Profile Update', function() {
 		}).to.throw('Only finished games can be used for Elo calculations');
 	});
 
-	it('updateProfilesOnGameFinish updates Profiles and inserts EloScores', function() {
+	it('updates Profiles and inserts EloScores', function() {
 		var gameId = Random.id(5),
 			hostProfileId = Random.id(5),
 			createdByUserId = 1,
@@ -75,8 +75,10 @@ describe('Game Profile Update', function() {
 		chai.assert.isObject(eloScoresClient);
 		chai.assert.propertyVal(eloScoresClient, 'eloRating', 984);
 	});
+});
 
-	it('getEloScore', function() {
+describe('Game#getEloScore', function() {
+	it('returns correct scores depending on the previous eloRating', function() {
 		chai.assert.equal('0.5000', getEloScore(1000, 1000).toFixed(4));
 		chai.assert.equal('0.4712', getEloScore(990, 1010).toFixed(4));
 		chai.assert.equal('0.6401', getEloScore(1100, 1000).toFixed(4));
@@ -84,8 +86,10 @@ describe('Game Profile Update', function() {
 		chai.assert.equal('0.5516', getEloScore(1200, 1164).toFixed(4));
 		chai.assert.equal('0.9919', getEloScore(1469, 634).toFixed(4));
 	});
+});
 
-	it('getEloRating', function() {
+describe('Game#getEloRating', function() {
+	it('returns correct rating depending on the score and who wins', function() {
 		var eloScore, eloRating;
 
 		eloRating = 1000;

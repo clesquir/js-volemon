@@ -1,6 +1,7 @@
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
 import { Constants } from '/lib/constants.js';
+import { getUTCTimeStamp } from '/lib/utils.js';
 
 Meteor.methods({
 	keepPlayerAlive: function(playerId) {

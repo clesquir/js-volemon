@@ -1,3 +1,4 @@
+import { Config } from '/lib/config.js';
 import { Constants } from '/lib/constants.js';
 
 export default class PhaserEngine {

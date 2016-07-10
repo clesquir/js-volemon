@@ -1,6 +1,7 @@
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
 import { Constants } from '/lib/constants.js';
+import { GameStream } from '/lib/streams.js';
 
 export default class StreamInitiator {
 
@@ -85,23 +86,23 @@ export default class StreamInitiator {
 			}
 		});
 
-		GameStream.on('activateBonus-' + gameId, function(playerKey) {
+		GameStream.on('activateBonus-' + gameId, function(bonusIdentifier, playerKey) {
 			var game = Games.findOne(gameId),
 				player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
 
 			//Player is in game and is not the creator
 			if (game && player && game.createdBy !== Meteor.userId() && gameInitiator.hasActiveGame()) {
-				gameInitiator.currentGame.activateBonus(playerKey);
+				gameInitiator.currentGame.activateBonus(bonusIdentifier, playerKey);
 			}
 		});
 
-		GameStream.on('moveClientBonus-' + gameId, function(bonusData) {
+		GameStream.on('moveClientBonus-' + gameId, function(bonusIdentifier, bonusData) {
 			var game = Games.findOne(gameId),
 				player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
 
 			//Player is in game and is not the creator
 			if (game && player && game.createdBy !== Meteor.userId() && gameInitiator.hasActiveGame()) {
-				gameInitiator.currentGame.moveClientBonus(bonusData);
+				gameInitiator.currentGame.moveClientBonus(bonusIdentifier, bonusData);
 			}
 		});
 	}
