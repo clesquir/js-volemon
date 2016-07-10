@@ -49,13 +49,27 @@ export default class GameInitiator {
 
 	initTimer() {
 		this.timerUpdater = Meteor.setInterval(() => {
-			var game = Games.findOne(this.gameId);
-
-			if (game && game.status === Constants.GAME_STATUS_STARTED) {
-				Session.set('matchTimer', moment(getUTCTimeStamp() + this.serverOffset - game.startedAt).format('mm:ss'));
-				Session.set('pointTimer', moment(getUTCTimeStamp() + this.serverOffset - game.lastPointAt).format('mm:ss'));
-			}
+			this.updateTimer();
 		}, 1000);
+	}
+
+	updateTimer() {
+		var game = Games.findOne(this.gameId);
+
+		if (game && game.status === Constants.GAME_STATUS_STARTED) {
+			let matchTimer = getUTCTimeStamp() + this.serverOffset - game.startedAt;
+			if (matchTimer < 0) {
+				matchTimer = 0;
+			}
+
+			let pointTimer = getUTCTimeStamp() + this.serverOffset - game.lastPointAt;
+			if (pointTimer < 0) {
+				pointTimer = 0;
+			}
+
+			Session.set('matchTimer', moment(matchTimer).format('mm:ss'));
+			Session.set('pointTimer', moment(pointTimer).format('mm:ss'));
+		}
 	}
 
 	clearTimer() {

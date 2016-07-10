@@ -45,6 +45,7 @@ export default class StreamInitiator {
 
 					//Player is in game
 					if (game && player && gameInitiator.hasActiveGame()) {
+						gameInitiator.updateTimer();
 						gameInitiator.currentGame.shakeLevel();
 						gameInitiator.currentGame.resumeOnTimerEnd();
 					}
