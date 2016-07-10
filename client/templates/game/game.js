@@ -2,6 +2,7 @@ import GameInitiator from '/client/lib/game/GameInitiator.js';
 import KeepRegistrationAlive from '/client/lib/game/KeepRegistrationAlive.js';
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
+import { Config } from '/lib/config.js';
 
 Template.game.helpers({
 	isHost: function() {

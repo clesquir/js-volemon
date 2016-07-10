@@ -1,4 +1,5 @@
 import MovementMonsterBonus from '/client/lib/game/bonus/MovementMonsterBonus.js';
+import { Config } from '/lib/config.js';
 
 export default class FastMonsterBonus extends MovementMonsterBonus {
 

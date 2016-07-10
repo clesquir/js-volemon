@@ -1,8 +1,12 @@
-import { Games } from '/collections/games.js';
-import { Players } from '/collections/players.js';
-import { Constants } from '/lib/constants.js';
+import { getRandomInt } from '/client/lib/utils.js';
 import PhaserEngine from '/client/lib/game/engine/PhaserEngine.js';
 import BonusFactory from '/client/lib/game/BonusFactory.js';
+import { Games } from '/collections/games.js';
+import { Players } from '/collections/players.js';
+import { Config } from '/lib/config.js';
+import { Constants } from '/lib/constants.js';
+import { GameStream } from '/lib/streams.js';
+import { getUTCTimeStamp } from '/lib/utils.js';
 
 export default class Game {
 
@@ -17,11 +21,11 @@ export default class Game {
 		this.lastPlayerUpdate = 0;
 		this.lastBonusUpdate = 0;
 		this.gameResumed = false;
-		this.lastBonusActivated = 0;
+		this.lastBonusCreated = 0;
 		this.bonusFrequenceTime = 0;
 		this.lastGameRespawn = 0;
-		this.bonus = null;
 		this.bonuses = [];
+		this.activeBonuses = [];
 		this.serverOffset = TimeSync.serverOffset();
 	}
 
@@ -185,6 +189,16 @@ export default class Game {
 		} else {
 			return null;
 		}
+	}
+
+	getBonusFromIdentifier(bonusIdentifier) {
+		for (let bonus of this.bonuses) {
+			if (bonus.identifier === bonusIdentifier) {
+				return bonus;
+			}
+		}
+
+		return null;
 	}
 
 	getPolygonKeyFromScale(scale) {
@@ -498,7 +512,7 @@ export default class Game {
 			this.onGameEnd();
 		} else if (this.isGameOnGoing()) {
 			this.startCountdownTimer();
-			this.generateBonusActivationAndFrequenceTime();
+			this.regenerateLastBonusCreatedAndFrequenceTime();
 			this.lastGameRespawn = this.engine.getTime();
 		}
 	}
@@ -574,10 +588,7 @@ export default class Game {
 
 				if (this.hasGameBonuses()) {
 					this.createBonusIfTimeHasElapsed();
-
-					if (this.bonus) {
-						this.sendBonusPosition();
-					}
+					this.sendBonusesPosition();
 				}
 			}
 		} else if (this.isGameTimeOut()) {
@@ -678,15 +689,17 @@ export default class Game {
 		);
 	}
 
-	sendBonusPosition() {
-		var bonusPositionData = this.engine.getPositionData(this.bonus);
+	sendBonusesPosition() {
+		for (let bonus of this.bonuses) {
+			let bonusPositionData = this.engine.getPositionData(bonus);
 
-		this.lastBonusUpdate = this.emitGameStreamAtFrequence(
-			this.lastBonusUpdate,
-			Config.bonusInterval,
-			'moveClientBonus-' + this.gameId,
-			[bonusPositionData]
-		);
+			this.lastBonusUpdate = this.emitGameStreamAtFrequence(
+				this.lastBonusUpdate,
+				Config.bonusInterval,
+				'moveClientBonus-' + this.gameId,
+				[bonus.identifier, bonusPositionData]
+			);
+		}
 	}
 
 	hitBall(ball, player) {
@@ -879,12 +892,14 @@ export default class Game {
 		this.engine.move(this.ball, data);
 	}
 
-	moveClientBonus(data) {
-		if (!this.bonus) {
+	moveClientBonus(bonusIdentifier, data) {
+		var correspondingBonus = this.getBonusFromIdentifier(bonusIdentifier);
+
+		if (!correspondingBonus) {
 			return;
 		}
 
-		this.engine.move(this.bonus, data);
+		this.engine.move(correspondingBonus, data);
 	}
 
 	pauseGame() {
@@ -896,8 +911,8 @@ export default class Game {
 		this.engine.freeze(this.player2);
 		this.engine.freeze(this.ball);
 
-		if (this.bonus) {
-			this.engine.freeze(this.bonus);
+		for (let bonus of this.bonuses) {
+			this.engine.freeze(bonus);
 		}
 	}
 
@@ -1083,69 +1098,76 @@ export default class Game {
 		this.engine.shake(this.level, 5, 20);
 	}
 
-	generateBonusActivationAndFrequenceTime() {
-		this.lastBonusActivated = this.engine.getTime();
+	regenerateLastBonusCreatedAndFrequenceTime() {
+		this.lastBonusCreated = this.engine.getTime();
 		this.bonusFrequenceTime = getRandomInt(Config.bonusMinimumInterval, Config.bonusMaximumInterval);
 	}
 
 	createBonusIfTimeHasElapsed() {
 		var frequenceTime = this.bonusFrequenceTime - Math.round((this.engine.getTime() - this.lastGameRespawn) / 10);
 
-		if (frequenceTime < 0) {
-			frequenceTime = 0;
+		if (frequenceTime < Config.bonusMinimumFrequence) {
+			frequenceTime = Config.bonusMinimumFrequence;
 		}
 
-		//Only one bonus sprite at the same time
-		if (this.bonus === null && this.engine.getTime() - this.lastBonusActivated >= frequenceTime) {
+		if (this.engine.getTime() - this.lastBonusCreated >= frequenceTime) {
 			//Host choose position and bonusCls
+			let bonusClass = BonusFactory.getRandomBonusKey();
 			let data = {
 				initialX: this.xSize / 2 + Random.choice([-6, +6]),
-				bonusKey: BonusFactory.getRandomBonusKey()
+				bonusKey: bonusClass,
+				bonusIdentifier: bonusClass + '_' + getUTCTimeStamp()
 			};
 
 			//Create the bonus the host
 			this.createBonus(data);
+			this.regenerateLastBonusCreatedAndFrequenceTime();
 			//Send to client
 			GameStream.emit('createBonus-' + this.gameId, data);
 		}
 	}
 
 	createBonus(data) {
-		var bonus = BonusFactory.getInstance(data.bonusKey, this);
+		var bonus = BonusFactory.getInstance(data.bonusKey, this),
+			bonusSprite = this.engine.addBonus(
+				data.initialX, Config.bonusGravityScale, this.bonusMaterial, this.bonusCollisionGroup,
+				bonus.getLetter(), bonus.getFontSize(), bonus.getSpriteBorderKey()
+			);
 
-		this.bonus = this.engine.addBonus(
-			data.initialX, Config.bonusGravityScale, this.bonusMaterial, this.bonusCollisionGroup,
-			bonus.getLetter(), bonus.getFontSize(), bonus.getSpriteBorderKey()
-		);
-		this.bonus.bonus = bonus;
+		bonusSprite.identifier = data.bonusIdentifier;
+		bonusSprite.bonus = bonus;
 
-		this.engine.collidesWith(this.bonus, this.playerCollisionGroup, (bonusItem, player) => {
+		this.bonuses.push(bonusSprite);
+
+		this.engine.collidesWith(bonusSprite, this.playerCollisionGroup, (bonusItem, player) => {
 			if (this.isUserHost()) {
 				//Activate bonus
-				this.activateBonus(this.engine.getKey(player));
-				this.generateBonusActivationAndFrequenceTime();
+				this.activateBonus(bonusSprite.identifier, this.engine.getKey(player));
 				//Send to client
-				GameStream.emit('activateBonus-' + this.gameId, this.engine.getKey(player));
+				GameStream.emit('activateBonus-' + this.gameId, bonusSprite.identifier, this.engine.getKey(player));
 			}
 		}, this);
-		this.engine.collidesWith(this.bonus, this.netHitDelimiterCollisionGroup);
-		this.engine.collidesWith(this.bonus, this.groundHitDelimiterCollisionGroup);
-		this.engine.collidesWith(this.bonus, this.ballCollisionGroup);
+		this.engine.collidesWith(bonusSprite, this.netHitDelimiterCollisionGroup);
+		this.engine.collidesWith(bonusSprite, this.groundHitDelimiterCollisionGroup);
+		this.engine.collidesWith(bonusSprite, this.ballCollisionGroup);
+		this.engine.collidesWith(bonusSprite, this.bonusCollisionGroup);
 	}
 
-	activateBonus(playerKey) {
-		if (!this.bonus || !this.bonus.bonus) {
+	activateBonus(bonusIdentifier, playerKey) {
+		var correspondingBonus = this.getBonusFromIdentifier(bonusIdentifier);
+
+		if (!correspondingBonus) {
 			return;
 		}
 
-		let bonus = this.bonus.bonus;
+		let bonus = correspondingBonus.bonus;
 
 		this.deactivateSimilarBonusForPlayerKey(bonus, playerKey);
 
 		bonus.activate(playerKey);
 		bonus.start();
 
-		this.bonuses.push(bonus);
+		this.activeBonuses.push(bonus);
 		if (this.isUserHost()) {
 			Meteor.call(
 				'addActiveBonusToGame',
@@ -1157,12 +1179,25 @@ export default class Game {
 			);
 		}
 
-		this.bonus.destroy();
-		this.bonus = null;
+		this.removeBonusSprite(bonusIdentifier);
+	}
+
+	removeBonusSprite(bonusIdentifier) {
+		var bonuses = [];
+
+		for (let bonus of this.bonuses) {
+			if (bonus.identifier === bonusIdentifier) {
+				bonus.destroy();
+			} else {
+				bonuses.push(bonus);
+			}
+		}
+
+		this.bonuses = bonuses;
 	}
 
 	deactivateSimilarBonusForPlayerKey(newBonus, playerKey) {
-		for (let bonus of this.bonuses) {
+		for (let bonus of this.activeBonuses) {
 			if (bonus.isSimilarBonusForPlayerKey(newBonus, playerKey)) {
 				bonus.deactivateFromSimilar(newBonus);
 			}
@@ -1172,7 +1207,7 @@ export default class Game {
 	checkBonuses() {
 		var stillActiveBonuses = [];
 
-		for (let bonus of this.bonuses) {
+		for (let bonus of this.activeBonuses) {
 			if (bonus.check()) {
 				stillActiveBonuses.push(bonus);
 			} else if (this.isUserHost()) {
@@ -1180,20 +1215,21 @@ export default class Game {
 			}
 		}
 
-		this.bonuses = stillActiveBonuses;
+		this.activeBonuses = stillActiveBonuses;
 	}
 
 	resetAllBonuses() {
-		if (this.bonus !== null) {
-			this.bonus.destroy();
-			this.bonus = null;
-		}
-
+		//Remove bonus sprites
 		for (let bonus of this.bonuses) {
+			bonus.destroy();
+		}
+		this.bonuses = [];
+
+		//Remove active bonuses
+		for (let bonus of this.activeBonuses) {
 			bonus.stop();
 		}
-
-		this.bonuses = [];
+		this.activeBonuses = [];
 	}
 
 };

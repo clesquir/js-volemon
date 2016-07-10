@@ -1,8 +1,8 @@
 import { chai } from 'meteor/practicalmeteor:chai';
 import PhaserEngine from '/client/lib/game/engine/PhaserEngine.js';
 
-describe('PhaserEngine', function() {
-	it('constrainVelocity restrict velocity without changing the angle if 0 degrees', function() {
+describe('PhaserEngine#constrainVelocity', function() {
+	it('restricts velocity without changing the angle if 0 degrees', function() {
 		var engine = new PhaserEngine(),
 			sprite = {
 				body: {
@@ -19,7 +19,7 @@ describe('PhaserEngine', function() {
 		chai.assert.equal(500, Math.round(sprite.body.velocity.y));
 	});
 
-	it('constrainVelocity restrict velocity without changing the angle if 45 degrees', function() {
+	it('restricts velocity without changing the angle if 45 degrees', function() {
 		var engine = new PhaserEngine(),
 			sprite = {
 				body: {
@@ -36,7 +36,7 @@ describe('PhaserEngine', function() {
 		chai.assert.equal(354, Math.round(sprite.body.velocity.y));
 	});
 
-	it('constrainVelocity restrict velocity without changing the angle if 90 degrees', function() {
+	it('restricts velocity without changing the angle if 90 degrees', function() {
 		var engine = new PhaserEngine(),
 			sprite = {
 				body: {

@@ -3,7 +3,7 @@ import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
 import { Profiles } from '/collections/profiles.js';
 import { Constants } from '/lib/constants.js';
-import { Utils } from '/lib/utils.js';
+import { getUTCTimeStamp } from '/lib/utils.js';
 
 /**
  * @param gameId

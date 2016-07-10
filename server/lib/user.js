@@ -1,5 +1,6 @@
 import { EloScores } from '/collections/eloscores.js';
 import { Profiles } from '/collections/profiles.js';
+import { getUTCTimeStamp } from '/lib/utils.js';
 
 createProfile = function(user) {
 	var profile = {

@@ -1,3 +1,5 @@
+import { Config } from '/lib/config.js';
+
 Meteor.setInterval(function() {
 	Meteor.call('removeTimeoutPlayersAndGames');
 }, Config.keepAliveElapsedForTimeOut);

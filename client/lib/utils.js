@@ -15,7 +15,7 @@ isGameStatusOnGoing = function(gameStatus) {
 	return [Constants.GAME_STATUS_STARTED, Constants.GAME_STATUS_FINISHED, Constants.GAME_STATUS_TIMEOUT].indexOf(gameStatus) !== -1;
 };
 
-getRandomInt = function(min, max) {
+export const getRandomInt = function(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min);
 };
 

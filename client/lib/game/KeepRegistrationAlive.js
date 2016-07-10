@@ -1,5 +1,6 @@
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
+import { Config } from '/lib/config.js';
 import { Constants } from '/lib/constants.js';
 
 export default class KeepRegistrationAlive {

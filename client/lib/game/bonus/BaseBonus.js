@@ -1,3 +1,6 @@
+import { Config } from '/lib/config.js';
+import { getUTCTimeStamp } from '/lib/utils.js';
+
 export default class BaseBonus {
 
 	constructor(game, className) {
