@@ -377,6 +377,8 @@ export default class Game {
 		this.ball = this.engine.addSprite(initialXLocation, initialYLocation, 'ball');
 
 		this.ball.initialGravity = Constants.BALL_GRAVITY_SCALE;
+		this.ball.isFrozen = false;
+
 		this.ball.polygonObject = 'ball';
 		this.engine.loadPolygon(this.ball, Constants.NORMAL_SCALE_PHYSICS_DATA, 'ball');
 
@@ -385,7 +387,11 @@ export default class Game {
 
 	setupBallBody() {
 		this.engine.setFixedRotation(this.ball, true);
-		this.engine.setGravity(this.ball, this.ball.initialGravity);
+		if (this.ball.isFrozen) {
+			this.engine.setGravity(this.ball, 0);
+		} else {
+			this.engine.setGravity(this.ball, this.ball.initialGravity);
+		}
 		this.engine.setDamping(this.ball, 0.1);
 		this.engine.setMaterial(this.ball, this.ballMaterial);
 		this.engine.setCollisionGroup(this.ball, this.ballCollisionGroup);
@@ -573,6 +579,12 @@ export default class Game {
 			this.lastKeepAliveUpdate = this.callMeteorMethodAtFrequence(
 				this.lastKeepAliveUpdate, Config.keepAliveInterval, 'keepPlayerAlive', [player._id]
 			);
+		}
+
+		//Do not allow ball movement if it is frozen
+		if (this.isUserHost() && this.ball.isFrozen) {
+			this.engine.setHorizontalSpeed(this.ball, 0);
+			this.engine.setVerticalSpeed(this.ball, 0);
 		}
 
 		if (this.isGameOnGoing()) {
@@ -904,12 +916,14 @@ export default class Game {
 
 	pauseGame() {
 		this.engine.freeze(this.ball);
+		this.ball.isFrozen = true;
 	}
 
 	stopGame() {
 		this.engine.freeze(this.player1);
 		this.engine.freeze(this.player2);
 		this.engine.freeze(this.ball);
+		this.ball.isFrozen = true;
 
 		for (let bonus of this.bonuses) {
 			this.engine.freeze(bonus);
@@ -918,6 +932,7 @@ export default class Game {
 
 	resumeGame() {
 		this.engine.unfreeze(this.ball);
+		this.ball.isFrozen = false;
 		this.gameResumed = true;
 
 		this.countdownText.text = '';
