@@ -1097,7 +1097,7 @@ export default class Game {
 
 	drawCloud() {
 		if (!this.cloudBonus) {
-			this.cloudBonus = this.engine.addSprite(this.xSize / 2, this.ySize / 2, 'cloud');
+			this.cloudBonus = this.engine.addTileSprite(this.xSize / 2, this.ySize / 2, this.xSize, this.ySize, 'cloud');
 			this.engine.setStatic(this.cloudBonus, true);
 			this.engine.setOpacity(this.cloudBonus, 0);
 		}
