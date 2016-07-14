@@ -45,6 +45,7 @@ Meteor.publish('games', function() {
 Meteor.publish('game', function(id) {
 	return [
 		Games.find({_id: id}),
-		Players.find({gameId: id})
+		Players.find({gameId: id}),
+		Profiles.find()
 	];
 });

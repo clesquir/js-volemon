@@ -56,7 +56,8 @@ Router.map(function() {
 		data: function() {
 			return {
 				game: Games.findOne(this.params._id),
-				players: Players.find({gameId: this.params._id}, {sort: ['joinedAt']})
+				players: Players.find({gameId: this.params._id}, {sort: ['joinedAt']}),
+				profiles: Profiles.find()
 			};
 		},
 		onBeforeAction: function() {

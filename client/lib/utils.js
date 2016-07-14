@@ -1,5 +1,3 @@
-import { Constants } from '/lib/constants.js';
-
 padNumber = function(number, size = 2) {
 	var result = String(number),
 		character = '0';
@@ -9,10 +7,6 @@ padNumber = function(number, size = 2) {
 	}
 
 	return result;
-};
-
-isGameStatusOnGoing = function(gameStatus) {
-	return [Constants.GAME_STATUS_STARTED, Constants.GAME_STATUS_FINISHED, Constants.GAME_STATUS_TIMEOUT].indexOf(gameStatus) !== -1;
 };
 
 export const getRandomInt = function(min, max) {
