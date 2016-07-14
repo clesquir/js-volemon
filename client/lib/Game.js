@@ -1,6 +1,13 @@
-import { getRandomInt } from '/client/lib/utils.js';
 import PhaserEngine from '/client/lib/game/engine/PhaserEngine.js';
 import BonusFactory from '/client/lib/game/BonusFactory.js';
+import {
+	getGameHostPlayer,
+	getGameClientPlayer,
+	isGameStatusStarted,
+	isGameStatusTimeout,
+	isGameStatusFinished
+} from '/client/lib/game/utils.js';
+import { getRandomInt } from '/client/lib/utils.js';
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
 import { Config } from '/lib/config.js';
@@ -37,14 +44,6 @@ export default class Game {
 		return Players.findOne({gameId: this.gameId, userId: Meteor.userId()});
 	}
 
-	getHostPlayer(game) {
-		return Players.findOne({gameId: game._id, userId: game.createdBy});
-	}
-
-	getClientPlayer(game) {
-		return Players.findOne({gameId: game._id, userId: {$ne: game.createdBy}});
-	}
-
 	/**
 	 * @param playerKey
 	 * @returns string Returns the player shape or PLAYER_DEFAULT_SHAPE if no game nor player is found
@@ -58,9 +57,9 @@ export default class Game {
 		}
 
 		if (playerKey == 'player1') {
-			player = this.getHostPlayer(game);
+			player = getGameHostPlayer(game);
 		} else {
-			player = this.getClientPlayer(game);
+			player = getGameClientPlayer(game);
 		}
 
 		if (!player) {
@@ -86,19 +85,19 @@ export default class Game {
 	isGameOnGoing() {
 		var game = this.getGame();
 
-		return (game && game.status === Constants.GAME_STATUS_STARTED);
+		return (game && isGameStatusStarted(game.status));
 	}
 
 	isGameTimeOut() {
 		var game = this.getGame();
 
-		return (game && game.status === Constants.GAME_STATUS_TIMEOUT);
+		return (game && isGameStatusTimeout(game.status));
 	}
 
 	isGameFinished() {
 		var game = this.getGame();
 
-		return (game && game.status === Constants.GAME_STATUS_FINISHED);
+		return (game && isGameStatusFinished(game.status));
 	}
 
 	getGameLastPointTaken() {
@@ -139,34 +138,6 @@ export default class Game {
 		}
 
 		return false;
-	}
-
-	getWinnerName() {
-		var game = this.getGame(),
-			winnerName = 'Nobody',
-			winner;
-
-		if (game && this.isGameFinished()) {
-			if (game.hostPoints >= Constants.MAXIMUM_POINTS) {
-				winner = this.getHostPlayer(game);
-
-				if (winner) {
-					winnerName = winner.name;
-				} else {
-					winnerName = 'Player 1';
-				}
-			} else if (game.clientPoints >= Constants.MAXIMUM_POINTS) {
-				winner = this.getClientPlayer(game);
-
-				if (winner) {
-					winnerName = winner.name;
-				} else {
-					winnerName = 'Player 2';
-				}
-			}
-		}
-
-		return winnerName;
 	}
 
 	getCurrentPlayer() {
@@ -295,15 +266,6 @@ export default class Game {
 		 */
 		this.countdownText = this.engine.addText(this.engine.getCenterX(), this.engine.getCenterY(), '', {
 			font: "75px 'Oxygen Mono', sans-serif",
-			fill: '#363636',
-			align: 'center'
-		});
-
-		/**
-		 * Information text
-		 */
-		this.informationText = this.engine.addText(this.engine.getCenterX(), this.engine.getCenterY(), '', {
-			font: '40px Oxygen, sans-serif',
 			fill: '#363636',
 			align: 'center'
 		});
@@ -514,7 +476,6 @@ export default class Game {
 		this.respawnSprites();
 
 		if (this.isGameFinished()) {
-			this.engine.updateText(this.informationText, this.getWinnerName() + ' wins!');
 			this.onGameEnd();
 		} else if (this.isGameOnGoing()) {
 			this.startCountdownTimer();
@@ -605,7 +566,6 @@ export default class Game {
 			}
 		} else if (this.isGameTimeOut()) {
 			this.stopGame();
-			this.engine.updateText(this.informationText, 'The game has timed out...');
 			this.onGameEnd();
 		}
 	}

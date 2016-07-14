@@ -1,5 +1,6 @@
-import Game from '/client/lib/Game.js';
 import StreamInitiator from '/client/lib/game/StreamInitiator.js';
+import { isGameStatusOnGoing } from '/client/lib/game/utils.js';
+import Game from '/client/lib/Game.js';
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
 import { Constants } from '/lib/constants.js';

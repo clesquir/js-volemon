@@ -1,5 +1,12 @@
 import GameInitiator from '/client/lib/game/GameInitiator.js';
 import KeepRegistrationAlive from '/client/lib/game/KeepRegistrationAlive.js';
+import {
+	isGameStatusStarted,
+	isGameStatusFinished,
+	isGameStatusOnGoing,
+	isGameStatusTimeout,
+	getWinnerName
+} from '/client/lib/game/utils.js';
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
 import { Config } from '/lib/config.js';
@@ -133,6 +140,50 @@ Template.game.helpers({
 
 	isCurentPlayer: function() {
 		return this.userId === Meteor.userId();
+	},
+
+	getStatusDependentClass: function() {
+		if (isGameStatusStarted(this.game.status)) {
+			return 'hidden-container';
+		} else {
+			return 'shown-container';
+		}
+	},
+
+	isGameStatusFinished: function() {
+		return isGameStatusFinished(this.game.status);
+	},
+
+	getAfterGameTitle: function() {
+		if (isGameStatusTimeout(this.game.status)) {
+			return 'The game has timed out...';
+		} else if (isGameStatusFinished(this.game.status)) {
+			return getWinnerName(this.game) + ' wins';
+		}
+	},
+
+	getPlayerEloRating: function(player, profiles) {
+		var eloRating = '-';
+
+		profiles.forEach((profile) => {
+			if (player.userId == profile.userId) {
+				eloRating = profile.eloRating;
+			}
+		});
+
+		return eloRating;
+	},
+
+	getPlayerProfile: function(player, profiles) {
+		var playerProfile = null;
+
+		profiles.forEach((profile) => {
+			if (player.userId == profile.userId) {
+				playerProfile = profile;
+			}
+		});
+
+		return playerProfile;
 	}
 });
 
