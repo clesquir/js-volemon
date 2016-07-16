@@ -40,7 +40,7 @@ Meteor.publish('games', function() {
 		gamesIds = [];
 
 	games.forEach((game) => {
-		gamesIds.push(gamesIds._id);
+		gamesIds.push(game._id);
 	});
 
 	return [
