@@ -29,7 +29,7 @@ Meteor.publish('recentProfileGames', function(limit) {
 
 Meteor.publish('ranks', function() {
 	return [
-		Meteor.users.find(),
+		Meteor.users.find({}, {fields: {'profile.name': 1}}),
 		Profiles.find(),
 		EloScores.find()
 	];
