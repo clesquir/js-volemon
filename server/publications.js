@@ -36,16 +36,9 @@ Meteor.publish('ranks', function() {
 });
 
 Meteor.publish('games', function() {
-	var games = Games.find({isPrivate: 0, status: {$in: [Constants.GAME_STATUS_REGISTRATION, Constants.GAME_STATUS_STARTED]}}),
-		gamesIds = [];
-
-	games.forEach((game) => {
-		gamesIds.push(game._id);
-	});
-
 	return [
-		games,
-		Players.find({gameId: {$in: gamesIds}})
+		Games.find({isPrivate: 0, status: {$in: [Constants.GAME_STATUS_REGISTRATION, Constants.GAME_STATUS_STARTED]}}),
+		Meteor.users.find({}, {fields: {'profile.name': 1}})
 	];
 });
 
