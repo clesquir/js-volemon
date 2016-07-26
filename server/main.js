@@ -1,9 +1,3 @@
-import { Config } from '/lib/config.js';
-
-Meteor.setInterval(function() {
-	Meteor.call('removeTimeoutPlayersAndGames');
-}, Config.keepAliveElapsedForTimeOut);
-
 Accounts.onCreateUser((options, user) => {
 	user._id = Random.id();
 

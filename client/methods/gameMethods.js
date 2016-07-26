@@ -4,14 +4,6 @@ import { Constants } from '/lib/constants.js';
 import { getUTCTimeStamp } from '/lib/utils.js';
 
 Meteor.methods({
-	keepPlayerAlive: function(playerId) {
-		var player = Players.findOne(playerId);
-
-		if (player) {
-			Players.update({_id: playerId}, {$set: {lastKeepAlive: getUTCTimeStamp()}});
-		}
-	},
-
 	addGamePoints: function(gameId, columnName) {
 		var game = Games.findOne(gameId),
 			data = {};

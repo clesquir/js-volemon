@@ -13,7 +13,7 @@ import { Players } from '/collections/players.js';
 import { Config } from '/lib/config.js';
 import { Constants } from '/lib/constants.js';
 import { GameStream } from '/lib/streams.js';
-import { getUTCTimeStamp } from '/lib/utils.js';
+import { getUTCTimeStamp, emitGameStreamAtFrequence } from '/lib/utils.js';
 
 export default class Game {
 
@@ -23,7 +23,6 @@ export default class Game {
 		this.xSize = Constants.GAME_X_SIZE;
 		this.ySize = Constants.GAME_Y_SIZE;
 		this.groundHeight = Constants.GAME_GROUND_HEIGHT;
-		this.lastKeepAliveUpdate = 0;
 		this.lastBallUpdate = 0;
 		this.lastPlayerUpdate = 0;
 		this.lastBonusUpdate = 0;
@@ -534,14 +533,6 @@ export default class Game {
 	}
 
 	updateGame() {
-		let player = this.getPlayer();
-
-		if (player) {
-			this.lastKeepAliveUpdate = this.callMeteorMethodAtFrequence(
-				this.lastKeepAliveUpdate, Config.keepAliveInterval, 'keepPlayerAlive', [player._id]
-			);
-		}
-
 		//Do not allow ball movement if it is frozen
 		if (this.isUserHost() && this.ball.isFrozen) {
 			this.engine.setHorizontalSpeed(this.ball, 0);
@@ -640,7 +631,7 @@ export default class Game {
 	sendBallPosition() {
 		var ballPositionData = this.engine.getPositionData(this.ball);
 
-		this.lastBallUpdate = this.emitGameStreamAtFrequence(
+		this.lastBallUpdate = emitGameStreamAtFrequence(
 			this.lastBallUpdate,
 			Config.ballInterval,
 			'moveClientBall-' + this.gameId,
@@ -653,7 +644,7 @@ export default class Game {
 
 		playerPositionData.doingDropShot = player.doingDropShot;
 
-		this.lastPlayerUpdate = this.emitGameStreamAtFrequence(
+		this.lastPlayerUpdate = emitGameStreamAtFrequence(
 			this.lastPlayerUpdate,
 			Config.playerInterval,
 			'moveOppositePlayer-' + this.gameId,
@@ -665,7 +656,7 @@ export default class Game {
 		for (let bonus of this.bonuses) {
 			let bonusPositionData = this.engine.getPositionData(bonus);
 
-			this.lastBonusUpdate = this.emitGameStreamAtFrequence(
+			this.lastBonusUpdate = emitGameStreamAtFrequence(
 				this.lastBonusUpdate,
 				Config.bonusInterval,
 				'moveClientBonus-' + this.gameId,
@@ -897,26 +888,6 @@ export default class Game {
 
 		this.countdownText.text = '';
 		this.countdownTimer.stop();
-	}
-
-	callMeteorMethodAtFrequence(lastCallTime, frequenceTime, methodToCall, argumentsToCallWith) {
-		if (this.engine.getTime() - lastCallTime >= frequenceTime) {
-			Meteor.apply(methodToCall, argumentsToCallWith);
-
-			lastCallTime = this.engine.getTime();
-		}
-
-		return lastCallTime;
-	}
-
-	emitGameStreamAtFrequence(lastCallTime, frequenceTime, streamToEmit, argumentsToEmitWith) {
-		if (this.engine.getTime() - lastCallTime >= frequenceTime) {
-			GameStream.emit.apply(GameStream, [streamToEmit].concat(argumentsToEmitWith));
-
-			lastCallTime = this.engine.getTime();
-		}
-
-		return lastCallTime;
 	}
 
 	scalePlayer(playerKey, scale) {

@@ -1,5 +1,4 @@
 import GameInitiator from '/client/lib/game/GameInitiator.js';
-import KeepRegistrationAlive from '/client/lib/game/KeepRegistrationAlive.js';
 import {
 	isGameStatusStarted,
 	isGameStatusFinished,
@@ -261,21 +260,26 @@ Template.game.events({
 
 /** @type {GameInitiator}|null */
 var gameInitiator = null;
-/** @type {KeepRegistrationAlive}|null */
-var keepRegistrationAlive = null;
 
 Template.game.rendered = function() {
 	gameInitiator = new GameInitiator(Session.get('game'));
 	gameInitiator.init();
-	keepRegistrationAlive = new KeepRegistrationAlive(Session.get('game'));
-	keepRegistrationAlive.start();
 };
 
 Template.game.destroyed = function() {
+	Meteor.call('quitGame', Session.get('game'), function() {});
+
 	if (gameInitiator) {
 		gameInitiator.stop();
 	}
-	if (keepRegistrationAlive) {
-		keepRegistrationAlive.stop();
-	}
+
+	Session.set('game', undefined);
 };
+
+Meteor.startup(function(){
+	$(window).bind('beforeunload', function() {
+		if (Session.get('game')) {
+			Meteor.call('quitGame', Session.get('game'), function() {});
+		}
+	});
+});

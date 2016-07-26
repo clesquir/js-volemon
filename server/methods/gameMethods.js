@@ -42,8 +42,12 @@ Meteor.methods({
 	},
 
 	updateGamePrivacy: function(gameId, isPrivate) {
-		var game = Games.findOne(gameId),
-			user = Meteor.user();
+		var user = Meteor.user(),
+			game = Games.findOne(gameId);
+
+		if (!user) {
+			throw new Meteor.Error(401, 'You need to login to update game privacy property');
+		}
 
 		if (!game) {
 			throw new Meteor.Error(404, 'Game not found');
@@ -57,8 +61,12 @@ Meteor.methods({
 	},
 
 	updateGameHasBonuses: function(gameId, hasBonuses) {
-		var game = Games.findOne(gameId),
-			user = Meteor.user();
+		var user = Meteor.user(),
+			game = Games.findOne(gameId);
+
+		if (!user) {
+			throw new Meteor.Error(401, 'You need to login to update game bonus property');
+		}
 
 		if (!game) {
 			throw new Meteor.Error(404, 'Game not found');
@@ -72,16 +80,19 @@ Meteor.methods({
 	},
 
 	joinGame: function(gameId, isReady) {
-		check(this.userId, String);
-
 		var user = Meteor.user(),
 			game = Games.findOne(gameId),
-			player = Players.findOne({gameId: gameId, userId: user._id});
+			player;
+
+		if (!user) {
+			throw new Meteor.Error(401, 'You need to login to join a game');
+		}
 
 		if (!game) {
 			throw new Meteor.Error(404, 'Game not found');
 		}
 
+		player = Players.findOne({gameId: gameId, userId: user._id});
 		if (player) {
 			throw new Meteor.Error('not-allowed', 'Already joined');
 		}
@@ -94,7 +105,7 @@ Meteor.methods({
 			game = Games.findOne(gameId);
 
 		if (!user) {
-			throw new Meteor.Error(401, 'You need to login to join a game');
+			throw new Meteor.Error(401, 'You need to login to add player to a game');
 		}
 
 		if (!game) {
@@ -111,7 +122,7 @@ Meteor.methods({
 			gameId: gameId,
 			joinedAt: getUTCTimeStamp(),
 			isReady: isReady,
-			lastKeepAlive: getUTCTimeStamp(),
+			hasQuit: false,
 			shape: Constants.PLAYER_DEFAULT_SHAPE
 		});
 
@@ -121,11 +132,13 @@ Meteor.methods({
 	},
 
 	updatePlayerShape: function(gameId, shape) {
-		check(this.userId, String);
+		var user = Meteor.user(),
+			game = Games.findOne(gameId),
+			player;
 
-		var game = Games.findOne(gameId),
-			user = Meteor.user(),
-			player = Players.findOne({gameId: gameId, userId: user._id});
+		if (!user) {
+			throw new Meteor.Error(401, 'You need to login to update your player shape');
+		}
 
 		if (!game) {
 			throw new Meteor.Error(404, 'Game not found');
@@ -135,6 +148,7 @@ Meteor.methods({
 			throw new Meteor.Error('not-allowed', 'Game already started');
 		}
 
+		player = Players.findOne({gameId: gameId, userId: user._id});
 		if (!player) {
 			throw new Meteor.Error(404, 'Player not found');
 		}
@@ -150,16 +164,19 @@ Meteor.methods({
 	},
 
 	setPlayerIsReady: function(gameId) {
-		check(this.userId, String);
+		var user = Meteor.user(),
+			game = Games.findOne(gameId),
+			player;
 
-		var game = Games.findOne(gameId),
-			user = Meteor.user(),
-			player = Players.findOne({gameId: gameId, userId: user._id});
+		if (!user) {
+			throw new Meteor.Error(401, 'You need to login to set player ready');
+		}
 
 		if (!game) {
 			throw new Meteor.Error(404, 'Game not found');
 		}
 
+		player = Players.findOne({gameId: gameId, userId: user._id});
 		if (!player) {
 			throw new Meteor.Error(404, 'Player not found');
 		}
@@ -168,11 +185,13 @@ Meteor.methods({
 	},
 
 	leaveGame: function(gameId) {
-		check(this.userId, String);
+		var user = Meteor.user(),
+			game = Games.findOne(gameId),
+			player;
 
-		var user = Meteor.user();
-		var game = Games.findOne(gameId);
-		var player = Players.findOne({gameId: gameId, userId: user._id});
+		if (!user) {
+			throw new Meteor.Error(401, 'You need to login to leave a game');
+		}
 
 		if (!game) {
 			throw new Meteor.Error(404, 'Game not found');
@@ -182,7 +201,21 @@ Meteor.methods({
 			throw new Meteor.Error('not-allowed', 'Game already started');
 		}
 
+		player = Players.findOne({gameId: gameId, userId: user._id});
+
+		if (!player) {
+			throw new Meteor.Error(404, 'Player not found');
+		}
+
 		Players.remove(player._id);
+
+		//if player is game creator, remove game and all players
+		if (game.createdBy === user._id) {
+			//Remove all players
+			Players.remove({gameId: game._id});
+			//Remove game
+			Games.remove(game._id);
+		}
 	},
 
 	startGame: function(gameId) {
@@ -204,6 +237,37 @@ Meteor.methods({
 		GameStream.emit('play-' + game._id);
 	},
 
+	quitGame: function(gameId) {
+		var user = Meteor.user(),
+			game = Games.findOne(gameId),
+			player;
+
+		if (!user) {
+			throw new Meteor.Error(401, 'You need to login to quit a game');
+		}
+
+		if (!game) {
+			throw new Meteor.Error(404, 'Game not found');
+		}
+
+		//If game has not started, leaveGame instead
+		if (game.status === Constants.GAME_STATUS_REGISTRATION) {
+			Meteor.call('leaveGame', gameId);
+		} else if (game.status !== Constants.GAME_STATUS_FINISHED) {
+			player = Players.findOne({userId: user._id, gameId: gameId});
+
+			if (!player) {
+				throw new Meteor.Error(404, 'Player not found');
+			}
+
+			Players.update({_id: player._id}, {$set: {hasQuit: getUTCTimeStamp()}});
+
+			if (game.status === Constants.GAME_STATUS_STARTED) {
+				Games.update({_id: game._id}, {$set: {status: Constants.GAME_STATUS_TIMEOUT}});
+			}
+		}
+	},
+
 	keepPlayerAlive: function(playerId) {
 		var player = Players.findOne(playerId);
 
@@ -215,38 +279,36 @@ Meteor.methods({
 	},
 
 	removeTimeoutPlayersAndGames: function() {
-		var games = Games.find({status: {$nin: [Constants.GAME_STATUS_FINISHED]}}),
-			timedOutPlayers = Players.find({lastKeepAlive: {$lt: (getUTCTimeStamp() - Config.keepAliveElapsedForTimeOut)}}),
-			timedOutPlayersByGameId = {};
-
-		//Gather players ids and player object by ids
-		timedOutPlayers.forEach(function(player) {
-			if (timedOutPlayersByGameId[player.gameId] === undefined) {
-				timedOutPlayersByGameId[player.gameId] = [];
-			}
-			timedOutPlayersByGameId[player.gameId].push(player);
-		});
+		var games = Games.find({status: {$in: [Constants.GAME_STATUS_STARTED]}}),
+			gameIds = [];
 
 		games.forEach(function(game) {
-			//If there are timed out players
-			if (timedOutPlayersByGameId[game._id] !== undefined) {
-				//Check if games have players left
-				let playersInGame = Players.find({gameId: game._id});
+			gameIds.push(game._id);
+		});
 
-				if (playersInGame.count() - timedOutPlayersByGameId[game._id].length === 0) {
+		if (gameIds.length) {
+			let timedOutPlayers = Players.find({gameId: {$in: gameIds}, lastKeepAlive: {$lt: (getUTCTimeStamp() - Config.keepAliveTimeOutInterval)}});
+			let timedOutPlayersByGameId = {};
+
+			//Gather players ids and player object by ids
+			timedOutPlayers.forEach(function(player) {
+				if (timedOutPlayersByGameId[player.gameId] === undefined) {
+					timedOutPlayersByGameId[player.gameId] = [];
+				}
+				timedOutPlayersByGameId[player.gameId].push(player);
+			});
+
+			games.forEach(function(game) {
+				//If there are timed out players
+				if (timedOutPlayersByGameId[game._id] !== undefined) {
 					for (let player of timedOutPlayersByGameId[game._id]) {
-						Players.remove(player._id);
-						console.log('Removed timed out player = ' + player._id);
+						Players.update({_id: player._id}, {$set: {hasQuit: player.lastKeepAlive}});
 					}
 
-					Games.remove(game._id);
-					console.log('Removed game = ' + game._id);
-				} else if (game.status === Constants.GAME_STATUS_STARTED) {
 					Games.update({_id: game._id}, {$set: {status: Constants.GAME_STATUS_TIMEOUT}});
-					console.log('Set game status to timeout = ' + game._id);
 				}
-			}
-		});
+			});
+		}
 	},
 
 	addGamePoints: function(gameId, columnName) {
