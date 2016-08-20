@@ -1,0 +1,28 @@
+{
+  "name": "js-volemon",
+  "version": "1.0.0",
+  "description": "HTML5 version of the Volemon (or Slime Volley) game implemented in Meteor",
+  "main": "index.js",
+  "dependencies": {
+    "bcrypt": "^0.8.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "meteor test --driver-package=practicalmeteor:mocha --port 4000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/clesquir/js-volemon.git"
+  },
+  "keywords": [
+    "volemon",
+    "slimevolley",
+    "multiplayer"
+  ],
+  "author": "Cedric Lesquir",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/clesquir/js-volemon/issues"
+  },
+  "homepage": "https://github.com/clesquir/js-volemon#readme"
+}
