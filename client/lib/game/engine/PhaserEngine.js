@@ -263,6 +263,30 @@ export default class PhaserEngine {
 		this.game.physics.p2.enable(sprite);
 	}
 
+	interpolateFromTimestamp(currentTimestamp, sprite, data) {
+		var t = (currentTimestamp - data.timestamp) / 1000,
+			gravity = this.game.physics.p2.gravity.y * sprite.body.data.gravityScale,
+			x = data.velocityX * t,
+			y = 0;
+
+		if (data.velocityY != 0) {
+			y = -data.velocityY * t - 0.5 * gravity * t * t;
+		}
+
+		/**
+		 * From x and y starting point,
+		 * determine what would be the new x and y position
+		 * from the x and y velocity and the elapsedTime
+		 */
+		data.x = x + data.x;
+		data.y = data.y - y;
+
+		//@todo Restrict horizontally
+		//@todo Restrict vertically
+
+		return data;
+	}
+
 	move(sprite, data) {
 		if (!sprite.body) {
 			return;

@@ -190,6 +190,10 @@ export default class Game {
 		return polygonKey;
 	}
 
+	getServerNormalizedTimestamp() {
+		return getUTCTimeStamp() + this.serverOffset;
+	}
+
 	start() {
 		this.engine.start(
 			this.xSize, this.ySize, 'gameContainer',
@@ -479,7 +483,7 @@ export default class Game {
 		} else if (this.isGameOnGoing()) {
 			this.startCountdownTimer();
 			this.regenerateLastBonusCreatedAndFrequenceTime();
-			this.lastGameRespawn = this.engine.getTime();
+			this.lastGameRespawn = getUTCTimeStamp();
 		}
 	}
 
@@ -599,7 +603,7 @@ export default class Game {
 	}
 
 	getBonusProgress(activeBonus, bonus) {
-		return 1 - ((getUTCTimeStamp() + this.serverOffset - activeBonus.activatedAt) / bonus.getDuration());
+		return 1 - ((this.getServerNormalizedTimestamp() - activeBonus.activatedAt) / bonus.getDuration());
 	}
 
 	updateCountdown() {
@@ -631,6 +635,8 @@ export default class Game {
 	sendBallPosition() {
 		var ballPositionData = this.engine.getPositionData(this.ball);
 
+		ballPositionData = this.addServerNormalizedTimestampToPositionData(ballPositionData);
+
 		this.lastBallUpdate = emitGameStreamAtFrequence(
 			this.lastBallUpdate,
 			Config.ballInterval,
@@ -643,6 +649,7 @@ export default class Game {
 		var playerPositionData = this.engine.getPositionData(player);
 
 		playerPositionData.doingDropShot = player.doingDropShot;
+		playerPositionData = this.addServerNormalizedTimestampToPositionData(playerPositionData);
 
 		this.lastPlayerUpdate = emitGameStreamAtFrequence(
 			this.lastPlayerUpdate,
@@ -656,6 +663,8 @@ export default class Game {
 		for (let bonus of this.bonuses) {
 			let bonusPositionData = this.engine.getPositionData(bonus);
 
+			bonusPositionData = this.addServerNormalizedTimestampToPositionData(bonusPositionData);
+
 			this.lastBonusUpdate = emitGameStreamAtFrequence(
 				this.lastBonusUpdate,
 				Config.bonusInterval,
@@ -663,6 +672,12 @@ export default class Game {
 				[bonus.identifier, bonusPositionData]
 			);
 		}
+	}
+
+	addServerNormalizedTimestampToPositionData(data) {
+		data['timestamp'] = this.getServerNormalizedTimestamp();
+
+		return data;
 	}
 
 	hitBall(ball, player) {
@@ -844,6 +859,8 @@ export default class Game {
 
 		player.doingDropShot = data.doingDropShot;
 
+		data = this.engine.interpolateFromTimestamp(this.getServerNormalizedTimestamp(), player, data);
+
 		this.engine.move(player, data);
 	}
 
@@ -851,6 +868,8 @@ export default class Game {
 		if (!this.ball) {
 			return;
 		}
+
+		data = this.engine.interpolateFromTimestamp(this.getServerNormalizedTimestamp(), this.ball, data);
 
 		this.engine.move(this.ball, data);
 	}
@@ -861,6 +880,8 @@ export default class Game {
 		if (!correspondingBonus) {
 			return;
 		}
+
+		data = this.engine.interpolateFromTimestamp(this.getServerNormalizedTimestamp(), correspondingBonus, data);
 
 		this.engine.move(correspondingBonus, data);
 	}
@@ -1045,24 +1066,24 @@ export default class Game {
 	}
 
 	regenerateLastBonusCreatedAndFrequenceTime() {
-		this.lastBonusCreated = this.engine.getTime();
+		this.lastBonusCreated = getUTCTimeStamp();
 		this.bonusFrequenceTime = getRandomInt(Config.bonusMinimumInterval, Config.bonusMaximumInterval);
 	}
 
 	createBonusIfTimeHasElapsed() {
-		var frequenceTime = this.bonusFrequenceTime - Math.round((this.engine.getTime() - this.lastGameRespawn) / 10);
+		var frequenceTime = this.bonusFrequenceTime - Math.round((getUTCTimeStamp() - this.lastGameRespawn) / 10);
 
 		if (frequenceTime < Config.bonusMinimumFrequence) {
 			frequenceTime = Config.bonusMinimumFrequence;
 		}
 
-		if (this.engine.getTime() - this.lastBonusCreated >= frequenceTime) {
+		if (getUTCTimeStamp() - this.lastBonusCreated >= frequenceTime) {
 			//Host choose position and bonusCls
 			let bonusClass = BonusFactory.getRandomBonusKey();
 			let data = {
 				initialX: this.xSize / 2 + Random.choice([-6, +6]),
 				bonusKey: bonusClass,
-				bonusIdentifier: bonusClass + '_' + getUTCTimeStamp()
+				bonusIdentifier: bonusClass + '_' + this.getServerNormalizedTimestamp()
 			};
 
 			//Create the bonus the host
