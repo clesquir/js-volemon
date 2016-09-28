@@ -13,7 +13,7 @@ import { Players } from '/collections/players.js';
 import { Config } from '/lib/config.js';
 import { Constants } from '/lib/constants.js';
 import { GameStream } from '/lib/streams.js';
-import { getUTCTimeStamp, emitGameStreamAtFrequence } from '/lib/utils.js';
+import { getUTCTimeStamp } from '/lib/utils.js';
 
 export default class Game {
 
@@ -30,6 +30,7 @@ export default class Game {
 		this.lastBonusCreated = 0;
 		this.bonusFrequenceTime = 0;
 		this.lastGameRespawn = 0;
+		this.bundledStreamsToEmit = {};
 		this.bonuses = [];
 		this.activeBonuses = [];
 		this.serverOffset = TimeSync.serverOffset();
@@ -537,6 +538,9 @@ export default class Game {
 	}
 
 	updateGame() {
+		//Reset bundled streams
+		this.bundledStreamsToEmit = {};
+
 		//Do not allow ball movement if it is frozen
 		if (this.isUserHost() && this.ball.isFrozen) {
 			this.engine.setHorizontalSpeed(this.ball, 0);
@@ -563,6 +567,21 @@ export default class Game {
 			this.stopGame();
 			this.onGameEnd();
 		}
+
+		//Send bundled streams if there is streams to send
+		if (this.bundledStreamsToEmit != {}) {
+			GameStream.emit.apply(GameStream, ['sendBundledData-' + this.gameId, this.bundledStreamsToEmit]);
+		}
+	}
+
+	addToBundledStreamsAtFrequence(lastCallTime, frequenceTime, streamName, argumentsToBundleWith) {
+		if (getUTCTimeStamp() - lastCallTime >= frequenceTime) {
+			this.bundledStreamsToEmit[streamName] = argumentsToBundleWith;
+
+			lastCallTime = getUTCTimeStamp();
+		}
+
+		return lastCallTime;
 	}
 
 	updatePlayerBonuses() {
@@ -637,10 +656,10 @@ export default class Game {
 
 		ballPositionData = this.addServerNormalizedTimestampToPositionData(ballPositionData);
 
-		this.lastBallUpdate = emitGameStreamAtFrequence(
+		this.lastBallUpdate = this.addToBundledStreamsAtFrequence(
 			this.lastBallUpdate,
 			Config.ballInterval,
-			'moveClientBall-' + this.gameId,
+			'moveClientBall',
 			[ballPositionData]
 		);
 	}
@@ -651,10 +670,10 @@ export default class Game {
 		playerPositionData.doingDropShot = player.doingDropShot;
 		playerPositionData = this.addServerNormalizedTimestampToPositionData(playerPositionData);
 
-		this.lastPlayerUpdate = emitGameStreamAtFrequence(
+		this.lastPlayerUpdate = this.addToBundledStreamsAtFrequence(
 			this.lastPlayerUpdate,
 			Config.playerInterval,
-			'moveOppositePlayer-' + this.gameId,
+			'moveOppositePlayer',
 			[this.isUserHost(), playerPositionData]
 		);
 	}
@@ -665,10 +684,10 @@ export default class Game {
 
 			bonusPositionData = this.addServerNormalizedTimestampToPositionData(bonusPositionData);
 
-			this.lastBonusUpdate = emitGameStreamAtFrequence(
+			this.lastBonusUpdate = this.addToBundledStreamsAtFrequence(
 				this.lastBonusUpdate,
 				Config.bonusInterval,
-				'moveClientBonus-' + this.gameId,
+				'moveClientBonus',
 				[bonus.identifier, bonusPositionData]
 			);
 		}
@@ -1089,8 +1108,8 @@ export default class Game {
 			//Create the bonus the host
 			this.createBonus(data);
 			this.regenerateLastBonusCreatedAndFrequenceTime();
-			//Send to client
-			GameStream.emit('createBonus-' + this.gameId, data);
+			//Add to bundled stream to send
+			this.bundledStreamsToEmit.createBonus = [data];
 		}
 	}
 

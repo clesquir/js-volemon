@@ -53,70 +53,96 @@ export default class StreamInitiator {
 			}
 		});
 
-		GameStream.on('moveClientBall-' + gameId, function(ballData) {
-			var game = Games.findOne(gameId),
-				player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
-
-			//Player is in game and is not the creator
-			if (game && player && game.createdBy !== Meteor.userId() && gameInitiator.hasActiveGame()) {
-				gameInitiator.currentGame.moveClientBall(ballData);
-			}
+		GameStream.on('activateBonus-' + gameId, (bonusIdentifier, playerKey) => {
+			this.activateBonus(bonusIdentifier, playerKey);
 		});
 
-		GameStream.on('moveOppositePlayer-' + gameId, function(isUserHost, playerData) {
-			var game = Games.findOne(gameId),
-				player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
-
-			//Player is in game and sent data is for opposite player
-			if (
-				game && player &&
-				((isUserHost && game.createdBy !== Meteor.userId()) || (!isUserHost && game.createdBy === Meteor.userId())) &&
-				gameInitiator.hasActiveGame()
-			) {
-				gameInitiator.currentGame.moveOppositePlayer(playerData);
+		GameStream.on('sendBundledData-' + gameId, (bundledData) => {
+			if (bundledData.moveClientBall) {
+				this.moveClientBall.apply(this, bundledData.moveClientBall);
+			}
+			if (bundledData.moveOppositePlayer) {
+				this.moveOppositePlayer.apply(this, bundledData.moveOppositePlayer);
+			}
+			if (bundledData.createBonus) {
+				this.createBonus.apply(this, bundledData.createBonus);
+			}
+			if (bundledData.moveClientBonus) {
+				this.moveClientBonus.apply(this, bundledData.moveClientBonus);
 			}
 		});
+	}
 
-		GameStream.on('createBonus-' + gameId, function(bonusData) {
-			var game = Games.findOne(gameId),
-				player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
+	moveClientBall(ballData) {
+		var gameInitiator = this.gameInitiator;
+		var gameId = gameInitiator.gameId;
+		var game = Games.findOne(gameId);
+		var player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
 
-			//Player is in game and is not the creator
-			if (game && player && game.createdBy !== Meteor.userId() && gameInitiator.hasActiveGame()) {
-				gameInitiator.currentGame.createBonus(bonusData);
-			}
-		});
+		//Player is in game and is not the creator
+		if (game && player && game.createdBy !== Meteor.userId() && gameInitiator.hasActiveGame()) {
+			gameInitiator.currentGame.moveClientBall(ballData);
+		}
+	}
 
-		GameStream.on('activateBonus-' + gameId, function(bonusIdentifier, playerKey) {
-			var game = Games.findOne(gameId),
-				player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
+	moveOppositePlayer(isUserHost, playerData) {
+		var gameInitiator = this.gameInitiator;
+		var gameId = gameInitiator.gameId;
+		var game = Games.findOne(gameId);
+		var player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
 
-			//Player is in game and is not the creator
-			if (game && player && game.createdBy !== Meteor.userId() && gameInitiator.hasActiveGame()) {
-				gameInitiator.currentGame.activateBonus(bonusIdentifier, playerKey);
-			}
-		});
+		//Player is in game and sent data is for opposite player
+		if (
+			game && player &&
+			((isUserHost && game.createdBy !== Meteor.userId()) || (!isUserHost && game.createdBy === Meteor.userId())) &&
+			gameInitiator.hasActiveGame()
+		) {
+			gameInitiator.currentGame.moveOppositePlayer(playerData);
+		}
+	}
 
-		GameStream.on('moveClientBonus-' + gameId, function(bonusIdentifier, bonusData) {
-			var game = Games.findOne(gameId),
-				player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
+	createBonus(bonusData) {
+		var gameInitiator = this.gameInitiator;
+		var gameId = gameInitiator.gameId;
+		var game = Games.findOne(gameId);
+		var player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
 
-			//Player is in game and is not the creator
-			if (game && player && game.createdBy !== Meteor.userId() && gameInitiator.hasActiveGame()) {
-				gameInitiator.currentGame.moveClientBonus(bonusIdentifier, bonusData);
-			}
-		});
+		//Player is in game and is not the creator
+		if (game && player && game.createdBy !== Meteor.userId() && gameInitiator.hasActiveGame()) {
+			gameInitiator.currentGame.createBonus(bonusData);
+		}
+	}
+
+	activateBonus(bonusIdentifier, playerKey) {
+		var gameInitiator = this.gameInitiator;
+		var gameId = gameInitiator.gameId;
+		var game = Games.findOne(gameId);
+		var player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
+
+		//Player is in game and is not the creator
+		if (game && player && game.createdBy !== Meteor.userId() && gameInitiator.hasActiveGame()) {
+			gameInitiator.currentGame.activateBonus(bonusIdentifier, playerKey);
+		}
+	}
+
+	moveClientBonus(bonusIdentifier, bonusData) {
+		var gameInitiator = this.gameInitiator;
+		var gameId = gameInitiator.gameId;
+		var game = Games.findOne(gameId);
+		var player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
+
+		//Player is in game and is not the creator
+		if (game && player && game.createdBy !== Meteor.userId() && gameInitiator.hasActiveGame()) {
+			gameInitiator.currentGame.moveClientBonus(bonusIdentifier, bonusData);
+		}
 	}
 
 	stop() {
 		var gameId = this.gameInitiator.gameId;
 
 		GameStream.removeAllListeners('play-' + gameId);
-		GameStream.removeAllListeners('moveClientBall-' + gameId);
-		GameStream.removeAllListeners('moveOppositePlayer-' + gameId);
-		GameStream.removeAllListeners('createBonus-' + gameId);
 		GameStream.removeAllListeners('activateBonus-' + gameId);
-		GameStream.removeAllListeners('moveClientBonus-' + gameId);
+		GameStream.removeAllListeners('sendBundledData-' + gameId);
 
 		if (this.gamePointsTracker) {
 			this.gamePointsTracker.stop();

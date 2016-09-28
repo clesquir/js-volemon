@@ -7,6 +7,7 @@ import Game from '/client/lib/Game.js';
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
 import { GameStream } from '/lib/streams.js';
+import { getUTCTimeStamp } from '/lib/utils.js';
 
 describe('Game#getPlayerShapeFromKey', function() {
 	it('returns default shape when games does not exist', function() {
@@ -1254,16 +1255,14 @@ describe('Game#createBonusIfTimeHasElapsed', function() {
 	});
 
 	it('creates bonus if time has elapsed', function() {
-		var gameId = Random.id(5),
-			game = new Game(gameId);
+		var gameId = Random.id(5);
+		var game = new Game(gameId);
+		var timestamp = getUTCTimeStamp();
 
 		game.bonusFrequenceTime = 5000;
-		game.lastGameRespawn = 10000;
+		game.lastGameRespawn = timestamp - 8000;
 
 		game.engine = {
-			getTime: function() {
-				return 18000;
-			},
 			addBonus: function() {
 				return new BaseBonus();
 			},
@@ -1274,28 +1273,24 @@ describe('Game#createBonusIfTimeHasElapsed', function() {
 		//Create spies
 		let createBonusSpy = sinon.spy(game, 'createBonus');
 		let regenerateLastBonusCreatedAndFrequenceTimeSpy = sinon.spy(game, 'regenerateLastBonusCreatedAndFrequenceTime');
-		let gameStreamSpy = sinon.spy(GameStream, 'emit');
 
 		game.createBonusIfTimeHasElapsed();
 
 		chai.assert.isTrue(createBonusSpy.calledOnce);
 		chai.assert.isTrue(regenerateLastBonusCreatedAndFrequenceTimeSpy.calledOnce);
-		chai.assert.isTrue(gameStreamSpy.calledOnce);
-		chai.assert.isTrue(gameStreamSpy.alwaysCalledWith('createBonus-' + gameId));
+		chai.assert.property(game.bundledStreamsToEmit, 'createBonus');
 	});
 
 	it('does not create bonus if time has not elapsed', function() {
-		var gameId = Random.id(5),
-			game = new Game(gameId);
+		var gameId = Random.id(5);
+		var game = new Game(gameId);
+		var timestamp = getUTCTimeStamp();
 
 		game.bonusFrequenceTime = 5000;
-		game.lastBonusCreated = 10000;
-		game.lastGameRespawn = 10000;
+		game.lastBonusCreated = timestamp;
+		game.lastGameRespawn = timestamp;
 
 		game.engine = {
-			getTime: function() {
-				return 14500;
-			},
 			addBonus: function() {
 				return new BaseBonus();
 			},
@@ -1306,27 +1301,24 @@ describe('Game#createBonusIfTimeHasElapsed', function() {
 		//Create spies
 		let createBonusSpy = sinon.spy(game, 'createBonus');
 		let regenerateLastBonusCreatedAndFrequenceTimeSpy = sinon.spy(game, 'regenerateLastBonusCreatedAndFrequenceTime');
-		let gameStreamSpy = sinon.spy(GameStream, 'emit');
 
 		game.createBonusIfTimeHasElapsed();
 
 		sinon.assert.notCalled(createBonusSpy);
 		sinon.assert.notCalled(regenerateLastBonusCreatedAndFrequenceTimeSpy);
-		sinon.assert.notCalled(gameStreamSpy);
+		chai.assert.notProperty(game.bundledStreamsToEmit, 'createBonus');
 	});
 
 	it('does not create bonus if time is too short since last creation depending on bonusMinimumFrequence', function() {
-		var gameId = Random.id(5),
-			game = new Game(gameId);
+		var gameId = Random.id(5);
+		var game = new Game(gameId);
+		var timestamp = getUTCTimeStamp();
 
 		game.bonusFrequenceTime = 0;
-		game.lastBonusCreated = 10000;
-		game.lastGameRespawn = 10000;
+		game.lastBonusCreated = timestamp - 1;
+		game.lastGameRespawn = timestamp - 1;
 
 		game.engine = {
-			getTime: function() {
-				return 10001;
-			},
 			addBonus: function() {
 				return new BaseBonus();
 			},
@@ -1337,13 +1329,12 @@ describe('Game#createBonusIfTimeHasElapsed', function() {
 		//Create spies
 		let createBonusSpy = sinon.spy(game, 'createBonus');
 		let regenerateLastBonusCreatedAndFrequenceTimeSpy = sinon.spy(game, 'regenerateLastBonusCreatedAndFrequenceTime');
-		let gameStreamSpy = sinon.spy(GameStream, 'emit');
 
 		game.createBonusIfTimeHasElapsed();
 
 		sinon.assert.notCalled(createBonusSpy);
 		sinon.assert.notCalled(regenerateLastBonusCreatedAndFrequenceTimeSpy);
-		sinon.assert.notCalled(gameStreamSpy);
+		chai.assert.notProperty(game.bundledStreamsToEmit, 'createBonus');
 	});
 });
 
