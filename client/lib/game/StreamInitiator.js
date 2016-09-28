@@ -141,6 +141,7 @@ export default class StreamInitiator {
 		var gameId = this.gameInitiator.gameId;
 
 		GameStream.removeAllListeners('play-' + gameId);
+		GameStream.removeAllListeners('activateBonus-' + gameId);
 		GameStream.removeAllListeners('sendBundledData-' + gameId);
 
 		if (this.gamePointsTracker) {
