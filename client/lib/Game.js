@@ -763,8 +763,9 @@ export default class Game {
 	}
 
 	dropShotBallOnPlayerHit(ball) {
-		this.engine.setHorizontalSpeed(ball, 0);
-		this.engine.setVerticalSpeed(ball, 0);
+		//Do not modify or add any velocity to the ball
+		// this.engine.setHorizontalSpeed(ball, 0);
+		// this.engine.setVerticalSpeed(ball, 0);
 	}
 
 	smashBallOnPlayerHit(ball, playerKey) {
