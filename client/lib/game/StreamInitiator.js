@@ -67,8 +67,10 @@ export default class StreamInitiator {
 			if (bundledData.createBonus) {
 				this.createBonus.apply(this, bundledData.createBonus);
 			}
-			if (bundledData.moveClientBonus) {
-				this.moveClientBonus.apply(this, bundledData.moveClientBonus);
+			if (bundledData.moveClientBonuses) {
+				for (let clientBonus of bundledData.moveClientBonuses) {
+					this.moveClientBonus.apply(this, clientBonus);
+				}
 			}
 		});
 	}
