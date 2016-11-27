@@ -679,16 +679,23 @@ export default class Game {
 	}
 
 	sendBonusesPosition() {
+		let bonusesData = [];
+
 		for (let bonus of this.bonuses) {
 			let bonusPositionData = this.engine.getPositionData(bonus);
 
-			bonusPositionData = this.addServerNormalizedTimestampToPositionData(bonusPositionData);
+			bonusesData.push([
+				bonus.identifier,
+				this.addServerNormalizedTimestampToPositionData(bonusPositionData)
+			]);
+		}
 
+		if (bonusesData.length) {
 			this.lastBonusUpdate = this.addToBundledStreamsAtFrequence(
 				this.lastBonusUpdate,
 				Config.bonusInterval,
-				'moveClientBonus',
-				[bonus.identifier, bonusPositionData]
+				'moveClientBonuses',
+				bonusesData
 			);
 		}
 	}
