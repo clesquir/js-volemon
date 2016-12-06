@@ -1,5 +1,6 @@
 import { EloScores } from '/collections/eloscores.js';
 import { Profiles } from '/collections/profiles.js';
+import { Constants } from '/lib/constants.js';
 import { getUTCTimeStamp } from '/lib/utils.js';
 
 createProfile = function(user) {
@@ -9,7 +10,8 @@ createProfile = function(user) {
 		numberOfWin: 0,
 		numberOfLost: 0,
 		eloRating: 1000,
-		eloRatingLastChange: 0
+		eloRatingLastChange: 0,
+		lastShapeUsed: Constants.PLAYER_DEFAULT_SHAPE
 	};
 
 	Profiles.insert(profile);
