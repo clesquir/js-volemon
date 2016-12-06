@@ -1,5 +1,6 @@
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
+import { Profiles } from '/collections/profiles.js';
 import { Config } from '/lib/config.js';
 import { Constants } from '/lib/constants.js';
 import { GameStream } from '/lib/streams.js';
@@ -102,7 +103,8 @@ Meteor.methods({
 
 	addPlayerToGame: function(gameId, isReady) {
 		var user = Meteor.user(),
-			game = Games.findOne(gameId);
+			game = Games.findOne(gameId),
+			profile = Profiles.findOne({userId: this.userId});
 
 		if (!user) {
 			throw new Meteor.Error(401, 'You need to login to add player to a game');
@@ -116,6 +118,11 @@ Meteor.methods({
 			isReady = false;
 		}
 
+		let shape = Constants.PLAYER_DEFAULT_SHAPE;
+		if (profile && profile.lastShapeUsed) {
+			shape = profile.lastShapeUsed;
+		}
+
 		let playerId = Players.insert({
 			userId: user._id,
 			name: user.profile.name,
@@ -123,7 +130,7 @@ Meteor.methods({
 			joinedAt: getUTCTimeStamp(),
 			isReady: isReady,
 			hasQuit: false,
-			shape: Constants.PLAYER_DEFAULT_SHAPE
+			shape: shape
 		});
 
 		return {
@@ -161,6 +168,7 @@ Meteor.methods({
 		}
 
 		Players.update({_id: player._id}, {$set: {shape: shape}});
+		Profiles.update({userId: this.userId}, {$set: {'lastShapeUsed': shape}});
 	},
 
 	setPlayerIsReady: function(gameId) {
