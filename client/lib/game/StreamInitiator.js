@@ -1,5 +1,4 @@
 import { Games } from '/collections/games.js';
-import { Players } from '/collections/players.js';
 import { Constants } from '/lib/constants.js';
 import { GameStream } from '/lib/streams.js';
 
@@ -12,26 +11,22 @@ export default class StreamInitiator {
 	}
 
 	init() {
-		var gameInitiator = this.gameInitiator,
-			gameId = gameInitiator.gameId;
+		let gameInitiator = this.gameInitiator;
+		let gameId = gameInitiator.gameId;
 
 		GameStream.on('play-' + gameId, function() {
-			var player = Players.findOne({gameId: gameId, userId: Meteor.userId()}),
-				loopUntilGameContainerIsCreated;
+			let loopUntilGameContainerIsCreated;
 
-			//Player is in game and this is the current game being started
-			if (player) {
-				//Wait for gameContainer creation before starting game
-				loopUntilGameContainerIsCreated = function() {
-					if (document.getElementById('gameContainer')) {
-						gameInitiator.createNewGame();
-					} else {
-						window.setTimeout(loopUntilGameContainerIsCreated, 1);
-					}
-				};
+			//Wait for gameContainer creation before starting game
+			loopUntilGameContainerIsCreated = function() {
+				if (document.getElementById('gameContainer')) {
+					gameInitiator.createNewGame();
+				} else {
+					window.setTimeout(loopUntilGameContainerIsCreated, 1);
+				}
+			};
 
-				loopUntilGameContainerIsCreated();
-			}
+			loopUntilGameContainerIsCreated();
 		});
 
 		this.gamePointsTracker = Games.find({_id: gameId}).observeChanges({
@@ -40,11 +35,7 @@ export default class StreamInitiator {
 					fields.hasOwnProperty(Constants.HOST_POINTS_COLUMN) ||
 					fields.hasOwnProperty(Constants.CLIENT_POINTS_COLUMN)
 				) {
-					let game = Games.findOne(gameId);
-					let player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
-
-					//Player is in game
-					if (game && player && gameInitiator.hasActiveGame()) {
+					if (gameInitiator.hasActiveGame()) {
 						gameInitiator.updateTimer();
 						gameInitiator.currentGame.shakeLevel();
 						gameInitiator.currentGame.resumeOnTimerEnd();
@@ -76,27 +67,19 @@ export default class StreamInitiator {
 	}
 
 	moveClientBall(ballData) {
-		var gameInitiator = this.gameInitiator;
-		var gameId = gameInitiator.gameId;
-		var game = Games.findOne(gameId);
-		var player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
+		let gameInitiator = this.gameInitiator;
 
-		//Player is in game and is not the creator
-		if (game && player && game.createdBy !== Meteor.userId() && gameInitiator.hasActiveGame()) {
+		if (!gameInitiator.userIsGameCreator() && gameInitiator.hasActiveGame()) {
 			gameInitiator.currentGame.moveClientBall(ballData);
 		}
 	}
 
 	moveOppositePlayer(isUserHost, playerData) {
-		var gameInitiator = this.gameInitiator;
-		var gameId = gameInitiator.gameId;
-		var game = Games.findOne(gameId);
-		var player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
+		let gameInitiator = this.gameInitiator;
 
-		//Player is in game and sent data is for opposite player
+		//Sent data is for opposite player
 		if (
-			game && player &&
-			((isUserHost && game.createdBy !== Meteor.userId()) || (!isUserHost && game.createdBy === Meteor.userId())) &&
+			((isUserHost && !gameInitiator.userIsGameCreator()) || (!isUserHost && gameInitiator.userIsGameCreator())) &&
 			gameInitiator.hasActiveGame()
 		) {
 			gameInitiator.currentGame.moveOppositePlayer(playerData);
@@ -104,43 +87,31 @@ export default class StreamInitiator {
 	}
 
 	createBonus(bonusData) {
-		var gameInitiator = this.gameInitiator;
-		var gameId = gameInitiator.gameId;
-		var game = Games.findOne(gameId);
-		var player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
+		let gameInitiator = this.gameInitiator;
 
-		//Player is in game and is not the creator
-		if (game && player && game.createdBy !== Meteor.userId() && gameInitiator.hasActiveGame()) {
+		if (!gameInitiator.userIsGameCreator() && gameInitiator.hasActiveGame()) {
 			gameInitiator.currentGame.createBonus(bonusData);
 		}
 	}
 
 	activateBonus(bonusIdentifier, playerKey) {
-		var gameInitiator = this.gameInitiator;
-		var gameId = gameInitiator.gameId;
-		var game = Games.findOne(gameId);
-		var player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
+		let gameInitiator = this.gameInitiator;
 
-		//Player is in game and is not the creator
-		if (game && player && game.createdBy !== Meteor.userId() && gameInitiator.hasActiveGame()) {
+		if (!gameInitiator.userIsGameCreator() && gameInitiator.hasActiveGame()) {
 			gameInitiator.currentGame.activateBonus(bonusIdentifier, playerKey);
 		}
 	}
 
 	moveClientBonus(bonusIdentifier, bonusData) {
-		var gameInitiator = this.gameInitiator;
-		var gameId = gameInitiator.gameId;
-		var game = Games.findOne(gameId);
-		var player = Players.findOne({gameId: gameId, userId: Meteor.userId()});
+		let gameInitiator = this.gameInitiator;
 
-		//Player is in game and is not the creator
-		if (game && player && game.createdBy !== Meteor.userId() && gameInitiator.hasActiveGame()) {
+		if (!gameInitiator.userIsGameCreator() && gameInitiator.hasActiveGame()) {
 			gameInitiator.currentGame.moveClientBonus(bonusIdentifier, bonusData);
 		}
 	}
 
 	stop() {
-		var gameId = this.gameInitiator.gameId;
+		let gameId = this.gameInitiator.gameId;
 
 		GameStream.removeAllListeners('play-' + gameId);
 		GameStream.removeAllListeners('activateBonus-' + gameId);

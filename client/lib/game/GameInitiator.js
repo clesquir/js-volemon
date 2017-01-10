@@ -1,5 +1,5 @@
 import StreamInitiator from '/client/lib/game/StreamInitiator.js';
-import { isGameStatusOnGoing } from '/client/lib/game/utils.js';
+import { isGameStatusStarted, isGameStatusOnGoing } from '/client/lib/game/utils.js';
 import Game from '/client/lib/Game.js';
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
@@ -17,19 +17,28 @@ export default class GameInitiator {
 	}
 
 	init() {
-		var player = Players.findOne({gameId: this.gameId, userId: Meteor.userId()}),
-			game = Games.findOne(this.gameId);
+		let game = this.fetchGame();
+		let player = Players.findOne({gameId: this.gameId, userId: Meteor.userId()});
 
+		this.gameCreatedBy = game.createdBy;
 		this.currentGame = null;
 
 		//Player is in game and this game is already started
 		if (player && isGameStatusOnGoing(game.status)) {
 			this.createNewGame();
 		}
-		
+
 		this.initTimer();
 
 		this.streamInitiator.init();
+	}
+
+	fetchGame() {
+		return Games.findOne({_id: this.gameId});
+	}
+
+	userIsGameCreator() {
+		return this.gameCreatedBy === Meteor.userId();
 	}
 
 	stop() {
@@ -55,9 +64,9 @@ export default class GameInitiator {
 	}
 
 	updateTimer() {
-		var game = Games.findOne(this.gameId);
+		let game = this.fetchGame();
 
-		if (game && game.status === Constants.GAME_STATUS_STARTED) {
+		if (isGameStatusStarted(game.status)) {
 			let matchTimer = getUTCTimeStamp() + this.serverOffset - game.startedAt;
 			if (matchTimer < 0) {
 				matchTimer = 0;
