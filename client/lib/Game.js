@@ -1,8 +1,6 @@
 import PhaserEngine from '/client/lib/game/engine/PhaserEngine.js';
 import BonusFactory from '/client/lib/game/BonusFactory.js';
 import {
-	getGameHostPlayer,
-	getGameClientPlayer,
 	isGameStatusStarted,
 	isGameStatusTimeout,
 	isGameStatusFinished
@@ -36,30 +34,17 @@ export default class Game {
 		this.serverOffset = TimeSync.serverOffset();
 	}
 
-	getGame() {
-		return Games.findOne({_id: this.gameId});
-	}
-
-	getPlayer() {
-		return Players.findOne({gameId: this.gameId, userId: Meteor.userId()});
-	}
-
 	/**
 	 * @param playerKey
 	 * @returns string Returns the player shape or PLAYER_DEFAULT_SHAPE if no game nor player is found
 	 */
 	getPlayerShapeFromKey(playerKey) {
-		var game = this.getGame(),
-			player;
-
-		if (!game) {
-			return Constants.PLAYER_DEFAULT_SHAPE;
-		}
+		let player;
 
 		if (playerKey == 'player1') {
-			player = getGameHostPlayer(game);
+			player = this.hostPlayer;
 		} else {
-			player = getGameClientPlayer(game);
+			player = this.clientPlayer;
 		}
 
 		if (!player) {
@@ -70,74 +55,41 @@ export default class Game {
 	}
 
 	isUserHost() {
-		var game = this.getGame();
-
-		return (game && game.createdBy === Meteor.userId());
+		return (this.gameCreatedBy === Meteor.userId() && this.currentPlayer);
 	}
 
 	isUserClient() {
-		var game = this.getGame(),
-			player = this.getPlayer();
-
-		return (game && game.createdBy !== Meteor.userId() && player);
+		return (this.gameCreatedBy !== Meteor.userId() && this.currentPlayer);
 	}
 
 	isGameOnGoing() {
-		var game = this.getGame();
-
-		return (game && isGameStatusStarted(game.status));
+		return isGameStatusStarted(this.gameStatus);
 	}
 
 	isGameTimeOut() {
-		var game = this.getGame();
-
-		return (game && isGameStatusTimeout(game.status));
+		return isGameStatusTimeout(this.gameStatus);
 	}
 
 	isGameFinished() {
-		var game = this.getGame();
-
-		return (game && isGameStatusFinished(game.status));
-	}
-
-	getGameLastPointTaken() {
-		var game = this.getGame();
-
-		return (game && game.lastPointTaken);
-	}
-
-	hasGameBonuses() {
-		var game = this.getGame();
-
-		return (game && game.hasBonuses);
+		return isGameStatusFinished(this.gameStatus);
 	}
 
 	isMatchPoint() {
-		var game = this.getGame(),
-			matchPoint = Constants.MAXIMUM_POINTS - 1;
+		let matchPoint = Constants.MAXIMUM_POINTS - 1;
 
-		if (game) {
-			return (
-				game.hostPoints == matchPoint ||
-				game.clientPoints == matchPoint
-			);
-		}
-
-		return false;
+		return (
+			this.gameHostPoints == matchPoint ||
+			this.gameClientPoints == matchPoint
+		);
 	}
 
 	isDeucePoint() {
-		var game = this.getGame(),
-			matchPoint = Constants.MAXIMUM_POINTS - 1;
+		let matchPoint = Constants.MAXIMUM_POINTS - 1;
 
-		if (game) {
-			return (
-				game.hostPoints == matchPoint &&
-				game.clientPoints == matchPoint
-			);
-		}
-
-		return false;
+		return (
+			this.gameHostPoints == matchPoint &&
+			this.gameClientPoints == matchPoint
+		);
 	}
 
 	getCurrentPlayer() {
@@ -196,11 +148,68 @@ export default class Game {
 	}
 
 	start() {
+		this.initGame();
+
 		this.engine.start(
 			this.xSize, this.ySize, 'gameContainer',
 			this.preloadGame, this.createGame, this.updateGame,
 			this
 		);
+	}
+
+	initGame() {
+		let game = this.fetchGame();
+
+		this.gameCreatedBy = game.createdBy;
+		this.gameHasBonuses = game.hasBonuses;
+
+		this.updatePoints(game);
+		this.updateLastPointTaken(game);
+		this.updateStatus(game);
+		this.updateActiveBonuses(game);
+
+		this.initPlayers();
+	}
+
+	initPlayers() {
+		let players = Players.find({gameId: this.gameId});
+
+		this.currentPlayer = null;
+		this.hostPlayer = null;
+		this.clientPlayer = null;
+
+		players.forEach((player) => {
+			if (player.userId == Meteor.userId()) {
+				this.currentPlayer = player;
+			}
+
+			if (player.userId == this.gameCreatedBy) {
+				this.hostPlayer = player;
+			} else {
+				this.clientPlayer = player;
+			}
+		});
+	}
+
+	fetchGame() {
+		return Games.findOne({_id: this.gameId});
+	}
+
+	updatePoints(game) {
+		this.gameHostPoints = game.hostPoints;
+		this.gameClientPoints = game.clientPoints;
+	}
+
+	updateLastPointTaken(game) {
+		this.gameLastPointTaken = game.lastPointTaken;
+	}
+
+	updateStatus(game) {
+		this.gameStatus = game.status;
+	}
+
+	updateActiveBonuses(game) {
+		this.gameActiveBonuses = game.activeBonuses;
 	}
 
 	stop() {
@@ -475,6 +484,12 @@ export default class Game {
 	}
 
 	resumeOnTimerEnd() {
+		let game = this.fetchGame();
+
+		this.updateStatus(game);
+		this.updatePoints(game);
+		this.updateLastPointTaken(game);
+
 		this.resetAllBonuses();
 		this.pauseGame();
 		this.respawnSprites();
@@ -516,7 +531,7 @@ export default class Game {
 			xBallPositionClientSide = this.xSize - Config.playerInitialLocation - (Constants.PLAYER_WIDTH / 4) - (Constants.BALL_RADIUS),
 			xBallPosition;
 
-		switch (this.getGameLastPointTaken()) {
+		switch (this.gameLastPointTaken) {
 			case Constants.LAST_POINT_TAKEN_CLIENT:
 				xBallPosition = xBallPositionHostSide;
 				break;
@@ -538,6 +553,12 @@ export default class Game {
 	}
 
 	updateGame() {
+		//Fetch game for status and activeBonuses
+		let game = this.fetchGame();
+
+		this.updateStatus(game);
+		this.updateActiveBonuses(game);
+
 		//Reset bundled streams
 		this.bundledStreamsToEmit = {};
 
@@ -558,7 +579,7 @@ export default class Game {
 			if (this.isUserHost()) {
 				this.sendBallPosition();
 
-				if (this.hasGameBonuses()) {
+				if (this.gameHasBonuses) {
 					this.createBonusIfTimeHasElapsed();
 					this.sendBonusesPosition();
 				}
@@ -585,38 +606,34 @@ export default class Game {
 	}
 
 	updatePlayerBonuses() {
-		var game = this.getGame();
+		this.bonusesGroup.removeAll(true);
 
-		if (game) {
-			this.bonusesGroup.removeAll(true);
+		let padding = 5;
+		let player1Count = 0;
+		let player2Count = 0;
 
-			let padding = 5,
-				player1Count = 0,
-				player2Count = 0;
+		for (let activeBonus of this.gameActiveBonuses) {
+			let bonus = BonusFactory.getInstance(activeBonus.bonusClass, this);
 
-			for (let activeBonus of game.activeBonuses) {
-				let bonus = BonusFactory.getInstance(activeBonus.bonusClass, this);
-
-				switch (activeBonus.targetPlayerKey) {
-					case 'player1':
-						player1Count++;
-						this.bonusesGroup.add(this.engine.drawBonus(
-							padding + (player1Count * ((Config.bonusRadius * 2) + padding)),
-							this.ySize - (this.groundHeight / 2),
-							bonus.getLetter(), bonus.getFontSize(), bonus.getSpriteBorderKey(),
-							this.getBonusProgress(activeBonus, bonus)
-						));
-						break;
-					case 'player2':
-						player2Count++;
-						this.bonusesGroup.add(this.engine.drawBonus(
-							(this.xSize / 2) + padding + (player2Count * ((Config.bonusRadius * 2) + padding)),
-							this.ySize - (this.groundHeight / 2),
-							bonus.getLetter(), bonus.getFontSize(), bonus.getSpriteBorderKey(),
-							this.getBonusProgress(activeBonus, bonus)
-						));
-						break;
-				}
+			switch (activeBonus.targetPlayerKey) {
+				case 'player1':
+					player1Count++;
+					this.bonusesGroup.add(this.engine.drawBonus(
+						padding + (player1Count * ((Config.bonusRadius * 2) + padding)),
+						this.ySize - (this.groundHeight / 2),
+						bonus.getLetter(), bonus.getFontSize(), bonus.getSpriteBorderKey(),
+						this.getBonusProgress(activeBonus, bonus)
+					));
+					break;
+				case 'player2':
+					player2Count++;
+					this.bonusesGroup.add(this.engine.drawBonus(
+						(this.xSize / 2) + padding + (player2Count * ((Config.bonusRadius * 2) + padding)),
+						this.ySize - (this.groundHeight / 2),
+						bonus.getLetter(), bonus.getFontSize(), bonus.getSpriteBorderKey(),
+						this.getBonusProgress(activeBonus, bonus)
+					));
+					break;
 			}
 		}
 	}
@@ -764,8 +781,6 @@ export default class Game {
 
 	dropShotBallOnPlayerHit(ball) {
 		//Do not modify or add any velocity to the ball
-		// this.engine.setHorizontalSpeed(ball, 0);
-		// this.engine.setVerticalSpeed(ball, 0);
 	}
 
 	smashBallOnPlayerHit(ball, playerKey) {

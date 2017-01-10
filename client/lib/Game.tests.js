@@ -10,15 +10,6 @@ import { GameStream } from '/lib/streams.js';
 import { getUTCTimeStamp } from '/lib/utils.js';
 
 describe('Game#getPlayerShapeFromKey', function() {
-	it('returns default shape when games does not exist', function() {
-		StubCollections.stub(Games);
-
-		let game = new Game(Random.id(5));
-		chai.assert.strictEqual(Constants.PLAYER_DEFAULT_SHAPE, game.getPlayerShapeFromKey('player1'));
-
-		StubCollections.restore();
-	});
-
 	it('returns default shape when player 1 does not exist', function() {
 		StubCollections.add([Games, Players]);
 		StubCollections.stub();
@@ -60,6 +51,7 @@ describe('Game#getPlayerShapeFromKey', function() {
 		});
 
 		let game = new Game(gameId);
+		game.initGame();
 		chai.assert.strictEqual(Constants.PLAYER_SHAPE_RECTANGLE, game.getPlayerShapeFromKey('player1'));
 
 		StubCollections.restore();
@@ -74,6 +66,7 @@ describe('Game#getPlayerShapeFromKey', function() {
 		Players.insert({_id: Random.id(5), gameId: gameId, userId: 2, shape: Constants.PLAYER_SHAPE_RECTANGLE});
 
 		let game = new Game(gameId);
+		game.initGame();
 		chai.assert.strictEqual(Constants.PLAYER_SHAPE_RECTANGLE, game.getPlayerShapeFromKey('player2'));
 
 		StubCollections.restore();
@@ -81,15 +74,6 @@ describe('Game#getPlayerShapeFromKey', function() {
 });
 
 describe('Game#isMatchPoint', function() {
-	it('returns false if game does not exist', function() {
-		StubCollections.stub(Games);
-
-		let game = new Game(Random.id(5));
-		chai.assert.isFalse(game.isMatchPoint());
-
-		StubCollections.restore();
-	});
-
 	it('returns false if no players are at one point from maximum', function() {
 		StubCollections.stub(Games);
 
@@ -97,6 +81,7 @@ describe('Game#isMatchPoint', function() {
 		Games.insert({_id: gameId, hostPoints: 0, clientPoints: 0});
 
 		let game = new Game(gameId);
+		game.initGame();
 		chai.assert.isFalse(game.isMatchPoint());
 
 		StubCollections.restore();
@@ -109,6 +94,7 @@ describe('Game#isMatchPoint', function() {
 		Games.insert({_id: gameId, hostPoints: Constants.MAXIMUM_POINTS - 1, clientPoints: 0});
 
 		let game = new Game(gameId);
+		game.initGame();
 		chai.assert.isTrue(game.isMatchPoint());
 
 		StubCollections.restore();
@@ -121,6 +107,7 @@ describe('Game#isMatchPoint', function() {
 		Games.insert({_id: gameId, hostPoints: 0, clientPoints: Constants.MAXIMUM_POINTS - 1});
 
 		let game = new Game(gameId);
+		game.initGame();
 		chai.assert.isTrue(game.isMatchPoint());
 
 		StubCollections.restore();
@@ -137,6 +124,7 @@ describe('Game#isMatchPoint', function() {
 		});
 
 		let game = new Game(gameId);
+		game.initGame();
 		chai.assert.isTrue(game.isMatchPoint());
 
 		StubCollections.restore();
@@ -144,15 +132,6 @@ describe('Game#isMatchPoint', function() {
 });
 
 describe('Game#isDeuce', function() {
-	it('returns false if game does not exist', function() {
-		StubCollections.stub(Games);
-
-		let game = new Game(Random.id(5));
-		chai.assert.isFalse(game.isDeucePoint());
-
-		StubCollections.restore();
-	});
-
 	it('returns false if not both players are at one point from maximum', function() {
 		StubCollections.stub(Games);
 
@@ -160,6 +139,7 @@ describe('Game#isDeuce', function() {
 		Games.insert({_id: gameId, hostPoints: 0, clientPoints: 0});
 
 		let game = new Game(gameId);
+		game.initGame();
 		chai.assert.isFalse(game.isDeucePoint());
 
 		StubCollections.restore();
@@ -176,6 +156,7 @@ describe('Game#isDeuce', function() {
 		});
 
 		let game = new Game(gameId);
+		game.initGame();
 		chai.assert.isTrue(game.isDeucePoint());
 
 		StubCollections.restore();
@@ -631,8 +612,8 @@ describe('Game#dropShotBallOnPlayerHit', function() {
 
 		game.dropShotBallOnPlayerHit(ball);
 
-		chai.assert.equal(0, ball.body.velocity.x);
-		chai.assert.equal(0, ball.body.velocity.y);
+		chai.assert.equal(300, ball.body.velocity.x);
+		chai.assert.equal(200, ball.body.velocity.y);
 	});
 });
 
