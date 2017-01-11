@@ -195,6 +195,23 @@ export default class Game {
 		return Games.findOne({_id: this.gameId});
 	}
 
+	onStatusChange() {
+		let game = this.fetchGame();
+
+		this.updateStatus(game);
+	}
+
+	onActiveBonusesChange() {
+		let game = this.fetchGame();
+
+		this.updateActiveBonuses(game);
+	}
+
+	onPointTaken() {
+		this.shakeLevel();
+		this.resumeOnTimerEnd();
+	}
+
 	updatePoints(game) {
 		this.gameHostPoints = game.hostPoints;
 		this.gameClientPoints = game.clientPoints;
@@ -486,9 +503,10 @@ export default class Game {
 	resumeOnTimerEnd() {
 		let game = this.fetchGame();
 
-		this.updateStatus(game);
 		this.updatePoints(game);
 		this.updateLastPointTaken(game);
+		this.updateStatus(game);
+		this.updateActiveBonuses(game);
 
 		this.resetAllBonuses();
 		this.pauseGame();
@@ -553,12 +571,6 @@ export default class Game {
 	}
 
 	updateGame() {
-		//Fetch game for status and activeBonuses
-		let game = this.fetchGame();
-
-		this.updateStatus(game);
-		this.updateActiveBonuses(game);
-
 		//Reset bundled streams
 		this.bundledStreamsToEmit = {};
 

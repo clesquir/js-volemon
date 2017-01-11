@@ -1,5 +1,3 @@
-import { Games } from '/collections/games.js';
-import { Constants } from '/lib/constants.js';
 import { GameStream } from '/lib/streams.js';
 
 export default class StreamInitiator {
@@ -7,7 +5,6 @@ export default class StreamInitiator {
 	constructor(gameInitiator = null) {
 		/** @type {GameInitiator} */
 		this.gameInitiator = gameInitiator;
-		this.gamePointsTracker = null;
 	}
 
 	init() {
@@ -27,21 +24,6 @@ export default class StreamInitiator {
 			};
 
 			loopUntilGameContainerIsCreated();
-		});
-
-		this.gamePointsTracker = Games.find({_id: gameId}).observeChanges({
-			changed: (id, fields) => {
-				if (
-					fields.hasOwnProperty(Constants.HOST_POINTS_COLUMN) ||
-					fields.hasOwnProperty(Constants.CLIENT_POINTS_COLUMN)
-				) {
-					if (gameInitiator.hasActiveGame()) {
-						gameInitiator.updateTimer();
-						gameInitiator.currentGame.shakeLevel();
-						gameInitiator.currentGame.resumeOnTimerEnd();
-					}
-				}
-			}
 		});
 
 		GameStream.on('activateBonus-' + gameId, (bonusIdentifier, playerKey) => {
@@ -116,10 +98,6 @@ export default class StreamInitiator {
 		GameStream.removeAllListeners('play-' + gameId);
 		GameStream.removeAllListeners('activateBonus-' + gameId);
 		GameStream.removeAllListeners('sendBundledData-' + gameId);
-
-		if (this.gamePointsTracker) {
-			this.gamePointsTracker.stop();
-		}
 	}
 
 }
