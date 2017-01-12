@@ -15,6 +15,36 @@ Template.home.helpers({
 		return moment(this.startedAt).format('YYYY-MM-DD HH:mm');
 	},
 
+	longestGameInformation: function() {
+		if (Session.get('longestGame')) {
+			return 'Game date: ' + moment(Session.get('longestGame').startedAt).format('YYYY-MM-DD HH:mm') + '<br />' +
+				'Opponent: ' + Session.get('longestGame').playerName;
+		}
+		return '';
+	},
+
+	longestGameDuration: function() {
+		if (Session.get('longestGame')) {
+			return moment(Session.get('longestGame').gameDuration).format('mm:ss');
+		}
+		return '-';
+	},
+
+	longestPointInformation: function() {
+		if (Session.get('longestPoint')) {
+			return 'Game date: ' + moment(Session.get('longestGame').startedAt).format('YYYY-MM-DD HH:mm') + '<br />' +
+				'Opponent: ' + Session.get('longestPoint').playerName;
+		}
+		return '';
+	},
+
+	longestPointDuration: function() {
+		if (Session.get('longestPoint')) {
+			return moment(Session.get('longestPoint').pointDuration).format('mm:ss');
+		}
+		return '-';
+	},
+
 	getOpponent: function(players) {
 		var opponentUserId;
 
