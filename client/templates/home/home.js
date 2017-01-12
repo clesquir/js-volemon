@@ -15,6 +15,21 @@ Template.home.helpers({
 		return moment(this.startedAt).format('YYYY-MM-DD HH:mm');
 	},
 
+	longestGameInformation: function(statisticName) {
+		if (Session.get(statisticName)) {
+			return 'Game date: ' + moment(Session.get(statisticName).startedAt).format('YYYY-MM-DD HH:mm') + '<br />' +
+				'Opponent: ' + Session.get(statisticName).playerName;
+		}
+		return '';
+	},
+
+	longestGameDuration: function(statisticName) {
+		if (Session.get(statisticName)) {
+			return moment(Session.get(statisticName).duration).format('mm:ss');
+		}
+		return '-';
+	},
+
 	getOpponent: function(players) {
 		var opponentUserId;
 
