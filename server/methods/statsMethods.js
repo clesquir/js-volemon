@@ -25,7 +25,7 @@ Meteor.methods({
 			data = {
 				gameId: game._id,
 				startedAt: game.startedAt,
-				gameDuration: game.gameDuration,
+				duration: game.gameDuration,
 				playerName: player ? player.name : '-'
 			};
 		});
@@ -48,11 +48,11 @@ Meteor.methods({
 		let data = {};
 		games.forEach((game) => {
 			for (let pointDuration of game.pointsDuration) {
-				if (!data.pointDuration || pointDuration > data.pointDuration) {
+				if (!data.duration || pointDuration > data.duration) {
 					data = {
 						gameId: game._id,
 						startedAt: game.startedAt,
-						pointDuration: pointDuration
+						duration: pointDuration
 					};
 				}
 			}
