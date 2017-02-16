@@ -4,7 +4,7 @@ import { EloScores } from '/collections/eloscores.js';
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
 import { Profiles } from '/collections/profiles.js';
-import { Constants } from '/lib/constants.js';
+import { Constants } from '/imports/lib/constants.js';
 import { game } from '/server/lib/game.js';
 
 describe('Game#updateProfilesOnGameFinish', function() {

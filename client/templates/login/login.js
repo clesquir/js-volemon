@@ -1,4 +1,4 @@
-import { Constants } from '/lib/constants.js';
+import { Constants } from '/imports/lib/constants.js';
 
 Template.login.events({
 	'click [data-action=switch-for-create-account]': function(e) {

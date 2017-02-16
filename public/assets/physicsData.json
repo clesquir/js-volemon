@@ -95,12 +95,24 @@
     }
   ],
   "ball": [
-        {
-          "density": 20,
-          "friction": 0,
-          "bounce": 0,
-          "filter": { "categoryBits": 1, "maskBits": 65535 },
-          "shape": [   24, 8  ,  24, 16  ,  16, 24  ,  8, 24  ,  0, 16  ,  0, 8  ,  8, 0  ,  16, 0  ]
-        }
-    ]
+    {
+      "density": 20,
+      "friction": 0,
+      "bounce": 0,
+      "filter": {
+        "categoryBits": 1,
+        "maskBits": 65535
+      },
+      "shape": [
+        24, 8,
+        24, 16,
+        16, 24,
+        8, 24,
+        0, 16,
+        0, 8,
+        8, 0,
+        16, 0
+      ]
+    }
+  ]
 }

@@ -1,9 +1,9 @@
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
-import { Config } from '/lib/config.js';
-import { Constants } from '/lib/constants.js';
-import { GameStream } from '/lib/streams.js';
-import { callMeteorMethodAtFrequence } from '/lib/utils.js';
+import { Config } from '/imports/lib/config.js';
+import { Constants } from '/imports/lib/constants.js';
+import { GameStream } from '/imports/lib/streams.js';
+import { callMeteorMethodAtFrequence } from '/imports/lib/utils.js';
 
 var listenersAddedByGameIds = {};
 var lastKeepAliveUpdateByPlayerIds = {};

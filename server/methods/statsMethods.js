@@ -1,6 +1,6 @@
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
-import { Constants } from '/lib/constants.js';
+import { Constants } from '/imports/lib/constants.js';
 
 Meteor.methods({
 	longestGame: function() {

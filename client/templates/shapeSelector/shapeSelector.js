@@ -1,4 +1,4 @@
-import { Constants } from '/lib/constants.js';
+import { Constants } from '/imports/lib/constants.js';
 
 var incrementShape = function(increment) {
 	var listOfShapes = Constants.PLAYER_LIST_OF_SHAPES,
