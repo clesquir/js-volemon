@@ -15,14 +15,8 @@ Template.game.helpers({
 		return this.game.createdBy === Meteor.userId();
 	},
 
-	isPlaying: function() {
+	isGameOnGoing: function() {
 		return isGameStatusOnGoing(this.game.status);
-	},
-
-	isUserNotPlaying: function() {
-		var player = Players.findOne({gameId: Session.get('game'), userId: Meteor.userId()});
-
-		return (!player);
 	},
 
 	hostPoints: function() {
@@ -259,7 +253,7 @@ Template.game.events({
 });
 
 /** @type {ClientGameInitiator}|null */
-var gameInitiator = null;
+let gameInitiator = null;
 
 Template.game.rendered = function() {
 	gameInitiator = new ClientGameInitiator(Session.get('game'));

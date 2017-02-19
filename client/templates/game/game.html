@@ -4,62 +4,53 @@
 
 		<div class="app-section-inner">
 
-			{{#if isPlaying}}
+			{{#if isGameOnGoing}}
 
-				{{#if isUserNotPlaying}}
+				<div class="game-container">
 
-					<p>The game has already started and you are not in it...</p>
-					<p>Please start your own...</p>
+					{{! Names and Points }}
 
-				{{else}}
+					<div class="players-container">
+						<p class="players-names"><div>{{hostName}}</div><div>{{clientName}}</div></p>
+						<p class="players-points">{{hostPoints}} | {{clientPoints}}</p>
+					</div>
 
-					<div class="game-container">
+					<div class="timers-container">
+						<div class="match-timer">{{matchTimer}}</div>
+						<div class="point-timer">{{pointTimer}}</div>
+					</div>
 
-						{{! Names and Points }}
+					{{! Game container }}
 
-						<div class="players-container">
-							<p class="players-names"><div>{{hostName}}</div><div>{{clientName}}</div></p>
-							<p class="players-points">{{hostPoints}} | {{clientPoints}}</p>
-						</div>
+					<div id="gameContainer" class="page game"></div>
 
-						<div class="timers-container">
-							<div class="match-timer">{{matchTimer}}</div>
-							<div class="point-timer">{{pointTimer}}</div>
-						</div>
-
-						{{! Phaser container }}
-
-						<div id="gameContainer" class="page game"></div>
-
-						<div id="afterGameContainer" class="after-game-container {{getStatusDependentClass}}">
+					<div id="afterGameContainer" class="after-game-container {{getStatusDependentClass}}">
+						<div>
 							<div>
-								<div>
-									<div class="after-game-item after-game-title">{{getAfterGameTitle}}</div>
+								<div class="after-game-item after-game-title">{{getAfterGameTitle}}</div>
 
-									{{#if isGameStatusFinished}}
-										<div class="after-game-item after-game-elo">
-											{{#each players}}
-												<div>
-													<div class="player-name">{{name}}</div>
-													<div>{{getPlayerEloRating this ../profiles}}</div>
-													<div>{{> eloRatingChange getPlayerProfile this ../profiles}}</div>
-												</div>
-											{{/each}}
-										</div>
-									{{/if}}
-
-									<div class="after-game-item after-game-actions">
-										<strong>What do you want to do next?</strong>
-										<div><a href="{{pathFor 'home'}}">Go to the homepage</a></div>
-										<div><a href="{{pathFor 'rank'}}">View rank</a></div>
+								{{#if isGameStatusFinished}}
+									<div class="after-game-item after-game-elo">
+										{{#each players}}
+											<div>
+												<div class="player-name">{{name}}</div>
+												<div>{{getPlayerEloRating this ../profiles}}</div>
+												<div>{{> eloRatingChange getPlayerProfile this ../profiles}}</div>
+											</div>
+										{{/each}}
 									</div>
+								{{/if}}
+
+								<div class="after-game-item after-game-actions">
+									<strong>What do you want to do next?</strong>
+									<div><a href="{{pathFor 'home'}}">Go to the homepage</a></div>
+									<div><a href="{{pathFor 'rank'}}">View rank</a></div>
 								</div>
 							</div>
 						</div>
-
 					</div>
 
-				{{/if}}
+				</div>
 
 			{{else}}
 

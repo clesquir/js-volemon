@@ -901,10 +901,10 @@ export default class ClientGame {
 	moveOppositePlayer(data) {
 		var player;
 
-		if (this.isUserHost()) {
-			player = this.player2;
-		} else if (this.isUserClient()) {
+		if (data.isHost) {
 			player = this.player1;
+		} else {
+			player = this.player2;
 		}
 
 		if (!player) {
