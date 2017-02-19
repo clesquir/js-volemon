@@ -1,15 +1,15 @@
-import SmallBallBonus from '/client/lib/game/bonus/SmallBallBonus.js';
-import BigBallBonus from '/client/lib/game/bonus/BigBallBonus.js';
-import SmallMonsterBonus from '/client/lib/game/bonus/SmallMonsterBonus.js';
-import BigMonsterBonus from '/client/lib/game/bonus/BigMonsterBonus.js';
-import BigJumpMonsterBonus from '/client/lib/game/bonus/BigJumpMonsterBonus.js';
-import SlowMonsterBonus from '/client/lib/game/bonus/SlowMonsterBonus.js';
-import FastMonsterBonus from '/client/lib/game/bonus/FastMonsterBonus.js';
-import FreezeMonsterBonus from '/client/lib/game/bonus/FreezeMonsterBonus.js';
-import ReverseMoveMonsterBonus from '/client/lib/game/bonus/ReverseMoveMonsterBonus.js';
-import InvisibilityMonsterBonus from '/client/lib/game/bonus/InvisibilityMonsterBonus.js';
-import CloudBonus from '/client/lib/game/bonus/CloudBonus.js';
-import { Constants } from '/lib/constants.js';
+import SmallBallBonus from '/imports/game/bonus/SmallBallBonus.js';
+import BigBallBonus from '/imports/game/bonus/BigBallBonus.js';
+import SmallMonsterBonus from '/imports/game/bonus/SmallMonsterBonus.js';
+import BigMonsterBonus from '/imports/game/bonus/BigMonsterBonus.js';
+import BigJumpMonsterBonus from '/imports/game/bonus/BigJumpMonsterBonus.js';
+import SlowMonsterBonus from '/imports/game/bonus/SlowMonsterBonus.js';
+import FastMonsterBonus from '/imports/game/bonus/FastMonsterBonus.js';
+import FreezeMonsterBonus from '/imports/game/bonus/FreezeMonsterBonus.js';
+import ReverseMoveMonsterBonus from '/imports/game/bonus/ReverseMoveMonsterBonus.js';
+import InvisibilityMonsterBonus from '/imports/game/bonus/InvisibilityMonsterBonus.js';
+import CloudBonus from '/imports/game/bonus/CloudBonus.js';
+import { Constants } from '/imports/lib/constants.js';
 
 export default class BonusFactory {
 	

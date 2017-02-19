@@ -1,9 +1,9 @@
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
 import { Profiles } from '/collections/profiles.js';
-import { Config } from '/lib/config.js';
-import { Constants } from '/lib/constants.js';
-import { getUTCTimeStamp } from '/lib/utils.js';
+import { Config } from '/imports/lib/config.js';
+import { Constants } from '/imports/lib/constants.js';
+import { getUTCTimeStamp } from '/imports/lib/utils.js';
 import ServerStreamInitiator from '/imports/game/server/ServerStreamInitiator.js';
 
 let serverStreams = {};

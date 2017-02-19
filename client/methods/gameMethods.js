@@ -1,7 +1,7 @@
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
-import { Constants } from '/lib/constants.js';
-import { getUTCTimeStamp } from '/lib/utils.js';
+import { Constants } from '/imports/lib/constants.js';
+import { getUTCTimeStamp } from '/imports/lib/utils.js';
 
 Meteor.methods({
 	addGamePoints: function(gameId, columnName) {

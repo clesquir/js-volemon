@@ -1,5 +1,5 @@
-import MonsterScaleBonus from '/client/lib/game/bonus/MonsterScaleBonus.js';
-import { Constants } from '/lib/constants.js';
+import MonsterScaleBonus from '/imports/game/bonus/MonsterScaleBonus.js';
+import { Constants } from '/imports/lib/constants.js';
 
 export default class SmallMonsterBonus extends MonsterScaleBonus {
 

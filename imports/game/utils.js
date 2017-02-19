@@ -1,5 +1,5 @@
 import { Players } from '/collections/players.js';
-import { Constants } from '/lib/constants.js';
+import { Constants } from '/imports/lib/constants.js';
 
 export const isGameStatusOnGoing = function(gameStatus) {
 	return [Constants.GAME_STATUS_STARTED, Constants.GAME_STATUS_FINISHED, Constants.GAME_STATUS_TIMEOUT].indexOf(gameStatus) !== -1;

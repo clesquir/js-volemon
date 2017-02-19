@@ -1,9 +1,9 @@
 import ClientStreamInitiator from '/client/lib/game/ClientStreamInitiator.js';
-import { isGameStatusStarted, isGameStatusOnGoing } from '/client/lib/game/utils.js';
+import { isGameStatusStarted, isGameStatusOnGoing } from '/imports/game/utils.js';
 import ClientGame from '/client/lib/game/ClientGame.js';
 import { Games } from '/collections/games.js';
-import { Constants } from '/lib/constants.js';
-import { getUTCTimeStamp } from '/lib/utils.js';
+import { Constants } from '/imports/lib/constants.js';
+import { getUTCTimeStamp } from '/imports/lib/utils.js';
 
 export default class ClientGameInitiator {
 

@@ -1,7 +1,7 @@
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
 import { Profiles } from '/collections/profiles.js';
-import { Config } from '/lib/config.js';
+import { Config } from '/imports/lib/config.js';
 
 HomeController = RouteController.extend({
 	subscriptions: function() {

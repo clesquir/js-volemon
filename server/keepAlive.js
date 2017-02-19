@@ -1,7 +1,7 @@
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
-import { Config } from '/lib/config.js';
-import { callMeteorMethodAtFrequence } from '/lib/utils.js';
+import { Config } from '/imports/lib/config.js';
+import { callMeteorMethodAtFrequence } from '/imports/lib/utils.js';
 
 const lastKeepAliveUpdateByPlayerIds = {};
 

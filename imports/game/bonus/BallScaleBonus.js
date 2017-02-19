@@ -1,4 +1,4 @@
-import BallBonus from '/client/lib/game/bonus/BallBonus.js';
+import BallBonus from '/imports/game/bonus/BallBonus.js';
 
 export default class BallScaleBonus extends BallBonus {
 

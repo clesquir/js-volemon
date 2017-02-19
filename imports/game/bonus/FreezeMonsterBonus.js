@@ -1,4 +1,4 @@
-import MonsterBonus from '/client/lib/game/bonus/MonsterBonus.js';
+import MonsterBonus from '/imports/game/bonus/MonsterBonus.js';
 
 export default class FreezeMonsterBonus extends MonsterBonus {
 

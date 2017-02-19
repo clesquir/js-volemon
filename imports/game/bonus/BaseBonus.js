@@ -1,5 +1,5 @@
-import { Config } from '/lib/config.js';
-import { getUTCTimeStamp } from '/lib/utils.js';
+import { Config } from '/imports/lib/config.js';
+import { getUTCTimeStamp } from '/imports/lib/utils.js';
 
 export default class BaseBonus {
 

@@ -1,16 +1,16 @@
-import PhaserEngine from '/client/lib/game/engine/PhaserEngine.js';
-import BonusFactory from '/client/lib/game/BonusFactory.js';
+import PhaserEngine from '/imports/game/engine/client/PhaserEngine.js';
+import BonusFactory from '/imports/game/BonusFactory.js';
 import {
 	isGameStatusStarted,
 	isGameStatusTimeout,
 	isGameStatusFinished
-} from '/client/lib/game/utils.js';
+} from '/imports/game/utils.js';
 import { getRandomInt } from '/client/lib/utils.js';
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
-import { Config } from '/lib/config.js';
-import { Constants } from '/lib/constants.js';
-import { getUTCTimeStamp } from '/lib/utils.js';
+import { Config } from '/imports/lib/config.js';
+import { Constants } from '/imports/lib/constants.js';
+import { getUTCTimeStamp } from '/imports/lib/utils.js';
 
 export default class ClientGame {
 

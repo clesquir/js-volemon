@@ -1,12 +1,12 @@
 import StubCollections from 'meteor/hwillson:stub-collections';
 import { chai } from 'meteor/practicalmeteor:chai';
 import { sinon } from 'meteor/practicalmeteor:sinon';
-import BaseBonus from '/client/lib/game/bonus/BaseBonus.js';
-import { Constants } from '/lib/constants.js';
+import BaseBonus from '/imports/game/bonus/BaseBonus.js';
+import { Constants } from '/imports/lib/constants.js';
 import Game from '/client/lib/game/ClientGame.js';
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
-import { getUTCTimeStamp } from '/lib/utils.js';
+import { getUTCTimeStamp } from '/imports/lib/utils.js';
 
 describe('Game#getPlayerShapeFromKey', function() {
 	it('returns default shape when player 1 does not exist', function() {

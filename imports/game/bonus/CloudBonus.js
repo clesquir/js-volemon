@@ -1,4 +1,4 @@
-import BaseBonus from '/client/lib/game/bonus/BaseBonus.js';
+import BaseBonus from '/imports/game/bonus/BaseBonus.js';
 
 export default class CloudBonus extends BaseBonus {
 

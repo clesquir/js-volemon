@@ -1,5 +1,5 @@
-import MonsterBonus from '/client/lib/game/bonus/MonsterBonus.js';
-import { Config } from '/lib/config.js';
+import MonsterBonus from '/imports/game/bonus/MonsterBonus.js';
+import { Config } from '/imports/lib/config.js';
 
 export default class BigJumpMonsterBonus extends MonsterBonus {
 

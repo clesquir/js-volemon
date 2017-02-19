@@ -1,5 +1,5 @@
 import { chai } from 'meteor/practicalmeteor:chai';
-import PhaserEngine from '/client/lib/game/engine/PhaserEngine.js';
+import PhaserEngine from '/imports/game/engine/client/PhaserEngine.js';
 
 describe('PhaserEngine#constrainVelocity', function() {
 	it('restricts velocity without changing the angle if 0 degrees', function() {
