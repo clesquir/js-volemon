@@ -223,7 +223,10 @@ Template.game.events({
 	},
 	
 	'click [data-action="start"]': function(e) {
-		Meteor.call('startGame', Session.get('game'));
+		Session.set('loadingmask', true);
+		Meteor.call('startGame', Session.get('game'), function(error) {
+			Session.set('loadingmask', false);
+		});
 	},
 
 	'click [data-action="join"]': function(e) {

@@ -1,15 +1,21 @@
 @import "{}/client/scss/variables.scss";
 
 .loading-app-mask {
-	background: rgba($background-color, .95);
+	background: rgba($background-color, .75);
 	flex: 1 0 auto;
 	flex-direction: row;
-	display: flex;
 	justify-content: center;
 	overflow: auto;
 	box-sizing: border-box;
 	text-align: center;
 	align-items: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	z-index: 1000;
 
 	.loading-app-text {
 		color: $text-color;
