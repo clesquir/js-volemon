@@ -2,7 +2,7 @@ import { EloScores } from '/collections/eloscores.js';
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
 import { Profiles } from '/collections/profiles.js';
-import { Constants } from '/lib/constants.js';
+import { Constants } from '/imports/lib/constants.js';
 
 Meteor.publish('userData', function() {
 	return Meteor.users.find({_id: this.userId});
@@ -43,6 +43,15 @@ Meteor.publish('games', function() {
 });
 
 Meteor.publish('game', function(id) {
+	// let sessionId = this.connection.id;
+	//
+	// // Here store the sessionId somewhere.
+	// // You can also store this.userId of subscribed client and therefore be able to send to specified clients based on the user ids.
+	//
+	// this.onStop(() => {
+	// 	// Here delete the stored sessionId.
+	// });
+
 	return [
 		Games.find({_id: id}),
 		Players.find({gameId: id}),

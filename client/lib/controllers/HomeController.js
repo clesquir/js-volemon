@@ -1,7 +1,7 @@
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
 import { Profiles } from '/collections/profiles.js';
-import { Config } from '/lib/config.js';
+import { Config } from '/imports/lib/config.js';
 
 HomeController = RouteController.extend({
 	subscriptions: function() {
@@ -22,16 +22,19 @@ HomeController = RouteController.extend({
 	},
 	action: function () {
 		Meteor.subscribe('recentProfileGames', this.gamesLimit());
-		Meteor.call('longestGame', function(error, data) {
-			if (!error && data.gameId) {
-				Session.set('longestGame', data);
-			}
-		});
-		Meteor.call('longestPoint', function(error, data) {
-			if (!error && data.gameId) {
-				Session.set('longestPoint', data);
-			}
-		});
+
+		if (Meteor.userId()) {
+			Meteor.call('longestGame', function(error, data) {
+				if (!error && data.gameId) {
+					Session.set('longestGame', data);
+				}
+			});
+			Meteor.call('longestPoint', function(error, data) {
+				if (!error && data.gameId) {
+					Session.set('longestPoint', data);
+				}
+			});
+		}
 
 		if (this.ready()) {
 			this.render();

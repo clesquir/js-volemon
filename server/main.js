@@ -1,3 +1,5 @@
+import ServerSocketIo from '/imports/lib/stream/server/ServerSocketIo.js';
+
 Accounts.onCreateUser((options, user) => {
 	user._id = Random.id();
 
@@ -11,4 +13,10 @@ Accounts.onCreateUser((options, user) => {
 	createProfile(user);
 
 	return user;
+});
+
+ServerStream = new ServerSocketIo();
+
+Meteor.startup(() => {
+	ServerStream.connect();
 });

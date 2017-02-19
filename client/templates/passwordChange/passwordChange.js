@@ -1,4 +1,4 @@
-import { Constants } from '/lib/constants.js';
+import { Constants } from '/imports/lib/constants.js';
 
 Template.passwordChange.events({
 	'focus input.field-in-error': function(e) {

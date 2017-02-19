@@ -16,13 +16,6 @@ Router.map(function() {
 		controller: 'HomeController'
 	});
 
-	//This is use for various game environment tests
-	if (Meteor.isDevelopment) {
-		this.route('test-environment', {
-			path: '/test-environment'
-		});
-	}
-
 	this.route('games-list', {
 		path: '/games-list',
 		waitOn: function() {
