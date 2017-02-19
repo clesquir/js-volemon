@@ -3,10 +3,9 @@ import { chai } from 'meteor/practicalmeteor:chai';
 import { sinon } from 'meteor/practicalmeteor:sinon';
 import BaseBonus from '/client/lib/game/bonus/BaseBonus.js';
 import { Constants } from '/lib/constants.js';
-import Game from '/client/lib/Game.js';
+import Game from '/client/lib/game/ClientGame.js';
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
-import { GameStream } from '/lib/streams.js';
 import { getUTCTimeStamp } from '/lib/utils.js';
 
 describe('Game#getPlayerShapeFromKey', function() {
@@ -1229,12 +1228,6 @@ describe('Game#unFreezePlayer', function() {
 });
 
 describe('Game#createBonusIfTimeHasElapsed', function() {
-	beforeEach(function(){
-		if (GameStream.emit.restore) {
-			GameStream.emit.restore();
-		}
-	});
-
 	it('creates bonus if time has elapsed', function() {
 		var gameId = Random.id(5);
 		var game = new Game(gameId);

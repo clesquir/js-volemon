@@ -1,4 +1,4 @@
-import Game from '/client/lib/Game.js';
+import Game from '/client/lib/game/ClientGame.js';
 import { Constants } from '/lib/constants.js';
 
 export default class TestEnvironment {

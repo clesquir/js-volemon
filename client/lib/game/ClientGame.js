@@ -10,10 +10,9 @@ import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
 import { Config } from '/lib/config.js';
 import { Constants } from '/lib/constants.js';
-import { GameStream } from '/lib/streams.js';
 import { getUTCTimeStamp } from '/lib/utils.js';
 
-export default class Game {
+export default class ClientGame {
 
 	constructor(gameId) {
 		this.gameId = gameId;
@@ -603,7 +602,7 @@ export default class Game {
 
 		//Send bundled streams if there is streams to send
 		if (this.bundledStreamsToEmit != {}) {
-			GameStream.emit.apply(GameStream, ['sendBundledData-' + this.gameId, this.bundledStreamsToEmit]);
+			ClientStream.emit('sendBundledData-' + this.gameId, this.bundledStreamsToEmit);
 		}
 	}
 
@@ -689,13 +688,14 @@ export default class Game {
 			this.lastBallUpdate,
 			Config.ballInterval,
 			'moveClientBall',
-			[ballPositionData]
+			ballPositionData
 		);
 	}
 
 	sendPlayerPosition(player) {
 		var playerPositionData = this.engine.getPositionData(player);
 
+		playerPositionData.isHost = this.isUserHost();
 		playerPositionData.doingDropShot = player.doingDropShot;
 		playerPositionData = this.addServerNormalizedTimestampToPositionData(playerPositionData);
 
@@ -703,7 +703,7 @@ export default class Game {
 			this.lastPlayerUpdate,
 			Config.playerInterval,
 			'moveOppositePlayer',
-			[this.isUserHost(), playerPositionData]
+			playerPositionData
 		);
 	}
 
@@ -1144,7 +1144,7 @@ export default class Game {
 			this.createBonus(data);
 			this.regenerateLastBonusCreatedAndFrequenceTime();
 			//Add to bundled stream to send
-			this.bundledStreamsToEmit.createBonus = [data];
+			this.bundledStreamsToEmit.createBonus = data;
 		}
 	}
 
@@ -1165,7 +1165,7 @@ export default class Game {
 				//Activate bonus
 				this.activateBonus(bonusSprite.identifier, this.engine.getKey(player));
 				//Send to client
-				GameStream.emit('activateBonus-' + this.gameId, bonusSprite.identifier, this.engine.getKey(player));
+				ClientStream.emit('activateBonus-' + this.gameId, {identifier: bonusSprite.identifier, player: this.engine.getKey(player)});
 			}
 		}, this);
 		this.engine.collidesWith(bonusSprite, this.netHitDelimiterCollisionGroup);

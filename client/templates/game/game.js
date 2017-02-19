@@ -1,4 +1,4 @@
-import GameInitiator from '/client/lib/game/GameInitiator.js';
+import ClientGameInitiator from '/client/lib/game/ClientGameInitiator.js';
 import {
 	isGameStatusStarted,
 	isGameStatusFinished,
@@ -258,11 +258,11 @@ Template.game.events({
 	}
 });
 
-/** @type {GameInitiator}|null */
+/** @type {ClientGameInitiator}|null */
 var gameInitiator = null;
 
 Template.game.rendered = function() {
-	gameInitiator = new GameInitiator(Session.get('game'));
+	gameInitiator = new ClientGameInitiator(Session.get('game'));
 	gameInitiator.init();
 };
 

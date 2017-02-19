@@ -1,16 +1,15 @@
-import StreamInitiator from '/client/lib/game/StreamInitiator.js';
+import ClientStreamInitiator from '/client/lib/game/ClientStreamInitiator.js';
 import { isGameStatusStarted, isGameStatusOnGoing } from '/client/lib/game/utils.js';
-import Game from '/client/lib/Game.js';
+import ClientGame from '/client/lib/game/ClientGame.js';
 import { Games } from '/collections/games.js';
-import { Players } from '/collections/players.js';
 import { Constants } from '/lib/constants.js';
 import { getUTCTimeStamp } from '/lib/utils.js';
 
-export default class GameInitiator {
+export default class ClientGameInitiator {
 
 	constructor(gameId) {
 		this.gameId = gameId;
-		this.streamInitiator = new StreamInitiator(this);
+		this.streamInitiator = new ClientStreamInitiator(this);
 		this.currentGame = null;
 		this.gameStartedAt = 0;
 		this.gameLastPointAt = 0;
@@ -20,12 +19,10 @@ export default class GameInitiator {
 	}
 
 	init() {
-		let player = Players.findOne({gameId: this.gameId, userId: Meteor.userId()});
-
 		this.updateGameProperties();
 
-		//Player is in game and this game is already started
-		if (player && isGameStatusOnGoing(this.gameStatus)) {
+		//Game is already started
+		if (isGameStatusOnGoing(this.gameStatus)) {
 			this.createNewGame();
 		}
 
@@ -84,10 +81,6 @@ export default class GameInitiator {
 		this.gameStatus = game.status;
 	}
 
-	userIsGameCreator() {
-		return this.gameCreatedBy === Meteor.userId();
-	}
-
 	stop() {
 		if (this.hasActiveGame()) {
 			this.currentGame.stop();
@@ -104,7 +97,7 @@ export default class GameInitiator {
 	}
 
 	createNewGame() {
-		this.currentGame = new Game(this.gameId);
+		this.currentGame = new ClientGame(this.gameId);
 		this.currentGame.start();
 	}
 

@@ -4,9 +4,17 @@
   "description": "HTML5 version of the Volemon (or Slime Volley) game implemented in Meteor",
   "main": "index.js",
   "dependencies": {
-    "bcrypt": "^0.8.7"
+    "bcrypt": "^0.8.7",
+    "meteor-node-stubs": "^0.2.5",
+    "socket.io": "^1.7.3",
+    "socket.io-client": "^1.7.3"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "bcrypt": "^0.8.7",
+    "meteor-node-stubs": "^0.2.5",
+    "socket.io": "^1.7.3",
+    "socket.io-client": "^1.7.3"
+  },
   "scripts": {
     "test": "meteor test --driver-package=practicalmeteor:mocha --port 4000"
   },
