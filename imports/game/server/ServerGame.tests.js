@@ -2,13 +2,13 @@ import { chai } from 'meteor/practicalmeteor:chai';
 import { sinon } from 'meteor/practicalmeteor:sinon';
 import BaseBonus from '/imports/game/bonus/BaseBonus.js';
 import ServerGame from '/imports/game/server/ServerGame.js';
-import { GameStream } from '/imports/lib/streams.js';
+import { ServerStream } from '/imports/lib/streams.js';
 import { getUTCTimeStamp } from '/imports/lib/utils.js';
 
 describe('Game#createBonusIfTimeHasElapsed', function() {
 	beforeEach(function(){
-		if (GameStream.emit.restore) {
-			GameStream.emit.restore();
+		if (ServerStream.emit.restore) {
+			ServerStream.emit.restore();
 		}
 	});
 

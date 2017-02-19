@@ -4,7 +4,6 @@ import {Games} from '/collections/games.js';
 import {Players} from '/collections/players.js';
 import {Config} from '/imports/lib/config.js';
 import {Constants} from '/imports/lib/constants.js';
-import {GameStream} from '/imports/lib/streams.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 import PhysicsData from '/public/assets/physicsData.json';
 
@@ -558,13 +557,6 @@ export default class Game {
 		if (this.isGameTimeOut()) {
 			this.stopGame();
 			this.onGameEnd();
-		}
-	}
-
-	sendBundledStreams() {
-		//Send bundled streams if there is streams to send
-		if (this.bundledStreamsToEmit != {}) {
-			GameStream.emit.apply(GameStream, ['sendBundledData-' + this.gameId, this.bundledStreamsToEmit]);
 		}
 	}
 

@@ -1,5 +1,3 @@
-import { GameStream } from '/imports/lib/streams.js';
-
 export default class ClientStreamInitiator {
 
 	constructor(gameInitiator = null) {
@@ -11,7 +9,7 @@ export default class ClientStreamInitiator {
 		let gameInitiator = this.gameInitiator;
 		let gameId = gameInitiator.gameId;
 
-		GameStream.on('play-' + gameId, function() {
+		ClientStream.on('play-' + gameId, function() {
 			//Wait for gameContainer creation before starting game
 			let loopUntilGameContainerIsCreated = function() {
 				if (document.getElementById('gameContainer')) {
@@ -24,16 +22,13 @@ export default class ClientStreamInitiator {
 			loopUntilGameContainerIsCreated();
 		});
 
-		GameStream.on('activateBonus-' + gameId, (bonusIdentifier, playerKey) => {
-			this.activateBonus(bonusIdentifier, playerKey);
+		ClientStream.on('activateBonus-' + gameId, (data) => {
+			this.activateBonus(data.identifier, data.player);
 		});
 
-		GameStream.on('sendBundledData-' + gameId, (bundledData) => {
+		ClientStream.on('sendServerBundledData-' + gameId, (bundledData) => {
 			if (bundledData.moveClientBall) {
 				this.moveClientBall.call(this, bundledData.moveClientBall);
-			}
-			if (bundledData.moveOppositePlayer) {
-				this.moveOppositePlayer.call(this, bundledData.moveOppositePlayer);
 			}
 			if (bundledData.createBonus) {
 				this.createBonus.call(this, bundledData.createBonus);
@@ -42,6 +37,12 @@ export default class ClientStreamInitiator {
 				for (let clientBonus of bundledData.moveClientBonuses) {
 					this.moveClientBonus.apply(this, clientBonus);
 				}
+			}
+		});
+
+		ClientStream.on('sendClientBundledData-' + gameId, (bundledData) => {
+			if (bundledData.moveOppositePlayer) {
+				this.moveOppositePlayer.call(this, bundledData.moveOppositePlayer);
 			}
 		});
 	}
@@ -94,9 +95,10 @@ export default class ClientStreamInitiator {
 			gameInitiator.currentGame.stop();
 		}
 
-		GameStream.removeAllListeners('play-' + gameId);
-		GameStream.removeAllListeners('activateBonus-' + gameId);
-		GameStream.removeAllListeners('sendBundledData-' + gameId);
+		ClientStream.off('play-' + gameId);
+		ClientStream.off('activateBonus-' + gameId);
+		ClientStream.off('sendServerBundledData-' + gameId);
+		ClientStream.off('sendClientBundledData-' + gameId);
 	}
 
 }

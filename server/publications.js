@@ -43,6 +43,15 @@ Meteor.publish('games', function() {
 });
 
 Meteor.publish('game', function(id) {
+	// let sessionId = this.connection.id;
+	//
+	// // Here store the sessionId somewhere.
+	// // You can also store this.userId of subscribed client and therefore be able to send to specified clients based on the user ids.
+	//
+	// this.onStop(() => {
+	// 	// Here delete the stored sessionId.
+	// });
+
 	return [
 		Games.find({_id: id}),
 		Players.find({gameId: id}),

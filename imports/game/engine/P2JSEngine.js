@@ -340,11 +340,11 @@ export default class P2JSEngine {
 	}
 
 	addGraphics(x, y, group) {
-		//throw 'todo implement';
+		//implement if client side is needed
 	}
 
 	addText(x, y, text, style, group) {
-		//throw 'todo implement';
+		//implement if client side is needed
 		return {};
 	}
 
@@ -403,19 +403,19 @@ export default class P2JSEngine {
 	}
 
 	getCenterX() {
-		//throw 'todo implement';
+		//implement if client side is needed
 	}
 
 	getCenterY() {
-		//throw 'todo implement';
+		//implement if client side is needed
 	}
 
 	isTimerRunning(timer) {
-		//throw 'todo implement';
+		//implement if client side is needed
 	}
 
 	getTimerRemainingDuration(timer) {
-		//throw 'todo implement';
+		//implement if client side is needed
 	}
 
 	getKey(spriteBody) {
@@ -716,7 +716,7 @@ export default class P2JSEngine {
 	}
 
 	getXPosition(sprite) {
-		return this.mpxi(sprite.body.position[0]);
+		return this.mpxi(sprite.body.position[0]) + this.mpxi(sprite.body.shapes[0].centerOfMass[0]);
 	}
 
 	getYPosition(sprite) {
@@ -724,7 +724,7 @@ export default class P2JSEngine {
 	}
 
 	setAnchor(sprite, anchor) {
-		//throw 'todo implement';
+		//implement if client side is needed
 	}
 
 	setMaterial(sprite, material) {
@@ -775,7 +775,7 @@ export default class P2JSEngine {
 
 	scale(sprite, x, y) {
 		if (Meteor.isClient) {
-			//throw 'todo implement';
+			//implement if client side is needed
 		}
 	}
 
@@ -784,15 +784,15 @@ export default class P2JSEngine {
 	}
 
 	updateText(textComponent, text) {
-		//throw 'todo implement';
+		//implement if client side is needed
 	}
 
 	shake(sprite, move, time) {
-		//throw 'todo implement';
+		//implement if client side is needed
 	}
 
 	drawBonus(x, y, bonusLetter, bonusFontSize, bonusSpriteBorderKey, bonusProgress) {
-		//throw 'todo implement';
+		//implement if client side is needed
 	}
 
 	addBonus(x, bonusGravityScale, bonusMaterial, bonusCollisionGroup,

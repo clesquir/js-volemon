@@ -25,3 +25,12 @@ export const getRandomInt = function(min, max) {
 export const round = function round(value, decimals) {
 	return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
 };
+
+export const isEmpty = function(object){
+	for (let key in object) {
+		if (object.hasOwnProperty(key)) {
+			return false;
+		}
+	}
+	return true;
+};

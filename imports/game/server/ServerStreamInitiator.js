@@ -1,6 +1,5 @@
 import P2JSEngine from '/imports/game/engine/P2JSEngine.js';
 import ServerGame from '/imports/game/server/ServerGame.js';
-import { GameStream } from '/imports/lib/streams.js';
 
 export default class ServerStreamInitiator {
 
@@ -8,11 +7,11 @@ export default class ServerStreamInitiator {
 		this.gameId = gameId;
 		this.currentGame = new ServerGame(this.gameId, new P2JSEngine());
 
-		GameStream.on('sendBundledData-' + gameId, (bundledData) => {
+		ServerStream.on('sendClientBundledData-' + gameId, (bundledData) => {
 			if (bundledData.moveOppositePlayer) {
 				this.moveOppositePlayer.call(this, bundledData.moveOppositePlayer);
 			}
-		});
+		}, true);
 	}
 
 	start() {
@@ -32,7 +31,7 @@ export default class ServerStreamInitiator {
 			this.currentGame.stop();
 		}
 
-		GameStream.removeAllListeners('sendBundledData-' + this.gameId);
+		ServerStream.off('sendBundledData-' + this.gameId);
 	}
 
 }

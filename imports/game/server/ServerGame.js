@@ -2,8 +2,7 @@ import Game from '/imports/game/Game.js';
 import BonusFactory from '/imports/game/BonusFactory.js';
 import { Config } from '/imports/lib/config.js';
 import { Constants } from '/imports/lib/constants.js';
-import { GameStream } from '/imports/lib/streams.js';
-import { getRandomInt, getUTCTimeStamp } from '/imports/lib/utils.js';
+import { getRandomInt, getUTCTimeStamp, isEmpty } from '/imports/lib/utils.js';
 
 export default class ServerGame extends Game {
 
@@ -40,6 +39,13 @@ export default class ServerGame extends Game {
 		this.stopGameOnTimeout();
 
 		this.sendBundledStreams();
+	}
+
+	sendBundledStreams() {
+		//Send bundled streams if there is streams to send
+		if (!isEmpty(this.bundledStreamsToEmit)) {
+			ServerStream.emit('sendServerBundledData-' + this.gameId, this.bundledStreamsToEmit);
+		}
 	}
 
 	sendBallPosition() {
@@ -81,7 +87,7 @@ export default class ServerGame extends Game {
 		if (this.gameResumed == true) {
 			let pointSide;
 
-			if (ball.x < this.xSize / 2) {
+			if (this.engine.getXPosition(ball.sprite) < this.xSize / 2) {
 				pointSide = Constants.CLIENT_POINTS_COLUMN;
 			} else {
 				pointSide = Constants.HOST_POINTS_COLUMN;
@@ -128,7 +134,7 @@ export default class ServerGame extends Game {
 			//Activate bonus
 			this.activateBonus(bonusSprite.identifier, this.engine.getKey(player));
 			//Send to client
-			GameStream.emit('activateBonus-' + this.gameId, bonusSprite.identifier, this.engine.getKey(player));
+			ServerStream.emit('activateBonus-' + this.gameId, {identifier: bonusSprite.identifier, player: this.engine.getKey(player)});
 		}, this);
 	}
 

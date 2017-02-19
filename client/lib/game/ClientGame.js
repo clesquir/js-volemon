@@ -2,7 +2,7 @@ import Game from '/imports/game/Game.js';
 import BonusFactory from '/imports/game/BonusFactory.js';
 import {Config} from '/imports/lib/config.js';
 import {Constants} from '/imports/lib/constants.js';
-import {getUTCTimeStamp} from '/imports/lib/utils.js';
+import {getUTCTimeStamp, isEmpty} from '/imports/lib/utils.js';
 import PhysicsData from '/public/assets/physicsData.json';
 
 export default class ClientGame extends Game {
@@ -14,11 +14,11 @@ export default class ClientGame extends Game {
 	}
 
 	isUserHost() {
-		return (this.gameCreatedBy === Meteor.userId() && this.currentPlayer);
+		return (this.gameCreatedBy === Meteor.userId() && !!this.currentPlayer);
 	}
 
 	isUserClient() {
-		return (this.gameCreatedBy !== Meteor.userId() && this.currentPlayer);
+		return (this.gameCreatedBy !== Meteor.userId() && !!this.currentPlayer);
 	}
 
 	getCurrentPlayer() {
@@ -90,6 +90,13 @@ export default class ClientGame extends Game {
 		this.stopGameOnTimeout();
 
 		this.sendBundledStreams();
+	}
+
+	sendBundledStreams() {
+		//Send bundled streams if there is streams to send
+		if (!isEmpty(this.bundledStreamsToEmit)) {
+			ClientStream.emit('sendClientBundledData-' + this.gameId, this.bundledStreamsToEmit);
+		}
 	}
 
 	render() {
@@ -197,7 +204,6 @@ export default class ClientGame extends Game {
 	sendPlayerPosition(player) {
 		let playerPositionData = this.engine.getPositionData(player);
 
-		playerPositionData.createdBy = this.gameCreatedBy;
 		playerPositionData.isHost = this.isUserHost();
 		playerPositionData.doingDropShot = player.doingDropShot;
 		playerPositionData = this.addServerNormalizedTimestampToPositionData(playerPositionData);
