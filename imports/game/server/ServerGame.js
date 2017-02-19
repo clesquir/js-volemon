@@ -27,6 +27,7 @@ export default class ServerGame extends Game {
 		this.applyIfBallIsFrozen();
 
 		if (this.isGameOnGoing()) {
+			this.engine.constrainVelocity(this.ball, 900);
 			this.sendBallPosition();
 
 			if (this.gameHasBonuses) {

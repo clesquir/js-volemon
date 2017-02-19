@@ -80,6 +80,7 @@ export default class ClientGame extends Game {
 		if (this.isGameOnGoing()) {
 			this.inputs();
 			this.updateCountdown();
+			this.engine.constrainVelocity(this.ball, 900);
 
 			if (this.gameHasBonuses) {
 				this.checkBonuses();

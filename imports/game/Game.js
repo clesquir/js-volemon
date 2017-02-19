@@ -597,7 +597,7 @@ export default class Game {
 			}
 		}
 
-		this.engine.constrainVelocity(ball, 1000);
+		this.engine.constrainVelocity(ball, 900);
 	}
 
 	isPlayerJumpingForward(player, playerKey) {

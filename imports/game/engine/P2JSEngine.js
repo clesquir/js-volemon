@@ -712,7 +712,7 @@ export default class P2JSEngine {
 	}
 
 	hasXPositionBefore(spriteA, spriteB) {
-		return spriteA.body.position[0] > spriteB.body.position[0];
+		return spriteA.body.position[0] + spriteA.body.shapes[0].centerOfMass[1] > spriteB.body.position[0] + spriteB.body.shapes[0].centerOfMass[1];
 	}
 
 	getXPosition(sprite) {
