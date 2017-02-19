@@ -632,7 +632,7 @@ export default class ClientGame {
 					this.bonusesGroup.add(this.engine.drawBonus(
 						padding + (player1Count * ((Config.bonusRadius * 2) + padding)),
 						this.ySize - (this.groundHeight / 2),
-						bonus.getLetter(), bonus.getFontSize(), bonus.getSpriteBorderKey(),
+						bonus.getLetter(), bonus.getFontSize(), bonus.getSpriteBorderKeyForList(),
 						this.getBonusProgress(activeBonus, bonus)
 					));
 					break;
@@ -641,7 +641,7 @@ export default class ClientGame {
 					this.bonusesGroup.add(this.engine.drawBonus(
 						(this.xSize / 2) + padding + (player2Count * ((Config.bonusRadius * 2) + padding)),
 						this.ySize - (this.groundHeight / 2),
-						bonus.getLetter(), bonus.getFontSize(), bonus.getSpriteBorderKey(),
+						bonus.getLetter(), bonus.getFontSize(), bonus.getSpriteBorderKeyForList(),
 						this.getBonusProgress(activeBonus, bonus)
 					));
 					break;
@@ -1183,10 +1183,10 @@ export default class ClientGame {
 
 		let bonus = correspondingBonus.bonus;
 
-		this.deactivateSimilarBonusForPlayerKey(bonus, playerKey);
-
 		bonus.activate(playerKey);
 		bonus.start();
+
+		this.deactivateSimilarBonusForPlayerKey(bonus, playerKey);
 
 		this.activeBonuses.push(bonus);
 		if (this.isUserHost()) {

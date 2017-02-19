@@ -1,6 +1,7 @@
+import InvisibleOpponentMonsterBonus from '/imports/game/bonus/InvisibleOpponentMonsterBonus.js';
 import MonsterBonus from '/imports/game/bonus/MonsterBonus.js';
 
-export default class InvisibilityMonsterBonus extends MonsterBonus {
+export default class InvisibleMonsterBonus extends MonsterBonus {
 
 	constructor(...args) {
 		super(...args);
@@ -9,7 +10,8 @@ export default class InvisibilityMonsterBonus extends MonsterBonus {
 	}
 
 	isSimilarBonusForPlayerKey(bonus, playerKey) {
-		return bonus instanceof InvisibilityMonsterBonus && playerKey == this.activatorPlayerKey;
+		return (bonus instanceof InvisibleMonsterBonus || bonus instanceof InvisibleOpponentMonsterBonus) &&
+			bonus.getTargetPlayerKey() == this.getTargetPlayerKey();
 	}
 
 	start() {

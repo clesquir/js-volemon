@@ -54,7 +54,8 @@ export const Constants = {
 	BONUS_FAST_MONSTER: 'FastMonsterBonus',
 	BONUS_FREEZE_MONSTER: 'FreezeMonsterBonus',
 	BONUS_REVERSE_MOVE_MONSTER: 'ReverseMoveMonsterBonus',
-	BONUS_INVISIBILITY_MONSTER: 'InvisibilityMonsterBonus',
+	BONUS_INVISIBLE_MONSTER: 'InvisibleMonsterBonus',
+	BONUS_INVISIBLE_OPPONENT_MONSTER: 'InvisibleOpponentMonsterBonus',
 	BONUS_CLOUD: 'CloudBonus'
 };
 

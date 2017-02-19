@@ -28,6 +28,10 @@ export default class BaseBonus {
 		return this.spriteBorderKey;
 	}
 
+	getSpriteBorderKeyForList() {
+		return this.spriteBorderKey;
+	}
+
 	getLetter() {
 		return this.letter;
 	}

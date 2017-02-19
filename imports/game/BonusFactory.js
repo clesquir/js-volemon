@@ -7,7 +7,8 @@ import SlowMonsterBonus from '/imports/game/bonus/SlowMonsterBonus.js';
 import FastMonsterBonus from '/imports/game/bonus/FastMonsterBonus.js';
 import FreezeMonsterBonus from '/imports/game/bonus/FreezeMonsterBonus.js';
 import ReverseMoveMonsterBonus from '/imports/game/bonus/ReverseMoveMonsterBonus.js';
-import InvisibilityMonsterBonus from '/imports/game/bonus/InvisibilityMonsterBonus.js';
+import InvisibleMonsterBonus from '/imports/game/bonus/InvisibleMonsterBonus.js';
+import InvisibleOpponentMonsterBonus from '/imports/game/bonus/InvisibleOpponentMonsterBonus.js';
 import CloudBonus from '/imports/game/bonus/CloudBonus.js';
 import { Constants } from '/imports/lib/constants.js';
 
@@ -24,7 +25,8 @@ export default class BonusFactory {
 			Constants.BONUS_FAST_MONSTER,
 			Constants.BONUS_FREEZE_MONSTER,
 			Constants.BONUS_REVERSE_MOVE_MONSTER,
-			Constants.BONUS_INVISIBILITY_MONSTER,
+			Constants.BONUS_INVISIBLE_MONSTER,
+			Constants.BONUS_INVISIBLE_OPPONENT_MONSTER,
 			Constants.BONUS_CLOUD
 		]);
 	}
@@ -54,8 +56,10 @@ export default class BonusFactory {
 				return new FreezeMonsterBonus(game, bonusClass);
 			case Constants.BONUS_REVERSE_MOVE_MONSTER:
 				return new ReverseMoveMonsterBonus(game, bonusClass);
-			case Constants.BONUS_INVISIBILITY_MONSTER:
-				return new InvisibilityMonsterBonus(game, bonusClass);
+			case Constants.BONUS_INVISIBLE_MONSTER:
+				return new InvisibleMonsterBonus(game, bonusClass);
+			case Constants.BONUS_INVISIBLE_OPPONENT_MONSTER:
+				return new InvisibleOpponentMonsterBonus(game, bonusClass);
 			case Constants.BONUS_CLOUD:
 				return new CloudBonus(game, bonusClass);
 		}
