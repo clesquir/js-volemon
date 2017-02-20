@@ -56,7 +56,8 @@ export const Constants = {
 	BONUS_REVERSE_MOVE_MONSTER: 'ReverseMoveMonsterBonus',
 	BONUS_INVISIBLE_MONSTER: 'InvisibleMonsterBonus',
 	BONUS_INVISIBLE_OPPONENT_MONSTER: 'InvisibleOpponentMonsterBonus',
-	BONUS_CLOUD: 'CloudBonus'
+	BONUS_CLOUD: 'CloudBonus',
+	BONUS_NO_JUMP: 'NoJumpMonsterBonus'
 };
 
 Constants.PLAYER_DEFAULT_SHAPE = Constants.PLAYER_SHAPE_HALF_CIRCLE;

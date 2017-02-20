@@ -338,6 +338,7 @@ export default class ClientGame {
 		player.velocityXOnMove = Config.playerVelocityXOnMove;
 		player.velocityYOnJump = Config.playerVelocityYOnJump;
 		player.isFrozen = false;
+		player.canJump = true;
 		player.doingDropShot = false;
 
 		player.polygonObject = 'player-' + this.getPlayerShapeFromKey(playerKey);
@@ -855,7 +856,7 @@ export default class ClientGame {
 			}
 
 			if (this.isPlayerAtGroundLevel(player)) {
-				if (this.isUpKeyDown()) {
+				if (this.isUpKeyDown() && player.canJump) {
 					this.engine.setVerticalSpeed(player, -player.velocityYOnJump);
 				} else {
 					this.engine.setVerticalSpeed(player, 0);

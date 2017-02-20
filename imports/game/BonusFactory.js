@@ -10,6 +10,7 @@ import ReverseMoveMonsterBonus from '/imports/game/bonus/ReverseMoveMonsterBonus
 import InvisibleMonsterBonus from '/imports/game/bonus/InvisibleMonsterBonus.js';
 import InvisibleOpponentMonsterBonus from '/imports/game/bonus/InvisibleOpponentMonsterBonus.js';
 import CloudBonus from '/imports/game/bonus/CloudBonus.js';
+import NoJumpMonsterBonus from '/imports/game/bonus/NoJumpMonsterBonus.js';
 import { Constants } from '/imports/lib/constants.js';
 
 export default class BonusFactory {
@@ -27,7 +28,8 @@ export default class BonusFactory {
 			Constants.BONUS_REVERSE_MOVE_MONSTER,
 			Constants.BONUS_INVISIBLE_MONSTER,
 			Constants.BONUS_INVISIBLE_OPPONENT_MONSTER,
-			Constants.BONUS_CLOUD
+			Constants.BONUS_CLOUD,
+			Constants.BONUS_NO_JUMP
 		]);
 	}
 
@@ -62,6 +64,8 @@ export default class BonusFactory {
 				return new InvisibleOpponentMonsterBonus(game, bonusClass);
 			case Constants.BONUS_CLOUD:
 				return new CloudBonus(game, bonusClass);
+			case Constants.BONUS_NO_JUMP:
+				return new NoJumpMonsterBonus(game, bonusClass);
 		}
 
 		throw 'Inexistent bonus';
