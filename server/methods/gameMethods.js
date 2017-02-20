@@ -1,10 +1,12 @@
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
 import { Profiles } from '/collections/profiles.js';
-import { Config } from '/lib/config.js';
-import { Constants } from '/lib/constants.js';
-import { GameStream } from '/lib/streams.js';
-import { getUTCTimeStamp } from '/lib/utils.js';
+import { Config } from '/imports/lib/config.js';
+import { Constants } from '/imports/lib/constants.js';
+import { getUTCTimeStamp } from '/imports/lib/utils.js';
+import ServerStreamInitiator from '/imports/game/server/ServerStreamInitiator.js';
+
+let serverStreams = {};
 
 Meteor.methods({
 	createGame: function() {
@@ -227,22 +229,25 @@ Meteor.methods({
 	},
 
 	startGame: function(gameId) {
-		var game = Games.findOne(gameId);
+		let game = Games.findOne(gameId);
 
 		if (!game) {
 			throw new Meteor.Error(404, 'Game not found');
 		}
 
-		var data = {
+		let data = {
 			status: Constants.GAME_STATUS_STARTED,
 			startedAt: getUTCTimeStamp(),
 			lastPointAt: getUTCTimeStamp(),
 			pointsDuration: []
 		};
 
-		Games.update({_id: game._id}, {$set: data});
+		Games.update({_id: gameId}, {$set: data});
 
-		GameStream.emit('play-' + game._id);
+		ServerStream.emit('play-' + gameId, 'play');
+
+		serverStreams[gameId] = new ServerStreamInitiator(gameId);
+		serverStreams[gameId].start();
 	},
 
 	quitGame: function(gameId) {
@@ -270,6 +275,11 @@ Meteor.methods({
 
 			Players.update({_id: player._id}, {$set: {hasQuit: getUTCTimeStamp()}});
 
+			if (serverStreams[gameId]) {
+				serverStreams[gameId].stop();
+				delete serverStreams[gameId];
+			}
+
 			if (game.status === Constants.GAME_STATUS_STARTED) {
 				Games.update({_id: game._id}, {$set: {status: Constants.GAME_STATUS_TIMEOUT}});
 			}
@@ -277,7 +287,7 @@ Meteor.methods({
 	},
 
 	keepPlayerAlive: function(playerId) {
-		var player = Players.findOne(playerId);
+		let player = Players.findOne(playerId);
 
 		if (!player) {
 			throw new Meteor.Error(404, 'Player not found');

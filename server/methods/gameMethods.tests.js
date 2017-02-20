@@ -2,8 +2,8 @@ import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { chai } from 'meteor/practicalmeteor:chai';
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
-import { Constants } from '/lib/constants.js';
-import { getUTCTimeStamp } from '/lib/utils.js';
+import { Constants } from '/imports/lib/constants.js';
+import { getUTCTimeStamp } from '/imports/lib/utils.js';
 import { gameMethods } from '/server/methods/gameMethods.js';
 
 describe('GameMethods#leaveGame', function() {

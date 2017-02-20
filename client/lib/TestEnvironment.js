@@ -1,5 +1,5 @@
-import Game from '/client/lib/Game.js';
-import { Constants } from '/lib/constants.js';
+import Game from '/client/lib/game/ClientGame.js';
+import { Constants } from '/imports/lib/constants.js';
 
 export default class TestEnvironment {
 

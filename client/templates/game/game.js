@@ -1,28 +1,22 @@
-import GameInitiator from '/client/lib/game/GameInitiator.js';
+import ClientGameInitiator from '/client/lib/game/ClientGameInitiator.js';
 import {
 	isGameStatusStarted,
 	isGameStatusFinished,
 	isGameStatusOnGoing,
 	isGameStatusTimeout,
 	getWinnerName
-} from '/client/lib/game/utils.js';
+} from '/imports/game/utils.js';
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
-import { Config } from '/lib/config.js';
+import { Config } from '/imports/lib/config.js';
 
 Template.game.helpers({
 	isHost: function() {
 		return this.game.createdBy === Meteor.userId();
 	},
 
-	isPlaying: function() {
+	isGameOnGoing: function() {
 		return isGameStatusOnGoing(this.game.status);
-	},
-
-	isUserNotPlaying: function() {
-		var player = Players.findOne({gameId: Session.get('game'), userId: Meteor.userId()});
-
-		return (!player);
 	},
 
 	hostPoints: function() {
@@ -229,7 +223,10 @@ Template.game.events({
 	},
 	
 	'click [data-action="start"]': function(e) {
-		Meteor.call('startGame', Session.get('game'));
+		Session.set('loadingmask', true);
+		Meteor.call('startGame', Session.get('game'), function(error) {
+			Session.set('loadingmask', false);
+		});
 	},
 
 	'click [data-action="join"]': function(e) {
@@ -258,11 +255,11 @@ Template.game.events({
 	}
 });
 
-/** @type {GameInitiator}|null */
-var gameInitiator = null;
+/** @type {ClientGameInitiator}|null */
+let gameInitiator = null;
 
 Template.game.rendered = function() {
-	gameInitiator = new GameInitiator(Session.get('game'));
+	gameInitiator = new ClientGameInitiator(Session.get('game'));
 	gameInitiator.init();
 };
 

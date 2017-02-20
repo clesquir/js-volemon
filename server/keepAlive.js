@@ -1,55 +1,48 @@
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
-import { Config } from '/lib/config.js';
-import { Constants } from '/lib/constants.js';
-import { GameStream } from '/lib/streams.js';
-import { callMeteorMethodAtFrequence } from '/lib/utils.js';
+import { Config } from '/imports/lib/config.js';
+import { callMeteorMethodAtFrequence } from '/imports/lib/utils.js';
 
-var listenersAddedByGameIds = {};
-var lastKeepAliveUpdateByPlayerIds = {};
+const lastKeepAliveUpdateByPlayerIds = {};
 
-Games.find({status: {$nin: [Constants.GAME_STATUS_TIMEOUT]}}).observeChanges({
-	changed: (gameId, fields) => {
-		if (fields.hasOwnProperty('status')) {
-			let game = Games.findOne(gameId);
+startKeepAlive = function(gameId) {
+	let game = Games.findOne(gameId);
+	let players = Players.find({gameId: gameId});
+	let hostPlayer = null;
+	let clientPlayer = null;
+	players.forEach(function(player) {
+		if (game.createdBy == player.userId) {
+			hostPlayer = player;
+		} else {
+			clientPlayer = player;
+		}
+	});
 
-			if (game.status === Constants.GAME_STATUS_STARTED) {
-				if (!listenersAddedByGameIds[gameId]) {
-					GameStream.on('moveOppositePlayer-' + gameId, function(isUserHost) {
-						var game = Games.findOne(gameId);
-
-						if (game) {
-							let selector = {gameId: gameId};
-
-							if (isUserHost) {
-								selector.userId = game.createdBy;
-							} else {
-								selector.userId = {$ne: game.createdBy};
-							}
-
-							let player = Players.findOne(selector);
-
-							if (player) {
-								if (!lastKeepAliveUpdateByPlayerIds[player._id]) {
-									lastKeepAliveUpdateByPlayerIds[player._id] = 0;
-								}
-								lastKeepAliveUpdateByPlayerIds[player._id] = callMeteorMethodAtFrequence(
-									lastKeepAliveUpdateByPlayerIds[player._id],
-									Config.keepAliveInterval,
-									'keepPlayerAlive',
-									[player._id]
-								);
-							}
-						}
-					});
-					listenersAddedByGameIds[gameId] = true;
-				}
+	ServerStream.on('sendBundledData-' + gameId, function(bundledData) {
+		if (bundledData.moveOppositePlayer) {
+			let movedPlayer = null;
+			if (bundledData.moveOppositePlayer.isUserHost) {
+				movedPlayer = hostPlayer;
 			} else {
-				GameStream.removeAllListeners('moveOppositePlayer-' + gameId);
+				movedPlayer = clientPlayer;
+			}
+
+			if (movedPlayer) {
+				if (!lastKeepAliveUpdateByPlayerIds[movedPlayer._id]) {
+					lastKeepAliveUpdateByPlayerIds[movedPlayer._id] = 0;
+				}
+				Meteor.wrapAsync(() => {
+					lastKeepAliveUpdateByPlayerIds[movedPlayer._id] = callMeteorMethodAtFrequence(
+						lastKeepAliveUpdateByPlayerIds[movedPlayer._id],
+						Config.keepAliveInterval,
+						'keepPlayerAlive',
+						[movedPlayer._id]
+					);
+				});
 			}
 		}
-	}
-});
+	});
+};
 
 Meteor.setInterval(function() {
 	Meteor.call('removeTimeoutPlayersAndGames');

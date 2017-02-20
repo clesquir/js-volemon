@@ -1,4 +1,4 @@
-import { Constants } from '/lib/constants.js';
+import { Constants } from '/imports/lib/constants.js';
 
 Template.gamesList.helpers({
 	createdByUserName: function() {
