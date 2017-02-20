@@ -19,7 +19,10 @@ module.exports = {
 			serverOnly: true,
 		},
 		docker: {
-			image: 'abernix/meteord:base'
+			image: 'abernix/meteord:base',
+			args: [
+				"-p 8080:8080"
+			]
 		},
 		env: {
 			"PORT": 80,
@@ -27,7 +30,6 @@ module.exports = {
 			MONGO_URL: 'mongodb://localhost/meteor'
 		},
 
-		//dockerImage: 'kadirahq/meteord'
 		deployCheckWaitTime: 120
 	},
 
