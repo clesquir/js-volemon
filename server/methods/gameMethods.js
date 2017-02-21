@@ -29,7 +29,8 @@ Meteor.methods({
 					hostPoints: 0,
 					clientPoints: 0,
 					lastPointTaken: null,
-					activeBonuses: []
+					activeBonuses: [],
+					viewers: 0
 				});
 			} catch (e) {
 				//If the id is already taken loop until it finds a unique id
@@ -248,6 +249,26 @@ Meteor.methods({
 
 		serverStreams[gameId] = new ServerStreamInitiator(gameId);
 		serverStreams[gameId].start();
+	},
+
+	addGameViewer: function(gameId) {
+		let game = Games.findOne(gameId);
+
+		if (!game) {
+			throw new Meteor.Error(404, 'Game not found');
+		}
+
+		Games.update({_id: gameId}, {$set: {viewers: game.viewers + 1}});
+	},
+
+	removeGameViewer: function(gameId) {
+		let game = Games.findOne(gameId);
+
+		if (!game) {
+			throw new Meteor.Error(404, 'Game not found');
+		}
+
+		Games.update({_id: gameId}, {$set: {viewers: game.viewers - 1}});
 	},
 
 	quitGame: function(gameId) {

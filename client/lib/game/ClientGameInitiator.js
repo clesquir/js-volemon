@@ -2,6 +2,7 @@ import ClientStreamInitiator from '/client/lib/game/ClientStreamInitiator.js';
 import { isGameStatusStarted, isGameStatusOnGoing } from '/imports/game/utils.js';
 import ClientGame from '/client/lib/game/ClientGame.js';
 import { Games } from '/collections/games.js';
+import { Players } from '/collections/players.js';
 import { Constants } from '/imports/lib/constants.js';
 import { getUTCTimeStamp } from '/imports/lib/utils.js';
 
@@ -32,10 +33,8 @@ export default class ClientGameInitiator {
 
 		this.gamePointsTracker = Games.find({_id: this.gameId}).observeChanges({
 			changed: (id, fields) => {
-				let needsToUpdateGameProperties = false;
-
 				if (fields.hasOwnProperty('status')) {
-					needsToUpdateGameProperties = true;
+					this.updateGameProperties();
 					if (this.hasActiveGame()) {
 						this.currentGame.onStatusChange();
 					}
@@ -48,11 +47,7 @@ export default class ClientGameInitiator {
 				}
 
 				if (fields.hasOwnProperty('lastPointAt')) {
-					needsToUpdateGameProperties = true;
-				}
-
-				if (needsToUpdateGameProperties) {
-					this.updateGameProperties();
+					this.gameLastPointAt = fields.lastPointAt;
 				}
 
 				if (
@@ -94,11 +89,21 @@ export default class ClientGameInitiator {
 		if (this.gamePointsTracker) {
 			this.gamePointsTracker.stop();
 		}
+
+		let player = Players.findOne({gameId: this.gameId, userId: Meteor.userId()});
+		if (!player) {
+			Meteor.call('removeGameViewer', this.gameId);
+		}
 	}
 
 	createNewGame() {
 		this.currentGame = new ClientGame(this.gameId);
 		this.currentGame.start();
+
+		let player = Players.findOne({gameId: this.gameId, userId: Meteor.userId()});
+		if (!player) {
+			Meteor.call('addGameViewer', this.gameId);
+		}
 	}
 
 	initTimer() {
