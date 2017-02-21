@@ -1,5 +1,3 @@
-import http from 'http';
-import socket_io from 'socket.io';
 import Stream from '/imports/lib/stream/Stream.js';
 
 export default class ServerSocketIo extends Stream {
@@ -10,8 +8,10 @@ export default class ServerSocketIo extends Stream {
 		// Client-side config
 		WebAppInternals.addStaticJs(`window.socketPort = ${PORT};`);
 
-		const server = http.createServer();
-		this.io = socket_io.listen(server);
+		const express = require('express');
+		const app = express();
+		const server = require('http').createServer(app);
+		this.io = require('socket.io')(server);
 
 		this.sockets = {};
 		this.io.on('connection', (socket) => {
