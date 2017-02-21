@@ -61,6 +61,26 @@ export default class ClientGame {
 		return (this.gameCreatedBy !== Meteor.userId() && this.currentPlayer);
 	}
 
+	isUserViewer() {
+		return (!this.isUserHost() && !this.isUserClient());
+	}
+
+	isUserHostTargetPlayer(playerKey) {
+		return this.isUserHost() && playerKey == 'player1';
+	}
+
+	isUserClientTargetPlayer(playerKey) {
+		return this.isUserClient() && playerKey == 'player2';
+	}
+
+	isUserHostNotTargetPlayer(playerKey) {
+		return this.isUserHost() && playerKey == 'player2';
+	}
+
+	isUserClientNotTargetPlayer(playerKey) {
+		return this.isUserClient() && playerKey == 'player1';
+	}
+
 	isGameOnGoing() {
 		return isGameStatusStarted(this.gameStatus);
 	}
@@ -1057,10 +1077,10 @@ export default class ClientGame {
 
 		player.isHiddenToHimself = true;
 
-		if (this.isUserHost() || this.isUserClient()) {
+		if (!this.isUserViewer()) {
 			if (
-				(this.isUserHost() && playerKey == 'player1') ||
-				(this.isUserClient() && playerKey == 'player2')
+				this.isUserHostTargetPlayer(playerKey) ||
+				this.isUserClientTargetPlayer(playerKey)
 			) {
 				//Target player cannot see himself
 				this.engine.setOpacity(player, 0);
@@ -1087,9 +1107,9 @@ export default class ClientGame {
 
 		if (player.isHiddenToOpponent) {
 			if (
-				(this.isUserHost() && playerKey == 'player1') ||
-				(this.isUserClient() && playerKey == 'player2') ||
-				(!this.isUserHost() && !this.isUserClient())
+				this.isUserHostTargetPlayer(playerKey) ||
+				this.isUserClientTargetPlayer(playerKey) ||
+				this.isUserViewer()
 			) {
 				this.engine.setOpacity(player, 0.5);
 			}
@@ -1107,10 +1127,10 @@ export default class ClientGame {
 
 		player.isHiddenToOpponent = true;
 
-		if (this.isUserHost() || this.isUserClient()) {
+		if (!this.isUserViewer()) {
 			if (
-				(this.isUserHost() && playerKey == 'player2') ||
-				(this.isUserClient() && playerKey == 'player1')
+				this.isUserHostNotTargetPlayer(playerKey) ||
+				this.isUserClientNotTargetPlayer(playerKey)
 			) {
 				//Opponent cannot see player
 				this.engine.setOpacity(player, 0);
@@ -1137,9 +1157,9 @@ export default class ClientGame {
 
 		if (player.isHiddenToHimself) {
 			if (
-				(this.isUserHost() && playerKey == 'player2') ||
-				(this.isUserClient() && playerKey == 'player1') ||
-				(!this.isUserHost() && !this.isUserClient())
+				this.isUserHostNotTargetPlayer(playerKey) ||
+				this.isUserClientNotTargetPlayer(playerKey) ||
+				this.isUserViewer()
 			) {
 				this.engine.setOpacity(player, 0.5);
 			}
