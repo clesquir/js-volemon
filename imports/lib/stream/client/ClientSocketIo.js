@@ -5,7 +5,10 @@ export default class ClientSocketIo extends Stream {
 	connect() {
 		// Socket io client
 		const PORT = window.socketPort || 8080;
-		const url = `http://localhost:${PORT}`;
+		let url = `http://localhost:${PORT}`;
+		if (Meteor.settings.public.SOCKET_URL) {
+			url = Meteor.settings.public.SOCKET_URL;
+		}
 
 		this.socket = require('socket.io-client').connect(url);
 	}

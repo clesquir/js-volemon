@@ -3,9 +3,6 @@ module.exports = {
 		one: {
 			"host": "volemon.cloudalto.net",
 			"username": "root"
-			// pem:
-			// password:
-			// or leave blank for authenticate from ssh-agent
 		}
 	},
 
@@ -25,11 +22,10 @@ module.exports = {
 			]
 		},
 		env: {
-			"PORT": 80,
-			"ROOT_URL": "http://volemon.cloudalto.net",
+			PORT: 80,
+			ROOT_URL: "http://volemon.cloudalto.net",
 			MONGO_URL: 'mongodb://localhost/meteor'
 		},
-
 		deployCheckWaitTime: 120
 	},
 
