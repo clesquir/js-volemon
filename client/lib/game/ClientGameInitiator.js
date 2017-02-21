@@ -76,7 +76,7 @@ export default class ClientGameInitiator {
 		let game = this.fetchGame();
 
 		this.gameCreatedBy = game.createdBy;
-		this.gameStartedAt = game.lastPointAt;
+		this.gameStartedAt = game.startedAt;
 		this.gameLastPointAt = game.lastPointAt;
 		this.gameStatus = game.status;
 	}
