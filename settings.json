@@ -1,5 +1,5 @@
 {
   "public": {
-
+    "SOCKET_URL": "http://volemon.cloudalto.net:8080"
   }
 }
