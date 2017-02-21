@@ -55,6 +55,14 @@ Template.game.helpers({
 		return Session.get('pointTimer');
 	},
 
+	hasViewer: function() {
+		return this.game.viewers > 0;
+	},
+
+	viewers: function() {
+		return this.game.viewers;
+	},
+
 	loggedPlayer: function() {
 		return Players.findOne({gameId: Session.get('game'), userId: Meteor.userId()});
 	},
@@ -276,6 +284,10 @@ Template.game.destroyed = function() {
 Meteor.startup(function(){
 	$(window).bind('beforeunload', function() {
 		if (Session.get('game')) {
+			if (gameInitiator) {
+				gameInitiator.stop();
+			}
+
 			Meteor.call('quitGame', Session.get('game'), function() {});
 		}
 	});

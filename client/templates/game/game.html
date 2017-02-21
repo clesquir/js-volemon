@@ -20,6 +20,14 @@
 						<div class="point-timer">{{pointTimer}}</div>
 					</div>
 
+					<div class="viewers-container">
+						<span>
+							{{#if hasViewer}}
+								{{viewers}}<i class="fa fa-eye"></i>
+							{{/if}}
+						</span>
+					</div>
+
 					{{! Game container }}
 
 					<div id="gameContainer" class="page game"></div>
