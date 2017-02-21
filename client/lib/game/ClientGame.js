@@ -1049,30 +1049,103 @@ export default class ClientGame {
 	}
 
 	hidePlayingPlayer(playerKey) {
-		var player = this.getPlayerFromKey(playerKey);
+		let player = this.getPlayerFromKey(playerKey);
 
 		if (!player) {
 			return;
 		}
 
-		if (
-			(this.isUserHost() && playerKey == 'player1') ||
-			(this.isUserClient() && playerKey == 'player2')
-		) {
-			this.engine.setOpacity(player, 0);
+		player.isHiddenToHimself = true;
+
+		if (this.isUserHost() || this.isUserClient()) {
+			if (
+				(this.isUserHost() && playerKey == 'player1') ||
+				(this.isUserClient() && playerKey == 'player2')
+			) {
+				//Target player cannot see himself
+				this.engine.setOpacity(player, 0);
+			} else {
+				//Opponent see transparent if he can see
+				if (!player.isHiddenToOpponent) {
+					this.engine.setOpacity(player, 0.5);
+				}
+			}
 		} else {
+			//Viewers always see transparent
 			this.engine.setOpacity(player, 0.5);
 		}
 	}
 
 	showPlayingPlayer(playerKey) {
-		var player = this.getPlayerFromKey(playerKey);
+		let player = this.getPlayerFromKey(playerKey);
 
 		if (!player) {
 			return;
 		}
 
-		this.engine.setOpacity(player, 1);
+		player.isHiddenToHimself = false;
+
+		if (player.isHiddenToOpponent) {
+			if (
+				(this.isUserHost() && playerKey == 'player1') ||
+				(this.isUserClient() && playerKey == 'player2') ||
+				(!this.isUserHost() && !this.isUserClient())
+			) {
+				this.engine.setOpacity(player, 0.5);
+			}
+		} else {
+			this.engine.setOpacity(player, 1);
+		}
+	}
+
+	hideFromOpponent(playerKey) {
+		let player = this.getPlayerFromKey(playerKey);
+
+		if (!player) {
+			return;
+		}
+
+		player.isHiddenToOpponent = true;
+
+		if (this.isUserHost() || this.isUserClient()) {
+			if (
+				(this.isUserHost() && playerKey == 'player2') ||
+				(this.isUserClient() && playerKey == 'player1')
+			) {
+				//Opponent cannot see player
+				this.engine.setOpacity(player, 0);
+			} else {
+				//Bonus player see himself transparent if not hidden to himself
+				if (!player.isHiddenToHimself) {
+					this.engine.setOpacity(player, 0.5);
+				}
+			}
+		} else {
+			//Viewers always see transparent
+			this.engine.setOpacity(player, 0.5);
+		}
+	}
+
+	showToOpponent(playerKey) {
+		let player = this.getPlayerFromKey(playerKey);
+
+		if (!player) {
+			return;
+		}
+
+		player.isHiddenToOpponent = false;
+
+		if (player.isHiddenToHimself) {
+			if (
+				(this.isUserHost() && playerKey == 'player2') ||
+				(this.isUserClient() && playerKey == 'player1') ||
+				(!this.isUserHost() && !this.isUserClient())
+			) {
+				this.engine.setOpacity(player, 0.5);
+			}
+		} else {
+			this.engine.setOpacity(player, 1);
+		}
 	}
 
 	freezePlayer(playerKey) {
