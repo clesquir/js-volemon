@@ -24,6 +24,7 @@ Meteor.methods({
 					status: Constants.GAME_STATUS_REGISTRATION,
 					createdAt: getUTCTimeStamp(),
 					createdBy: user._id,
+					creatorName: user.profile.name,
 					isPrivate: 0,
 					hasBonuses: 1,
 					hostPoints: 0,
