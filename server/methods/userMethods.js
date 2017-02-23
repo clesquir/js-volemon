@@ -1,3 +1,4 @@
+import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
 
 Meteor.methods({
@@ -5,10 +6,7 @@ Meteor.methods({
 		check(this.userId, String);
 
 		Meteor.users.update({_id: this.userId}, {$set: {'profile.name': name}});
-
-		let players = Players.find({userId: this.userId});
-		if (players.count()) {
-			Players.update({userId: this.userId}, {$set: {name: name}}, {multi: true});
-		}
+		Players.update({userId: this.userId}, {$set: {name: name}}, {multi: true});
+		Games.update({createdBy: this.userId}, {$set: {creatorName: name}}, {multi: true});
 	}
 });

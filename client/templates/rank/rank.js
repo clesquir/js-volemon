@@ -37,7 +37,7 @@ var rankChart = null;
 
 Template.rank.events({
 	'click [data-action=view-table-display]': function(e) {
-		var rankDisplay = document.getElementById('rank-display');
+		const rankDisplay = document.getElementById('rank-display');
 
 		if (!$(rankDisplay).is('.spinner-table-display')) {
 			$(rankDisplay).addClass('spinner-table-display');
@@ -46,7 +46,7 @@ Template.rank.events({
 	},
 
 	'click [data-action=view-line-chart-display]': function(e) {
-		var rankDisplay = document.getElementById('rank-display');
+		const rankDisplay = document.getElementById('rank-display');
 
 		if (!$(rankDisplay).is('.spinner-line-chart-display')) {
 			$(rankDisplay).addClass('spinner-line-chart-display');
@@ -59,39 +59,54 @@ Template.rank.events({
 
 	'click [data-action=display-chart-all-time]': function(e) {
 		highlightSelectedChartPeriodItem(e);
-		rankChart.update('Oldest');
+
+		Meteor.subscribe('ranks-chart', 0, () => {
+			rankChart.update('Oldest');
+		});
 	},
 
 	'click [data-action=display-chart-60-days]': function(e) {
-		var minDate = new Date();
+		const minDate = new Date();
 		minDate.setDate(minDate.getDate() - 60);
 
 		highlightSelectedChartPeriodItem(e);
-		rankChart.update('60 days ago', minDate);
+
+		Meteor.subscribe('ranks-chart', minDate.getTime(), () => {
+			rankChart.update('60 days ago', minDate);
+		});
 	},
 
 	'click [data-action=display-chart-30-days]': function(e) {
-		var minDate = new Date();
+		const minDate = new Date();
 		minDate.setDate(minDate.getDate() - 30);
 
 		highlightSelectedChartPeriodItem(e);
-		rankChart.update('30 days ago', minDate);
+
+		Meteor.subscribe('ranks-chart', minDate.getTime(), () => {
+			rankChart.update('30 days ago', minDate);
+		});
 	},
 
 	'click [data-action=display-chart-14-days]': function(e) {
-		var minDate = new Date();
+		const minDate = new Date();
 		minDate.setDate(minDate.getDate() - 14);
 
 		highlightSelectedChartPeriodItem(e);
-		rankChart.update('14 days ago', minDate);
+
+		Meteor.subscribe('ranks-chart', minDate.getTime(), () => {
+			rankChart.update('14 days ago', minDate);
+		});
 	},
 
 	'click [data-action=display-chart-7-days]': function(e) {
-		var minDate = new Date();
+		const minDate = new Date();
 		minDate.setDate(minDate.getDate() - 7);
 
 		highlightSelectedChartPeriodItem(e);
-		rankChart.update('7 days ago', minDate);
+
+		Meteor.subscribe('ranks-chart', minDate.getTime(), () => {
+			rankChart.update('7 days ago', minDate);
+		});
 	}
 });
 

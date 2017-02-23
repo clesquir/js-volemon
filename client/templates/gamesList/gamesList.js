@@ -1,11 +1,9 @@
 import { Constants } from '/imports/lib/constants.js';
 
 Template.gamesList.helpers({
-	createdByUserName: function() {
-		var user = Meteor.users.findOne({_id: this.createdBy});
-
-		if (user) {
-			return user.profile.name;
+	creatorName: function() {
+		if (this.creatorName !== undefined) {
+			return this.creatorName;
 		} else {
 			return '-';
 		}
