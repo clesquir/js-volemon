@@ -279,6 +279,7 @@ Template.game.destroyed = function() {
 	}
 
 	Session.set('game', undefined);
+	Session.set('userCurrentlyPlaying', false);
 };
 
 Meteor.startup(function(){

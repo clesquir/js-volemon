@@ -254,6 +254,7 @@ export default class ClientGame {
 
 	onGameEnd() {
 		this.engine.onGameEnd();
+		Session.set('userCurrentlyPlaying', false);
 	}
 
 	preloadGame() {
@@ -321,7 +322,10 @@ export default class ClientGame {
 
 		this.bonusesGroup = this.engine.addGroup();
 
-		this.engine.addKeyControllers();
+		if (this.getCurrentPlayer()) {
+			this.engine.addKeyControllers();
+			Session.set('userCurrentlyPlaying', true);
+		}
 
 		this.resumeOnTimerEnd();
 	}
