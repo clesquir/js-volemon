@@ -15,12 +15,19 @@
 
 	.button {
 		display: block;
-		margin: 15px auto 0;
+		margin: 15px auto 25px;
+		min-width: 80px;
+	}
+
+	.button[data-action=close-login] {
+		width: 100px;
+	}
+
+	#forgot-password-email-field {
+		margin-top: 10px;
 	}
 
 	.form-switch-link {
-		margin-top: 25px;
-
 		a {
 			cursor: pointer;
 			font-size: 14px;
@@ -32,6 +39,6 @@
 	display: block;
 }
 
-#create-account-form {
+#forgot-password-form, #password-token-sent-form, #create-account-form {
 	display: none;
 }

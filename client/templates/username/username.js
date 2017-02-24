@@ -32,8 +32,18 @@ Template.username.events({
 		}
 
 		if (user && !hasErrors) {
-			Meteor.call('updateUserName', usernameFieldValue);
-			Session.set('lightbox', null);
+			let button = $(e.target).find('.button');
+			button.prop('disabled', true);
+
+			Meteor.call('updateUserName', usernameFieldValue, function(error) {
+				button.prop('disabled', false);
+				if (error === undefined) {
+					Session.set('lightbox', null);
+				} else {
+					errorLabelContainer.show();
+					errorLabelContainer.html(error.reason);
+				}
+			});
 		}
 	}
 });

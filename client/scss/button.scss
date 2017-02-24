@@ -29,6 +29,11 @@
 	}
 }
 
+.button[disabled] {
+	color: darken($border-color-light, 7%);
+	background: lighten($border-color-light, 7%);
+}
+
 $switch-button-width: 30px;
 $switch-button-height: 16px;
 
