@@ -1,5 +1,6 @@
 {
   "public": {
     "SOCKET_URL": "http://volemon.cloudalto.net:8080"
-  }
+  },
+  "smtpUrl": "smtp://email:password@smtp.gmail.com:465"
 }

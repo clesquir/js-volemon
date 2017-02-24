@@ -19,4 +19,7 @@ ServerStream = new ServerSocketIo();
 
 Meteor.startup(() => {
 	ServerStream.connect();
+
+	//Setup SMTP url
+	process.env.MAIL_URL = Meteor.settings.smtpUrl;
 });

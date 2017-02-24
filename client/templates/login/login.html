@@ -16,7 +16,33 @@
 
 			<input type="submit" class="button" value="Log in" />
 
+			<p class="form-switch-link"><a data-action="switch-for-forgot-password">Forgot your password?</a></p>
+
 			<p class="form-switch-link"><a data-action="switch-for-create-account">Don't have an account? Sign up!</a></p>
+
+		</form>
+
+		<form id="forgot-password-form" name="forgotPassword">
+
+			<h1>Forgot you password?</h1>
+
+			<p>No problem! Please enter the email you signed up with:</p>
+
+			<input id="forgot-password-email-field" type="text" autofocus="autofocus" autocomplete="off" name="email" size="32" value="" />
+
+			<p id="forgot-password-error-label-container" class="error-label-container"></p>
+
+			<input type="submit" class="button" value="Reset" />
+
+		</form>
+
+		<form id="password-token-sent-form">
+
+			<h1>Email sent</h1>
+
+			<p>Instructions to set a new password have been sent to your email.</p>
+
+			<input type="button" data-action="close-login" class="button" value="OK" />
 
 		</form>
 

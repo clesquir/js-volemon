@@ -1,4 +1,5 @@
 @import "{}/client/scss/variables.scss";
+@import "{}/client/scss/button.scss";
 
 html, body {
 	height: 100%;
@@ -73,4 +74,41 @@ p {
 
 .elo-rating-negative {
 	color: $negative;
+}
+
+.accounts-centered-dialog {
+	background: rgba($background-color, .95);
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1000;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+
+	.accounts-close {
+		position: absolute;
+		right: 25px;
+		top: 25px;
+		font-size: 2em;
+		display: block;
+		line-height: 0;
+		cursor: pointer;
+	}
+
+	.reset-password-new-password-wrapper input {
+		width: 285px;
+	}
+
+	& > div, & > label {
+		margin: 10px;
+	}
+
+	.login-button {
+		@extend .button;
+		margin-top: 25px;
+	}
 }

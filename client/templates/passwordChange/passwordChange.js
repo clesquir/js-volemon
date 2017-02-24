@@ -44,7 +44,11 @@ Template.passwordChange.events({
 		}
 
 		if (!hasErrors) {
+			let button = $(e.target).find('.button');
+			button.prop('disabled', true);
+
 			Accounts.changePassword(oldPasswordValue, passwordValue, function (error) {
+				button.prop('disabled', false);
 				if (error === undefined) {
 					Session.set('lightbox', null);
 				} else {

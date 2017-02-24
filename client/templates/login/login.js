@@ -8,11 +8,23 @@ Template.login.events({
 		removeFieldsInvalidMarkAndSwitchForm(createAccountForm, loginForm);
 	},
 
+	'click [data-action=switch-for-forgot-password]': function(e) {
+		var loginForm = document.getElementById('login-form'),
+			forgotPasswordForm = document.getElementById('forgot-password-form');
+
+		removeFieldsInvalidMarkAndSwitchForm(forgotPasswordForm, loginForm);
+	},
+
 	'click [data-action=switch-for-log-in]': function(e) {
 		var loginForm = document.getElementById('login-form'),
 			createAccountForm = document.getElementById('create-account-form');
 
 		removeFieldsInvalidMarkAndSwitchForm(loginForm, createAccountForm);
+	},
+
+	'click [data-action=close-login]': function(e) {
+		actionAfterLoginCreateUser = null;
+		Session.set('lightbox', null);
 	},
 
 	'focus input.field-in-error': function(e) {
@@ -37,13 +49,50 @@ Template.login.events({
 		]);
 
 		if (!hasErrors) {
+			let button = $(e.target).find('.button');
+			button.prop('disabled', true);
+
 			Meteor.loginWithPassword(emailValue, passwordValue, function(error) {
+				button.prop('disabled', false);
 				if (error === undefined) {
 					if (actionAfterLoginCreateUser) {
 						actionAfterLoginCreateUser();
 						actionAfterLoginCreateUser = null;
 					}
 					Session.set('lightbox', null);
+				} else {
+					errorLabelContainer.show();
+					errorLabelContainer.html(error.reason);
+				}
+			});
+		}
+	},
+
+	'submit form[name=forgotPassword]': function(e) {
+		e.preventDefault();
+
+		let form = document.getElementById('forgot-password-form');
+		let emailField = $(e.target).find('#forgot-password-email-field');
+		let emailValue = emailField.val();
+		let errorLabelContainer = $(e.target).find('.error-label-container');
+		let hasErrors;
+
+		removeErrorLabelContainer(errorLabelContainer);
+
+		hasErrors = validateFieldsPresenceAndMarkInvalid($(e.target), [
+			emailField
+		]);
+
+		if (!hasErrors) {
+			let button = $(e.target).find('.button');
+			button.prop('disabled', true);
+
+			Meteor.call('sendUserPasswordToken', emailValue, function(error) {
+				button.prop('disabled', false);
+				if (error === undefined) {
+					$(form).hide();
+					removeErrorLabelContainer(errorLabelContainer);
+					$(document.getElementById('password-token-sent-form')).show();
 				} else {
 					errorLabelContainer.show();
 					errorLabelContainer.html(error.reason);
@@ -103,9 +152,13 @@ Template.login.events({
 		}
 
 		if (!hasErrors) {
+			let button = $(e.target).find('.button');
+			button.prop('disabled', true);
+
 			Accounts.createUser(
 				{email: emailValue, password: passwordValue, profile: {name: nameValue}},
 				function(error) {
+					button.prop('disabled', false);
 					if (error === undefined) {
 						if (actionAfterLoginCreateUser) {
 							actionAfterLoginCreateUser();
