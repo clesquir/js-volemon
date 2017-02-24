@@ -203,6 +203,15 @@
 
 .username-header-menu {
 	position: relative;
+
+	&.disabled-menu {
+		color: rgba(lighten($header-text-color, 15%), 0.8);
+		text-shadow: 1px 1px 0 lighten($header-text-color, 30%);
+
+		& > a {
+			cursor: default;
+		}
+	}
 }
 
 .username-header-menu .username-dialog {

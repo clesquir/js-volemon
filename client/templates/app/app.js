@@ -1,3 +1,12 @@
+Template.app.helpers({
+	classForProfileMenu: function() {
+		if (Session.get('userCurrentlyPlaying')) {
+			return 'disabled-menu';
+		}
+		return '';
+	}
+});
+
 Template.app.events({
 	'click [data-action]': function(e) {
 		e.preventDefault();
@@ -26,6 +35,9 @@ Template.app.events({
 		if ($(dropdownList).is(":visible")) {
 			$(dropdownList).hide();
 		} else {
+			if (Session.get('userCurrentlyPlaying')) {
+				return;
+			}
 			$(dropdownList).show();
 		}
 	},
