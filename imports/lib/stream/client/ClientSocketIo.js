@@ -11,18 +11,22 @@ export default class ClientSocketIo extends Stream {
 		}
 
 		this.socket = require('socket.io-client').connect(url);
+		this.p2p = new (require('socket.io-p2p'))(this.socket);
+		this.p2p.on('ready', () => {
+			this.p2p.usePeerConnection = true;
+		})
 	}
 
 	emit(eventName, payload) {
-		this.socket.emit(eventName, payload);
+		this.p2p.emit(eventName, payload);
 	}
 
 	on(eventName, callback) {
-		this.socket.on(eventName, callback);
+		this.p2p.on(eventName, callback);
 	}
 
 	off(eventName) {
-		this.socket.removeListener(eventName);
+		this.p2p.removeListener(eventName);
 	}
 
 }

@@ -12,6 +12,8 @@ export default class ServerSocketIo extends Stream {
 		const app = express();
 		const server = require('http').createServer(app);
 		this.io = require('socket.io')(server);
+		const p2p = require('socket.io-p2p-server').Server;
+		this.io.use(p2p);
 
 		this.sockets = {};
 		this.io.on('connection', (socket) => {
