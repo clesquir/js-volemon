@@ -26,7 +26,6 @@ check@1.2.3
 standard-minifier-css@1.2.0
 standard-minifier-js@1.2.0
 accounts-ui-unstyled@1.1.12
-clesquir:meteor-phaser
 lookback:tooltips
 rocketchat:streamer
 momentjs:moment
@@ -38,3 +37,4 @@ practicalmeteor:sinon
 xolvio:cleaner
 shell-server
 email
+vrakfall:phaser

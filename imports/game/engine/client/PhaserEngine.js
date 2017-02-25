@@ -7,7 +7,7 @@ export default class PhaserEngine {
 		this.game = new Phaser.Game({
 			width: width,
 			height: height,
-			renderer: Phaser.CANVAS,
+			renderer: Phaser.AUTO,
 			parent: parent
 		});
 
@@ -23,6 +23,7 @@ export default class PhaserEngine {
 	stop() {
 		this.removeKeyControllers();
 		this.game.state.destroy();
+		this.game.destroy();
 	}
 
 	onGameEnd() {
