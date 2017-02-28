@@ -16,6 +16,8 @@ cd js-volemon
 ROOT_URL=http://your.ip.address:3000 meteor --production
 ```
 
+Do not install missing modules bufferutil and utf-8-validate as they are not compatible with socket-io.
+
 Open a browser with your ip address at port 3000 (e.g.: 192.168.200.23:3000).
 
 Have fun!
