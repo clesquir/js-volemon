@@ -14,8 +14,13 @@ import { getUTCTimeStamp } from '/imports/lib/utils.js';
 
 export default class ClientGame {
 
-	constructor(gameId) {
+	/**
+	 * @param {string} gameId
+	 * @param {Stream} stream
+	 */
+	constructor(gameId, stream) {
 		this.gameId = gameId;
+		this.stream = stream;
 		this.engine = new PhaserEngine();
 		this.xSize = Constants.GAME_X_SIZE;
 		this.ySize = Constants.GAME_Y_SIZE;
@@ -628,7 +633,7 @@ export default class ClientGame {
 
 		//Send bundled streams if there is streams to send
 		if (this.bundledStreamsToEmit != {}) {
-			ClientStream.emit('sendBundledData-' + this.gameId, this.bundledStreamsToEmit);
+			this.stream.emit('sendBundledData-' + this.gameId, this.bundledStreamsToEmit);
 		}
 	}
 
@@ -1264,7 +1269,7 @@ export default class ClientGame {
 				//Activate bonus
 				this.activateBonus(bonusSprite.identifier, this.engine.getKey(player));
 				//Send to client
-				ClientStream.emit('activateBonus-' + this.gameId, {identifier: bonusSprite.identifier, player: this.engine.getKey(player)});
+				this.stream.emit('activateBonus-' + this.gameId, {identifier: bonusSprite.identifier, player: this.engine.getKey(player)});
 			}
 		}, this);
 		this.engine.collidesWith(bonusSprite, this.netHitDelimiterCollisionGroup);
