@@ -1,3 +1,4 @@
+import '/imports/lib/rollbar/server/Init.js';
 import ServerSocketIo from '/imports/lib/stream/server/ServerSocketIo.js';
 
 Accounts.onCreateUser((options, user) => {
