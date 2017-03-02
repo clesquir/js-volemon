@@ -1,3 +1,4 @@
+import '/imports/lib/rollbar/client/Init.js';
 import ClientSocketIo from '/imports/lib/stream/client/ClientSocketIo.js';
 
 // Hack https://github.com/socketio/socket.io-client/issues/961
