@@ -26,6 +26,11 @@
 		left: 0;
 		padding: 5px 0;
 
+		.volemon-logo {
+			height: 40px;
+			width: 40px;
+		}
+
 		.logo-shifter {
 			position: relative;
 			overflow: hidden;
@@ -42,11 +47,6 @@
 
 			& > :first-child {
 				top: 0;
-
-				.volemon-logo {
-					height: 40px;
-					width: 40px;
-				}
 			}
 
 			& > :last-child {
@@ -65,21 +65,6 @@
 	}
 }
 
-@media (min-width: 765px) {
-	.app-header:hover {
-		.app-title {
-			.logo-shifter {
-				& > :first-child {
-					top: -40px;
-				}
-				& > :last-child {
-					top: 0;
-				}
-			}
-		}
-	}
-}
-
 .app-header-section {
 	display: block;
 	text-align: center;
@@ -89,7 +74,7 @@
 	z-index: 1;
 
 	&.app-header-section-button {
-		padding: 8px 8px;
+		padding: 8px;
 		font-size: 8px;
 		width: 80px;
 		white-space: nowrap;
@@ -127,6 +112,10 @@
 
 .app-header-section-button-home {
 	z-index: 4;
+
+	.fa:before {
+		content: "\f015";
+	}
 }
 
 .app-header-section-button-create-game {
@@ -139,30 +128,6 @@
 
 .app-header-section-button-view-rank {
 	z-index: 1;
-}
-
-@media (max-width: 765px) {
-	.app-header-section-button-home {
-		transform: translateX(0);
-	}
-
-	.app-header-section-button-create-game {
-		transform: translateX(-75px);
-	}
-
-	.app-header-section-button-games-list {
-		transform: translateX(-150px);
-	}
-
-	.app-header-section-button-view-rank {
-		transform: translateX(-225px);
-	}
-
-	.app-header:hover {
-		.app-header-section-button {
-			transform: translateX(0);
-		}
-	}
 }
 
 .app-main {
@@ -316,5 +281,93 @@ input.field-in-error {
 		top: -$arrow-size*2;
 		bottom: auto;
 		border-color: transparent transparent $tooltip-color transparent;
+	}
+}
+
+@media (max-width: 720px) {
+	.app-header {
+		max-height: 40px;
+
+		.app-title {
+			.volemon-logo {
+				width: 25px;
+				height: 25px;
+			}
+		}
+	}
+
+	.app-header-section.app-header-section-button {
+		width: 50px;
+	}
+
+	.app-header-section {
+		min-height: 35px;
+		padding: 15px 15px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		&.app-header-section-button {
+			padding: 2px;
+		}
+	}
+
+	.app-header-button-title {
+		display: none;
+	}
+
+	.app-header-section-button-home {
+		transform: translateX(0);
+	}
+
+	.app-header-section-button-create-game {
+		transform: translateX(-45px);
+	}
+
+	.app-header-section-button-games-list {
+		transform: translateX(-90px);
+	}
+
+	.app-header-section-button-view-rank {
+		transform: translateX(-135px);
+	}
+
+	.app-header-section-button-home .fa {
+		-webkit-transition: -webkit-transform .75s ease-in-out;
+		transition: transform .75s ease-in-out;
+
+		&:before {
+			content: "\f0c9";
+		}
+
+		.app-header:hover & {
+			-webkit-transform: rotate(360deg);
+			transform: rotate(360deg);
+
+			&:before {
+				content: "\f015";
+			}
+		}
+	}
+
+	.app-header:hover {
+		.app-header-section-button {
+			transform: translateX(0);
+		}
+	}
+}
+
+@media (min-width: 720px) {
+	.app-header:hover {
+		.app-title {
+			.logo-shifter {
+				& > :first-child {
+					top: -40px;
+				}
+				& > :last-child {
+					top: 0;
+				}
+			}
+		}
 	}
 }

@@ -77,20 +77,6 @@
 	margin: 10px auto;
 }
 
-@media (max-width: 850px) {
-	#gameContainer canvas {
-		width: 699px !important;
-		height: 466px !important;
-	}
-}
-
-@media (min-width: 1325px) and (min-height: 910px) {
-	#gameContainer canvas {
-		width: 1260px !important;
-		height: 840px !important;
-	}
-}
-
 .copyable-url-input {
 	position: relative;
 
@@ -154,5 +140,32 @@
 
 	.after-game-item + .after-game-item {
 		margin-top: 20px;
+	}
+}
+
+@media (max-width: 720px) {
+	#gameContainer canvas {
+		width: 474px !important;
+		height: 316px !important;
+	}
+
+	.after-game-container {
+		& .after-game-title {
+			font-size: 35px;
+		}
+	}
+}
+
+@media (min-width: 720px) and (max-width: 850px) {
+	#gameContainer canvas {
+		width: 699px !important;
+		height: 466px !important;
+	}
+}
+
+@media (min-width: 1325px) and (min-height: 910px) {
+	#gameContainer canvas {
+		width: 1260px !important;
+		height: 840px !important;
 	}
 }
