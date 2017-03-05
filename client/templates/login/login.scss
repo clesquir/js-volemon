@@ -1,12 +1,6 @@
 .login {
-	text-align: center;
-
 	form {
 		animation: appear 1s linear both;
-	}
-
-	h1 {
-		margin-bottom: 30px;
 	}
 
 	p {
@@ -14,8 +8,7 @@
 	}
 
 	.button {
-		display: block;
-		margin: 15px auto 25px;
+		margin-bottom: 25px;
 		min-width: 80px;
 	}
 
