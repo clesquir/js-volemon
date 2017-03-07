@@ -365,6 +365,10 @@ export default class PhaserEngine {
 		sprite.anchor.set(anchor);
 	}
 
+	rotateLeft(sprite, velocity) {
+		sprite.body.rotateLeft(velocity);
+	}
+
 	setMaterial(sprite, material) {
 		sprite.body.setMaterial(material);
 	}
