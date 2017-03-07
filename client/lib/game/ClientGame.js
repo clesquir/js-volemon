@@ -1222,18 +1222,14 @@ export default class ClientGame {
 	generateClouds() {
 		this.clouds = [];
 
-		const layers = [
-			'white-cloud', 'white-cloud', 'dark-cloud', 'dark-cloud',
-			'white-cloud', 'white-cloud', 'dark-cloud', 'dark-cloud',
-			'white-cloud', 'white-cloud', 'dark-cloud', 'dark-cloud'
-		];
+		const layers = ['white-cloud', 'white-cloud', 'dark-cloud', 'dark-cloud'];
 		for (let i = 1; i < 6; i++) {
 			let x = Constants.GAME_X_SIZE / 6 * i;
 
 			for (let layer of layers) {
 				let scale = getRandomFloat(1, 2);
 				let cloud = this.engine.addSprite(x, 200, layer);
-				cloud.opacity = getRandomFloat(0.10, 0.13);
+				cloud.opacity = getRandomFloat(0.25, 0.30);
 				cloud.rotateSpeed = getRandomFloat(-6, 6);
 				this.engine.setStatic(cloud, true);
 				this.engine.setOpacity(cloud, 0);
