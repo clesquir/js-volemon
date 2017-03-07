@@ -4,13 +4,15 @@ import ClientGame from '/client/lib/game/ClientGame.js';
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
 import { Constants } from '/imports/lib/constants.js';
+import ClientSocketIo from '/imports/lib/stream/client/ClientSocketIo.js';
 import { getUTCTimeStamp } from '/imports/lib/utils.js';
 
 export default class ClientGameInitiator {
 
 	constructor(gameId) {
 		this.gameId = gameId;
-		this.streamInitiator = new ClientStreamInitiator(this);
+		this.stream = new ClientSocketIo();
+		this.streamInitiator = new ClientStreamInitiator(this, this.stream);
 		this.currentGame = null;
 		this.gameStartedAt = 0;
 		this.gameLastPointAt = 0;
@@ -22,14 +24,14 @@ export default class ClientGameInitiator {
 	init() {
 		this.updateGameProperties();
 
+		this.streamInitiator.init();
+
 		//Game is already started
 		if (isGameStatusOnGoing(this.gameStatus)) {
 			this.createNewGame();
 		}
 
 		this.initTimer();
-
-		this.streamInitiator.init();
 
 		this.gamePointsTracker = Games.find({_id: this.gameId}).observeChanges({
 			changed: (id, fields) => {
@@ -97,7 +99,7 @@ export default class ClientGameInitiator {
 	}
 
 	createNewGame() {
-		this.currentGame = new ClientGame(this.gameId);
+		this.currentGame = new ClientGame(this.gameId, this.stream);
 		this.currentGame.start();
 
 		let player = Players.findOne({gameId: this.gameId, userId: Meteor.userId()});

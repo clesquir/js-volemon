@@ -2,4 +2,5 @@
 mup.json
 settings.json
 settings-dev.json
+settings-prod.json
 node_modules/

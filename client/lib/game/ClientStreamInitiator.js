@@ -1,15 +1,23 @@
+import Stream from '/imports/lib/stream/Stream.js';
+
 export default class ClientStreamInitiator {
 
-	constructor(gameInitiator = null) {
-		/** @type {ClientGameInitiator} */
+	/**
+	 * @param {ClientGameInitiator} gameInitiator
+	 * @param {Stream} stream
+	 */
+	constructor(gameInitiator, stream) {
 		this.gameInitiator = gameInitiator;
+		this.stream = stream;
 	}
 
 	init() {
 		let gameInitiator = this.gameInitiator;
 		let gameId = gameInitiator.gameId;
 
-		ClientStream.on('play-' + gameId, function() {
+		this.stream.connect();
+
+		this.stream.on('play-' + gameId, function() {
 			//Wait for gameContainer creation before starting game
 			let loopUntilGameContainerIsCreated = function() {
 				if (document.getElementById('gameContainer')) {
@@ -22,11 +30,11 @@ export default class ClientStreamInitiator {
 			loopUntilGameContainerIsCreated();
 		});
 
-		ClientStream.on('activateBonus-' + gameId, (data) => {
+		this.stream.on('activateBonus-' + gameId, (data) => {
 			this.activateBonus(data.identifier, data.player);
 		});
 
-		ClientStream.on('sendBundledData-' + gameId, (bundledData) => {
+		this.stream.on('sendBundledData-' + gameId, (bundledData) => {
 			if (bundledData.moveClientBall) {
 				this.moveClientBall.call(this, bundledData.moveClientBall);
 			}
@@ -88,13 +96,9 @@ export default class ClientStreamInitiator {
 		let gameInitiator = this.gameInitiator;
 		let gameId = gameInitiator.gameId;
 
-		if (gameInitiator.hasActiveGame()) {
-			gameInitiator.currentGame.stop();
-		}
-
-		ClientStream.off('play-' + gameId);
-		ClientStream.off('activateBonus-' + gameId);
-		ClientStream.off('sendBundledData-' + gameId);
+		this.stream.off('play-' + gameId);
+		this.stream.off('activateBonus-' + gameId);
+		this.stream.off('sendBundledData-' + gameId);
 	}
 
 }
