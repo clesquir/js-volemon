@@ -5,7 +5,7 @@ import {
 	isGameStatusTimeout,
 	isGameStatusFinished
 } from '/imports/game/utils.js';
-import { getRandomInt } from '/client/lib/utils.js';
+import { getRandomInt, getRandomFloat } from '/client/lib/utils.js';
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
 import { Config } from '/imports/lib/config.js';
@@ -29,6 +29,7 @@ export default class ClientGame {
 		this.lastGameRespawn = 0;
 		this.bundledStreamsToEmit = {};
 		this.bonuses = [];
+		this.clouds = [];
 		this.activeBonuses = [];
 		this.serverOffset = TimeSync.serverOffset();
 	}
@@ -266,6 +267,8 @@ export default class ClientGame {
 		this.engine.loadImage('net', 'assets/net.png');
 		this.engine.loadImage('ground', 'assets/ground.png');
 		this.engine.loadImage('cloud', 'assets/cloud.png');
+		this.engine.loadImage('dark-cloud', 'assets/dark-cloud.png');
+		this.engine.loadImage('white-cloud', 'assets/white-cloud.png');
 
 		this.engine.loadImage('delimiter', 'assets/clear.png');
 		this.engine.loadImage('bonus-environment', 'assets/bonus-environment.png');
@@ -1205,13 +1208,49 @@ export default class ClientGame {
 			this.cloudBonus = this.engine.addTileSprite(this.xSize / 2, this.ySize / 2, this.xSize, this.ySize, 'cloud');
 			this.engine.setStatic(this.cloudBonus, true);
 			this.engine.setOpacity(this.cloudBonus, 0);
+
+			this.generateClouds();
 		}
 
-		this.engine.animateSetOpacity(this.cloudBonus, 1, this.engine.getOpacity(this.cloudBonus), 250);
+		this.engine.animateSetOpacity(this.cloudBonus, 0.7, this.engine.getOpacity(this.cloudBonus), 250);
+		for (let cloud of this.clouds) {
+			this.engine.rotateLeft(cloud, cloud.rotateSpeed);
+			this.engine.animateSetOpacity(cloud, cloud.opacity, this.engine.getOpacity(cloud), 250);
+		}
+	}
+
+	generateClouds() {
+		this.clouds = [];
+
+		const layers = [
+			'white-cloud', 'white-cloud', 'dark-cloud', 'dark-cloud',
+			'white-cloud', 'white-cloud', 'dark-cloud', 'dark-cloud',
+			'white-cloud', 'white-cloud', 'dark-cloud', 'dark-cloud'
+		];
+		for (let i = 1; i < 6; i++) {
+			let x = Constants.GAME_X_SIZE / 6 * i;
+
+			for (let layer of layers) {
+				let scale = getRandomFloat(1, 2);
+				let cloud = this.engine.addSprite(x, 200, layer);
+				cloud.opacity = getRandomFloat(0.10, 0.13);
+				cloud.rotateSpeed = getRandomFloat(-6, 6);
+				this.engine.setStatic(cloud, true);
+				this.engine.setOpacity(cloud, 0);
+				this.engine.setAnchor(cloud, 0.5);
+				this.engine.setFixedRotation(cloud, false);
+				this.engine.scale(cloud, scale, scale);
+				this.clouds.push(cloud);
+			}
+		}
 	}
 
 	hideCloud() {
-		this.engine.animateSetOpacity(this.cloudBonus, 0, 1, 250);
+		for (let cloud of this.clouds) {
+			this.engine.animateSetOpacity(cloud, 0, this.engine.getOpacity(cloud), 250);
+			this.engine.rotateLeft(cloud, 0);
+		}
+		this.engine.animateSetOpacity(this.cloudBonus, 0, this.engine.getOpacity(this.cloudBonus), 250);
 	}
 
 	shakeLevel() {
