@@ -59,7 +59,8 @@ export const Constants = {
 	BONUS_CLOUD: 'CloudBonus',
 	BONUS_NO_JUMP_MONSTER: 'NoJumpMonsterBonus',
 	BONUS_BOUNCE_MONSTER: 'BounceMonsterBonus',
-	BONUS_CLOAKED_MONSTER: 'CloakedMonsterBonus'
+	BONUS_CLOAKED_MONSTER: 'CloakedMonsterBonus',
+	RANDOM_BONUS: 'RandomBonus'
 };
 
 Constants.PLAYER_DEFAULT_SHAPE = Constants.PLAYER_SHAPE_HALF_CIRCLE;

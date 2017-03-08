@@ -139,7 +139,7 @@ export default class ClientGame {
 		}
 	}
 
-	getBonusFromIdentifier(bonusIdentifier) {
+	getBonusSpriteFromIdentifier(bonusIdentifier) {
 		for (let bonus of this.bonuses) {
 			if (bonus.identifier === bonusIdentifier) {
 				return bonus;
@@ -658,7 +658,7 @@ export default class ClientGame {
 		let player2Count = 0;
 
 		for (let activeBonus of this.gameActiveBonuses) {
-			let bonus = BonusFactory.getInstance(activeBonus.bonusClass, this);
+			let bonus = BonusFactory.fromClassName(activeBonus.bonusClass, this);
 
 			switch (activeBonus.targetPlayerKey) {
 				case 'player1':
@@ -666,7 +666,7 @@ export default class ClientGame {
 					this.bonusesGroup.add(this.engine.drawBonus(
 						padding + (player1Count * ((Config.bonusRadius * 2) + padding)),
 						this.ySize - (this.groundHeight / 2),
-						bonus.getLetter(), bonus.getFontSize(), bonus.getSpriteBorderKeyForList(),
+						bonus.getLetter(), bonus.getFontSize(), bonus.getSpriteBorderKey(),
 						this.getBonusProgress(activeBonus, bonus)
 					));
 					break;
@@ -675,7 +675,7 @@ export default class ClientGame {
 					this.bonusesGroup.add(this.engine.drawBonus(
 						(this.xSize / 2) + padding + (player2Count * ((Config.bonusRadius * 2) + padding)),
 						this.ySize - (this.groundHeight / 2),
-						bonus.getLetter(), bonus.getFontSize(), bonus.getSpriteBorderKeyForList(),
+						bonus.getLetter(), bonus.getFontSize(), bonus.getSpriteBorderKey(),
 						this.getBonusProgress(activeBonus, bonus)
 					));
 					break;
@@ -963,15 +963,15 @@ export default class ClientGame {
 	}
 
 	moveClientBonus(bonusIdentifier, data) {
-		var correspondingBonus = this.getBonusFromIdentifier(bonusIdentifier);
+		const correspondingBonusSprite = this.getBonusSpriteFromIdentifier(bonusIdentifier);
 
-		if (!correspondingBonus) {
+		if (!correspondingBonusSprite) {
 			return;
 		}
 
-		data = this.engine.interpolateFromTimestamp(this.getServerNormalizedTimestamp(), correspondingBonus, data);
+		data = this.engine.interpolateFromTimestamp(this.getServerNormalizedTimestamp(), correspondingBonusSprite, data);
 
-		this.engine.move(correspondingBonus, data);
+		this.engine.move(correspondingBonusSprite, data);
 	}
 
 	pauseGame() {
@@ -1181,7 +1181,7 @@ export default class ClientGame {
 	}
 
 	freezePlayer(playerKey) {
-		var player = this.getPlayerFromKey(playerKey);
+		const player = this.getPlayerFromKey(playerKey);
 
 		if (!player) {
 			return;
@@ -1193,7 +1193,7 @@ export default class ClientGame {
 	}
 
 	unFreezePlayer(playerKey) {
-		var player = this.getPlayerFromKey(playerKey);
+		const player = this.getPlayerFromKey(playerKey);
 
 		if (!player) {
 			return;
@@ -1264,20 +1264,16 @@ export default class ClientGame {
 	}
 
 	createBonusIfTimeHasElapsed() {
-		var frequenceTime = this.bonusFrequenceTime - Math.round((getUTCTimeStamp() - this.lastGameRespawn) / 10);
+		let frequenceTime = this.bonusFrequenceTime - Math.round((getUTCTimeStamp() - this.lastGameRespawn) / 10);
 
 		if (frequenceTime < Config.bonusMinimumFrequence) {
 			frequenceTime = Config.bonusMinimumFrequence;
 		}
 
 		if (getUTCTimeStamp() - this.lastBonusCreated >= frequenceTime) {
-			//Host choose position and bonusCls
-			let bonusClass = BonusFactory.getRandomBonusKey();
-			let data = {
-				initialX: this.xSize / 2 + Random.choice([-6, +6]),
-				bonusKey: bonusClass,
-				bonusIdentifier: bonusClass + '_' + this.getServerNormalizedTimestamp()
-			};
+			let bonus = BonusFactory.randomBonus(this);
+			let data = bonus.dataToStream();
+			data.initialX = this.xSize / 2 + Random.choice([-6, +6]);
 
 			//Create the bonus the host
 			this.createBonus(data);
@@ -1288,11 +1284,11 @@ export default class ClientGame {
 	}
 
 	createBonus(data) {
-		var bonus = BonusFactory.getInstance(data.bonusKey, this),
-			bonusSprite = this.engine.addBonus(
-				data.initialX, Config.bonusGravityScale, this.bonusMaterial, this.bonusCollisionGroup,
-				bonus.getLetter(), bonus.getFontSize(), bonus.getSpriteBorderKey()
-			);
+		const bonus = BonusFactory.fromData(data, this);
+		const bonusSprite = this.engine.addBonus(
+			data.initialX, Config.bonusGravityScale, this.bonusMaterial, this.bonusCollisionGroup,
+			bonus.getLetter(), bonus.getFontSize(), bonus.getSpriteBorderKey()
+		);
 
 		bonusSprite.identifier = data.bonusIdentifier;
 		bonusSprite.bonus = bonus;
@@ -1314,13 +1310,13 @@ export default class ClientGame {
 	}
 
 	activateBonus(bonusIdentifier, playerKey) {
-		var correspondingBonus = this.getBonusFromIdentifier(bonusIdentifier);
+		const correspondingBonusSprite = this.getBonusSpriteFromIdentifier(bonusIdentifier);
 
-		if (!correspondingBonus) {
+		if (!correspondingBonusSprite) {
 			return;
 		}
 
-		let bonus = correspondingBonus.bonus;
+		let bonus = correspondingBonusSprite.bonus.bonusToActivate();
 
 		bonus.activate(playerKey);
 		bonus.start();
@@ -1333,7 +1329,7 @@ export default class ClientGame {
 				'addActiveBonusToGame',
 				this.gameId,
 				bonus.getIdentifier(),
-				bonus.getClassName(),
+				bonus.classNameToActivate(),
 				bonus.getActivatedAt() + this.serverOffset,
 				bonus.getTargetPlayerKey()
 			);
@@ -1343,7 +1339,7 @@ export default class ClientGame {
 	}
 
 	removeBonusSprite(bonusIdentifier) {
-		var bonuses = [];
+		const bonuses = [];
 
 		for (let bonus of this.bonuses) {
 			if (bonus.identifier === bonusIdentifier) {
@@ -1359,13 +1355,13 @@ export default class ClientGame {
 	deactivateSimilarBonusForPlayerKey(newBonus, playerKey) {
 		for (let bonus of this.activeBonuses) {
 			if (bonus.isSimilarBonusForPlayerKey(newBonus, playerKey)) {
-				bonus.deactivateFromSimilar(newBonus);
+				bonus.deactivate();
 			}
 		}
 	}
 
 	checkBonuses() {
-		var stillActiveBonuses = [];
+		const stillActiveBonuses = [];
 
 		for (let bonus of this.activeBonuses) {
 			if (bonus.check()) {

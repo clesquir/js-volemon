@@ -16,6 +16,13 @@ export default class BaseBonus {
 		this.fontSize = '16px';
 	}
 
+	dataToStream() {
+		return {
+			bonusClassName: this.getClassName(),
+			bonusIdentifier: this.getIdentifier()
+		};
+	}
+
 	getIdentifier() {
 		return this.className + '_' + this.createdAt;
 	}
@@ -24,11 +31,15 @@ export default class BaseBonus {
 		return this.className;
 	}
 
-	getSpriteBorderKey() {
-		return this.spriteBorderKey;
+	bonusToActivate() {
+		return this;
 	}
 
-	getSpriteBorderKeyForList() {
+	classNameToActivate() {
+		return this.getClassName();
+	}
+
+	getSpriteBorderKey() {
 		return this.spriteBorderKey;
 	}
 
@@ -62,16 +73,8 @@ export default class BaseBonus {
 		this.activatedAt = getUTCTimeStamp();
 	}
 
-	deactivateFromSimilar(bonus) {
-		this.deactivate();
-	}
-
 	deactivate() {
 		this.isActive = false;
-	}
-
-	getIsActive() {
-		return this.isActive;
 	}
 
 	/**

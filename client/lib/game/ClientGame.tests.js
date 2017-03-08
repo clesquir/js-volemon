@@ -162,7 +162,7 @@ describe('Game#isDeuce', function() {
 	});
 });
 
-describe('Game#getBonusFromIdentifier', function() {
+describe('Game#getBonusSpriteFromIdentifier', function() {
 	it('returns null if the bonusIdentifier matches nothing', function() {
 		var game = new Game(Random.id(5));
 
@@ -172,7 +172,7 @@ describe('Game#getBonusFromIdentifier', function() {
 			{identifier: 'c'}
 		];
 
-		let bonus = game.getBonusFromIdentifier('d');
+		let bonus = game.getBonusSpriteFromIdentifier('d');
 
 		chai.assert.isNull(bonus);
 	});
@@ -187,7 +187,7 @@ describe('Game#getBonusFromIdentifier', function() {
 			{identifier: 'c'}
 		];
 
-		let bonus = game.getBonusFromIdentifier('b');
+		let bonus = game.getBonusSpriteFromIdentifier('b');
 
 		chai.assert.equal(bBonus, bonus);
 	});
