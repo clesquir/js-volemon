@@ -13,12 +13,33 @@ import CloudBonus from '/imports/game/bonus/CloudBonus.js';
 import NoJumpMonsterBonus from '/imports/game/bonus/NoJumpMonsterBonus.js';
 import BounceMonsterBonus from '/imports/game/bonus/BounceMonsterBonus.js';
 import CloakedMonsterBonus from '/imports/game/bonus/CloakedMonsterBonus.js';
+import RandomBonus from '/imports/game/bonus/RandomBonus.js';
 import { Constants } from '/imports/lib/constants.js';
 
 export default class BonusFactory {
-	
-	static getRandomBonusKey() {
-		return Random.choice([
+
+	/**
+	 * @param {ClientGame} game
+	 * @param {boolean} [excludeRandom=false]
+	 * @returns {BaseBonus}
+	 */
+	static randomBonus(game, excludeRandom) {
+		const bonusClass = this.randomBonusKey(excludeRandom);
+		const bonus = this.fromClassName(bonusClass, game);
+
+		if (bonus instanceof RandomBonus) {
+			bonus.setRandomBonus(this.randomBonus(game, true));
+		}
+
+		return bonus;
+	}
+
+	/**
+	 * @param {boolean} [excludeRandom=false]
+	 * @returns {string}
+	 */
+	static randomBonusKey(excludeRandom) {
+		const availableBonuses = [
 			Constants.BONUS_SMALL_BALL,
 			Constants.BONUS_BIG_BALL,
 			Constants.BONUS_SMALL_MONSTER,
@@ -34,15 +55,21 @@ export default class BonusFactory {
 			Constants.BONUS_NO_JUMP_MONSTER,
 			Constants.BONUS_BOUNCE_MONSTER,
 			Constants.BONUS_CLOAKED_MONSTER
-		]);
+		];
+
+		if (!excludeRandom) {
+			availableBonuses.push(Constants.RANDOM_BONUS);
+		}
+
+		return Random.choice(availableBonuses);
 	}
 
 	/**
-	 * @param bonusClass
-	 * @param game
+	 * @param {string} bonusClass
+	 * @param {ClientGame} game
 	 * @returns {BaseBonus}
 	 */
-	static getInstance(bonusClass, game) {
+	static fromClassName(bonusClass, game) {
 		switch (bonusClass) {
 			case Constants.BONUS_SMALL_BALL:
 				return new SmallBallBonus(game, bonusClass);
@@ -74,9 +101,21 @@ export default class BonusFactory {
 				return new BounceMonsterBonus(game, bonusClass);
 			case Constants.BONUS_CLOAKED_MONSTER:
 				return new CloakedMonsterBonus(game, bonusClass);
+			case Constants.RANDOM_BONUS:
+				return new RandomBonus(game, bonusClass);
 		}
 
-		throw 'Inexistent bonus';
+		throw 'Inexistent bonus: ' + bonusClass;
+	}
+
+	static fromData(data, game) {
+		const bonus = this.fromClassName(data.bonusClassName, game);
+
+		if (bonus instanceof RandomBonus) {
+			bonus.setRandomBonus(this.fromClassName(data.randomBonusClassName, game));
+		}
+
+		return bonus;
 	}
 
 }
