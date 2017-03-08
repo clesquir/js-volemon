@@ -24,7 +24,10 @@
     "socket.io-p2p-server": "^1.2.0"
   },
   "scripts": {
-    "test": "meteor test --driver-package=practicalmeteor:mocha --port 4000"
+    "test": "meteor test --driver-package=practicalmeteor:mocha --port 4000",
+    "sshkey": "eval \"$(ssh-agent -s)\" && ssh-add ~/.ssh/id_rsa",
+    "setup": "mup setup",
+    "deploy": "mup deploy --settings=settings-prod.json"
   },
   "repository": {
     "type": "git",
