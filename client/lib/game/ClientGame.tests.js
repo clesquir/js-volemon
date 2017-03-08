@@ -993,6 +993,7 @@ describe('Game#inputs', function() {
 		sinon.stub(game, 'getCurrentPlayer', function() {
 			return {
 				isFrozen: false,
+				canJump: true,
 				leftMoveModifier: -moveModifier,
 				rightMoveModifier: moveModifier,
 				velocityXOnMove: velocity,
