@@ -33,10 +33,19 @@ export default class ServerSocketIo extends Stream {
 		}
 	}
 
+	/**
+	 * @param {string} eventName
+	 * @param payload
+	 */
 	emit(eventName, payload) {
 		this.io.emit(eventName, payload);
 	}
 
+	/**
+	 * @param {string} eventName
+	 * @param callback
+	 * @param {boolean} broadcast Broadcast to all sockets if true
+	 */
 	on(eventName, callback, broadcast) {
 		const sockets = this.sockets;
 		for (let socketId in sockets) {
@@ -44,6 +53,7 @@ export default class ServerSocketIo extends Stream {
 				sockets[socketId].on(eventName, function(data) {
 					callback.call(this, data);
 					if (broadcast) {
+						data.broadcast = true;
 						sockets[socketId].broadcast.emit(eventName, data);
 					}
 				});
@@ -51,6 +61,9 @@ export default class ServerSocketIo extends Stream {
 		}
 	}
 
+	/**
+	 * @param {string} eventName Event name to remove listener on
+	 */
 	off(eventName) {
 		for (let socketId in this.sockets) {
 			if (this.sockets.hasOwnProperty(socketId)) {

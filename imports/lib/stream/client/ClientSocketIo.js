@@ -21,27 +21,55 @@ export default class ClientSocketIo extends Stream {
 		}
 
 		this.socket = require('socket.io-client').connect(url);
-		this.adapter = this.socket;
+		this.socketAdapter = this.socket;
 
 		if (isWebRTCSupported) {
 			this.p2p = new (require('socket.io-p2p'))(this.socket, {numClients: 10, autoUpgrade: true});
 			this.p2p.on('ready', () => {
 				this.p2p.usePeerConnection = true;
 			});
-			this.adapter = this.p2p;
+			this.p2pAdapter = this.p2p;
 		}
 	}
 
+	/**
+	 * @param {string} eventName
+	 * @param payload
+	 */
 	emit(eventName, payload) {
-		this.adapter.emit(eventName, payload);
+		if (this.p2pAdapter) {
+			this.p2pAdapter.emit(eventName, payload);
+		} else {
+			payload.webRTCUnsupportedClient = true;
+			this.socketAdapter.emit(eventName, payload);
+		}
 	}
 
+	/**
+	 * @param {string} eventName
+	 * @param callback
+	 */
 	on(eventName, callback) {
-		this.adapter.on(eventName, callback);
+		if (this.p2pAdapter) {
+			this.p2pAdapter.on(eventName, function(data) {
+				if (!data.broadcast || data.webRTCUnsupportedClient) {
+					callback.apply(this, arguments);
+				}
+			});
+		} else {
+			this.socketAdapter.on(eventName, callback);
+		}
 	}
 
+	/**
+	 * @param {string} eventName Event name to remove listener on
+	 */
 	off(eventName) {
-		this.adapter.removeListener(eventName);
+		if (this.p2pAdapter) {
+			this.p2pAdapter.removeListener(eventName);
+		} else {
+			this.socketAdapter.removeListener(eventName);
+		}
 	}
 
 }
