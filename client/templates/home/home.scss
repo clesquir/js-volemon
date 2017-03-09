@@ -15,7 +15,8 @@
 	display: flex;
 	justify-content: flex-end;
 	width: 100%;
-	min-width: 650px;
+	min-width: 600px;
+	max-width: 650px;
 
 	.profile-information-statistic {
 		padding: 10px 15px;

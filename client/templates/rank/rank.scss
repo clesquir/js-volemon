@@ -45,7 +45,8 @@
 
 .spinner {
 	display: flex;
-	width: 650px;
+	min-width: 600px;
+	max-width: 650px;
 	margin-bottom: 10px;
 
 	& > div {
