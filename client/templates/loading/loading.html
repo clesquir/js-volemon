@@ -1,7 +1,7 @@
 <template name="loading">
-	{{#if visible}}
-	<div class="loading-app-mask">
-		<div class="loading-app-text">Loading...</div>
+	{{#if visible loadingMask}}
+	<div class="loading-mask">
+		<div class="loading-mask-text">Loading...</div>
 	</div>
 	{{/if}}
 </template>

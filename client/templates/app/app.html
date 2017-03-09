@@ -1,6 +1,6 @@
 <template name="app">
 
-	{{> loading}}
+	{{> loading loadingMask="apploadingmask"}}
 
 	{{> lightbox}}
 
@@ -53,6 +53,8 @@
 		</div>
 
 		<div class="app-main">
+
+			{{> loading loadingMask="loadingmask"}}
 
 			{{> yield}}
 

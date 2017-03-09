@@ -1,3 +1,5 @@
+import Chart from "chart.js";
+
 export default class RankChart {
 
 	constructor(documentElementId, eloScores, users, profiles, currentUser) {
@@ -11,26 +13,26 @@ export default class RankChart {
 	}
 
 	update(minDateLabel, minDate) {
-		var eloScores = this.eloScores,
-			eloScoresByUsersByTimestamps = {},
-			users = this.users,
-			profiles = this.profiles,
-			usersList = [],
-			labels = [],
-			timestamps = [],
-			datasets = [];
+		const eloScores = this.eloScores;
+		const eloScoresByUsersByTimestamps = {};
+		const users = this.users;
+		const profiles = this.profiles;
+		const usersList = [];
+		let labels = [];
+		let timestamps = [];
+		const datasets = [];
 
 		//Gather eloScores by users and timestamps for faster references
 		eloScores.forEach(function(eloScore) {
-			if (eloScoresByUsersByTimestamps[eloScore.userId] === undefined) {
-				eloScoresByUsersByTimestamps[eloScore.userId] = {};
-			}
-
-			if (eloScoresByUsersByTimestamps[eloScore.userId][eloScore.timestamp] === undefined) {
-				eloScoresByUsersByTimestamps[eloScore.userId][eloScore.timestamp] = eloScore.eloRating;
-			}
-
 			if (!minDate || eloScore.timestamp >= minDate.getTime()) {
+				if (eloScoresByUsersByTimestamps[eloScore.userId] === undefined) {
+					eloScoresByUsersByTimestamps[eloScore.userId] = {};
+				}
+
+				if (eloScoresByUsersByTimestamps[eloScore.userId][eloScore.timestamp] === undefined) {
+					eloScoresByUsersByTimestamps[eloScore.userId][eloScore.timestamp] = eloScore.eloRating;
+				}
+
 				labels.push(new Date(eloScore.timestamp).toISOString());
 				timestamps.push(eloScore.timestamp);
 			}

@@ -1,6 +1,6 @@
 @import "{}/client/scss/variables.scss";
 
-.loading-app-mask {
+.loading-mask {
 	background: rgba($background-color, .75);
 	flex: 1 0 auto;
 	flex-direction: row;
@@ -9,7 +9,7 @@
 	box-sizing: border-box;
 	text-align: center;
 	align-items: center;
-	position: fixed;
+	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;

@@ -1,5 +1,5 @@
 Template.loading.helpers({
-	visible: function() {
-		return Session.get('loadingmask');
+	visible: function(loadingMask) {
+		return Session.get(loadingMask);
 	}
 });
