@@ -1,6 +1,3 @@
 .idea
-mup.json
-settings.json
-settings-dev.json
-settings-prod.json
+settings-*.json
 node_modules/
