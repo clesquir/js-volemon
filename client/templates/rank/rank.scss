@@ -73,3 +73,15 @@
 		}
 	}
 }
+
+#rank-line-chart {
+	width: 650px;
+	height: 400px;
+}
+
+@media (max-width: 720px) {
+	#rank-line-chart {
+		width: 585px !important;
+		height: 360px !important;
+	}
+}
