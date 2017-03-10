@@ -551,6 +551,7 @@ export default class ClientGame {
 		} else if (this.isGameOnGoing()) {
 			this.startCountdownTimer();
 			this.regenerateLastBonusCreatedAndFrequenceTime();
+			this.applyActiveBonuses();
 			this.lastGameRespawn = getUTCTimeStamp();
 		}
 	}
@@ -572,6 +573,15 @@ export default class ClientGame {
 		if (timerLeft > 0) {
 			this.countdownTimer = this.engine.createTimer(timerLeft, this.resumeGame, this);
 			this.countdownTimer.start();
+		}
+	}
+
+	applyActiveBonuses() {
+		for (let activeBonus of this.gameActiveBonuses) {
+			let bonus = BonusFactory.fromClassName(activeBonus.bonusClass, this);
+			bonus.activate(activeBonus.targetPlayerKey, activeBonus.activatedAt);
+			bonus.start();
+			this.activeBonuses.push(bonus);
 		}
 	}
 
@@ -975,6 +985,7 @@ export default class ClientGame {
 		const correspondingBonusSprite = this.getBonusSpriteFromIdentifier(bonusIdentifier);
 
 		if (!correspondingBonusSprite) {
+			//@todo Create bonus at position
 			return;
 		}
 
@@ -1306,10 +1317,11 @@ export default class ClientGame {
 
 		this.engine.collidesWith(bonusSprite, this.playerCollisionGroup, (bonusItem, player) => {
 			if (this.isUserHost()) {
+				const activatedAt = this.getServerNormalizedTimestamp();
 				//Activate bonus
-				this.activateBonus(bonusSprite.identifier, this.engine.getKey(player));
+				this.activateBonus(bonusSprite.identifier, this.engine.getKey(player), activatedAt);
 				//Send to client
-				this.stream.emit('activateBonus-' + this.gameId, {identifier: bonusSprite.identifier, player: this.engine.getKey(player)});
+				this.stream.emit('activateBonus-' + this.gameId, {identifier: bonusSprite.identifier, player: this.engine.getKey(player), activatedAt: activatedAt});
 			}
 		}, this);
 		this.engine.collidesWith(bonusSprite, this.netHitDelimiterCollisionGroup);
@@ -1318,7 +1330,7 @@ export default class ClientGame {
 		this.engine.collidesWith(bonusSprite, this.bonusCollisionGroup);
 	}
 
-	activateBonus(bonusIdentifier, playerKey) {
+	activateBonus(bonusIdentifier, playerKey, activatedAt) {
 		const correspondingBonusSprite = this.getBonusSpriteFromIdentifier(bonusIdentifier);
 
 		if (!correspondingBonusSprite) {
@@ -1327,7 +1339,7 @@ export default class ClientGame {
 
 		let bonus = correspondingBonusSprite.bonus.bonusToActivate();
 
-		bonus.activate(playerKey);
+		bonus.activate(playerKey, activatedAt);
 		bonus.start();
 
 		this.deactivateSimilarBonusForPlayerKey(bonus, playerKey);
@@ -1339,7 +1351,7 @@ export default class ClientGame {
 				this.gameId,
 				bonus.getIdentifier(),
 				bonus.classNameToActivate(),
-				bonus.getActivatedAt() + this.serverOffset,
+				activatedAt,
 				bonus.getTargetPlayerKey()
 			);
 		}
@@ -1373,7 +1385,7 @@ export default class ClientGame {
 		const stillActiveBonuses = [];
 
 		for (let bonus of this.activeBonuses) {
-			if (bonus.check()) {
+			if (bonus.check(this.getServerNormalizedTimestamp())) {
 				stillActiveBonuses.push(bonus);
 			} else if (this.isUserHost()) {
 				Meteor.call('removeActiveBonusFromGame', this.gameId, bonus.getIdentifier());

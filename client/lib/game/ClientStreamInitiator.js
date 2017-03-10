@@ -31,7 +31,7 @@ export default class ClientStreamInitiator {
 		});
 
 		this.stream.on('activateBonus-' + gameId, (data) => {
-			this.activateBonus(data.identifier, data.player);
+			this.activateBonus(data.identifier, data.player, data.activatedAt);
 		});
 
 		this.stream.on('sendBundledData-' + gameId, (bundledData) => {
@@ -76,11 +76,11 @@ export default class ClientStreamInitiator {
 		}
 	}
 
-	activateBonus(bonusIdentifier, playerKey) {
+	activateBonus(bonusIdentifier, playerKey, activatedAt) {
 		let gameInitiator = this.gameInitiator;
 
 		if (gameInitiator.hasActiveGame()) {
-			gameInitiator.currentGame.activateBonus(bonusIdentifier, playerKey);
+			gameInitiator.currentGame.activateBonus(bonusIdentifier, playerKey, activatedAt);
 		}
 	}
 

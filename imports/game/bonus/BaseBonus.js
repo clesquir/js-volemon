@@ -65,12 +65,13 @@ export default class BaseBonus {
 
 	/**
 	 * Sets the bonus active and keep reference of the activator player and date
-	 * @param playerKey
+	 * @param {string} playerKey
+	 * @param {int} activatedAt
 	 */
-	activate(playerKey) {
+	activate(playerKey, activatedAt) {
 		this.isActive = true;
 		this.activatorPlayerKey = playerKey;
-		this.activatedAt = getUTCTimeStamp();
+		this.activatedAt = activatedAt;
 	}
 
 	deactivate() {
@@ -79,14 +80,15 @@ export default class BaseBonus {
 
 	/**
 	 * Deactivate the bonus if the duration has elapsed
+	 * @param {int} currentTimestamp
 	 * @returns {boolean} False if this bonus is not active
 	 */
-	check() {
+	check(currentTimestamp) {
 		if (!this.isActive) {
 			return false;
 		}
 
-		if (getUTCTimeStamp() - this.activatedAt >= this.durationMilliseconds) {
+		if (currentTimestamp - this.activatedAt >= this.durationMilliseconds) {
 			this.stop();
 			return false;
 		}
