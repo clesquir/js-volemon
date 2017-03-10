@@ -189,7 +189,7 @@ export default class ClientGame {
 		this.gameHasBonuses = game.hasBonuses;
 
 		this.updatePoints(game);
-		this.updateLastPointTaken(game);
+		this.updateLastPoint(game);
 		this.updateStatus(game);
 		this.updateActiveBonuses(game);
 
@@ -242,8 +242,9 @@ export default class ClientGame {
 		this.gameClientPoints = game.clientPoints;
 	}
 
-	updateLastPointTaken(game) {
+	updateLastPoint(game) {
 		this.gameLastPointTaken = game.lastPointTaken;
+		this.gameLastPointAt = game.lastPointAt;
 	}
 
 	updateStatus(game) {
@@ -537,7 +538,7 @@ export default class ClientGame {
 		let game = this.fetchGame();
 
 		this.updatePoints(game);
-		this.updateLastPointTaken(game);
+		this.updateLastPoint(game);
 		this.updateStatus(game);
 		this.updateActiveBonuses(game);
 
@@ -555,15 +556,23 @@ export default class ClientGame {
 	}
 
 	startCountdownTimer() {
-		var timerDuration = 3;
+		let timerDuration = 3;
 
 		if (this.isMatchPoint()) {
 			//Add one second to show text
 			timerDuration = 4;
 		}
 
-		this.countdownTimer = this.engine.createTimer(timerDuration, this.resumeGame, this);
-		this.countdownTimer.start();
+		//Calculate what's left
+		let timerLeft = timerDuration - (this.getServerNormalizedTimestamp() - this.gameLastPointAt) / 1000;
+		if (timerLeft > timerDuration) {
+			timerLeft = timerDuration;
+		}
+
+		if (timerLeft > 0) {
+			this.countdownTimer = this.engine.createTimer(timerLeft, this.resumeGame, this);
+			this.countdownTimer.start();
+		}
 	}
 
 	respawnSprites() {
