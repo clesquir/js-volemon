@@ -549,9 +549,9 @@ export default class ClientGame {
 		if (this.isGameFinished()) {
 			this.onGameEnd();
 		} else if (this.isGameOnGoing()) {
-			this.startCountdownTimer();
 			this.regenerateLastBonusCreatedAndFrequenceTime();
 			this.applyActiveBonuses();
+			this.startCountdownTimer();
 			this.lastGameRespawn = getUTCTimeStamp();
 		}
 	}
@@ -571,8 +571,14 @@ export default class ClientGame {
 		}
 
 		if (timerLeft > 0) {
-			this.countdownTimer = this.engine.createTimer(timerLeft, this.resumeGame, this);
+			this.countdownTimer = this.engine.createTimer(timerLeft, () => {
+				this.countdownText.text = '';
+				this.countdownTimer.stop();
+				this.resumeGame();
+			}, this);
 			this.countdownTimer.start();
+		} else {
+			this.resumeGame();
 		}
 	}
 
@@ -592,7 +598,6 @@ export default class ClientGame {
 	}
 
 	spawnPlayer(player) {
-		this.engine.animateScale(player, 1, 1, 0, 0, 300);
 		this.engine.spawn(player, player.initialXLocation, player.initialYLocation);
 	}
 
@@ -765,6 +770,8 @@ export default class ClientGame {
 
 		for (let bonus of this.bonuses) {
 			let bonusPositionData = this.engine.getPositionData(bonus);
+
+			bonusPositionData = Object.assign(bonusPositionData, bonus.bonus.dataToStream());
 
 			bonusesData.push([
 				bonus.identifier,
@@ -982,11 +989,11 @@ export default class ClientGame {
 	}
 
 	moveClientBonus(bonusIdentifier, data) {
-		const correspondingBonusSprite = this.getBonusSpriteFromIdentifier(bonusIdentifier);
+		let correspondingBonusSprite = this.getBonusSpriteFromIdentifier(bonusIdentifier);
 
 		if (!correspondingBonusSprite) {
-			//@todo Create bonus at position
-			return;
+			data.bonusIdentifier = bonusIdentifier;
+			correspondingBonusSprite = this.createBonus(data);
 		}
 
 		data = this.engine.interpolateFromTimestamp(this.getServerNormalizedTimestamp(), correspondingBonusSprite, data);
@@ -1014,9 +1021,6 @@ export default class ClientGame {
 		this.engine.unfreeze(this.ball);
 		this.ball.isFrozen = false;
 		this.gameResumed = true;
-
-		this.countdownText.text = '';
-		this.countdownTimer.stop();
 	}
 
 	scalePlayer(playerKey, scale) {
@@ -1328,6 +1332,8 @@ export default class ClientGame {
 		this.engine.collidesWith(bonusSprite, this.groundHitDelimiterCollisionGroup);
 		this.engine.collidesWith(bonusSprite, this.ballCollisionGroup);
 		this.engine.collidesWith(bonusSprite, this.bonusCollisionGroup);
+
+		return bonusSprite;
 	}
 
 	activateBonus(bonusIdentifier, playerKey, activatedAt) {
