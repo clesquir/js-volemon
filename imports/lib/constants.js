@@ -34,9 +34,6 @@ export const Constants = {
 	BALL_BIG_GRAVITY_SCALE: 0.6,
 	BALL_SMALL_GRAVITY_SCALE: 0.2,
 
-	TOO_SHORT_PASSWORD_ERROR_MESSAGE: 'Password must be at least 6 characters long',
-	CONFIRMATION_MATCH_PASSWORD_ERROR_MESSAGE: 'The password confirmation must match the password',
-
 	NORMAL_SCALE_BONUS: 1,
 	NORMAL_SCALE_PHYSICS_DATA: 'physicsData',
 	SMALL_SCALE_PLAYER_BONUS: 0.5,

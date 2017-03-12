@@ -1,14 +1,6 @@
-@import "{}/client/scss/variables.scss";
-
 .lightbox {
-	background: rgba($background-color, .95);
+	@include mask;
 	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	display: flex;
-	z-index: 1000;
 
 	h1 {
 		margin-bottom: 30px;

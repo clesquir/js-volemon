@@ -1,0 +1,90 @@
+$form-background-color: $header-background-color;
+$input-border-width: 2px;
+$input-border-color: darken($background-color, 50%);
+
+input[type=text], input[type=password], input[type=email] {
+	background-color: $form-background-color;
+	border: 0;
+	outline: 0;
+	box-shadow: 0 0 0 $input-border-width $input-border-color;
+	font: inherit;
+	color: inherit;
+	padding: 15px;
+	border-radius: 3px;
+	letter-spacing: inherit;
+
+	&[readonly] {
+		background-color: $background-color-dark;
+		box-shadow: 0 0 0 $input-border-width $background-color-darker;
+		cursor: pointer;
+		width: 360px;
+	}
+}
+
+input.field-in-error {
+	box-shadow: 0 0 0 $input-border-width $negative;
+	background-color: lighten($negative, 40%);
+}
+
+.form-section {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+
+	label {
+		display: block;
+		margin: 15px 0 5px;
+	}
+}
+
+.inline-form-error {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	padding: 3px;
+	font-size: 0.8em;
+	color: $negative;
+	user-select: none;
+}
+
+.error-label-container, .accounts-dialog .error-message {
+	margin: 15px 0 0;
+	color: $negative;
+}
+
+.accounts-centered-dialog {
+	background: rgba($background-color, .95);
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1000;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+
+	.accounts-close {
+		position: absolute;
+		right: 25px;
+		top: 25px;
+		font-size: 2em;
+		display: block;
+		line-height: 0;
+		cursor: pointer;
+	}
+
+	.reset-password-new-password-wrapper input {
+		width: 285px;
+	}
+
+	& > div, & > label {
+		margin: 10px;
+	}
+
+	.login-button {
+		@extend .button;
+		margin-top: 25px;
+	}
+}
