@@ -1,4 +1,8 @@
-import { Constants } from '/imports/lib/constants.js';
+import {Accounts} from 'meteor/accounts-base';
+import {Template} from 'meteor/templating';
+import {Session} from 'meteor/session';
+import '/imports/ui/util/form.js';
+import '/imports/ui/util/error-messages.js';
 
 Template.passwordChange.events({
 	'focus input.field-in-error': function(e) {
@@ -8,16 +12,11 @@ Template.passwordChange.events({
 	'submit form[name=passwordChange]': function(e) {
 		e.preventDefault();
 
-		var oldPasswordField = $(e.target).find('#password-change-old-password-field'),
-			oldPasswordValue = oldPasswordField.val(),
-			passwordField = $(e.target).find('#password-change-password-field'),
-			passwordValue = passwordField.val(),
-			passwordConfirmationField = $(e.target).find('#password-change-password-confirmation-field'),
-			passwordConfirmationValue = passwordConfirmationField.val(),
-			errorLabelContainer = $(e.target).find('.error-label-container'),
-			tooShortPasswordErrorMessage = Constants.TOO_SHORT_PASSWORD_ERROR_MESSAGE,
-			confirmationMatchPasswordErrorMessage = Constants.CONFIRMATION_MATCH_PASSWORD_ERROR_MESSAGE,
-			hasErrors;
+		const oldPasswordField = $(e.target).find('#password-change-old-password-field');
+		const passwordField = $(e.target).find('#password-change-password-field');
+		const passwordConfirmationField = $(e.target).find('#password-change-password-confirmation-field');
+		const errorLabelContainer = $(e.target).find('.error-label-container');
+		let hasErrors;
 
 		removeErrorLabelContainer(errorLabelContainer);
 
@@ -27,35 +26,29 @@ Template.passwordChange.events({
 			passwordConfirmationField
 		]);
 
-		if (!hasErrors && passwordValue.length < 6) {
-			passwordField.addClass('field-in-error');
-			passwordField.prop('title', tooShortPasswordErrorMessage);
-			errorLabelContainer.show();
-			errorLabelContainer.html(tooShortPasswordErrorMessage);
-			hasErrors = true;
-		}
-
-		if (!hasErrors && passwordConfirmationValue != passwordValue) {
-			passwordConfirmationField.addClass('field-in-error');
-			passwordConfirmationField.prop('title', confirmationMatchPasswordErrorMessage);
-			errorLabelContainer.show();
-			errorLabelContainer.html(confirmationMatchPasswordErrorMessage);
-			hasErrors = true;
-		}
-
 		if (!hasErrors) {
-			let button = $(e.target).find('.button');
-			button.prop('disabled', true);
+			if (passwordField.val().length < 6) {
+				addErrorToField(passwordField, PASSWORD_TOO_SHORT);
+				hasErrors = true;
+			}
 
-			Accounts.changePassword(oldPasswordValue, passwordValue, function (error) {
-				button.prop('disabled', false);
-				if (error === undefined) {
-					Session.set('lightbox', null);
-				} else {
-					errorLabelContainer.show();
-					errorLabelContainer.html(error.reason);
-				}
-			});
+			if (passwordConfirmationField.val() != passwordField.val()) {
+				addErrorToField(passwordConfirmationField, CONFIRMATION_MUST_MATCH_PASSWORD);
+				hasErrors = true;
+			}
+
+			if (!hasErrors) {
+				disableButton(e, true);
+				Accounts.changePassword(oldPasswordField.val(), passwordField.val(), function(error) {
+					disableButton(e, false);
+					if (error === undefined) {
+						Session.set('lightbox', null);
+					} else {
+						errorLabelContainer.show();
+						errorLabelContainer.html(error.reason);
+					}
+				});
+			}
 		}
 	}
 });

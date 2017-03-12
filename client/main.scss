@@ -1,5 +1,29 @@
-@import "{}/client/scss/variables.scss";
-@import "{}/client/scss/button.scss";
+//Components
+@import "{}/imports/ui/stylesheets/variables.scss";
+@import "{}/imports/ui/stylesheets/animations.scss";
+@import "{}/imports/ui/stylesheets/button.scss";
+@import "{}/imports/ui/stylesheets/form.scss";
+@import "{}/imports/ui/stylesheets/table-list.scss";
+
+@mixin mask {
+	background: rgba($background-color, .95);
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	z-index: 1000;
+}
+
+//Pages
+@import "{}/imports/ui/pages/app.scss";
+@import "{}/imports/ui/pages/game.scss";
+@import "{}/imports/ui/pages/home.scss";
+@import "{}/imports/ui/pages/lightbox.scss";
+@import "{}/imports/ui/pages/loading.scss";
+@import "{}/imports/ui/pages/login.scss";
+@import "{}/imports/ui/pages/rank.scss";
+@import "{}/imports/ui/pages/shapeSelector.scss";
 
 html, body {
 	height: 100%;
@@ -30,26 +54,6 @@ h1 {
 	font-size: 1.5em;
 }
 
-input[type=text], input[type=password], input[type=email] {
-	background-color: $background-color-dark;
-	border: 0;
-	outline: 0;
-	font: inherit;
-	color: inherit;
-	padding: 10px;
-	border-radius: 3px;
-	letter-spacing: inherit;
-
-	&[readonly] {
-		cursor: pointer;
-		width: 380px;
-	}
-}
-
-::placeholder {
-	color: $background-color;
-}
-
 .hidden {
 	display: none;
 }
@@ -60,6 +64,11 @@ p {
 
 .elo-rating-statistic {
 	display: flex;
+}
+
+.elo-rating-change-container {
+	margin-left: 5px;
+	font-size: 10px;
 }
 
 .elo-rating-change-container i.fa {
@@ -73,41 +82,4 @@ p {
 
 .elo-rating-negative {
 	color: $negative;
-}
-
-.accounts-centered-dialog {
-	background: rgba($background-color, .95);
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 1000;
-	display: flex;
-	justify-content: center;
-	flex-direction: column;
-	align-items: center;
-
-	.accounts-close {
-		position: absolute;
-		right: 25px;
-		top: 25px;
-		font-size: 2em;
-		display: block;
-		line-height: 0;
-		cursor: pointer;
-	}
-
-	.reset-password-new-password-wrapper input {
-		width: 285px;
-	}
-
-	& > div, & > label {
-		margin: 10px;
-	}
-
-	.login-button {
-		@extend .button;
-		margin-top: 25px;
-	}
 }

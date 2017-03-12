@@ -1,5 +1,3 @@
-@import "{}/client/scss/variables.scss";
-
 .app {
 	height: 100%;
 	display: flex;
@@ -200,17 +198,6 @@
 	&:hover {
 		background: $header-username-dialog-background-color-hover;
 	}
-}
-
-input.field-in-error {
-	animation: shake 2s linear both;
-	box-shadow: 0 0 0 1px $negative;
-}
-
-.error-label-container, .accounts-dialog .error-message {
-	margin: 15px 0 0;
-	animation: shake 2s linear both;
-	color: $negative;
 }
 
 .tooltip-element {
