@@ -38,6 +38,9 @@ export default class ClientSocketIo extends Stream {
 	 */
 	emit(eventName, payload) {
 		if (this.p2pAdapter) {
+			if (!this.p2pAdapter.usePeerConnection) {
+				payload.webRTCUnsupportedClient = true;
+			}
 			this.p2pAdapter.emit(eventName, payload);
 		} else {
 			payload.webRTCUnsupportedClient = true;
@@ -50,14 +53,17 @@ export default class ClientSocketIo extends Stream {
 	 * @param callback
 	 */
 	on(eventName, callback) {
+		let adapter;
 		if (this.p2pAdapter) {
-			this.p2pAdapter.on(eventName, function(data) {
-				if (!data.broadcast || data.webRTCUnsupportedClient) {
+			adapter = this.p2pAdapter;
+			adapter.on(eventName, function(data) {
+				if (!data.broadcast || !adapter.usePeerConnection || data.webRTCUnsupportedClient) {
 					callback.apply(this, arguments);
 				}
 			});
 		} else {
-			this.socketAdapter.on(eventName, callback);
+			adapter = this.socketAdapter;
+			adapter.on(eventName, callback);
 		}
 	}
 
