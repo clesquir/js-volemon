@@ -1,10 +1,19 @@
 $table-list-radius: 3px;
 
 .table-list {
-	width: 400px;
 	border: 1px solid $border-color;
 	text-align: left;
 	border-radius: $table-list-radius;
+	margin: 0 auto;
+
+	&.constrained-table {
+		min-width: 350px;
+		max-width: 450px;
+
+		@include breakpoint(mobile) {
+			min-width: 275px;
+		}
+	}
 }
 
 .table-list-row {
@@ -46,10 +55,24 @@ $table-list-radius: 3px;
 	white-space: nowrap;
 	vertical-align: middle;
 	box-sizing: border-box;
-	padding: 10px;
+	padding: 10px 5px;
+
+	&:first-of-type {
+		padding-left: 10px;
+	}
+
+	&:last-of-type {
+		padding-right: 10px;
+	}
 
 	&.center-aligned-cell {
 		text-align: center;
+	}
+
+	&.hideable-cell {
+		@include breakpoint(mobileportrait) {
+			display: none;
+		}
 	}
 
 	&.right-aligned-cell {

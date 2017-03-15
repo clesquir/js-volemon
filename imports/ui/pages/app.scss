@@ -17,6 +17,10 @@
 	position: relative;
 	max-height: 55px;
 
+	@include breakpoint(tablet) {
+		max-height: 40px;
+	}
+
 	.app-title {
 		position: absolute;
 		top: 0;
@@ -25,8 +29,13 @@
 		padding: 5px 0;
 
 		.volemon-logo {
-			height: 40px;
 			width: 40px;
+			height: 40px;
+
+			@include breakpoint(tablet) {
+				width: 25px;
+				height: 25px;
+			}
 		}
 
 		.logo-shifter {
@@ -34,6 +43,10 @@
 			overflow: hidden;
 			height: 40px;
 			text-align: center;
+
+			@include breakpoint(tablet) {
+				height: 25px;
+			}
 
 			em {
 				position: absolute;
@@ -71,19 +84,55 @@
 	min-height: 50px;
 	z-index: 1;
 
+	@include breakpoint(tablet) {
+		min-height: 35px;
+		padding: 15px 15px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
 	&.app-header-section-button {
-		padding: 8px;
 		font-size: 8px;
-		width: 80px;
 		white-space: nowrap;
 		text-align: center;
-		background-color: #ffffff;
-		transition: 0.75s ease-in-out;
+		width: 80px;
+		min-width: 80px;
+		padding: 8px;
+
+		@include breakpoint(tablet) {
+			width: 50px;
+			min-width: 50px;
+			padding: 2px;
+
+			.app-header-button-title {
+				display: none;
+			}
+		}
 
 		i.fa {
 			font-size: 22px;
 			display: block;
 			margin-bottom: 2px;
+		}
+	}
+
+	&.app-header-section-menu {
+		position: relative;
+
+		@include breakpoint(tablet) {
+			padding: 7px 20px;
+		}
+	}
+
+	&.app-header-section-button, &.app-header-section-menu {
+		background-color: #ffffff;
+
+		@include breakpoint(mobileportrait) {
+			width: initial;
+			min-width: initial;
+			padding: 2px;
+			flex: 1 1 0;
 		}
 	}
 
@@ -97,6 +146,10 @@
 
 	&.app-header-empty-section {
 		flex: 1 1 auto;
+
+		@include breakpoint(mobileportrait) {
+			display: none;
+		}
 	}
 
 	& + &, &:first-of-type {
@@ -108,32 +161,13 @@
 	}
 }
 
-.app-header-section-button-home {
-	z-index: 4;
-
-	.fa:before {
-		content: "\f015";
-	}
-}
-
-.app-header-section-button-create-game {
-	z-index: 3;
-}
-
-.app-header-section-button-games-list {
-	z-index: 2;
-}
-
-.app-header-section-button-view-rank {
-	z-index: 1;
-}
-
 .app-main {
 	flex: 1 1 auto;
 	display: flex;
 	align-content: stretch;
 	flex-direction: column;
 	position: relative;
+	margin: 0 20px;
 }
 
 .app-section {
@@ -144,7 +178,6 @@
 	overflow: auto;
 	box-sizing: border-box;
 	text-align: center;
-	padding: 0 20px;
 
 	&.app-section-center {
 		align-items: center;
@@ -166,7 +199,7 @@
 }
 
 .username-header-menu {
-	position: relative;
+	white-space: nowrap;
 
 	&.disabled-menu {
 		color: rgba(lighten($header-text-color, 15%), 0.8);
@@ -176,17 +209,40 @@
 			cursor: default;
 		}
 	}
+
+	.logged-in-user-menu {
+		display: none;
+
+		@include breakpoint(mobileportrait) {
+			display: block;
+		}
+
+		& i.fa {
+			font-size: 22px;
+			margin-bottom: 2px;
+		}
+	}
+
+	.logged-in-user-name-menu {
+		@include breakpoint(mobileportrait) {
+			display: none;
+		}
+	}
 }
 
 .username-header-menu .username-dialog {
 	display: none;
 	position: absolute;
-	right: -10px;
+	right: 10px;
 	background: $header-username-dialog-background-color;
 	color: $text-color;
 	padding: 5px 0;
-	top: 35px;
+	top: 50px;
 	box-shadow: $background-color-darker 0 3px 5px 0;
+
+	@include breakpoint(tablet) {
+		top: 35px;
+	}
 }
 
 .username-dialog .username-dialog-button {
@@ -272,80 +328,7 @@
 	}
 }
 
-@media (max-width: 720px) {
-	.app-header {
-		max-height: 40px;
-
-		.app-title {
-			.volemon-logo {
-				width: 25px;
-				height: 25px;
-			}
-		}
-	}
-
-	.app-header-section.app-header-section-button {
-		width: 50px;
-	}
-
-	.app-header-section {
-		min-height: 35px;
-		padding: 15px 15px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-
-		&.app-header-section-button {
-			padding: 2px;
-		}
-	}
-
-	.app-header-button-title {
-		display: none;
-	}
-
-	.app-header-section-button-home {
-		transform: translateX(0);
-	}
-
-	.app-header-section-button-create-game {
-		transform: translateX(-45px);
-	}
-
-	.app-header-section-button-games-list {
-		transform: translateX(-90px);
-	}
-
-	.app-header-section-button-view-rank {
-		transform: translateX(-135px);
-	}
-
-	.app-header-section-button-home .fa {
-		-webkit-transition: -webkit-transform .75s ease-in-out;
-		transition: transform .75s ease-in-out;
-
-		&:before {
-			content: "\f0c9";
-		}
-
-		.app-header:hover & {
-			-webkit-transform: rotate(360deg);
-			transform: rotate(360deg);
-
-			&:before {
-				content: "\f015";
-			}
-		}
-	}
-
-	.app-header:hover {
-		.app-header-section-button {
-			transform: translateX(0);
-		}
-	}
-}
-
-@media (min-width: 720px) {
+@media (min-width: $tablet-max-width) {
 	.app-header:hover {
 		.app-title {
 			.logo-shifter {

@@ -39,12 +39,12 @@ getRainbowColor = function(numOfSteps, step) {
 	return (c);
 };
 
-getWinRate = function(profile) {
+getWinRate = function(profile, showSign) {
 	if (profile.numberOfWin + profile.numberOfLost == 0) {
 		return 'N/A';
 	} else if (profile.numberOfLost == 0) {
-		return '100%';
+		return '100' + (showSign ? '%' : '');
 	} else {
-		return Math.round(profile.numberOfWin / (profile.numberOfWin + profile.numberOfLost) * 100) + '%';
+		return Math.round(profile.numberOfWin / (profile.numberOfWin + profile.numberOfLost) * 100) + (showSign ? '%' : '');
 	}
 };

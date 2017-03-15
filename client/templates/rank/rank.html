@@ -2,7 +2,7 @@
 
 	<div class="app-section app-section-top">
 
-		<div class="app-section-inner">
+		<div class="app-section-inner maximum-responsive-width">
 
 			<h1>Rank</h1>
 
@@ -12,24 +12,24 @@
 			</div>
 
 			<div id="rank-display" class="spinner spinner-table-display">
-				<div id="rank-table-display" class="table-list" style="margin: 0 auto;">
+				<div id="rank-table-display" class="table-list">
 					<div class="table-list-row table-list-header">
-						<div class="table-list-cell center-aligned-cell" style="flex: 0 0 65px;">Rank</div>
+						<div class="table-list-cell center-aligned-cell" style="flex: 0 0 50px;"></div>
 						<div class="table-list-cell">Name</div>
-						<div class="table-list-cell right-aligned-cell" style="flex: 0 0 75px;">Won</div>
-						<div class="table-list-cell right-aligned-cell" style="flex: 0 0 75px;">Lost</div>
-						<div class="table-list-cell right-aligned-cell" style="flex: 0 0 75px;">Win %</div>
-						<div class="table-list-cell" style="flex: 0 0 95px;">Elo</div>
+						<div class="table-list-cell right-aligned-cell hideable-cell" style="flex: 0 0 50px;">W</div>
+						<div class="table-list-cell right-aligned-cell hideable-cell" style="flex: 0 0 50px;">L</div>
+						<div class="table-list-cell right-aligned-cell hideable-cell" style="flex: 0 0 50px;">%</div>
+						<div class="table-list-cell" style="flex: 0 0 90px;">Elo</div>
 					</div>
 
 					{{#each profiles}}
 						<div class="table-list-row {{getHighlightedClassIfCurrentUser}}">
-							<div class="table-list-cell center-aligned-cell rank-cell" style="flex: 0 0 65px;">{{getRank @index}}</div>
+							<div class="table-list-cell center-aligned-cell rank-cell" style="flex: 0 0 50px;">{{getRank @index}}</div>
 							<div class="table-list-cell">{{getUserName ../users}}</div>
-							<div class="table-list-cell right-aligned-cell" style="flex: 0 0 75px;">{{numberOfWin}}</div>
-							<div class="table-list-cell right-aligned-cell" style="flex: 0 0 75px;">{{numberOfLost}}</div>
-							<div class="table-list-cell right-aligned-cell" style="flex: 0 0 75px;">{{getWinRate}}</div>
-							<div class="table-list-cell elo-rating-cell" style="flex: 0 0 95px;"><div>{{eloRating}}</div> {{> eloRatingChange}}</div>
+							<div class="table-list-cell right-aligned-cell hideable-cell" style="flex: 0 0 50px;">{{numberOfWin}}</div>
+							<div class="table-list-cell right-aligned-cell hideable-cell" style="flex: 0 0 50px;">{{numberOfLost}}</div>
+							<div class="table-list-cell right-aligned-cell hideable-cell" style="flex: 0 0 50px;">{{getWinRate}}</div>
+							<div class="table-list-cell elo-rating-cell" style="flex: 0 0 90px;"><div>{{eloRating}}</div> {{> eloRatingChange}}</div>
 						</div>
 					{{else}}
 						<div class="table-list-row">
@@ -46,7 +46,9 @@
 						<span data-action="display-chart-14-days">14 days</span> |
 						<span data-action="display-chart-7-days">7 days</span>
 					</div>
-					<canvas id="rank-line-chart" width="650" height="400"></canvas>
+					<div id="rank-line-chart">
+						<canvas id="rank-line-chart-canvas"></canvas>
+					</div>
 				</div>
 			</div>
 

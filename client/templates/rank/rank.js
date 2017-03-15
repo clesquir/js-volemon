@@ -119,7 +119,7 @@ const highlightSelectedChartPeriodItem = function(e) {
 
 Template.rank.rendered = function() {
 	rankChart = new RankChart(
-		'rank-line-chart',
+		'rank-line-chart-canvas',
 		EloScores.find({}, {sort: ['timestamp']}),
 		Meteor.users.find({}, {sort: ['profile.name']}),
 		Profiles.find(),

@@ -1,5 +1,4 @@
 $form-background-color: $header-background-color;
-$input-border-width: 2px;
 $input-border-color: darken($background-color, 50%);
 
 input[type=text], input[type=password], input[type=email] {
@@ -12,13 +11,6 @@ input[type=text], input[type=password], input[type=email] {
 	padding: 15px;
 	border-radius: 3px;
 	letter-spacing: inherit;
-
-	&[readonly] {
-		background-color: $background-color-dark;
-		box-shadow: 0 0 0 $input-border-width $background-color-darker;
-		cursor: pointer;
-		width: 360px;
-	}
 }
 
 input.field-in-error {
