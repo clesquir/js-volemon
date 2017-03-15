@@ -49,7 +49,7 @@ export default class ClientSocketIo extends Stream {
 		if (this.p2pAdapter) {
 			adapter = this.p2pAdapter;
 			adapter.on(eventName, function(data) {
-				if (!data.broadcast || !adapter.usePeerConnection || data.webRTCUnsupportedClient) {
+				if (!data.broadcast || (adapter && !adapter.usePeerConnection) || data.webRTCUnsupportedClient) {
 					callback.apply(this, arguments);
 				}
 			});
