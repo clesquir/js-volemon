@@ -659,7 +659,7 @@ export default class ClientGame {
 		}
 
 		//Send bundled streams if there is streams to send
-		if (this.bundledStreamsToEmit != {}) {
+		if (Object.keys(this.bundledStreamsToEmit).length) {
 			this.stream.emit('sendBundledData-' + this.gameId, this.bundledStreamsToEmit);
 		}
 	}
