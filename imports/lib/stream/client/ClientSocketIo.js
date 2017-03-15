@@ -1,14 +1,6 @@
 import Stream from '/imports/lib/stream/Stream.js';
 
-let isWebRTCSupported = false;
-const rtcProperties = ['RTCPeerConnection', 'webkitRTCPeerConnection', 'mozRTCPeerConnection', 'RTCIceGatherer'];
-
-for (let property of rtcProperties) {
-	if (property in window) {
-		isWebRTCSupported = true;
-		break;
-	}
-}
+let isWebRTCSupported = !!require('get-browser-rtc')();
 
 export default class ClientSocketIo extends Stream {
 
