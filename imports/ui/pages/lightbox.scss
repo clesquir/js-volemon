@@ -1,9 +1,12 @@
 .lightbox {
 	@include mask;
 	position: fixed;
+	overflow: scroll;
+	-webkit-overflow-scrolling: touch;
 
 	h1 {
-		margin-bottom: 30px;
+		margin-top: 5px;
+		margin-bottom: 15px;
 	}
 
 	text-align: center;
@@ -14,22 +17,16 @@
 	}
 }
 
-@media (max-width: 720px) {
-	.lightbox {
-		h1 {
-			margin-bottom: 15px;
-			margin-top: 5px;
-		}
-
-		p {
-			margin: 10px 0;
-		}
-	}
-}
-
 .lightbox-inner {
 	margin: auto;
 	animation: appear 1s linear both;
+	flex: 1 1 auto;
+	min-width: 275px;
+	max-width: 350px;
+
+	@include breakpoint(mobile) {
+		max-width: 275px;
+	}
 }
 
 .lightbox-close {

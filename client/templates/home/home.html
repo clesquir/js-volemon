@@ -2,12 +2,12 @@
 
 	<div class="app-section app-section-top">
 
-		<div class="app-section-inner">
+		<div class="app-section-inner maximum-responsive-width">
 
 			{{#if currentUser}}
 
 				<div class="profile-information-container">
-					<div class="profile-information-header"><div>Statistics:</div></div>
+					<div class="profile-information-header"><div>Statistics</div></div>
 					<div class="profile-information-statistic">
 						<div>
 							<div>{{numberOfGamesPlayed}}</div>
@@ -43,17 +43,17 @@
 
 				<h1 style="margin-top: 25px;">Recent games</h1>
 
-				<div class="table-list" style="margin: 0 auto 10px; width: 475px;">
+				<div class="table-list">
 					<div class="table-list-row table-list-header">
-						<div class="table-list-cell" style="flex: 0 0 120px;">Date</div>
-						<div class="table-list-cell center-aligned-cell" style="flex: 0 0 100px;">Score</div>
+						<div class="table-list-cell" style="flex: 0 0 110px;">Date</div>
+						<div class="table-list-cell center-aligned-cell" style="flex: 0 0 75px;">Score</div>
 						<div class="table-list-cell">Opponent</div>
 					</div>
 
 					{{#each games}}
 						<div class="table-list-row">
-							<div class="table-list-cell" style="flex: 0 0 120px;"><span data-tooltip="{{getStartedAtDateTime}}">{{{getStartedAtDate}}}</span></div>
-							<div class="table-list-cell center-aligned-cell" style="flex: 0 0 100px;">{{{getScore}}}</div>
+							<div class="table-list-cell" style="flex: 0 0 110px;"><span data-tooltip="{{getStartedAtDateTime}}">{{{getStartedAtDate}}}</span></div>
+							<div class="table-list-cell center-aligned-cell" style="flex: 0 0 75px;">{{{getScore}}}</div>
 							<div class="table-list-cell">{{getOpponent ../players}}</div>
 						</div>
 					{{else}}
@@ -64,7 +64,7 @@
 				</div>
 
 				{{#if hasMoreGames}}
-					<div class="button show-more" style="margin: 0 auto 10px; width: 475px;" data-action="show-more-games">Show more games</div>
+					<div class="button show-more" data-action="show-more-games">Show more games</div>
 				{{/if}}
 
 			{{else}}

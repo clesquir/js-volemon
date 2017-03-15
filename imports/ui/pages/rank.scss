@@ -17,6 +17,8 @@
 }
 
 #rank-table-display {
+	min-width: 275px;
+
 	.rank-cell {
 		font-weight: 900;
 		font-size: 20px;
@@ -45,8 +47,6 @@
 
 .spinner {
 	display: flex;
-	min-width: 600px;
-	max-width: 650px;
 	margin-bottom: 10px;
 
 	& > div {
@@ -74,14 +74,6 @@
 	}
 }
 
-#rank-line-chart {
-	width: 650px;
-	height: 400px;
-}
-
-@media (max-width: 720px) {
-	#rank-line-chart {
-		width: 585px !important;
-		height: 360px !important;
-	}
+#rank-line-chart canvas {
+	@include aspect-ratio(50, 50);
 }

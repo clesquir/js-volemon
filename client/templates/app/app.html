@@ -9,7 +9,7 @@
 		<div class="app-header">
 
 			<div class="app-header-section app-header-section-button app-header-section-button-home" title="Home">
-				<a href="{{pathFor 'home'}}"><i class="fa"></i><span class="app-header-button-title">Home</span></a>
+				<a href="{{pathFor 'home'}}"><i class="fa fa-home"></i><span class="app-header-button-title">Home</span></a>
 			</div>
 
 			<div class="app-header-section app-header-section-button app-header-section-button-create-game" title="Create a game">
@@ -26,11 +26,14 @@
 
 			<div class="app-header-section app-header-empty-section"></div>
 
-			<div class="app-header-section">
+			<div class="app-header-section app-header-section-menu">
 				<div class="username-header">
 					{{#if currentUser}}
 						<div class="username-header-menu {{classForProfileMenu}}">
-							<a id="username-header-menu-open" class="username-header-menu-open">{{currentUser.profile.name}} <i class="fa fa-caret-down small-icon"></i></a>
+							<a id="username-header-menu-open" class="username-header-menu-open">
+								<span class="logged-in-user-menu"><i class="fa fa-bars"></i></span>
+								<span class="logged-in-user-name-menu">{{currentUser.profile.name}} <i class="fa fa-caret-down small-icon"></i></span>
+							</a>
 							<div id="username-dialog-dropdown-list" class="username-dialog">
 								<div data-action="user-edit-name" class="username-dialog-button">Edit name</div>
 								<div data-action="user-password-change" class="username-dialog-button">Change password</div>
