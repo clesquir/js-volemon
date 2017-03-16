@@ -12,16 +12,17 @@ export default class ClientSocketIo extends Stream {
 			url = Meteor.settings.public.SOCKET_URL;
 		}
 
-		this.socket = require('socket.io-client').connect(url);
-		this.socketAdapter = this.socket;
-
+		this.socketAdapter = require('socket.io-client').connect(url);
 		if (isWebRTCSupported) {
-			this.p2p = new (require('socket.io-p2p'))(this.socket, {numClients: 10, autoUpgrade: true});
-			this.p2p.on('ready', () => {
-				this.p2p.usePeerConnection = true;
-			});
-			this.p2pAdapter = this.p2p;
+			this.p2pAdapter = new (require('socket.io-p2p'))(this.socketAdapter, {numClients: 10, autoUpgrade: true});
 		}
+	}
+
+	disconnect() {
+		if (this.p2pAdapter) {
+			this.p2pAdapter.disconnect();
+		}
+		this.socketAdapter.disconnect();
 	}
 
 	/**
@@ -32,8 +33,13 @@ export default class ClientSocketIo extends Stream {
 		if (this.p2pAdapter) {
 			if (!this.p2pAdapter.usePeerConnection) {
 				payload.webRTCUnsupportedClient = true;
+				//Fallback already sends to server
+				this.p2pAdapter.emit(eventName, payload);
+			} else {
+				//Emit to server for WebRTC unsupported clients
+				this.socketAdapter.emit(eventName, payload);
+				this.p2pAdapter.emit(eventName, payload);
 			}
-			this.p2pAdapter.emit(eventName, payload);
 		} else {
 			payload.webRTCUnsupportedClient = true;
 			this.socketAdapter.emit(eventName, payload);

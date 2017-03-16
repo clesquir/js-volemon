@@ -33,6 +33,9 @@ export default class ServerSocketIo extends Stream {
 		}
 	}
 
+	disconnect() {
+	}
+
 	/**
 	 * @param {string} eventName
 	 * @param payload

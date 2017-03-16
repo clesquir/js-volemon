@@ -99,6 +99,7 @@ export default class ClientStreamInitiator {
 		this.stream.off('play-' + gameId);
 		this.stream.off('activateBonus-' + gameId);
 		this.stream.off('sendBundledData-' + gameId);
+		this.stream.disconnect();
 	}
 
 }

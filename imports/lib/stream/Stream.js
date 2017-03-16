@@ -6,6 +6,9 @@ export default class Stream {
 	connect() {
 	}
 
+	disconnect() {
+	}
+
 	emit(eventName, payload) {
 	}
 
