@@ -39,6 +39,7 @@ export default class ClientGame {
 		this.clouds = [];
 		this.activeBonuses = [];
 		this.serverOffset = TimeSync.serverOffset();
+		this.gameInitiated = false;
 	}
 
 	/**
@@ -337,6 +338,8 @@ export default class ClientGame {
 			this.engine.addKeyControllers();
 			Session.set('userCurrentlyPlaying', true);
 		}
+
+		this.gameInitiated = true;
 
 		this.resumeOnTimerEnd();
 	}
@@ -974,7 +977,7 @@ export default class ClientGame {
 	}
 
 	moveOppositePlayer(data) {
-		var player;
+		let player;
 
 		if (data.isHost) {
 			player = this.player1;
@@ -982,7 +985,7 @@ export default class ClientGame {
 			player = this.player2;
 		}
 
-		if (!player) {
+		if (!this.gameInitiated || !player) {
 			return;
 		}
 
@@ -994,7 +997,7 @@ export default class ClientGame {
 	}
 
 	moveClientBall(data) {
-		if (!this.ball) {
+		if (!this.gameInitiated || !this.ball) {
 			return;
 		}
 
@@ -1004,6 +1007,10 @@ export default class ClientGame {
 	}
 
 	moveClientBonus(bonusIdentifier, data) {
+		if (!this.gameInitiated) {
+			return;
+		}
+
 		let correspondingBonusSprite = this.getBonusSpriteFromIdentifier(bonusIdentifier);
 
 		if (!correspondingBonusSprite) {
