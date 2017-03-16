@@ -25,6 +25,8 @@ export default class ClientGame {
 		this.xSize = Constants.GAME_X_SIZE;
 		this.ySize = Constants.GAME_Y_SIZE;
 		this.groundHeight = Constants.GAME_GROUND_HEIGHT;
+		this.lastBallPositionData = {};
+		this.lastPlayerPositionData = {};
 		this.lastBallUpdate = 0;
 		this.lastPlayerUpdate = 0;
 		this.lastBonusUpdate = 0;
@@ -60,11 +62,11 @@ export default class ClientGame {
 	}
 
 	isUserHost() {
-		return (this.gameCreatedBy === Meteor.userId() && this.currentPlayer);
+		return (this.gameCreatedBy === Meteor.userId() && !!this.currentPlayer);
 	}
 
 	isUserClient() {
-		return (this.gameCreatedBy !== Meteor.userId() && this.currentPlayer);
+		return (this.gameCreatedBy !== Meteor.userId() && !!this.currentPlayer);
 	}
 
 	isUserViewer() {
@@ -738,28 +740,41 @@ export default class ClientGame {
 	}
 
 	sendBallPosition() {
-		var ballPositionData = this.engine.getPositionData(this.ball);
+		let ballPositionData = this.engine.getPositionData(this.ball);
+		let ballInterval = Config.ballInterval;
+
+		if (JSON.stringify(this.lastBallPositionData) === JSON.stringify(ballPositionData)) {
+			ballInterval *= 2;
+		}
+		this.lastBallPositionData = Object.assign({}, ballPositionData);
 
 		ballPositionData = this.addServerNormalizedTimestampToPositionData(ballPositionData);
 
 		this.lastBallUpdate = this.addToBundledStreamsAtFrequence(
 			this.lastBallUpdate,
-			Config.ballInterval,
+			ballInterval,
 			'moveClientBall',
 			ballPositionData
 		);
 	}
 
 	sendPlayerPosition(player) {
-		var playerPositionData = this.engine.getPositionData(player);
+		let playerPositionData = this.engine.getPositionData(player);
+		let playerInterval = Config.playerInterval;
 
 		playerPositionData.isHost = this.isUserHost();
 		playerPositionData.doingDropShot = player.doingDropShot;
+
+		if (JSON.stringify(this.lastPlayerPositionData) === JSON.stringify(playerPositionData)) {
+			playerInterval *= 2;
+		}
+		this.lastPlayerPositionData = Object.assign({}, playerPositionData);
+
 		playerPositionData = this.addServerNormalizedTimestampToPositionData(playerPositionData);
 
 		this.lastPlayerUpdate = this.addToBundledStreamsAtFrequence(
 			this.lastPlayerUpdate,
-			Config.playerInterval,
+			playerInterval,
 			'moveOppositePlayer',
 			playerPositionData
 		);
