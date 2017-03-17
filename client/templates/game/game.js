@@ -260,6 +260,16 @@ Template.game.events({
 
 	'click [data-action="leave"]': function(e) {
 		Meteor.call('leaveGame', Session.get('game'));
+	},
+
+	'click [data-action="expand-extra-big-game"]': function(e) {
+		const gameContainer = document.getElementById('gameContainer');
+
+		if ($(gameContainer).is('.extra-big-game-size')) {
+			$(gameContainer).removeClass('extra-big-game-size');
+		} else {
+			$(gameContainer).addClass('extra-big-game-size');
+		}
 	}
 });
 
