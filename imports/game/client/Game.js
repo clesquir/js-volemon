@@ -770,7 +770,7 @@ export default class Game {
 	}
 
 	shakeLevel() {
-		this.engine.shake(this.level, 5, 20);
+		this.engine.shake(this.level, 5, 20, 0, 0);
 	}
 
 };

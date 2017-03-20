@@ -423,10 +423,7 @@ export default class PhaserEngine extends Engine {
 		return textComponent.text = multilineText.join('\n');
 	}
 
-	shake(sprite, move, time) {
-		const x = sprite.x;
-		const y = sprite.y;
-
+	shake(sprite, move, time, x, y) {
 		this.game.add.tween(sprite)
 			.to({y: "-" + move}, time).to({y: "+" + move * 2}, time * 2).to({y: "-" + move}, time)
 			.to({y: "-" + move}, time).to({y: "+" + move * 2}, time * 2).to({y: "-" + move}, time)
