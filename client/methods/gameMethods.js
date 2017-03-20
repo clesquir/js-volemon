@@ -1,12 +1,13 @@
+import {Meteor} from 'meteor/meteor';
+import {TimeSync} from 'meteor/mizzao:timesync';
 import { Games } from '/collections/games.js';
-import { Players } from '/collections/players.js';
 import { Constants } from '/imports/lib/constants.js';
 import { getUTCTimeStamp } from '/imports/lib/utils.js';
 
 Meteor.methods({
 	addGamePoints: function(gameId, columnName) {
-		var game = Games.findOne(gameId),
-			data = {};
+		const game = Games.findOne(gameId);
+		const data = {};
 
 		if (
 			game && game.status == Constants.GAME_STATUS_STARTED &&
@@ -24,7 +25,7 @@ Meteor.methods({
 			}
 
 			data['activeBonuses'] = [];
-			data['lastPointAt'] = getUTCTimeStamp();
+			data['lastPointAt'] = getUTCTimeStamp() + TimeSync.serverOffset();
 
 			if (data[columnName] >= Constants.MAXIMUM_POINTS) {
 				data['status'] = Constants.GAME_STATUS_FINISHED;
@@ -35,8 +36,8 @@ Meteor.methods({
 	},
 
 	addActiveBonusToGame: function(gameId, bonusIdentifier, bonusClass, activatedAt, targetPlayerKey) {
-		var game = Games.findOne(gameId),
-			data = {};
+		const game = Games.findOne(gameId);
+		const data = {};
 
 		if (game && game.status == Constants.GAME_STATUS_STARTED) {
 			data['activeBonuses'] = [].concat(game.activeBonuses).concat([{
@@ -51,10 +52,10 @@ Meteor.methods({
 	},
 
 	removeActiveBonusFromGame: function(gameId, bonusIdentifier) {
-		var game = Games.findOne(gameId),
-			data = {
-				activeBonuses: []
-			};
+		const game = Games.findOne(gameId);
+		const data = {
+			activeBonuses: []
+		};
 
 		if (game) {
 			//Remove the bonus/targetPlayerKey from the list
