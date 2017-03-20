@@ -19,7 +19,7 @@ import { Constants } from '/imports/lib/constants.js';
 export default class BonusFactory {
 
 	/**
-	 * @param {ClientGame} game
+	 * @param {Game} game
 	 * @param {boolean} [excludeRandom=false]
 	 * @returns {BaseBonus}
 	 */
@@ -66,7 +66,7 @@ export default class BonusFactory {
 
 	/**
 	 * @param {string} bonusClass
-	 * @param {ClientGame} game
+	 * @param {Game} game
 	 * @returns {BaseBonus}
 	 */
 	static fromClassName(bonusClass, game) {

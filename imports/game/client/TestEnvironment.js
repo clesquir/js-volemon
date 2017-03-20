@@ -1,5 +1,11 @@
-import Game from '/client/lib/game/ClientGame.js';
-import { Constants } from '/imports/lib/constants.js';
+import {Random} from 'meteor/random';
+import Game from '/imports/game/client/Game.js';
+import PhaserEngine from '/imports/game/engine/client/PhaserEngine.js';
+import GameData from '/imports/game/client/GameData.js';
+import GameStreamBundler from '/imports/game/client/GameStreamBundler.js';
+import ServerNormalizedTime from '/imports/game/client/ServerNormalizedTime.js';
+import {Config} from '/imports/lib/config.js';
+import {Constants} from '/imports/lib/constants.js';
 
 export default class TestEnvironment {
 
@@ -8,10 +14,8 @@ export default class TestEnvironment {
 	}
 
 	start() {
-		this.game = new Game();
-		this.game.xSize = 500;
-		this.game.ySize = 400;
-		this.game.groundHeight = 50;
+		const gameId = Random.id(5);
+		this.game = new Game(gameId, new PhaserEngine(), new GameData(gameId), new GameStreamBundler(null), new ServerNormalizedTime());
 		this.game.engine.start(
 			this.game.xSize, this.game.ySize, 'testEnvironmentContainer',
 			this.preloadGame, this.createGame, this.updateGame,
@@ -28,7 +32,7 @@ export default class TestEnvironment {
 	preloadGame() {
 		this.game.engine.preloadGame();
 
-		this.game.engine.loadImage('player1', 'assets/player-' + this.game.getPlayerShapeFromKey('player1') + '.png');
+		this.game.engine.loadImage('player1', 'assets/player-' + this.game.gameData.getPlayerShapeFromKey('player1') + '.png');
 		this.game.engine.loadImage('ball', 'assets/ball.png');
 		this.game.engine.loadImage('ground', 'assets/ground.png');
 		this.game.engine.loadImage('delimiter', 'assets/clear.png');
@@ -42,8 +46,9 @@ export default class TestEnvironment {
 
 		this.game.createCollisionGroupsAndMaterials();
 
-		this.game.player1 = this.game.engine.addSprite(300, 300, 'player1');
-		this.game.createPlayer(this.game.player1, 300, 300, 'player1');
+		const yPosition = this.game.ySize - this.game.groundHeight - (Constants.PLAYER_HEIGHT / 2);
+		this.game.player1 = this.game.engine.addSprite(Config.playerInitialLocation, yPosition, 'player1');
+		this.game.createPlayer(this.game.player1, Config.playerInitialLocation, yPosition, 'player1');
 
 		this.game.createBall(100, 100);
 

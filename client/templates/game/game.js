@@ -1,4 +1,7 @@
-import ClientGameInitiator from '/client/lib/game/ClientGameInitiator.js';
+import {Meteor} from 'meteor/meteor';
+import {Template} from 'meteor/templating';
+import {Session} from 'meteor/session';
+import GameInitiator from '/imports/game/client/GameInitiator.js';
 import {
 	isGameStatusStarted,
 	isGameStatusFinished,
@@ -24,7 +27,7 @@ Template.game.helpers({
 	},
 
 	hostName: function() {
-		var player = Players.findOne({gameId: Session.get('game'), userId: this.game.createdBy});
+		const player = Players.findOne({gameId: Session.get('game'), userId: this.game.createdBy});
 
 		if (player) {
 			return player.name;
@@ -38,7 +41,7 @@ Template.game.helpers({
 	},
 
 	clientName: function() {
-		var player = Players.findOne({gameId: Session.get('game'), userId: {$ne: this.game.createdBy}});
+		const player = Players.findOne({gameId: Session.get('game'), userId: {$ne: this.game.createdBy}});
 
 		if (player) {
 			return player.name;
@@ -76,7 +79,7 @@ Template.game.helpers({
 	 * @returns {boolean}
 	 */
 	canSetReadyOrLeave: function() {
-		var player = Players.findOne({gameId: Session.get('game'), userId: Meteor.userId()});
+		const player = Players.findOne({gameId: Session.get('game'), userId: Meteor.userId()});
 
 		return player && player.isReady === false;
 	},
@@ -86,7 +89,7 @@ Template.game.helpers({
 	 * @returns {boolean}
 	 */
 	waitingForGameToStart: function() {
-		var player = Players.findOne({gameId: Session.get('game'), userId: Meteor.userId()});
+		const player = Players.findOne({gameId: Session.get('game'), userId: Meteor.userId()});
 
 		return player && player.isReady === true;
 	},
@@ -96,8 +99,8 @@ Template.game.helpers({
 	 * @returns {boolean}
 	 */
 	canJoin: function() {
-		var player = Players.findOne({gameId: Session.get('game'), userId: Meteor.userId()}),
-			players = Players.find({gameId: Session.get('game')});
+		const player = Players.findOne({gameId: Session.get('game'), userId: Meteor.userId()});
+		const players = Players.find({gameId: Session.get('game')});
 
 		return (!player && Config.possibleNoPlayers.indexOf(players.count() + 1) !== -1);
 	},
@@ -107,7 +110,7 @@ Template.game.helpers({
 	 * @returns {boolean}
 	 */
 	hasEnoughPlayers: function() {
-		var players = Players.find({gameId: Session.get('game')});
+		const players = Players.find({gameId: Session.get('game')});
 
 		return (
 			Config.possibleNoPlayers.indexOf(players.count()) !== -1
@@ -119,7 +122,7 @@ Template.game.helpers({
 	 * @returns {boolean}
 	 */
 	allPlayersAreReady: function() {
-		var players = Players.find({gameId: Session.get('game')});
+		const players = Players.find({gameId: Session.get('game')});
 
 		let havePlayersNotReady = false;
 		players.forEach(function(player) {
@@ -132,11 +135,11 @@ Template.game.helpers({
 	},
 
 	isPrivateGame: function() {
-		return this.game.isPrivate ? true : false;
+		return !!this.game.isPrivate;
 	},
 
 	hasBonusesGame: function() {
-		return this.game.hasBonuses ? true : false;
+		return !!this.game.hasBonuses;
 	},
 
 	isCurentPlayer: function() {
@@ -164,7 +167,7 @@ Template.game.helpers({
 	},
 
 	getPlayerEloRating: function(player, profiles) {
-		var eloRating = '-';
+		let eloRating = '-';
 
 		profiles.forEach((profile) => {
 			if (player.userId == profile.userId) {
@@ -176,7 +179,7 @@ Template.game.helpers({
 	},
 
 	getPlayerProfile: function(player, profiles) {
-		var playerProfile = null;
+		let playerProfile = null;
 
 		profiles.forEach((profile) => {
 			if (player.userId == profile.userId) {
@@ -190,8 +193,8 @@ Template.game.helpers({
 
 Template.game.events({
 	'click [data-action="copy-url"]': function(e) {
-		var url = Router.routes['game'].url({_id: Session.get('game')}),
-			temporaryInput = $('<input>');
+		const url = Router.routes['game'].url({_id: Session.get('game')});
+		const temporaryInput = $('<input>');
 
 		$('body').append(temporaryInput);
 		temporaryInput.val(url).select();
@@ -207,8 +210,8 @@ Template.game.events({
 	},
 
 	'click [data-action="update-privacy"]': function(e) {
-		var game = Games.findOne(Session.get('game')),
-			isPrivate = !game.isPrivate;
+		const game = Games.findOne(Session.get('game'));
+		const isPrivate = !game.isPrivate;
 
 		switchTargetButton(e, isPrivate);
 
@@ -216,8 +219,8 @@ Template.game.events({
 	},
 
 	'click [data-action="update-has-bonuses"]': function(e) {
-		var game = Games.findOne(Session.get('game')),
-			hasBonuses = !game.hasBonuses;
+		const game = Games.findOne(Session.get('game'));
+		const hasBonuses = !game.hasBonuses;
 
 		if (game.createdBy === Meteor.userId()) {
 			switchTargetButton(e, hasBonuses);
@@ -273,11 +276,11 @@ Template.game.events({
 	}
 });
 
-/** @type {ClientGameInitiator}|null */
+/** @type {GameInitiator}|null */
 let gameInitiator = null;
 
 Template.game.rendered = function() {
-	gameInitiator = new ClientGameInitiator(Session.get('game'));
+	gameInitiator = new GameInitiator(Session.get('game'));
 	gameInitiator.init();
 };
 

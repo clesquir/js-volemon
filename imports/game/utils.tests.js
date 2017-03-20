@@ -1,5 +1,5 @@
 import StubCollections from 'meteor/hwillson:stub-collections';
-import { getWinnerName } from '/imports/game/utils.js';
+import { getWinnerName, isMatchPoint, isDeucePoint } from '/imports/game/utils.js';
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
 import { Constants } from '/imports/lib/constants.js';
@@ -108,5 +108,41 @@ describe('game/utils#getWinnerName', function() {
 		chai.assert.equal(getWinnerName(Games.findOne({_id: gameId})), clientPlayerName);
 
 		StubCollections.restore();
+	});
+});
+
+describe('game/utils#isMatchPoint', function() {
+	it('returns false if no players are at one point from maximum', function() {
+		chai.assert.isFalse(isMatchPoint(0, 0));
+	});
+
+	it('returns true if hostPoints is at one point from maximum', function() {
+		chai.assert.isTrue(isMatchPoint(Constants.MAXIMUM_POINTS - 1, 0));
+	});
+
+	it('returns true if clientPoints is at one point from maximum', function() {
+		chai.assert.isTrue(isMatchPoint(0, Constants.MAXIMUM_POINTS - 1));
+	});
+
+	it('returns true if both players are at one point from maximum', function() {
+		chai.assert.isTrue(isMatchPoint(Constants.MAXIMUM_POINTS - 1, Constants.MAXIMUM_POINTS - 1));
+	});
+});
+
+describe('game/utils#isDeuce', function() {
+	it('returns false if both players are not at one point from maximum', function() {
+		chai.assert.isFalse(isDeucePoint(0, 0));
+	});
+
+	it('returns false if hostPoints is at one point from maximum', function() {
+		chai.assert.isFalse(isDeucePoint(Constants.MAXIMUM_POINTS - 1, 0));
+	});
+
+	it('returns false if clientPoints is at one point from maximum', function() {
+		chai.assert.isFalse(isDeucePoint(0, Constants.MAXIMUM_POINTS - 1));
+	});
+
+	it('returns true if both players are at one point from maximum', function() {
+		chai.assert.isTrue(isDeucePoint(Constants.MAXIMUM_POINTS - 1, Constants.MAXIMUM_POINTS - 1));
 	});
 });
