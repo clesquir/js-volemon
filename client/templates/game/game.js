@@ -188,6 +188,18 @@ Template.game.helpers({
 		});
 
 		return playerProfile;
+	},
+
+	gameZoomedInClass(profiles) {
+		let gameZoomedIn = false;
+
+		profiles.forEach((profile) => {
+			if (Meteor.userId() == profile.userId) {
+				gameZoomedIn = profile.gameZoomedIn;
+			}
+		});
+
+		return gameZoomedIn ? 'extra-big-game-size' : '';
 	}
 });
 
@@ -267,11 +279,17 @@ Template.game.events({
 
 	'click [data-action="expand-extra-big-game"]': function(e) {
 		const gameContainer = $('.game-container').first();
+		let zoomedIn = false;
 
 		if ($(gameContainer).is('.extra-big-game-size')) {
 			$(gameContainer).removeClass('extra-big-game-size');
 		} else {
 			$(gameContainer).addClass('extra-big-game-size');
+			zoomedIn = true;
+		}
+
+		if (Meteor.userId()) {
+			Meteor.call('saveZoomedInGame', zoomedIn);
 		}
 	}
 });

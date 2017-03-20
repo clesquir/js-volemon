@@ -1,3 +1,6 @@
+import {Meteor} from 'meteor/meteor';
+import {check} from 'meteor/check';
+import {Accounts} from 'meteor/accounts-base';
 import { Games } from '/collections/games.js';
 import { Players } from '/collections/players.js';
 import { Profiles } from '/collections/profiles.js';
@@ -10,6 +13,12 @@ Meteor.methods({
 		Meteor.users.update({_id: this.userId}, {$set: {'profile.name': name}});
 		Players.update({userId: this.userId}, {$set: {name: name}}, {multi: true});
 		Games.update({createdBy: this.userId}, {$set: {creatorName: name}}, {multi: true});
+	},
+
+	saveZoomedInGame: function(zoomedIn) {
+		check(this.userId, String);
+
+		Profiles.update({userId: this.userId}, {$set: {gameZoomedIn: zoomedIn}});
 	},
 
 	sendUserPasswordToken: function(email) {
