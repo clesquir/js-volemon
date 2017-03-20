@@ -1,4 +1,4 @@
-export default class ServerStreamInitiator {
+export default class StreamInitiator {
 
 	constructor(gameId) {
 		this.gameId = gameId;
