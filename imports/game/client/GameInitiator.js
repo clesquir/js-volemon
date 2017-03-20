@@ -63,10 +63,15 @@ export default class GameInitiator {
 					this.gameData.updateLastPointAt(fields.lastPointAt);
 
 					this.updateTimer();
+				}
 
-					if (this.hasActiveGame()) {
-						this.currentGame.onPointTaken();
-					}
+				if (
+					this.hasActiveGame() && (
+						fields.hasOwnProperty(Constants.HOST_POINTS_COLUMN) ||
+						fields.hasOwnProperty(Constants.CLIENT_POINTS_COLUMN)
+					)
+				) {
+					this.currentGame.onPointTaken();
 				}
 			}
 		});

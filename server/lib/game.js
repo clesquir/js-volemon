@@ -1,16 +1,17 @@
-import { EloScores } from '/collections/eloscores.js';
-import { Games } from '/collections/games.js';
-import { Players } from '/collections/players.js';
-import { Profiles } from '/collections/profiles.js';
-import { Constants } from '/imports/lib/constants.js';
-import { getUTCTimeStamp } from '/imports/lib/utils.js';
+import {Meteor} from 'meteor/meteor';
+import {EloScores} from '/collections/eloscores.js';
+import {Games} from '/collections/games.js';
+import {Players} from '/collections/players.js';
+import {Profiles} from '/collections/profiles.js';
+import {Constants} from '/imports/lib/constants.js';
+import {getUTCTimeStamp} from '/imports/lib/utils.js';
 
 /**
  * @param gameId
  * @param highestPointsColumn
  */
-updateProfilesOnGameFinish = function(gameId, highestPointsColumn) {
-	var game = Games.findOne(gameId);
+export const updateProfilesOnGameFinish = function(gameId, highestPointsColumn) {
+	const game = Games.findOne(gameId);
 
 	if (!game) {
 		throw new Meteor.Error(404, 'Game not found');
@@ -69,7 +70,7 @@ updateProfilesOnGameFinish = function(gameId, highestPointsColumn) {
  * @param opponentElo
  * @returns {number}
  */
-getEloScore = function(currentElo, opponentElo) {
+export const getEloScore = function(currentElo, opponentElo) {
 	return 1 / (1 + Math.pow(10, (opponentElo - currentElo) / 400));
 };
 
@@ -80,6 +81,6 @@ getEloScore = function(currentElo, opponentElo) {
  * @param K
  * @returns {number}
  */
-getEloRating = function(previousEloRating, eloScore, score, K = 32) {
+export const getEloRating = function(previousEloRating, eloScore, score, K = 32) {
 	return previousEloRating + Math.round(K * (score - eloScore));
 };

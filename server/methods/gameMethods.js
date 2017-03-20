@@ -1,3 +1,5 @@
+import {Meteor} from 'meteor/meteor';
+import {Random} from 'meteor/random';
 import {Games} from '/collections/games.js';
 import {Players} from '/collections/players.js';
 import {Profiles} from '/collections/profiles.js';
@@ -5,13 +7,14 @@ import {Config} from '/imports/lib/config.js';
 import {Constants} from '/imports/lib/constants.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 import StreamInitiator from '/imports/game/server/StreamInitiator.js';
+import {updateProfilesOnGameFinish} from '/server/lib/game.js';
 
 let serverStreams = {};
 
 Meteor.methods({
 	createGame: function() {
-		var user = Meteor.user(),
-			id = null;
+		const user = Meteor.user();
+		let id = null;
 
 		if (!user) {
 			throw new Meteor.Error(401, 'You need to login to create a game');
@@ -47,8 +50,8 @@ Meteor.methods({
 	},
 
 	updateGamePrivacy: function(gameId, isPrivate) {
-		var user = Meteor.user(),
-			game = Games.findOne(gameId);
+		const user = Meteor.user();
+		const game = Games.findOne(gameId);
 
 		if (!user) {
 			throw new Meteor.Error(401, 'You need to login to update game privacy property');
@@ -65,29 +68,10 @@ Meteor.methods({
 		Games.update({_id: game._id}, {$set: {isPrivate: isPrivate ? 1 : 0}});
 	},
 
-	updateGameHasBonuses: function(gameId, hasBonuses) {
-		var user = Meteor.user(),
-			game = Games.findOne(gameId);
-
-		if (!user) {
-			throw new Meteor.Error(401, 'You need to login to update game bonus property');
-		}
-
-		if (!game) {
-			throw new Meteor.Error(404, 'Game not found');
-		}
-
-		if (game.createdBy != user._id) {
-			throw new Meteor.Error('not-allowed', 'Only the creator can update this game property');
-		}
-
-		Games.update({_id: game._id}, {$set: {hasBonuses: hasBonuses ? 1 : 0}});
-	},
-
 	joinGame: function(gameId, isReady) {
-		var user = Meteor.user(),
-			game = Games.findOne(gameId),
-			player;
+		const user = Meteor.user();
+		const game = Games.findOne(gameId);
+		let player;
 
 		if (!user) {
 			throw new Meteor.Error(401, 'You need to login to join a game');
@@ -106,9 +90,9 @@ Meteor.methods({
 	},
 
 	addPlayerToGame: function(gameId, isReady) {
-		var user = Meteor.user(),
-			game = Games.findOne(gameId),
-			profile = Profiles.findOne({userId: this.userId});
+		const user = Meteor.user();
+		const game = Games.findOne(gameId);
+		const profile = Profiles.findOne({userId: this.userId});
 
 		if (!user) {
 			throw new Meteor.Error(401, 'You need to login to add player to a game');
@@ -143,9 +127,9 @@ Meteor.methods({
 	},
 
 	updatePlayerShape: function(gameId, shape) {
-		var user = Meteor.user(),
-			game = Games.findOne(gameId),
-			player;
+		const user = Meteor.user();
+		const game = Games.findOne(gameId);
+		let player;
 
 		if (!user) {
 			throw new Meteor.Error(401, 'You need to login to update your player shape');
@@ -176,9 +160,9 @@ Meteor.methods({
 	},
 
 	setPlayerIsReady: function(gameId) {
-		var user = Meteor.user(),
-			game = Games.findOne(gameId),
-			player;
+		const user = Meteor.user();
+		const game = Games.findOne(gameId);
+		let player;
 
 		if (!user) {
 			throw new Meteor.Error(401, 'You need to login to set player ready');
@@ -197,9 +181,9 @@ Meteor.methods({
 	},
 
 	leaveGame: function(gameId) {
-		var user = Meteor.user(),
-			game = Games.findOne(gameId),
-			player;
+		const user = Meteor.user();
+		const game = Games.findOne(gameId);
+		let player;
 
 		if (!user) {
 			throw new Meteor.Error(401, 'You need to login to leave a game');
@@ -273,9 +257,9 @@ Meteor.methods({
 	},
 
 	quitGame: function(gameId) {
-		var user = Meteor.user(),
-			game = Games.findOne(gameId),
-			player;
+		const user = Meteor.user();
+		const game = Games.findOne(gameId);
+		let player;
 
 		if (!user) {
 			throw new Meteor.Error(401, 'You need to login to quit a game');
@@ -309,7 +293,7 @@ Meteor.methods({
 	},
 
 	keepPlayerAlive: function(playerId) {
-		let player = Players.findOne(playerId);
+		const player = Players.findOne(playerId);
 
 		if (!player) {
 			throw new Meteor.Error(404, 'Player not found');
@@ -319,8 +303,8 @@ Meteor.methods({
 	},
 
 	removeTimeoutPlayersAndGames: function() {
-		var games = Games.find({status: {$in: [Constants.GAME_STATUS_STARTED]}}),
-			gameIds = [];
+		const games = Games.find({status: {$in: [Constants.GAME_STATUS_STARTED]}});
+		const gameIds = [];
 
 		games.forEach(function(game) {
 			gameIds.push(game._id);
@@ -352,8 +336,8 @@ Meteor.methods({
 	},
 
 	addGamePoints: function(gameId, columnName) {
-		var game = Games.findOne(gameId),
-			data = {};
+		const game = Games.findOne(gameId);
+		const data = {};
 
 		if (!game) {
 			throw new Meteor.Error(404, 'Game not found');
@@ -398,47 +382,5 @@ Meteor.methods({
 		if (isGameFinished) {
 			updateProfilesOnGameFinish(game._id, columnName);
 		}
-	},
-
-	addActiveBonusToGame: function(gameId, bonusIdentifier, bonusClass, activatedAt, targetPlayerKey) {
-		var game = Games.findOne(gameId),
-			data = {};
-
-		if (!game) {
-			throw new Meteor.Error(404, 'Game not found');
-		}
-
-		if (game.status != Constants.GAME_STATUS_STARTED) {
-			throw new Meteor.Error('not-allowed', 'Only active games can have active bonus added to');
-		}
-
-		data['activeBonuses'] = [].concat(game.activeBonuses).concat([{
-			bonusIdentifier: bonusIdentifier,
-			bonusClass: bonusClass,
-			activatedAt: activatedAt,
-			targetPlayerKey: targetPlayerKey
-		}]);
-
-		Games.update({_id: game._id}, {$set: data});
-	},
-
-	removeActiveBonusFromGame: function(gameId, bonusIdentifier) {
-		var game = Games.findOne(gameId),
-			data = {
-				activeBonuses: []
-			};
-
-		if (!game) {
-			throw new Meteor.Error(404, 'Game not found');
-		}
-
-		//Remove the bonus/targetPlayerKey from the list
-		for (let activeBonus of game.activeBonuses) {
-			if (activeBonus.bonusIdentifier != bonusIdentifier) {
-				data.activeBonuses.push(activeBonus);
-			}
-		}
-
-		Games.update({_id: game._id}, {$set: data});
 	}
 });

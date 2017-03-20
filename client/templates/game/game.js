@@ -9,9 +9,9 @@ import {
 	isGameStatusTimeout,
 	getWinnerName
 } from '/imports/game/utils.js';
-import { Games } from '/collections/games.js';
-import { Players } from '/collections/players.js';
-import { Config } from '/imports/lib/config.js';
+import {Games} from '/collections/games.js';
+import {Players} from '/collections/players.js';
+import {Config} from '/imports/lib/config.js';
 
 Template.game.helpers({
 	isHost: function() {

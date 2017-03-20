@@ -1,8 +1,8 @@
 import {Meteor} from 'meteor/meteor';
 import {TimeSync} from 'meteor/mizzao:timesync';
-import { Games } from '/collections/games.js';
-import { Constants } from '/imports/lib/constants.js';
-import { getUTCTimeStamp } from '/imports/lib/utils.js';
+import {Games} from '/collections/games.js';
+import {Constants} from '/imports/lib/constants.js';
+import {getUTCTimeStamp} from '/imports/lib/utils.js';
 
 Meteor.methods({
 	addGamePoints: function(gameId, columnName) {
@@ -29,40 +29,6 @@ Meteor.methods({
 
 			if (data[columnName] >= Constants.MAXIMUM_POINTS) {
 				data['status'] = Constants.GAME_STATUS_FINISHED;
-			}
-
-			Games.update({_id: game._id}, {$set: data});
-		}
-	},
-
-	addActiveBonusToGame: function(gameId, bonusIdentifier, bonusClass, activatedAt, targetPlayerKey) {
-		const game = Games.findOne(gameId);
-		const data = {};
-
-		if (game && game.status == Constants.GAME_STATUS_STARTED) {
-			data['activeBonuses'] = [].concat(game.activeBonuses).concat([{
-				bonusIdentifier: bonusIdentifier,
-				bonusClass: bonusClass,
-				activatedAt: activatedAt,
-				targetPlayerKey: targetPlayerKey
-			}]);
-
-			Games.update({_id: game._id}, {$set: data});
-		}
-	},
-
-	removeActiveBonusFromGame: function(gameId, bonusIdentifier) {
-		const game = Games.findOne(gameId);
-		const data = {
-			activeBonuses: []
-		};
-
-		if (game) {
-			//Remove the bonus/targetPlayerKey from the list
-			for (let activeBonus of game.activeBonuses) {
-				if (activeBonus.bonusIdentifier != bonusIdentifier) {
-					data.activeBonuses.push(activeBonus);
-				}
 			}
 
 			Games.update({_id: game._id}, {$set: data});

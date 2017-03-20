@@ -1,11 +1,12 @@
-import { chai } from 'meteor/practicalmeteor:chai';
-import { resetDatabase } from 'meteor/xolvio:cleaner';
-import { EloScores } from '/collections/eloscores.js';
-import { Games } from '/collections/games.js';
-import { Players } from '/collections/players.js';
-import { Profiles } from '/collections/profiles.js';
-import { Constants } from '/imports/lib/constants.js';
-import { game } from '/server/lib/game.js';
+import {Random} from 'meteor/random';
+import {chai} from 'meteor/practicalmeteor:chai';
+import {resetDatabase} from 'meteor/xolvio:cleaner';
+import {EloScores} from '/collections/eloscores.js';
+import {Games} from '/collections/games.js';
+import {Players} from '/collections/players.js';
+import {Profiles} from '/collections/profiles.js';
+import {Constants} from '/imports/lib/constants.js';
+import {updateProfilesOnGameFinish, getEloScore, getEloRating} from '/server/lib/game.js';
 
 describe('Game#updateProfilesOnGameFinish', function() {
 	it('throws 404 if game does not exist', function() {
@@ -15,7 +16,7 @@ describe('Game#updateProfilesOnGameFinish', function() {
 	});
 
 	it('throws not-allowed if game status is not finished', function() {
-		let gameId = Random.id(5);
+		const gameId = Random.id(5);
 		Games.insert({_id: gameId, status: Constants.GAME_STATUS_STARTED});
 
 		chai.expect(() => {
@@ -24,11 +25,11 @@ describe('Game#updateProfilesOnGameFinish', function() {
 	});
 
 	it('updates Profiles and inserts EloScores', function() {
-		var gameId = Random.id(5),
-			hostProfileId = Random.id(5),
-			createdByUserId = 1,
-			clientProfileId = Random.id(5),
-			notCreatedByUserId = 2;
+		const gameId = Random.id(5);
+		const hostProfileId = Random.id(5);
+		const createdByUserId = 1;
+		const clientProfileId = Random.id(5);
+		const notCreatedByUserId = 2;
 
 		resetDatabase();
 
@@ -90,7 +91,8 @@ describe('Game#getEloScore', function() {
 
 describe('Game#getEloRating', function() {
 	it('returns correct rating depending on the score and who wins', function() {
-		var eloScore, eloRating;
+		let eloRating;
+		let eloScore;
 
 		eloRating = 1000;
 		eloScore = getEloScore(eloRating, 1000);
