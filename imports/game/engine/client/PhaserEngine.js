@@ -424,8 +424,8 @@ export default class PhaserEngine extends Engine {
 	}
 
 	shake(sprite, move, time) {
-		const x = this.getXPosition();
-		const y = this.getYPosition();
+		const x = sprite.x;
+		const y = sprite.y;
 
 		this.game.add.tween(sprite)
 			.to({y: "-" + move}, time).to({y: "+" + move * 2}, time * 2).to({y: "-" + move}, time)
