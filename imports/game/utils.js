@@ -17,9 +17,21 @@ export const isGameStatusFinished = function(gameStatus) {
 	return (gameStatus === Constants.GAME_STATUS_FINISHED);
 };
 
+export const isMatchPoint = function(hostPoints, clientPoints) {
+	let matchPoint = Constants.MAXIMUM_POINTS - 1;
+
+	return (hostPoints == matchPoint || clientPoints == matchPoint);
+};
+
+export const isDeucePoint = function(hostPoints, clientPoints) {
+	let matchPoint = Constants.MAXIMUM_POINTS - 1;
+
+	return (hostPoints == matchPoint && clientPoints == matchPoint);
+};
+
 export const getWinnerName = function(game) {
-	var winnerName = 'Nobody',
-		winner;
+	let winnerName = 'Nobody';
+	let winner;
 
 	if (isGameStatusFinished(game.status)) {
 		if (game.hostPoints >= Constants.MAXIMUM_POINTS) {

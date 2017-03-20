@@ -1,7 +1,8 @@
-import TestEnvironment from '/client/lib/TestEnvironment.js';
+import {Template} from 'meteor/templating';
+import TestEnvironment from '/imports/game/client/TestEnvironment.js';
 
 /** @type {TestEnvironment}|null */
-var testEnvironment = null;
+let testEnvironment = null;
 
 Template.testEnvironment.rendered = function() {
 	testEnvironment = new TestEnvironment();

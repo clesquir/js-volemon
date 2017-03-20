@@ -1,9 +1,9 @@
 import Stream from '/imports/lib/stream/Stream.js';
 
-export default class ClientStreamInitiator {
+export default class StreamInitiator {
 
 	/**
-	 * @param {ClientGameInitiator} gameInitiator
+	 * @param {GameInitiator} gameInitiator
 	 * @param {Stream} stream
 	 */
 	constructor(gameInitiator, stream) {

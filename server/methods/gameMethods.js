@@ -1,10 +1,10 @@
-import { Games } from '/collections/games.js';
-import { Players } from '/collections/players.js';
-import { Profiles } from '/collections/profiles.js';
-import { Config } from '/imports/lib/config.js';
-import { Constants } from '/imports/lib/constants.js';
-import { getUTCTimeStamp } from '/imports/lib/utils.js';
-import ServerStreamInitiator from '/imports/game/server/ServerStreamInitiator.js';
+import {Games} from '/collections/games.js';
+import {Players} from '/collections/players.js';
+import {Profiles} from '/collections/profiles.js';
+import {Config} from '/imports/lib/config.js';
+import {Constants} from '/imports/lib/constants.js';
+import {getUTCTimeStamp} from '/imports/lib/utils.js';
+import StreamInitiator from '/imports/game/server/StreamInitiator.js';
 
 let serverStreams = {};
 
@@ -248,7 +248,7 @@ Meteor.methods({
 
 		ServerStream.emit('play-' + gameId, 'play');
 
-		serverStreams[gameId] = new ServerStreamInitiator(gameId);
+		serverStreams[gameId] = new StreamInitiator(gameId);
 		serverStreams[gameId].start();
 	},
 

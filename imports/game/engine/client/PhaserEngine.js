@@ -1,7 +1,8 @@
+import Engine from '/imports/game/engine/Engine.js';
 import { Config } from '/imports/lib/config.js';
 import { Constants } from '/imports/lib/constants.js';
 
-export default class PhaserEngine {
+export default class PhaserEngine extends Engine {
 
 	start(width, height, parent, preloadGame, createGame, updateGame, scope) {
 		this.game = new Phaser.Game({
@@ -230,29 +231,19 @@ export default class PhaserEngine {
 		};
 	}
 
-	updateContactMaterials(ballMaterial, playerMaterial, playerDelimiterMaterial,
-		bonusMaterial, netDelimiterMaterial, groundDelimiterMaterial) {
-		var worldMaterial = this.createMaterial('world');
+	initWorldContactMaterial() {
+		this.worldMaterial = this.createMaterial('world');
 
 		this.game.physics.p2.updateBoundsCollisionGroup();
-		this.game.physics.p2.setWorldMaterial(worldMaterial);
+		this.game.physics.p2.setWorldMaterial(this.worldMaterial);
+	}
 
-		this.game.physics.p2.createContactMaterial(ballMaterial, worldMaterial,
-			{restitution: 1});
-		this.game.physics.p2.createContactMaterial(ballMaterial, groundDelimiterMaterial,
-			{restitution: 1});
+	createWorldContactMaterial(material, config) {
+		this.game.physics.p2.createContactMaterial(material, this.worldMaterial, config);
+	}
 
-		this.game.physics.p2.createContactMaterial(playerMaterial, worldMaterial,
-			{stiffness: 1e20, relaxation: 3, friction: 0});
-		this.game.physics.p2.createContactMaterial(playerMaterial, playerDelimiterMaterial,
-			{stiffness: 1e20, relaxation: 3, friction: 0});
-
-		this.game.physics.p2.createContactMaterial(bonusMaterial, worldMaterial,
-			{restitution: 1});
-		this.game.physics.p2.createContactMaterial(bonusMaterial, netDelimiterMaterial,
-			{restitution: 0.7});
-		this.game.physics.p2.createContactMaterial(bonusMaterial, groundDelimiterMaterial,
-			{restitution: 1});
+	createContactMaterial(materialA, materialB, config) {
+		this.game.physics.p2.createContactMaterial(materialA, materialB, config);
 	}
 
 	loadPolygon(sprite, key, object) {
