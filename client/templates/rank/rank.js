@@ -1,3 +1,5 @@
+import {Meteor} from 'meteor/meteor';
+import {Template} from 'meteor/templating';
 import RankChart from '/client/lib/RankChart.js';
 import { EloScores } from '/collections/eloscores.js';
 import { Profiles } from '/collections/profiles.js';

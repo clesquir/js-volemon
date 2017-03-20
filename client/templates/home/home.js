@@ -4,7 +4,7 @@ Template.home.helpers({
 	},
 
 	winRate: function() {
-		return getWinRate(this.profile, true);
+		return getWinRate(this.profile);
 	},
 
 	getStartedAtDate: function() {
