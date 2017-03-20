@@ -266,7 +266,7 @@ Template.game.events({
 	},
 
 	'click [data-action="expand-extra-big-game"]': function(e) {
-		const gameContainer = document.getElementById('gameContainer');
+		const gameContainer = $('.game-container').first();
 
 		if ($(gameContainer).is('.extra-big-game-size')) {
 			$(gameContainer).removeClass('extra-big-game-size');

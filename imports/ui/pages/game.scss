@@ -208,8 +208,22 @@
 		z-index: 1;
 	}
 
-	#gameContainer.extra-big-game-size canvas {
-		width: 1260px !important;
-		height: 840px !important;
+	.expand-extra-big-game-size-x1 {
+		display: none;
+	}
+
+	.game-container.extra-big-game-size {
+		#gameContainer canvas {
+			width: 1260px !important;
+			height: 840px !important;
+		}
+
+		.expand-extra-big-game-size-x1 {
+			display: block;
+		}
+
+		.expand-extra-big-game-size-x2 {
+			display:none;
+		}
 	}
 }
