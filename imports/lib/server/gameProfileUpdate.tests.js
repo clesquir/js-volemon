@@ -6,9 +6,9 @@ import {Games} from '/collections/games.js';
 import {Players} from '/collections/players.js';
 import {Profiles} from '/collections/profiles.js';
 import {Constants} from '/imports/lib/constants.js';
-import {updateProfilesOnGameFinish, getEloScore, getEloRating} from '/server/lib/game.js';
+import {updateProfilesOnGameFinish, getEloScore, getEloRating} from '/imports/lib/server/gameProfileUpdate.js';
 
-describe('Game#updateProfilesOnGameFinish', function() {
+describe('lib/server/gameProfileUpdate#updateProfilesOnGameFinish', function() {
 	it('throws 404 if game does not exist', function() {
 		chai.expect(() => {
 			updateProfilesOnGameFinish(Random.id(5));
@@ -78,7 +78,7 @@ describe('Game#updateProfilesOnGameFinish', function() {
 	});
 });
 
-describe('Game#getEloScore', function() {
+describe('lib/server/gameProfileUpdate#getEloScore', function() {
 	it('returns correct scores depending on the previous eloRating', function() {
 		chai.assert.equal('0.5000', getEloScore(1000, 1000).toFixed(4));
 		chai.assert.equal('0.4712', getEloScore(990, 1010).toFixed(4));
@@ -89,7 +89,7 @@ describe('Game#getEloScore', function() {
 	});
 });
 
-describe('Game#getEloRating', function() {
+describe('lib/server/gameProfileUpdate#getEloRating', function() {
 	it('returns correct rating depending on the score and who wins', function() {
 		let eloRating;
 		let eloScore;

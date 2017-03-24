@@ -49,11 +49,37 @@
 									</div>
 								{{/if}}
 
-								<div class="after-game-item after-game-actions">
-									<strong>What do you want to do next?</strong>
-									<div><a href="{{pathFor 'home'}}">Go to the homepage</a></div>
-									<div><a href="{{pathFor 'rank'}}">View rank</a></div>
-								</div>
+								{{#if isGamePlayer}}
+									<div class="after-game-item after-game-actions">
+										{{#if showOpponentDeclinedRematch}}
+											<div class="rematch-declined">Your opponent declined a rematch...</div>
+										{{/if}}
+										{{#if showPlayerLeftTheGame}}
+											<div class="rematch-declined">Your opponent left the game...</div>
+										{{/if}}
+										{{#if showWaitingForReply}}
+											<div>Waiting for your opponent to accept...</div>
+										{{/if}}
+										{{#if showCreatingGame}}
+											<div>Creating game...</div>
+										{{/if}}
+										{{#if askForRematchReply}}
+											<div>
+												Your opponent is asking for a rematch. Do you accept?<br />
+												<a href="#" class="button" data-action="game-rematch">Yes</a>
+												<a href="#" class="button" data-action="declined-game-rematch">No</a>
+											</div>
+										{{/if}}
+										{{#if showActionAfterGame}}
+											<strong>What do you want to do next?</strong>
+											{{#if showAskForRematch}}
+												<div><a href="#" data-action="game-rematch">Ask for a rematch</a></div>
+											{{/if}}
+											<div><a href="{{pathFor 'home'}}">Go to the homepage</a></div>
+											<div><a href="{{pathFor 'rank'}}">View rank</a></div>
+										{{/if}}
+									</div>
+								{{/if}}
 							</div>
 						</div>
 					</div>

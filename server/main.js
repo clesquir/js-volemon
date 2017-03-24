@@ -1,4 +1,8 @@
+import {Meteor} from 'meteor/meteor';
+import {Accounts} from 'meteor/accounts-base';
+import {Random} from 'meteor/random';
 import '/imports/lib/rollbar/server/Init.js';
+import {createProfile} from '/imports/lib/server/userProfileCreation.js';
 import ServerSocketIo from '/imports/lib/stream/server/ServerSocketIo.js';
 
 Accounts.onCreateUser((options, user) => {

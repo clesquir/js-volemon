@@ -120,6 +120,18 @@
 	transition: opacity 1s ease-in-out;
 	opacity: 0;
 
+	.rematch-declined {
+		margin-bottom: 15px;
+	}
+
+	.button {
+		margin-top: 10px;
+	}
+
+	a + a {
+		margin: 0;
+	}
+
 	&.shown-container {
 		visibility: visible;
 		opacity: 1;
