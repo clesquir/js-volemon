@@ -6,43 +6,20 @@ import {Profiles} from '/collections/profiles.js';
 import {Config} from '/imports/lib/config.js';
 import {Constants} from '/imports/lib/constants.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
-import StreamInitiator from '/imports/game/server/StreamInitiator.js';
-import {updateProfilesOnGameFinish} from '/server/lib/game.js';
+import {createGame, joinGame, startGame, replyRematch} from '/imports/lib/server/game.js';
+import {updateProfilesOnGameFinish} from '/imports/lib/server/gameProfileUpdate.js';
 
-let serverStreams = {};
+let streamInitiators = {};
 
 Meteor.methods({
 	createGame: function() {
 		const user = Meteor.user();
-		let id = null;
 
 		if (!user) {
 			throw new Meteor.Error(401, 'You need to login to create a game');
 		}
 
-		do {
-			try {
-				id = Games.insert({
-					_id: Random.id(5),
-					status: Constants.GAME_STATUS_REGISTRATION,
-					createdAt: getUTCTimeStamp(),
-					createdBy: user._id,
-					creatorName: user.profile.name,
-					isPrivate: 0,
-					hasBonuses: 1,
-					hostPoints: 0,
-					clientPoints: 0,
-					lastPointTaken: null,
-					activeBonuses: [],
-					viewers: 0
-				});
-			} catch (e) {
-				//If the id is already taken loop until it finds a unique id
-				if (e.code != 11000) {
-					throw e;
-				}
-			}
-		} while (id == null);
+		const id = createGame(user);
 
 		Meteor.call('joinGame', id, true);
 
@@ -70,60 +47,12 @@ Meteor.methods({
 
 	joinGame: function(gameId, isReady) {
 		const user = Meteor.user();
-		const game = Games.findOne(gameId);
-		let player;
 
 		if (!user) {
 			throw new Meteor.Error(401, 'You need to login to join a game');
 		}
 
-		if (!game) {
-			throw new Meteor.Error(404, 'Game not found');
-		}
-
-		player = Players.findOne({gameId: gameId, userId: user._id});
-		if (player) {
-			throw new Meteor.Error('not-allowed', 'Already joined');
-		}
-
-		return Meteor.call('addPlayerToGame', gameId, isReady);
-	},
-
-	addPlayerToGame: function(gameId, isReady) {
-		const user = Meteor.user();
-		const game = Games.findOne(gameId);
-		const profile = Profiles.findOne({userId: this.userId});
-
-		if (!user) {
-			throw new Meteor.Error(401, 'You need to login to add player to a game');
-		}
-
-		if (!game) {
-			throw new Meteor.Error(404, 'Game not found');
-		}
-
-		if (isReady === undefined) {
-			isReady = false;
-		}
-
-		let shape = Constants.PLAYER_DEFAULT_SHAPE;
-		if (profile && profile.lastShapeUsed) {
-			shape = profile.lastShapeUsed;
-		}
-
-		let playerId = Players.insert({
-			userId: user._id,
-			name: user.profile.name,
-			gameId: gameId,
-			joinedAt: getUTCTimeStamp(),
-			isReady: isReady,
-			hasQuit: false,
-			shape: shape
-		});
-
-		return {
-			_id: playerId
-		};
+		return joinGame(user, gameId, isReady);
 	},
 
 	updatePlayerShape: function(gameId, shape) {
@@ -215,25 +144,7 @@ Meteor.methods({
 	},
 
 	startGame: function(gameId) {
-		let game = Games.findOne(gameId);
-
-		if (!game) {
-			throw new Meteor.Error(404, 'Game not found');
-		}
-
-		let data = {
-			status: Constants.GAME_STATUS_STARTED,
-			startedAt: getUTCTimeStamp(),
-			lastPointAt: getUTCTimeStamp(),
-			pointsDuration: []
-		};
-
-		Games.update({_id: gameId}, {$set: data});
-
-		ServerStream.emit('play-' + gameId, 'play');
-
-		serverStreams[gameId] = new StreamInitiator(gameId);
-		serverStreams[gameId].start();
+		startGame(gameId, streamInitiators);
 	},
 
 	addGameViewer: function(gameId) {
@@ -272,7 +183,7 @@ Meteor.methods({
 		//If game has not started, leaveGame instead
 		if (game.status === Constants.GAME_STATUS_REGISTRATION) {
 			Meteor.call('leaveGame', gameId);
-		} else if (game.status !== Constants.GAME_STATUS_FINISHED) {
+		} else {
 			player = Players.findOne({userId: user._id, gameId: gameId});
 
 			if (!player) {
@@ -281,9 +192,9 @@ Meteor.methods({
 
 			Players.update({_id: player._id}, {$set: {hasQuit: getUTCTimeStamp()}});
 
-			if (serverStreams[gameId]) {
-				serverStreams[gameId].stop();
-				delete serverStreams[gameId];
+			if (streamInitiators[gameId]) {
+				streamInitiators[gameId].stop();
+				delete streamInitiators[gameId];
 			}
 
 			if (game.status === Constants.GAME_STATUS_STARTED) {
@@ -382,5 +293,15 @@ Meteor.methods({
 		if (isGameFinished) {
 			updateProfilesOnGameFinish(game._id, columnName);
 		}
+	},
+
+	replyRematch(gameId, accepted) {
+		const user = Meteor.user();
+
+		if (!user) {
+			throw new Meteor.Error(401, 'You need to login to ask for rematch');
+		}
+
+		replyRematch(user._id, gameId, accepted, streamInitiators);
 	}
 });

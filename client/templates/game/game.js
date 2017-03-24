@@ -2,6 +2,7 @@ import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
 import {Session} from 'meteor/session';
 import GameInitiator from '/imports/game/client/GameInitiator.js';
+import GameRematch from '/imports/game/client/GameRematch.js';
 import {
 	isGameStatusStarted,
 	isGameStatusFinished,
@@ -12,6 +13,14 @@ import {
 import {Games} from '/collections/games.js';
 import {Players} from '/collections/players.js';
 import {Config} from '/imports/lib/config.js';
+import {
+	playerAcceptedRematch,
+	playerDeclinedRematch,
+	playerHasNotRepliedRematch,
+	playerLeftGame,
+	currentPlayerHasRepliedRematch,
+	currentPlayerAcceptedRematch
+} from '/imports/lib/client/gameSetup.js';
 
 Template.game.helpers({
 	isHost: function() {
@@ -66,12 +75,8 @@ Template.game.helpers({
 		return this.game.viewers;
 	},
 
-	loggedPlayer: function() {
-		return Players.findOne({gameId: Session.get('game'), userId: Meteor.userId()});
-	},
-
-	opponents: function() {
-		return Players.find({gameId: Session.get('game'), userId: {$ne: Meteor.userId()}});
+	isGamePlayer: function() {
+		return !!Players.findOne({gameId: Session.get('game'), userId: Meteor.userId()});
 	},
 
 	/**
@@ -200,6 +205,74 @@ Template.game.helpers({
 		});
 
 		return gameZoomedIn ? 'extra-big-game-size' : '';
+	},
+
+	showActionAfterGame() {
+		const players = Players.find({gameId: Session.get('game')});
+
+		return (
+			!playerAcceptedRematch(players) ||
+			playerDeclinedRematch(players) ||
+			playerLeftGame(players)
+		);
+	},
+
+	showAskForRematch() {
+		const players = Players.find({gameId: Session.get('game')});
+
+		return (
+			!playerAcceptedRematch(players) &&
+			!playerDeclinedRematch(players) &&
+			!playerLeftGame(players)
+		);
+	},
+
+	showWaitingForReply() {
+		const players = Players.find({gameId: Session.get('game')});
+
+		return (
+			currentPlayerAcceptedRematch(players, Meteor.userId()) &&
+			playerHasNotRepliedRematch(players) &&
+			!playerLeftGame(players)
+		);
+	},
+
+	showPlayerLeftTheGame() {
+		const players = Players.find({gameId: Session.get('game')});
+
+		return (
+			playerLeftGame(players) &&
+			!playerDeclinedRematch(players)
+		);
+	},
+
+	showOpponentDeclinedRematch() {
+		const players = Players.find({gameId: Session.get('game')});
+
+		return (
+			currentPlayerAcceptedRematch(players, Meteor.userId()) &&
+			playerDeclinedRematch(players)
+		);
+	},
+
+	askForRematchReply() {
+		const players = Players.find({gameId: Session.get('game')});
+
+		return (
+			playerAcceptedRematch(players) &&
+			!currentPlayerHasRepliedRematch(players, Meteor.userId()) &&
+			!playerDeclinedRematch(players) &&
+			!playerLeftGame(players)
+		);
+	},
+
+	showCreatingGame() {
+		const players = Players.find({gameId: Session.get('game')});
+
+		return (
+			!playerDeclinedRematch(players) &&
+			!playerHasNotRepliedRematch(players)
+		);
 	}
 });
 
@@ -241,18 +314,18 @@ Template.game.events({
 		}
 	},
 
-	'click [data-action="set-player-is-ready"]': function(e) {
+	'click [data-action="set-player-is-ready"]': function() {
 		Meteor.call('setPlayerIsReady', Session.get('game'));
 	},
 	
-	'click [data-action="start"]': function(e) {
+	'click [data-action="start"]': function() {
 		Session.set('loadingmask', true);
 		Meteor.call('startGame', Session.get('game'), function(error) {
 			Session.set('loadingmask', false);
 		});
 	},
 
-	'click [data-action="join"]': function(e) {
+	'click [data-action="join"]': function() {
 		actionAfterLoginCreateUser = function() {
 			Meteor.call('joinGame', Session.get('game'), function(error) {
 				if (error) {
@@ -273,11 +346,11 @@ Template.game.events({
 		actionAfterLoginCreateUser = null;
 	},
 
-	'click [data-action="leave"]': function(e) {
+	'click [data-action="leave"]': function() {
 		Meteor.call('leaveGame', Session.get('game'));
 	},
 
-	'click [data-action="expand-extra-big-game"]': function(e) {
+	'click [data-action="expand-extra-big-game"]': function() {
 		const gameContainer = $('.game-container').first();
 		let zoomedIn = false;
 
@@ -291,15 +364,27 @@ Template.game.events({
 		if (Meteor.userId()) {
 			Meteor.call('saveZoomedInGame', zoomedIn);
 		}
+	},
+
+	'click [data-action="game-rematch"]': function() {
+		Meteor.call('replyRematch', Session.get('game'), true);
+	},
+
+	'click [data-action="declined-game-rematch"]': function() {
+		Meteor.call('replyRematch', Session.get('game'), false);
 	}
 });
 
 /** @type {GameInitiator}|null */
 let gameInitiator = null;
+/** @type {GameRematch}|null */
+let gameRematch = null;
 
 Template.game.rendered = function() {
 	gameInitiator = new GameInitiator(Session.get('game'));
 	gameInitiator.init();
+	gameRematch = new GameRematch(Session.get('game'));
+	gameRematch.init();
 };
 
 Template.game.destroyed = function() {
@@ -307,6 +392,9 @@ Template.game.destroyed = function() {
 
 	if (gameInitiator) {
 		gameInitiator.stop();
+	}
+	if (gameRematch) {
+		gameRematch.stop();
 	}
 
 	Session.set('game', undefined);
@@ -318,6 +406,9 @@ Meteor.startup(function(){
 		if (Session.get('game')) {
 			if (gameInitiator) {
 				gameInitiator.stop();
+			}
+			if (gameRematch) {
+				gameRematch.stop();
 			}
 
 			Meteor.call('quitGame', Session.get('game'), function() {});

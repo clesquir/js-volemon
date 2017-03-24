@@ -41,6 +41,10 @@ export default class GameInitiator {
 			changed: (id, fields) => {
 				if (fields.hasOwnProperty('status')) {
 					this.gameData.updateStatus(fields.status);
+
+					if (fields.status === Constants.GAME_STATUS_STARTED) {
+						Session.set('apploadingmask', false);
+					}
 				}
 
 				if (fields.hasOwnProperty(Constants.HOST_POINTS_COLUMN)) {
@@ -123,12 +127,12 @@ export default class GameInitiator {
 	updateTimer() {
 		if (this.gameData.isGameStatusStarted()) {
 			let matchTimer = this.serverNormalizedTime.getServerNormalizedTimestamp() - this.gameData.startedAt;
-			if (matchTimer < 0) {
+			if (matchTimer < 0 || isNaN(matchTimer)) {
 				matchTimer = 0;
 			}
 
 			let pointTimer = this.serverNormalizedTime.getServerNormalizedTimestamp() - this.gameData.lastPointAt;
-			if (pointTimer < 0) {
+			if (pointTimer < 0 || isNaN(pointTimer)) {
 				pointTimer = 0;
 			}
 

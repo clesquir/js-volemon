@@ -1,10 +1,10 @@
-import { EloScores } from '/collections/eloscores.js';
-import { Profiles } from '/collections/profiles.js';
-import { Constants } from '/imports/lib/constants.js';
-import { getUTCTimeStamp } from '/imports/lib/utils.js';
+import {EloScores} from '/collections/eloscores.js';
+import {Profiles} from '/collections/profiles.js';
+import {Constants} from '/imports/lib/constants.js';
+import {getUTCTimeStamp} from '/imports/lib/utils.js';
 
-createProfile = function(user) {
-	var profile = {
+export const createProfile = function(user) {
+	const profile = {
 		userId: user._id,
 		retiredAt: null,
 		numberOfWin: 0,

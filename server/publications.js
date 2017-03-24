@@ -1,8 +1,9 @@
-import { EloScores } from '/collections/eloscores.js';
-import { Games } from '/collections/games.js';
-import { Players } from '/collections/players.js';
-import { Profiles } from '/collections/profiles.js';
-import { Constants } from '/imports/lib/constants.js';
+import {Meteor} from 'meteor/meteor';
+import {EloScores} from '/collections/eloscores.js';
+import {Games} from '/collections/games.js';
+import {Players} from '/collections/players.js';
+import {Profiles} from '/collections/profiles.js';
+import {Constants} from '/imports/lib/constants.js';
 
 Meteor.publish('userData', function() {
 	return Meteor.users.find({_id: this.userId});
@@ -23,7 +24,10 @@ Meteor.publish('recentProfileGames', function(limit) {
 
 	//Fetch game ids for these limited games
 	const games = Games.find(
-		{_id: {$in: gamesIds}, status: Constants.GAME_STATUS_FINISHED},
+		{
+			_id: {$in: gamesIds},
+			status: Constants.GAME_STATUS_FINISHED
+		},
 		{
 			sort: [['startedAt', 'desc']],
 			limit: limit,
@@ -58,8 +62,14 @@ Meteor.publish('ranks-chart', function(minDate) {
 Meteor.publish('games', function() {
 	return [
 		Games.find(
-			{isPrivate: 0, status: {$in: [Constants.GAME_STATUS_REGISTRATION, Constants.GAME_STATUS_STARTED]}},
-			{fields: {status: 1, creatorName: 1}}
+			{
+				isPrivate: 0,
+				status: {$in: [Constants.GAME_STATUS_REGISTRATION, Constants.GAME_STATUS_STARTED]}
+			},
+			{
+				sort: [['createdAt', 'asc']],
+				fields: {status: 1, creatorName: 1}
+			}
 		)
 	];
 });
