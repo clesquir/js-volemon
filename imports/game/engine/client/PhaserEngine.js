@@ -83,16 +83,20 @@ export default class PhaserEngine extends Engine {
 	}
 
 	addKeyControllers() {
-		this.cursor = this.game.input.keyboard.createCursorKeys();
-		this.cursor['a'] = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
-		this.cursor['w'] = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
-		this.cursor['d'] = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
-		this.cursor['s'] = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
-		this.cursor['spacebar'] = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+		if (Phaser.Keyboard) {
+			this.cursor = this.game.input.keyboard.createCursorKeys();
+			this.cursor['a'] = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
+			this.cursor['w'] = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
+			this.cursor['d'] = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
+			this.cursor['s'] = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
+			this.cursor['spacebar'] = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+		}
 	}
 
 	removeKeyControllers() {
-		this.game.input.keyboard.clearCaptures();
+		if (Phaser.Keyboard) {
+			this.game.input.keyboard.clearCaptures();
+		}
 	}
 
 	addGroup() {
@@ -158,6 +162,10 @@ export default class PhaserEngine extends Engine {
 
 	createMaterial(material) {
 		return this.game.physics.p2.createMaterial(material);
+	}
+
+	isInputSetup() {
+		return (!!Phaser.Keyboard);
 	}
 
 	isLeftKeyDown() {
