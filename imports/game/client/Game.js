@@ -677,25 +677,37 @@ export default class Game {
 
 	isLeftKeyDown() {
 		return (
-			this.engine.isLeftKeyDown() || this.engine.isAKeyDown()
+			this.engine.isInputSetup() &&
+			(
+				this.engine.isLeftKeyDown() || this.engine.isAKeyDown()
+			)
 		);
 	}
 
 	isRightKeyDown() {
 		return (
-			this.engine.isRightKeyDown() || this.engine.isDKeyDown()
+			this.engine.isInputSetup() &&
+			(
+				this.engine.isRightKeyDown() || this.engine.isDKeyDown()
+			)
 		);
 	}
 
 	isUpKeyDown() {
 		return (
-			this.engine.isUpKeyDown() || this.engine.isWKeyDown()
+			this.engine.isInputSetup() &&
+			(
+				this.engine.isUpKeyDown() || this.engine.isWKeyDown()
+			)
 		);
 	}
 
 	isDropShotKeyDown() {
 		return (
-			this.engine.isDownKeyDown() || this.engine.isSKeyDown() || this.engine.isSpacebarKeyDown()
+			this.engine.isInputSetup() &&
+			(
+				this.engine.isDownKeyDown() || this.engine.isSKeyDown() || this.engine.isSpacebarKeyDown()
+			)
 		);
 	}
 
