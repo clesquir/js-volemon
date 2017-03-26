@@ -746,10 +746,18 @@ export default class Game {
 	}
 
 	createBonus(data) {
+		if (!this.gameInitiated) {
+			return;
+		}
+
 		this.gameBonus.createBonus(data);
 	}
 
 	activateBonus(bonusIdentifier, playerKey, activatedAt) {
+		if (!this.gameInitiated) {
+			return;
+		}
+
 		this.gameBonus.activateBonus(bonusIdentifier, playerKey, activatedAt);
 	}
 
