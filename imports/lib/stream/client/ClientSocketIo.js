@@ -1,4 +1,5 @@
 import Stream from '/imports/lib/stream/Stream.js';
+import socketIOP2P from '/imports/lib/override/socket.io-p2p.js';
 
 let isWebRTCSupported = !!require('get-browser-rtc')();
 
@@ -14,7 +15,7 @@ export default class ClientSocketIo extends Stream {
 
 		this.socketAdapter = require('socket.io-client').connect(url);
 		if (isWebRTCSupported) {
-			this.p2pAdapter = new (require('socket.io-p2p'))(this.socketAdapter, {numClients: 10, autoUpgrade: true});
+			this.p2pAdapter = new (socketIOP2P)(this.socketAdapter, {numClients: 10, autoUpgrade: true});
 		}
 	}
 
