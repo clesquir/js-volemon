@@ -1,5 +1,5 @@
 import Stream from '/imports/lib/stream/Stream.js';
-import p2pserver from '/imports/lib/override/p2pSocket.js';
+import p2pserver from '/imports/lib/override/socket.io-p2p-server.js';
 
 export default class ServerSocketIo extends Stream {
 
