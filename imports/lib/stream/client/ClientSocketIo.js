@@ -15,8 +15,18 @@ export default class ClientSocketIo extends Stream {
 
 		this.socketAdapter = require('socket.io-client').connect(url);
 		if (isWebRTCSupported) {
-			this.p2pAdapter = new (socketIOP2P)(this.socketAdapter, {numClients: 10, autoUpgrade: true});
+			this.connectP2pAdapter();
 		}
+	}
+
+	/**
+	 * @private
+	 */
+	connectP2pAdapter() {
+		this.p2pAdapter = new (socketIOP2P)(this.socketAdapter, {numClients: 10, autoUpgrade: true});
+		this.p2pAdapter.on('peer-error', () => {
+			this.connectP2pAdapter();
+		});
 	}
 
 	disconnect() {
