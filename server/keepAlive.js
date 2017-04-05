@@ -5,20 +5,20 @@ import { callMeteorMethodAtFrequence } from '/imports/lib/utils.js';
 
 const lastKeepAliveUpdateByPlayerIds = {};
 
-startKeepAlive = function(gameId) {
+export const startKeepAlive = function(gameId, stream) {
 	let game = Games.findOne(gameId);
 	let players = Players.find({gameId: gameId});
 	let hostPlayer = null;
 	let clientPlayer = null;
 	players.forEach(function(player) {
-		if (game.createdBy == player.userId) {
+		if (game.createdBy === player.userId) {
 			hostPlayer = player;
 		} else {
 			clientPlayer = player;
 		}
 	});
 
-	ServerStream.on('sendBundledData-' + gameId, function(bundledData) {
+	stream.on('sendBundledData-' + gameId, function(bundledData) {
 		if (bundledData.moveOppositePlayer) {
 			let movedPlayer = null;
 			if (bundledData.moveOppositePlayer.isUserHost) {

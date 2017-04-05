@@ -3,7 +3,7 @@ import {Accounts} from 'meteor/accounts-base';
 import {Random} from 'meteor/random';
 import '/imports/lib/rollbar/server/Init.js';
 import {createProfile} from '/imports/lib/server/userProfileCreation.js';
-import ServerSocketIo from '/imports/lib/stream/server/ServerSocketIo.js';
+import {ServerStreamInitiator} from '/imports/lib/stream/server/ServerStreamInitiator.js';
 
 Accounts.onCreateUser((options, user) => {
 	user._id = Random.id();
@@ -20,10 +20,8 @@ Accounts.onCreateUser((options, user) => {
 	return user;
 });
 
-ServerStream = new ServerSocketIo();
-
 Meteor.startup(() => {
-	ServerStream.connect();
+	ServerStreamInitiator.connect();
 
 	//Setup SMTP url
 	process.env.MAIL_URL = Meteor.settings.smtpUrl;

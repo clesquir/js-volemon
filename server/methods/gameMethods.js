@@ -9,6 +9,7 @@ import {getUTCTimeStamp} from '/imports/lib/utils.js';
 import {createGame, joinGame, startGame, replyRematch} from '/imports/lib/server/game.js';
 import {updateProfilesOnGameFinish} from '/imports/lib/server/gameProfileUpdate.js';
 
+/** @type {StreamInitiator[]} */
 let streamInitiators = {};
 
 Meteor.methods({
@@ -19,7 +20,7 @@ Meteor.methods({
 			throw new Meteor.Error(401, 'You need to login to create a game');
 		}
 
-		const id = createGame(user);
+		const id = createGame(user, streamInitiators);
 
 		Meteor.call('joinGame', id, true);
 
@@ -38,7 +39,7 @@ Meteor.methods({
 			throw new Meteor.Error(404, 'Game not found');
 		}
 
-		if (game.createdBy != user._id) {
+		if (game.createdBy !== user._id) {
 			throw new Meteor.Error('not-allowed', 'Only the creator can update this game privacy');
 		}
 
@@ -254,7 +255,7 @@ Meteor.methods({
 			throw new Meteor.Error(404, 'Game not found');
 		}
 
-		if (game.status != Constants.GAME_STATUS_STARTED) {
+		if (game.status !== Constants.GAME_STATUS_STARTED) {
 			throw new Meteor.Error('not-allowed', 'Only active games can be updated');
 		}
 

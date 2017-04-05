@@ -1,18 +1,25 @@
+import {startKeepAlive} from '/server/keepAlive.js';
+
 export default class StreamInitiator {
 
-	constructor(gameId) {
+	constructor(gameId, stream) {
 		this.gameId = gameId;
+		this.stream = stream;
+	}
 
-		ServerStream.on('activateBonus-' + gameId, (bundledData) => {}, true);
-		ServerStream.on('sendBundledData-' + gameId, (bundledData) => {}, true);
+	init() {
+		this.stream.on('activateBonus-' + this.gameId, (bundledData) => {}, true);
+		this.stream.on('sendBundledData-' + this.gameId, (bundledData) => {}, true);
 	}
 
 	start() {
-		startKeepAlive(this.gameId);
+		this.stream.emit('play-' + this.gameId, 'play');
+		startKeepAlive(this.gameId, this.stream);
 	}
 
 	stop() {
-		ServerStream.off('sendBundledData-' + this.gameId);
+		this.stream.off('sendBundledData-' + this.gameId);
+		this.stream.off('activateBonus-' + this.gameId);
 	}
 
 }

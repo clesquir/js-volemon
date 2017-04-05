@@ -6,9 +6,15 @@ import {Profiles} from '/collections/profiles.js';
 import {Constants} from '/imports/lib/constants.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 import StreamInitiator from '/imports/game/server/StreamInitiator.js';
+import {ServerStreamInitiator} from '/imports/lib/stream/server/ServerStreamInitiator.js';
 import {isGameStatusTimeout, isGameStatusFinished} from '/imports/game/utils.js';
 
-export const createGame = function(user) {
+/**
+ * @param user
+ * @param {StreamInitiator[]} streamInitiators
+ * @returns {string}
+ */
+export const createGame = function(user, streamInitiators) {
 	let id = null;
 
 	do {
@@ -33,11 +39,20 @@ export const createGame = function(user) {
 				throw e;
 			}
 		}
-	} while (id == null);
+	} while (id === null);
+
+	streamInitiators[id] = new StreamInitiator(id, ServerStreamInitiator);
+	streamInitiators[id].init();
 
 	return id;
 };
 
+/**
+ * @param user
+ * @param {string} gameId
+ * @param {boolean} isReady
+ * @returns {*}
+ */
 export const joinGame = function(user, gameId, isReady) {
 	const game = Games.findOne(gameId);
 
@@ -72,6 +87,10 @@ export const joinGame = function(user, gameId, isReady) {
 	});
 };
 
+/**
+ * @param {string} gameId
+ * @param {StreamInitiator[]} streamInitiators
+ */
 export const startGame = function(gameId, streamInitiators) {
 	let game = Games.findOne(gameId);
 
@@ -88,12 +107,17 @@ export const startGame = function(gameId, streamInitiators) {
 
 	Games.update({_id: gameId}, {$set: data});
 
-	ServerStream.emit('play-' + gameId, 'play');
-
-	streamInitiators[gameId] = new StreamInitiator(gameId);
-	streamInitiators[gameId].start();
+	if (streamInitiators[gameId]) {
+		streamInitiators[gameId].start();
+	}
 };
 
+/**
+ * @param {string} userId
+ * @param {string} gameId
+ * @param {boolean} accepted
+ * @param {StreamInitiator[]} streamInitiators
+ */
 export const replyRematch = function(userId, gameId, accepted, streamInitiators) {
 	const game = Games.findOne(gameId);
 
@@ -118,7 +142,7 @@ export const replyRematch = function(userId, gameId, accepted, streamInitiators)
 		const clientPlayer = Players.findOne({gameId: gameId, userId: {$ne: game.createdBy}});
 		const clientUser = Meteor.users.findOne({_id: clientPlayer.userId});
 
-		const gameRematchId = createGame(clientUser);
+		const gameRematchId = createGame(clientUser, streamInitiators);
 		joinGame(clientUser, gameRematchId, true);
 		joinGame(hostUser, gameRematchId, true);
 
