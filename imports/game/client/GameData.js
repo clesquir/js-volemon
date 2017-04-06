@@ -30,7 +30,7 @@ export default class GameData {
 	getPlayerShapeFromKey(playerKey) {
 		let player;
 
-		if (playerKey == 'player1') {
+		if (playerKey === 'player1') {
 			player = this.hostPlayer;
 		} else {
 			player = this.clientPlayer;
@@ -43,12 +43,16 @@ export default class GameData {
 		return player.shape;
 	}
 
+	isUserCreator() {
+		return (this.createdBy === Meteor.userId());
+	}
+
 	isUserHost() {
-		return (this.createdBy === Meteor.userId() && !!this.currentPlayer);
+		return (this.isUserCreator() && !!this.currentPlayer);
 	}
 
 	isUserClient() {
-		return (this.createdBy !== Meteor.userId() && !!this.currentPlayer);
+		return (!this.isUserCreator() && !!this.currentPlayer);
 	}
 
 	isUserViewer() {
@@ -56,19 +60,19 @@ export default class GameData {
 	}
 
 	isUserHostTargetPlayer(playerKey) {
-		return this.isUserHost() && playerKey == 'player1';
+		return this.isUserHost() && playerKey === 'player1';
 	}
 
 	isUserClientTargetPlayer(playerKey) {
-		return this.isUserClient() && playerKey == 'player2';
+		return this.isUserClient() && playerKey === 'player2';
 	}
 
 	isUserHostNotTargetPlayer(playerKey) {
-		return this.isUserHost() && playerKey == 'player2';
+		return this.isUserHost() && playerKey === 'player2';
 	}
 
 	isUserClientNotTargetPlayer(playerKey) {
-		return this.isUserClient() && playerKey == 'player1';
+		return this.isUserClient() && playerKey === 'player1';
 	}
 
 	isGameStatusOnGoing() {
@@ -120,11 +124,11 @@ export default class GameData {
 		this.clientPlayer = null;
 
 		players.forEach((player) => {
-			if (player.userId == Meteor.userId()) {
+			if (player.userId === Meteor.userId()) {
 				this.currentPlayer = player;
 			}
 
-			if (player.userId == this.createdBy) {
+			if (player.userId === this.createdBy) {
 				this.hostPlayer = player;
 			} else {
 				this.clientPlayer = player;

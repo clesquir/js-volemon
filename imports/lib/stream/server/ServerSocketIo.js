@@ -3,6 +3,12 @@ import p2pserver from '/imports/lib/override/socket.io-p2p-server.js';
 
 export default class ServerSocketIo extends Stream {
 
+	constructor(...args) {
+		super(...args);
+		this.sockets = {};
+		this.listeners = {};
+	}
+
 	connect() {
 		const PORT = 8080;
 
@@ -16,9 +22,9 @@ export default class ServerSocketIo extends Stream {
 		const p2p = p2pserver.Server;
 		this.io.use(p2p);
 
-		this.sockets = {};
 		this.io.on('connection', (socket) => {
 			this.sockets[socket.id] = socket;
+			this.attachListeners(socket);
 
 			socket.on('disconnect', () => {
 				delete this.sockets[socket.id];
@@ -50,14 +56,29 @@ export default class ServerSocketIo extends Stream {
 	 * @param {boolean} broadcast Broadcast to all sockets if true
 	 */
 	on(eventName, callback, broadcast) {
+		this.listeners[eventName] = {
+			callback: callback,
+			broadcast: broadcast
+		};
+
 		const sockets = this.sockets;
 		for (let socketId in sockets) {
 			if (sockets.hasOwnProperty(socketId)) {
-				sockets[socketId].on(eventName, function(data) {
+				this.attachListeners(sockets[socketId]);
+			}
+		}
+	}
+
+	attachListeners(socket) {
+		for (let eventName in this.listeners) {
+			if (this.listeners.hasOwnProperty(eventName)) {
+				const callback = this.listeners[eventName].callback;
+				const broadcast = this.listeners[eventName].broadcast;
+				socket.on(eventName, function(data) {
 					callback.call(this, data);
 					if (broadcast) {
 						data.broadcast = true;
-						sockets[socketId].broadcast.emit(eventName, data);
+						socket.broadcast.emit(eventName, data);
 					}
 				});
 			}
@@ -73,6 +94,8 @@ export default class ServerSocketIo extends Stream {
 				// this.sockets[socketId].removeListener(eventName);
 			}
 		}
+		this.sockets = {};
+		this.listeners = {};
 	}
 
 }

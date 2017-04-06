@@ -19,7 +19,7 @@ export default class GameInitiator {
 		this.currentGame = null;
 		this.timerUpdater = null;
 
-		this.stream = new ClientSocketIo();
+		this.stream = new ClientSocketIo(this.gameId);
 		this.engine = new PhaserEngine();
 		this.gameData = new GameData(this.gameId);
 		this.gameStreamBundler = new GameStreamBundler(this.stream);
@@ -148,7 +148,7 @@ export default class GameInitiator {
 	}
 
 	hasActiveGame() {
-		return this.currentGame != null;
+		return this.currentGame !== null;
 	}
 
 }

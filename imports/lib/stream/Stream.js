@@ -1,6 +1,7 @@
 export default class Stream {
 
-	constructor() {
+	constructor(channel) {
+		this.channel = channel;
 	}
 
 	connect() {
