@@ -1,13 +1,9 @@
 export default class Stream {
 
-	constructor(channel) {
-		this.channel = channel;
+	connect(channel) {
 	}
 
-	connect() {
-	}
-
-	disconnect() {
+	disconnect(channel) {
 	}
 
 	emit(eventName, payload) {

@@ -1,7 +1,6 @@
 import Stream from '/imports/lib/stream/Stream.js';
-import p2pserver from '/imports/lib/override/socket.io-p2p-server.js';
 
-export default class ServerSocketIo extends Stream {
+export default class ServerSimplePeer extends Stream {
 
 	connect() {
 		this.sockets = {};
@@ -16,8 +15,6 @@ export default class ServerSocketIo extends Stream {
 		const app = express();
 		const server = require('http').createServer(app);
 		this.io = require('socket.io')(server);
-		const p2p = p2pserver.Server;
-		this.io.use(p2p);
 
 		this.io.on('connection', (socket) => {
 			this.sockets[socket.id] = socket;

@@ -9,8 +9,9 @@ import GameStreamBundler from '/imports/game/client/GameStreamBundler.js';
 import ServerNormalizedTime from '/imports/game/client/ServerNormalizedTime.js';
 import StreamInitiator from '/imports/game/client/StreamInitiator.js';
 import Game from '/imports/game/client/Game.js';
+import {isGameStatusStarted} from '/imports/game/utils.js';
 import {Constants} from '/imports/lib/constants.js';
-import ClientSocketIo from '/imports/lib/stream/client/ClientSocketIo.js';
+import ClientSimplePeer from '/imports/lib/stream/client/ClientSimplePeer.js';
 
 export default class GameInitiator {
 
@@ -19,7 +20,7 @@ export default class GameInitiator {
 		this.currentGame = null;
 		this.timerUpdater = null;
 
-		this.stream = new ClientSocketIo(this.gameId);
+		this.stream = new ClientSimplePeer();
 		this.engine = new PhaserEngine();
 		this.gameData = new GameData(this.gameId);
 		this.gameStreamBundler = new GameStreamBundler(this.stream);
@@ -29,6 +30,7 @@ export default class GameInitiator {
 
 	init() {
 		this.gameData.init();
+		this.stream.connect(this.gameId);
 		this.streamInitiator.init();
 
 		if (this.gameData.isGameStatusOnGoing()) {
@@ -42,7 +44,7 @@ export default class GameInitiator {
 				if (fields.hasOwnProperty('status')) {
 					this.gameData.updateStatus(fields.status);
 
-					if (fields.status === Constants.GAME_STATUS_STARTED) {
+					if (isGameStatusStarted(fields.status)) {
 						Session.set('apploadingmask', false);
 					}
 				}
@@ -83,6 +85,11 @@ export default class GameInitiator {
 
 	stop() {
 		if (this.hasActiveGame()) {
+			let player = Players.findOne({gameId: this.gameId, userId: Meteor.userId()});
+			if (!player) {
+				Meteor.call('removeGameViewer', this.gameId);
+			}
+
 			this.currentGame.stop();
 			this.currentGame = null;
 		}
@@ -93,11 +100,6 @@ export default class GameInitiator {
 
 		if (this.gamePointsTracker) {
 			this.gamePointsTracker.stop();
-		}
-
-		let player = Players.findOne({gameId: this.gameId, userId: Meteor.userId()});
-		if (!player) {
-			Meteor.call('removeGameViewer', this.gameId);
 		}
 	}
 

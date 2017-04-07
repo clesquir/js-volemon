@@ -1,8 +1,12 @@
-import { Players } from '/collections/players.js';
-import { Constants } from '/imports/lib/constants.js';
+import {Players} from '/collections/players.js';
+import {Constants} from '/imports/lib/constants.js';
 
 export const isGameStatusOnGoing = function(gameStatus) {
-	return [Constants.GAME_STATUS_STARTED, Constants.GAME_STATUS_FINISHED, Constants.GAME_STATUS_TIMEOUT].indexOf(gameStatus) !== -1;
+	return [
+		Constants.GAME_STATUS_STARTED,
+		Constants.GAME_STATUS_FINISHED,
+		Constants.GAME_STATUS_TIMEOUT
+	].indexOf(gameStatus) !== -1;
 };
 
 export const isGameStatusStarted = function(gameStatus) {
@@ -20,13 +24,13 @@ export const isGameStatusFinished = function(gameStatus) {
 export const isMatchPoint = function(hostPoints, clientPoints) {
 	let matchPoint = Constants.MAXIMUM_POINTS - 1;
 
-	return (hostPoints == matchPoint || clientPoints == matchPoint);
+	return (hostPoints === matchPoint || clientPoints === matchPoint);
 };
 
 export const isDeucePoint = function(hostPoints, clientPoints) {
 	let matchPoint = Constants.MAXIMUM_POINTS - 1;
 
-	return (hostPoints == matchPoint && clientPoints == matchPoint);
+	return (hostPoints === matchPoint && clientPoints === matchPoint);
 };
 
 export const getWinnerName = function(game) {

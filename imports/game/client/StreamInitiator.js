@@ -15,8 +15,6 @@ export default class StreamInitiator {
 		let gameInitiator = this.gameInitiator;
 		let gameId = gameInitiator.gameId;
 
-		this.stream.connect();
-
 		this.stream.on('play-' + gameId, function() {
 			//Wait for gameContainer creation before starting game
 			let loopUntilGameContainerIsCreated = function() {
@@ -99,7 +97,7 @@ export default class StreamInitiator {
 		this.stream.off('play-' + gameId);
 		this.stream.off('activateBonus-' + gameId);
 		this.stream.off('sendBundledData-' + gameId);
-		this.stream.disconnect();
+		this.stream.disconnect(gameId);
 	}
 
 }

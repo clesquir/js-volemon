@@ -1,6 +1,6 @@
-import ServerSocketIo from '/imports/lib/stream/server/ServerSocketIo.js';
+import ServerSimplePeer from '/imports/lib/stream/server/ServerSimplePeer.js';
 
-const stream = new ServerSocketIo();
+const stream = new ServerSimplePeer();
 
 /** @type {Stream} */
 export const ServerStreamInitiator = stream;
