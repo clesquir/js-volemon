@@ -8,6 +8,7 @@ export default class StreamInitiator {
 	}
 
 	init() {
+		this.stream.connect(this.gameId);
 		this.stream.on('activateBonus-' + this.gameId, (bundledData) => {}, true);
 		this.stream.on('sendBundledData-' + this.gameId, (bundledData) => {}, true);
 	}
@@ -20,6 +21,7 @@ export default class StreamInitiator {
 	stop() {
 		this.stream.off('sendBundledData-' + this.gameId);
 		this.stream.off('activateBonus-' + this.gameId);
+		this.stream.disconnect(this.gameId);
 	}
 
 }

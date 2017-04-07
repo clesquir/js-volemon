@@ -1,6 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
 import {Session} from 'meteor/session';
+import GameData from '/imports/game/client/GameData.js';
 import GameInitiator from '/imports/game/client/GameInitiator.js';
 import GameRematch from '/imports/game/client/GameRematch.js';
 import {
@@ -381,9 +382,11 @@ let gameInitiator = null;
 let gameRematch = null;
 
 Template.game.rendered = function() {
-	gameInitiator = new GameInitiator(Session.get('game'));
+	const gameData = new GameData(Session.get('game'));
+	gameData.init();
+	gameInitiator = new GameInitiator(Session.get('game'), gameData);
 	gameInitiator.init();
-	gameRematch = new GameRematch(Session.get('game'));
+	gameRematch = new GameRematch(Session.get('game'), gameData);
 	gameRematch.init();
 };
 

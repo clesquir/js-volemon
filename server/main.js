@@ -21,7 +21,7 @@ Accounts.onCreateUser((options, user) => {
 });
 
 Meteor.startup(() => {
-	ServerStreamInitiator.connect();
+	ServerStreamInitiator.init();
 
 	//Setup SMTP url
 	process.env.MAIL_URL = Meteor.settings.smtpUrl;

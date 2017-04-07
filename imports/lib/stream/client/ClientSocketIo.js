@@ -1,11 +1,14 @@
 import Stream from '/imports/lib/stream/Stream.js';
 import socketIOP2P from '/imports/lib/override/socket.io-p2p.js';
-
-let isWebRTCSupported = !!require('get-browser-rtc')();
+const isWebRTCSupported = !!require('get-browser-rtc')();
+const rtcSupport = require('webrtcsupport');
 
 export default class ClientSocketIo extends Stream {
 
-	connect() {
+	/**
+	 * @param {string} channel
+	 */
+	connect(channel) {
 		// Socket io client
 		const PORT = window.socketPort || 8080;
 		let url = `http://localhost:${PORT}`;
@@ -14,8 +17,12 @@ export default class ClientSocketIo extends Stream {
 		}
 
 		this.socketAdapter = require('socket.io-client').connect(url);
-		if (isWebRTCSupported) {
+		if (isWebRTCSupported && rtcSupport.supportDataChannel) {
 			this.connectP2pAdapter();
+
+			this.socketAdapter.on('connect', () => {
+				this.socketAdapter.emit('room', channel);
+			});
 		}
 	}
 
@@ -29,7 +36,10 @@ export default class ClientSocketIo extends Stream {
 		});
 	}
 
-	disconnect() {
+	/**
+	 * @param {string} channel
+	 */
+	disconnect(channel) {
 		if (this.p2pAdapter) {
 			this.p2pAdapter.disconnect();
 		}
@@ -62,17 +72,14 @@ export default class ClientSocketIo extends Stream {
 	 * @param callback
 	 */
 	on(eventName, callback) {
-		let adapter;
 		if (this.p2pAdapter) {
-			adapter = this.p2pAdapter;
-			adapter.on(eventName, function(data) {
-				if (!data.broadcast || (adapter && !adapter.usePeerConnection) || data.webRTCUnsupportedClient) {
+			this.p2pAdapter.on(eventName, function(data) {
+				if (!data.broadcast || data.webRTCUnsupportedClient) {
 					callback.apply(this, arguments);
 				}
 			});
 		} else {
-			adapter = this.socketAdapter;
-			adapter.on(eventName, callback);
+			this.socketAdapter.on(eventName, callback);
 		}
 	}
 
@@ -82,9 +89,8 @@ export default class ClientSocketIo extends Stream {
 	off(eventName) {
 		if (this.p2pAdapter) {
 			this.p2pAdapter.removeListener(eventName);
-		} else {
-			this.socketAdapter.removeListener(eventName);
 		}
+		this.socketAdapter.removeListener(eventName);
 	}
 
 }
