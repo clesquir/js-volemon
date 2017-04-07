@@ -2,8 +2,13 @@ import {Games} from '/collections/games.js';
 
 export default class GameRematch {
 
-	constructor(gameId) {
+	/**
+	 * @param {string} gameId
+	 * @param {GameData} gameData
+	 */
+	constructor(gameId, gameData) {
 		this.gameId = gameId;
+		this.gameData = gameData;
 	}
 
 	init() {
@@ -11,7 +16,17 @@ export default class GameRematch {
 			changed: (id, fields) => {
 				if (fields.hasOwnProperty('rematchGameId')) {
 					Session.set('apploadingmask', true);
-					Router.go(Router.routes['game'].url({_id: fields.rematchGameId}));
+
+					let timeout = 1000;
+					if (this.gameData.isUserClient()) {
+						timeout = 0;
+					} else if (this.gameData.isUserHost()) {
+						timeout = 500;
+					}
+
+					Meteor.setTimeout(() => {
+						Router.go(Router.routes['game'].url({_id: fields.rematchGameId}));
+					}, timeout);
 				}
 			}
 		});

@@ -3,13 +3,10 @@ import p2pserver from '/imports/lib/override/socket.io-p2p-server.js';
 
 export default class ServerSocketIo extends Stream {
 
-	constructor(...args) {
-		super(...args);
+	init() {
 		this.sockets = {};
 		this.listeners = {};
-	}
 
-	connect() {
 		const PORT = 8080;
 
 		// Client-side config
@@ -20,11 +17,15 @@ export default class ServerSocketIo extends Stream {
 		const server = require('http').createServer(app);
 		this.io = require('socket.io')(server);
 		const p2p = p2pserver.Server;
-		this.io.use(p2p);
 
 		this.io.on('connection', (socket) => {
 			this.sockets[socket.id] = socket;
 			this.attachListeners(socket);
+
+			socket.on('room', (room) => {
+				socket.join('room');
+				p2p(socket, null, room);
+			});
 
 			socket.on('disconnect', () => {
 				delete this.sockets[socket.id];
@@ -37,9 +38,6 @@ export default class ServerSocketIo extends Stream {
 		} catch (e) {
 			console.error(e);
 		}
-	}
-
-	disconnect() {
 	}
 
 	/**
@@ -89,13 +87,6 @@ export default class ServerSocketIo extends Stream {
 	 * @param {string} eventName Event name to remove listener on
 	 */
 	off(eventName) {
-		for (let socketId in this.sockets) {
-			if (this.sockets.hasOwnProperty(socketId)) {
-				// this.sockets[socketId].removeListener(eventName);
-			}
-		}
-		this.sockets = {};
-		this.listeners = {};
 	}
 
 }

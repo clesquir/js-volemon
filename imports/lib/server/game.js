@@ -150,6 +150,6 @@ export const replyRematch = function(userId, gameId, accepted, streamInitiators)
 
 		Meteor.setTimeout(() => {
 			startGame(gameRematchId, streamInitiators);
-		}, 1500);
+		}, 3000);
 	}
 };

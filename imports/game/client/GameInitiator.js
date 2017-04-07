@@ -4,7 +4,6 @@ import {moment} from 'meteor/momentjs:moment';
 import {Games} from '/collections/games.js';
 import {Players} from '/collections/players.js';
 import PhaserEngine from '/imports/game/engine/client/PhaserEngine.js';
-import GameData from '/imports/game/client/GameData.js';
 import GameStreamBundler from '/imports/game/client/GameStreamBundler.js';
 import ServerNormalizedTime from '/imports/game/client/ServerNormalizedTime.js';
 import StreamInitiator from '/imports/game/client/StreamInitiator.js';
@@ -14,21 +13,27 @@ import ClientSocketIo from '/imports/lib/stream/client/ClientSocketIo.js';
 
 export default class GameInitiator {
 
-	constructor(gameId) {
+	/**
+	 * @param {string} gameId
+	 * @param {GameData} gameData
+	 */
+	constructor(gameId, gameData) {
 		this.gameId = gameId;
+		this.gameData = gameData;
+
 		this.currentGame = null;
 		this.timerUpdater = null;
 
 		this.stream = new ClientSocketIo(this.gameId);
 		this.engine = new PhaserEngine();
-		this.gameData = new GameData(this.gameId);
 		this.gameStreamBundler = new GameStreamBundler(this.stream);
 		this.serverNormalizedTime = new ServerNormalizedTime();
 		this.streamInitiator = new StreamInitiator(this, this.stream);
 	}
 
 	init() {
-		this.gameData.init();
+		this.stream.init();
+		this.stream.connect(this.gameId);
 		this.streamInitiator.init();
 
 		if (this.gameData.isGameStatusOnGoing()) {
@@ -83,6 +88,11 @@ export default class GameInitiator {
 
 	stop() {
 		if (this.hasActiveGame()) {
+			const player = Players.findOne({gameId: this.gameId, userId: Meteor.userId()});
+			if (!player) {
+				Meteor.call('removeGameViewer', this.gameId);
+			}
+
 			this.currentGame.stop();
 			this.currentGame = null;
 		}
@@ -93,11 +103,6 @@ export default class GameInitiator {
 
 		if (this.gamePointsTracker) {
 			this.gamePointsTracker.stop();
-		}
-
-		let player = Players.findOne({gameId: this.gameId, userId: Meteor.userId()});
-		if (!player) {
-			Meteor.call('removeGameViewer', this.gameId);
 		}
 	}
 
