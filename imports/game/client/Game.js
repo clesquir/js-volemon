@@ -45,9 +45,9 @@ export default class Game {
 	}
 
 	getPlayerFromKey(playerKey) {
-		if (playerKey == 'player1') {
+		if (playerKey === 'player1') {
 			return this.player1;
-		} else if (playerKey == 'player2') {
+		} else if (playerKey === 'player2') {
 			return this.player2;
 		} else {
 			return null;
@@ -63,8 +63,10 @@ export default class Game {
 	}
 
 	onPointTaken() {
-		this.shakeLevel();
-		this.resumeOnTimerEnd();
+		if (this.gameInitiated) {
+			this.shakeLevel();
+			this.resumeOnTimerEnd();
+		}
 	}
 
 	stop() {
@@ -482,7 +484,7 @@ export default class Game {
 			let countdownText = Math.ceil(this.engine.getTimerRemainingDuration(this.countdownTimer) / 1000),
 				scaleTo = 7;
 
-			if (countdownText == 4 && this.gameData.isMatchPoint()) {
+			if (countdownText === 4 && this.gameData.isMatchPoint()) {
 				countdownText = 'MATCH POINT';
 				scaleTo = 3;
 
@@ -494,7 +496,7 @@ export default class Game {
 			countdownText = this.engine.updateText(this.countdownText, countdownText);
 
 			//Zoom numbers
-			if (countdownText != this.lastCountdownNumber) {
+			if (countdownText !== this.lastCountdownNumber) {
 				this.engine.animateScale(this.countdownText, scaleTo, scaleTo, 1, 1, 500);
 				this.engine.animateSetOpacity(this.countdownText, 0, 1, 500);
 			}
@@ -624,7 +626,7 @@ export default class Game {
 	}
 
 	hitGround(ball) {
-		if (this.gameData.isUserHost() && this.gameResumed == true) {
+		if (this.gameData.isUserHost() && this.gameResumed === true) {
 			let pointSide;
 
 			if (ball.x < this.xSize / 2) {
