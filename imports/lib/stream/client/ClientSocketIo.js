@@ -54,10 +54,13 @@ export default class ClientSocketIo extends Stream {
 		if (this.p2pAdapter) {
 			if (!this.p2pAdapter.usePeerConnection) {
 				payload.webRTCUnsupportedClient = true;
+				//Fallback already sends to server
+				this.p2pAdapter.emit(eventName, payload);
+			} else {
+				//Emit to server for WebRTC unsupported clients
+				this.socketAdapter.emit(eventName, payload);
+				this.p2pAdapter.emit(eventName, payload);
 			}
-			//Emit to server for WebRTC unsupported clients
-			this.socketAdapter.emit(eventName, payload);
-			this.p2pAdapter.emit(eventName, payload);
 		} else {
 			payload.webRTCUnsupportedClient = true;
 			this.socketAdapter.emit(eventName, payload);
