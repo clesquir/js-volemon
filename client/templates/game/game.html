@@ -91,6 +91,46 @@
 						</div>
 					</div>
 
+					{{#if isGamePlayer}}
+						<div id="reaction-selector" class="reaction-selector">
+							<div class="reaction-list">
+								<div class="reaction-list-items">
+									<div class="reaction-list-items-group">
+										<div class="reaction-list-item" data-action="send-reaction" data-reaction-icon="good"><div class="reaction-icon-good"></div></div>
+										<div class="reaction-list-item" data-action="send-reaction" data-reaction-icon="angry"><div class="reaction-icon-angry"></div></div>
+										<div class="reaction-list-item" data-action="send-reaction" data-reaction-icon="sob"><div class="reaction-icon-sob"></div></div>
+										<div class="reaction-list-item" data-action="send-reaction" data-reaction-icon="happy"><div class="reaction-icon-happy"></div></div>
+									</div>
+									<div class="reaction-list-items-group reaction-list-items-group-text">
+										<div class="reaction-list-item" data-action="send-reaction" data-reaction-text="Good game!">Good game!</div>
+										<div class="reaction-list-item" data-action="send-reaction" data-reaction-text="Well played!">Well played!</div>
+										<div class="reaction-list-item" data-action="send-reaction" data-reaction-text="Nice one!">Nice one!</div>
+									</div>
+									<div class="reaction-list-items-group reaction-list-items-group-text">
+										<div class="reaction-list-item" data-action="send-reaction" data-reaction-text="Calculated.">Calculated.</div>
+										<div class="reaction-list-item" data-action="send-reaction" data-reaction-text="No way!">No way!</div>
+										<div class="reaction-list-item" data-action="send-reaction" data-reaction-text="Oops!">Oops!</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					{{/if}}
+
+					{{#if isGamePlayer}}
+						<div id="chat-button" class="chat-button" data-action="trigger-reaction-list">
+							<div class="fa"></div>
+						</div>
+					{{/if}}
+
+					<div class="received-reaction-container">
+						<div id="reaction-from-host" class="received-reaction">
+							<div class="received-reaction-item reaction-hidden"></div>
+						</div>
+						<div id="reaction-from-client" class="received-reaction">
+							<div class="received-reaction-item reaction-hidden"></div>
+						</div>
+					</div>
+
 				</div>
 
 			{{else}}

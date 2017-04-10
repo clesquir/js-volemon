@@ -86,7 +86,7 @@
 	box-sizing: border-box;
 	padding: 15px 20px;
 	min-height: 50px;
-	z-index: 1;
+	z-index: 5;
 
 	@include breakpoint(tablet) {
 		min-height: 35px;

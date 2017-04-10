@@ -3,8 +3,11 @@ import {Template} from 'meteor/templating';
 import {Session} from 'meteor/session';
 import GameData from '/imports/game/client/GameData.js';
 import GameInitiator from '/imports/game/client/GameInitiator.js';
+import GameReaction from '/imports/game/client/GameReaction.js';
 import GameRematch from '/imports/game/client/GameRematch.js';
+import StreamManager from '/imports/game/client/StreamManager.js';
 import {
+	isUserHost,
 	isGameStatusStarted,
 	isGameStatusFinished,
 	isGameStatusOnGoing,
@@ -22,6 +25,7 @@ import {
 	currentPlayerHasRepliedRematch,
 	currentPlayerAcceptedRematch
 } from '/imports/lib/client/gameSetup.js';
+import ClientSocketIo from '/imports/lib/stream/client/ClientSocketIo.js';
 
 Template.game.helpers({
 	isHost: function() {
@@ -308,7 +312,7 @@ Template.game.events({
 		const game = Games.findOne(Session.get('game'));
 		const hasBonuses = !game.hasBonuses;
 
-		if (game.createdBy === Meteor.userId()) {
+		if (isUserHost(Session.get('game'))) {
 			switchTargetButton(e, hasBonuses);
 
 			Meteor.call('updateGameHasBonuses', Session.get('game'), hasBonuses ? 1 : 0);
@@ -367,6 +371,14 @@ Template.game.events({
 		}
 	},
 
+	'click [data-action="trigger-reaction-list"]': function(e) {
+		gameReaction.toggleSelectorDisplay($(e.currentTarget));
+	},
+
+	'click [data-action="send-reaction"]': function(e) {
+		gameReaction.onReactionSelection($(e.currentTarget), isUserHost(Session.get('game')));
+	},
+
 	'click [data-action="game-rematch"]': function() {
 		Meteor.call('replyRematch', Session.get('game'), true);
 	},
@@ -376,15 +388,25 @@ Template.game.events({
 	}
 });
 
+/** @type {StreamManager} */
+let streamManager = null;
+/** @type {GameReaction} */
+let gameReaction = null;
 /** @type {GameInitiator}|null */
 let gameInitiator = null;
 /** @type {GameRematch}|null */
 let gameRematch = null;
 
 Template.game.rendered = function() {
+	const stream = new ClientSocketIo();
 	const gameData = new GameData(Session.get('game'));
 	gameData.init();
-	gameInitiator = new GameInitiator(Session.get('game'), gameData);
+	streamManager = new StreamManager(stream);
+	streamManager.init();
+	streamManager.connect(Session.get('game'));
+	gameReaction = new GameReaction(Session.get('game'), stream);
+	gameReaction.init();
+	gameInitiator = new GameInitiator(Session.get('game'), stream, gameData);
 	gameInitiator.init();
 	gameRematch = new GameRematch(Session.get('game'), gameData);
 	gameRematch.init();
@@ -399,6 +421,12 @@ Template.game.destroyed = function() {
 	if (gameRematch) {
 		gameRematch.stop();
 	}
+	if (gameReaction) {
+		gameReaction.stop();
+	}
+	if (streamManager) {
+		streamManager.disconnect(Session.get('game'));
+	}
 
 	Session.set('game', undefined);
 	Session.set('userCurrentlyPlaying', false);
@@ -407,14 +435,20 @@ Template.game.destroyed = function() {
 Meteor.startup(function(){
 	$(window).bind('beforeunload', function() {
 		if (Session.get('game')) {
+			Meteor.call('quitGame', Session.get('game'), function() {});
+
 			if (gameInitiator) {
 				gameInitiator.stop();
 			}
 			if (gameRematch) {
 				gameRematch.stop();
 			}
-
-			Meteor.call('quitGame', Session.get('game'), function() {});
+			if (gameReaction) {
+				gameReaction.stop();
+			}
+			if (streamManager) {
+				streamManager.disconnect(Session.get('game'));
+			}
 		}
 	});
 });
