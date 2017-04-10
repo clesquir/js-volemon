@@ -1,0 +1,188 @@
+.reaction-list-item {
+	background-color: white;
+	border-radius: 10px;
+	border: $text-color solid 3px;
+	height: 40px;
+	width: 100px;
+	font-size: 14px;
+
+	& > div {
+		display: inline-block;
+		margin-top: -40px;
+		width: 75px;
+		height: 75px;
+	}
+}
+
+.chat-button {
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	z-index: 2;
+	font-size: 20px;
+	cursor: pointer;
+	opacity: 0.65;
+
+	&:hover {
+		opacity: 1;
+	}
+
+	&:active {
+		transform: translateY(1px) translateX(1px);
+	}
+
+	& > div {
+		display: block;
+		-webkit-transition: -webkit-transform .75s ease-in-out;
+		transition: transform .75s ease-in-out;
+
+		&:before {
+			content: "\f27b";
+		}
+	}
+
+	&.reaction-selector-opened > div {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+
+		&:before {
+			content: "\f00d";
+		}
+	}
+}
+
+.received-reaction-container {
+	position: absolute;
+	width: 100%;
+	display: flex;
+	z-index: 1;
+
+	.received-reaction {
+		position: absolute;
+		width: 50%;
+		bottom: -10px;
+		display: flex;
+		justify-content: center;
+
+		.received-reaction-item {
+			transition: transform .2s ease-in-out;
+			transform: scale(0);
+
+			&.reaction-shown {
+				transform: scale(1);
+			}
+
+			.reaction-list-item {
+				&:before {
+					content: "";
+					position: absolute;
+				}
+
+				&.reaction-icon > div {
+					animation: wobble 1.5s linear infinite;
+				}
+			}
+		}
+	}
+
+	#reaction-from-host {
+		left: 0;
+
+		.reaction-list-item:before {
+			top: 10px;
+			left: -20px;
+			border-right: 20px solid $text-color;
+			border-top: 2px solid transparent;
+			border-bottom: 10px solid transparent;
+		}
+	}
+
+	#reaction-from-client {
+		right: 0;
+
+		.reaction-list-item:before {
+			top: 10px;
+			right: -20px;
+			border-left: 20px solid $text-color;
+			border-top: 2px solid transparent;
+			border-bottom: 10px solid transparent;
+		}
+	}
+}
+
+.reaction-selector {
+	width: 100%;
+	height: 100%;
+	top: 0;
+	position: absolute;
+	background: rgba(256, 256, 256, 0.25);
+	display: none;
+	z-index: 2;
+
+	.reaction-list {
+		width: 100%;
+		height: 100%;
+		display: flex;
+
+		.reaction-list-items {
+			flex: 1 0 0;
+			display: flex;
+			justify-content: center;
+			flex-direction: column;
+
+			.reaction-list-items-group {
+				display: flex;
+				justify-content: center;
+
+				.reaction-list-item {
+					margin: 5px;
+					cursor: pointer;
+
+					& > div {
+						transition: all .2s ease-in-out;
+					}
+
+					&:hover {
+						& > div {
+							transform: scale(1.15);
+						}
+					}
+				}
+
+				&.reaction-list-items-group-text {
+					.reaction-list-item {
+						transition: all .2s ease-in-out;
+
+						&:hover {
+							font-size: 16px;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+.reaction-list-item.reaction-text, .reaction-list-items-group-text .reaction-list-item {
+	width: 142px;
+	height: 35px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.reaction-icon-good {
+	background-image: url("/assets/reaction-good.png");
+}
+
+.reaction-icon-angry {
+	background-image: url("/assets/reaction-angry.png");
+}
+
+.reaction-icon-sob {
+	background-image: url("/assets/reaction-sob.png");
+}
+
+.reaction-icon-happy {
+	background-image: url("/assets/reaction-happy.png");
+}

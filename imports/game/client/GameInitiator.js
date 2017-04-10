@@ -9,22 +9,22 @@ import ServerNormalizedTime from '/imports/game/client/ServerNormalizedTime.js';
 import StreamInitiator from '/imports/game/client/StreamInitiator.js';
 import Game from '/imports/game/client/Game.js';
 import {Constants} from '/imports/lib/constants.js';
-import ClientSocketIo from '/imports/lib/stream/client/ClientSocketIo.js';
 
 export default class GameInitiator {
 
 	/**
 	 * @param {string} gameId
+	 * @param {Stream} stream
 	 * @param {GameData} gameData
 	 */
-	constructor(gameId, gameData) {
+	constructor(gameId, stream, gameData) {
 		this.gameId = gameId;
+		this.stream = stream;
 		this.gameData = gameData;
 
 		this.currentGame = null;
 		this.timerUpdater = null;
 
-		this.stream = new ClientSocketIo(this.gameId);
 		this.engine = new PhaserEngine();
 		this.gameStreamBundler = new GameStreamBundler(this.stream);
 		this.serverNormalizedTime = new ServerNormalizedTime();
@@ -32,8 +32,6 @@ export default class GameInitiator {
 	}
 
 	init() {
-		this.stream.init();
-		this.stream.connect(this.gameId);
 		this.streamInitiator.init();
 
 		if (this.gameData.isGameStatusOnGoing()) {
