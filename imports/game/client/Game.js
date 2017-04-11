@@ -726,7 +726,7 @@ export default class Game {
 			player = this.player2;
 		}
 
-		if (!this.gameInitiated || !player) {
+		if (!this.gameInitiated || !player || !this.gameData.isGameStatusStarted()) {
 			return;
 		}
 
@@ -738,7 +738,7 @@ export default class Game {
 	}
 
 	moveClientBall(data) {
-		if (!this.gameInitiated || !this.ball) {
+		if (!this.gameInitiated || !this.ball || !this.gameData.isGameStatusStarted()) {
 			return;
 		}
 
@@ -748,7 +748,7 @@ export default class Game {
 	}
 
 	createBonus(data) {
-		if (!this.gameInitiated) {
+		if (!this.gameInitiated || !this.gameData.isGameStatusStarted()) {
 			return;
 		}
 
@@ -756,7 +756,7 @@ export default class Game {
 	}
 
 	activateBonus(bonusIdentifier, playerKey, activatedAt) {
-		if (!this.gameInitiated) {
+		if (!this.gameInitiated || !this.gameData.isGameStatusStarted()) {
 			return;
 		}
 
@@ -764,7 +764,7 @@ export default class Game {
 	}
 
 	moveClientBonus(bonusIdentifier, data) {
-		if (!this.gameInitiated) {
+		if (!this.gameInitiated || !this.gameData.isGameStatusStarted()) {
 			return;
 		}
 
