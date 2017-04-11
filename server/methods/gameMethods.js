@@ -138,9 +138,15 @@ Meteor.methods({
 		//if player is game creator, remove game and all players
 		if (game.createdBy === user._id) {
 			//Remove all players
-			Players.remove({gameId: game._id});
+			Players.remove({gameId: gameId});
 			//Remove game
-			Games.remove(game._id);
+			Games.remove(gameId);
+
+			//Stop streaming
+			if (streamInitiators[gameId]) {
+				streamInitiators[gameId].stop();
+				delete streamInitiators[gameId];
+			}
 		}
 	},
 
@@ -193,13 +199,18 @@ Meteor.methods({
 
 			Players.update({_id: player._id}, {$set: {hasQuit: getUTCTimeStamp()}});
 
-			if (streamInitiators[gameId]) {
-				streamInitiators[gameId].stop();
-				delete streamInitiators[gameId];
-			}
-
 			if (game.status === Constants.GAME_STATUS_STARTED) {
 				Games.update({_id: game._id}, {$set: {status: Constants.GAME_STATUS_TIMEOUT}});
+			}
+
+			//If there is no active players anymore
+			const activePlayers = Players.find({gameId: gameId, hasQuit: false});
+			if (activePlayers.count() === 0) {
+				//Stop streaming
+				if (streamInitiators[gameId]) {
+					streamInitiators[gameId].stop();
+					delete streamInitiators[gameId];
+				}
 			}
 		}
 	},
@@ -244,6 +255,28 @@ Meteor.methods({
 					Games.update({_id: game._id}, {$set: {status: Constants.GAME_STATUS_TIMEOUT}});
 				}
 			});
+		}
+	},
+
+	removeVacantGameStreams: function() {
+		const gameIds = Object.keys(streamInitiators);
+		const players = Players.find({gameId: {$in: gameIds}, hasQuit: false});
+
+		const stillOccupiedGames = [];
+		players.forEach(function(player) {
+			stillOccupiedGames.push(player.gameId);
+		});
+
+		const vacantGameIds = gameIds.filter(function(gameId) {
+			return stillOccupiedGames.indexOf(gameId) === -1;
+		});
+
+		for (let gameId of vacantGameIds) {
+			//Stop streaming
+			if (streamInitiators[gameId]) {
+				streamInitiators[gameId].stop();
+				delete streamInitiators[gameId];
+			}
 		}
 	},
 

@@ -2,6 +2,10 @@ import {startKeepAlive} from '/server/keepAlive.js';
 
 export default class StreamInitiator {
 
+	/**
+	 * @param {string} gameId
+	 * @param {Stream} stream
+	 */
 	constructor(gameId, stream) {
 		this.gameId = gameId;
 		this.stream = stream;
@@ -9,9 +13,9 @@ export default class StreamInitiator {
 
 	init() {
 		this.stream.connect(this.gameId);
-		this.stream.on('activateBonus-' + this.gameId, (bundledData) => {}, true);
-		this.stream.on('sendBundledData-' + this.gameId, (bundledData) => {}, true);
-		this.stream.on('reaction-' + this.gameId, (bundledData) => {}, true);
+		this.stream.broadcastOnEvent('activateBonus-' + this.gameId);
+		this.stream.broadcastOnEvent('sendBundledData-' + this.gameId);
+		this.stream.broadcastOnEvent('reaction-' + this.gameId);
 	}
 
 	start() {
