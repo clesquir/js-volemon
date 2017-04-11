@@ -48,7 +48,7 @@ export default class ClientSocketIo extends Stream {
 
 	/**
 	 * @param {string} eventName
-	 * @param payload
+	 * @param {*} payload
 	 */
 	emit(eventName, payload) {
 		if (this.p2pAdapter) {
@@ -69,7 +69,7 @@ export default class ClientSocketIo extends Stream {
 
 	/**
 	 * @param {string} eventName
-	 * @param callback
+	 * @param {Function} callback
 	 */
 	on(eventName, callback) {
 		if (this.p2pAdapter) {
@@ -85,7 +85,7 @@ export default class ClientSocketIo extends Stream {
 	}
 
 	/**
-	 * @param {string} eventName Event name to remove listener on
+	 * @param {string} eventName Event name to remove listeners on
 	 */
 	off(eventName) {
 		if (this.p2pAdapter) {

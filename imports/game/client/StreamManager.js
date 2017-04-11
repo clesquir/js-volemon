@@ -12,14 +12,14 @@ export default class StreamManager {
 	}
 
 	/**
-	 * @param {String} gameId
+	 * @param {string} gameId
 	 */
 	connect(gameId) {
 		this.stream.connect(gameId);
 	}
 
 	/**
-	 * @param {String} gameId
+	 * @param {string} gameId
 	 */
 	disconnect(gameId) {
 		this.stream.disconnect(gameId);

@@ -4,6 +4,7 @@ export const Config = {
 	gamesLimitOnHomePage: 5,
 	keepAliveInterval: 2500,
 	keepAliveTimeOutInterval: 5000,
+	vacantGameStreamsRemovalInterval: 300000,
 	ballInterval: 50,
 	playerInterval: 50,
 	bonusInterval: 50,

@@ -47,3 +47,7 @@ export const startKeepAlive = function(gameId, stream) {
 Meteor.setInterval(function() {
 	Meteor.call('removeTimeoutPlayersAndGames');
 }, Config.keepAliveTimeOutInterval);
+
+Meteor.setInterval(function() {
+	Meteor.call('removeVacantGameStreams');
+}, Config.vacantGameStreamsRemovalInterval);
