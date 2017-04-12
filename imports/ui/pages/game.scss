@@ -75,7 +75,7 @@
 }
 
 #gameContainer canvas {
-	margin: 10px auto;
+	margin: 10px auto 30px;
 	@include aspect-ratio(45, 30);
 }
 
