@@ -5,16 +5,33 @@ export default class GameReaction {
 	/**
 	 * @param {string} gameId
 	 * @param {Stream} stream
+	 * @param {GameData} gameData
 	 */
-	constructor(gameId, stream) {
+	constructor(gameId, stream, gameData) {
 		this.gameId = gameId;
 		this.stream = stream;
+		this.gameData = gameData;
 	}
 
 	init() {
 		this.stream.on('reaction-' + this.gameId, (data) => {
 			this.showReaction(data.isHost, data.reactionIcon, data.reactionText);
 		});
+
+		$(document).on(
+			'keypress',
+			require('lodash.throttle')(
+				(e) => {
+					const keyMap = String.fromCharCode(e.which);
+
+					if (!this.gameData.isUserViewer() && $.isNumeric(keyMap)) {
+						this.onReactionSelection($(`div[data-reaction-key-map="${keyMap}"]:first`), this.gameData.isUserHost());
+					}
+				},
+				2200,
+				{trailing: false}
+			)
+		);
 	}
 
 	toggleSelectorDisplay(chatButton) {
@@ -76,9 +93,9 @@ export default class GameReaction {
 		reactionListItem.empty();
 
 		if (reactionText === undefined) {
-			reactionListItem.append('<div class="reaction-list-item reaction-icon"><div class="reaction-icon-' + reactionIcon + '"></div></div>');
+			reactionListItem.append('<div class="reaction-list-item"><div class="reaction-icon reaction-icon-' + reactionIcon + '"></div></div>');
 		} else {
-			reactionListItem.append('<div class="reaction-list-item reaction-text">' + reactionText + '</div>');
+			reactionListItem.append('<div class="reaction-list-item reaction-list-item-text"><div class="reaction-text">' + reactionText + '</div></div>');
 		}
 
 		const timeout = Meteor.setTimeout(() => {
@@ -93,6 +110,7 @@ export default class GameReaction {
 	}
 
 	stop() {
+		$(document).off('keypress');
 		this.stream.off('reaction-' + this.gameId);
 	}
 

@@ -404,7 +404,7 @@ Template.game.rendered = function() {
 	streamManager = new StreamManager(stream);
 	streamManager.init();
 	streamManager.connect(Session.get('game'));
-	gameReaction = new GameReaction(Session.get('game'), stream);
+	gameReaction = new GameReaction(Session.get('game'), stream, gameData);
 	gameReaction.init();
 	gameInitiator = new GameInitiator(Session.get('game'), stream, gameData);
 	gameInitiator.init();
