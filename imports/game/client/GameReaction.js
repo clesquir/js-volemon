@@ -51,11 +51,6 @@ export default class GameReaction {
 	 * @param {boolean} isUserHost
 	 */
 	onReactionSelection(reactionButton, isUserHost) {
-		const reactionSelector = document.getElementById('reaction-selector');
-		$(reactionSelector).hide();
-		const chatButton = document.getElementById('chat-button');
-		$(chatButton).removeClass('reaction-selector-opened');
-
 		this.emitReaction(
 			isUserHost,
 			reactionButton.attr('data-reaction-icon'),
