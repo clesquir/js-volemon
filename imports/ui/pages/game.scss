@@ -132,16 +132,6 @@
 		margin: 0;
 	}
 
-	&.shown-container {
-		visibility: visible;
-		opacity: 1;
-		z-index: 1;
-	}
-
-	&.hidden-container {
-		opacity: 0;
-	}
-
 	& > div {
 		align-items: center;
 		display: flex;
@@ -166,6 +156,12 @@
 	.after-game-item + .after-game-item {
 		margin-top: 20px;
 	}
+}
+
+.finished-game-status .after-game-container {
+	visibility: visible;
+	opacity: 1;
+	z-index: 1;
 }
 
 @media (max-width: $mobile-max-width) {

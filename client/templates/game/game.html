@@ -6,7 +6,7 @@
 
 			{{#if isGameOnGoing}}
 
-				<div class="game-container {{gameZoomedInClass profiles}}">
+				<div class="game-container {{gameZoomedInClass profiles}} {{getFinishedStatusClass}}">
 
 					{{! Names and Points }}
 
@@ -32,7 +32,7 @@
 
 					<div id="gameContainer" class="page game"></div>
 
-					<div id="afterGameContainer" class="after-game-container {{getStatusDependentClass}}">
+					<div id="afterGameContainer" class="after-game-container">
 						<div>
 							<div>
 								<div class="after-game-item after-game-title">{{getAfterGameTitle}}</div>

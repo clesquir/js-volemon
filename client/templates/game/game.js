@@ -156,11 +156,9 @@ Template.game.helpers({
 		return this.userId === Meteor.userId();
 	},
 
-	getStatusDependentClass: function() {
-		if (isGameStatusStarted(this.game.status)) {
-			return 'hidden-container';
-		} else {
-			return 'shown-container';
+	getFinishedStatusClass: function() {
+		if (!isGameStatusStarted(this.game.status)) {
+			return 'finished-game-status';
 		}
 	},
 
@@ -372,7 +370,7 @@ Template.game.events({
 	},
 
 	'click [data-action="trigger-reaction-list"]': function(e) {
-		gameReaction.toggleSelectorDisplay($(e.currentTarget));
+		gameReaction.toggleSelectorDisplay();
 	},
 
 	'click [data-action="send-reaction"]': function(e) {

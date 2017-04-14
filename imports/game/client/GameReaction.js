@@ -34,8 +34,9 @@ export default class GameReaction {
 		);
 	}
 
-	toggleSelectorDisplay(chatButton) {
+	toggleSelectorDisplay() {
 		const reactionSelector = document.getElementById('reaction-selector');
+		const chatButton = document.getElementById('chat-button');
 
 		if ($(reactionSelector).is(":visible")) {
 			$(reactionSelector).hide();
