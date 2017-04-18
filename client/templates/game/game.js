@@ -1,13 +1,9 @@
 import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
 import {Session} from 'meteor/session';
-import GameData from '/imports/game/client/GameData.js';
-import GameInitiator from '/imports/game/client/GameInitiator.js';
-import GameReaction from '/imports/game/client/GameReaction.js';
-import GameRematch from '/imports/game/client/GameRematch.js';
-import StreamManager from '/imports/game/client/StreamManager.js';
 import {
 	isUserHost,
+	isGamePlayer,
 	isGameStatusStarted,
 	isGameStatusFinished,
 	isGameStatusOnGoing,
@@ -25,7 +21,6 @@ import {
 	currentPlayerHasRepliedRematch,
 	currentPlayerAcceptedRematch
 } from '/imports/lib/client/gameSetup.js';
-import ClientSocketIo from '/imports/lib/stream/client/ClientSocketIo.js';
 
 Template.game.helpers({
 	isHost: function() {
@@ -81,7 +76,7 @@ Template.game.helpers({
 	},
 
 	isGamePlayer: function() {
-		return !!Players.findOne({gameId: Session.get('game'), userId: Meteor.userId()});
+		return isGamePlayer(Session.get('game'));
 	},
 
 	/**
@@ -178,7 +173,7 @@ Template.game.helpers({
 		let eloRating = '-';
 
 		profiles.forEach((profile) => {
-			if (player.userId == profile.userId) {
+			if (player.userId === profile.userId) {
 				eloRating = profile.eloRating;
 			}
 		});
@@ -190,7 +185,7 @@ Template.game.helpers({
 		let playerProfile = null;
 
 		profiles.forEach((profile) => {
-			if (player.userId == profile.userId) {
+			if (player.userId === profile.userId) {
 				playerProfile = profile;
 			}
 		});
@@ -202,7 +197,7 @@ Template.game.helpers({
 		let gameZoomedIn = false;
 
 		profiles.forEach((profile) => {
-			if (Meteor.userId() == profile.userId) {
+			if (Meteor.userId() === profile.userId) {
 				gameZoomedIn = profile.gameZoomedIn;
 			}
 		});
@@ -369,14 +364,6 @@ Template.game.events({
 		}
 	},
 
-	'click [data-action="trigger-reaction-list"]': function(e) {
-		gameReaction.toggleSelectorDisplay();
-	},
-
-	'click [data-action="send-reaction"]': function(e) {
-		gameReaction.onReactionSelection($(e.currentTarget), isUserHost(Session.get('game')));
-	},
-
 	'click [data-action="game-rematch"]': function() {
 		Meteor.call('replyRematch', Session.get('game'), true);
 	},
@@ -384,69 +371,4 @@ Template.game.events({
 	'click [data-action="declined-game-rematch"]': function() {
 		Meteor.call('replyRematch', Session.get('game'), false);
 	}
-});
-
-/** @type {StreamManager} */
-let streamManager = null;
-/** @type {GameReaction} */
-let gameReaction = null;
-/** @type {GameInitiator}|null */
-let gameInitiator = null;
-/** @type {GameRematch}|null */
-let gameRematch = null;
-
-Template.game.rendered = function() {
-	const stream = new ClientSocketIo();
-	const gameData = new GameData(Session.get('game'));
-	gameData.init();
-	streamManager = new StreamManager(stream);
-	streamManager.init();
-	streamManager.connect(Session.get('game'));
-	gameReaction = new GameReaction(Session.get('game'), stream, gameData);
-	gameReaction.init();
-	gameInitiator = new GameInitiator(Session.get('game'), stream, gameData);
-	gameInitiator.init();
-	gameRematch = new GameRematch(Session.get('game'), gameData);
-	gameRematch.init();
-};
-
-Template.game.destroyed = function() {
-	Meteor.call('quitGame', Session.get('game'), function() {});
-
-	if (gameInitiator) {
-		gameInitiator.stop();
-	}
-	if (gameRematch) {
-		gameRematch.stop();
-	}
-	if (gameReaction) {
-		gameReaction.stop();
-	}
-	if (streamManager) {
-		streamManager.disconnect(Session.get('game'));
-	}
-
-	Session.set('game', undefined);
-	Session.set('userCurrentlyPlaying', false);
-};
-
-Meteor.startup(function(){
-	$(window).bind('beforeunload', function() {
-		if (Session.get('game')) {
-			Meteor.call('quitGame', Session.get('game'), function() {});
-
-			if (gameInitiator) {
-				gameInitiator.stop();
-			}
-			if (gameRematch) {
-				gameRematch.stop();
-			}
-			if (gameReaction) {
-				gameReaction.stop();
-			}
-			if (streamManager) {
-				streamManager.disconnect(Session.get('game'));
-			}
-		}
-	});
 });

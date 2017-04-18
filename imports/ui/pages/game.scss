@@ -4,6 +4,7 @@
 
 .game-container {
 	position: relative;
+	margin: 0 35px 0;
 }
 
 .players-container {
@@ -213,7 +214,7 @@
 @media (min-width: 1325px) and (min-height: 910px) {
 	.expand-extra-big-game-size {
 		display: block;
-		z-index: 1;
+		z-index: 2;
 	}
 
 	.expand-extra-big-game-size-x1 {

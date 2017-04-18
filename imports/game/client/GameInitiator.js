@@ -5,8 +5,8 @@ import {Games} from '/collections/games.js';
 import {Players} from '/collections/players.js';
 import PhaserEngine from '/imports/game/engine/client/PhaserEngine.js';
 import GameStreamBundler from '/imports/game/client/GameStreamBundler.js';
+import GameStreamInitiator from '/imports/game/client/GameStreamInitiator.js';
 import ServerNormalizedTime from '/imports/game/client/ServerNormalizedTime.js';
-import StreamInitiator from '/imports/game/client/StreamInitiator.js';
 import Game from '/imports/game/client/Game.js';
 import {Constants} from '/imports/lib/constants.js';
 
@@ -28,14 +28,14 @@ export default class GameInitiator {
 		this.engine = new PhaserEngine();
 		this.gameStreamBundler = new GameStreamBundler(this.stream);
 		this.serverNormalizedTime = new ServerNormalizedTime();
-		this.streamInitiator = new StreamInitiator(this, this.stream);
+		this.gameStreamInitiator = new GameStreamInitiator(this, this.stream);
 	}
 
 	init() {
-		this.streamInitiator.init();
+		this.gameStreamInitiator.init();
 
 		if (this.gameData.isGameStatusOnGoing()) {
-			this.createNewGame();
+			this.createNewGameWhenReady();
 		}
 
 		this.initTimer();
@@ -95,13 +95,28 @@ export default class GameInitiator {
 			this.currentGame = null;
 		}
 
-		this.streamInitiator.stop();
+		this.gameStreamInitiator.stop();
 
 		this.clearTimer();
 
 		if (this.gamePointsTracker) {
 			this.gamePointsTracker.stop();
 		}
+	}
+
+	createNewGameWhenReady() {
+		const me = this;
+
+		//Wait for gameContainer creation before starting game
+		let loopUntilGameContainerIsCreated = () => {
+			if (document.getElementById('gameContainer')) {
+				me.createNewGame();
+			} else {
+				window.setTimeout(loopUntilGameContainerIsCreated, 1);
+			}
+		};
+
+		loopUntilGameContainerIsCreated();
 	}
 
 	createNewGame() {

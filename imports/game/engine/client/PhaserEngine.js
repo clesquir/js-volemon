@@ -78,6 +78,10 @@ export default class PhaserEngine extends Engine {
 		this.game.load.image(key, path);
 	}
 
+	loadSpriteSheet(key, path, width, height) {
+		this.game.load.spritesheet(key, path, width, height);
+	}
+
 	loadData(key, path) {
 		this.game.load.physics(key, path);
 	}
@@ -429,6 +433,15 @@ export default class PhaserEngine extends Engine {
 		multilineText = multilineText.map(line => {return '    ' + line + '    ';});
 
 		return textComponent.text = multilineText.join('\n');
+	}
+
+	emitParticules(x, y, xMinSpeed, xMaxSpeed, yMinSpeed, yMaxSpeed, keys, frames, particlesQuantity, explode, lifespan, frequency, quantity) {
+		const emitter = this.game.add.emitter(x, y);
+		emitter.bounce.setTo(0.5, 0.5);
+		emitter.setXSpeed(xMinSpeed, xMaxSpeed);
+		emitter.setYSpeed(yMinSpeed, yMaxSpeed);
+		emitter.makeParticles(keys, frames, particlesQuantity);
+		emitter.start(explode, lifespan, frequency, quantity);
 	}
 
 	shake(sprite, move, time, x, y) {

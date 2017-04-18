@@ -1,4 +1,5 @@
 import {Meteor} from 'meteor/meteor';
+import {isGamePlayer} from '/imports/game/utils.js';
 
 export default class GameReaction {
 
@@ -6,16 +7,24 @@ export default class GameReaction {
 	 * @param {string} gameId
 	 * @param {Stream} stream
 	 * @param {GameData} gameData
+	 * @param {GameInitiator} gameInitiator
 	 */
-	constructor(gameId, stream, gameData) {
+	constructor(gameId, stream, gameData, gameInitiator) {
 		this.gameId = gameId;
 		this.stream = stream;
 		this.gameData = gameData;
+		this.gameInitiator = gameInitiator;
+
+		this.cheerFn = {};
 	}
 
 	init() {
 		this.stream.on('reaction-' + this.gameId, (data) => {
 			this.showReaction(data.isHost, data.reactionIcon, data.reactionText);
+		});
+
+		this.stream.on('cheer-' + this.gameId, (data) => {
+			this.showCheer(data.forHost);
 		});
 
 		$(document).on(
@@ -65,8 +74,31 @@ export default class GameReaction {
 	 * @param {string} reactionText
 	 */
 	emitReaction(isHost, reactionIcon, reactionText) {
-		this.stream.emit('reaction-' + this.gameId, {isHost: isHost, reactionIcon: reactionIcon, reactionText: reactionText});
+		this.stream.emit(
+			'reaction-' + this.gameId,
+			{
+				isHost: isHost,
+				reactionIcon: reactionIcon,
+				reactionText: reactionText
+			}
+		);
 		this.showReaction(isHost, reactionIcon, reactionText);
+	}
+
+	cheerPlayer(forHost) {
+		if (!isGamePlayer(this.gameId)) {
+			if (!this.cheerFn[forHost]) {
+				this.cheerFn[forHost] = require('lodash.throttle')(
+					() => {
+						this.stream.emit('cheer-' + this.gameId, {forHost: forHost});
+						this.showCheer(forHost);
+					},
+					2500,
+					{trailing: false}
+				);
+			}
+			this.cheerFn[forHost]();
+		}
 	}
 
 	/**
@@ -78,9 +110,9 @@ export default class GameReaction {
 		let selector = '#reaction-from-client .received-reaction-item';
 		if (isHost) {
 			selector = '#reaction-from-host .received-reaction-item';
-			Meteor.clearTimeout(this.hostTimeout);
+			Meteor.clearTimeout(this.hostReactionTimeout);
 		} else {
-			Meteor.clearTimeout(this.clientTimeout);
+			Meteor.clearTimeout(this.clientReactionTimeout);
 		}
 
 		const reactionListItem = $(selector).first();
@@ -99,14 +131,41 @@ export default class GameReaction {
 		}, 2000);
 
 		if (isHost) {
-			this.hostTimeout = timeout;
+			this.hostReactionTimeout = timeout;
 		} else {
-			this.clientTimeout = timeout;
+			this.clientReactionTimeout = timeout;
+		}
+	}
+
+	showCheer(forHost) {
+		this.gameInitiator.currentGame.cheer(forHost);
+
+		let cheerElement;
+		if (forHost) {
+			cheerElement = document.getElementById('cheer-host');
+			Meteor.clearTimeout(this.cheerHostTimeout);
+		} else {
+			cheerElement = document.getElementById('cheer-client');
+			Meteor.clearTimeout(this.cheerClientTimeout);
+		}
+
+		$(cheerElement).removeClass('cheer-activated');
+		$(cheerElement).addClass('cheer-activated');
+
+		const timeout = Meteor.setTimeout(() => {
+			$(cheerElement).removeClass('cheer-activated');
+		}, 1000);
+
+		if (forHost) {
+			this.cheerHostTimeout = timeout;
+		} else {
+			this.cheerClientTimeout = timeout;
 		}
 	}
 
 	stop() {
 		$(document).off('keypress');
+		this.stream.off('cheer-' + this.gameId);
 		this.stream.off('reaction-' + this.gameId);
 	}
 

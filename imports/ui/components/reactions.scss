@@ -207,3 +207,42 @@
 .reaction-icon-happy {
 	background-image: url("/assets/reaction-happy.png");
 }
+
+.cheer-icon {
+	background-image: url("/assets/cheer.png");
+	width: 50px;
+	height: 50px;
+}
+
+.cheer-item {
+	position: absolute;
+	top: 10%;
+	z-index: 1;
+
+	&.cheer-enabled {
+		cursor: pointer;
+		&:active {
+			transform: scale(0.95);
+		}
+	}
+}
+
+.cheer-host {
+	left: -25px;
+
+	& > div {
+		transform: rotate(35deg);
+	}
+}
+
+.cheer-client {
+	right: -25px;
+
+	& > div {
+		transform: scaleX(-1) rotate(35deg);
+	}
+}
+
+.cheer-activated {
+	animation: boom 1000ms linear both;
+}

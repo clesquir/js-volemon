@@ -9,8 +9,8 @@ import {getUTCTimeStamp} from '/imports/lib/utils.js';
 import {createGame, joinGame, startGame, replyRematch} from '/imports/lib/server/game.js';
 import {updateProfilesOnGameFinish} from '/imports/lib/server/gameProfileUpdate.js';
 
-/** @type {StreamInitiator[]} */
-let streamInitiators = {};
+/** @type {GameStreamInitiator[]} */
+let gameStreamInitiators = {};
 
 Meteor.methods({
 	createGame: function() {
@@ -20,7 +20,7 @@ Meteor.methods({
 			throw new Meteor.Error(401, 'You need to login to create a game');
 		}
 
-		const id = createGame(user, streamInitiators);
+		const id = createGame(user, gameStreamInitiators);
 
 		Meteor.call('joinGame', id, true);
 
@@ -143,15 +143,15 @@ Meteor.methods({
 			Games.remove(gameId);
 
 			//Stop streaming
-			if (streamInitiators[gameId]) {
-				streamInitiators[gameId].stop();
-				delete streamInitiators[gameId];
+			if (gameStreamInitiators[gameId]) {
+				gameStreamInitiators[gameId].stop();
+				delete gameStreamInitiators[gameId];
 			}
 		}
 	},
 
 	startGame: function(gameId) {
-		startGame(gameId, streamInitiators);
+		startGame(gameId, gameStreamInitiators);
 	},
 
 	addGameViewer: function(gameId) {
@@ -207,9 +207,9 @@ Meteor.methods({
 			const activePlayers = Players.find({gameId: gameId, hasQuit: false});
 			if (activePlayers.count() === 0) {
 				//Stop streaming
-				if (streamInitiators[gameId]) {
-					streamInitiators[gameId].stop();
-					delete streamInitiators[gameId];
+				if (gameStreamInitiators[gameId]) {
+					gameStreamInitiators[gameId].stop();
+					delete gameStreamInitiators[gameId];
 				}
 			}
 		}
@@ -259,7 +259,7 @@ Meteor.methods({
 	},
 
 	removeVacantGameStreams: function() {
-		const gameIds = Object.keys(streamInitiators);
+		const gameIds = Object.keys(gameStreamInitiators);
 		const players = Players.find({gameId: {$in: gameIds}, hasQuit: false});
 
 		const stillOccupiedGames = [];
@@ -273,9 +273,9 @@ Meteor.methods({
 
 		for (let gameId of vacantGameIds) {
 			//Stop streaming
-			if (streamInitiators[gameId]) {
-				streamInitiators[gameId].stop();
-				delete streamInitiators[gameId];
+			if (gameStreamInitiators[gameId]) {
+				gameStreamInitiators[gameId].stop();
+				delete gameStreamInitiators[gameId];
 			}
 		}
 	},
@@ -336,6 +336,6 @@ Meteor.methods({
 			throw new Meteor.Error(401, 'You need to login to ask for rematch');
 		}
 
-		replyRematch(user._id, gameId, accepted, streamInitiators);
+		replyRematch(user._id, gameId, accepted, gameStreamInitiators);
 	}
 });

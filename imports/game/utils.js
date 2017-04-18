@@ -1,3 +1,4 @@
+import {Meteor} from 'meteor/meteor';
 import {Games} from '/collections/games.js';
 import {Players} from '/collections/players.js';
 import {Constants} from '/imports/lib/constants.js';
@@ -6,6 +7,10 @@ export const isUserHost = function(gameId) {
 	const game = Games.findOne(gameId);
 
 	return (game.createdBy === Meteor.userId());
+};
+
+export const isGamePlayer = function(gameId) {
+	return !!Players.findOne({gameId: gameId, userId: Meteor.userId()});
 };
 
 export const isGameStatusOnGoing = function(gameStatus) {
