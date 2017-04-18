@@ -87,17 +87,18 @@ export default class GameReaction {
 
 	cheerPlayer(forHost) {
 		if (!isGamePlayer(this.gameId)) {
-			if (!this.cheerFn[forHost]) {
-				this.cheerFn[forHost] = require('lodash.throttle')(
-					() => {
+			//Delay emittion, both sides use same timer
+			if (!this.emitCheerFn) {
+				this.emitCheerFn = require('lodash.throttle')(
+					(forHost) => {
 						this.stream.emit('cheer-' + this.gameId, {forHost: forHost});
 						this.showCheer(forHost);
 					},
-					2500,
+					5000,
 					{trailing: false}
 				);
 			}
-			this.cheerFn[forHost]();
+			this.emitCheerFn(forHost);
 		}
 	}
 
@@ -138,29 +139,39 @@ export default class GameReaction {
 	}
 
 	showCheer(forHost) {
-		this.gameInitiator.currentGame.cheer(forHost);
+		//Delay reception, each side uses different timers
+		if (!this.cheerFn[forHost]) {
+			this.cheerFn[forHost] = require('lodash.throttle')(
+				() => {
+					this.gameInitiator.currentGame.cheer(forHost);
 
-		let cheerElement;
-		if (forHost) {
-			cheerElement = document.getElementById('cheer-host');
-			Meteor.clearTimeout(this.cheerHostTimeout);
-		} else {
-			cheerElement = document.getElementById('cheer-client');
-			Meteor.clearTimeout(this.cheerClientTimeout);
+					let cheerElement;
+					if (forHost) {
+						cheerElement = document.getElementById('cheer-host');
+						Meteor.clearTimeout(this.cheerHostTimeout);
+					} else {
+						cheerElement = document.getElementById('cheer-client');
+						Meteor.clearTimeout(this.cheerClientTimeout);
+					}
+
+					$(cheerElement).removeClass('cheer-activated');
+					$(cheerElement).addClass('cheer-activated');
+
+					const timeout = Meteor.setTimeout(() => {
+						$(cheerElement).removeClass('cheer-activated');
+					}, 1000);
+
+					if (forHost) {
+						this.cheerHostTimeout = timeout;
+					} else {
+						this.cheerClientTimeout = timeout;
+					}
+				},
+				5000,
+				{trailing: false}
+			);
 		}
-
-		$(cheerElement).removeClass('cheer-activated');
-		$(cheerElement).addClass('cheer-activated');
-
-		const timeout = Meteor.setTimeout(() => {
-			$(cheerElement).removeClass('cheer-activated');
-		}, 1000);
-
-		if (forHost) {
-			this.cheerHostTimeout = timeout;
-		} else {
-			this.cheerClientTimeout = timeout;
-		}
+		this.cheerFn[forHost]();
 	}
 
 	stop() {
