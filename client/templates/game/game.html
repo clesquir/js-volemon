@@ -91,75 +91,7 @@
 						</div>
 					</div>
 
-					{{#if isGamePlayer}}
-						<div id="reaction-selector" class="reaction-selector" data-action="trigger-reaction-list">
-							<div class="reaction-list">
-								<div class="reaction-list-items">
-									<div class="reaction-list-items-group">
-										<div class="reaction-list-item" data-action="send-reaction" data-reaction-icon="good" data-reaction-key-map="1">
-											<div class="reaction-key-map">1</div>
-											<div class="reaction-icon reaction-icon-good"></div>
-										</div>
-										<div class="reaction-list-item" data-action="send-reaction" data-reaction-icon="angry" data-reaction-key-map="2">
-											<div class="reaction-key-map">2</div>
-											<div class="reaction-icon reaction-icon-angry"></div>
-										</div>
-										<div class="reaction-list-item" data-action="send-reaction" data-reaction-icon="sob" data-reaction-key-map="3">
-											<div class="reaction-key-map">3</div>
-											<div class="reaction-icon reaction-icon-sob"></div>
-										</div>
-										<div class="reaction-list-item" data-action="send-reaction" data-reaction-icon="happy" data-reaction-key-map="4">
-											<div class="reaction-key-map">4</div>
-											<div class="reaction-icon reaction-icon-happy"></div>
-										</div>
-									</div>
-									<div class="reaction-list-items-group">
-										<div class="reaction-list-item reaction-list-item-text" data-action="send-reaction" data-reaction-text="Good game!" data-reaction-key-map="5">
-											<div class="reaction-key-map">5</div>
-											<div class="reaction-text">Good game!</div>
-										</div>
-										<div class="reaction-list-item reaction-list-item-text" data-action="send-reaction" data-reaction-text="What a shot!" data-reaction-key-map="6">
-											<div class="reaction-key-map">6</div>
-											<div class="reaction-text">What a shot!</div>
-										</div>
-										<div class="reaction-list-item reaction-list-item-text" data-action="send-reaction" data-reaction-text="Boring!" data-reaction-key-map="7">
-											<div class="reaction-key-map">7</div>
-											<div class="reaction-text">Boring!</div>
-										</div>
-									</div>
-									<div class="reaction-list-items-group">
-										<div class="reaction-list-item reaction-list-item-text" data-action="send-reaction" data-reaction-text="Calculated." data-reaction-key-map="8">
-											<div class="reaction-key-map">8</div>
-											<div class="reaction-text">Calculated.</div>
-										</div>
-										<div class="reaction-list-item reaction-list-item-text" data-action="send-reaction" data-reaction-text="Lucky you!" data-reaction-key-map="9">
-											<div class="reaction-key-map">9</div>
-											<div class="reaction-text">Lucky you!</div>
-										</div>
-										<div class="reaction-list-item reaction-list-item-text" data-action="send-reaction" data-reaction-text="Oops!" data-reaction-key-map="0">
-											<div class="reaction-key-map">0</div>
-											<div class="reaction-text">Oops!</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					{{/if}}
-
-					{{#if isGamePlayer}}
-						<div id="chat-button" class="chat-button" data-action="trigger-reaction-list">
-							<div class="fa"></div>
-						</div>
-					{{/if}}
-
-					<div class="received-reaction-container">
-						<div id="reaction-from-host" class="received-reaction">
-							<div class="received-reaction-item reaction-hidden"></div>
-						</div>
-						<div id="reaction-from-client" class="received-reaction">
-							<div class="received-reaction-item reaction-hidden"></div>
-						</div>
-					</div>
+					{{> reactions isGamePlayer=isGamePlayer }}
 
 				</div>
 

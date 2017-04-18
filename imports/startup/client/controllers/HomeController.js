@@ -3,7 +3,7 @@ import { Players } from '/collections/players.js';
 import { Profiles } from '/collections/profiles.js';
 import { Config } from '/imports/lib/config.js';
 
-HomeController = RouteController.extend({
+export const HomeController = RouteController.extend({
 	subscriptions: function() {
 		return Meteor.subscribe('profileData');
 	},

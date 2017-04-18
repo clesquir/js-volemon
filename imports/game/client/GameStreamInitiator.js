@@ -1,6 +1,4 @@
-import Stream from '/imports/lib/stream/Stream.js';
-
-export default class StreamInitiator {
+export default class GameStreamInitiator {
 
 	/**
 	 * @param {GameInitiator} gameInitiator
@@ -16,16 +14,7 @@ export default class StreamInitiator {
 		let gameId = gameInitiator.gameId;
 
 		this.stream.on('play-' + gameId, function() {
-			//Wait for gameContainer creation before starting game
-			let loopUntilGameContainerIsCreated = function() {
-				if (document.getElementById('gameContainer')) {
-					gameInitiator.createNewGame();
-				} else {
-					window.setTimeout(loopUntilGameContainerIsCreated, 1);
-				}
-			};
-
-			loopUntilGameContainerIsCreated();
+			gameInitiator.createNewGameWhenReady();
 		});
 
 		this.stream.on('activateBonus-' + gameId, (data) => {

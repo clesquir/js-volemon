@@ -86,6 +86,7 @@ export default class Game {
 		this.engine.loadImage('ball', 'assets/ball.png');
 		this.engine.loadImage('net', 'assets/net.png');
 		this.engine.loadImage('ground', 'assets/ground.png');
+		this.engine.loadSpriteSheet('confettis', 'assets/confettis.png', 10, 10);
 
 		this.engine.loadImage('delimiter', 'assets/clear.png');
 		this.engine.loadData(Constants.NORMAL_SCALE_PHYSICS_DATA, 'assets/physicsData.json');
@@ -789,6 +790,24 @@ export default class Game {
 		this.engine.unfreeze(this.ball);
 		this.ball.isFrozen = false;
 		this.gameResumed = true;
+	}
+
+	cheer(forHost) {
+		this.engine.emitParticules(
+			forHost ? 0 : this.xSize,
+			this.ySize * 0.10 + 28,
+			(forHost ? 1 : -1) * 50,
+			(forHost ? 1 : -1) * 250,
+			25,
+			150,
+			'confettis',
+			(forHost ? [0, 1, 2, 3, 4] : [5, 6, 7, 8, 9]),
+			50,
+			false,
+			3000,
+			0,
+			500
+		);
 	}
 
 	shakeLevel() {

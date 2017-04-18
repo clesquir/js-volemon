@@ -1,6 +1,6 @@
 import {startKeepAlive} from '/server/keepAlive.js';
 
-export default class StreamInitiator {
+export default class GameStreamInitiator {
 
 	/**
 	 * @param {string} gameId
@@ -16,6 +16,7 @@ export default class StreamInitiator {
 		this.stream.broadcastOnEvent('activateBonus-' + this.gameId);
 		this.stream.broadcastOnEvent('sendBundledData-' + this.gameId);
 		this.stream.broadcastOnEvent('reaction-' + this.gameId);
+		this.stream.broadcastOnEvent('cheer-' + this.gameId);
 	}
 
 	start() {
@@ -24,6 +25,7 @@ export default class StreamInitiator {
 	}
 
 	stop() {
+		this.stream.off('cheer-' + this.gameId);
 		this.stream.off('reaction-' + this.gameId);
 		this.stream.off('sendBundledData-' + this.gameId);
 		this.stream.off('activateBonus-' + this.gameId);
