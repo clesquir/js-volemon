@@ -24,6 +24,10 @@ export default class ClientSocketIo extends Stream {
 				this.socketAdapter.emit('room', channel);
 			});
 		}
+
+		this.usingSocket = false;
+		this.usingP2P = false;
+		this.usingPeerConnection = false;
 	}
 
 	/**
@@ -31,9 +35,9 @@ export default class ClientSocketIo extends Stream {
 	 */
 	connectP2pAdapter() {
 		this.p2pAdapter = new (socketIOP2P)(this.socketAdapter, {numClients: 10, autoUpgrade: true});
-		this.p2pAdapter.on('peer-error', () => {
+		this.p2pAdapter.onPeerError = () => {
 			this.connectP2pAdapter();
-		});
+		};
 	}
 
 	/**
@@ -61,9 +65,17 @@ export default class ClientSocketIo extends Stream {
 				this.socketAdapter.emit(eventName, payload);
 				this.p2pAdapter.emit(eventName, payload);
 			}
+
+			this.usingP2P = true;
+			this.usingPeerConnection = !!this.p2pAdapter.usePeerConnection;
+			this.usingSocket = false;
 		} else {
 			payload.webRTCUnsupportedClient = true;
 			this.socketAdapter.emit(eventName, payload);
+
+			this.usingP2P = false;
+			this.usingPeerConnection = false;
+			this.usingSocket = true;
 		}
 	}
 

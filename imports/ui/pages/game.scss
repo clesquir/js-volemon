@@ -236,3 +236,29 @@
 		}
 	}
 }
+
+.connection-indicator {
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
+
+	.connection-indicator-light {
+		width: 10px;
+		height: 10px;
+		border-radius: 10px;
+		border: solid 1px darken($background-color, 50%);
+
+		&.connection-indicator-light-green {
+			background-color: lighten($positive, 10%);
+		}
+		&.connection-indicator-light-yellow {
+			background-color: lighten(yellow, 10%);
+		}
+		&.connection-indicator-light-red {
+			background-color: lighten($negative, 5%);
+		}
+		&.connection-indicator-light-gray {
+			background-color: lighten($background-color, 10%);
+		}
+	}
+}

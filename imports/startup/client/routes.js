@@ -139,7 +139,7 @@ Router.map(function() {
 });
 
 /** @type {Stream} */
-let stream = null;
+export let stream = null;
 /** @type {GameData} */
 let gameData = null;
 /** @type {GameInitiator}|null */
