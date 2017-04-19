@@ -81,6 +81,8 @@ Router.map(function() {
 		action: function() {
 			this.render('game');
 
+			let connectionIndicatorTimer;
+
 			Template.game.rendered = function() {
 				stream = new ClientSocketIo();
 				stream.init();
@@ -113,7 +115,33 @@ Router.map(function() {
 					}
 				});
 
+				const setConnectionIndicatorClass = function() {
+					let connectionIndicatorClass = 'connection-indicator-light-gray';
+
+					if (stream) {
+						if (stream.usingPeerConnection) {
+							connectionIndicatorClass = 'connection-indicator-light-green';
+						} else if (stream.usingP2P) {
+							connectionIndicatorClass = 'connection-indicator-light-yellow';
+						} else if (stream.usingSocket) {
+							connectionIndicatorClass = 'connection-indicator-light-red';
+						}
+					}
+
+					Session.set('connection-indicator-class', connectionIndicatorClass);
+
+					connectionIndicatorTimer = Meteor.setTimeout(setConnectionIndicatorClass, 1000);
+				};
+
+				connectionIndicatorTimer = Meteor.setTimeout(setConnectionIndicatorClass, 1000);
+
 				Template.game.rendered = null;
+			};
+
+			Template.game.destroyed = function() {
+				Meteor.clearTimeout(connectionIndicatorTimer);
+
+				Template.game.destroyed = null;
 			};
 		},
 		onStop: function() {

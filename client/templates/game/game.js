@@ -275,20 +275,6 @@ Template.game.helpers({
 	},
 
 	connectionClass() {
-		Meteor.setTimeout(function() {
-			if (stream) {
-				if (stream.usingPeerConnection) {
-					return Session.set('connection-indicator-class', 'connection-indicator-light-green');
-				} else if (stream.usingP2P) {
-					return Session.set('connection-indicator-class', 'connection-indicator-light-yellow');
-				} else if (stream.usingSocket) {
-					return Session.set('connection-indicator-class', 'connection-indicator-light-red');
-				}
-			}
-
-			return Session.set('connection-indicator-class', 'connection-indicator-light-gray');
-		}, 1000);
-
 		return Session.get('connection-indicator-class');
 	}
 });
