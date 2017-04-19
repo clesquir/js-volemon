@@ -93,6 +93,10 @@
 
 					{{> reactions isGamePlayer=isGamePlayer }}
 
+					{{#if isGamePlayer}}
+						<div class="connection-indicator"><div class="connection-indicator-light {{connectionClass}}"></div></div>
+					{{/if}}
+
 				</div>
 
 			{{else}}
