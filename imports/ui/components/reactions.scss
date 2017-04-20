@@ -218,12 +218,15 @@
 	position: absolute;
 	top: 10%;
 	z-index: 1;
+	transition: all .5s ease-in-out;
+	transform: scale(0.75);
+
+	&.cheer-no-viewers {
+		transform: scale(0);
+	}
 
 	&.cheer-enabled {
 		cursor: pointer;
-		&:active {
-			transform: scale(0.95);
-		}
 	}
 }
 
