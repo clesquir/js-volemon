@@ -237,6 +237,13 @@
 	}
 }
 
+@mixin connection-indicator-light-look($color) {
+	background-color: $color;
+	box-shadow: 0 0 10px 0 rgba($color, 0.4),
+		inset 1px 1px 2px 1px rgba(white, 0.3),
+		inset -1px -1px 2px 1px rgba(black ,0.3);
+}
+
 .connection-indicator {
 	position: absolute;
 	bottom: 5px;
@@ -249,16 +256,16 @@
 		border: solid 1px darken($background-color, 50%);
 
 		&.connection-indicator-light-green {
-			background-color: lighten($positive, 10%);
+			@include connection-indicator-light-look(lighten($positive, 10%));
 		}
 		&.connection-indicator-light-yellow {
-			background-color: lighten(yellow, 10%);
+			@include connection-indicator-light-look(lighten(yellow, 10%));
 		}
 		&.connection-indicator-light-red {
-			background-color: lighten($negative, 5%);
+			@include connection-indicator-light-look(lighten($negative, 7.5%));
 		}
 		&.connection-indicator-light-gray {
-			background-color: lighten($background-color, 10%);
+			@include connection-indicator-light-look(lighten($background-color, 10%));
 		}
 	}
 }
