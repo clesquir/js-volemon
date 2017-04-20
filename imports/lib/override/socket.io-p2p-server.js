@@ -8,7 +8,7 @@ function p2pSocket (socket, next, room) {
 	clients[socket.id] = socket;
 	let connectedClients;
 	if (typeof room === 'object') {
-		connectedClients = socket.adapter.rooms[room.name];
+		connectedClients = socket.adapter.rooms[room.name].sockets;
 	} else {
 		connectedClients = clients;
 	}

@@ -25,8 +25,8 @@ export default class ServerSocketIo extends Stream {
 			this.attachAllListeners(socket);
 
 			socket.on('room', (room) => {
-				socket.join('room');
-				p2p(socket, null, room);
+				socket.join(room);
+				p2p(socket, null, {name: room});
 			});
 
 			socket.on('disconnect', () => {
