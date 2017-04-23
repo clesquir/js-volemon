@@ -56,12 +56,16 @@ export const updateProfilesOnGameFinish = function(gameId, highestPointsColumn) 
 	EloScores.insert({
 		timestamp: eloScoreTimestamp,
 		userId: hostProfile.userId,
-		eloRating: hostProfileData['eloRating']
+		gameId: gameId,
+		eloRating: hostProfileData['eloRating'],
+		eloRatingChange: hostProfileData['eloRatingLastChange']
 	});
 	EloScores.insert({
 		timestamp: eloScoreTimestamp,
 		userId: clientProfile.userId,
-		eloRating: clientProfileData['eloRating']
+		gameId: gameId,
+		eloRating: clientProfileData['eloRating'],
+		eloRatingChange: clientProfileData['eloRatingLastChange']
 	});
 };
 

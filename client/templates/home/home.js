@@ -1,3 +1,8 @@
+import {Meteor} from 'meteor/meteor';
+import {Template} from 'meteor/templating';
+import * as Moment from 'meteor/momentjs:moment';
+import {Session} from 'meteor/session';
+
 Template.home.helpers({
 	numberOfGamesPlayed: function() {
 		return this.profile.numberOfWin + this.profile.numberOfLost;
@@ -8,16 +13,16 @@ Template.home.helpers({
 	},
 
 	getStartedAtDate: function() {
-		return moment(this.startedAt).format('YYYY-MM-DD');
+		return Moment.moment(this.startedAt).format('YYYY-MM-DD');
 	},
 
 	getStartedAtDateTime: function() {
-		return moment(this.startedAt).format('YYYY-MM-DD HH:mm');
+		return Moment.moment(this.startedAt).format('YYYY-MM-DD HH:mm');
 	},
 
 	longestGameInformation: function(statisticName) {
 		if (Session.get(statisticName)) {
-			return 'Game date: ' + moment(Session.get(statisticName).startedAt).format('YYYY-MM-DD HH:mm') + '<br />' +
+			return 'Game date: ' + Moment.moment(Session.get(statisticName).startedAt).format('YYYY-MM-DD HH:mm') + '<br />' +
 				'Opponent: ' + Session.get(statisticName).playerName;
 		}
 		return '';
@@ -25,16 +30,16 @@ Template.home.helpers({
 
 	longestGameDuration: function(statisticName) {
 		if (Session.get(statisticName)) {
-			return moment(Session.get(statisticName).duration).format('mm:ss');
+			return Moment.moment(Session.get(statisticName).duration).format('mm:ss');
 		}
 		return '-';
 	},
 
 	getOpponent: function(players) {
-		var opponentUserId;
+		let opponentUserId;
 
 		players.forEach((player) => {
-			if (this._id == player.gameId) {
+			if (this._id === player.gameId) {
 				opponentUserId = player.name;
 			}
 		});
@@ -47,9 +52,9 @@ Template.home.helpers({
 	},
 
 	getScore: function() {
-		var userPoints, opponentPoints;
+		let userPoints, opponentPoints;
 
-		if (Meteor.userId() == this.createdBy) {
+		if (Meteor.userId() === this.createdBy) {
 			userPoints = this.hostPoints;
 			opponentPoints = this.clientPoints;
 		} else {
@@ -62,11 +67,23 @@ Template.home.helpers({
 			scoreClass = 'winning-score';
 		}
 
-		return '<span class="' + scoreClass + '">' + padNumber(userPoints) + '</span>' + ' - ' + padNumber(opponentPoints);
+		return '<span class="' + scoreClass + '">' + padNumber(userPoints) + '</span>' + '<span>&nbsp;-&nbsp;' + padNumber(opponentPoints) + '</span>';
+	},
+
+	getEloRatingChange: function(eloScores) {
+		let gameEloScoreChange = null;
+
+		eloScores.forEach((eloScore) => {
+			if (this._id === eloScore.gameId) {
+				gameEloScoreChange = eloScore.eloRatingChange;
+			}
+		});
+
+		return gameEloScoreChange;
 	},
 
 	hasMoreGames: function() {
-		var controller = Iron.controller();
+		const controller = Iron.controller();
 
 		return controller.gamesCount() >= controller.state.get('gamesLimit');
 	}
@@ -74,7 +91,7 @@ Template.home.helpers({
 
 Template.home.events({
 	'click [data-action="show-more-games"]': function(e) {
-		var controller = Iron.controller();
+		const controller = Iron.controller();
 
 		e.preventDefault();
 		controller.state.set('gamesLimit', controller.state.get('gamesLimit') + controller.gamesIncrement());

@@ -182,7 +182,7 @@ Template.game.helpers({
 		return eloRating;
 	},
 
-	getPlayerProfile: function(player, profiles) {
+	getPlayerProfileEloRatingLastChange: function(player, profiles) {
 		let playerProfile = null;
 
 		profiles.forEach((profile) => {
@@ -191,7 +191,7 @@ Template.game.helpers({
 			}
 		});
 
-		return playerProfile;
+		return playerProfile.eloRatingLastChange;
 	},
 
 	gameZoomedInClass(profiles) {

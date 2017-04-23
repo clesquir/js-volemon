@@ -42,7 +42,8 @@ Meteor.publish('recentProfileGames', function(limit) {
 
 	return [
 		games,
-		Players.find({userId: {$ne:this.userId}, gameId: {$in: gamesIds}}, {fields: {gameId: 1, name: 1}})
+		Players.find({userId: {$ne: this.userId}, gameId: {$in: gamesIds}}, {fields: {gameId: 1, name: 1}}),
+		EloScores.find({userId: this.userId, gameId: {$in: gamesIds}})
 	];
 });
 

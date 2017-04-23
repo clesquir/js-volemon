@@ -1,7 +1,8 @@
-import { Games } from '/collections/games.js';
-import { Players } from '/collections/players.js';
-import { Profiles } from '/collections/profiles.js';
-import { Config } from '/imports/lib/config.js';
+import {EloScores} from '/collections/eloscores.js';
+import {Games} from '/collections/games.js';
+import {Players} from '/collections/players.js';
+import {Profiles} from '/collections/profiles.js';
+import {Config} from '/imports/lib/config.js';
 
 export const HomeController = RouteController.extend({
 	subscriptions: function() {
@@ -46,7 +47,8 @@ export const HomeController = RouteController.extend({
 		return {
 			profile: Profiles.findOne({userId: Meteor.userId()}),
 			games: Games.find({}, {sort: [['startedAt', 'desc']]}),
-			players: Players.find()
+			players: Players.find(),
+			eloScores: EloScores.find()
 		};
 	}
 });
