@@ -43,7 +43,7 @@
 											<div>
 												<div class="player-name">{{name}}</div>
 												<div>{{getPlayerEloRating this ../profiles}}</div>
-												<div>{{> eloRatingChange getPlayerProfile this ../profiles}}</div>
+												<div>{{> eloRatingChange eloRatingChange=(getPlayerProfileEloRatingLastChange this ../profiles)}}</div>
 											</div>
 										{{/each}}
 									</div>

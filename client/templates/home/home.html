@@ -37,7 +37,7 @@
 							<div>{{profile.eloRating}}</div>
 							<div>ELO</div>
 						</div>
-						{{> eloRatingChange this.profile}}
+						{{> eloRatingChange eloRatingChange=this.profile.eloRatingLastChange}}
 					</div>
 				</div>
 
@@ -46,14 +46,14 @@
 				<div class="table-list">
 					<div class="table-list-row table-list-header">
 						<div class="table-list-cell" style="flex: 0 0 110px;">Date</div>
-						<div class="table-list-cell center-aligned-cell" style="flex: 0 0 75px;">Score</div>
+						<div class="table-list-cell center-aligned-cell" style="flex: 0 0 95px;">Score</div>
 						<div class="table-list-cell">Opponent</div>
 					</div>
 
 					{{#each games}}
 						<div class="table-list-row">
 							<div class="table-list-cell" style="flex: 0 0 110px;"><span data-tooltip="{{getStartedAtDateTime}}">{{{getStartedAtDate}}}</span></div>
-							<div class="table-list-cell center-aligned-cell" style="flex: 0 0 75px;">{{{getScore}}}</div>
+							<div class="table-list-cell center-aligned-cell" style="flex: 0 0 95px; display: flex;">{{{getScore}}} {{> eloRatingChange eloRatingChange=(getEloRatingChange ../eloScores)}}</div>
 							<div class="table-list-cell">{{getOpponent ../players}}</div>
 						</div>
 					{{else}}

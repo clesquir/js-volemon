@@ -29,7 +29,7 @@
 							<div class="table-list-cell right-aligned-cell hideable-cell" style="flex: 0 0 50px;">{{numberOfWin}}</div>
 							<div class="table-list-cell right-aligned-cell hideable-cell" style="flex: 0 0 50px;">{{numberOfLost}}</div>
 							<div class="table-list-cell right-aligned-cell hideable-cell" style="flex: 0 0 55px;">{{getWinRate}}</div>
-							<div class="table-list-cell elo-rating-cell" style="flex: 0 0 90px;"><div>{{eloRating}}</div> {{> eloRatingChange}}</div>
+							<div class="table-list-cell elo-rating-cell" style="flex: 0 0 90px;"><div>{{eloRating}}</div> {{> eloRatingChange eloRatingChange=eloRatingLastChange}}</div>
 						</div>
 					{{else}}
 						<div class="table-list-row">
