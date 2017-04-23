@@ -4,6 +4,11 @@
     "SOCKET_URL": "http://url:8080",
     "ROLLBAR_SERVER_ACCESS_TOKEN": "ACCESS_TOKEN",
     "ROLLBAR_CLIENT_ACCESS_TOKEN": "ACCESS_TOKEN",
-    "ROLLBAR_ENVIRONMENT": "production"
+    "ROLLBAR_ENVIRONMENT": "production",
+    "iceServers": [
+      {
+        "urls": "stun:stun.l.google.com:19302"
+      }
+    ]
   }
 }

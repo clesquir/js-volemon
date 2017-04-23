@@ -1,3 +1,4 @@
+import {Meteor} from 'meteor/meteor';
 import Stream from '/imports/lib/stream/Stream.js';
 import socketIOP2P from '/imports/lib/override/socket.io-p2p.js';
 const isWebRTCSupported = !!require('get-browser-rtc')();
@@ -34,7 +35,18 @@ export default class ClientSocketIo extends Stream {
 	 * @private
 	 */
 	connectP2pAdapter() {
-		this.p2pAdapter = new (socketIOP2P)(this.socketAdapter, {numClients: 10, autoUpgrade: true});
+		this.p2pAdapter = new (socketIOP2P)(
+			this.socketAdapter,
+			{
+				numClients: 10,
+				autoUpgrade: true,
+				peerOpts: {
+					config: {
+						iceServers: Meteor.settings.public.iceServers
+					}
+				}
+			}
+		);
 		this.p2pAdapter.onPeerError = () => {
 			this.connectP2pAdapter();
 		};
