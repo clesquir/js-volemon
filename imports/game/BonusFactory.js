@@ -1,5 +1,6 @@
 import SmallBallBonus from '/imports/game/bonus/SmallBallBonus.js';
 import BigBallBonus from '/imports/game/bonus/BigBallBonus.js';
+import InvisibleBallBonus from '/imports/game/bonus/InvisibleBallBonus.js';
 import SmallMonsterBonus from '/imports/game/bonus/SmallMonsterBonus.js';
 import BigMonsterBonus from '/imports/game/bonus/BigMonsterBonus.js';
 import BigJumpMonsterBonus from '/imports/game/bonus/BigJumpMonsterBonus.js';
@@ -42,6 +43,7 @@ export default class BonusFactory {
 		const availableBonuses = [
 			Constants.BONUS_SMALL_BALL,
 			Constants.BONUS_BIG_BALL,
+			Constants.BONUS_INVISIBLE_BALL,
 			Constants.BONUS_SMALL_MONSTER,
 			Constants.BONUS_BIG_MONSTER,
 			Constants.BONUS_BIG_JUMP_MONSTER,
@@ -75,6 +77,8 @@ export default class BonusFactory {
 				return new SmallBallBonus(game, bonusClass);
 			case Constants.BONUS_BIG_BALL:
 				return new BigBallBonus(game, bonusClass);
+			case Constants.BONUS_INVISIBLE_BALL:
+				return new InvisibleBallBonus(game, bonusClass);
 			case Constants.BONUS_SMALL_MONSTER:
 				return new SmallMonsterBonus(game, bonusClass);
 			case Constants.BONUS_BIG_MONSTER:

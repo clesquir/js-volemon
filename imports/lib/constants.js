@@ -46,6 +46,7 @@ export const Constants = {
 
 	BONUS_SMALL_BALL: 'SmallBallBonus',
 	BONUS_BIG_BALL: 'BigBallBonus',
+	BONUS_INVISIBLE_BALL: 'InvisibleBallBonus',
 	BONUS_SMALL_MONSTER: 'SmallMonsterBonus',
 	BONUS_BIG_MONSTER: 'BigMonsterBonus',
 	BONUS_BIG_JUMP_MONSTER: 'BigJumpMonsterBonus',

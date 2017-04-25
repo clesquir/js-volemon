@@ -73,6 +73,7 @@ export default class GameBonus {
 		this.engine.loadImage('bonus-target', 'assets/bonus-target.png');
 		this.engine.loadImage('bonus-target-positive', 'assets/bonus-target-positive.png');
 		this.engine.loadImage('bonus-target-negative', 'assets/bonus-target-negative.png');
+		this.engine.loadSpriteSheet('bonus-icons', 'assets/bonus-icons.png', 20, 20);
 	}
 
 	createCollisionGroupsAndMaterials() {
@@ -137,8 +138,8 @@ export default class GameBonus {
 					this.bonusesGroup.add(this.engine.drawBonus(
 						padding + (player1Count * ((Config.bonusRadius * 2) + padding)),
 						this.ySize - (this.groundHeight / 2),
-						bonus.getLetter(), bonus.getFontSize(), bonus.getSpriteBorderKey(),
-						this.getBonusProgress(activeBonus, bonus)
+						bonus,
+						this.getBonusProgress(activeBonus, bonus.getDuration())
 					));
 					break;
 				case 'player2':
@@ -146,16 +147,16 @@ export default class GameBonus {
 					this.bonusesGroup.add(this.engine.drawBonus(
 						(this.xSize / 2) + padding + (player2Count * ((Config.bonusRadius * 2) + padding)),
 						this.ySize - (this.groundHeight / 2),
-						bonus.getLetter(), bonus.getFontSize(), bonus.getSpriteBorderKey(),
-						this.getBonusProgress(activeBonus, bonus)
+						bonus,
+						this.getBonusProgress(activeBonus, bonus.getDuration())
 					));
 					break;
 			}
 		}
 	}
 
-	getBonusProgress(activeBonus, bonus) {
-		return 1 - ((this.serverNormalizedTime.getServerNormalizedTimestamp() - activeBonus.activatedAt) / bonus.getDuration());
+	getBonusProgress(activeBonus, duration) {
+		return 1 - ((this.serverNormalizedTime.getServerNormalizedTimestamp() - activeBonus.activatedAt) / duration);
 	}
 
 	sendBonusesPosition() {
@@ -281,6 +282,18 @@ export default class GameBonus {
 		}
 
 		player[property] = value;
+	}
+
+	hideBall() {
+		if (!this.gameData.isUserViewer()) {
+			this.engine.setOpacity(this.game.ball, 0);
+		} else {
+			this.engine.setOpacity(this.game.ball, 0.5);
+		}
+	}
+
+	showBall() {
+		this.engine.setOpacity(this.game.ball, 1);
 	}
 
 	hidePlayingPlayer(playerKey) {
@@ -436,7 +449,7 @@ export default class GameBonus {
 
 			for (let layer of layers) {
 				let scale = getRandomFloat(1, 2);
-				let cloud = this.engine.addSprite(x, 200, layer);
+				let cloud = this.engine.addSprite(x, 200, layer, undefined);
 				cloud.opacity = getRandomFloat(0.25, 0.30);
 				cloud.rotateSpeed = getRandomFloat(-6, 6);
 				this.engine.setStatic(cloud, true);
@@ -485,8 +498,7 @@ export default class GameBonus {
 	createBonus(data) {
 		const bonus = BonusFactory.fromData(data, this);
 		const bonusSprite = this.engine.addBonus(
-			data.initialX, Config.bonusGravityScale, this.bonusMaterial, this.bonusCollisionGroup,
-			bonus.getLetter(), bonus.getFontSize(), bonus.getSpriteBorderKey()
+			data.initialX, Config.bonusGravityScale, this.bonusMaterial, this.bonusCollisionGroup, bonus
 		);
 
 		bonusSprite.identifier = data.bonusIdentifier;
