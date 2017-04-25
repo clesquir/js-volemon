@@ -39,18 +39,6 @@ export default class BaseBonus {
 		return this.getClassName();
 	}
 
-	getSpriteBorderKey() {
-		return this.spriteBorderKey;
-	}
-
-	getLetter() {
-		return this.letter;
-	}
-
-	getFontSize() {
-		return this.fontSize;
-	}
-
 	getActivatedAt() {
 		return this.activatedAt;
 	}
@@ -61,6 +49,36 @@ export default class BaseBonus {
 
 	getTargetPlayerKey() {
 		return this.activatorPlayerKey;
+	}
+
+	itemsToDraw(engine) {
+		return []
+			.concat(this.backgroundToDraw(engine))
+			.concat(this.contentToDraw(engine))
+			.concat(this.borderToDraw(engine));
+	}
+
+	backgroundToDraw(engine) {
+		return [engine.drawCircle(0, 0, 0xFFFFFF, Config.bonusRadius * 2 - 2)];
+	}
+
+	contentToDraw(engine) {
+		return [
+			engine.addText(0, 3, this.letter, {
+				font: 'FontAwesome',
+				fontWeight: 'normal',
+				fontSize: this.fontSize,
+				fill: '#363636',
+				align: 'center'
+			})
+		];
+	}
+
+	borderToDraw(engine) {
+		const bonusBorder = engine.addSprite(0, 0, this.spriteBorderKey, undefined, undefined, true);
+		engine.setAnchor(bonusBorder, 0.5);
+
+		return [bonusBorder];
 	}
 
 	/**

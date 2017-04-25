@@ -122,14 +122,14 @@ export default class Game {
 		/**
 		 * Player 1
 		 */
-		this.player1 = this.engine.addSprite(initialXLocation, initialYLocation, 'player1');
+		this.player1 = this.engine.addSprite(initialXLocation, initialYLocation, 'player1', undefined);
 		this.createPlayer(this.player1, initialXLocation, initialYLocation, 'player1');
 
 		/**
 		 * Player 2
 		 */
 		initialXLocation = this.xSize - Config.playerInitialLocation;
-		this.player2 = this.engine.addSprite(initialXLocation, initialYLocation, 'player2');
+		this.player2 = this.engine.addSprite(initialXLocation, initialYLocation, 'player2', undefined);
 		this.createPlayer(this.player2, initialXLocation, initialYLocation, 'player2');
 
 		/**
@@ -245,7 +245,7 @@ export default class Game {
 	}
 
 	createBall(initialXLocation, initialYLocation) {
-		this.ball = this.engine.addSprite(initialXLocation, initialYLocation, 'ball');
+		this.ball = this.engine.addSprite(initialXLocation, initialYLocation, 'ball', undefined);
 
 		this.ball.initialGravity = Constants.BALL_GRAVITY_SCALE;
 		this.ball.isFrozen = false;

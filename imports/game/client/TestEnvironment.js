@@ -47,7 +47,7 @@ export default class TestEnvironment {
 		this.game.createCollisionGroupsAndMaterials();
 
 		const yPosition = this.game.ySize - this.game.groundHeight - (Constants.PLAYER_HEIGHT / 2);
-		this.game.player1 = this.game.engine.addSprite(Config.playerInitialLocation, yPosition, 'player1');
+		this.game.player1 = this.game.engine.addSprite(Config.playerInitialLocation, yPosition, 'player1', undefined);
 		this.game.createPlayer(this.game.player1, Config.playerInitialLocation, yPosition, 'player1');
 
 		this.game.createBall(100, 100);

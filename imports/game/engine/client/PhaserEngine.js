@@ -53,8 +53,8 @@ export default class PhaserEngine extends Engine {
 	}
 
 	loadScaledPhysics(originalPhysicsKey, newPhysicsKey, shapeKey, scale) {
-		var newData = [],
-			data = this.game.cache.getPhysicsData(originalPhysicsKey, shapeKey);
+		const newData = [];
+		const data = this.game.cache.getPhysicsData(originalPhysicsKey, shapeKey);
 
 		for (let i = 0; i < data.length; i++) {
 			let vertices = [];
@@ -104,15 +104,15 @@ export default class PhaserEngine extends Engine {
 	}
 
 	addGroup() {
-		var group = this.game.add.group();
+		const group = this.game.add.group();
 
 		group.enableBody = true;
 
 		return group;
 	}
 
-	addSprite(x, y, key, group, disableBody) {
-		var sprite = this.game.add.sprite(x, y, key, undefined, group);
+	addSprite(x, y, key, frame, group, disableBody) {
+		const sprite = this.game.add.sprite(x, y, key, frame, group);
 
 		if (!disableBody) {
 			this.enableBody(sprite);
@@ -122,7 +122,7 @@ export default class PhaserEngine extends Engine {
 	}
 
 	addTileSprite(x, y, width, height, key, group, disableBody) {
-		var tileSprite = this.game.add.tileSprite(
+		const tileSprite = this.game.add.tileSprite(
 			x,
 			y,
 			width,
@@ -144,7 +144,7 @@ export default class PhaserEngine extends Engine {
 	}
 
 	addText(x, y, text, style, group) {
-		var textObject = this.game.add.text(x, y, text, style, group);
+		const textObject = this.game.add.text(x, y, text, style, group);
 
 		textObject.smoothed = true;
 		this.setAnchor(textObject, 0.5);
@@ -152,8 +152,18 @@ export default class PhaserEngine extends Engine {
 		return textObject;
 	}
 
+	drawCircle(x, y, decimalColor, diameter) {
+		const circle = this.addGraphics(x, y);
+
+		circle.beginFill(decimalColor);
+		circle.drawCircle(0, 0, diameter);
+		circle.endFill();
+
+		return circle;
+	}
+
 	createTimer(seconds, fn, scope) {
-		var timer = this.game.time.create();
+		const timer = this.game.time.create();
 
 		timer.add(Phaser.Timer.SECOND * seconds, fn, scope);
 
@@ -460,8 +470,8 @@ export default class PhaserEngine extends Engine {
 			.start();
 	}
 
-	drawBonus(x, y, bonusLetter, bonusFontSize, bonusSpriteBorderKey, bonusProgress) {
-		var bonusSprite = this.getBonusSprite(x, y, bonusLetter, bonusFontSize, bonusSpriteBorderKey);
+	drawBonus(x, y, bonus, bonusProgress) {
+		const bonusSprite = this.getBonusSprite(x, y, bonus);
 
 		//Add pie progress
 		let radius = 14;
@@ -496,9 +506,8 @@ export default class PhaserEngine extends Engine {
 		return bonusSprite;
 	}
 
-	addBonus(x, bonusGravityScale, bonusMaterial, bonusCollisionGroup,
-		bonusLetter, bonusFontSize, bonusSpriteBorderKey) {
-		var bonusSprite = this.getBonusSprite(x, 0, bonusLetter, bonusFontSize, bonusSpriteBorderKey);
+	addBonus(x, bonusGravityScale, bonusMaterial, bonusCollisionGroup, bonus) {
+		const bonusSprite = this.getBonusSprite(x, 0, bonus);
 
 		bonusSprite.initialGravity = bonusGravityScale;
 		bonusSprite.sendToBack();
@@ -512,33 +521,16 @@ export default class PhaserEngine extends Engine {
 		return bonusSprite;
 	}
 
-	getBonusSprite(x, y, bonusLetter, bonusFontSize, bonusSpriteBorderKey) {
-		var bonusSprite = this.addSprite(x, y, 'delimiter'),
-			bonusGraphics, bonusText, bonusBorder;
-
-		bonusGraphics = this.addGraphics(0, 0);
-
-		bonusGraphics.beginFill(0xFFFFFF);
-		bonusGraphics.drawCircle(0, 0, 28);
-		bonusGraphics.endFill();
-
-		bonusText = this.addText(0, 3, bonusLetter, {
-			font: 'FontAwesome',
-			fontWeight: 'normal',
-			fontSize: bonusFontSize,
-			fill: '#363636',
-			align: 'center'
-		});
-
-		bonusBorder = this.addSprite(0, 0, bonusSpriteBorderKey, undefined, true);
-		this.setAnchor(bonusBorder, 0.5);
+	getBonusSprite(x, y, bonus) {
+		const bonusSprite = this.addSprite(x, y, 'delimiter', undefined);
 
 		bonusSprite.body.clearShapes();
 		bonusSprite.body.addCircle(Config.bonusRadius);
 
-		bonusSprite.addChild(bonusGraphics);
-		bonusSprite.addChild(bonusText);
-		bonusSprite.addChild(bonusBorder);
+		const sprites = bonus.itemsToDraw(this);
+		for (let sprite of sprites) {
+			bonusSprite.addChild(sprite);
+		}
 
 		return bonusSprite;
 	}
