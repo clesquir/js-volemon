@@ -6,7 +6,7 @@ export default class SlowMonsterBonus extends MovementMonsterBonus {
 	constructor(...args) {
 		super(...args);
 		this.spriteBorderKey = 'bonus-target-negative';
-		this.letter = '\uf252';
+		this.bonusIconsIndex = 2;
 	}
 
 	start() {

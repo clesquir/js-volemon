@@ -12,8 +12,9 @@ export default class BaseBonus {
 		this.activatorPlayerKey = null;
 		this.activatedAt = null;
 		this.spriteBorderKey = 'bonus-environment';
-		this.letter = '\uf005';
 		this.fontSize = '16px';
+		this.letter = undefined;
+		this.bonusIconsIndex = undefined;
 	}
 
 	dataToStream() {
@@ -63,15 +64,32 @@ export default class BaseBonus {
 	}
 
 	contentToDraw(engine) {
-		return [
-			engine.addText(0, 3, this.letter, {
-				font: 'FontAwesome',
-				fontWeight: 'normal',
-				fontSize: this.fontSize,
-				fill: '#363636',
-				align: 'center'
-			})
-		];
+		let items = [];
+
+		if (this.letter !== undefined) {
+			items.push(
+				engine.addText(0, 3, this.letter, {
+					font: 'FontAwesome',
+					fontWeight: 'normal',
+					fontSize: this.fontSize,
+					fill: '#363636',
+					align: 'center'
+				})
+			);
+		} else if (this.bonusIconsIndex !== undefined) {
+			const bonus = engine.addSprite(
+				0,
+				0,
+				'bonus-icons',
+				this.bonusIconsIndex,
+				undefined,
+				true
+			);
+			engine.setAnchor(bonus, 0.5);
+			items.push(bonus);
+		}
+
+		return items;
 	}
 
 	borderToDraw(engine) {
