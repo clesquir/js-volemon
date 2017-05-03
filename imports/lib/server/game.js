@@ -144,6 +144,12 @@ export const replyRematch = function(userId, gameId, accepted, gameStreamInitiat
 		const clientUser = Meteor.users.findOne({_id: clientPlayer.userId});
 
 		const gameRematchId = createGame(clientUser, gameStreamInitiators);
+
+		Games.update(
+			{_id: gameRematchId},
+			{$set: {isPracticeGame: game.isPracticeGame, isPrivate: game.isPrivate, hasBonuses: game.hasBonuses}}
+		);
+
 		joinGame(clientUser, gameRematchId, true);
 		joinGame(hostUser, gameRematchId, true);
 
