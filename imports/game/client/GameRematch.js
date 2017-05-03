@@ -1,4 +1,4 @@
-import {Games} from '/collections/games.js';
+import {Games} from '/imports/api/games/games.js';
 
 export default class GameRematch {
 

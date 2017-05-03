@@ -2,8 +2,8 @@ import StubCollections from 'meteor/hwillson:stub-collections';
 import {chai} from 'meteor/practicalmeteor:chai';
 import {sinon} from 'meteor/practicalmeteor:sinon';
 import {Random} from 'meteor/random';
-import {Games} from '/collections/games.js';
-import {Players} from '/collections/players.js';
+import {Games} from '/imports/api/games/games.js';
+import {Players} from '/imports/api/games/players.js';
 import GameData from '/imports/game/client/GameData.js';
 import {Constants} from '/imports/lib/constants.js';
 

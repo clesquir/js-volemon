@@ -10,8 +10,8 @@ import {
 	isGameStatusTimeout,
 	getWinnerName
 } from '/imports/game/utils.js';
-import {Games} from '/collections/games.js';
-import {Players} from '/collections/players.js';
+import {Games} from '/imports/api/games/games.js';
+import {Players} from '/imports/api/games/players.js';
 import {Config} from '/imports/lib/config.js';
 import {
 	playerAcceptedRematch,

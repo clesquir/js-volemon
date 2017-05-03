@@ -45,30 +45,29 @@
 	}
 }
 
-.spinner {
-	display: flex;
+.rank-contents {
 	margin-bottom: 10px;
 
-	& > div {
-		flex: 1 1 auto;
+	.rank-content {
+		display: none;
 	}
 
-	&.spinner-table-display {
-		#rank-table-display {
+	&.rank-table-display-shown {
+		.view-table-display {
+			opacity: 1;
+		}
+
+		.rank-table-display {
 			display: block;
 		}
-
-		#rank-line-chart-display {
-			display: none;
-		}
 	}
 
-	&.spinner-line-chart-display {
-		#rank-table-display {
-			display: none;
+	&.rank-line-chart-display-shown {
+		.view-line-chart-display {
+			opacity: 1;
 		}
 
-		#rank-line-chart-display {
+		.rank-line-chart-display {
 			display: block;
 		}
 	}

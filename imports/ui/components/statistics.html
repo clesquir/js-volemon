@@ -1,0 +1,57 @@
+<template name="statistics">
+	<h1>Statistics</h1>
+
+	<div class="profile-information-container">
+		<div class="profile-information-statistic">
+			<div>
+				<div class="profile-information-statistic-data">{{numberOfGamesPlayed}}</div>
+				<div class="profile-information-statistic-title">games played</div>
+			</div>
+		</div>
+		<div class="profile-information-statistic">
+			<div>
+				<div class="profile-information-statistic-data">{{winRate}}</div>
+				<div class="profile-information-statistic-title">win rate</div>
+			</div>
+		</div>
+		<div class="profile-information-statistic">
+			<div>
+				<div class="profile-information-statistic-data">{{shutouts}}</div>
+				<div class="profile-information-statistic-title">shutouts</div>
+			</div>
+		</div>
+		<div class="profile-information-statistic">
+			<div data-tooltip="{{longestGameInformation 'longestGame'}}">
+				<div class="profile-information-statistic-data">{{longestGameDuration 'longestGame'}}</div>
+				<div class="profile-information-statistic-title">longest game</div>
+			</div>
+		</div>
+		<div class="profile-information-statistic">
+			<div data-tooltip="{{longestGameInformation 'longestPoint'}}">
+				<div class="profile-information-statistic-data">{{longestGameDuration 'longestPoint'}}</div>
+				<div class="profile-information-statistic-title">longest point</div>
+			</div>
+		</div>
+		<div class="profile-information-statistic">
+			<div data-tooltip="{{eloStatInformation 'lowestElo'}}">
+				<div class="profile-information-statistic-data">{{eloStat 'lowestElo'}}</div>
+				<div class="profile-information-statistic-title">lowest ELO</div>
+			</div>
+		</div>
+		<div class="profile-information-statistic">
+			<div data-tooltip="{{eloStatInformation 'highestElo'}}">
+				<div class="profile-information-statistic-data">{{eloStat 'highestElo'}}</div>
+				<div class="profile-information-statistic-title">highest ELO</div>
+			</div>
+		</div>
+		<div class="profile-information-statistic elo-rating-statistic">
+			<div>
+				<div class="profile-information-statistic-data">
+					<div>{{profile.eloRating}}</div>
+					{{> eloRatingChange eloRatingChange=this.profile.eloRatingLastChange}}
+				</div>
+				<div class="profile-information-statistic-title">ELO</div>
+			</div>
+		</div>
+	</div>
+</template>

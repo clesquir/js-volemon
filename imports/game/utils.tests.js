@@ -1,8 +1,8 @@
 import StubCollections from 'meteor/hwillson:stub-collections';
-import { getWinnerName, isMatchPoint, isDeucePoint } from '/imports/game/utils.js';
-import { Games } from '/collections/games.js';
-import { Players } from '/collections/players.js';
-import { Constants } from '/imports/lib/constants.js';
+import {getWinnerName, isMatchPoint, isDeucePoint} from '/imports/game/utils.js';
+import {Games} from '/imports/api/games/games.js';
+import {Players} from '/imports/api/games/players.js';
+import {Constants} from '/imports/lib/constants.js';
 
 describe('game/utils#getWinnerName', function() {
 	it('returns Nobody if game is not finished', function() {

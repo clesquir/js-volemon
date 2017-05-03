@@ -1,5 +1,5 @@
 import {Meteor} from 'meteor/meteor';
-import {Games} from '/collections/games.js';
+import {Games} from '/imports/api/games/games.js';
 import {Constants} from '/imports/lib/constants.js';
 
 Meteor.methods({
@@ -7,7 +7,7 @@ Meteor.methods({
 		const game = Games.findOne(gameId);
 		const data = {};
 
-		if (game && game.status == Constants.GAME_STATUS_STARTED) {
+		if (game && game.status === Constants.GAME_STATUS_STARTED) {
 			data['activeBonuses'] = [].concat(game.activeBonuses).concat([{
 				bonusIdentifier: bonusIdentifier,
 				bonusClass: bonusClass,
@@ -28,7 +28,7 @@ Meteor.methods({
 		if (game) {
 			//Remove the bonus/targetPlayerKey from the list
 			for (let activeBonus of game.activeBonuses) {
-				if (activeBonus.bonusIdentifier != bonusIdentifier) {
+				if (activeBonus.bonusIdentifier !== bonusIdentifier) {
 					data.activeBonuses.push(activeBonus);
 				}
 			}

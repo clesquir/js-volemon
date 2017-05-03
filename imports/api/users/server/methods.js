@@ -1,10 +1,10 @@
 import {Meteor} from 'meteor/meteor';
 import {check} from 'meteor/check';
 import {Accounts} from 'meteor/accounts-base';
-import { Games } from '/collections/games.js';
-import { Players } from '/collections/players.js';
-import { Profiles } from '/collections/profiles.js';
-import { getUTCTimeStamp } from '/imports/lib/utils.js';
+import {Games} from '/imports/api/games/games.js';
+import {Players} from '/imports/api/games/players.js';
+import {Profiles} from '/imports/api/profiles/profiles.js';
+import {getUTCTimeStamp} from '/imports/lib/utils.js';
 
 Meteor.methods({
 	updateUserName: function(name) {

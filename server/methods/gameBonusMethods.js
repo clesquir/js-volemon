@@ -1,5 +1,5 @@
 import {Meteor} from 'meteor/meteor';
-import {Games} from '/collections/games.js';
+import {Games} from '/imports/api/games/games.js';
 import {Constants} from '/imports/lib/constants.js';
 
 Meteor.methods({
@@ -15,7 +15,7 @@ Meteor.methods({
 			throw new Meteor.Error(404, 'Game not found');
 		}
 
-		if (game.createdBy != user._id) {
+		if (game.createdBy !== user._id) {
 			throw new Meteor.Error('not-allowed', 'Only the creator can update this game property');
 		}
 
@@ -30,7 +30,7 @@ Meteor.methods({
 			throw new Meteor.Error(404, 'Game not found');
 		}
 
-		if (game.status != Constants.GAME_STATUS_STARTED) {
+		if (game.status !== Constants.GAME_STATUS_STARTED) {
 			throw new Meteor.Error('not-allowed', 'Only active games can have active bonus added to');
 		}
 
@@ -56,7 +56,7 @@ Meteor.methods({
 
 		//Remove the bonus/targetPlayerKey from the list
 		for (let activeBonus of game.activeBonuses) {
-			if (activeBonus.bonusIdentifier != bonusIdentifier) {
+			if (activeBonus.bonusIdentifier !== bonusIdentifier) {
 				data.activeBonuses.push(activeBonus);
 			}
 		}

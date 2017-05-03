@@ -1,8 +1,8 @@
 import {Meteor} from 'meteor/meteor';
-import {EloScores} from '/collections/eloscores.js';
-import {Games} from '/collections/games.js';
-import {Players} from '/collections/players.js';
-import {Profiles} from '/collections/profiles.js';
+import {EloScores} from '/imports/api/games/eloscores.js';
+import {Games} from '/imports/api/games/games.js';
+import {Players} from '/imports/api/games/players.js';
+import {Profiles} from '/imports/api/profiles/profiles.js';
 import {Constants} from '/imports/lib/constants.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 
@@ -17,7 +17,7 @@ export const updateProfilesOnGameFinish = function(gameId, highestPointsColumn) 
 		throw new Meteor.Error(404, 'Game not found');
 	}
 
-	if (game.status != Constants.GAME_STATUS_FINISHED) {
+	if (game.status !== Constants.GAME_STATUS_FINISHED) {
 		throw new Meteor.Error('not-allowed', 'Only finished games can be used for Elo calculations');
 	}
 
@@ -47,6 +47,12 @@ export const updateProfilesOnGameFinish = function(gameId, highestPointsColumn) 
 	hostProfileData['eloRatingLastChange'] = hostProfileData['eloRating'] - hostProfile.eloRating;
 	clientProfileData['eloRating'] = getEloRating(clientProfile.eloRating, clientEloScore, clientScore);
 	clientProfileData['eloRatingLastChange'] = clientProfileData['eloRating'] - clientProfile.eloRating;
+
+	if (game.hostPoints === 5 && game.clientPoints === 0) {
+		hostProfileData['numberOfShutouts'] = hostProfile.numberOfShutouts + 1;
+	} else if (game.hostPoints === 0 && game.clientPoints === 5) {
+		clientProfileData['numberOfShutouts'] = clientProfile.numberOfShutouts + 1;
+	}
 
 	Profiles.update({_id: hostProfile._id}, {$set: hostProfileData});
 	Profiles.update({_id: clientProfile._id}, {$set: clientProfileData});
