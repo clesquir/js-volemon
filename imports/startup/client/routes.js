@@ -1,6 +1,7 @@
-import { Games } from '/collections/games.js';
-import { Players } from '/collections/players.js';
-import { Profiles } from '/collections/profiles.js';
+import {EloScores} from '/collections/eloscores.js';
+import {Games} from '/collections/games.js';
+import {Players} from '/collections/players.js';
+import {Profiles} from '/collections/profiles.js';
 import {HomeController} from '/imports/startup/client/controllers/HomeController.js';
 import GameData from '/imports/game/client/GameData.js';
 import GameInitiator from '/imports/game/client/GameInitiator.js';
@@ -64,7 +65,8 @@ Router.map(function() {
 			return {
 				game: Games.findOne(this.params._id),
 				players: Players.find({gameId: this.params._id}, {sort: ['joinedAt']}),
-				profiles: Profiles.find()
+				profiles: Profiles.find(),
+				eloScores: EloScores.find({gameId: this.params._id})
 			};
 		},
 		onBeforeAction: function() {
