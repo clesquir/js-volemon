@@ -1,87 +1,45 @@
-.clickable-link {
-	text-decoration: underline;
-	cursor: pointer;
-}
+.home-display-selection {
+	margin-bottom: 10px;
+	text-align: right;
 
-.button + .button {
-	margin-left: 5px;
-}
+	i {
+		cursor: pointer;
+		opacity: .25;
 
-.profile-information-container {
-	border-bottom: 1px solid $border-color;
-	padding-bottom: 5px;
-	display: flex;
-	justify-content: flex-end;
-	min-width: 580px;
-
-	@include breakpoint(mobile) {
-		min-width: unset;
-		flex-direction: column;
-	}
-
-	.profile-information-statistic {
-		padding: 10px 15px;
-		margin: 0;
-		text-align: center;
-
-		&:last-of-type {
-			padding-right: 0;
-
-			@include breakpoint(mobile) {
-				padding-right: 15px;
-			}
+		& + & {
+			margin-left: 10px;
 		}
 
-		& > div > div:first-of-type {
-			font-size: 25px;
-		}
-
-		& > div > div:last-of-type {
-			font-size: 10px;
-		}
-
-		&.elo-rating-statistic {
-			justify-content: center;
+		&:hover {
+			opacity: 1;
 		}
 	}
 }
 
-.profile-information-header {
-	flex: 1 1 auto;
-	justify-content: flex-end;
-	min-width: 80px;
-	text-align: initial;
-	display: flex;
-	flex-direction: column;
-	padding: 10px 0 10px;
+.home-contents {
+	margin-bottom: 10px;
 
-	@include breakpoint(mobile) {
-		text-align: center;
+	.home-content {
+		display: none;
 	}
 
-	& > div {
-		font-size: 19px;
-		font-weight: 700;
+	&.user-statistics-shown {
+		.view-user-statistics {
+			opacity: 1;
+		}
 
-		@include breakpoint(mobile) {
-			font-size: 1.5em;
+		.user-statistics {
+			display: block;
 		}
 	}
-}
 
-.profile-information-statistic + .profile-information-statistic {
-	border-left: 1px solid $border-color;
+	&.user-recent-games-shown {
+		.view-user-recent-games {
+			opacity: 1;
+		}
 
-	@include breakpoint(mobile) {
-		border-left: 0;
-		border-top: 1px solid $border-color;
+		.user-recent-games {
+			display: block;
+		}
 	}
-}
-
-.winning-score {
-	color: $positive;
-}
-
-.loosing-score {
-	color: $negative;
 }
