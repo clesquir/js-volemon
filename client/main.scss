@@ -47,6 +47,8 @@ $desktop-max-width: 70em;
 
 //Pages
 @import "{}/imports/ui/components/reactions.scss";
+@import "{}/imports/ui/components/recentGames.scss";
+@import "{}/imports/ui/components/statistics.scss";
 @import "{}/imports/ui/pages/app.scss";
 @import "{}/imports/ui/pages/game.scss";
 @import "{}/imports/ui/pages/home.scss";
