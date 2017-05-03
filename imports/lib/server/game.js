@@ -25,6 +25,7 @@ export const createGame = function(user, gameStreamInitiators) {
 				createdAt: getUTCTimeStamp(),
 				createdBy: user._id,
 				creatorName: user.profile.name,
+				isPracticeGame: 0,
 				isPrivate: 0,
 				hasBonuses: 1,
 				hostPoints: 0,

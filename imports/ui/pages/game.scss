@@ -80,6 +80,32 @@
 	@include aspect-ratio(45, 30);
 }
 
+.switch-containers {
+	display: flex;
+
+	& > div {
+		flex: 1 0 0;
+		text-align: left;
+	}
+
+	.switch-label {
+		width: 115px;
+		display: inline-block;
+	}
+
+	@include breakpoint(mobile) {
+		.switch-label {
+			width: 100%;
+			display: block;
+			margin-bottom: 5px;
+		}
+
+		.switch-button {
+			margin-left: 0;
+		}
+	}
+}
+
 .copyable-url-input {
 	position: relative;
 	display: flex;

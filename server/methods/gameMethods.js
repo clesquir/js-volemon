@@ -27,6 +27,25 @@ Meteor.methods({
 		return id;
 	},
 
+	updatePracticeGame: function(gameId, isPracticeGame) {
+		const user = Meteor.user();
+		const game = Games.findOne(gameId);
+
+		if (!user) {
+			throw new Meteor.Error(401, 'You need to login to update practice game property');
+		}
+
+		if (!game) {
+			throw new Meteor.Error(404, 'Game not found');
+		}
+
+		if (game.createdBy !== user._id) {
+			throw new Meteor.Error('not-allowed', 'Only the creator can update the practice game property');
+		}
+
+		Games.update({_id: game._id}, {$set: {isPracticeGame: isPracticeGame ? 1 : 0}});
+	},
+
 	updateGamePrivacy: function(gameId, isPrivate) {
 		const user = Meteor.user();
 		const game = Games.findOne(gameId);
@@ -324,7 +343,7 @@ Meteor.methods({
 
 		Games.update({_id: game._id}, {$set: data});
 
-		if (isGameFinished) {
+		if (isGameFinished && !game.isPracticeGame) {
 			updateProfilesOnGameFinish(game._id, columnName);
 		}
 	},
