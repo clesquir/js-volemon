@@ -79,6 +79,7 @@ Meteor.publish('game', function(id) {
 	return [
 		Games.find({_id: id}),
 		Players.find({gameId: id}),
-		Profiles.find()
+		Profiles.find(),
+		EloScores.find({gameId: id})
 	];
 });

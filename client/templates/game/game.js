@@ -174,28 +174,28 @@ Template.game.helpers({
 		}
 	},
 
-	getPlayerEloRating: function(player, profiles) {
+	getPlayerEloRating: function(player, eloScores) {
 		let eloRating = '-';
 
-		profiles.forEach((profile) => {
-			if (player.userId === profile.userId) {
-				eloRating = profile.eloRating;
+		eloScores.forEach((eloScore) => {
+			if (player.userId === eloScore.userId) {
+				eloRating = eloScore.eloRating;
 			}
 		});
 
 		return eloRating;
 	},
 
-	getPlayerProfileEloRatingLastChange: function(player, profiles) {
-		let playerProfile = null;
+	getPlayerGameEloRatingChange: function(player, eloScores) {
+		let gameEloRatingChange = null;
 
-		profiles.forEach((profile) => {
-			if (player.userId === profile.userId) {
-				playerProfile = profile;
+		eloScores.forEach((eloScore) => {
+			if (player.userId === eloScore.userId) {
+				gameEloRatingChange = eloScore.eloRatingChange;
 			}
 		});
 
-		return playerProfile.eloRatingLastChange;
+		return gameEloRatingChange;
 	},
 
 	gameZoomedInClass(profiles) {

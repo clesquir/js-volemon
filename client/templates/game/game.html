@@ -42,8 +42,8 @@
 										{{#each players}}
 											<div>
 												<div class="player-name">{{name}}</div>
-												<div>{{getPlayerEloRating this ../profiles}}</div>
-												<div>{{> eloRatingChange eloRatingChange=(getPlayerProfileEloRatingLastChange this ../profiles)}}</div>
+												<div>{{getPlayerEloRating this ../eloScores}}</div>
+												<div>{{> eloRatingChange eloRatingChange=(getPlayerGameEloRatingChange this ../eloScores)}}</div>
 											</div>
 										{{/each}}
 									</div>
