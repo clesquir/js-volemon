@@ -196,6 +196,15 @@
 	margin-top: 10px;
 }
 
+.clickable-link {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.button + .button {
+	margin-left: 5px;
+}
+
 .small-icon {
 	font-size: 12px;
 	line-height: 20px;

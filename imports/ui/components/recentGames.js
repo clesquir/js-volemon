@@ -1,38 +1,16 @@
 import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
 import * as Moment from 'meteor/momentjs:moment';
-import {Session} from 'meteor/session';
 
-Template.home.helpers({
-	numberOfGamesPlayed: function() {
-		return this.profile.numberOfWin + this.profile.numberOfLost;
-	},
+import './recentGames.html';
 
-	winRate: function() {
-		return getWinRate(this.profile);
-	},
-
+Template.recentGames.helpers({
 	getStartedAtDate: function() {
 		return Moment.moment(this.startedAt).format('YYYY-MM-DD');
 	},
 
 	getStartedAtDateTime: function() {
 		return Moment.moment(this.startedAt).format('YYYY-MM-DD HH:mm');
-	},
-
-	longestGameInformation: function(statisticName) {
-		if (Session.get(statisticName)) {
-			return 'Game date: ' + Moment.moment(Session.get(statisticName).startedAt).format('YYYY-MM-DD HH:mm') + '<br />' +
-				'Opponent: ' + Session.get(statisticName).playerName;
-		}
-		return '';
-	},
-
-	longestGameDuration: function(statisticName) {
-		if (Session.get(statisticName)) {
-			return Moment.moment(Session.get(statisticName).duration).format('mm:ss');
-		}
-		return '-';
 	},
 
 	getOpponent: function(players) {
@@ -89,7 +67,7 @@ Template.home.helpers({
 	}
 });
 
-Template.home.events({
+Template.recentGames.events({
 	'click [data-action="show-more-games"]': function(e) {
 		const controller = Iron.controller();
 

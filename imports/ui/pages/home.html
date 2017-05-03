@@ -1,0 +1,34 @@
+<template name="home">
+
+	<div class="app-section app-section-top">
+
+		<div class="app-section-inner maximum-responsive-width">
+
+			{{#if currentUser}}
+
+				<div id="home-contents" class="home-contents user-statistics-shown">
+					<div class="home-display-selection">
+						<i class="fa fa-pie-chart view-user-statistics" data-action="view-user-statistics" data-tooltip="Statistics"></i>
+						<i class="fa fa-list view-user-recent-games" data-action="view-user-recent-games" data-tooltip="Recent games"></i>
+					</div>
+
+					<div class="home-content user-statistics">
+						{{> statistics}}
+					</div>
+
+					<div class="home-content user-recent-games">
+						{{> recentGames}}
+					</div>
+				</div>
+
+			{{else}}
+
+				<p>Please <a class="clickable-link" data-action="user-log-in">log in</a> to get statistics on your profile!</p>
+
+			{{/if}}
+
+		</div>
+
+	</div>
+
+</template>

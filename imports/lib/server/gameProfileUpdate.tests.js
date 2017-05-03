@@ -1,10 +1,10 @@
 import {Random} from 'meteor/random';
 import {chai} from 'meteor/practicalmeteor:chai';
 import {resetDatabase} from 'meteor/xolvio:cleaner';
-import {EloScores} from '/collections/eloscores.js';
-import {Games} from '/collections/games.js';
-import {Players} from '/collections/players.js';
-import {Profiles} from '/collections/profiles.js';
+import {EloScores} from '/imports/api/games/eloscores.js';
+import {Games} from '/imports/api/games/games.js';
+import {Players} from '/imports/api/games/players.js';
+import {Profiles} from '/imports/api/profiles/profiles.js';
 import {Constants} from '/imports/lib/constants.js';
 import {updateProfilesOnGameFinish, getEloScore, getEloRating} from '/imports/lib/server/gameProfileUpdate.js';
 
@@ -75,6 +75,102 @@ describe('lib/server/gameProfileUpdate#updateProfilesOnGameFinish', function() {
 		let eloScoresClient = EloScores.findOne({userId: notCreatedByUserId});
 		chai.assert.isObject(eloScoresClient);
 		chai.assert.propertyVal(eloScoresClient, 'eloRating', 984);
+	});
+
+	it('updates numberOfShutouts', function() {
+		const hostProfileId = Random.id(5);
+		const createdByUserId = 1;
+		const clientProfileId = Random.id(5);
+		const notCreatedByUserId = 2;
+
+		resetDatabase();
+
+		Profiles.insert({
+			_id: hostProfileId,
+			userId: createdByUserId,
+			numberOfWin: 0,
+			numberOfLost: 0,
+			numberOfShutouts: 0,
+			eloRating: 1000,
+			eloRatingLastChange: null
+		});
+		Profiles.insert({
+			_id: clientProfileId,
+			userId: notCreatedByUserId,
+			numberOfWin: 0,
+			numberOfLost: 0,
+			numberOfShutouts: 0,
+			eloRating: 1000,
+			eloRatingLastChange: null
+		});
+
+		/**
+		 * 5-1
+		 */
+		let gameId = Random.id(5);
+		Players.insert({gameId: gameId, userId: notCreatedByUserId});
+		Games.insert({_id: gameId, createdBy: createdByUserId, status: Constants.GAME_STATUS_FINISHED, hostPoints: 5, clientPoints: 1});
+
+		updateProfilesOnGameFinish(gameId, Constants.HOST_POINTS_COLUMN);
+
+		let hostProfile = Profiles.findOne({_id: hostProfileId});
+		chai.assert.isObject(hostProfile);
+		chai.assert.propertyVal(hostProfile, 'numberOfShutouts', 0);
+
+		let clientProfile = Profiles.findOne({_id: clientProfileId});
+		chai.assert.isObject(clientProfile);
+		chai.assert.propertyVal(clientProfile, 'numberOfShutouts', 0);
+
+		/**
+		 * 1-5
+		 */
+		gameId = Random.id(5);
+		Players.insert({gameId: gameId, userId: notCreatedByUserId});
+		Games.insert({_id: gameId, createdBy: createdByUserId, status: Constants.GAME_STATUS_FINISHED, hostPoints: 1, clientPoints: 5});
+
+		updateProfilesOnGameFinish(gameId, Constants.CLIENT_POINTS_COLUMN);
+
+		hostProfile = Profiles.findOne({_id: hostProfileId});
+		chai.assert.isObject(hostProfile);
+		chai.assert.propertyVal(hostProfile, 'numberOfShutouts', 0);
+
+		clientProfile = Profiles.findOne({_id: clientProfileId});
+		chai.assert.isObject(clientProfile);
+		chai.assert.propertyVal(clientProfile, 'numberOfShutouts', 0);
+
+		/**
+		 * 5-0
+		 */
+		gameId = Random.id(5);
+		Players.insert({gameId: gameId, userId: notCreatedByUserId});
+		Games.insert({_id: gameId, createdBy: createdByUserId, status: Constants.GAME_STATUS_FINISHED, hostPoints: 5, clientPoints: 0});
+
+		updateProfilesOnGameFinish(gameId, Constants.HOST_POINTS_COLUMN);
+
+		hostProfile = Profiles.findOne({_id: hostProfileId});
+		chai.assert.isObject(hostProfile);
+		chai.assert.propertyVal(hostProfile, 'numberOfShutouts', 1);
+
+		clientProfile = Profiles.findOne({_id: clientProfileId});
+		chai.assert.isObject(clientProfile);
+		chai.assert.propertyVal(clientProfile, 'numberOfShutouts', 0);
+
+		/**
+		 * 0-5
+		 */
+		gameId = Random.id(5);
+		Players.insert({gameId: gameId, userId: notCreatedByUserId});
+		Games.insert({_id: gameId, createdBy: createdByUserId, status: Constants.GAME_STATUS_FINISHED, hostPoints: 0, clientPoints: 5});
+
+		updateProfilesOnGameFinish(gameId, Constants.CLIENT_POINTS_COLUMN);
+
+		hostProfile = Profiles.findOne({_id: hostProfileId});
+		chai.assert.isObject(hostProfile);
+		chai.assert.propertyVal(hostProfile, 'numberOfShutouts', 1);
+
+		clientProfile = Profiles.findOne({_id: clientProfileId});
+		chai.assert.isObject(clientProfile);
+		chai.assert.propertyVal(clientProfile, 'numberOfShutouts', 1);
 	});
 });
 

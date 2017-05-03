@@ -1,6 +1,6 @@
 import {Meteor} from 'meteor/meteor';
 import {TimeSync} from 'meteor/mizzao:timesync';
-import {Games} from '/collections/games.js';
+import {Games} from '/imports/api/games/games.js';
 import {Constants} from '/imports/lib/constants.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 
@@ -10,7 +10,7 @@ Meteor.methods({
 		const data = {};
 
 		if (
-			game && game.status == Constants.GAME_STATUS_STARTED &&
+			game && game.status === Constants.GAME_STATUS_STARTED &&
 			[Constants.HOST_POINTS_COLUMN, Constants.CLIENT_POINTS_COLUMN].indexOf(columnName) !== -1
 		) {
 			data[columnName] = game[columnName] + 1;

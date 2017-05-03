@@ -1,12 +1,12 @@
 import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
 import RankChart from '/client/lib/RankChart.js';
-import { EloScores } from '/collections/eloscores.js';
-import { Profiles } from '/collections/profiles.js';
+import { EloScores } from '/imports/api/games/eloscores.js';
+import { Profiles } from '/imports/api/profiles/profiles.js';
 
 Template.rank.helpers({
 	getHighlightedClassIfCurrentUser: function() {
-		if (this.userId == Meteor.userId()) {
+		if (this.userId === Meteor.userId()) {
 			return 'highlighted-row';
 		}
 
@@ -21,7 +21,7 @@ Template.rank.helpers({
 		let userName = '-';
 
 		users.forEach((user) => {
-			if (this.userId == user._id) {
+			if (this.userId === user._id) {
 				userName = user.profile.name;
 			}
 		});
@@ -41,18 +41,18 @@ Template.rank.events({
 	'click [data-action=view-table-display]': function(e) {
 		const rankDisplay = document.getElementById('rank-display');
 
-		if (!$(rankDisplay).is('.spinner-table-display')) {
-			$(rankDisplay).addClass('spinner-table-display');
-			$(rankDisplay).removeClass('spinner-line-chart-display');
+		if (!$(rankDisplay).is('.rank-table-display-shown')) {
+			removeShownClasses(rankDisplay);
+			$(rankDisplay).addClass('rank-table-display-shown');
 		}
 	},
 
 	'click [data-action=view-line-chart-display]': function(e) {
 		const rankDisplay = document.getElementById('rank-display');
 
-		if (!$(rankDisplay).is('.spinner-line-chart-display')) {
-			$(rankDisplay).addClass('spinner-line-chart-display');
-			$(rankDisplay).removeClass('spinner-table-display');
+		if (!$(rankDisplay).is('.rank-line-chart-display-shown')) {
+			removeShownClasses(rankDisplay);
+			$(rankDisplay).addClass('rank-line-chart-display-shown');
 
 			//Select the 7 days by default
 			$('span[data-action="display-chart-7-days"]').first().trigger('click');
@@ -91,6 +91,11 @@ Template.rank.events({
 		updateRankChart(e, '7 days ago', minDate);
 	}
 });
+
+const removeShownClasses = function(rankDisplay) {
+	$(rankDisplay).removeClass('rank-table-display-shown');
+	$(rankDisplay).removeClass('rank-line-chart-display-shown');
+};
 
 const updateRankChart = function(e, minDateLabel, minDate) {
 	highlightSelectedChartPeriodItem(e);

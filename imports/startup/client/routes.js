@@ -1,14 +1,19 @@
-import {EloScores} from '/collections/eloscores.js';
-import {Games} from '/collections/games.js';
-import {Players} from '/collections/players.js';
-import {Profiles} from '/collections/profiles.js';
+import {EloScores} from '/imports/api/games/eloscores.js';
+import {Games} from '/imports/api/games/games.js';
+import {Players} from '/imports/api/games/players.js';
+import {Profiles} from '/imports/api/profiles/profiles.js';
 import {HomeController} from '/imports/startup/client/controllers/HomeController.js';
 import GameData from '/imports/game/client/GameData.js';
 import GameInitiator from '/imports/game/client/GameInitiator.js';
 import GameReaction from '/imports/game/client/GameReaction.js';
 import GameRematch from '/imports/game/client/GameRematch.js';
 import ClientSocketIo from '/imports/lib/stream/client/ClientSocketIo.js';
+
+import '/imports/ui/pages/home.js';
+
 import '/imports/ui/components/reactions.js';
+import '/imports/ui/components/recentGames.js';
+import '/imports/ui/components/statistics.js';
 
 Router.configure({
 	layoutTemplate: 'app',

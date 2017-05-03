@@ -6,13 +6,13 @@
 
 			<h1>Rank</h1>
 
-			<div class="rank-display-selection">
-				<i class="fa fa-table" data-action="view-table-display"></i>
-				<i class="fa fa-line-chart" data-action="view-line-chart-display"></i>
-			</div>
+			<div id="rank-display" class="rank-contents rank-table-display-shown">
+				<div class="rank-display-selection">
+					<i class="fa fa-table view-table-display" data-action="view-table-display" data-tooltip="Table"></i>
+					<i class="fa fa-line-chart view-line-chart-display" data-action="view-line-chart-display" data-tooltip="Line chart"></i>
+				</div>
 
-			<div id="rank-display" class="spinner spinner-table-display">
-				<div id="rank-table-display" class="table-list">
+				<div id="rank-table-display" class="rank-content rank-table-display table-list">
 					<div class="table-list-row table-list-header">
 						<div class="table-list-cell center-aligned-cell" style="flex: 0 0 50px;"></div>
 						<div class="table-list-cell">Name</div>
@@ -38,7 +38,7 @@
 					{{/each}}
 				</div>
 
-				<div id="rank-line-chart-display">
+				<div id="rank-line-chart-display" class="rank-content rank-line-chart-display">
 					<div class="display-chart-period">
 						<span data-action="display-chart-all-time">All time</span> |
 						<span data-action="display-chart-60-days">60 days</span> |
