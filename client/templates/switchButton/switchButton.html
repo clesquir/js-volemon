@@ -1,6 +1,6 @@
 <template name="switchButton">
 	<span data-action="{{dataAction}}">
-		{{label}}
+		<span class="switch-label">{{label}}</span>
 		<span class="switch-button {{#if onOffMethod}}on-value{{else}}off-value{{/if}}" tabindex="0">
 			<span data-role="status"></span>
 		</span>
