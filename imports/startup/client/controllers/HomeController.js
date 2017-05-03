@@ -1,12 +1,14 @@
-import {EloScores} from '/collections/eloscores.js';
-import {Games} from '/collections/games.js';
-import {Players} from '/collections/players.js';
-import {Profiles} from '/collections/profiles.js';
+import {Meteor} from 'meteor/meteor';
+import {Session} from 'meteor/session';
+import {EloScores} from '/imports/api/games/eloscores.js';
+import {Games} from '/imports/api/games/games.js';
+import {Players} from '/imports/api/games/players.js';
+import {Profiles} from '/imports/api/profiles/profiles.js';
 import {Config} from '/imports/lib/config.js';
 
 export const HomeController = RouteController.extend({
 	subscriptions: function() {
-		return Meteor.subscribe('profileData');
+		return [];
 	},
 	onBeforeAction: function() {
 		this.state.setDefault('gamesLimit', Config.gamesLimitOnHomePage);
@@ -23,19 +25,6 @@ export const HomeController = RouteController.extend({
 	},
 	action: function () {
 		Meteor.subscribe('recentProfileGames', this.gamesLimit());
-
-		if (Meteor.userId()) {
-			Meteor.call('longestGame', function(error, data) {
-				if (!error && data.gameId) {
-					Session.set('longestGame', data);
-				}
-			});
-			Meteor.call('longestPoint', function(error, data) {
-				if (!error && data.gameId) {
-					Session.set('longestPoint', data);
-				}
-			});
-		}
 
 		if (this.ready()) {
 			this.render();
