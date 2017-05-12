@@ -94,7 +94,9 @@
 					{{> reactions isGamePlayer=isGamePlayer hasViewer=hasViewer }}
 
 					{{#if isGamePlayer}}
-						<div class="connection-indicator"><div class="connection-indicator-light {{connectionClass}}"></div></div>
+						<div class="connection-indicator">
+							<div class="connection-indicator-light {{connectionClass}}" data-tooltip="{{connectionInformation}}"></div>
+						</div>
 					{{/if}}
 
 				</div>

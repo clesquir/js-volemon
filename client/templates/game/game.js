@@ -21,7 +21,7 @@ import {
 	currentPlayerHasRepliedRematch,
 	currentPlayerAcceptedRematch
 } from '/imports/lib/client/gameSetup.js';
-import {stream} from '/imports/startup/client/routes.js';
+import {serverNormalizedTime} from '/imports/startup/client/routes.js';
 
 Template.game.helpers({
 	isHost: function() {
@@ -280,6 +280,28 @@ Template.game.helpers({
 
 	connectionClass() {
 		return Session.get('connection-indicator-class');
+	},
+
+	connectionInformation() {
+		let webRTCUsage = 'No connection';
+		switch (Session.get('connection-indicator-class')) {
+			case 'connection-indicator-light-green':
+				webRTCUsage = 'WebRTC used';
+				break;
+			case 'connection-indicator-light-yellow':
+				webRTCUsage = 'WebRTC not used';
+				break;
+			case 'connection-indicator-light-red':
+				webRTCUsage = 'WebRTC disabled';
+				break;
+		}
+
+		let serverOffset = '-';
+		if (serverNormalizedTime) {
+			serverOffset = serverNormalizedTime.serverOffset + 'ms';
+		}
+
+		return webRTCUsage + '<br />' + 'Server offset: ' + serverOffset;
 	}
 });
 

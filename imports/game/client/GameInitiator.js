@@ -6,7 +6,6 @@ import {Players} from '/imports/api/games/players.js';
 import PhaserEngine from '/imports/game/engine/client/PhaserEngine.js';
 import GameStreamBundler from '/imports/game/client/GameStreamBundler.js';
 import GameStreamInitiator from '/imports/game/client/GameStreamInitiator.js';
-import ServerNormalizedTime from '/imports/game/client/ServerNormalizedTime.js';
 import Game from '/imports/game/client/Game.js';
 import {Constants} from '/imports/lib/constants.js';
 
@@ -16,18 +15,18 @@ export default class GameInitiator {
 	 * @param {string} gameId
 	 * @param {Stream} stream
 	 * @param {GameData} gameData
+	 * @param {ServerNormalizedTime} serverNormalizedTime
 	 */
-	constructor(gameId, stream, gameData) {
+	constructor(gameId, stream, gameData, serverNormalizedTime) {
 		this.gameId = gameId;
 		this.stream = stream;
 		this.gameData = gameData;
+		this.serverNormalizedTime = serverNormalizedTime;
 
 		this.currentGame = null;
 		this.timerUpdater = null;
-
 		this.engine = new PhaserEngine();
 		this.gameStreamBundler = new GameStreamBundler(this.stream);
-		this.serverNormalizedTime = new ServerNormalizedTime();
 		this.gameStreamInitiator = new GameStreamInitiator(this, this.stream);
 	}
 

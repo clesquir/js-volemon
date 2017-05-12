@@ -7,6 +7,7 @@ import GameData from '/imports/game/client/GameData.js';
 import GameInitiator from '/imports/game/client/GameInitiator.js';
 import GameReaction from '/imports/game/client/GameReaction.js';
 import GameRematch from '/imports/game/client/GameRematch.js';
+import ServerNormalizedTime from '/imports/game/client/ServerNormalizedTime.js';
 import ClientSocketIo from '/imports/lib/stream/client/ClientSocketIo.js';
 
 import '/imports/ui/pages/home.js';
@@ -96,7 +97,8 @@ Router.map(function() {
 				stream.connect(Session.get('game'));
 				gameData = new GameData(Session.get('game'));
 				gameData.init();
-				gameInitiator = new GameInitiator(Session.get('game'), stream, gameData);
+				serverNormalizedTime = new ServerNormalizedTime();
+				gameInitiator = new GameInitiator(Session.get('game'), stream, gameData, serverNormalizedTime);
 				gameInitiator.init();
 				gameRematch = new GameRematch(Session.get('game'), gameData);
 				gameRematch.init();
@@ -177,6 +179,8 @@ Router.map(function() {
 export let stream = null;
 /** @type {GameData} */
 let gameData = null;
+/** @type {ServerNormalizedTime} */
+export let serverNormalizedTime = null;
 /** @type {GameInitiator}|null */
 let gameInitiator = null;
 /** @type {GameRematch}|null */
