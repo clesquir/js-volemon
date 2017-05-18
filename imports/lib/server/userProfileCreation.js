@@ -10,6 +10,7 @@ export const createProfile = function(user) {
 		numberOfWin: 0,
 		numberOfLost: 0,
 		numberOfShutouts: 0,
+		numberOfShutoutLosses: 0,
 		eloRating: 1000,
 		eloRatingLastChange: 0,
 		lastShapeUsed: Constants.PLAYER_DEFAULT_SHAPE

@@ -6,5 +6,6 @@ import '/imports/api/users/server/methods.js';
 
 //Migrations
 import '/imports/api/achievements/server/migrations/initialAchievements.js';
-import '/imports/api/profiles/server/migrations/noShutouts.js';
+import '/imports/api/profiles/server/migrations/numberOfShutouts.js';
+import '/imports/api/profiles/server/migrations/numberOfShutoutLosses.js';
 import '/imports/api/achievements/server/migrations/userInitialAchievements.js';

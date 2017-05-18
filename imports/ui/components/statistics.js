@@ -47,12 +47,20 @@ Template.statistics.helpers({
 		return getWinRate(this.profile);
 	},
 
-	shutouts: function() {
+	numberOfShutouts: function() {
 		if (!this.profile) {
 			return '-';
 		}
 
 		return this.profile.numberOfShutouts;
+	},
+
+	numberOfShutoutLosses: function() {
+		if (!this.profile) {
+			return '-';
+		}
+
+		return this.profile.numberOfShutoutLosses;
 	},
 
 	longestGameInformation: function(statisticName) {
