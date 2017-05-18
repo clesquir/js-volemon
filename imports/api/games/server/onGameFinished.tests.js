@@ -1,17 +1,23 @@
 import {Random} from 'meteor/random';
 import {chai} from 'meteor/practicalmeteor:chai';
 import {resetDatabase} from 'meteor/xolvio:cleaner';
+import {
+	onGameFinished,
+	updateProfilesOnGameFinished,
+	updateEloScoresOnGameFinished,
+	getEloScore,
+	getEloRating
+} from '/imports/api/games/server/onGameFinished.js';
 import {EloScores} from '/imports/api/games/eloscores.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
 import {Constants} from '/imports/lib/constants.js';
-import {updateProfilesOnGameFinish, getEloScore, getEloRating} from '/imports/lib/server/gameProfileUpdate.js';
 
-describe('lib/server/gameProfileUpdate#updateProfilesOnGameFinish', function() {
+describe('onGameFinished', function() {
 	it('throws 404 if game does not exist', function() {
 		chai.expect(() => {
-			updateProfilesOnGameFinish(Random.id(5));
+			onGameFinished(Random.id(5));
 		}).to.throw('Game not found');
 	});
 
@@ -20,22 +26,22 @@ describe('lib/server/gameProfileUpdate#updateProfilesOnGameFinish', function() {
 		Games.insert({_id: gameId, status: Constants.GAME_STATUS_STARTED});
 
 		chai.expect(() => {
-			updateProfilesOnGameFinish(gameId);
+			onGameFinished(gameId);
 		}).to.throw('Only finished games can be used for Elo calculations');
 	});
 
-	it('updates Profiles and inserts EloScores', function() {
+	it('updates elo ratings and scores', function() {
 		const gameId = Random.id(5);
 		const hostProfileId = Random.id(5);
-		const createdByUserId = 1;
+		const hostUserId = 1;
 		const clientProfileId = Random.id(5);
-		const notCreatedByUserId = 2;
+		const clientUserId = 2;
 
 		resetDatabase();
 
 		Profiles.insert({
 			_id: hostProfileId,
-			userId: createdByUserId,
+			userId: hostUserId,
 			numberOfWin: 0,
 			numberOfLost: 0,
 			eloRating: 1000,
@@ -43,51 +49,108 @@ describe('lib/server/gameProfileUpdate#updateProfilesOnGameFinish', function() {
 		});
 		Profiles.insert({
 			_id: clientProfileId,
-			userId: notCreatedByUserId,
+			userId: clientUserId,
 			numberOfWin: 0,
 			numberOfLost: 0,
 			eloRating: 1000,
 			eloRatingLastChange: null
 		});
-		Players.insert({gameId: gameId, userId: notCreatedByUserId});
-		Games.insert({_id: gameId, createdBy: createdByUserId, status: Constants.GAME_STATUS_FINISHED});
+		Players.insert({gameId: gameId, userId: clientUserId});
+		Games.insert({_id: gameId, status: Constants.GAME_STATUS_FINISHED});
 
-		updateProfilesOnGameFinish(gameId, Constants.HOST_POINTS_COLUMN);
+		updateEloScoresOnGameFinished(Games.findOne({_id: gameId}), Profiles.findOne({_id: hostProfileId}), Profiles.findOne({_id: clientProfileId}));
 
 		let hostProfile = Profiles.findOne({_id: hostProfileId});
 		chai.assert.isObject(hostProfile);
-		chai.assert.propertyVal(hostProfile, 'numberOfWin', 1);
-		chai.assert.propertyVal(hostProfile, 'numberOfLost', 0);
 		chai.assert.propertyVal(hostProfile, 'eloRating', 1016);
 		chai.assert.propertyVal(hostProfile, 'eloRatingLastChange', 16);
 
 		let clientProfile = Profiles.findOne({_id: clientProfileId});
 		chai.assert.isObject(clientProfile);
-		chai.assert.propertyVal(clientProfile, 'numberOfWin', 0);
-		chai.assert.propertyVal(clientProfile, 'numberOfLost', 1);
 		chai.assert.propertyVal(clientProfile, 'eloRating', 984);
 		chai.assert.propertyVal(clientProfile, 'eloRatingLastChange', -16);
 
-		let eloScoresHost = EloScores.findOne({userId: createdByUserId});
+		let eloScoresHost = EloScores.findOne({userId: hostUserId});
 		chai.assert.isObject(eloScoresHost);
 		chai.assert.propertyVal(eloScoresHost, 'eloRating', 1016);
 
-		let eloScoresClient = EloScores.findOne({userId: notCreatedByUserId});
+		let eloScoresClient = EloScores.findOne({userId: clientUserId});
 		chai.assert.isObject(eloScoresClient);
 		chai.assert.propertyVal(eloScoresClient, 'eloRating', 984);
 	});
 
-	it('updates numberOfShutouts', function() {
+	it('updates number of win and lost', function() {
+		const gameId = Random.id(5);
 		const hostProfileId = Random.id(5);
-		const createdByUserId = 1;
+		const hostUserId = 1;
 		const clientProfileId = Random.id(5);
-		const notCreatedByUserId = 2;
+		const clientUserId = 2;
 
 		resetDatabase();
 
 		Profiles.insert({
 			_id: hostProfileId,
-			userId: createdByUserId,
+			userId: hostUserId,
+			numberOfWin: 0,
+			numberOfLost: 0
+		});
+		Profiles.insert({
+			_id: clientProfileId,
+			userId: clientUserId,
+			numberOfWin: 0,
+			numberOfLost: 0
+		});
+		Players.insert({gameId: gameId, userId: clientUserId});
+		Games.insert({_id: gameId, status: Constants.GAME_STATUS_FINISHED});
+
+		updateProfilesOnGameFinished(Games.findOne({_id: gameId}), Profiles.findOne({_id: hostProfileId}), Profiles.findOne({_id: clientProfileId}));
+
+		let hostProfile = Profiles.findOne({_id: hostProfileId});
+		chai.assert.isObject(hostProfile);
+		chai.assert.propertyVal(hostProfile, 'numberOfWin', 1);
+		chai.assert.propertyVal(hostProfile, 'numberOfLost', 0);
+
+		let clientProfile = Profiles.findOne({_id: clientProfileId});
+		chai.assert.isObject(clientProfile);
+		chai.assert.propertyVal(clientProfile, 'numberOfWin', 0);
+		chai.assert.propertyVal(clientProfile, 'numberOfLost', 1);
+
+		updateProfilesOnGameFinished(Games.findOne({_id: gameId}), Profiles.findOne({_id: clientProfileId}), Profiles.findOne({_id: hostProfileId}));
+
+		hostProfile = Profiles.findOne({_id: hostProfileId});
+		chai.assert.isObject(hostProfile);
+		chai.assert.propertyVal(hostProfile, 'numberOfWin', 1);
+		chai.assert.propertyVal(hostProfile, 'numberOfLost', 1);
+
+		clientProfile = Profiles.findOne({_id: clientProfileId});
+		chai.assert.isObject(clientProfile);
+		chai.assert.propertyVal(clientProfile, 'numberOfWin', 1);
+		chai.assert.propertyVal(clientProfile, 'numberOfLost', 1);
+
+		updateProfilesOnGameFinished(Games.findOne({_id: gameId}), Profiles.findOne({_id: hostProfileId}), Profiles.findOne({_id: clientProfileId}));
+
+		hostProfile = Profiles.findOne({_id: hostProfileId});
+		chai.assert.isObject(hostProfile);
+		chai.assert.propertyVal(hostProfile, 'numberOfWin', 2);
+		chai.assert.propertyVal(hostProfile, 'numberOfLost', 1);
+
+		clientProfile = Profiles.findOne({_id: clientProfileId});
+		chai.assert.isObject(clientProfile);
+		chai.assert.propertyVal(clientProfile, 'numberOfWin', 1);
+		chai.assert.propertyVal(clientProfile, 'numberOfLost', 2);
+	});
+
+	it('updates numberOfShutouts', function() {
+		const hostProfileId = Random.id(5);
+		const hostUserId = 1;
+		const clientProfileId = Random.id(5);
+		const clientUserId = 2;
+
+		resetDatabase();
+
+		Profiles.insert({
+			_id: hostProfileId,
+			userId: hostUserId,
 			numberOfWin: 0,
 			numberOfLost: 0,
 			numberOfShutouts: 0,
@@ -96,7 +159,7 @@ describe('lib/server/gameProfileUpdate#updateProfilesOnGameFinish', function() {
 		});
 		Profiles.insert({
 			_id: clientProfileId,
-			userId: notCreatedByUserId,
+			userId: clientUserId,
 			numberOfWin: 0,
 			numberOfLost: 0,
 			numberOfShutouts: 0,
@@ -108,10 +171,10 @@ describe('lib/server/gameProfileUpdate#updateProfilesOnGameFinish', function() {
 		 * 5-1
 		 */
 		let gameId = Random.id(5);
-		Players.insert({gameId: gameId, userId: notCreatedByUserId});
-		Games.insert({_id: gameId, createdBy: createdByUserId, status: Constants.GAME_STATUS_FINISHED, hostPoints: 5, clientPoints: 1});
+		Players.insert({gameId: gameId, userId: clientUserId});
+		Games.insert({_id: gameId, status: Constants.GAME_STATUS_FINISHED, hostPoints: 5, clientPoints: 1});
 
-		updateProfilesOnGameFinish(gameId, Constants.HOST_POINTS_COLUMN);
+		updateProfilesOnGameFinished(Games.findOne({_id: gameId}), Profiles.findOne({_id: hostProfileId}), Profiles.findOne({_id: clientProfileId}));
 
 		let hostProfile = Profiles.findOne({_id: hostProfileId});
 		chai.assert.isObject(hostProfile);
@@ -125,10 +188,10 @@ describe('lib/server/gameProfileUpdate#updateProfilesOnGameFinish', function() {
 		 * 1-5
 		 */
 		gameId = Random.id(5);
-		Players.insert({gameId: gameId, userId: notCreatedByUserId});
-		Games.insert({_id: gameId, createdBy: createdByUserId, status: Constants.GAME_STATUS_FINISHED, hostPoints: 1, clientPoints: 5});
+		Players.insert({gameId: gameId, userId: clientUserId});
+		Games.insert({_id: gameId, status: Constants.GAME_STATUS_FINISHED, hostPoints: 1, clientPoints: 5});
 
-		updateProfilesOnGameFinish(gameId, Constants.CLIENT_POINTS_COLUMN);
+		updateProfilesOnGameFinished(Games.findOne({_id: gameId}), Profiles.findOne({_id: clientProfileId}), Profiles.findOne({_id: hostProfileId}));
 
 		hostProfile = Profiles.findOne({_id: hostProfileId});
 		chai.assert.isObject(hostProfile);
@@ -142,10 +205,10 @@ describe('lib/server/gameProfileUpdate#updateProfilesOnGameFinish', function() {
 		 * 5-0
 		 */
 		gameId = Random.id(5);
-		Players.insert({gameId: gameId, userId: notCreatedByUserId});
-		Games.insert({_id: gameId, createdBy: createdByUserId, status: Constants.GAME_STATUS_FINISHED, hostPoints: 5, clientPoints: 0});
+		Players.insert({gameId: gameId, userId: clientUserId});
+		Games.insert({_id: gameId, status: Constants.GAME_STATUS_FINISHED, hostPoints: 5, clientPoints: 0});
 
-		updateProfilesOnGameFinish(gameId, Constants.HOST_POINTS_COLUMN);
+		updateProfilesOnGameFinished(Games.findOne({_id: gameId}), Profiles.findOne({_id: hostProfileId}), Profiles.findOne({_id: clientProfileId}));
 
 		hostProfile = Profiles.findOne({_id: hostProfileId});
 		chai.assert.isObject(hostProfile);
@@ -159,10 +222,10 @@ describe('lib/server/gameProfileUpdate#updateProfilesOnGameFinish', function() {
 		 * 0-5
 		 */
 		gameId = Random.id(5);
-		Players.insert({gameId: gameId, userId: notCreatedByUserId});
-		Games.insert({_id: gameId, createdBy: createdByUserId, status: Constants.GAME_STATUS_FINISHED, hostPoints: 0, clientPoints: 5});
+		Players.insert({gameId: gameId, userId: clientUserId});
+		Games.insert({_id: gameId, status: Constants.GAME_STATUS_FINISHED, hostPoints: 0, clientPoints: 5});
 
-		updateProfilesOnGameFinish(gameId, Constants.CLIENT_POINTS_COLUMN);
+		updateProfilesOnGameFinished(Games.findOne({_id: gameId}), Profiles.findOne({_id: clientProfileId}), Profiles.findOne({_id: hostProfileId}));
 
 		hostProfile = Profiles.findOne({_id: hostProfileId});
 		chai.assert.isObject(hostProfile);

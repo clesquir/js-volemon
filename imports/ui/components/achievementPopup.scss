@@ -1,0 +1,50 @@
+.achievement-popup {
+	position: fixed;
+	z-index: 1000;
+	left: 50%;
+	transform: translateX(-50%);
+	justify-content: center;
+	display: flex;
+	transition: all 0.25s ease-in-out;
+	top: -80px;
+	opacity: 0;
+	cursor: pointer;
+
+	&.achievement-popup-visible {
+		top: 5px;
+		opacity: 0.9;
+
+		&:hover {
+			opacity: 1;
+		}
+	}
+
+	.achievement-popup-content {
+		display: flex;
+		align-items: center;
+		background-color: white;
+		border-radius: 5px;
+		padding: 10px;
+		border: 1px #aaa solid;
+		box-shadow: 0 0 5px #aaa;
+
+		.achievement-star {
+			font-size: 20px;
+
+			i.fa {
+				padding: 2px;
+			}
+		}
+
+		.achievement-level-info {
+			&:hover {
+				font-size: 18px;
+			}
+		}
+
+		.achievement-description {
+			margin-left: 0;
+			font-size: 15px;
+		}
+	}
+}

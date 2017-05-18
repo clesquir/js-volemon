@@ -1,6 +1,9 @@
 import {Meteor} from 'meteor/meteor';
 import {Games} from '/imports/api/games/games.js';
+import BonusCaught from '/imports/api/games/events/BonusCaught.js';
+import BonusRemoved from '/imports/api/games/events/BonusRemoved.js';
 import {Constants} from '/imports/lib/constants.js';
+import {EventPublisher} from '/imports/lib/EventPublisher.js';
 
 Meteor.methods({
 	updateGameHasBonuses: function(gameId, hasBonuses) {
@@ -22,7 +25,7 @@ Meteor.methods({
 		Games.update({_id: game._id}, {$set: {hasBonuses: hasBonuses ? 1 : 0}});
 	},
 
-	addActiveBonusToGame: function(gameId, bonusIdentifier, bonusClass, activatedAt, targetPlayerKey) {
+	addActiveBonusToGame: function(gameId, bonusIdentifier, activatedBonusClass, activatedAt, targetPlayerKey, bonusClass, activatorPlayerKey) {
 		const game = Games.findOne(gameId);
 		const data = {};
 
@@ -36,12 +39,18 @@ Meteor.methods({
 
 		data['activeBonuses'] = [].concat(game.activeBonuses).concat([{
 			bonusIdentifier: bonusIdentifier,
-			bonusClass: bonusClass,
+			activatedBonusClass: activatedBonusClass,
 			activatedAt: activatedAt,
-			targetPlayerKey: targetPlayerKey
+			targetPlayerKey: targetPlayerKey,
+			bonusClass: bonusClass,
+			activatorPlayerKey: activatorPlayerKey
 		}]);
 
 		Games.update({_id: game._id}, {$set: data});
+
+		EventPublisher.publish(new BonusCaught(
+			game._id, activatedBonusClass, targetPlayerKey, bonusClass, activatorPlayerKey
+		));
 	},
 
 	removeActiveBonusFromGame: function(gameId, bonusIdentifier) {
@@ -55,12 +64,25 @@ Meteor.methods({
 		}
 
 		//Remove the bonus/targetPlayerKey from the list
+		let removedActivatedBonusClass;
+		let removedBonusTargetPlayerKey;
+		let removedBonusClass;
+		let removedActivatorPlayerKey;
 		for (let activeBonus of game.activeBonuses) {
 			if (activeBonus.bonusIdentifier !== bonusIdentifier) {
 				data.activeBonuses.push(activeBonus);
+			} else {
+				removedActivatedBonusClass = activeBonus.activatedBonusClass;
+				removedBonusTargetPlayerKey = activeBonus.targetPlayerKey;
+				removedBonusClass = activeBonus.bonusClass;
+				removedActivatorPlayerKey = activeBonus.activatorPlayerKey;
 			}
 		}
 
 		Games.update({_id: game._id}, {$set: data});
+
+		EventPublisher.publish(new BonusRemoved(
+			game._id, removedActivatedBonusClass, removedBonusTargetPlayerKey, removedBonusClass, removedActivatorPlayerKey
+		));
 	}
 });

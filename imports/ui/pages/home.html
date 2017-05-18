@@ -9,11 +9,16 @@
 				<div id="home-contents" class="home-contents user-statistics-shown">
 					<div class="home-display-selection">
 						<i class="fa fa-pie-chart view-user-statistics" data-action="view-user-statistics" data-tooltip="Statistics"></i>
+						<i class="fa fa-trophy view-user-achievements" data-action="view-user-achievements" data-tooltip="Achievements"></i>
 						<i class="fa fa-list view-user-recent-games" data-action="view-user-recent-games" data-tooltip="Recent games"></i>
 					</div>
 
 					<div class="home-content user-statistics">
 						{{> statistics}}
+					</div>
+
+					<div class="home-content user-achievements">
+						{{> achievements}}
 					</div>
 
 					<div class="home-content user-recent-games">

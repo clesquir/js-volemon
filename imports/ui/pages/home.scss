@@ -33,6 +33,16 @@
 		}
 	}
 
+	&.user-achievements-shown {
+		.view-user-achievements {
+			opacity: 1;
+		}
+
+		.user-achievements {
+			display: block;
+		}
+	}
+
 	&.user-recent-games-shown {
 		.view-user-recent-games {
 			opacity: 1;

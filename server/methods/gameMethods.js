@@ -1,16 +1,25 @@
 import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
+import GameFinished from '/imports/api/games/events/GameFinished.js';
+import GameTimedOut from '/imports/api/games/events/GameTimedOut.js';
+import PointTaken from '/imports/api/games/events/PointTaken.js';
+import {
+	createGame,
+	joinGame,
+	startGame,
+	replyRematch
+} from '/imports/api/games/server/gameSetup.js';
+import {onGameFinished} from '/imports/api/games/server/onGameFinished.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
 import {Config} from '/imports/lib/config.js';
 import {Constants} from '/imports/lib/constants.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
-import {createGame, joinGame, startGame, replyRematch} from '/imports/lib/server/game.js';
-import {updateProfilesOnGameFinish} from '/imports/lib/server/gameProfileUpdate.js';
+import {EventPublisher} from '/imports/lib/EventPublisher.js';
 
-/** @type {GameStreamInitiator[]} */
-let gameStreamInitiators = {};
+/** @type {GameInitiator[]} */
+let gameInitiators = {};
 
 Meteor.methods({
 	createGame: function() {
@@ -20,7 +29,7 @@ Meteor.methods({
 			throw new Meteor.Error(401, 'You need to login to create a game');
 		}
 
-		const id = createGame(user, gameStreamInitiators);
+		const id = createGame(user, gameInitiators);
 
 		Meteor.call('joinGame', id, true);
 
@@ -162,15 +171,15 @@ Meteor.methods({
 			Games.remove(gameId);
 
 			//Stop streaming
-			if (gameStreamInitiators[gameId]) {
-				gameStreamInitiators[gameId].stop();
-				delete gameStreamInitiators[gameId];
+			if (gameInitiators[gameId]) {
+				gameInitiators[gameId].stop();
+				delete gameInitiators[gameId];
 			}
 		}
 	},
 
 	startGame: function(gameId) {
-		startGame(gameId, gameStreamInitiators);
+		startGame(gameId, gameInitiators);
 	},
 
 	addGameViewer: function(gameId) {
@@ -220,15 +229,17 @@ Meteor.methods({
 
 			if (game.status === Constants.GAME_STATUS_STARTED) {
 				Games.update({_id: game._id}, {$set: {status: Constants.GAME_STATUS_TIMEOUT}});
+
+				EventPublisher.publish(new GameTimedOut(game._id));
 			}
 
 			//If there is no active players anymore
 			const activePlayers = Players.find({gameId: gameId, hasQuit: false});
 			if (activePlayers.count() === 0) {
 				//Stop streaming
-				if (gameStreamInitiators[gameId]) {
-					gameStreamInitiators[gameId].stop();
-					delete gameStreamInitiators[gameId];
+				if (gameInitiators[gameId]) {
+					gameInitiators[gameId].stop();
+					delete gameInitiators[gameId];
 				}
 			}
 		}
@@ -272,13 +283,15 @@ Meteor.methods({
 					}
 
 					Games.update({_id: game._id}, {$set: {status: Constants.GAME_STATUS_TIMEOUT}});
+
+					EventPublisher.publish(new GameTimedOut(game._id));
 				}
 			});
 		}
 	},
 
 	removeVacantGameStreams: function() {
-		const gameIds = Object.keys(gameStreamInitiators);
+		const gameIds = Object.keys(gameInitiators);
 		const players = Players.find({gameId: {$in: gameIds}, hasQuit: false});
 
 		const stillOccupiedGames = [];
@@ -292,9 +305,9 @@ Meteor.methods({
 
 		for (let gameId of vacantGameIds) {
 			//Stop streaming
-			if (gameStreamInitiators[gameId]) {
-				gameStreamInitiators[gameId].stop();
-				delete gameStreamInitiators[gameId];
+			if (gameInitiators[gameId]) {
+				gameInitiators[gameId].stop();
+				delete gameInitiators[gameId];
 			}
 		}
 	},
@@ -331,7 +344,8 @@ Meteor.methods({
 
 		data['activeBonuses'] = [];
 		data['lastPointAt'] = getUTCTimeStamp();
-		data['pointsDuration'] = [].concat(game.pointsDuration).concat([data['lastPointAt'] - game.lastPointAt]);
+		const pointDuration = data['lastPointAt'] - game.lastPointAt;
+		data['pointsDuration'] = [].concat(game.pointsDuration).concat([pointDuration]);
 
 		let isGameFinished = false;
 		if (data[columnName] >= Constants.MAXIMUM_POINTS) {
@@ -343,8 +357,26 @@ Meteor.methods({
 
 		Games.update({_id: game._id}, {$set: data});
 
+		EventPublisher.publish(new PointTaken(game._id, pointDuration));
+
 		if (isGameFinished && !game.isPracticeGame) {
-			updateProfilesOnGameFinish(game._id, columnName);
+			const clientPlayer = Players.findOne({gameId: game._id, userId: {$ne: game.createdBy}});
+
+			let winnerUserId;
+			let loserUserId;
+			switch (columnName) {
+				case Constants.HOST_POINTS_COLUMN:
+					winnerUserId = game.createdBy;
+					loserUserId = clientPlayer.userId;
+					break;
+				case Constants.CLIENT_POINTS_COLUMN:
+					winnerUserId = clientPlayer.userId;
+					loserUserId = game.createdBy;
+					break;
+			}
+
+			onGameFinished(game._id, winnerUserId, loserUserId);
+			EventPublisher.publish(new GameFinished(game._id, data['gameDuration']));
 		}
 	},
 
@@ -355,6 +387,6 @@ Meteor.methods({
 			throw new Meteor.Error(401, 'You need to login to ask for rematch');
 		}
 
-		replyRematch(user._id, gameId, accepted, gameStreamInitiators);
+		replyRematch(user._id, gameId, accepted, gameInitiators);
 	}
 });

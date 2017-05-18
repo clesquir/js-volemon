@@ -1,3 +1,4 @@
+import {Random} from 'meteor/random';
 import SmallBallBonus from '/imports/game/bonus/SmallBallBonus.js';
 import BigBallBonus from '/imports/game/bonus/BigBallBonus.js';
 import InvisibleBallBonus from '/imports/game/bonus/InvisibleBallBonus.js';
@@ -15,7 +16,7 @@ import NoJumpMonsterBonus from '/imports/game/bonus/NoJumpMonsterBonus.js';
 import BounceMonsterBonus from '/imports/game/bonus/BounceMonsterBonus.js';
 import CloakedMonsterBonus from '/imports/game/bonus/CloakedMonsterBonus.js';
 import RandomBonus from '/imports/game/bonus/RandomBonus.js';
-import { Constants } from '/imports/lib/constants.js';
+import {Constants} from '/imports/lib/constants.js';
 
 export default class BonusFactory {
 
@@ -40,7 +41,20 @@ export default class BonusFactory {
 	 * @returns {string}
 	 */
 	static randomBonusKey(excludeRandom) {
-		const availableBonuses = [
+		const availableBonuses = this.availableBonuses();
+
+		if (!excludeRandom) {
+			availableBonuses.push(Constants.RANDOM_BONUS);
+		}
+
+		return Random.choice(availableBonuses);
+	}
+
+	/**
+	 * @returns {string[]}
+	 */
+	static availableBonuses() {
+		return [
 			Constants.BONUS_SMALL_BALL,
 			Constants.BONUS_BIG_BALL,
 			Constants.BONUS_INVISIBLE_BALL,
@@ -58,12 +72,6 @@ export default class BonusFactory {
 			Constants.BONUS_BOUNCE_MONSTER,
 			Constants.BONUS_CLOAKED_MONSTER
 		];
-
-		if (!excludeRandom) {
-			availableBonuses.push(Constants.RANDOM_BONUS);
-		}
-
-		return Random.choice(availableBonuses);
 	}
 
 	/**
@@ -113,10 +121,10 @@ export default class BonusFactory {
 	}
 
 	static fromData(data, game) {
-		const bonus = this.fromClassName(data.bonusClassName, game);
+		const bonus = this.fromClassName(data.bonusClass, game);
 
 		if (bonus instanceof RandomBonus) {
-			bonus.setRandomBonus(this.fromClassName(data.randomBonusClassName, game));
+			bonus.setRandomBonus(this.fromClassName(data.randomBonusClass, game));
 		}
 
 		return bonus;

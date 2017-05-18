@@ -1,3 +1,6 @@
+import {Meteor} from 'meteor/meteor';
+import {Session} from 'meteor/session';
+import {Template} from 'meteor/templating';
 import {EloScores} from '/imports/api/games/eloscores.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
@@ -12,6 +15,8 @@ import ClientSocketIo from '/imports/lib/stream/client/ClientSocketIo.js';
 
 import '/imports/ui/pages/home.js';
 
+import '/imports/ui/components/achievementPopup.js';
+import '/imports/ui/components/achievements.js';
 import '/imports/ui/components/reactions.js';
 import '/imports/ui/components/recentGames.js';
 import '/imports/ui/components/statistics.js';
@@ -20,7 +25,11 @@ Router.configure({
 	layoutTemplate: 'app',
 	loadingTemplate: 'loading',
 	waitOn: function() {
-		return Meteor.subscribe('userData');
+		return [
+			Meteor.subscribe('userData'),
+			Meteor.subscribe('achievements'),
+			Meteor.subscribe('userAchievements', Meteor.userId())
+		];
 	}
 });
 

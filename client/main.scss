@@ -46,6 +46,8 @@ $desktop-max-width: 70em;
 }
 
 //Pages
+@import "{}/imports/ui/components/achievementPopup.scss";
+@import "{}/imports/ui/components/achievements.scss";
 @import "{}/imports/ui/components/reactions.scss";
 @import "{}/imports/ui/components/recentGames.scss";
 @import "{}/imports/ui/components/statistics.scss";

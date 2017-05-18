@@ -3,16 +3,18 @@ import {Games} from '/imports/api/games/games.js';
 import {Constants} from '/imports/lib/constants.js';
 
 Meteor.methods({
-	addActiveBonusToGame: function(gameId, bonusIdentifier, bonusClass, activatedAt, targetPlayerKey) {
+	addActiveBonusToGame: function(gameId, bonusIdentifier, activatedBonusClass, activatedAt, targetPlayerKey, bonusClass, activatorPlayerKey) {
 		const game = Games.findOne(gameId);
 		const data = {};
 
 		if (game && game.status === Constants.GAME_STATUS_STARTED) {
 			data['activeBonuses'] = [].concat(game.activeBonuses).concat([{
 				bonusIdentifier: bonusIdentifier,
-				bonusClass: bonusClass,
+				activatedBonusClass: activatedBonusClass,
 				activatedAt: activatedAt,
-				targetPlayerKey: targetPlayerKey
+				targetPlayerKey: targetPlayerKey,
+				bonusClass: bonusClass,
+				activatorPlayerKey: activatorPlayerKey
 			}]);
 
 			Games.update({_id: game._id}, {$set: data});

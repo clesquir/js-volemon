@@ -10,7 +10,7 @@ export default class RandomBonus extends BaseBonus {
 
 	dataToStream() {
 		const data = super.dataToStream();
-		data.randomBonusClassName = this.randomBonus.getClassName();
+		data.randomBonusClass = this.randomBonus.getClassName();
 		return data;
 	}
 

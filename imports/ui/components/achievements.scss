@@ -1,0 +1,90 @@
+$gold-color: darken(#ede175, 5%);
+
+@keyframes gold-glowing {
+	from { background: lighten($gold-color, 5%); box-shadow: 0 0 30px 2px lighten($gold-color, 7.5%); }
+	50% { background: $gold-color; box-shadow: 0 0 15px lighten($gold-color, 15%); }
+	to { background: lighten($gold-color, 5%); box-shadow: 0 0 30px 2px lighten($gold-color, 7.5%); }
+}
+
+.achievement-item {
+	margin: 0 10px 0 0;
+	position: relative;
+
+	@include breakpoint(mobile) {
+		margin-right: 15px;
+	}
+}
+
+.achievement-star {
+	font-size: 30px;
+	background: $border-color-light;
+	color: $background-color-darker;
+	border: 2px solid $background-color-darker;
+	border-radius: 35px;
+	padding: 3px;
+
+	i.fa {
+		border: 2px solid $background-color-darker;
+		border-radius: 35px;
+		padding: 5px;
+	}
+
+	&.level-completed {
+		background: $gold-color;
+		animation-name: gold-glowing;
+		animation-duration: 2s;
+		animation-iteration-count: infinite;
+	}
+
+	@include breakpoint(mobile) {
+		font-size: 20px;
+
+		i.fa {
+			padding: 2px;
+		}
+	}
+}
+
+.achievement-level-info {
+	font-size: 10px;
+	color: #ffffff;
+	text-shadow: 0 0 5px #000000;
+	font-weight: bold;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	top: 0;
+	align-items: center;
+	justify-content: center;
+	transition: 0.25s ease-in-out;
+
+	&:hover {
+		font-size: 22px;
+	}
+
+	@include breakpoint(mobile) {
+		&:hover {
+			font-size: 18px;
+		}
+	}
+}
+
+.achievement-description {
+	flex: 1 0 0;
+	text-align: left;
+	font-size: 20px;
+	margin-left: 10px;
+
+	@include breakpoint(mobile) {
+		font-size: 15px;
+	}
+}
+
+.achievement-lists {
+	.achievement-row {
+		display: flex;
+		align-items: center;
+		margin-bottom: 10px;
+	}
+}
