@@ -23,6 +23,15 @@ Template.home.events({
 		}
 	},
 
+	'click [data-action=view-user-achievements]': function(e) {
+		const homeContents = document.getElementById('home-contents');
+
+		if (!$(homeContents).is('.user-achievements-shown')) {
+			removeShownClasses(homeContents);
+			$(homeContents).addClass('user-achievements-shown');
+		}
+	},
+
 	'click [data-action=view-user-recent-games]': function(e) {
 		const homeContents = document.getElementById('home-contents');
 
@@ -35,5 +44,6 @@ Template.home.events({
 
 const removeShownClasses = function(homeContents) {
 	$(homeContents).removeClass('user-statistics-shown');
+	$(homeContents).removeClass('user-achievements-shown');
 	$(homeContents).removeClass('user-recent-games-shown');
 };

@@ -19,7 +19,7 @@ export default class BaseBonus {
 
 	dataToStream() {
 		return {
-			bonusClassName: this.getClassName(),
+			bonusClass: this.getClassName(),
 			bonusIdentifier: this.getIdentifier()
 		};
 	}
@@ -46,6 +46,10 @@ export default class BaseBonus {
 
 	getDuration() {
 		return this.durationMilliseconds;
+	}
+
+	getActivatorPlayerKey() {
+		return this.activatorPlayerKey;
 	}
 
 	getTargetPlayerKey() {

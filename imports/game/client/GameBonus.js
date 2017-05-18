@@ -115,7 +115,7 @@ export default class GameBonus {
 
 	applyActiveBonuses() {
 		for (let activeBonus of this.gameData.activeBonuses) {
-			let bonus = BonusFactory.fromClassName(activeBonus.bonusClass, this);
+			let bonus = BonusFactory.fromClassName(activeBonus.activatedBonusClass, this);
 			bonus.activate(activeBonus.targetPlayerKey, activeBonus.activatedAt);
 			bonus.start();
 			this.activeBonuses.push(bonus);
@@ -130,7 +130,7 @@ export default class GameBonus {
 		let player2Count = 0;
 
 		for (let activeBonus of this.gameData.activeBonuses) {
-			let bonus = BonusFactory.fromClassName(activeBonus.bonusClass, this);
+			let bonus = BonusFactory.fromClassName(activeBonus.activatedBonusClass, this);
 
 			switch (activeBonus.targetPlayerKey) {
 				case 'player1':
@@ -545,7 +545,9 @@ export default class GameBonus {
 				bonus.getIdentifier(),
 				bonus.classNameToActivate(),
 				activatedAt,
-				bonus.getTargetPlayerKey()
+				bonus.getTargetPlayerKey(),
+				bonus.getClassName(),
+				bonus.getActivatorPlayerKey()
 			);
 		}
 

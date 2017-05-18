@@ -1,5 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Session} from 'meteor/session';
+import {Achievements} from '/imports/api/achievements/achievements.js';
+import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
 import {EloScores} from '/imports/api/games/eloscores.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
@@ -34,6 +36,8 @@ export const HomeController = RouteController.extend({
 	},
 	data: function() {
 		return {
+			achievements: Achievements.find(),
+			userAchievements: UserAchievements.find({userId: Meteor.userId()}),
 			profile: Profiles.findOne({userId: Meteor.userId()}),
 			games: Games.find({}, {sort: [['startedAt', 'desc']]}),
 			players: Players.find(),
