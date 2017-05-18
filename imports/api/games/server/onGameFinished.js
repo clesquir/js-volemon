@@ -53,6 +53,7 @@ export const updateProfilesOnGameFinished = function(game, winnerProfile, loserP
 
 	if (winnerPoints === Constants.MAXIMUM_POINTS && loserPoints === 0) {
 		winnerProfileData['numberOfShutouts'] = winnerProfile.numberOfShutouts + 1;
+		loserProfileData['numberOfShutoutLosses'] = loserProfile.numberOfShutoutLosses + 1;
 	}
 
 	Profiles.update({_id: winnerProfile._id}, {$set: winnerProfileData});

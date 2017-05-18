@@ -140,7 +140,7 @@ describe('onGameFinished', function() {
 		chai.assert.propertyVal(clientProfile, 'numberOfLost', 2);
 	});
 
-	it('updates numberOfShutouts', function() {
+	it('updates numberOfShutouts and numberOfShutoutLosses', function() {
 		const hostProfileId = Random.id(5);
 		const hostUserId = 1;
 		const clientProfileId = Random.id(5);
@@ -154,6 +154,7 @@ describe('onGameFinished', function() {
 			numberOfWin: 0,
 			numberOfLost: 0,
 			numberOfShutouts: 0,
+			numberOfShutoutLosses: 0,
 			eloRating: 1000,
 			eloRatingLastChange: null
 		});
@@ -163,6 +164,7 @@ describe('onGameFinished', function() {
 			numberOfWin: 0,
 			numberOfLost: 0,
 			numberOfShutouts: 0,
+			numberOfShutoutLosses: 0,
 			eloRating: 1000,
 			eloRatingLastChange: null
 		});
@@ -179,10 +181,12 @@ describe('onGameFinished', function() {
 		let hostProfile = Profiles.findOne({_id: hostProfileId});
 		chai.assert.isObject(hostProfile);
 		chai.assert.propertyVal(hostProfile, 'numberOfShutouts', 0);
+		chai.assert.propertyVal(hostProfile, 'numberOfShutoutLosses', 0);
 
 		let clientProfile = Profiles.findOne({_id: clientProfileId});
 		chai.assert.isObject(clientProfile);
 		chai.assert.propertyVal(clientProfile, 'numberOfShutouts', 0);
+		chai.assert.propertyVal(clientProfile, 'numberOfShutoutLosses', 0);
 
 		/**
 		 * 1-5
@@ -196,10 +200,12 @@ describe('onGameFinished', function() {
 		hostProfile = Profiles.findOne({_id: hostProfileId});
 		chai.assert.isObject(hostProfile);
 		chai.assert.propertyVal(hostProfile, 'numberOfShutouts', 0);
+		chai.assert.propertyVal(hostProfile, 'numberOfShutoutLosses', 0);
 
 		clientProfile = Profiles.findOne({_id: clientProfileId});
 		chai.assert.isObject(clientProfile);
 		chai.assert.propertyVal(clientProfile, 'numberOfShutouts', 0);
+		chai.assert.propertyVal(clientProfile, 'numberOfShutoutLosses', 0);
 
 		/**
 		 * 5-0
@@ -213,10 +219,12 @@ describe('onGameFinished', function() {
 		hostProfile = Profiles.findOne({_id: hostProfileId});
 		chai.assert.isObject(hostProfile);
 		chai.assert.propertyVal(hostProfile, 'numberOfShutouts', 1);
+		chai.assert.propertyVal(hostProfile, 'numberOfShutoutLosses', 0);
 
 		clientProfile = Profiles.findOne({_id: clientProfileId});
 		chai.assert.isObject(clientProfile);
 		chai.assert.propertyVal(clientProfile, 'numberOfShutouts', 0);
+		chai.assert.propertyVal(clientProfile, 'numberOfShutoutLosses', 1);
 
 		/**
 		 * 0-5
@@ -230,10 +238,12 @@ describe('onGameFinished', function() {
 		hostProfile = Profiles.findOne({_id: hostProfileId});
 		chai.assert.isObject(hostProfile);
 		chai.assert.propertyVal(hostProfile, 'numberOfShutouts', 1);
+		chai.assert.propertyVal(hostProfile, 'numberOfShutoutLosses', 1);
 
 		clientProfile = Profiles.findOne({_id: clientProfileId});
 		chai.assert.isObject(clientProfile);
 		chai.assert.propertyVal(clientProfile, 'numberOfShutouts', 1);
+		chai.assert.propertyVal(clientProfile, 'numberOfShutoutLosses', 1);
 	});
 });
 

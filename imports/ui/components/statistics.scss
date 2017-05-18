@@ -13,7 +13,7 @@
 	.profile-information-statistic {
 		padding: 10px 15px;
 		margin: 0 20px 30px;
-		min-width: 100px;
+		min-width: 115px;
 		text-align: center;
 		border-left: 1px solid $border-color;
 		border-bottom: 1px solid $border-color;
@@ -47,10 +47,11 @@
 		}
 	}
 }
-//
-//.profile-information-statistic + .profile-information-statistic {
-//	@include breakpoint(mobile) {
-//		border-left: 0;
-//		border-top: 1px solid $border-color;
-//	}
-//}
+
+.shutouts-positive {
+	color: $positive;
+}
+
+.shutouts-negative {
+	color: $negative;
+}
