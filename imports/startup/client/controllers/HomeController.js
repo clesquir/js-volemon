@@ -41,7 +41,7 @@ export const HomeController = RouteController.extend({
 			profile: Profiles.findOne({userId: Meteor.userId()}),
 			games: Games.find({}, {sort: [['startedAt', 'desc']]}),
 			players: Players.find(),
-			eloScores: EloScores.find()
+			eloScores: EloScores.find({userId: Meteor.userId()})
 		};
 	}
 });
