@@ -12,7 +12,8 @@ Meteor.methods({
 
 		Meteor.users.update({_id: this.userId}, {$set: {'profile.name': name}});
 		Players.update({userId: this.userId}, {$set: {name: name}}, {multi: true});
-		Games.update({createdBy: this.userId}, {$set: {creatorName: name}}, {multi: true});
+		Games.update({hostId: this.userId}, {$set: {hostName: name}}, {multi: true});
+		Games.update({clientId: this.userId}, {$set: {clientName: name}}, {multi: true});
 	},
 
 	saveZoomedInGame: function(zoomedIn) {

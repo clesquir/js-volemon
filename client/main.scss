@@ -30,6 +30,7 @@ $desktop-max-width: 70em;
 @import "{}/imports/ui/stylesheets/animations.scss";
 @import "{}/imports/ui/stylesheets/button.scss";
 @import "{}/imports/ui/stylesheets/form.scss";
+@import "{}/imports/ui/stylesheets/cards.scss";
 @import "{}/imports/ui/stylesheets/table-list.scss";
 
 @mixin mask {
@@ -125,4 +126,13 @@ p {
 	flex: 1 1 auto;
 	min-width: 275px;
 	max-width: 750px;
+}
+
+.constrained-width {
+	min-width: 350px;
+	max-width: 450px;
+
+	@include breakpoint(mobile) {
+		min-width: 275px;
+	}
 }

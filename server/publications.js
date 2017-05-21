@@ -31,7 +31,7 @@ Meteor.publish('games', function() {
 			},
 			{
 				sort: [['createdAt', 'asc']],
-				fields: {status: 1, creatorName: 1}
+				fields: {hostName: 1, clientName: 1, createdAt: 1, status: 1}
 			}
 		)
 	];

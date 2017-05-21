@@ -175,6 +175,14 @@ Meteor.methods({
 				gameInitiators[gameId].stop();
 				delete gameInitiators[gameId];
 			}
+		} else if (user._id !== game.hostId) {
+			Games.update(
+				{_id: gameId},
+				{$set: {
+					clientId: null,
+					clientName: null
+				}}
+			);
 		}
 	},
 
