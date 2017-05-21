@@ -13,6 +13,16 @@ describe('ConsecutiveDaysPlayed', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
 	const listener = new ConsecutiveDaysPlayed(gameId, userId);
+	const assertConsecutiveDaysPlayedUserAchievementValuesEqual = function(number, lastDatePlayed, consecutiveDays) {
+		const achievement = UserAchievements.findOne();
+		chai.assert.notEqual(undefined, achievement);
+
+		chai.assert.strictEqual(userId, achievement.userId);
+		chai.assert.strictEqual(ACHIEVEMENT_CONSECUTIVE_DAYS_PLAYED, achievement.achievementId);
+		chai.assert.strictEqual(number, achievement.number);
+		chai.assert.strictEqual(lastDatePlayed, achievement.lastDatePlayed);
+		chai.assert.strictEqual(consecutiveDays, achievement.consecutiveDays);
+	};
 	let stub;
 
 	beforeEach(function() {
@@ -37,13 +47,7 @@ describe('ConsecutiveDaysPlayed', function() {
 		listener.onGameFinished(new GameFinished(gameId, 2000));
 
 		chai.assert.equal(1, UserAchievements.find().count());
-		const achievement = UserAchievements.findOne();
-		chai.assert.notEqual(undefined, achievement);
-
-		chai.assert.strictEqual(userId, achievement.userId);
-		chai.assert.strictEqual(ACHIEVEMENT_CONSECUTIVE_DAYS_PLAYED, achievement.achievementId);
-		chai.assert.strictEqual(1, achievement.number);
-		chai.assert.strictEqual(1, achievement.consecutiveDays);
+		assertConsecutiveDaysPlayedUserAchievementValuesEqual(1, lastDatePlayed, 1);
 	});
 
 	it('do not create achievement if not gameId', function() {
@@ -69,26 +73,13 @@ describe('ConsecutiveDaysPlayed', function() {
 		listener.onGameFinished(new GameFinished(gameId, 2000));
 
 		chai.assert.equal(1, UserAchievements.find().count());
-		let achievement = UserAchievements.findOne();
-		chai.assert.notEqual(undefined, achievement);
-
-		chai.assert.strictEqual(userId, achievement.userId);
-		chai.assert.strictEqual(ACHIEVEMENT_CONSECUTIVE_DAYS_PLAYED, achievement.achievementId);
-		chai.assert.strictEqual(1, achievement.number);
-		chai.assert.strictEqual(lastDatePlayed, achievement.lastDatePlayed);
-		chai.assert.strictEqual(1, achievement.consecutiveDays);
+		assertConsecutiveDaysPlayedUserAchievementValuesEqual(1, lastDatePlayed, 1);
 
 		lastDatePlayed = Moment.moment([2017, 0, 2]).valueOf();
 
 		listener.onGameFinished(new GameFinished(gameId, 2000));
-		achievement = UserAchievements.findOne();
-		chai.assert.notEqual(undefined, achievement);
 
-		chai.assert.strictEqual(userId, achievement.userId);
-		chai.assert.strictEqual(ACHIEVEMENT_CONSECUTIVE_DAYS_PLAYED, achievement.achievementId);
-		chai.assert.strictEqual(lastDatePlayed, achievement.lastDatePlayed);
-		chai.assert.strictEqual(2, achievement.number);
-		chai.assert.strictEqual(2, achievement.consecutiveDays);
+		assertConsecutiveDaysPlayedUserAchievementValuesEqual(2, lastDatePlayed, 2);
 	});
 
 	it('do not reset nor increase achievement if last increment was today', function() {
@@ -102,24 +93,11 @@ describe('ConsecutiveDaysPlayed', function() {
 		listener.onGameFinished(new GameFinished(gameId, 2000));
 
 		chai.assert.equal(1, UserAchievements.find().count());
-		let achievement = UserAchievements.findOne();
-		chai.assert.notEqual(undefined, achievement);
-
-		chai.assert.strictEqual(userId, achievement.userId);
-		chai.assert.strictEqual(ACHIEVEMENT_CONSECUTIVE_DAYS_PLAYED, achievement.achievementId);
-		chai.assert.strictEqual(1, achievement.number);
-		chai.assert.strictEqual(lastDatePlayed, achievement.lastDatePlayed);
-		chai.assert.strictEqual(1, achievement.consecutiveDays);
+		assertConsecutiveDaysPlayedUserAchievementValuesEqual(1, lastDatePlayed, 1);
 
 		listener.onGameFinished(new GameFinished(gameId, 2000));
-		achievement = UserAchievements.findOne();
-		chai.assert.notEqual(undefined, achievement);
 
-		chai.assert.strictEqual(userId, achievement.userId);
-		chai.assert.strictEqual(ACHIEVEMENT_CONSECUTIVE_DAYS_PLAYED, achievement.achievementId);
-		chai.assert.strictEqual(lastDatePlayed, achievement.lastDatePlayed);
-		chai.assert.strictEqual(1, achievement.number);
-		chai.assert.strictEqual(1, achievement.consecutiveDays);
+		assertConsecutiveDaysPlayedUserAchievementValuesEqual(1, lastDatePlayed, 1);
 	});
 
 	it('reset achievement if last increment was before yesterday', function() {
@@ -133,26 +111,13 @@ describe('ConsecutiveDaysPlayed', function() {
 		listener.onGameFinished(new GameFinished(gameId, 2000));
 
 		chai.assert.equal(1, UserAchievements.find().count());
-		let achievement = UserAchievements.findOne();
-		chai.assert.notEqual(undefined, achievement);
-
-		chai.assert.strictEqual(userId, achievement.userId);
-		chai.assert.strictEqual(ACHIEVEMENT_CONSECUTIVE_DAYS_PLAYED, achievement.achievementId);
-		chai.assert.strictEqual(1, achievement.number);
-		chai.assert.strictEqual(lastDatePlayed, achievement.lastDatePlayed);
-		chai.assert.strictEqual(1, achievement.consecutiveDays);
+		assertConsecutiveDaysPlayedUserAchievementValuesEqual(1, lastDatePlayed, 1);
 
 		lastDatePlayed = Moment.moment([2017, 0, 3]).valueOf();
 
 		listener.onGameFinished(new GameFinished(gameId, 2000));
-		achievement = UserAchievements.findOne();
-		chai.assert.notEqual(undefined, achievement);
 
-		chai.assert.strictEqual(userId, achievement.userId);
-		chai.assert.strictEqual(ACHIEVEMENT_CONSECUTIVE_DAYS_PLAYED, achievement.achievementId);
-		chai.assert.strictEqual(1, achievement.number);
-		chai.assert.strictEqual(lastDatePlayed, achievement.lastDatePlayed);
-		chai.assert.strictEqual(1, achievement.consecutiveDays);
+		assertConsecutiveDaysPlayedUserAchievementValuesEqual(1, lastDatePlayed, 1);
 	});
 
 	it('do not increment achievement if consecutive days have already been higher', function() {
@@ -166,49 +131,24 @@ describe('ConsecutiveDaysPlayed', function() {
 		listener.onGameFinished(new GameFinished(gameId, 2000));
 
 		chai.assert.equal(1, UserAchievements.find().count());
-		let achievement = UserAchievements.findOne();
-		chai.assert.notEqual(undefined, achievement);
-
-		chai.assert.strictEqual(userId, achievement.userId);
-		chai.assert.strictEqual(ACHIEVEMENT_CONSECUTIVE_DAYS_PLAYED, achievement.achievementId);
-		chai.assert.strictEqual(1, achievement.number);
-		chai.assert.strictEqual(lastDatePlayed, achievement.lastDatePlayed);
-		chai.assert.strictEqual(1, achievement.consecutiveDays);
+		assertConsecutiveDaysPlayedUserAchievementValuesEqual(1, lastDatePlayed, 1);
 
 		lastDatePlayed = Moment.moment([2017, 0, 2]).valueOf();
 
 		listener.onGameFinished(new GameFinished(gameId, 2000));
-		achievement = UserAchievements.findOne();
-		chai.assert.notEqual(undefined, achievement);
 
-		chai.assert.strictEqual(userId, achievement.userId);
-		chai.assert.strictEqual(ACHIEVEMENT_CONSECUTIVE_DAYS_PLAYED, achievement.achievementId);
-		chai.assert.strictEqual(2, achievement.number);
-		chai.assert.strictEqual(lastDatePlayed, achievement.lastDatePlayed);
-		chai.assert.strictEqual(2, achievement.consecutiveDays);
+		assertConsecutiveDaysPlayedUserAchievementValuesEqual(2, lastDatePlayed, 2);
 
 		lastDatePlayed = Moment.moment([2017, 0, 4]).valueOf();
 
 		listener.onGameFinished(new GameFinished(gameId, 2000));
-		achievement = UserAchievements.findOne();
-		chai.assert.notEqual(undefined, achievement);
 
-		chai.assert.strictEqual(userId, achievement.userId);
-		chai.assert.strictEqual(ACHIEVEMENT_CONSECUTIVE_DAYS_PLAYED, achievement.achievementId);
-		chai.assert.strictEqual(2, achievement.number);
-		chai.assert.strictEqual(lastDatePlayed, achievement.lastDatePlayed);
-		chai.assert.strictEqual(1, achievement.consecutiveDays);
+		assertConsecutiveDaysPlayedUserAchievementValuesEqual(2, lastDatePlayed, 1);
 
 		lastDatePlayed = Moment.moment([2017, 0, 5]).valueOf();
 
 		listener.onGameFinished(new GameFinished(gameId, 2000));
-		achievement = UserAchievements.findOne();
-		chai.assert.notEqual(undefined, achievement);
 
-		chai.assert.strictEqual(userId, achievement.userId);
-		chai.assert.strictEqual(ACHIEVEMENT_CONSECUTIVE_DAYS_PLAYED, achievement.achievementId);
-		chai.assert.strictEqual(2, achievement.number);
-		chai.assert.strictEqual(lastDatePlayed, achievement.lastDatePlayed);
-		chai.assert.strictEqual(2, achievement.consecutiveDays);
+		assertConsecutiveDaysPlayedUserAchievementValuesEqual(2, lastDatePlayed, 2);
 	});
 });

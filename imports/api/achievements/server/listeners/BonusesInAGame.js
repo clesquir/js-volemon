@@ -19,7 +19,7 @@ export default class BonusesInAGame extends Listener {
 			event.gameId === this.gameId &&
 			this.playerKeyIsUser(event.activatorPlayerKey)
 		) {
-			this.updateNumberIfHigherWithNumberSinceLastReset(ACHIEVEMENT_BONUSES_IN_A_GAME);
+			this.incrementNumberIfHigherWithNumberSinceLastReset(ACHIEVEMENT_BONUSES_IN_A_GAME);
 		}
 	}
 }

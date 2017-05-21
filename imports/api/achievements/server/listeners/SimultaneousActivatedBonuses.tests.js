@@ -14,12 +14,17 @@ describe('SimultaneousActivatedBonuses', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
 	const listener = new SimultaneousActivatedBonuses(gameId, userId);
+	const assertSimultaneousActivatedBonusesUserAchievementNumberEquals = function(number) {
+		const achievement = UserAchievements.findOne();
+		chai.assert.notEqual(undefined, achievement);
+
+		chai.assert.strictEqual(userId, achievement.userId);
+		chai.assert.strictEqual(ACHIEVEMENT_SIMULTANEOUS_ACTIVATED_BONUSES, achievement.achievementId);
+		chai.assert.strictEqual(number, achievement.number);
+	};
 
 	beforeEach(function() {
 		resetDatabase();
-	});
-
-	afterEach(function() {
 	});
 
 	it('increment if all different bonus', function() {
@@ -30,13 +35,7 @@ describe('SimultaneousActivatedBonuses', function() {
 		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1'));
 
 		chai.assert.strictEqual(1, listener.numberOfActivatedBonuses());
-		chai.assert.equal(1, UserAchievements.find().count());
-		const achievement = UserAchievements.findOne();
-		chai.assert.notEqual(undefined, achievement);
-
-		chai.assert.strictEqual(userId, achievement.userId);
-		chai.assert.strictEqual(ACHIEVEMENT_SIMULTANEOUS_ACTIVATED_BONUSES, achievement.achievementId);
-		chai.assert.strictEqual(1, achievement.number);
+		assertSimultaneousActivatedBonusesUserAchievementNumberEquals(1);
 	});
 
 	it('do not increment if same bonus', function() {
@@ -48,23 +47,12 @@ describe('SimultaneousActivatedBonuses', function() {
 
 		chai.assert.strictEqual(1, listener.numberOfActivatedBonuses());
 		chai.assert.equal(1, UserAchievements.find().count());
-		let achievement = UserAchievements.findOne();
-		chai.assert.notEqual(undefined, achievement);
-
-		chai.assert.strictEqual(userId, achievement.userId);
-		chai.assert.strictEqual(ACHIEVEMENT_SIMULTANEOUS_ACTIVATED_BONUSES, achievement.achievementId);
-		chai.assert.strictEqual(1, achievement.number);
+		assertSimultaneousActivatedBonusesUserAchievementNumberEquals(1);
 
 		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1'));
 
 		chai.assert.strictEqual(1, listener.numberOfActivatedBonuses());
-		chai.assert.equal(1, UserAchievements.find().count());
-		achievement = UserAchievements.findOne();
-		chai.assert.notEqual(undefined, achievement);
-
-		chai.assert.strictEqual(userId, achievement.userId);
-		chai.assert.strictEqual(ACHIEVEMENT_SIMULTANEOUS_ACTIVATED_BONUSES, achievement.achievementId);
-		chai.assert.strictEqual(1, achievement.number);
+		assertSimultaneousActivatedBonusesUserAchievementNumberEquals(1);
 	});
 
 	it('do not increment if not gameId', function() {

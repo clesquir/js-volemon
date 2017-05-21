@@ -21,7 +21,7 @@ export default class InvisibleInAGame extends Listener {
 			event.activatedBonusClass === Constants.BONUS_INVISIBLE_MONSTER &&
 			this.playerKeyIsUser(event.targetPlayerKey)
 		) {
-			this.updateNumberIfHigherWithNumberSinceLastReset(ACHIEVEMENT_INVISIBLE_IN_A_GAME);
+			this.incrementNumberIfHigherWithNumberSinceLastReset(ACHIEVEMENT_INVISIBLE_IN_A_GAME);
 		}
 	}
 }
