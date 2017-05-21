@@ -40,13 +40,13 @@
       "_id": "PAUSE_IN_A_POINT",
       "name": "# of pause bonuses caught in a point",
       "type": "QUANTITY",
-      "levels": [{"level": 1, "number": 3}, {"level": 2, "number": 5}, {"level": 3, "number": 10}]
+      "levels": [{"level": 1, "number": 2}, {"level": 2, "number": 4}, {"level": 3, "number": 6}]
     },
     {
       "_id": "PAUSE_IN_A_GAME",
       "name": "# of pause bonuses caught in a game",
       "type": "QUANTITY",
-      "levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 15}]
+      "levels": [{"level": 1, "number": 3}, {"level": 2, "number": 6}, {"level": 3, "number": 9}]
     },
     {
       "_id": "PAUSE_IN_A_LIFETIME",
@@ -58,13 +58,13 @@
       "_id": "INVISIBLE_IN_A_POINT",
       "name": "# of invisible bonuses caught in a point",
       "type": "QUANTITY",
-      "levels": [{"level": 1, "number": 3}, {"level": 2, "number": 5}, {"level": 3, "number": 10}]
+      "levels": [{"level": 1, "number": 3}, {"level": 2, "number": 6}, {"level": 3, "number": 9}]
     },
     {
       "_id": "INVISIBLE_IN_A_GAME",
       "name": "# of invisible bonuses caught in a game",
       "type": "QUANTITY",
-      "levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 15}]
+      "levels": [{"level": 1, "number": 4}, {"level": 2, "number": 8}, {"level": 3, "number": 12}]
     },
     {
       "_id": "INVISIBLE_IN_A_LIFETIME",
