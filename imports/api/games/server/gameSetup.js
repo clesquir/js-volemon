@@ -23,7 +23,10 @@ export const createGame = function(user, gameInitiators) {
 				status: Constants.GAME_STATUS_REGISTRATION,
 				createdAt: getUTCTimeStamp(),
 				createdBy: user._id,
-				creatorName: user.profile.name,
+				hostId: user._id,
+				hostName: user.profile.name,
+				clientId: null,
+				clientName: null,
 				isPracticeGame: 0,
 				isPrivate: 0,
 				hasBonuses: 1,
@@ -73,6 +76,16 @@ export const joinGame = function(user, gameId, isReady) {
 
 	if (isReady === undefined) {
 		isReady = false;
+	}
+
+	if (user._id !== game.hostId) {
+		Games.update(
+			{_id: gameId},
+			{$set: {
+				clientId: user._id,
+				clientName: user.profile.name
+			}}
+		);
 	}
 
 	return Players.insert({

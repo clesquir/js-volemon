@@ -1,0 +1,38 @@
+<template name="gamesList">
+
+	<div class="app-section app-section-center">
+
+		<div class="app-section-inner">
+
+			<h1>Games list</h1>
+			<p>You can join a game in Registration status if the game has not all its players yet.</p>
+
+			<div class="cards-list constrained-width">
+				{{#each games}}
+					<div class="card clickable-card" data-action="go-to-game">
+						<div class="card-row card-row-top">
+							{{#if hasOpponent}}
+								<div class="card-cell card-title">{{hostName}}</div>
+								<div class="card-cell card-title" style="flex: 0;">vs</div>
+								<div class="card-cell card-title">{{clientName}}</div>
+							{{else}}
+								<div class="card-cell card-title">{{hostName}}</div>
+							{{/if}}
+						</div>
+						<div class="card-row card-row-bottom">
+							<div class="card-cell card-left">{{createdAt}}</div>
+							<div class="card-cell card-right">{{gameStatus}}</div>
+						</div>
+					</div>
+				{{else}}
+					<div class="card empty-card">
+						<div class="card-cell">There are no games...</div>
+					</div>
+				{{/each}}
+			</div>
+
+		</div>
+
+	</div>
+
+</template>

@@ -14,6 +14,7 @@ import ServerNormalizedTime from '/imports/game/client/ServerNormalizedTime.js';
 import ClientSocketIo from '/imports/lib/stream/client/ClientSocketIo.js';
 
 import '/imports/ui/pages/home.js';
+import '/imports/ui/pages/gamesList.js';
 
 import '/imports/ui/components/achievementPopup.js';
 import '/imports/ui/components/achievements.js';

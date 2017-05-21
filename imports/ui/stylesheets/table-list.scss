@@ -5,15 +5,6 @@ $table-list-radius: 3px;
 	text-align: left;
 	border-radius: $table-list-radius;
 	margin: 0 auto;
-
-	&.constrained-table {
-		min-width: 350px;
-		max-width: 450px;
-
-		@include breakpoint(mobile) {
-			min-width: 275px;
-		}
-	}
 }
 
 .table-list-row {

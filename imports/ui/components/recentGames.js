@@ -1,51 +1,69 @@
 import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
+import {ReactiveVar} from 'meteor/reactive-var';
 import * as Moment from 'meteor/momentjs:moment';
+import {getUTCTimeStamp, timeElapsedSince} from '/imports/lib/utils.js';
 
 import './recentGames.html';
 
 Template.recentGames.helpers({
 	getStartedAtDate: function() {
-		return Moment.moment(this.startedAt).format('YYYY-MM-DD');
+		Template.instance().uptime.get();
+		return timeElapsedSince(this.startedAt);
 	},
 
 	getStartedAtDateTime: function() {
 		return Moment.moment(this.startedAt).format('YYYY-MM-DD HH:mm');
 	},
 
-	getOpponent: function(players) {
-		let opponentUserId;
+	getPlayerName: function(players, host) {
+		let playerName;
+
+		if (host && this.createdBy === Meteor.userId()) {
+			return Meteor.user().profile.name;
+		} else if (!host && this.createdBy !== Meteor.userId()) {
+			return Meteor.user().profile.name;
+		}
 
 		players.forEach((player) => {
 			if (this._id === player.gameId) {
-				opponentUserId = player.name;
+				playerName = player.name;
 			}
 		});
 
-		if (opponentUserId) {
-			return opponentUserId;
+		if (playerName) {
+			return playerName;
 		} else {
 			return 'N/A';
 		}
 	},
 
 	getScore: function() {
-		let userPoints, opponentPoints;
+		let hostPoints;
+		let clientPoints;
+		let hostScoreClass = '';
+		let clientScoreClass = '';
 
 		if (Meteor.userId() === this.createdBy) {
-			userPoints = this.hostPoints;
-			opponentPoints = this.clientPoints;
+			hostPoints = this.hostPoints;
+			clientPoints = this.clientPoints;
+
+			hostScoreClass = 'loosing-score';
+			if (hostPoints > clientPoints) {
+				hostScoreClass = 'winning-score';
+			}
 		} else {
-			userPoints = this.clientPoints;
-			opponentPoints = this.hostPoints;
+			hostPoints = this.clientPoints;
+			clientPoints = this.hostPoints;
+
+			clientScoreClass = 'loosing-score';
+			if (clientPoints > hostPoints) {
+				clientScoreClass = 'winning-score';
+			}
 		}
 
-		let scoreClass = 'loosing-score';
-		if (userPoints > opponentPoints) {
-			scoreClass = 'winning-score';
-		}
-
-		return '<span class="' + scoreClass + '">' + padNumber(userPoints) + '</span>' + '<span>&nbsp;-&nbsp;' + padNumber(opponentPoints) + '</span>';
+		return '<span class="' + hostScoreClass + '">' + padNumber(hostPoints) + '</span>' + '&nbsp;-&nbsp;' +
+			'<span class="' + clientScoreClass + '">' + padNumber(clientPoints) + '</span>';
 	},
 
 	getEloRatingChange: function(eloScores) {
@@ -75,3 +93,15 @@ Template.recentGames.events({
 		controller.state.set('gamesLimit', controller.state.get('gamesLimit') + controller.gamesIncrement());
 	}
 });
+
+Template.recentGames.onCreated(function() {
+	this.uptime = new ReactiveVar(0);
+	this.uptimeInterval = Meteor.setInterval(() => {
+		this.uptime.set(getUTCTimeStamp());
+		console.log('allo!');
+	}, 10000);
+});
+
+Template.recentGames.destroyed = function() {
+	Meteor.clearInterval(this.uptimeInterval);
+};
