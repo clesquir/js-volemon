@@ -96,11 +96,11 @@ export default class Listener {
 		return playerKey === userPlayerKey;
 	}
 
-	updateNumberIfHigherWithNumberSinceLastReset(achievementId) {
-		if (!this.numberSinceLastReset) {
+	incrementNumberIfHigherWithNumberSinceLastReset(achievementId) {
+		if (this.numberSinceLastReset === undefined) {
 			this.resetNumberSinceLastReset();
 		}
-		this.numberSinceLastReset++;
+		this.numberSinceLastReset = this.numberSinceLastReset + 1;
 
 		this.updateNumberIfHigher(achievementId, this.numberSinceLastReset);
 	}

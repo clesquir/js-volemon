@@ -24,7 +24,7 @@ export default class InvisibleInAPoint extends Listener {
 			event.activatedBonusClass === Constants.BONUS_INVISIBLE_MONSTER &&
 			this.playerKeyIsUser(event.targetPlayerKey)
 		) {
-			this.updateNumberIfHigherWithNumberSinceLastReset(ACHIEVEMENT_INVISIBLE_IN_A_POINT);
+			this.incrementNumberIfHigherWithNumberSinceLastReset(ACHIEVEMENT_INVISIBLE_IN_A_POINT);
 		}
 	}
 

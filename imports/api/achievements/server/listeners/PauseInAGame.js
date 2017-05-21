@@ -21,7 +21,7 @@ export default class PauseInAGame extends Listener {
 			event.activatedBonusClass === Constants.BONUS_FREEZE_MONSTER &&
 			this.playerKeyIsUser(event.targetPlayerKey)
 		) {
-			this.updateNumberIfHigherWithNumberSinceLastReset(ACHIEVEMENT_PAUSE_IN_A_GAME);
+			this.incrementNumberIfHigherWithNumberSinceLastReset(ACHIEVEMENT_PAUSE_IN_A_GAME);
 		}
 	}
 }
