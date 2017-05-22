@@ -9,11 +9,10 @@ $table-list-radius: 3px;
 
 .table-list-row {
 	display: flex;
+	align-items: center;
 
 	& + & {
-		.table-list-cell {
-			border-top: 1px solid $border-color;
-		}
+		border-top: 1px solid $border-color;
 	}
 
 	&.clickable-row {

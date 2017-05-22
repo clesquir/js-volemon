@@ -27,24 +27,5 @@
 		padding: 10px;
 		border: 1px #aaa solid;
 		box-shadow: 0 0 5px #aaa;
-
-		.achievement-star {
-			font-size: 20px;
-
-			i.fa {
-				padding: 2px;
-			}
-		}
-
-		.achievement-level-info {
-			&:hover {
-				font-size: 18px;
-			}
-		}
-
-		.achievement-description {
-			margin-left: 0;
-			font-size: 15px;
-		}
 	}
 }

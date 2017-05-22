@@ -1,8 +1,14 @@
 import {Meteor} from 'meteor/meteor';
+import {Mongo} from 'meteor/mongo';
 import {Template} from 'meteor/templating';
 import RankChart from '/client/lib/RankChart.js';
-import { EloScores } from '/imports/api/games/eloscores.js';
-import { Profiles } from '/imports/api/profiles/profiles.js';
+import {EloScores} from '/imports/api/games/eloscores.js';
+import {Profiles} from '/imports/api/profiles/profiles.js';
+
+import './rank.html';
+
+class AchievementsRankingCollection extends Mongo.Collection {}
+const AchievementsRanking = new AchievementsRankingCollection('achievementsranking');
 
 Template.rank.helpers({
 	getHighlightedClassIfCurrentUser: function() {
@@ -31,6 +37,10 @@ Template.rank.helpers({
 
 	getWinRate: function() {
 		return getWinRate(this);
+	},
+
+	achievementsRanking: function() {
+		return AchievementsRanking.find();
 	}
 });
 
@@ -38,12 +48,26 @@ Template.rank.helpers({
 let rankChart = null;
 
 Template.rank.events({
-	'click [data-action=view-table-display]': function(e) {
+	'click [data-action=view-elo-ranking]': function(e) {
 		const rankDisplay = document.getElementById('rank-display');
 
-		if (!$(rankDisplay).is('.rank-table-display-shown')) {
+		if (!$(rankDisplay).is('.rank-elo-ranking-shown')) {
 			removeShownClasses(rankDisplay);
-			$(rankDisplay).addClass('rank-table-display-shown');
+			$(rankDisplay).addClass('rank-elo-ranking-shown');
+		}
+	},
+
+	'click [data-action=view-achievements-ranking]': function(e) {
+		const rankDisplay = document.getElementById('rank-display');
+
+		if (!$(rankDisplay).is('.rank-achievements-ranking-shown')) {
+			removeShownClasses(rankDisplay);
+			$(rankDisplay).addClass('rank-achievements-ranking-shown');
+
+			Session.set('loadingmask', true);
+			Meteor.subscribe('achievementsRanking', () => {
+				Session.set('loadingmask', false);
+			});
 		}
 	},
 
@@ -93,7 +117,8 @@ Template.rank.events({
 });
 
 const removeShownClasses = function(rankDisplay) {
-	$(rankDisplay).removeClass('rank-table-display-shown');
+	$(rankDisplay).removeClass('rank-elo-ranking-shown');
+	$(rankDisplay).removeClass('rank-achievements-ranking-shown');
 	$(rankDisplay).removeClass('rank-line-chart-display-shown');
 };
 

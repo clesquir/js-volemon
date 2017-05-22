@@ -16,7 +16,7 @@
 	}
 }
 
-#rank-table-display {
+#rank-elo-ranking, #rank-achievements-ranking {
 	min-width: 275px;
 
 	.rank-cell {
@@ -52,12 +52,22 @@
 		display: none;
 	}
 
-	&.rank-table-display-shown {
-		.view-table-display {
+	&.rank-elo-ranking-shown {
+		.view-elo-ranking {
 			opacity: 1;
 		}
 
-		.rank-table-display {
+		.rank-elo-ranking {
+			display: block;
+		}
+	}
+
+	&.rank-achievements-ranking-shown {
+		.view-achievements-ranking {
+			opacity: 1;
+		}
+
+		.rank-achievements-ranking {
 			display: block;
 		}
 	}
@@ -71,6 +81,20 @@
 			display: block;
 		}
 	}
+}
+
+.user-achievements {
+	display: flex;
+	align-items: center;
+	padding: 5px 0;
+}
+
+.table-list-row .achievement-item {
+	opacity: 0.75;
+}
+
+.table-list-row:hover .achievement-item {
+	opacity: 1;
 }
 
 #rank-line-chart canvas {
