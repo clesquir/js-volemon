@@ -1,5 +1,5 @@
+import {assert, expect} from 'chai'
 import {Random} from 'meteor/random';
-import {chai} from 'meteor/practicalmeteor:chai';
 import {resetDatabase} from 'meteor/xolvio:cleaner';
 import {
 	onGameFinished,
@@ -16,7 +16,7 @@ import {Profiles} from '/imports/api/profiles/profiles.js';
 
 describe('onGameFinished', function() {
 	it('throws 404 if game does not exist', function() {
-		chai.expect(() => {
+		expect(() => {
 			onGameFinished(Random.id(5));
 		}).to.throw('Game not found');
 	});
@@ -25,7 +25,7 @@ describe('onGameFinished', function() {
 		const gameId = Random.id(5);
 		Games.insert({_id: gameId, status: GAME_STATUS_STARTED});
 
-		chai.expect(() => {
+		expect(() => {
 			onGameFinished(gameId);
 		}).to.throw('Only finished games can be used for Elo calculations');
 	});
@@ -61,22 +61,22 @@ describe('onGameFinished', function() {
 		updateEloScoresOnGameFinished(Games.findOne({_id: gameId}), Profiles.findOne({_id: hostProfileId}), Profiles.findOne({_id: clientProfileId}));
 
 		let hostProfile = Profiles.findOne({_id: hostProfileId});
-		chai.assert.isObject(hostProfile);
-		chai.assert.propertyVal(hostProfile, 'eloRating', 1016);
-		chai.assert.propertyVal(hostProfile, 'eloRatingLastChange', 16);
+		assert.isObject(hostProfile);
+		assert.propertyVal(hostProfile, 'eloRating', 1016);
+		assert.propertyVal(hostProfile, 'eloRatingLastChange', 16);
 
 		let clientProfile = Profiles.findOne({_id: clientProfileId});
-		chai.assert.isObject(clientProfile);
-		chai.assert.propertyVal(clientProfile, 'eloRating', 984);
-		chai.assert.propertyVal(clientProfile, 'eloRatingLastChange', -16);
+		assert.isObject(clientProfile);
+		assert.propertyVal(clientProfile, 'eloRating', 984);
+		assert.propertyVal(clientProfile, 'eloRatingLastChange', -16);
 
 		let eloScoresHost = EloScores.findOne({userId: hostUserId});
-		chai.assert.isObject(eloScoresHost);
-		chai.assert.propertyVal(eloScoresHost, 'eloRating', 1016);
+		assert.isObject(eloScoresHost);
+		assert.propertyVal(eloScoresHost, 'eloRating', 1016);
 
 		let eloScoresClient = EloScores.findOne({userId: clientUserId});
-		chai.assert.isObject(eloScoresClient);
-		chai.assert.propertyVal(eloScoresClient, 'eloRating', 984);
+		assert.isObject(eloScoresClient);
+		assert.propertyVal(eloScoresClient, 'eloRating', 984);
 	});
 
 	it('updates number of win and lost', function() {
@@ -106,38 +106,38 @@ describe('onGameFinished', function() {
 		updateProfilesOnGameFinished(Games.findOne({_id: gameId}), Profiles.findOne({_id: hostProfileId}), Profiles.findOne({_id: clientProfileId}));
 
 		let hostProfile = Profiles.findOne({_id: hostProfileId});
-		chai.assert.isObject(hostProfile);
-		chai.assert.propertyVal(hostProfile, 'numberOfWin', 1);
-		chai.assert.propertyVal(hostProfile, 'numberOfLost', 0);
+		assert.isObject(hostProfile);
+		assert.propertyVal(hostProfile, 'numberOfWin', 1);
+		assert.propertyVal(hostProfile, 'numberOfLost', 0);
 
 		let clientProfile = Profiles.findOne({_id: clientProfileId});
-		chai.assert.isObject(clientProfile);
-		chai.assert.propertyVal(clientProfile, 'numberOfWin', 0);
-		chai.assert.propertyVal(clientProfile, 'numberOfLost', 1);
+		assert.isObject(clientProfile);
+		assert.propertyVal(clientProfile, 'numberOfWin', 0);
+		assert.propertyVal(clientProfile, 'numberOfLost', 1);
 
 		updateProfilesOnGameFinished(Games.findOne({_id: gameId}), Profiles.findOne({_id: clientProfileId}), Profiles.findOne({_id: hostProfileId}));
 
 		hostProfile = Profiles.findOne({_id: hostProfileId});
-		chai.assert.isObject(hostProfile);
-		chai.assert.propertyVal(hostProfile, 'numberOfWin', 1);
-		chai.assert.propertyVal(hostProfile, 'numberOfLost', 1);
+		assert.isObject(hostProfile);
+		assert.propertyVal(hostProfile, 'numberOfWin', 1);
+		assert.propertyVal(hostProfile, 'numberOfLost', 1);
 
 		clientProfile = Profiles.findOne({_id: clientProfileId});
-		chai.assert.isObject(clientProfile);
-		chai.assert.propertyVal(clientProfile, 'numberOfWin', 1);
-		chai.assert.propertyVal(clientProfile, 'numberOfLost', 1);
+		assert.isObject(clientProfile);
+		assert.propertyVal(clientProfile, 'numberOfWin', 1);
+		assert.propertyVal(clientProfile, 'numberOfLost', 1);
 
 		updateProfilesOnGameFinished(Games.findOne({_id: gameId}), Profiles.findOne({_id: hostProfileId}), Profiles.findOne({_id: clientProfileId}));
 
 		hostProfile = Profiles.findOne({_id: hostProfileId});
-		chai.assert.isObject(hostProfile);
-		chai.assert.propertyVal(hostProfile, 'numberOfWin', 2);
-		chai.assert.propertyVal(hostProfile, 'numberOfLost', 1);
+		assert.isObject(hostProfile);
+		assert.propertyVal(hostProfile, 'numberOfWin', 2);
+		assert.propertyVal(hostProfile, 'numberOfLost', 1);
 
 		clientProfile = Profiles.findOne({_id: clientProfileId});
-		chai.assert.isObject(clientProfile);
-		chai.assert.propertyVal(clientProfile, 'numberOfWin', 1);
-		chai.assert.propertyVal(clientProfile, 'numberOfLost', 2);
+		assert.isObject(clientProfile);
+		assert.propertyVal(clientProfile, 'numberOfWin', 1);
+		assert.propertyVal(clientProfile, 'numberOfLost', 2);
 	});
 
 	it('updates numberOfShutouts and numberOfShutoutLosses', function() {
@@ -179,14 +179,14 @@ describe('onGameFinished', function() {
 		updateProfilesOnGameFinished(Games.findOne({_id: gameId}), Profiles.findOne({_id: hostProfileId}), Profiles.findOne({_id: clientProfileId}));
 
 		let hostProfile = Profiles.findOne({_id: hostProfileId});
-		chai.assert.isObject(hostProfile);
-		chai.assert.propertyVal(hostProfile, 'numberOfShutouts', 0);
-		chai.assert.propertyVal(hostProfile, 'numberOfShutoutLosses', 0);
+		assert.isObject(hostProfile);
+		assert.propertyVal(hostProfile, 'numberOfShutouts', 0);
+		assert.propertyVal(hostProfile, 'numberOfShutoutLosses', 0);
 
 		let clientProfile = Profiles.findOne({_id: clientProfileId});
-		chai.assert.isObject(clientProfile);
-		chai.assert.propertyVal(clientProfile, 'numberOfShutouts', 0);
-		chai.assert.propertyVal(clientProfile, 'numberOfShutoutLosses', 0);
+		assert.isObject(clientProfile);
+		assert.propertyVal(clientProfile, 'numberOfShutouts', 0);
+		assert.propertyVal(clientProfile, 'numberOfShutoutLosses', 0);
 
 		/**
 		 * 1-5
@@ -198,14 +198,14 @@ describe('onGameFinished', function() {
 		updateProfilesOnGameFinished(Games.findOne({_id: gameId}), Profiles.findOne({_id: clientProfileId}), Profiles.findOne({_id: hostProfileId}));
 
 		hostProfile = Profiles.findOne({_id: hostProfileId});
-		chai.assert.isObject(hostProfile);
-		chai.assert.propertyVal(hostProfile, 'numberOfShutouts', 0);
-		chai.assert.propertyVal(hostProfile, 'numberOfShutoutLosses', 0);
+		assert.isObject(hostProfile);
+		assert.propertyVal(hostProfile, 'numberOfShutouts', 0);
+		assert.propertyVal(hostProfile, 'numberOfShutoutLosses', 0);
 
 		clientProfile = Profiles.findOne({_id: clientProfileId});
-		chai.assert.isObject(clientProfile);
-		chai.assert.propertyVal(clientProfile, 'numberOfShutouts', 0);
-		chai.assert.propertyVal(clientProfile, 'numberOfShutoutLosses', 0);
+		assert.isObject(clientProfile);
+		assert.propertyVal(clientProfile, 'numberOfShutouts', 0);
+		assert.propertyVal(clientProfile, 'numberOfShutoutLosses', 0);
 
 		/**
 		 * 5-0
@@ -217,14 +217,14 @@ describe('onGameFinished', function() {
 		updateProfilesOnGameFinished(Games.findOne({_id: gameId}), Profiles.findOne({_id: hostProfileId}), Profiles.findOne({_id: clientProfileId}));
 
 		hostProfile = Profiles.findOne({_id: hostProfileId});
-		chai.assert.isObject(hostProfile);
-		chai.assert.propertyVal(hostProfile, 'numberOfShutouts', 1);
-		chai.assert.propertyVal(hostProfile, 'numberOfShutoutLosses', 0);
+		assert.isObject(hostProfile);
+		assert.propertyVal(hostProfile, 'numberOfShutouts', 1);
+		assert.propertyVal(hostProfile, 'numberOfShutoutLosses', 0);
 
 		clientProfile = Profiles.findOne({_id: clientProfileId});
-		chai.assert.isObject(clientProfile);
-		chai.assert.propertyVal(clientProfile, 'numberOfShutouts', 0);
-		chai.assert.propertyVal(clientProfile, 'numberOfShutoutLosses', 1);
+		assert.isObject(clientProfile);
+		assert.propertyVal(clientProfile, 'numberOfShutouts', 0);
+		assert.propertyVal(clientProfile, 'numberOfShutoutLosses', 1);
 
 		/**
 		 * 0-5
@@ -236,25 +236,25 @@ describe('onGameFinished', function() {
 		updateProfilesOnGameFinished(Games.findOne({_id: gameId}), Profiles.findOne({_id: clientProfileId}), Profiles.findOne({_id: hostProfileId}));
 
 		hostProfile = Profiles.findOne({_id: hostProfileId});
-		chai.assert.isObject(hostProfile);
-		chai.assert.propertyVal(hostProfile, 'numberOfShutouts', 1);
-		chai.assert.propertyVal(hostProfile, 'numberOfShutoutLosses', 1);
+		assert.isObject(hostProfile);
+		assert.propertyVal(hostProfile, 'numberOfShutouts', 1);
+		assert.propertyVal(hostProfile, 'numberOfShutoutLosses', 1);
 
 		clientProfile = Profiles.findOne({_id: clientProfileId});
-		chai.assert.isObject(clientProfile);
-		chai.assert.propertyVal(clientProfile, 'numberOfShutouts', 1);
-		chai.assert.propertyVal(clientProfile, 'numberOfShutoutLosses', 1);
+		assert.isObject(clientProfile);
+		assert.propertyVal(clientProfile, 'numberOfShutouts', 1);
+		assert.propertyVal(clientProfile, 'numberOfShutoutLosses', 1);
 	});
 });
 
 describe('lib/server/gameProfileUpdate#getEloScore', function() {
 	it('returns correct scores depending on the previous eloRating', function() {
-		chai.assert.equal('0.5000', getEloScore(1000, 1000).toFixed(4));
-		chai.assert.equal('0.4712', getEloScore(990, 1010).toFixed(4));
-		chai.assert.equal('0.6401', getEloScore(1100, 1000).toFixed(4));
-		chai.assert.equal('0.5144', getEloScore(1000, 990).toFixed(4));
-		chai.assert.equal('0.5516', getEloScore(1200, 1164).toFixed(4));
-		chai.assert.equal('0.9919', getEloScore(1469, 634).toFixed(4));
+		assert.equal('0.5000', getEloScore(1000, 1000).toFixed(4));
+		assert.equal('0.4712', getEloScore(990, 1010).toFixed(4));
+		assert.equal('0.6401', getEloScore(1100, 1000).toFixed(4));
+		assert.equal('0.5144', getEloScore(1000, 990).toFixed(4));
+		assert.equal('0.5516', getEloScore(1200, 1164).toFixed(4));
+		assert.equal('0.9919', getEloScore(1469, 634).toFixed(4));
 	});
 });
 
@@ -265,32 +265,32 @@ describe('lib/server/gameProfileUpdate#getEloRating', function() {
 
 		eloRating = 1000;
 		eloScore = getEloScore(eloRating, 1000);
-		chai.assert.equal(1016, getEloRating(eloRating, eloScore, 1)); //+16
-		chai.assert.equal(984, getEloRating(eloRating, eloScore, 0)); //-16
+		assert.equal(1016, getEloRating(eloRating, eloScore, 1)); //+16
+		assert.equal(984, getEloRating(eloRating, eloScore, 0)); //-16
 
 		eloRating = 990;
 		eloScore = getEloScore(eloRating, 1010);
-		chai.assert.equal(1007, getEloRating(eloRating, eloScore, 1)); //+17
-		chai.assert.equal(975, getEloRating(eloRating, eloScore, 0)); //-15
+		assert.equal(1007, getEloRating(eloRating, eloScore, 1)); //+17
+		assert.equal(975, getEloRating(eloRating, eloScore, 0)); //-15
 
 		eloRating = 1100;
 		eloScore = getEloScore(eloRating, 1000);
-		chai.assert.equal(1112, getEloRating(eloRating, eloScore, 1)); //+12
-		chai.assert.equal(1080, getEloRating(eloRating, eloScore, 0)); //-20
+		assert.equal(1112, getEloRating(eloRating, eloScore, 1)); //+12
+		assert.equal(1080, getEloRating(eloRating, eloScore, 0)); //-20
 
 		eloRating = 1000;
 		eloScore = getEloScore(eloRating, 990);
-		chai.assert.equal(1016, getEloRating(eloRating, eloScore, 1)); //+16
-		chai.assert.equal(984, getEloRating(eloRating, eloScore, 0)); //-16
+		assert.equal(1016, getEloRating(eloRating, eloScore, 1)); //+16
+		assert.equal(984, getEloRating(eloRating, eloScore, 0)); //-16
 
 		eloRating = 1200;
 		eloScore = getEloScore(eloRating, 1164);
-		chai.assert.equal(1214, getEloRating(eloRating, eloScore, 1)); //+14
-		chai.assert.equal(1182, getEloRating(eloRating, eloScore, 0)); //-18
+		assert.equal(1214, getEloRating(eloRating, eloScore, 1)); //+14
+		assert.equal(1182, getEloRating(eloRating, eloScore, 0)); //-18
 
 		eloRating = 1469;
 		eloScore = getEloScore(eloRating, 634);
-		chai.assert.equal(1469, getEloRating(eloRating, eloScore, 1)); //+0
-		chai.assert.equal(1437, getEloRating(eloRating, eloScore, 0)); //-32
+		assert.equal(1469, getEloRating(eloRating, eloScore, 1)); //+0
+		assert.equal(1437, getEloRating(eloRating, eloScore, 0)); //-32
 	});
 });

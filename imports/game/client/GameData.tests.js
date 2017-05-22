@@ -1,5 +1,5 @@
 import StubCollections from 'meteor/hwillson:stub-collections';
-import {chai} from 'meteor/practicalmeteor:chai';
+import {assert} from 'chai';
 import {sinon} from 'meteor/practicalmeteor:sinon';
 import {Random} from 'meteor/random';
 import {Games} from '/imports/api/games/games.js';
@@ -16,7 +16,7 @@ describe('GameData#getPlayerShapeFromKey', function() {
 		Games.insert({_id: gameId});
 
 		const gameData = new GameData(gameId);
-		chai.assert.strictEqual(PLAYER_DEFAULT_SHAPE, gameData.getPlayerShapeFromKey('player1'));
+		assert.strictEqual(PLAYER_DEFAULT_SHAPE, gameData.getPlayerShapeFromKey('player1'));
 
 		StubCollections.restore();
 	});
@@ -29,7 +29,7 @@ describe('GameData#getPlayerShapeFromKey', function() {
 		Games.insert({_id: gameId});
 
 		const gameData = new GameData(gameId);
-		chai.assert.strictEqual(PLAYER_DEFAULT_SHAPE, gameData.getPlayerShapeFromKey('player2'));
+		assert.strictEqual(PLAYER_DEFAULT_SHAPE, gameData.getPlayerShapeFromKey('player2'));
 
 		StubCollections.restore();
 	});
@@ -50,7 +50,7 @@ describe('GameData#getPlayerShapeFromKey', function() {
 
 		const gameData = new GameData(gameId);
 		gameData.init();
-		chai.assert.strictEqual(PLAYER_SHAPE_RECTANGLE, gameData.getPlayerShapeFromKey('player1'));
+		assert.strictEqual(PLAYER_SHAPE_RECTANGLE, gameData.getPlayerShapeFromKey('player1'));
 
 		StubCollections.restore();
 	});
@@ -65,7 +65,7 @@ describe('GameData#getPlayerShapeFromKey', function() {
 
 		const gameData = new GameData(gameId);
 		gameData.init();
-		chai.assert.strictEqual(PLAYER_SHAPE_RECTANGLE, gameData.getPlayerShapeFromKey('player2'));
+		assert.strictEqual(PLAYER_SHAPE_RECTANGLE, gameData.getPlayerShapeFromKey('player2'));
 
 		StubCollections.restore();
 	});

@@ -1,5 +1,5 @@
 import {Random} from 'meteor/random';
-import {chai} from 'meteor/practicalmeteor:chai';
+import {assert} from 'chai';
 import {
 	playerAcceptedRematch,
 	playerDeclinedRematch,
@@ -35,7 +35,7 @@ describe('lib/client/gameSetup#playerDeclinedRematch', function() {
 		];
 
 		for (let item of falseProvider) {
-			chai.assert.isFalse(playerDeclinedRematch(item[1]), item[0]);
+			assert.isFalse(playerDeclinedRematch(item[1]), item[0]);
 		}
 	});
 	it('returns true', function() {
@@ -51,7 +51,7 @@ describe('lib/client/gameSetup#playerDeclinedRematch', function() {
 		];
 
 		for (let item of trueProvider) {
-			chai.assert.isTrue(playerDeclinedRematch(item[1]), item[0]);
+			assert.isTrue(playerDeclinedRematch(item[1]), item[0]);
 		}
 	});
 });
@@ -70,7 +70,7 @@ describe('lib/client/gameSetup#playerLeftGame', function() {
 		];
 
 		for (let item of falseProvider) {
-			chai.assert.isFalse(playerLeftGame(item[1]), item[0]);
+			assert.isFalse(playerLeftGame(item[1]), item[0]);
 		}
 	});
 	it('returns true', function() {
@@ -82,7 +82,7 @@ describe('lib/client/gameSetup#playerLeftGame', function() {
 		];
 
 		for (let item of trueProvider) {
-			chai.assert.isTrue(playerLeftGame(item[1]), item[0]);
+			assert.isTrue(playerLeftGame(item[1]), item[0]);
 		}
 	});
 });
@@ -109,7 +109,7 @@ describe('lib/client/gameSetup#playerAcceptedRematch', function() {
 		];
 
 		for (let item of falseProvider) {
-			chai.assert.isFalse(playerAcceptedRematch(item[1]), item[0]);
+			assert.isFalse(playerAcceptedRematch(item[1]), item[0]);
 		}
 	});
 	it('returns true', function() {
@@ -121,7 +121,7 @@ describe('lib/client/gameSetup#playerAcceptedRematch', function() {
 		];
 
 		for (let item of trueProvider) {
-			chai.assert.isTrue(playerAcceptedRematch(item[1]), item[0]);
+			assert.isTrue(playerAcceptedRematch(item[1]), item[0]);
 		}
 	});
 });
@@ -144,7 +144,7 @@ describe('lib/client/gameSetup#playerHasNotRepliedRematch', function() {
 		];
 
 		for (let item of falseProvider) {
-			chai.assert.isFalse(playerHasNotRepliedRematch(item[1]), item[0]);
+			assert.isFalse(playerHasNotRepliedRematch(item[1]), item[0]);
 		}
 	});
 	it('returns true', function() {
@@ -176,7 +176,7 @@ describe('lib/client/gameSetup#playerHasNotRepliedRematch', function() {
 		];
 
 		for (let item of trueProvider) {
-			chai.assert.isTrue(playerHasNotRepliedRematch(item[1]), item[0]);
+			assert.isTrue(playerHasNotRepliedRematch(item[1]), item[0]);
 		}
 	});
 });
@@ -217,7 +217,7 @@ describe('lib/client/gameSetup#currentPlayerAcceptedRematch', function() {
 		];
 
 		for (let item of falseProvider) {
-			chai.assert.isFalse(currentPlayerAcceptedRematch(item[1], item[2]), item[0]);
+			assert.isFalse(currentPlayerAcceptedRematch(item[1], item[2]), item[0]);
 		}
 	});
 	it('returns true', function() {
@@ -245,7 +245,7 @@ describe('lib/client/gameSetup#currentPlayerAcceptedRematch', function() {
 		];
 
 		for (let item of trueProvider) {
-			chai.assert.isTrue(currentPlayerAcceptedRematch(item[1], item[2]), item[0]);
+			assert.isTrue(currentPlayerAcceptedRematch(item[1], item[2]), item[0]);
 		}
 	});
 });
@@ -281,7 +281,7 @@ describe('lib/client/gameSetup#currentPlayerHasRepliedRematch', function() {
 		];
 
 		for (let item of falseProvider) {
-			chai.assert.isFalse(currentPlayerHasRepliedRematch(item[1], item[2]), item[0]);
+			assert.isFalse(currentPlayerHasRepliedRematch(item[1], item[2]), item[0]);
 		}
 	});
 	it('returns true', function() {
@@ -314,7 +314,7 @@ describe('lib/client/gameSetup#currentPlayerHasRepliedRematch', function() {
 		];
 
 		for (let item of trueProvider) {
-			chai.assert.isTrue(currentPlayerHasRepliedRematch(item[1], item[2]), item[0]);
+			assert.isTrue(currentPlayerHasRepliedRematch(item[1], item[2]), item[0]);
 		}
 	});
 });

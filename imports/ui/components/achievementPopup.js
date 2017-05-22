@@ -13,7 +13,15 @@ Template.achievementPopup.helpers({
 	achievementLevel: function() {
 		const achievement = Session.get('achievement-reached');
 		if (achievement) {
-			return formatAchievementNumber(achievement.type, achievement.level);
+			return achievement.level;
+		}
+		return '';
+	},
+
+	achievementLevelNumber: function() {
+		const achievement = Session.get('achievement-reached');
+		if (achievement) {
+			return formatAchievementNumber(achievement.type, achievement.levelNumber);
 		}
 		return '';
 	},

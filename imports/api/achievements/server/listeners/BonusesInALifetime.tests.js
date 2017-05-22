@@ -1,4 +1,4 @@
-import {chai} from 'meteor/practicalmeteor:chai';
+import {assert} from 'chai';
 import {sinon} from 'meteor/practicalmeteor:sinon';
 import {resetDatabase} from 'meteor/xolvio:cleaner';
 import {Random} from 'meteor/random';
@@ -15,11 +15,11 @@ describe('BonusesInALifetime', function() {
 	const listener = new BonusesInALifetime(gameId, userId);
 	const assertBonusesInALifetimeUserAchievementNumberEquals = function(number) {
 		const achievement = UserAchievements.findOne();
-		chai.assert.notEqual(undefined, achievement);
+		assert.notEqual(undefined, achievement);
 
-		chai.assert.strictEqual(userId, achievement.userId);
-		chai.assert.strictEqual(ACHIEVEMENT_BONUSES_IN_A_LIFETIME, achievement.achievementId);
-		chai.assert.strictEqual(number, achievement.number);
+		assert.strictEqual(userId, achievement.userId);
+		assert.strictEqual(ACHIEVEMENT_BONUSES_IN_A_LIFETIME, achievement.achievementId);
+		assert.strictEqual(number, achievement.number);
 	};
 
 	beforeEach(function() {
@@ -30,10 +30,10 @@ describe('BonusesInALifetime', function() {
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1'));
 
-		chai.assert.equal(1, UserAchievements.find().count());
+		assert.equal(1, UserAchievements.find().count());
 		assertBonusesInALifetimeUserAchievementNumberEquals(1);
 	});
 
@@ -41,18 +41,18 @@ describe('BonusesInALifetime', function() {
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 		listener.onBonusCaught(new BonusCaught(Random.id(5), 'a', 'player1', 'a', 'player1'));
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 	});
 
 	it('do not create achievement if not created if player key is not the current user on bonus caught', function() {
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player2', 'a', 'player2'));
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 	});
 
 	it('increment achievement on bonus caught', function() {

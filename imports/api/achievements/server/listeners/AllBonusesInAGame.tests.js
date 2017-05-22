@@ -1,4 +1,4 @@
-import {chai} from 'meteor/practicalmeteor:chai';
+import {assert} from 'chai';
 import {sinon} from 'meteor/practicalmeteor:sinon';
 import {resetDatabase} from 'meteor/xolvio:cleaner';
 import {Random} from 'meteor/random';
@@ -30,18 +30,18 @@ describe('AllBonusesInAGame', function() {
 			];
 		});
 
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1'));
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 		listener.onBonusCaught(new BonusCaught(gameId, 'b', 'player1', 'b', 'player1'));
 
-		chai.assert.equal(1, UserAchievements.find().count());
+		assert.equal(1, UserAchievements.find().count());
 		const achievement = UserAchievements.findOne();
-		chai.assert.notEqual(undefined, achievement);
+		assert.notEqual(undefined, achievement);
 
-		chai.assert.strictEqual(userId, achievement.userId);
-		chai.assert.strictEqual(ACHIEVEMENT_ALL_BONUSES_IN_A_GAME, achievement.achievementId);
-		chai.assert.strictEqual(1, achievement.number);
+		assert.strictEqual(userId, achievement.userId);
+		assert.strictEqual(ACHIEVEMENT_ALL_BONUSES_IN_A_GAME, achievement.achievementId);
+		assert.strictEqual(1, achievement.number);
 	});
 
 	it('do not add achievement if different gameId', function() {
@@ -52,9 +52,9 @@ describe('AllBonusesInAGame', function() {
 			];
 		});
 
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 		listener.onBonusCaught(new BonusCaught(Random.id(5), 'a', 'player1', 'a', 'player1'));
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 	});
 
 	it('do not add achievement if different userId', function() {
@@ -65,9 +65,9 @@ describe('AllBonusesInAGame', function() {
 			];
 		});
 
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player2', 'a', 'player2'));
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 	});
 
 	it('do not increment achievement if same bonus twice but not all', function() {
@@ -79,10 +79,10 @@ describe('AllBonusesInAGame', function() {
 			];
 		});
 
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1'));
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1'));
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 	});
 });

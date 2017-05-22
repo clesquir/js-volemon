@@ -1,7 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
 import {resetDatabase} from 'meteor/xolvio:cleaner';
-import {chai} from 'meteor/practicalmeteor:chai';
+import {assert} from 'chai';
 import {sinon} from 'meteor/practicalmeteor:sinon';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
@@ -32,9 +32,9 @@ describe('GameMethods#leaveGame', function() {
 	it('throws 404 if game does not exist', function(done) {
 		Meteor.call('leaveGame', Random.id(5), function(error) {
 			try {
-				chai.assert.isObject(error);
-				chai.assert.propertyVal(error, 'error', 404);
-				chai.assert.propertyVal(error, 'reason', 'Game not found');
+				assert.isObject(error);
+				assert.propertyVal(error, 'error', 404);
+				assert.propertyVal(error, 'reason', 'Game not found');
 			} catch (exception) {
 				done(exception);
 			}
@@ -48,9 +48,9 @@ describe('GameMethods#leaveGame', function() {
 
 		Meteor.call('leaveGame', gameId, function(error) {
 			try {
-				chai.assert.isObject(error);
-				chai.assert.propertyVal(error, 'error', 'not-allowed');
-				chai.assert.propertyVal(error, 'reason', 'Game already started');
+				assert.isObject(error);
+				assert.propertyVal(error, 'error', 'not-allowed');
+				assert.propertyVal(error, 'reason', 'Game already started');
 			} catch(exception) {
 				done(exception);
 			}
@@ -64,9 +64,9 @@ describe('GameMethods#leaveGame', function() {
 
 		Meteor.call('leaveGame', gameId, function(error) {
 			try {
-				chai.assert.isObject(error);
-				chai.assert.propertyVal(error, 'error', 404);
-				chai.assert.propertyVal(error, 'reason', 'Player not found');
+				assert.isObject(error);
+				assert.propertyVal(error, 'error', 404);
+				assert.propertyVal(error, 'reason', 'Player not found');
 			} catch (exception) {
 				done(exception);
 			}
@@ -84,14 +84,14 @@ describe('GameMethods#leaveGame', function() {
 
 		Meteor.call('leaveGame', gameId, function(error) {
 			try {
-				chai.assert.isUndefined(error);
+				assert.isUndefined(error);
 
-				chai.assert.equal(Games.find().count(), 1);
+				assert.equal(Games.find().count(), 1);
 				let players = Players.find();
-				chai.assert.equal(players.count(), 1);
+				assert.equal(players.count(), 1);
 
 				players.forEach(function(player) {
-					chai.assert.equal(player._id, creatorPlayerId);
+					assert.equal(player._id, creatorPlayerId);
 				});
 			} catch(exception) {
 				done(exception);
@@ -117,18 +117,18 @@ describe('GameMethods#leaveGame', function() {
 
 		Meteor.call('leaveGame', gameId, function(error) {
 			try {
-				chai.assert.isUndefined(error);
+				assert.isUndefined(error);
 
 				let games = Games.find();
-				chai.assert.equal(games.count(), 1);
+				assert.equal(games.count(), 1);
 				games.forEach(function(game) {
-					chai.assert.equal(game._id, notRelatedGameId);
+					assert.equal(game._id, notRelatedGameId);
 				});
 
 				let players = Players.find();
-				chai.assert.equal(players.count(), 2);
+				assert.equal(players.count(), 2);
 				players.forEach(function(player) {
-					chai.assert.equal(player.gameId, notRelatedGameId);
+					assert.equal(player.gameId, notRelatedGameId);
 				});
 			} catch(exception) {
 				done(exception);
@@ -156,9 +156,9 @@ describe('GameMethods#quitGame', function() {
 	it('throws 404 if game does not exist', function(done) {
 		Meteor.call('quitGame', Random.id(5), function(error) {
 			try {
-				chai.assert.isObject(error);
-				chai.assert.propertyVal(error, 'error', 404);
-				chai.assert.propertyVal(error, 'reason', 'Game not found');
+				assert.isObject(error);
+				assert.propertyVal(error, 'error', 404);
+				assert.propertyVal(error, 'reason', 'Game not found');
 			} catch(exception) {
 				done(exception);
 			}
@@ -172,9 +172,9 @@ describe('GameMethods#quitGame', function() {
 
 		Meteor.call('quitGame', gameId, function(error) {
 			try {
-				chai.assert.isObject(error);
-				chai.assert.propertyVal(error, 'error', 404);
-				chai.assert.propertyVal(error, 'reason', 'Player not found');
+				assert.isObject(error);
+				assert.propertyVal(error, 'error', 404);
+				assert.propertyVal(error, 'reason', 'Player not found');
 			} catch(exception) {
 				done(exception);
 			}
@@ -192,8 +192,8 @@ describe('GameMethods#quitGame', function() {
 
 		Meteor.call('quitGame', gameId, function(error) {
 			try {
-				chai.assert.isUndefined(error);
-				chai.assert.isTrue(meteorCallSpy.withArgs('leaveGame').calledOnce);
+				assert.isUndefined(error);
+				assert.isTrue(meteorCallSpy.withArgs('leaveGame').calledOnce);
 			} catch(exception) {
 				done(exception);
 			}
@@ -208,15 +208,15 @@ describe('GameMethods#quitGame', function() {
 
 		Meteor.call('quitGame', gameId, function(error) {
 			try {
-				chai.assert.isUndefined(error);
+				assert.isUndefined(error);
 
 				let game = Games.findOne({_id: gameId});
-				chai.assert.isNotNull(game);
+				assert.isNotNull(game);
 
 				let players = Players.find({gameId: gameId});
-				chai.assert.equal(players.count(), 1);
+				assert.equal(players.count(), 1);
 				players.forEach(function(player) {
-					chai.assert.isNotNull(player.hasQuit);
+					assert.isNotNull(player.hasQuit);
 				});
 			} catch(exception) {
 				done(exception);
@@ -232,15 +232,15 @@ describe('GameMethods#quitGame', function() {
 
 		Meteor.call('quitGame', gameId, function(error) {
 			try {
-				chai.assert.isUndefined(error);
+				assert.isUndefined(error);
 
 				let game = Games.findOne({_id: gameId});
-				chai.assert.isNotNull(game);
+				assert.isNotNull(game);
 
 				let players = Players.find({gameId: gameId});
-				chai.assert.equal(players.count(), 1);
+				assert.equal(players.count(), 1);
 				players.forEach(function(player) {
-					chai.assert.notStrictEqual(player.hasQuit, false);
+					assert.notStrictEqual(player.hasQuit, false);
 				});
 			} catch(exception) {
 				done(exception);
@@ -256,16 +256,16 @@ describe('GameMethods#quitGame', function() {
 
 		Meteor.call('quitGame', gameId, function(error) {
 			try {
-				chai.assert.isUndefined(error);
+				assert.isUndefined(error);
 
 				let game = Games.findOne({_id: gameId});
-				chai.assert.isNotNull(game);
-				chai.assert.strictEqual(game.status, GAME_STATUS_TIMEOUT);
+				assert.isNotNull(game);
+				assert.strictEqual(game.status, GAME_STATUS_TIMEOUT);
 
 				let players = Players.find({gameId: gameId});
-				chai.assert.equal(players.count(), 1);
+				assert.equal(players.count(), 1);
 				players.forEach(function(player) {
-					chai.assert.notStrictEqual(player.hasQuit, false);
+					assert.notStrictEqual(player.hasQuit, false);
 				});
 			} catch(exception) {
 				done(exception);
@@ -287,16 +287,16 @@ describe('GameMethods#removeTimeoutPlayersAndGames', function() {
 
 		Meteor.call('removeTimeoutPlayersAndGames', 0, function(error) {
 			try {
-				chai.assert.isUndefined(error);
+				assert.isUndefined(error);
 
 				let game = Games.findOne({_id: gameId});
-				chai.assert.isNotNull(game);
-				chai.assert.strictEqual(game.status, GAME_STATUS_FINISHED);
+				assert.isNotNull(game);
+				assert.strictEqual(game.status, GAME_STATUS_FINISHED);
 
 				let players = Players.find({gameId: gameId});
-				chai.assert.equal(players.count(), 1);
+				assert.equal(players.count(), 1);
 				players.forEach(function(player) {
-					chai.assert.strictEqual(player.hasQuit, false);
+					assert.strictEqual(player.hasQuit, false);
 				});
 			} catch(exception) {
 				done(exception);
@@ -312,16 +312,16 @@ describe('GameMethods#removeTimeoutPlayersAndGames', function() {
 
 		Meteor.call('removeTimeoutPlayersAndGames', 0, function(error) {
 			try {
-				chai.assert.isUndefined(error);
+				assert.isUndefined(error);
 
 				let game = Games.findOne({_id: gameId});
-				chai.assert.isNotNull(game);
-				chai.assert.strictEqual(game.status, GAME_STATUS_STARTED);
+				assert.isNotNull(game);
+				assert.strictEqual(game.status, GAME_STATUS_STARTED);
 
 				let players = Players.find({gameId: gameId});
-				chai.assert.equal(players.count(), 1);
+				assert.equal(players.count(), 1);
 				players.forEach(function(player) {
-					chai.assert.strictEqual(player.hasQuit, false);
+					assert.strictEqual(player.hasQuit, false);
 				});
 			} catch(exception) {
 				done(exception);
@@ -341,19 +341,19 @@ describe('GameMethods#removeTimeoutPlayersAndGames', function() {
 
 		Meteor.call('removeTimeoutPlayersAndGames', 0, function(error) {
 			try {
-				chai.assert.isUndefined(error);
+				assert.isUndefined(error);
 
 				let game = Games.findOne({_id: gameId});
-				chai.assert.isNotNull(game);
-				chai.assert.strictEqual(game.status, GAME_STATUS_TIMEOUT);
+				assert.isNotNull(game);
+				assert.strictEqual(game.status, GAME_STATUS_TIMEOUT);
 
 				let players = Players.find({gameId: gameId});
-				chai.assert.equal(players.count(), 2);
+				assert.equal(players.count(), 2);
 				players.forEach(function(player) {
 					if (player._id === playerId1) {
-						chai.assert.notStrictEqual(player.hasQuit, false);
+						assert.notStrictEqual(player.hasQuit, false);
 					} else if (player._id === playerId2) {
-						chai.assert.strictEqual(player.hasQuit, false);
+						assert.strictEqual(player.hasQuit, false);
 					}
 				});
 			} catch(exception) {

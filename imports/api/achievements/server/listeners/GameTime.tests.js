@@ -1,4 +1,4 @@
-import {chai} from 'meteor/practicalmeteor:chai';
+import {assert} from 'chai';
 import {sinon} from 'meteor/practicalmeteor:sinon';
 import {resetDatabase} from 'meteor/xolvio:cleaner';
 import {Random} from 'meteor/random';
@@ -15,11 +15,11 @@ describe('GameTime', function() {
 	const listener = new GameTime(gameId, userId);
 	const assertGameTimeUserAchievementNumberEquals = function(number) {
 		const achievement = UserAchievements.findOne();
-		chai.assert.notEqual(undefined, achievement);
+		assert.notEqual(undefined, achievement);
 
-		chai.assert.strictEqual(userId, achievement.userId);
-		chai.assert.strictEqual(ACHIEVEMENT_GAME_TIME, achievement.achievementId);
-		chai.assert.strictEqual(number, achievement.number);
+		assert.strictEqual(userId, achievement.userId);
+		assert.strictEqual(ACHIEVEMENT_GAME_TIME, achievement.achievementId);
+		assert.strictEqual(number, achievement.number);
 	};
 
 	beforeEach(function() {
@@ -30,10 +30,10 @@ describe('GameTime', function() {
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 		listener.onGameFinished(new GameFinished(gameId, 2000));
 
-		chai.assert.equal(1, UserAchievements.find().count());
+		assert.equal(1, UserAchievements.find().count());
 		assertGameTimeUserAchievementNumberEquals(2000);
 	});
 
@@ -41,17 +41,17 @@ describe('GameTime', function() {
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 		listener.onGameFinished(new GameFinished(Random.id(5), 2000));
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 	});
 
 	it('do not create achievement if not created if current user is not game player on game finished', function() {
 		Games.insert({_id: gameId, createdBy: userId});
 
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 		listener.onGameFinished(new GameFinished(gameId, 2000));
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 	});
 
 	it('update achievement if higher on game finished', function() {

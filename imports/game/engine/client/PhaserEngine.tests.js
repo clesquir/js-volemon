@@ -1,4 +1,4 @@
-import { chai } from 'meteor/practicalmeteor:chai';
+import {assert} from 'chai';
 import PhaserEngine from '/imports/game/engine/client/PhaserEngine.js';
 
 describe('PhaserEngine#constrainVelocity', function() {
@@ -15,8 +15,8 @@ describe('PhaserEngine#constrainVelocity', function() {
 
 		engine.constrainVelocity(sprite, 500);
 
-		chai.assert.equal(0, Math.round(sprite.body.velocity.x));
-		chai.assert.equal(500, Math.round(sprite.body.velocity.y));
+		assert.equal(0, Math.round(sprite.body.velocity.x));
+		assert.equal(500, Math.round(sprite.body.velocity.y));
 	});
 
 	it('restricts velocity without changing the angle if 45 degrees', function() {
@@ -32,8 +32,8 @@ describe('PhaserEngine#constrainVelocity', function() {
 
 		engine.constrainVelocity(sprite, 500);
 
-		chai.assert.equal(354, Math.round(sprite.body.velocity.x));
-		chai.assert.equal(354, Math.round(sprite.body.velocity.y));
+		assert.equal(354, Math.round(sprite.body.velocity.x));
+		assert.equal(354, Math.round(sprite.body.velocity.y));
 	});
 
 	it('restricts velocity without changing the angle if 90 degrees', function() {
@@ -49,7 +49,7 @@ describe('PhaserEngine#constrainVelocity', function() {
 
 		engine.constrainVelocity(sprite, 500);
 
-		chai.assert.equal(500, Math.round(sprite.body.velocity.x));
-		chai.assert.equal(0, Math.round(sprite.body.velocity.y));
+		assert.equal(500, Math.round(sprite.body.velocity.x));
+		assert.equal(0, Math.round(sprite.body.velocity.y));
 	});
 });
