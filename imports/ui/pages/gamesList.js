@@ -1,7 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
 import {ReactiveVar} from 'meteor/reactive-var';
-import {Constants} from '/imports/lib/constants.js';
+import {GAME_STATUS_REGISTRATION, GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
 import {getUTCTimeStamp, timeElapsedSince} from '/imports/lib/utils.js';
 
 import './gamesList.html';
@@ -38,9 +38,9 @@ Template.gamesList.helpers({
 
 	gameStatus: function() {
 		switch (this.status) {
-			case Constants.GAME_STATUS_REGISTRATION:
+			case GAME_STATUS_REGISTRATION:
 				return 'Registration';
-			case Constants.GAME_STATUS_STARTED:
+			case GAME_STATUS_STARTED:
 				return 'Started';
 		}
 

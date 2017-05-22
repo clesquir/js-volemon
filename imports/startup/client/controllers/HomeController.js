@@ -6,18 +6,20 @@ import {EloScores} from '/imports/api/games/eloscores.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
-import {Config} from '/imports/lib/config.js';
+
+const GAMES_INCREMENT_ON_HOMEPAGE = 5;
+const GAMES_LIMIT_ON_HOMEPAGE = 5;
 
 export const HomeController = RouteController.extend({
 	subscriptions: function() {
 		return [];
 	},
 	onBeforeAction: function() {
-		this.state.setDefault('gamesLimit', Config.gamesLimitOnHomePage);
+		this.state.setDefault('gamesLimit', GAMES_LIMIT_ON_HOMEPAGE);
 		this.next();
 	},
 	gamesIncrement: function() {
-		return Config.gamesIncrementOnHomePage;
+		return GAMES_INCREMENT_ON_HOMEPAGE;
 	},
 	gamesLimit: function () {
 		return this.state.get('gamesLimit') || this.gamesIncrement();

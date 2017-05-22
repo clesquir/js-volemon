@@ -1,8 +1,11 @@
-import { Constants } from '/imports/lib/constants.js';
+import {Meteor} from 'meteor/meteor';
+import {Template} from 'meteor/templating';
+import {Session} from 'meteor/session';
+import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
 
-var incrementShape = function(increment) {
-	var listOfShapes = Constants.PLAYER_LIST_OF_SHAPES,
-		index = listOfShapes.indexOf(this.shape);
+const incrementShape = function(increment) {
+	const listOfShapes = PLAYER_LIST_OF_SHAPES;
+	let index = listOfShapes.indexOf(this.shape);
 
 	index = index + increment;
 
@@ -20,11 +23,11 @@ var incrementShape = function(increment) {
 };
 
 Template.shapeSelector.events({
-	'click [data-action="shape-change-up"]': function(e) {
+	'click [data-action="shape-change-up"]': function() {
 		incrementShape.call(this, -1);
 	},
 
-	'click [data-action="shape-change-down"]': function(e) {
+	'click [data-action="shape-change-down"]': function() {
 		incrementShape.call(this, 1);
 	}
 });

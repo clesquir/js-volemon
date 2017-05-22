@@ -7,7 +7,8 @@ import PhaserEngine from '/imports/game/engine/client/PhaserEngine.js';
 import GameStreamBundler from '/imports/game/client/GameStreamBundler.js';
 import GameStreamInitiator from '/imports/game/client/GameStreamInitiator.js';
 import Game from '/imports/game/client/Game.js';
-import {Constants} from '/imports/lib/constants.js';
+import {HOST_POINTS_COLUMN, CLIENT_POINTS_COLUMN} from '/imports/api/games/constants.js';
+import {GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
 
 export default class GameInitiator {
 
@@ -44,16 +45,16 @@ export default class GameInitiator {
 				if (fields.hasOwnProperty('status')) {
 					this.gameData.updateStatus(fields.status);
 
-					if (fields.status === Constants.GAME_STATUS_STARTED) {
+					if (fields.status === GAME_STATUS_STARTED) {
 						Session.set('apploadingmask', false);
 					}
 				}
 
-				if (fields.hasOwnProperty(Constants.HOST_POINTS_COLUMN)) {
+				if (fields.hasOwnProperty(HOST_POINTS_COLUMN)) {
 					this.gameData.updateHostPoints(fields.hostPoints);
 				}
 
-				if (fields.hasOwnProperty(Constants.CLIENT_POINTS_COLUMN)) {
+				if (fields.hasOwnProperty(CLIENT_POINTS_COLUMN)) {
 					this.gameData.updateClientPoints(fields.clientPoints);
 				}
 
@@ -73,8 +74,8 @@ export default class GameInitiator {
 
 				if (
 					this.hasActiveGame() && (
-						fields.hasOwnProperty(Constants.HOST_POINTS_COLUMN) ||
-						fields.hasOwnProperty(Constants.CLIENT_POINTS_COLUMN)
+						fields.hasOwnProperty(HOST_POINTS_COLUMN) ||
+						fields.hasOwnProperty(CLIENT_POINTS_COLUMN)
 					)
 				) {
 					this.currentGame.onPointTaken();

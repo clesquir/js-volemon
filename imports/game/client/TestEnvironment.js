@@ -4,8 +4,11 @@ import PhaserEngine from '/imports/game/engine/client/PhaserEngine.js';
 import GameData from '/imports/game/client/GameData.js';
 import GameStreamBundler from '/imports/game/client/GameStreamBundler.js';
 import ServerNormalizedTime from '/imports/game/client/ServerNormalizedTime.js';
-import {Config} from '/imports/lib/config.js';
-import {Constants} from '/imports/lib/constants.js';
+import {
+	NORMAL_SCALE_PHYSICS_DATA,
+	PLAYER_HEIGHT,
+	PLAYER_INITIAL_LOCATION
+} from '/imports/api/games/constants.js';
 
 export default class TestEnvironment {
 
@@ -36,7 +39,7 @@ export default class TestEnvironment {
 		this.game.engine.loadImage('ball', 'assets/ball.png');
 		this.game.engine.loadImage('ground', 'assets/ground.png');
 		this.game.engine.loadImage('delimiter', 'assets/clear.png');
-		this.game.engine.loadData(Constants.NORMAL_SCALE_PHYSICS_DATA, 'assets/physicsData.json');
+		this.game.engine.loadData(NORMAL_SCALE_PHYSICS_DATA, 'assets/physicsData.json');
 	}
 
 	createGame() {
@@ -46,9 +49,9 @@ export default class TestEnvironment {
 
 		this.game.createCollisionGroupsAndMaterials();
 
-		const yPosition = this.game.ySize - this.game.groundHeight - (Constants.PLAYER_HEIGHT / 2);
-		this.game.player1 = this.game.engine.addSprite(Config.playerInitialLocation, yPosition, 'player1', undefined);
-		this.game.createPlayer(this.game.player1, Config.playerInitialLocation, yPosition, 'player1');
+		const yPosition = this.game.ySize - this.game.groundHeight - (PLAYER_HEIGHT / 2);
+		this.game.player1 = this.game.engine.addSprite(PLAYER_INITIAL_LOCATION, yPosition, 'player1', undefined);
+		this.game.createPlayer(this.game.player1, PLAYER_INITIAL_LOCATION, yPosition, 'player1');
 
 		this.game.createBall(100, 100);
 
@@ -67,7 +70,7 @@ export default class TestEnvironment {
 		this.game.sendPlayerPosition = () => {};
 
 		this.game.hitGround = () => {
-			if (this.game.gameResumed == true) {
+			if (this.game.gameResumed === true) {
 				this.game.shakeLevel();
 				this.resumeOnTimerEnd();
 

@@ -1,6 +1,6 @@
 import {EloScores} from '/imports/api/games/eloscores.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
-import {Constants} from '/imports/lib/constants.js';
+import {PLAYER_DEFAULT_SHAPE} from '/imports/api/games/shapeConstants.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 
 export const createProfile = function(user) {
@@ -13,7 +13,7 @@ export const createProfile = function(user) {
 		numberOfShutoutLosses: 0,
 		eloRating: 1000,
 		eloRatingLastChange: 0,
-		lastShapeUsed: Constants.PLAYER_DEFAULT_SHAPE
+		lastShapeUsed: PLAYER_DEFAULT_SHAPE
 	};
 
 	Profiles.insert(profile);

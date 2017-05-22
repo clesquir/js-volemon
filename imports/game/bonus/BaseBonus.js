@@ -1,12 +1,13 @@
-import { Config } from '/imports/lib/config.js';
-import { getUTCTimeStamp } from '/imports/lib/utils.js';
+import {BONUS_RADIUS} from '/imports/api/games/constants.js';
+import {BONUS_DURATION} from '/imports/api/games/emissionConstants.js';
+import {getUTCTimeStamp} from '/imports/lib/utils.js';
 
 export default class BaseBonus {
 
 	constructor(game, className) {
 		this.game = game;
 		this.className = className;
-		this.durationMilliseconds = Config.bonusDuration;
+		this.durationMilliseconds = BONUS_DURATION;
 		this.createdAt = getUTCTimeStamp();
 		this.isActive = false;
 		this.activatorPlayerKey = null;
@@ -64,7 +65,7 @@ export default class BaseBonus {
 	}
 
 	backgroundToDraw(engine) {
-		return [engine.drawCircle(0, 0, 0xFFFFFF, Config.bonusRadius * 2 - 2)];
+		return [engine.drawCircle(0, 0, 0xFFFFFF, BONUS_RADIUS * 2 - 2)];
 	}
 
 	contentToDraw(engine) {

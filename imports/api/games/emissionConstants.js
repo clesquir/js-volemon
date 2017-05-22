@@ -1,0 +1,7 @@
+export const PLAYER_INTERVAL = 50;
+export const BALL_INTERVAL = 50;
+export const BONUS_INTERVAL = 50;
+export const BONUS_MINIMUM_FREQUENCE = 2000;
+export const BONUS_MINIMUM_INTERVAL = 10000;
+export const BONUS_MAXIMUM_INTERVAL = 15000;
+export const BONUS_DURATION = 10000;

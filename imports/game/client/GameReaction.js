@@ -1,5 +1,5 @@
 import {Meteor} from 'meteor/meteor';
-import {isGamePlayer} from '/imports/game/utils.js';
+import {isGamePlayer} from '/imports/api/games/utils.js';
 
 export default class GameReaction {
 

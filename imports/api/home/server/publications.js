@@ -3,7 +3,7 @@ import {EloScores} from '/imports/api/games/eloscores.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
-import {Constants} from '/imports/lib/constants.js';
+import {GAME_STATUS_FINISHED} from '/imports/api/games/statusConstants.js';
 
 Meteor.publish('profileData', function(userId) {
 	return Profiles.find({userId: userId});
@@ -22,7 +22,7 @@ Meteor.publish('recentProfileGames', function(limit) {
 	const games = Games.find(
 		{
 			_id: {$in: gamesIds},
-			status: Constants.GAME_STATUS_FINISHED
+			status: GAME_STATUS_FINISHED
 		},
 		{
 			sort: [['startedAt', 'desc']],

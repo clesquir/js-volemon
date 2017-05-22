@@ -5,7 +5,12 @@ import {chai} from 'meteor/practicalmeteor:chai';
 import {sinon} from 'meteor/practicalmeteor:sinon';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import {Constants} from '/imports/lib/constants.js';
+import {
+	GAME_STATUS_REGISTRATION,
+	GAME_STATUS_STARTED,
+	GAME_STATUS_FINISHED,
+	GAME_STATUS_TIMEOUT
+} from '/imports/api/games/statusConstants.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 import {gameMethods} from '/server/methods/gameMethods.js';
 
@@ -39,7 +44,7 @@ describe('GameMethods#leaveGame', function() {
 
 	it('throws not-allowed if game status is not in registration', function(done) {
 		const gameId = Random.id(5);
-		Games.insert({_id: gameId, status: Constants.GAME_STATUS_FINISHED});
+		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED});
 
 		Meteor.call('leaveGame', gameId, function(error) {
 			try {
@@ -55,7 +60,7 @@ describe('GameMethods#leaveGame', function() {
 
 	it('throws 404 if player does not exist', function(done) {
 		const gameId = Random.id(5);
-		Games.insert({_id: gameId, status: Constants.GAME_STATUS_REGISTRATION});
+		Games.insert({_id: gameId, status: GAME_STATUS_REGISTRATION});
 
 		Meteor.call('leaveGame', gameId, function(error) {
 			try {
@@ -73,7 +78,7 @@ describe('GameMethods#leaveGame', function() {
 		const gameId = Random.id(5);
 		const creatorPlayerId = '1';
 
-		Games.insert({_id: gameId, status: Constants.GAME_STATUS_REGISTRATION, createdBy: creatorPlayerId});
+		Games.insert({_id: gameId, status: GAME_STATUS_REGISTRATION, createdBy: creatorPlayerId});
 		Players.insert({_id: '2', gameId: gameId, userId: userId});
 		Players.insert({_id: creatorPlayerId, gameId: gameId, userId: 1});
 
@@ -99,14 +104,14 @@ describe('GameMethods#leaveGame', function() {
 		const gameId = Random.id(5);
 		let creatorPlayerId = '1';
 
-		Games.insert({_id: gameId, status: Constants.GAME_STATUS_REGISTRATION, createdBy: userId});
+		Games.insert({_id: gameId, status: GAME_STATUS_REGISTRATION, createdBy: userId});
 		Players.insert({_id: creatorPlayerId, gameId: gameId, userId: userId});
 		Players.insert({_id: '2', gameId: gameId, userId: 1});
 
 		//Create second game and players related to that game to make sure it's not deleted along
 		let notRelatedGameId = Random.id(5);
 		creatorPlayerId = '3';
-		Games.insert({_id: notRelatedGameId, status: Constants.GAME_STATUS_REGISTRATION, createdBy: userId});
+		Games.insert({_id: notRelatedGameId, status: GAME_STATUS_REGISTRATION, createdBy: userId});
 		Players.insert({_id: creatorPlayerId, gameId: notRelatedGameId, userId: userId});
 		Players.insert({_id: '4', gameId: notRelatedGameId, userId: 1});
 
@@ -163,7 +168,7 @@ describe('GameMethods#quitGame', function() {
 
 	it('throws 404 if player does not exist', function(done) {
 		const gameId = Random.id(5);
-		Games.insert({_id: gameId, status: Constants.GAME_STATUS_TIMEOUT});
+		Games.insert({_id: gameId, status: GAME_STATUS_TIMEOUT});
 
 		Meteor.call('quitGame', gameId, function(error) {
 			try {
@@ -179,7 +184,7 @@ describe('GameMethods#quitGame', function() {
 
 	it('calls leaveGame if game status is in registration', function(done) {
 		const gameId = Random.id(5);
-		Games.insert({_id: gameId, status: Constants.GAME_STATUS_REGISTRATION});
+		Games.insert({_id: gameId, status: GAME_STATUS_REGISTRATION});
 		Players.insert({_id: Random.id(5), gameId: gameId, userId: userId});
 
 		let meteorCallSpy = sandbox.spy(Meteor, 'call');
@@ -198,7 +203,7 @@ describe('GameMethods#quitGame', function() {
 
 	it('quits if game status is finished', function(done) {
 		const gameId = Random.id(5);
-		Games.insert({_id: gameId, status: Constants.GAME_STATUS_FINISHED});
+		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED});
 		Players.insert({_id: Random.id(5), gameId: gameId, userId: userId, hasQuit: false});
 
 		Meteor.call('quitGame', gameId, function(error) {
@@ -222,7 +227,7 @@ describe('GameMethods#quitGame', function() {
 
 	it('updates player hasQuit if game status is timed out', function(done) {
 		const gameId = Random.id(5);
-		Games.insert({_id: gameId, status: Constants.GAME_STATUS_TIMEOUT});
+		Games.insert({_id: gameId, status: GAME_STATUS_TIMEOUT});
 		Players.insert({_id: Random.id(5), gameId: gameId, userId: userId, hasQuit: false});
 
 		Meteor.call('quitGame', gameId, function(error) {
@@ -246,7 +251,7 @@ describe('GameMethods#quitGame', function() {
 
 	it('updates player hasQuit and sets game status to timed out if game status is started', function(done) {
 		const gameId = Random.id(5);
-		Games.insert({_id: gameId, status: Constants.GAME_STATUS_STARTED});
+		Games.insert({_id: gameId, status: GAME_STATUS_STARTED});
 		Players.insert({_id: Random.id(5), gameId: gameId, userId: userId, hasQuit: false});
 
 		Meteor.call('quitGame', gameId, function(error) {
@@ -255,7 +260,7 @@ describe('GameMethods#quitGame', function() {
 
 				let game = Games.findOne({_id: gameId});
 				chai.assert.isNotNull(game);
-				chai.assert.strictEqual(game.status, Constants.GAME_STATUS_TIMEOUT);
+				chai.assert.strictEqual(game.status, GAME_STATUS_TIMEOUT);
 
 				let players = Players.find({gameId: gameId});
 				chai.assert.equal(players.count(), 1);
@@ -277,16 +282,16 @@ describe('GameMethods#removeTimeoutPlayersAndGames', function() {
 
 	it('does nothing if no game has started status but has timed out players', function(done) {
 		const gameId = Random.id(5);
-		Games.insert({_id: gameId, status: Constants.GAME_STATUS_FINISHED});
+		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED});
 		Players.insert({_id: Random.id(5), gameId: gameId, hasQuit: false, lastKeepAlive: 0});
 
-		Meteor.call('removeTimeoutPlayersAndGames', function(error) {
+		Meteor.call('removeTimeoutPlayersAndGames', 0, function(error) {
 			try {
 				chai.assert.isUndefined(error);
 
 				let game = Games.findOne({_id: gameId});
 				chai.assert.isNotNull(game);
-				chai.assert.strictEqual(game.status, Constants.GAME_STATUS_FINISHED);
+				chai.assert.strictEqual(game.status, GAME_STATUS_FINISHED);
 
 				let players = Players.find({gameId: gameId});
 				chai.assert.equal(players.count(), 1);
@@ -302,16 +307,16 @@ describe('GameMethods#removeTimeoutPlayersAndGames', function() {
 
 	it('does nothing if has no timed out players but game has started status', function(done) {
 		const gameId = Random.id(5);
-		Games.insert({_id: gameId, status: Constants.GAME_STATUS_STARTED});
+		Games.insert({_id: gameId, status: GAME_STATUS_STARTED});
 		Players.insert({_id: Random.id(5), gameId: gameId, hasQuit: false, lastKeepAlive: getUTCTimeStamp() * 2});
 
-		Meteor.call('removeTimeoutPlayersAndGames', function(error) {
+		Meteor.call('removeTimeoutPlayersAndGames', 0, function(error) {
 			try {
 				chai.assert.isUndefined(error);
 
 				let game = Games.findOne({_id: gameId});
 				chai.assert.isNotNull(game);
-				chai.assert.strictEqual(game.status, Constants.GAME_STATUS_STARTED);
+				chai.assert.strictEqual(game.status, GAME_STATUS_STARTED);
 
 				let players = Players.find({gameId: gameId});
 				chai.assert.equal(players.count(), 1);
@@ -330,24 +335,24 @@ describe('GameMethods#removeTimeoutPlayersAndGames', function() {
 		const playerId1 = Random.id(5);
 		const playerId2 = Random.id(5);
 
-		Games.insert({_id: gameId, status: Constants.GAME_STATUS_STARTED});
+		Games.insert({_id: gameId, status: GAME_STATUS_STARTED});
 		Players.insert({_id: playerId1, gameId: gameId, hasQuit: false, lastKeepAlive: 0});
 		Players.insert({_id: playerId2, gameId: gameId, hasQuit: false, lastKeepAlive: getUTCTimeStamp() * 2});
 
-		Meteor.call('removeTimeoutPlayersAndGames', function(error) {
+		Meteor.call('removeTimeoutPlayersAndGames', 0, function(error) {
 			try {
 				chai.assert.isUndefined(error);
 
 				let game = Games.findOne({_id: gameId});
 				chai.assert.isNotNull(game);
-				chai.assert.strictEqual(game.status, Constants.GAME_STATUS_TIMEOUT);
+				chai.assert.strictEqual(game.status, GAME_STATUS_TIMEOUT);
 
 				let players = Players.find({gameId: gameId});
 				chai.assert.equal(players.count(), 2);
 				players.forEach(function(player) {
-					if (player._id == playerId1) {
+					if (player._id === playerId1) {
 						chai.assert.notStrictEqual(player.hasQuit, false);
-					} else if (player._id == playerId2) {
+					} else if (player._id === playerId2) {
 						chai.assert.strictEqual(player.hasQuit, false);
 					}
 				});

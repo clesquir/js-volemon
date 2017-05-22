@@ -1,8 +1,11 @@
+import {chai} from 'meteor/practicalmeteor:chai';
+import {Random} from 'meteor/random';
 import StubCollections from 'meteor/hwillson:stub-collections';
-import {getWinnerName, isMatchPoint, isDeucePoint} from '/imports/game/utils.js';
+import {GAME_MAXIMUM_POINTS} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import {Constants} from '/imports/lib/constants.js';
+import {GAME_STATUS_STARTED, GAME_STATUS_FINISHED} from '/imports/api/games/statusConstants.js';
+import {getWinnerName, isMatchPoint, isDeucePoint} from '/imports/api/games/utils.js';
 
 describe('game/utils#getWinnerName', function() {
 	it('returns Nobody if game is not finished', function() {
@@ -11,9 +14,9 @@ describe('game/utils#getWinnerName', function() {
 		let gameId = Random.id(5);
 		Games.insert({
 			_id: gameId,
-			status: Constants.GAME_STATUS_STARTED,
-			hostPoints: Constants.MAXIMUM_POINTS,
-			clientPoints: Constants.MAXIMUM_POINTS
+			status: GAME_STATUS_STARTED,
+			hostPoints: GAME_MAXIMUM_POINTS,
+			clientPoints: GAME_MAXIMUM_POINTS
 		});
 
 		chai.assert.equal(getWinnerName(Games.findOne({_id: gameId})), 'Nobody');
@@ -27,7 +30,7 @@ describe('game/utils#getWinnerName', function() {
 		let gameId = Random.id(5);
 		Games.insert({
 			_id: gameId,
-			status: Constants.GAME_STATUS_FINISHED,
+			status: GAME_STATUS_FINISHED,
 			hostPoints: 0,
 			clientPoints: 0
 		});
@@ -43,8 +46,8 @@ describe('game/utils#getWinnerName', function() {
 		let gameId = Random.id(5);
 		Games.insert({
 			_id: gameId,
-			status: Constants.GAME_STATUS_FINISHED,
-			hostPoints: Constants.MAXIMUM_POINTS,
+			status: GAME_STATUS_FINISHED,
+			hostPoints: GAME_MAXIMUM_POINTS,
 			clientPoints: 0
 		});
 
@@ -62,8 +65,8 @@ describe('game/utils#getWinnerName', function() {
 		Games.insert({
 			_id: gameId,
 			createdBy: createdByUserId,
-			status: Constants.GAME_STATUS_FINISHED,
-			hostPoints: Constants.MAXIMUM_POINTS,
+			status: GAME_STATUS_FINISHED,
+			hostPoints: GAME_MAXIMUM_POINTS,
 			clientPoints: 0
 		});
 		let hostPlayerName = 'Host player name';
@@ -80,9 +83,9 @@ describe('game/utils#getWinnerName', function() {
 		let gameId = Random.id(5);
 		Games.insert({
 			_id: gameId,
-			status: Constants.GAME_STATUS_FINISHED,
+			status: GAME_STATUS_FINISHED,
 			hostPoints: 0,
-			clientPoints: Constants.MAXIMUM_POINTS
+			clientPoints: GAME_MAXIMUM_POINTS
 		});
 
 		chai.assert.equal(getWinnerName(Games.findOne({_id: gameId})), 'Player 2');
@@ -98,9 +101,9 @@ describe('game/utils#getWinnerName', function() {
 		Games.insert({
 			_id: gameId,
 			createdBy: 1,
-			status: Constants.GAME_STATUS_FINISHED,
+			status: GAME_STATUS_FINISHED,
 			hostPoints: 0,
-			clientPoints: Constants.MAXIMUM_POINTS
+			clientPoints: GAME_MAXIMUM_POINTS
 		});
 		let clientPlayerName = 'Client player name';
 		Players.insert({_id: Random.id(5), gameId: gameId, userId: 2, name: clientPlayerName});
@@ -117,15 +120,15 @@ describe('game/utils#isMatchPoint', function() {
 	});
 
 	it('returns true if hostPoints is at one point from maximum', function() {
-		chai.assert.isTrue(isMatchPoint(Constants.MAXIMUM_POINTS - 1, 0));
+		chai.assert.isTrue(isMatchPoint(GAME_MAXIMUM_POINTS - 1, 0));
 	});
 
 	it('returns true if clientPoints is at one point from maximum', function() {
-		chai.assert.isTrue(isMatchPoint(0, Constants.MAXIMUM_POINTS - 1));
+		chai.assert.isTrue(isMatchPoint(0, GAME_MAXIMUM_POINTS - 1));
 	});
 
 	it('returns true if both players are at one point from maximum', function() {
-		chai.assert.isTrue(isMatchPoint(Constants.MAXIMUM_POINTS - 1, Constants.MAXIMUM_POINTS - 1));
+		chai.assert.isTrue(isMatchPoint(GAME_MAXIMUM_POINTS - 1, GAME_MAXIMUM_POINTS - 1));
 	});
 });
 
@@ -135,14 +138,14 @@ describe('game/utils#isDeuce', function() {
 	});
 
 	it('returns false if hostPoints is at one point from maximum', function() {
-		chai.assert.isFalse(isDeucePoint(Constants.MAXIMUM_POINTS - 1, 0));
+		chai.assert.isFalse(isDeucePoint(GAME_MAXIMUM_POINTS - 1, 0));
 	});
 
 	it('returns false if clientPoints is at one point from maximum', function() {
-		chai.assert.isFalse(isDeucePoint(0, Constants.MAXIMUM_POINTS - 1));
+		chai.assert.isFalse(isDeucePoint(0, GAME_MAXIMUM_POINTS - 1));
 	});
 
 	it('returns true if both players are at one point from maximum', function() {
-		chai.assert.isTrue(isDeucePoint(Constants.MAXIMUM_POINTS - 1, Constants.MAXIMUM_POINTS - 1));
+		chai.assert.isTrue(isDeucePoint(GAME_MAXIMUM_POINTS - 1, GAME_MAXIMUM_POINTS - 1));
 	});
 });

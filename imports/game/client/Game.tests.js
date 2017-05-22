@@ -6,7 +6,7 @@ import GameData from '/imports/game/client/GameData.js';
 import GameStreamBundler from '/imports/game/client/GameStreamBundler.js';
 import ServerNormalizedTime from '/imports/game/client/ServerNormalizedTime.js';
 import PhaserEngine from '/imports/game/engine/client/PhaserEngine.js';
-import {Constants} from '/imports/lib/constants.js';
+import {PLAYER_HEIGHT, BALL_VERTICAL_SPEED_ON_PLAYER_HIT} from '/imports/api/games/constants.js';
 
 describe('Game#isPlayerJumpingForward', function() {
 	const engine = new PhaserEngine();
@@ -338,7 +338,7 @@ describe('Game#isBallBelowPlayer', function() {
 			{
 				body: {
 					x: 200,
-					y: 400 + (Constants.PLAYER_HEIGHT / 2)
+					y: 400 + (PLAYER_HEIGHT / 2)
 				}
 			},
 			{
@@ -357,7 +357,7 @@ describe('Game#isBallBelowPlayer', function() {
 			{
 				body: {
 					x: 200,
-					y: 400 + (Constants.PLAYER_HEIGHT / 2) + 0.1
+					y: 400 + (PLAYER_HEIGHT / 2) + 0.1
 				}
 			},
 			{
@@ -480,7 +480,7 @@ describe('Game#reboundBallOnPlayerHit', function() {
 		game.reboundBallOnPlayerHit(ball);
 
 		chai.assert.equal(horizontalVelocity, ball.body.velocity.x);
-		chai.assert.equal(Constants.BALL_VERTICAL_SPEED_ON_PLAYER_HIT, ball.body.velocity.y);
+		chai.assert.equal(BALL_VERTICAL_SPEED_ON_PLAYER_HIT, ball.body.velocity.y);
 	});
 });
 

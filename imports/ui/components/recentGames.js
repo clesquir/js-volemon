@@ -98,7 +98,6 @@ Template.recentGames.onCreated(function() {
 	this.uptime = new ReactiveVar(0);
 	this.uptimeInterval = Meteor.setInterval(() => {
 		this.uptime.set(getUTCTimeStamp());
-		console.log('allo!');
 	}, 10000);
 });
 

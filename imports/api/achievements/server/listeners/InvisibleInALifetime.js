@@ -1,7 +1,7 @@
 import Listener from '/imports/api/achievements/server/listeners/Listener.js';
 import {ACHIEVEMENT_INVISIBLE_IN_A_LIFETIME} from '/imports/api/achievements/constants.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
-import {Constants} from '/imports/lib/constants.js';
+import {BONUS_INVISIBLE_MONSTER} from '/imports/api/games/bonusConstants.js';
 
 export default class InvisibleInALifetime extends Listener {
 	addListeners() {
@@ -18,7 +18,7 @@ export default class InvisibleInALifetime extends Listener {
 	onBonusCaught(event) {
 		if (
 			event.gameId === this.gameId &&
-			event.activatedBonusClass === Constants.BONUS_INVISIBLE_MONSTER &&
+			event.activatedBonusClass === BONUS_INVISIBLE_MONSTER &&
 			this.playerKeyIsUser(event.targetPlayerKey)
 		) {
 			this.incrementNumber(ACHIEVEMENT_INVISIBLE_IN_A_LIFETIME);

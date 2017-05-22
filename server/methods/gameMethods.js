@@ -13,8 +13,20 @@ import {onGameFinished} from '/imports/api/games/server/onGameFinished.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
-import {Config} from '/imports/lib/config.js';
-import {Constants} from '/imports/lib/constants.js';
+import {
+	HOST_POINTS_COLUMN,
+	CLIENT_POINTS_COLUMN,
+	LAST_POINT_TAKEN_HOST,
+	LAST_POINT_TAKEN_CLIENT,
+	GAME_MAXIMUM_POINTS
+} from '/imports/api/games/constants.js';
+import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
+import {
+	GAME_STATUS_REGISTRATION,
+	GAME_STATUS_STARTED,
+	GAME_STATUS_FINISHED,
+	GAME_STATUS_TIMEOUT
+} from '/imports/api/games/statusConstants.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 import {EventPublisher} from '/imports/lib/EventPublisher.js';
 
@@ -97,7 +109,7 @@ Meteor.methods({
 			throw new Meteor.Error(404, 'Game not found');
 		}
 
-		if (game.status !== Constants.GAME_STATUS_REGISTRATION) {
+		if (game.status !== GAME_STATUS_REGISTRATION) {
 			throw new Meteor.Error('not-allowed', 'Game already started');
 		}
 
@@ -106,7 +118,7 @@ Meteor.methods({
 			throw new Meteor.Error(404, 'Player not found');
 		}
 
-		if (Constants.PLAYER_LIST_OF_SHAPES.indexOf(shape) === -1) {
+		if (PLAYER_LIST_OF_SHAPES.indexOf(shape) === -1) {
 			throw new Meteor.Error(
 				'not-allowed',
 				'The requested shape is not allowed'
@@ -151,7 +163,7 @@ Meteor.methods({
 			throw new Meteor.Error(404, 'Game not found');
 		}
 
-		if (game.status !== Constants.GAME_STATUS_REGISTRATION) {
+		if (game.status !== GAME_STATUS_REGISTRATION) {
 			throw new Meteor.Error('not-allowed', 'Game already started');
 		}
 
@@ -224,7 +236,7 @@ Meteor.methods({
 		}
 
 		//If game has not started, leaveGame instead
-		if (game.status === Constants.GAME_STATUS_REGISTRATION) {
+		if (game.status === GAME_STATUS_REGISTRATION) {
 			Meteor.call('leaveGame', gameId);
 		} else {
 			player = Players.findOne({userId: user._id, gameId: gameId});
@@ -235,8 +247,8 @@ Meteor.methods({
 
 			Players.update({_id: player._id}, {$set: {hasQuit: getUTCTimeStamp()}});
 
-			if (game.status === Constants.GAME_STATUS_STARTED) {
-				Games.update({_id: game._id}, {$set: {status: Constants.GAME_STATUS_TIMEOUT}});
+			if (game.status === GAME_STATUS_STARTED) {
+				Games.update({_id: game._id}, {$set: {status: GAME_STATUS_TIMEOUT}});
 
 				EventPublisher.publish(new GameTimedOut(game._id));
 			}
@@ -263,8 +275,8 @@ Meteor.methods({
 		Players.update({_id: playerId}, {$set: {lastKeepAlive: getUTCTimeStamp()}});
 	},
 
-	removeTimeoutPlayersAndGames: function() {
-		const games = Games.find({status: {$in: [Constants.GAME_STATUS_STARTED]}});
+	removeTimeoutPlayersAndGames: function(timeoutInterval) {
+		const games = Games.find({status: {$in: [GAME_STATUS_STARTED]}});
 		const gameIds = [];
 
 		games.forEach(function(game) {
@@ -272,7 +284,7 @@ Meteor.methods({
 		});
 
 		if (gameIds.length) {
-			let timedOutPlayers = Players.find({gameId: {$in: gameIds}, lastKeepAlive: {$lt: (getUTCTimeStamp() - Config.keepAliveTimeOutInterval)}});
+			let timedOutPlayers = Players.find({gameId: {$in: gameIds}, lastKeepAlive: {$lt: (getUTCTimeStamp() - timeoutInterval)}});
 			let timedOutPlayersByGameId = {};
 
 			//Gather players ids and player object by ids
@@ -290,7 +302,7 @@ Meteor.methods({
 						Players.update({_id: player._id}, {$set: {hasQuit: player.lastKeepAlive}});
 					}
 
-					Games.update({_id: game._id}, {$set: {status: Constants.GAME_STATUS_TIMEOUT}});
+					Games.update({_id: game._id}, {$set: {status: GAME_STATUS_TIMEOUT}});
 
 					EventPublisher.publish(new GameTimedOut(game._id));
 				}
@@ -328,25 +340,25 @@ Meteor.methods({
 			throw new Meteor.Error(404, 'Game not found');
 		}
 
-		if (game.status !== Constants.GAME_STATUS_STARTED) {
+		if (game.status !== GAME_STATUS_STARTED) {
 			throw new Meteor.Error('not-allowed', 'Only active games can be updated');
 		}
 
-		if ([Constants.HOST_POINTS_COLUMN, Constants.CLIENT_POINTS_COLUMN].indexOf(columnName) === -1) {
+		if ([HOST_POINTS_COLUMN, CLIENT_POINTS_COLUMN].indexOf(columnName) === -1) {
 			throw new Meteor.Error(
 				'not-allowed',
-				'Only ' + Constants.HOST_POINTS_COLUMN + ' and ' + Constants.CLIENT_POINTS_COLUMN + ' are allowed'
+				'Only ' + HOST_POINTS_COLUMN + ' and ' + CLIENT_POINTS_COLUMN + ' are allowed'
 			);
 		}
 
 		data[columnName] = game[columnName] + 1;
 
 		switch (columnName) {
-			case Constants.HOST_POINTS_COLUMN:
-				data['lastPointTaken'] = Constants.LAST_POINT_TAKEN_HOST;
+			case HOST_POINTS_COLUMN:
+				data['lastPointTaken'] = LAST_POINT_TAKEN_HOST;
 				break;
-			case Constants.CLIENT_POINTS_COLUMN:
-				data['lastPointTaken'] = Constants.LAST_POINT_TAKEN_CLIENT;
+			case CLIENT_POINTS_COLUMN:
+				data['lastPointTaken'] = LAST_POINT_TAKEN_CLIENT;
 				break;
 		}
 
@@ -356,8 +368,8 @@ Meteor.methods({
 		data['pointsDuration'] = [].concat(game.pointsDuration).concat([pointDuration]);
 
 		let isGameFinished = false;
-		if (data[columnName] >= Constants.MAXIMUM_POINTS) {
-			data['status'] = Constants.GAME_STATUS_FINISHED;
+		if (data[columnName] >= GAME_MAXIMUM_POINTS) {
+			data['status'] = GAME_STATUS_FINISHED;
 			data['finishedAt'] = getUTCTimeStamp();
 			data['gameDuration'] = data['finishedAt'] - game.startedAt;
 			isGameFinished = true;
@@ -373,11 +385,11 @@ Meteor.methods({
 			let winnerUserId;
 			let loserUserId;
 			switch (columnName) {
-				case Constants.HOST_POINTS_COLUMN:
+				case HOST_POINTS_COLUMN:
 					winnerUserId = game.createdBy;
 					loserUserId = clientPlayer.userId;
 					break;
-				case Constants.CLIENT_POINTS_COLUMN:
+				case CLIENT_POINTS_COLUMN:
 					winnerUserId = clientPlayer.userId;
 					loserUserId = game.createdBy;
 					break;

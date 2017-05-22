@@ -2,7 +2,7 @@ import {Meteor} from 'meteor/meteor';
 import {Games} from '/imports/api/games/games.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import BonusRemoved from '/imports/api/games/events/BonusRemoved.js';
-import {Constants} from '/imports/lib/constants.js';
+import {GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
 import {EventPublisher} from '/imports/lib/EventPublisher.js';
 
 Meteor.methods({
@@ -33,7 +33,7 @@ Meteor.methods({
 			throw new Meteor.Error(404, 'Game not found');
 		}
 
-		if (game.status !== Constants.GAME_STATUS_STARTED) {
+		if (game.status !== GAME_STATUS_STARTED) {
 			throw new Meteor.Error('not-allowed', 'Only active games can have active bonus added to');
 		}
 
