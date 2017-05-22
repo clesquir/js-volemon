@@ -1,4 +1,4 @@
-import {chai} from 'meteor/practicalmeteor:chai';
+import {assert} from 'chai';
 import {sinon} from 'meteor/practicalmeteor:sinon';
 import {resetDatabase} from 'meteor/xolvio:cleaner';
 import {Random} from 'meteor/random';
@@ -15,13 +15,13 @@ describe('ConsecutiveDaysPlayed', function() {
 	const listener = new ConsecutiveDaysPlayed(gameId, userId);
 	const assertConsecutiveDaysPlayedUserAchievementValuesEqual = function(number, lastDatePlayed, consecutiveDays) {
 		const achievement = UserAchievements.findOne();
-		chai.assert.notEqual(undefined, achievement);
+		assert.notEqual(undefined, achievement);
 
-		chai.assert.strictEqual(userId, achievement.userId);
-		chai.assert.strictEqual(ACHIEVEMENT_CONSECUTIVE_DAYS_PLAYED, achievement.achievementId);
-		chai.assert.strictEqual(number, achievement.number);
-		chai.assert.strictEqual(lastDatePlayed, achievement.lastDatePlayed);
-		chai.assert.strictEqual(consecutiveDays, achievement.consecutiveDays);
+		assert.strictEqual(userId, achievement.userId);
+		assert.strictEqual(ACHIEVEMENT_CONSECUTIVE_DAYS_PLAYED, achievement.achievementId);
+		assert.strictEqual(number, achievement.number);
+		assert.strictEqual(lastDatePlayed, achievement.lastDatePlayed);
+		assert.strictEqual(consecutiveDays, achievement.consecutiveDays);
 	};
 	let stub;
 
@@ -43,10 +43,10 @@ describe('ConsecutiveDaysPlayed', function() {
 			return lastDatePlayed;
 		});
 
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 		listener.onGameFinished(new GameFinished(gameId, 2000));
 
-		chai.assert.equal(1, UserAchievements.find().count());
+		assert.equal(1, UserAchievements.find().count());
 		assertConsecutiveDaysPlayedUserAchievementValuesEqual(1, lastDatePlayed, 1);
 	});
 
@@ -54,12 +54,12 @@ describe('ConsecutiveDaysPlayed', function() {
 		Players.insert({gameId: gameId, userId: userId});
 
 		listener.onGameFinished(new GameFinished(Random.id(5), 2000));
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 	});
 
 	it('do not create achievement if user is not in game', function() {
 		listener.onGameFinished(new GameFinished(gameId, 2000));
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 	});
 
 	it('increment achievement if last increment was yesterday', function() {
@@ -69,10 +69,10 @@ describe('ConsecutiveDaysPlayed', function() {
 			return lastDatePlayed;
 		});
 
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 		listener.onGameFinished(new GameFinished(gameId, 2000));
 
-		chai.assert.equal(1, UserAchievements.find().count());
+		assert.equal(1, UserAchievements.find().count());
 		assertConsecutiveDaysPlayedUserAchievementValuesEqual(1, lastDatePlayed, 1);
 
 		lastDatePlayed = Moment.moment([2017, 0, 2]).valueOf();
@@ -89,10 +89,10 @@ describe('ConsecutiveDaysPlayed', function() {
 			return lastDatePlayed;
 		});
 
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 		listener.onGameFinished(new GameFinished(gameId, 2000));
 
-		chai.assert.equal(1, UserAchievements.find().count());
+		assert.equal(1, UserAchievements.find().count());
 		assertConsecutiveDaysPlayedUserAchievementValuesEqual(1, lastDatePlayed, 1);
 
 		listener.onGameFinished(new GameFinished(gameId, 2000));
@@ -107,10 +107,10 @@ describe('ConsecutiveDaysPlayed', function() {
 			return lastDatePlayed;
 		});
 
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 		listener.onGameFinished(new GameFinished(gameId, 2000));
 
-		chai.assert.equal(1, UserAchievements.find().count());
+		assert.equal(1, UserAchievements.find().count());
 		assertConsecutiveDaysPlayedUserAchievementValuesEqual(1, lastDatePlayed, 1);
 
 		lastDatePlayed = Moment.moment([2017, 0, 3]).valueOf();
@@ -127,10 +127,10 @@ describe('ConsecutiveDaysPlayed', function() {
 			return lastDatePlayed;
 		});
 
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 		listener.onGameFinished(new GameFinished(gameId, 2000));
 
-		chai.assert.equal(1, UserAchievements.find().count());
+		assert.equal(1, UserAchievements.find().count());
 		assertConsecutiveDaysPlayedUserAchievementValuesEqual(1, lastDatePlayed, 1);
 
 		lastDatePlayed = Moment.moment([2017, 0, 2]).valueOf();

@@ -1,4 +1,4 @@
-import {chai} from 'meteor/practicalmeteor:chai';
+import {assert} from 'chai';
 import {sinon} from 'meteor/practicalmeteor:sinon';
 import {Random} from 'meteor/random';
 import GameData from '/imports/game/client/GameData.js';
@@ -29,7 +29,7 @@ describe('GameBonus#getBonusSpriteFromIdentifier', function() {
 
 		let bonus = gameBonus.getBonusSpriteFromIdentifier('d');
 
-		chai.assert.isNull(bonus);
+		assert.isNull(bonus);
 	});
 
 	it('returns the matching bonus', function() {
@@ -44,7 +44,7 @@ describe('GameBonus#getBonusSpriteFromIdentifier', function() {
 
 		let bonus = game.getBonusSpriteFromIdentifier('b');
 
-		chai.assert.equal(bBonus, bonus);
+		assert.equal(bBonus, bonus);
 	});
 });
 
@@ -80,9 +80,9 @@ describe('GameBonus#createBonusIfTimeHasElapsed', function() {
 
 		gameBonus.createBonusIfTimeHasElapsed();
 
-		chai.assert.isTrue(createBonusSpy.calledOnce);
-		chai.assert.isTrue(regenerateLastBonusCreatedAndFrequenceTimeSpy.calledOnce);
-		chai.assert.property(gameStreamBundler.bundledStreamsToEmit, 'createBonus');
+		assert.isTrue(createBonusSpy.calledOnce);
+		assert.isTrue(regenerateLastBonusCreatedAndFrequenceTimeSpy.calledOnce);
+		assert.property(gameStreamBundler.bundledStreamsToEmit, 'createBonus');
 	});
 
 	it('does not create bonus if time has not elapsed', function() {
@@ -101,7 +101,7 @@ describe('GameBonus#createBonusIfTimeHasElapsed', function() {
 
 		sinon.assert.notCalled(createBonusSpy);
 		sinon.assert.notCalled(regenerateLastBonusCreatedAndFrequenceTimeSpy);
-		chai.assert.notProperty(gameStreamBundler.bundledStreamsToEmit, 'createBonus');
+		assert.notProperty(gameStreamBundler.bundledStreamsToEmit, 'createBonus');
 	});
 
 	it('does not create bonus if time is too short since last creation depending on bonusMinimumFrequence', function() {
@@ -120,7 +120,7 @@ describe('GameBonus#createBonusIfTimeHasElapsed', function() {
 
 		sinon.assert.notCalled(createBonusSpy);
 		sinon.assert.notCalled(regenerateLastBonusCreatedAndFrequenceTimeSpy);
-		chai.assert.notProperty(gameStreamBundler.bundledStreamsToEmit, 'createBonus');
+		assert.notProperty(gameStreamBundler.bundledStreamsToEmit, 'createBonus');
 	});
 });
 
@@ -154,9 +154,9 @@ describe('GameBonus#removeBonusSprite', function() {
 		sinon.assert.calledOnce(bSpy);
 		sinon.assert.notCalled(cSpy);
 
-		chai.assert.lengthOf(gameBonus.bonuses, 2);
-		chai.assert.equal(gameBonus.bonuses[0], aBonus);
-		chai.assert.equal(gameBonus.bonuses[1], cBonus);
+		assert.lengthOf(gameBonus.bonuses, 2);
+		assert.equal(gameBonus.bonuses[0], aBonus);
+		assert.equal(gameBonus.bonuses[1], cBonus);
 	});
 
 	it ('does not remove anything if nothing matches the bonusIdentifier in bonuses', function() {
@@ -181,10 +181,10 @@ describe('GameBonus#removeBonusSprite', function() {
 		sinon.assert.notCalled(bSpy);
 		sinon.assert.notCalled(cSpy);
 
-		chai.assert.lengthOf(gameBonus.bonuses, 3);
-		chai.assert.equal(gameBonus.bonuses[0], aBonus);
-		chai.assert.equal(gameBonus.bonuses[1], bBonus);
-		chai.assert.equal(gameBonus.bonuses[2], cBonus);
+		assert.lengthOf(gameBonus.bonuses, 3);
+		assert.equal(gameBonus.bonuses[0], aBonus);
+		assert.equal(gameBonus.bonuses[1], bBonus);
+		assert.equal(gameBonus.bonuses[2], cBonus);
 	});
 });
 
@@ -211,7 +211,7 @@ describe('GameBonus#setPlayerGravity', function() {
 
 		gameBonus.setPlayerGravity('player1', gravity);
 
-		chai.assert.equal(gravity, game.player1.body.data.gravityScale);
+		assert.equal(gravity, game.player1.body.data.gravityScale);
 	});
 
 	it('does not set gravity if player is frozen', function() {
@@ -230,7 +230,7 @@ describe('GameBonus#setPlayerGravity', function() {
 
 		gameBonus.setPlayerGravity('player1', gravity);
 
-		chai.assert.equal(initialGravity, game.player1.body.data.gravityScale);
+		assert.equal(initialGravity, game.player1.body.data.gravityScale);
 	});
 });
 
@@ -259,7 +259,7 @@ describe('GameBonus#resetPlayerGravity', function() {
 
 		gameBonus.resetPlayerGravity('player1');
 
-		chai.assert.equal(initialGravity, game.player1.body.data.gravityScale);
+		assert.equal(initialGravity, game.player1.body.data.gravityScale);
 	});
 
 	it('does not reset gravity if player is frozen', function() {
@@ -279,7 +279,7 @@ describe('GameBonus#resetPlayerGravity', function() {
 
 		gameBonus.resetPlayerGravity('player1');
 
-		chai.assert.equal(actualGravity, game.player1.body.data.gravityScale);
+		assert.equal(actualGravity, game.player1.body.data.gravityScale);
 	});
 });
 
@@ -310,8 +310,8 @@ describe('GameBonus#unFreezePlayer', function() {
 
 		gameBonus.unFreezePlayer('player1');
 
-		chai.assert.equal(initialMass, game.player1.body.mass);
-		chai.assert.equal(initialGravity, game.player1.body.data.gravityScale);
+		assert.equal(initialMass, game.player1.body.mass);
+		assert.equal(initialGravity, game.player1.body.data.gravityScale);
 	});
 
 	it('restores initial player mass and restores active player gravity if set', function() {
@@ -334,7 +334,7 @@ describe('GameBonus#unFreezePlayer', function() {
 
 		gameBonus.unFreezePlayer('player1');
 
-		chai.assert.equal(initialMass, game.player1.body.mass);
-		chai.assert.equal(activeGravity, game.player1.body.data.gravityScale);
+		assert.equal(initialMass, game.player1.body.mass);
+		assert.equal(activeGravity, game.player1.body.data.gravityScale);
 	});
 });

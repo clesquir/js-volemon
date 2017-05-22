@@ -1,4 +1,4 @@
-import {chai} from 'meteor/practicalmeteor:chai';
+import {assert} from 'chai';
 import {sinon} from 'meteor/practicalmeteor:sinon';
 import {Random} from 'meteor/random';
 import Game from '/imports/game/client/Game.js';
@@ -17,7 +17,7 @@ describe('Game#isPlayerJumpingForward', function() {
 	it('returns false if vertical speed is 0', function() {
 		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
 
-		chai.assert.isFalse(game.isPlayerJumpingForward(
+		assert.isFalse(game.isPlayerJumpingForward(
 			{
 				body: {
 					x: 200,
@@ -35,7 +35,7 @@ describe('Game#isPlayerJumpingForward', function() {
 	it('returns false if vertical speed is positive', function() {
 		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
 
-		chai.assert.isFalse(game.isPlayerJumpingForward(
+		assert.isFalse(game.isPlayerJumpingForward(
 			{
 				body: {
 					x: 200,
@@ -55,7 +55,7 @@ describe('Game#isPlayerJumpingForward', function() {
 
 		sinon.stub(game, 'isPlayerAtGroundLevel', function() {return true;});
 
-		chai.assert.isFalse(game.isPlayerJumpingForward(
+		assert.isFalse(game.isPlayerJumpingForward(
 			{
 				body: {
 					x: 200,
@@ -73,7 +73,7 @@ describe('Game#isPlayerJumpingForward', function() {
 	it('returns false if player1 vertical speed is negative but horizontal speed is 0', function() {
 		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
 
-		chai.assert.isFalse(game.isPlayerJumpingForward(
+		assert.isFalse(game.isPlayerJumpingForward(
 			{
 				body: {
 					x: 200,
@@ -91,7 +91,7 @@ describe('Game#isPlayerJumpingForward', function() {
 	it('returns false if player1 vertical speed is negative but horizontal speed is negative', function() {
 		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
 
-		chai.assert.isFalse(game.isPlayerJumpingForward(
+		assert.isFalse(game.isPlayerJumpingForward(
 			{
 				body: {
 					x: 200,
@@ -109,7 +109,7 @@ describe('Game#isPlayerJumpingForward', function() {
 	it('returns true if player1 vertical speed is negative but horizontal speed is positive', function() {
 		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
 
-		chai.assert.isTrue(game.isPlayerJumpingForward(
+		assert.isTrue(game.isPlayerJumpingForward(
 			{
 				body: {
 					x: 200,
@@ -127,7 +127,7 @@ describe('Game#isPlayerJumpingForward', function() {
 	it('returns false if player2 vertical speed is negative but horizontal speed is 0', function() {
 		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
 
-		chai.assert.isFalse(game.isPlayerJumpingForward(
+		assert.isFalse(game.isPlayerJumpingForward(
 			{
 				body: {
 					x: 200,
@@ -145,7 +145,7 @@ describe('Game#isPlayerJumpingForward', function() {
 	it('returns false if player2 vertical speed is negative but horizontal speed is positive', function() {
 		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
 
-		chai.assert.isFalse(game.isPlayerJumpingForward(
+		assert.isFalse(game.isPlayerJumpingForward(
 			{
 				body: {
 					x: 200,
@@ -163,7 +163,7 @@ describe('Game#isPlayerJumpingForward', function() {
 	it('returns true if player2 vertical speed is negative and horizontal speed is negative', function() {
 		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
 
-		chai.assert.isTrue(game.isPlayerJumpingForward(
+		assert.isTrue(game.isPlayerJumpingForward(
 			{
 				body: {
 					x: 200,
@@ -188,7 +188,7 @@ describe('Game#isBallInFrontOfPlayer', function() {
 	it('returns false if player1 x position is equal to ball x position', function() {
 		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
 
-		chai.assert.isFalse(game.isBallInFrontOfPlayer(
+		assert.isFalse(game.isBallInFrontOfPlayer(
 			{
 				body: {
 					x: 200,
@@ -208,7 +208,7 @@ describe('Game#isBallInFrontOfPlayer', function() {
 	it('returns false if player1 x position is greater than to ball x position', function() {
 		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
 
-		chai.assert.isFalse(game.isBallInFrontOfPlayer(
+		assert.isFalse(game.isBallInFrontOfPlayer(
 			{
 				body: {
 					x: 198,
@@ -228,7 +228,7 @@ describe('Game#isBallInFrontOfPlayer', function() {
 	it('returns true if player1 x position is lower than to ball x position', function() {
 		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
 
-		chai.assert.isTrue(game.isBallInFrontOfPlayer(
+		assert.isTrue(game.isBallInFrontOfPlayer(
 			{
 				body: {
 					x: 202,
@@ -248,7 +248,7 @@ describe('Game#isBallInFrontOfPlayer', function() {
 	it('returns false if player2 x position is equal to ball x position', function() {
 		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
 
-		chai.assert.isFalse(game.isBallInFrontOfPlayer(
+		assert.isFalse(game.isBallInFrontOfPlayer(
 			{
 				body: {
 					x: 200,
@@ -268,7 +268,7 @@ describe('Game#isBallInFrontOfPlayer', function() {
 	it('returns false if player2 x position is lower than to ball x position', function() {
 		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
 
-		chai.assert.isFalse(game.isBallInFrontOfPlayer(
+		assert.isFalse(game.isBallInFrontOfPlayer(
 			{
 				body: {
 					x: 202,
@@ -288,7 +288,7 @@ describe('Game#isBallInFrontOfPlayer', function() {
 	it('returns true if player2 x position is greater than to ball x position', function() {
 		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
 
-		chai.assert.isTrue(game.isBallInFrontOfPlayer(
+		assert.isTrue(game.isBallInFrontOfPlayer(
 			{
 				body: {
 					x: 198,
@@ -315,7 +315,7 @@ describe('Game#isBallBelowPlayer', function() {
 	it('returns false if ball y position is lower than player y position + half its height', function() {
 		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
 
-		chai.assert.isFalse(game.isBallBelowPlayer(
+		assert.isFalse(game.isBallBelowPlayer(
 			{
 				body: {
 					x: 200,
@@ -334,7 +334,7 @@ describe('Game#isBallBelowPlayer', function() {
 	it('returns false if ball y position is equal than player y position + half its height', function() {
 		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
 
-		chai.assert.isFalse(game.isBallBelowPlayer(
+		assert.isFalse(game.isBallBelowPlayer(
 			{
 				body: {
 					x: 200,
@@ -353,7 +353,7 @@ describe('Game#isBallBelowPlayer', function() {
 	it('returns true if ball y position is greater than player y position + half its height', function() {
 		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
 
-		chai.assert.isTrue(game.isBallBelowPlayer(
+		assert.isTrue(game.isBallBelowPlayer(
 			{
 				body: {
 					x: 200,
@@ -382,7 +382,7 @@ describe('Game#isPlayerDoingDropShot', function() {
 		sinon.stub(game, 'isBallInFrontOfPlayer', function() {return true;});
 		sinon.stub(game, 'isPlayerAtGroundLevel', function() {return false;});
 
-		chai.assert.isTrue(game.isPlayerDoingDropShot(
+		assert.isTrue(game.isPlayerDoingDropShot(
 			{},
 			{doingDropShot: true},
 			'player1'
@@ -395,7 +395,7 @@ describe('Game#isPlayerDoingDropShot', function() {
 		sinon.stub(game, 'isBallInFrontOfPlayer', function() {return true;});
 		sinon.stub(game, 'isPlayerAtGroundLevel', function() {return false;});
 
-		chai.assert.isFalse(game.isPlayerDoingDropShot(
+		assert.isFalse(game.isPlayerDoingDropShot(
 			{},
 			{doingDropShot: false},
 			'player1'
@@ -408,7 +408,7 @@ describe('Game#isPlayerDoingDropShot', function() {
 		sinon.stub(game, 'isBallInFrontOfPlayer', function() {return false;});
 		sinon.stub(game, 'isPlayerAtGroundLevel', function() {return false;});
 
-		chai.assert.isFalse(game.isPlayerDoingDropShot(
+		assert.isFalse(game.isPlayerDoingDropShot(
 			{},
 			{doingDropShot: true},
 			'player1'
@@ -421,7 +421,7 @@ describe('Game#isPlayerDoingDropShot', function() {
 		sinon.stub(game, 'isBallInFrontOfPlayer', function() {return true;});
 		sinon.stub(game, 'isPlayerAtGroundLevel', function() {return true;});
 
-		chai.assert.isFalse(game.isPlayerDoingDropShot(
+		assert.isFalse(game.isPlayerDoingDropShot(
 			{},
 			{doingDropShot: true},
 			'player1'
@@ -451,8 +451,8 @@ describe('Game#dropShotBallOnPlayerHit', function() {
 
 		game.dropShotBallOnPlayerHit(ball);
 
-		chai.assert.equal(300, ball.body.velocity.x);
-		chai.assert.equal(200, ball.body.velocity.y);
+		assert.equal(300, ball.body.velocity.x);
+		assert.equal(200, ball.body.velocity.y);
 	});
 });
 
@@ -479,8 +479,8 @@ describe('Game#reboundBallOnPlayerHit', function() {
 
 		game.reboundBallOnPlayerHit(ball);
 
-		chai.assert.equal(horizontalVelocity, ball.body.velocity.x);
-		chai.assert.equal(BALL_VERTICAL_SPEED_ON_PLAYER_HIT, ball.body.velocity.y);
+		assert.equal(horizontalVelocity, ball.body.velocity.x);
+		assert.equal(BALL_VERTICAL_SPEED_ON_PLAYER_HIT, ball.body.velocity.y);
 	});
 });
 
@@ -502,7 +502,7 @@ describe('Game#onBallHitPlayer', function() {
 
 		game.onBallHitPlayer({}, {}, 'player1');
 
-		chai.assert.isTrue(reboundBallOnPlayerHit.called);
+		assert.isTrue(reboundBallOnPlayerHit.called);
 	});
 
 	it('reboundBallOnPlayerHit is not called if player is doing drop shot and ball is in front of the player', function() {
@@ -520,8 +520,8 @@ describe('Game#onBallHitPlayer', function() {
 
 		game.onBallHitPlayer({}, {}, 'player1');
 
-		chai.assert.isFalse(reboundBallOnPlayerHit.called);
-		chai.assert.isTrue(dropShotBallOnPlayerHit.called);
+		assert.isFalse(reboundBallOnPlayerHit.called);
+		assert.isTrue(dropShotBallOnPlayerHit.called);
 	});
 
 	it('reboundBallOnPlayerHit is not called if the player is not jumping forward and the ball is below the player', function() {
@@ -537,7 +537,7 @@ describe('Game#onBallHitPlayer', function() {
 
 		game.onBallHitPlayer({}, {}, 'player1');
 
-		chai.assert.isFalse(reboundBallOnPlayerHit.called);
+		assert.isFalse(reboundBallOnPlayerHit.called);
 	});
 
 	it('reboundBallOnPlayerHit is called if the ball is not in front of the player', function() {
@@ -554,7 +554,7 @@ describe('Game#onBallHitPlayer', function() {
 
 		game.onBallHitPlayer({}, {}, 'player1');
 
-		chai.assert.isTrue(reboundBallOnPlayerHit.called);
+		assert.isTrue(reboundBallOnPlayerHit.called);
 	});
 
 	it('smashBallOnPlayerHit is called', function() {
@@ -570,7 +570,7 @@ describe('Game#onBallHitPlayer', function() {
 
 		game.onBallHitPlayer({}, {}, 'player1');
 
-		chai.assert.isTrue(smashBallOnPlayerHit.called);
+		assert.isTrue(smashBallOnPlayerHit.called);
 	});
 
 	it('smashBallOnPlayerHit is not called if player is doing a drop shot', function() {
@@ -587,8 +587,8 @@ describe('Game#onBallHitPlayer', function() {
 
 		game.onBallHitPlayer({}, {}, 'player1');
 
-		chai.assert.isFalse(smashBallOnPlayerHit.called);
-		chai.assert.isTrue(dropShotBallOnPlayerHit.called);
+		assert.isFalse(smashBallOnPlayerHit.called);
+		assert.isTrue(dropShotBallOnPlayerHit.called);
 	});
 });
 
@@ -617,8 +617,8 @@ describe('Game#smashBallOnPlayerHit', function() {
 			'player1'
 		);
 
-		chai.assert.equal(horizontalSpeed * 2, ball.body.velocity.x);
-		chai.assert.equal(verticalSpeed / 4, ball.body.velocity.y);
+		assert.equal(horizontalSpeed * 2, ball.body.velocity.x);
+		assert.equal(verticalSpeed / 4, ball.body.velocity.y);
 	});
 
 	it('ball is smashed towards ground if its vertical speed was negative', function() {
@@ -640,8 +640,8 @@ describe('Game#smashBallOnPlayerHit', function() {
 			'player1'
 		);
 
-		chai.assert.equal(horizontalSpeed * 2, ball.body.velocity.x);
-		chai.assert.equal(-verticalSpeed / 4, ball.body.velocity.y);
+		assert.equal(horizontalSpeed * 2, ball.body.velocity.x);
+		assert.equal(-verticalSpeed / 4, ball.body.velocity.y);
 	});
 
 	it('for player1, ball direction is reversed if it is smashed', function() {
@@ -663,8 +663,8 @@ describe('Game#smashBallOnPlayerHit', function() {
 			'player1'
 		);
 
-		chai.assert.equal(-horizontalSpeed * 2, ball.body.velocity.x);
-		chai.assert.equal(-verticalSpeed / 4, ball.body.velocity.y);
+		assert.equal(-horizontalSpeed * 2, ball.body.velocity.x);
+		assert.equal(-verticalSpeed / 4, ball.body.velocity.y);
 	});
 
 	it('for player2, ball direction is reversed if it is smashed', function() {
@@ -686,8 +686,8 @@ describe('Game#smashBallOnPlayerHit', function() {
 			'player2'
 		);
 
-		chai.assert.equal(-horizontalSpeed * 2, ball.body.velocity.x);
-		chai.assert.equal(-verticalSpeed / 4, ball.body.velocity.y);
+		assert.equal(-horizontalSpeed * 2, ball.body.velocity.x);
+		assert.equal(-verticalSpeed / 4, ball.body.velocity.y);
 	});
 });
 
@@ -705,8 +705,8 @@ describe('Game#inputs', function() {
 		});
 		let sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
 
-		chai.assert.isFalse(game.inputs());
-		chai.assert.isFalse(sendPlayerPositionStub.called);
+		assert.isFalse(game.inputs());
+		assert.isFalse(sendPlayerPositionStub.called);
 	});
 
 	it('sets engine Horizontal and Vertical speed to 0 if player is frozen and sends player position', function() {
@@ -728,10 +728,10 @@ describe('Game#inputs', function() {
 			}
 		};
 
-		chai.assert.isTrue(game.inputs());
-		chai.assert.equal(0, horizontalSpeedValue);
-		chai.assert.equal(0, verticalSpeedValue);
-		chai.assert.isTrue(sendPlayerPositionStub.called);
+		assert.isTrue(game.inputs());
+		assert.equal(0, horizontalSpeedValue);
+		assert.equal(0, verticalSpeedValue);
+		assert.isTrue(sendPlayerPositionStub.called);
 	});
 
 	it('sets engine Horizontal speed if left is pressed and sends player position', function() {
@@ -765,10 +765,10 @@ describe('Game#inputs', function() {
 			}
 		};
 
-		chai.assert.isTrue(game.inputs());
-		chai.assert.equal(-moveModifier * velocity, horizontalSpeedValue);
-		chai.assert.equal(0, verticalSpeedValue);
-		chai.assert.isTrue(sendPlayerPositionStub.called);
+		assert.isTrue(game.inputs());
+		assert.equal(-moveModifier * velocity, horizontalSpeedValue);
+		assert.equal(0, verticalSpeedValue);
+		assert.isTrue(sendPlayerPositionStub.called);
 	});
 
 	it('sets engine Horizontal speed if right is pressed and sends player position', function() {
@@ -802,10 +802,10 @@ describe('Game#inputs', function() {
 			}
 		};
 
-		chai.assert.isTrue(game.inputs());
-		chai.assert.equal(moveModifier * velocity, horizontalSpeedValue);
-		chai.assert.equal(0, verticalSpeedValue);
-		chai.assert.isTrue(sendPlayerPositionStub.called);
+		assert.isTrue(game.inputs());
+		assert.equal(moveModifier * velocity, horizontalSpeedValue);
+		assert.equal(0, verticalSpeedValue);
+		assert.isTrue(sendPlayerPositionStub.called);
 	});
 
 	it('sets engine Horizontal speed to 0 if neither left or right is pressed and sends player position', function() {
@@ -839,10 +839,10 @@ describe('Game#inputs', function() {
 			}
 		};
 
-		chai.assert.isTrue(game.inputs());
-		chai.assert.equal(0, horizontalSpeedValue);
-		chai.assert.equal(0, verticalSpeedValue);
-		chai.assert.isTrue(sendPlayerPositionStub.called);
+		assert.isTrue(game.inputs());
+		assert.equal(0, horizontalSpeedValue);
+		assert.equal(0, verticalSpeedValue);
+		assert.isTrue(sendPlayerPositionStub.called);
 	});
 
 	it('sets engine Vertical speed if up is pressed and sends player position', function() {
@@ -877,10 +877,10 @@ describe('Game#inputs', function() {
 			}
 		};
 
-		chai.assert.isTrue(game.inputs());
-		chai.assert.equal(0, horizontalSpeedValue);
-		chai.assert.equal(-velocity, verticalSpeedValue);
-		chai.assert.isTrue(sendPlayerPositionStub.called);
+		assert.isTrue(game.inputs());
+		assert.equal(0, horizontalSpeedValue);
+		assert.equal(-velocity, verticalSpeedValue);
+		assert.isTrue(sendPlayerPositionStub.called);
 	});
 
 	it('sets engine Vertical speed to 0 if up is not pressed and sends player position', function() {
@@ -914,10 +914,10 @@ describe('Game#inputs', function() {
 			}
 		};
 
-		chai.assert.isTrue(game.inputs());
-		chai.assert.equal(0, horizontalSpeedValue);
-		chai.assert.equal(0, verticalSpeedValue);
-		chai.assert.isTrue(sendPlayerPositionStub.called);
+		assert.isTrue(game.inputs());
+		assert.equal(0, horizontalSpeedValue);
+		assert.equal(0, verticalSpeedValue);
+		assert.isTrue(sendPlayerPositionStub.called);
 	});
 
 	it('does not increase engine Vertical speed if player is not at ground level and sends player position', function() {
@@ -950,9 +950,9 @@ describe('Game#inputs', function() {
 		};
 		let setVerticalSpeedStub = sinon.stub(game.engine, 'setVerticalSpeed');
 
-		chai.assert.isTrue(game.inputs());
-		chai.assert.equal(0, horizontalSpeedValue);
-		chai.assert.isFalse(setVerticalSpeedStub.called);
-		chai.assert.isTrue(sendPlayerPositionStub.called);
+		assert.isTrue(game.inputs());
+		assert.equal(0, horizontalSpeedValue);
+		assert.isFalse(setVerticalSpeedStub.called);
+		assert.isTrue(sendPlayerPositionStub.called);
 	});
 });

@@ -1,4 +1,4 @@
-import {chai} from 'meteor/practicalmeteor:chai';
+import {assert} from 'chai';
 import {sinon} from 'meteor/practicalmeteor:sinon';
 import {resetDatabase} from 'meteor/xolvio:cleaner';
 import {Random} from 'meteor/random';
@@ -16,11 +16,11 @@ describe('InvisibleInAGame', function() {
 	const userId = Random.id(5);
 	const assertInvisibleInAPointUserAchievementNumberEquals = function(number) {
 		const achievement = UserAchievements.findOne();
-		chai.assert.notEqual(undefined, achievement);
+		assert.notEqual(undefined, achievement);
 
-		chai.assert.strictEqual(userId, achievement.userId);
-		chai.assert.strictEqual(ACHIEVEMENT_INVISIBLE_IN_A_POINT, achievement.achievementId);
-		chai.assert.strictEqual(number, achievement.number);
+		assert.strictEqual(userId, achievement.userId);
+		assert.strictEqual(ACHIEVEMENT_INVISIBLE_IN_A_POINT, achievement.achievementId);
+		assert.strictEqual(number, achievement.number);
 	};
 
 	beforeEach(function() {
@@ -32,10 +32,10 @@ describe('InvisibleInAGame', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		const listener = new InvisibleInAPoint(gameId, userId);
 
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 		listener.onBonusCaught(new BonusCaught(gameId, BONUS_INVISIBLE_MONSTER, 'player1', 'a', 'player1'));
 
-		chai.assert.equal(1, UserAchievements.find().count());
+		assert.equal(1, UserAchievements.find().count());
 		assertInvisibleInAPointUserAchievementNumberEquals(1);
 	});
 
@@ -44,10 +44,10 @@ describe('InvisibleInAGame', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		const listener = new InvisibleInAPoint(gameId, userId);
 
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 		listener.onBonusCaught(new BonusCaught(gameId, BONUS_INVISIBLE_MONSTER, 'player1', BONUS_INVISIBLE_OPPONENT_MONSTER, 'player2'));
 
-		chai.assert.equal(1, UserAchievements.find().count());
+		assert.equal(1, UserAchievements.find().count());
 		assertInvisibleInAPointUserAchievementNumberEquals(1);
 	});
 
@@ -56,9 +56,9 @@ describe('InvisibleInAGame', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		const listener = new InvisibleInAPoint(gameId, userId);
 
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 		listener.onBonusCaught(new BonusCaught(Random.id(5), BONUS_INVISIBLE_MONSTER, 'player1', 'a', 'player1'));
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 	});
 
 	it('do not create achievement if not created if activated bonus is not invisible on bonus caught', function() {
@@ -66,9 +66,9 @@ describe('InvisibleInAGame', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		const listener = new InvisibleInAPoint(gameId, userId);
 
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1'));
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 	});
 
 	it('do not create achievement if not created if current user is not player key on invisible bonus caught', function() {
@@ -76,9 +76,9 @@ describe('InvisibleInAGame', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		const listener = new InvisibleInAPoint(gameId, userId);
 
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 		listener.onBonusCaught(new BonusCaught(gameId, BONUS_INVISIBLE_MONSTER, 'player2', 'a', 'player2'));
-		chai.assert.equal(0, UserAchievements.find().count());
+		assert.equal(0, UserAchievements.find().count());
 	});
 
 	it('update achievement if higher on invisible bonus caught', function() {

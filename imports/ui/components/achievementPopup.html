@@ -2,10 +2,10 @@
 	<div class="achievement-popup {{#if visible}}achievement-popup-visible{{/if}}" data-action="close-achievement-popup">
 		<div class="achievement-popup-content">
 			<div class="achievement-item">
-				<div class="achievement-star level-completed">
+				<div class="achievement-star achievement-star-level-{{achievementLevel}} level-completed">
 					<i class="fa fa-star-o" aria-hidden="true"></i>
 				</div>
-				<div class="achievement-level-info">{{achievementLevel}}</div>
+				<div class="achievement-level-info">{{achievementLevelNumber}}</div>
 			</div>
 			<div class="achievement-description">{{achievementText}}</div>
 		</div>

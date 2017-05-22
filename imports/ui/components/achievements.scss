@@ -1,10 +1,28 @@
-$gold-color: darken(#ede175, 5%);
+$bronze-color: #dcb367;
+$silver-color: #d8d8d8;
+$gold-color: #eadc5e;
 
-@keyframes gold-glowing {
-	from { background: lighten($gold-color, 5%); box-shadow: 0 0 30px 2px lighten($gold-color, 7.5%); }
-	50% { background: $gold-color; box-shadow: 0 0 15px lighten($gold-color, 15%); }
-	to { background: lighten($gold-color, 5%); box-shadow: 0 0 30px 2px lighten($gold-color, 7.5%); }
+@mixin star-background($color, $color-opacity) {
+	background: linear-gradient(
+		45deg,
+		rgba($color, $color-opacity) 0%,
+		rgba($color, $color-opacity) 35%,
+		rgba(lighten($color, 20%), $color-opacity) 65%,
+		rgba(lighten($color, 5%), $color-opacity) 96%
+	);
 }
+
+@mixin star-glowing-animation($animation-name, $color) {
+	@keyframes #{$animation-name} {
+		from { box-shadow: 0 0 30px 2px lighten($color, 7.5%), inset 0 0 30px 2px lighten($color, 7.5%); }
+		50% { box-shadow: 0 0 15px rgba(lighten($color, 15%), 0.75), inset 0 0 15px lighten($color, 15%); }
+		to { box-shadow: 0 0 30px 2px lighten($color, 7.5%), inset 0 0 30px 2px lighten($color, 7.5%); }
+	}
+}
+
+@include star-glowing-animation(star-bronze-glowing, $bronze-color);
+@include star-glowing-animation(star-silver-glowing, $silver-color);
+@include star-glowing-animation(star-gold-glowing, $gold-color);
 
 .achievement-item {
 	margin: 0 10px 0 0;
@@ -23,6 +41,18 @@ $gold-color: darken(#ede175, 5%);
 	border-radius: 35px;
 	padding: 3px;
 
+	&.achievement-star-level-1 {
+		@include star-background($bronze-color, 0.2);
+	}
+
+	&.achievement-star-level-2 {
+		@include star-background($silver-color, 0.2);
+	}
+
+	&.achievement-star-level-3 {
+		@include star-background($gold-color, 0.2);
+	}
+
 	i.fa {
 		border: 2px solid $background-color-darker;
 		border-radius: 35px;
@@ -30,10 +60,23 @@ $gold-color: darken(#ede175, 5%);
 	}
 
 	&.level-completed {
-		background: $gold-color;
-		animation-name: gold-glowing;
 		animation-duration: 2s;
 		animation-iteration-count: infinite;
+
+		&.achievement-star-level-1 {
+			@include star-background($bronze-color, 1);
+			animation-name: star-bronze-glowing;
+		}
+
+		&.achievement-star-level-2 {
+			@include star-background($silver-color, 1);
+			animation-name: star-silver-glowing;
+		}
+
+		&.achievement-star-level-3 {
+			@include star-background($gold-color, 1);
+			animation-name: star-gold-glowing;
+		}
 	}
 
 	@include breakpoint(mobile) {

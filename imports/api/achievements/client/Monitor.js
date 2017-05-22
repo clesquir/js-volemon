@@ -56,14 +56,15 @@ export default class Monitor {
 
 	onUserAchievementNumberChange(achievementId, newNumber, oldNumber) {
 		const achievement = this.achievementById(achievementId);
-		const levelNumberReached = this.levelNumberReached(achievement, newNumber, oldNumber);
-		if (levelNumberReached !== false) {
+		const levelReached = this.levelReached(achievement, newNumber, oldNumber);
+		if (levelReached !== false) {
 			Meteor.clearTimeout(this.removeAchievementTimeout);
 
 			Session.set('achievement-reached-visible', true);
 			Session.set('achievement-reached', {
 				type: achievement.type,
-				level: levelNumberReached,
+				level: levelReached.level,
+				levelNumber: levelReached.number,
 				name: achievement.name,
 				number: newNumber
 			});
@@ -74,17 +75,17 @@ export default class Monitor {
 		}
 	}
 
-	levelNumberReached(achievement, newNumber, oldNumber) {
-		let levelNumber = false;
+	levelReached(achievement, newNumber, oldNumber) {
+		let levelReached = false;
 
 		if (achievement) {
 			for (let level of achievement.levels) {
 				if (oldNumber < level.number && newNumber >= level.number) {
-					levelNumber = level.number;
+					levelReached = level;
 				}
 			}
 		}
 
-		return levelNumber;
+		return levelReached;
 	}
 }
