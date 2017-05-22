@@ -11,8 +11,8 @@ import {
 import {EloScores} from '/imports/api/games/eloscores.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
+import {GAME_STATUS_STARTED, GAME_STATUS_FINISHED} from '/imports/api/games/statusConstants.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
-import {Constants} from '/imports/lib/constants.js';
 
 describe('onGameFinished', function() {
 	it('throws 404 if game does not exist', function() {
@@ -23,7 +23,7 @@ describe('onGameFinished', function() {
 
 	it('throws not-allowed if game status is not finished', function() {
 		const gameId = Random.id(5);
-		Games.insert({_id: gameId, status: Constants.GAME_STATUS_STARTED});
+		Games.insert({_id: gameId, status: GAME_STATUS_STARTED});
 
 		chai.expect(() => {
 			onGameFinished(gameId);
@@ -56,7 +56,7 @@ describe('onGameFinished', function() {
 			eloRatingLastChange: null
 		});
 		Players.insert({gameId: gameId, userId: clientUserId});
-		Games.insert({_id: gameId, status: Constants.GAME_STATUS_FINISHED});
+		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED});
 
 		updateEloScoresOnGameFinished(Games.findOne({_id: gameId}), Profiles.findOne({_id: hostProfileId}), Profiles.findOne({_id: clientProfileId}));
 
@@ -101,7 +101,7 @@ describe('onGameFinished', function() {
 			numberOfLost: 0
 		});
 		Players.insert({gameId: gameId, userId: clientUserId});
-		Games.insert({_id: gameId, status: Constants.GAME_STATUS_FINISHED});
+		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED});
 
 		updateProfilesOnGameFinished(Games.findOne({_id: gameId}), Profiles.findOne({_id: hostProfileId}), Profiles.findOne({_id: clientProfileId}));
 
@@ -174,7 +174,7 @@ describe('onGameFinished', function() {
 		 */
 		let gameId = Random.id(5);
 		Players.insert({gameId: gameId, userId: clientUserId});
-		Games.insert({_id: gameId, status: Constants.GAME_STATUS_FINISHED, hostPoints: 5, clientPoints: 1});
+		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED, hostPoints: 5, clientPoints: 1});
 
 		updateProfilesOnGameFinished(Games.findOne({_id: gameId}), Profiles.findOne({_id: hostProfileId}), Profiles.findOne({_id: clientProfileId}));
 
@@ -193,7 +193,7 @@ describe('onGameFinished', function() {
 		 */
 		gameId = Random.id(5);
 		Players.insert({gameId: gameId, userId: clientUserId});
-		Games.insert({_id: gameId, status: Constants.GAME_STATUS_FINISHED, hostPoints: 1, clientPoints: 5});
+		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED, hostPoints: 1, clientPoints: 5});
 
 		updateProfilesOnGameFinished(Games.findOne({_id: gameId}), Profiles.findOne({_id: clientProfileId}), Profiles.findOne({_id: hostProfileId}));
 
@@ -212,7 +212,7 @@ describe('onGameFinished', function() {
 		 */
 		gameId = Random.id(5);
 		Players.insert({gameId: gameId, userId: clientUserId});
-		Games.insert({_id: gameId, status: Constants.GAME_STATUS_FINISHED, hostPoints: 5, clientPoints: 0});
+		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED, hostPoints: 5, clientPoints: 0});
 
 		updateProfilesOnGameFinished(Games.findOne({_id: gameId}), Profiles.findOne({_id: hostProfileId}), Profiles.findOne({_id: clientProfileId}));
 
@@ -231,7 +231,7 @@ describe('onGameFinished', function() {
 		 */
 		gameId = Random.id(5);
 		Players.insert({gameId: gameId, userId: clientUserId});
-		Games.insert({_id: gameId, status: Constants.GAME_STATUS_FINISHED, hostPoints: 0, clientPoints: 5});
+		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED, hostPoints: 0, clientPoints: 5});
 
 		updateProfilesOnGameFinished(Games.findOne({_id: gameId}), Profiles.findOne({_id: clientProfileId}), Profiles.findOne({_id: hostProfileId}));
 

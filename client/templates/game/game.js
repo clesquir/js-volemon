@@ -1,6 +1,9 @@
 import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
 import {Session} from 'meteor/session';
+import {POSSIBLE_NO_PLAYERS} from '/imports/api/games/constants.js';
+import {Games} from '/imports/api/games/games.js';
+import {Players} from '/imports/api/games/players.js';
 import {
 	isUserHost,
 	isGamePlayer,
@@ -9,10 +12,7 @@ import {
 	isGameStatusOnGoing,
 	isGameStatusTimeout,
 	getWinnerName
-} from '/imports/game/utils.js';
-import {Games} from '/imports/api/games/games.js';
-import {Players} from '/imports/api/games/players.js';
-import {Config} from '/imports/lib/config.js';
+} from '/imports/api/games/utils.js';
 import {
 	playerAcceptedRematch,
 	playerDeclinedRematch,
@@ -108,7 +108,7 @@ Template.game.helpers({
 		const player = Players.findOne({gameId: Session.get('game'), userId: Meteor.userId()});
 		const players = Players.find({gameId: Session.get('game')});
 
-		return (!player && Config.possibleNoPlayers.indexOf(players.count() + 1) !== -1);
+		return (!player && POSSIBLE_NO_PLAYERS.indexOf(players.count() + 1) !== -1);
 	},
 
 	/**
@@ -119,7 +119,7 @@ Template.game.helpers({
 		const players = Players.find({gameId: Session.get('game')});
 
 		return (
-			Config.possibleNoPlayers.indexOf(players.count()) !== -1
+			POSSIBLE_NO_PLAYERS.indexOf(players.count()) !== -1
 		);
 	},
 

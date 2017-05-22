@@ -1,6 +1,6 @@
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import {Constants} from '/imports/lib/constants.js';
+import {GAME_STATUS_FINISHED} from '/imports/api/games/statusConstants.js';
 
 export const longestGame = function(userId) {
 	const players = Players.find({userId: userId});
@@ -11,7 +11,7 @@ export const longestGame = function(userId) {
 	});
 
 	const games = Games.find(
-		{_id: {$in: gamesIds}, status: Constants.GAME_STATUS_FINISHED, gameDuration: {$exists: true}},
+		{_id: {$in: gamesIds}, status: GAME_STATUS_FINISHED, gameDuration: {$exists: true}},
 		{sort: [['gameDuration', 'desc']], limit: 1}
 	);
 
@@ -38,7 +38,7 @@ export const longestPoint = function(userId) {
 		gamesIds.push(player.gameId);
 	});
 
-	const games = Games.find({_id: {$in: gamesIds}, status: Constants.GAME_STATUS_FINISHED, pointsDuration: {$exists: true}});
+	const games = Games.find({_id: {$in: gamesIds}, status: GAME_STATUS_FINISHED, pointsDuration: {$exists: true}});
 
 	let data = {};
 	games.forEach((game) => {

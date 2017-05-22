@@ -1,5 +1,5 @@
+import {PLAYER_VELOCITY_Y_ON_JUMP} from '/imports/api/games/constants.js';
 import MonsterBonus from '/imports/game/bonus/MonsterBonus.js';
-import { Config } from '/imports/lib/config.js';
 
 export default class BigJumpMonsterBonus extends MonsterBonus {
 
@@ -10,15 +10,15 @@ export default class BigJumpMonsterBonus extends MonsterBonus {
 	}
 
 	isSimilarBonusForPlayerKey(bonus, playerKey) {
-		return bonus instanceof BigJumpMonsterBonus && playerKey == this.activatorPlayerKey;
+		return bonus instanceof BigJumpMonsterBonus && playerKey === this.activatorPlayerKey;
 	}
 
 	start() {
-		this.game.changePlayerProperty.call(this.game, this.activatorPlayerKey, 'velocityYOnJump', Config.playerVelocityYOnJump * 1.35);
+		this.game.changePlayerProperty.call(this.game, this.activatorPlayerKey, 'velocityYOnJump', PLAYER_VELOCITY_Y_ON_JUMP * 1.35);
 	}
 
 	stop() {
-		this.game.changePlayerProperty.call(this.game, this.activatorPlayerKey, 'velocityYOnJump', Config.playerVelocityYOnJump);
+		this.game.changePlayerProperty.call(this.game, this.activatorPlayerKey, 'velocityYOnJump', PLAYER_VELOCITY_Y_ON_JUMP);
 
 		this.deactivate();
 	}

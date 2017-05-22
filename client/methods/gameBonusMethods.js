@@ -1,13 +1,13 @@
 import {Meteor} from 'meteor/meteor';
 import {Games} from '/imports/api/games/games.js';
-import {Constants} from '/imports/lib/constants.js';
+import {GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
 
 Meteor.methods({
 	addActiveBonusToGame: function(gameId, bonusIdentifier, activatedBonusClass, activatedAt, targetPlayerKey, bonusClass, activatorPlayerKey) {
 		const game = Games.findOne(gameId);
 		const data = {};
 
-		if (game && game.status === Constants.GAME_STATUS_STARTED) {
+		if (game && game.status === GAME_STATUS_STARTED) {
 			data['activeBonuses'] = [].concat(game.activeBonuses).concat([{
 				bonusIdentifier: bonusIdentifier,
 				activatedBonusClass: activatedBonusClass,

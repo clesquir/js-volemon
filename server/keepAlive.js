@@ -1,9 +1,12 @@
+import {Meteor} from 'meteor/meteor';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import {Config} from '/imports/lib/config.js';
 import {callMeteorMethodAtFrequence} from '/imports/lib/utils.js';
 
 const lastKeepAliveUpdateByPlayerIds = {};
+const KEEP_ALIVE_INTERVAL = 2500;
+const KEEP_ALIVE_TIMEOUT_INTERVAL = 5000;
+const VACANT_GAME_STREAMS_REMOVAL_INTERVAL = 300000;
 
 export const startKeepAlive = function(gameId, stream) {
 	let game = Games.findOne(gameId);
@@ -34,7 +37,7 @@ export const startKeepAlive = function(gameId, stream) {
 				Meteor.wrapAsync(() => {
 					lastKeepAliveUpdateByPlayerIds[movedPlayer._id] = callMeteorMethodAtFrequence(
 						lastKeepAliveUpdateByPlayerIds[movedPlayer._id],
-						Config.keepAliveInterval,
+						KEEP_ALIVE_INTERVAL,
 						'keepPlayerAlive',
 						[movedPlayer._id]
 					);
@@ -45,9 +48,9 @@ export const startKeepAlive = function(gameId, stream) {
 };
 
 Meteor.setInterval(function() {
-	Meteor.call('removeTimeoutPlayersAndGames');
-}, Config.keepAliveTimeOutInterval);
+	Meteor.call('removeTimeoutPlayersAndGames', KEEP_ALIVE_TIMEOUT_INTERVAL);
+}, KEEP_ALIVE_TIMEOUT_INTERVAL);
 
 Meteor.setInterval(function() {
 	Meteor.call('removeVacantGameStreams');
-}, Config.vacantGameStreamsRemovalInterval);
+}, VACANT_GAME_STREAMS_REMOVAL_INTERVAL);

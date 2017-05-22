@@ -1,6 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
+import {PLAYER_DEFAULT_SHAPE} from '/imports/api/games/shapeConstants.js';
 import {
 	isGameStatusOnGoing,
 	isGameStatusStarted,
@@ -8,8 +9,7 @@ import {
 	isGameStatusFinished,
 	isMatchPoint,
 	isDeucePoint
-} from '/imports/game/utils.js';
-import {Constants} from '/imports/lib/constants.js';
+} from '/imports/api/games/utils.js';
 
 export default class GameData {
 
@@ -37,7 +37,7 @@ export default class GameData {
 		}
 
 		if (!player) {
-			return Constants.PLAYER_DEFAULT_SHAPE;
+			return PLAYER_DEFAULT_SHAPE;
 		}
 
 		return player.shape;

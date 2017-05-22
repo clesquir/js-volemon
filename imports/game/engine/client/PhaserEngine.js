@@ -1,6 +1,15 @@
 import Engine from '/imports/game/engine/Engine.js';
-import { Config } from '/imports/lib/config.js';
-import { Constants } from '/imports/lib/constants.js';
+import {
+	WORLD_GRAVITY,
+	BONUS_RADIUS,
+	NORMAL_SCALE_PHYSICS_DATA,
+	SMALL_SCALE_PHYSICS_DATA,
+	BIG_SCALE_PHYSICS_DATA,
+	SMALL_SCALE_PLAYER_BONUS,
+	SMALL_SCALE_BALL_BONUS,
+	BIG_SCALE_BONUS
+} from '/imports/api/games/constants.js';
+import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
 
 export default class PhaserEngine extends Engine {
 
@@ -37,16 +46,16 @@ export default class PhaserEngine extends Engine {
 	}
 
 	createGame() {
-		for (let shape of Constants.PLAYER_LIST_OF_SHAPES) {
-			this.loadScaledPhysics(Constants.NORMAL_SCALE_PHYSICS_DATA, Constants.SMALL_SCALE_PHYSICS_DATA, 'player-' + shape, Constants.SMALL_SCALE_PLAYER_BONUS);
-			this.loadScaledPhysics(Constants.NORMAL_SCALE_PHYSICS_DATA, Constants.BIG_SCALE_PHYSICS_DATA, 'player-' + shape, Constants.BIG_SCALE_BONUS);
+		for (let shape of PLAYER_LIST_OF_SHAPES) {
+			this.loadScaledPhysics(NORMAL_SCALE_PHYSICS_DATA, SMALL_SCALE_PHYSICS_DATA, 'player-' + shape, SMALL_SCALE_PLAYER_BONUS);
+			this.loadScaledPhysics(NORMAL_SCALE_PHYSICS_DATA, BIG_SCALE_PHYSICS_DATA, 'player-' + shape, BIG_SCALE_BONUS);
 		}
-		this.loadScaledPhysics(Constants.NORMAL_SCALE_PHYSICS_DATA, Constants.SMALL_SCALE_PHYSICS_DATA, 'ball', Constants.SMALL_SCALE_BALL_BONUS);
-		this.loadScaledPhysics(Constants.NORMAL_SCALE_PHYSICS_DATA, Constants.BIG_SCALE_PHYSICS_DATA, 'ball', Constants.BIG_SCALE_BONUS);
+		this.loadScaledPhysics(NORMAL_SCALE_PHYSICS_DATA, SMALL_SCALE_PHYSICS_DATA, 'ball', SMALL_SCALE_BALL_BONUS);
+		this.loadScaledPhysics(NORMAL_SCALE_PHYSICS_DATA, BIG_SCALE_PHYSICS_DATA, 'ball', BIG_SCALE_BONUS);
 
 		this.game.physics.startSystem(Phaser.Physics.P2JS);
 		this.game.physics.p2.setImpactEvents(true);
-		this.game.physics.p2.gravity.y = Config.worldGravity;
+		this.game.physics.p2.gravity.y = WORLD_GRAVITY;
 		this.game.physics.p2.world.defaultContactMaterial.friction = 0;
 		this.game.physics.p2.world.setGlobalStiffness(1e10);
 		this.game.physics.p2.restitution = 0;
@@ -243,7 +252,7 @@ export default class PhaserEngine extends Engine {
 	}
 
 	getPositionData(sprite) {
-		var body = sprite.body;
+		const body = sprite.body;
 
 		return {
 			x: body.x,
@@ -278,10 +287,10 @@ export default class PhaserEngine extends Engine {
 	}
 
 	interpolateFromTimestamp(currentTimestamp, sprite, data) {
-		var t = (currentTimestamp - data.timestamp) / 1000,
-			gravity = this.game.physics.p2.gravity.y * sprite.body.data.gravityScale,
-			x = data.velocityX * t,
-			y = 0;
+		const t = (currentTimestamp - data.timestamp) / 1000;
+		const gravity = this.game.physics.p2.gravity.y * sprite.body.data.gravityScale;
+		const x = data.velocityX * t;
+		let y = 0;
 
 		if (data.velocityY != 0) {
 			y = -data.velocityY * t - 0.5 * gravity * t * t;
@@ -313,7 +322,7 @@ export default class PhaserEngine extends Engine {
 	}
 
 	freeze(sprite) {
-		var body = sprite.body;
+		const body = sprite.body;
 
 		body.setZeroRotation();
 		body.setZeroVelocity();
@@ -395,8 +404,11 @@ export default class PhaserEngine extends Engine {
 	}
 
 	constrainVelocity(sprite, maxVelocity) {
-		var body = sprite.body,
-			angle, currVelocitySqr, vx, vy;
+		const body = sprite.body;
+		let angle;
+		let currVelocitySqr;
+		let vx;
+		let vy;
 
 		vx = body.velocity.x;
 		vy = body.velocity.y;
@@ -434,7 +446,7 @@ export default class PhaserEngine extends Engine {
 	}
 
 	updateText(textComponent, text) {
-		var multilineText = text;
+		let multilineText = text;
 
 		if (!Array.isArray(multilineText)) {
 			multilineText = [multilineText];
@@ -525,7 +537,7 @@ export default class PhaserEngine extends Engine {
 		const bonusSprite = this.addSprite(x, y, 'delimiter', undefined);
 
 		bonusSprite.body.clearShapes();
-		bonusSprite.body.addCircle(Config.bonusRadius);
+		bonusSprite.body.addCircle(BONUS_RADIUS);
 
 		const sprites = bonus.itemsToDraw(this);
 		for (let sprite of sprites) {

@@ -3,10 +3,11 @@ import {Random} from 'meteor/random';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
-import {Constants} from '/imports/lib/constants.js';
+import {PLAYER_DEFAULT_SHAPE} from '/imports/api/games/shapeConstants.js';
+import {GAME_STATUS_REGISTRATION, GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
+import {isGameStatusTimeout, isGameStatusFinished} from '/imports/api/games/utils.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 import GameInitiator from '/imports/game/server/GameInitiator.js';
-import {isGameStatusTimeout, isGameStatusFinished} from '/imports/game/utils.js';
 
 /**
  * @param user
@@ -20,7 +21,7 @@ export const createGame = function(user, gameInitiators) {
 		try {
 			id = Games.insert({
 				_id: Random.id(5),
-				status: Constants.GAME_STATUS_REGISTRATION,
+				status: GAME_STATUS_REGISTRATION,
 				createdAt: getUTCTimeStamp(),
 				createdBy: user._id,
 				hostId: user._id,
@@ -38,7 +39,7 @@ export const createGame = function(user, gameInitiators) {
 			});
 		} catch (e) {
 			//If the id is already taken loop until it finds a unique id
-			if (e.code != 11000) {
+			if (e.code !== 11000) {
 				throw e;
 			}
 		}
@@ -69,7 +70,7 @@ export const joinGame = function(user, gameId, isReady) {
 	}
 
 	const profile = Profiles.findOne({userId: user._id});
-	let shape = Constants.PLAYER_DEFAULT_SHAPE;
+	let shape = PLAYER_DEFAULT_SHAPE;
 	if (profile && profile.lastShapeUsed) {
 		shape = profile.lastShapeUsed;
 	}
@@ -112,7 +113,7 @@ export const startGame = function(gameId, gameInitiators) {
 	}
 
 	let data = {
-		status: Constants.GAME_STATUS_STARTED,
+		status: GAME_STATUS_STARTED,
 		startedAt: getUTCTimeStamp(),
 		lastPointAt: getUTCTimeStamp(),
 		pointsDuration: []

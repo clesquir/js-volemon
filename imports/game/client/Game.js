@@ -1,9 +1,31 @@
 import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
 import {Session} from 'meteor/session';
+import {
+	GAME_X_SIZE,
+	GAME_Y_SIZE,
+	GAME_GROUND_HEIGHT,
+	GAME_NET_HEIGHT,
+	GAME_NET_THICKNESS,
+	PLAYER_HEIGHT,
+	PLAYER_WIDTH,
+	PLAYER_INITIAL_LOCATION,
+	PLAYER_VELOCITY_X_ON_MOVE,
+	PLAYER_VELOCITY_Y_ON_JUMP,
+	PLAYER_MASS,
+	PLAYER_GRAVITY_SCALE,
+	BALL_RADIUS,
+	BALL_DISTANCE_FROM_GROUND,
+	BALL_VERTICAL_SPEED_ON_PLAYER_HIT,
+	BALL_GRAVITY_SCALE,
+	NORMAL_SCALE_PHYSICS_DATA,
+	LAST_POINT_TAKEN_CLIENT,
+	LAST_POINT_TAKEN_HOST,
+	CLIENT_POINTS_COLUMN,
+	HOST_POINTS_COLUMN
+} from '/imports/api/games/constants.js';
+import {PLAYER_INTERVAL, BALL_INTERVAL} from '/imports/api/games/emissionConstants.js';
 import GameBonus from '/imports/game/client/GameBonus.js';
-import {Config} from '/imports/lib/config.js';
-import {Constants} from '/imports/lib/constants.js';
 
 export default class Game {
 
@@ -20,9 +42,9 @@ export default class Game {
 		this.gameData = gameData;
 		this.gameStreamBundler = gameStreamBundler;
 		this.serverNormalizedTime = serverNormalizedTime;
-		this.xSize = Constants.GAME_X_SIZE;
-		this.ySize = Constants.GAME_Y_SIZE;
-		this.groundHeight = Constants.GAME_GROUND_HEIGHT;
+		this.xSize = GAME_X_SIZE;
+		this.ySize = GAME_Y_SIZE;
+		this.groundHeight = GAME_GROUND_HEIGHT;
 		this.lastBallPositionData = {};
 		this.lastPlayerPositionData = {};
 		this.lastBallUpdate = 0;
@@ -89,7 +111,7 @@ export default class Game {
 		this.engine.loadSpriteSheet('confettis', 'assets/confettis.png', 10, 10);
 
 		this.engine.loadImage('delimiter', 'assets/clear.png');
-		this.engine.loadData(Constants.NORMAL_SCALE_PHYSICS_DATA, 'assets/physicsData.json');
+		this.engine.loadData(NORMAL_SCALE_PHYSICS_DATA, 'assets/physicsData.json');
 
 		this.gameBonus.preload();
 	}
@@ -109,8 +131,8 @@ export default class Game {
 	}
 
 	createComponents() {
-		let initialXLocation = Config.playerInitialLocation;
-		const initialYLocation = this.ySize - this.groundHeight - (Constants.PLAYER_HEIGHT / 2);
+		let initialXLocation = PLAYER_INITIAL_LOCATION;
+		const initialYLocation = this.ySize - this.groundHeight - (PLAYER_HEIGHT / 2);
 
 		this.engine.createGame();
 
@@ -128,14 +150,14 @@ export default class Game {
 		/**
 		 * Player 2
 		 */
-		initialXLocation = this.xSize - Config.playerInitialLocation;
+		initialXLocation = this.xSize - PLAYER_INITIAL_LOCATION;
 		this.player2 = this.engine.addSprite(initialXLocation, initialYLocation, 'player2', undefined);
 		this.createPlayer(this.player2, initialXLocation, initialYLocation, 'player2');
 
 		/**
 		 * Ball
 		 */
-		this.createBall(Config.playerInitialLocation, this.ySize - this.groundHeight - Config.ballDistanceFromGround);
+		this.createBall(PLAYER_INITIAL_LOCATION, this.ySize - this.groundHeight - BALL_DISTANCE_FROM_GROUND);
 
 		/**
 		 * Level
@@ -207,10 +229,10 @@ export default class Game {
 	createPlayer(player, initialXLocation, initialYLocation, playerKey) {
 		player.initialXLocation = initialXLocation;
 		player.initialYLocation = initialYLocation;
-		player.initialMass = Constants.PLAYER_MASS;
-		player.initialGravity = Constants.PLAYER_GRAVITY_SCALE;
-		player.velocityXOnMove = Config.playerVelocityXOnMove;
-		player.velocityYOnJump = Config.playerVelocityYOnJump;
+		player.initialMass = PLAYER_MASS;
+		player.initialGravity = PLAYER_GRAVITY_SCALE;
+		player.velocityXOnMove = PLAYER_VELOCITY_X_ON_MOVE;
+		player.velocityYOnJump = PLAYER_VELOCITY_Y_ON_JUMP;
 		player.doingDropShot = false;
 		//These are related to bonus but managed in this class
 		player.moveModifier = 1;
@@ -221,7 +243,7 @@ export default class Game {
 		this.gameBonus.initPlayerProperties(player);
 
 		player.polygonObject = 'player-' + this.gameData.getPlayerShapeFromKey(playerKey);
-		this.engine.loadPolygon(player, Constants.NORMAL_SCALE_PHYSICS_DATA, player.polygonObject);
+		this.engine.loadPolygon(player, NORMAL_SCALE_PHYSICS_DATA, player.polygonObject);
 
 		this.setupPlayerBody(player);
 	}
@@ -247,11 +269,11 @@ export default class Game {
 	createBall(initialXLocation, initialYLocation) {
 		this.ball = this.engine.addSprite(initialXLocation, initialYLocation, 'ball', undefined);
 
-		this.ball.initialGravity = Constants.BALL_GRAVITY_SCALE;
+		this.ball.initialGravity = BALL_GRAVITY_SCALE;
 		this.ball.isFrozen = false;
 
 		this.ball.polygonObject = 'ball';
-		this.engine.loadPolygon(this.ball, Constants.NORMAL_SCALE_PHYSICS_DATA, 'ball');
+		this.engine.loadPolygon(this.ball, NORMAL_SCALE_PHYSICS_DATA, 'ball');
 
 		this.setupBallBody();
 	}
@@ -337,10 +359,10 @@ export default class Game {
 		 * Look
 		 */
 		this.engine.addTileSprite(
-			(this.xSize / 2) - (Config.netThickness / 2),
-			this.ySize - this.groundHeight - Config.netHeight,
-			Config.netThickness,
-			Config.netHeight,
+			(this.xSize / 2) - (GAME_NET_THICKNESS / 2),
+			this.ySize - this.groundHeight - GAME_NET_HEIGHT,
+			GAME_NET_THICKNESS,
+			GAME_NET_HEIGHT,
 			'net',
 			this.level
 		);
@@ -351,7 +373,7 @@ export default class Game {
 		groupItem = this.engine.addTileSprite(
 			(this.xSize / 2),
 			(this.ySize / 2),
-			Config.netThickness,
+			GAME_NET_THICKNESS,
 			this.ySize,
 			'delimiter'
 		);
@@ -366,9 +388,9 @@ export default class Game {
 		 */
 		groupItem = this.engine.addTileSprite(
 			(this.xSize / 2),
-			this.ySize - this.groundHeight - (Config.netHeight / 2),
-			Config.netThickness,
-			Config.netHeight,
+			this.ySize - this.groundHeight - (GAME_NET_HEIGHT / 2),
+			GAME_NET_THICKNESS,
+			GAME_NET_HEIGHT,
 			'delimiter'
 		);
 
@@ -429,15 +451,15 @@ export default class Game {
 	}
 
 	spawnBall() {
-		const xBallPositionHostSide = Config.playerInitialLocation + (Constants.PLAYER_WIDTH / 4) + (Constants.BALL_RADIUS);
-		const xBallPositionClientSide = this.xSize - Config.playerInitialLocation - (Constants.PLAYER_WIDTH / 4) - (Constants.BALL_RADIUS);
+		const xBallPositionHostSide = PLAYER_INITIAL_LOCATION + (PLAYER_WIDTH / 4) + (BALL_RADIUS);
+		const xBallPositionClientSide = this.xSize - PLAYER_INITIAL_LOCATION - (PLAYER_WIDTH / 4) - (BALL_RADIUS);
 		let xBallPosition;
 
 		switch (this.gameData.lastPointTaken) {
-			case Constants.LAST_POINT_TAKEN_CLIENT:
+			case LAST_POINT_TAKEN_CLIENT:
 				xBallPosition = xBallPositionHostSide;
 				break;
-			case Constants.LAST_POINT_TAKEN_HOST:
+			case LAST_POINT_TAKEN_HOST:
 				xBallPosition = xBallPositionClientSide;
 				break;
 			default:
@@ -451,7 +473,7 @@ export default class Game {
 				break;
 		}
 
-		this.engine.spawn(this.ball, xBallPosition, this.ySize - this.groundHeight - Config.ballDistanceFromGround);
+		this.engine.spawn(this.ball, xBallPosition, this.ySize - this.groundHeight - BALL_DISTANCE_FROM_GROUND);
 	}
 
 	updateGame() {
@@ -508,7 +530,7 @@ export default class Game {
 
 	sendBallPosition() {
 		let ballPositionData = this.engine.getPositionData(this.ball);
-		let ballInterval = Config.ballInterval;
+		let ballInterval = BALL_INTERVAL;
 
 		if (JSON.stringify(this.lastBallPositionData) === JSON.stringify(ballPositionData)) {
 			ballInterval *= 2;
@@ -526,7 +548,7 @@ export default class Game {
 
 	sendPlayerPosition(player) {
 		let playerPositionData = this.engine.getPositionData(player);
-		let playerInterval = Config.playerInterval;
+		let playerInterval = PLAYER_INTERVAL;
 
 		playerPositionData.isHost = this.gameData.isUserHost();
 		playerPositionData.doingDropShot = player.doingDropShot;
@@ -589,7 +611,7 @@ export default class Game {
 
 	isBallBelowPlayer(ball, player) {
 		return (
-			this.engine.getYPosition(ball) > this.engine.getYPosition(player) + (Constants.PLAYER_HEIGHT / 2)
+			this.engine.getYPosition(ball) > this.engine.getYPosition(player) + (PLAYER_HEIGHT / 2)
 		);
 	}
 
@@ -623,17 +645,24 @@ export default class Game {
 	}
 
 	reboundBallOnPlayerHit(ball) {
-		this.engine.setVerticalSpeed(ball, Constants.BALL_VERTICAL_SPEED_ON_PLAYER_HIT);
+		this.engine.setVerticalSpeed(ball, BALL_VERTICAL_SPEED_ON_PLAYER_HIT);
 	}
 
 	hitGround(ball) {
 		if (this.gameData.isUserHost() && this.gameResumed === true) {
+			let playerKey;
 			let pointSide;
 
 			if (ball.x < this.xSize / 2) {
-				pointSide = Constants.CLIENT_POINTS_COLUMN;
+				playerKey = 'player1';
+				pointSide = CLIENT_POINTS_COLUMN;
 			} else {
-				pointSide = Constants.HOST_POINTS_COLUMN;
+				playerKey = 'player2';
+				pointSide = HOST_POINTS_COLUMN;
+			}
+
+			if (this.gameBonus.isPlayerInvincible(this.getPlayerFromKey(playerKey))) {
+				return;
 			}
 
 			this.gameResumed = false;

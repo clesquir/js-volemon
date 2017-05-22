@@ -4,7 +4,8 @@ import PlayerLost from '/imports/api/games/events/PlayerLost.js';
 import {EloScores} from '/imports/api/games/eloscores.js';
 import {Games} from '/imports/api/games/games.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
-import {Constants} from '/imports/lib/constants.js';
+import {GAME_MAXIMUM_POINTS} from '/imports/api/games/constants.js';
+import {GAME_STATUS_FINISHED} from '/imports/api/games/statusConstants.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 import {EventPublisher} from '/imports/lib/EventPublisher.js';
 
@@ -20,7 +21,7 @@ export const onGameFinished = function(gameId, winnerUserId, loserUserId) {
 		throw new Meteor.Error(404, 'Game not found');
 	}
 
-	if (game.status !== Constants.GAME_STATUS_FINISHED) {
+	if (game.status !== GAME_STATUS_FINISHED) {
 		throw new Meteor.Error('not-allowed', 'Only finished games can be used for Elo calculations');
 	}
 
@@ -51,7 +52,7 @@ export const updateProfilesOnGameFinished = function(game, winnerProfile, loserP
 	winnerProfileData['numberOfWin'] = winnerProfile.numberOfWin + 1;
 	loserProfileData['numberOfLost'] = loserProfile.numberOfLost + 1;
 
-	if (winnerPoints === Constants.MAXIMUM_POINTS && loserPoints === 0) {
+	if (winnerPoints === GAME_MAXIMUM_POINTS && loserPoints === 0) {
 		winnerProfileData['numberOfShutouts'] = winnerProfile.numberOfShutouts + 1;
 		loserProfileData['numberOfShutoutLosses'] = loserProfile.numberOfShutoutLosses + 1;
 	}

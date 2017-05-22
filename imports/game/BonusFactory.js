@@ -9,6 +9,7 @@ import SlowMonsterBonus from '/imports/game/bonus/SlowMonsterBonus.js';
 import FastMonsterBonus from '/imports/game/bonus/FastMonsterBonus.js';
 import FreezeMonsterBonus from '/imports/game/bonus/FreezeMonsterBonus.js';
 import ReverseMoveMonsterBonus from '/imports/game/bonus/ReverseMoveMonsterBonus.js';
+import InvincibleMonsterBonus from '/imports/game/bonus/InvincibleMonsterBonus.js';
 import InvisibleMonsterBonus from '/imports/game/bonus/InvisibleMonsterBonus.js';
 import InvisibleOpponentMonsterBonus from '/imports/game/bonus/InvisibleOpponentMonsterBonus.js';
 import CloudBonus from '/imports/game/bonus/CloudBonus.js';
@@ -16,36 +17,57 @@ import NoJumpMonsterBonus from '/imports/game/bonus/NoJumpMonsterBonus.js';
 import BounceMonsterBonus from '/imports/game/bonus/BounceMonsterBonus.js';
 import CloakedMonsterBonus from '/imports/game/bonus/CloakedMonsterBonus.js';
 import RandomBonus from '/imports/game/bonus/RandomBonus.js';
-import {Constants} from '/imports/lib/constants.js';
+import {
+	BONUS_SMALL_BALL,
+	BONUS_BIG_BALL,
+	BONUS_INVISIBLE_BALL,
+	BONUS_SMALL_MONSTER,
+	BONUS_BIG_MONSTER,
+	BONUS_BIG_JUMP_MONSTER,
+	BONUS_SLOW_MONSTER,
+	BONUS_FAST_MONSTER,
+	BONUS_FREEZE_MONSTER,
+	BONUS_REVERSE_MOVE_MONSTER,
+	BONUS_INVINCIBLE_MONSTER,
+	BONUS_INVISIBLE_MONSTER,
+	BONUS_INVISIBLE_OPPONENT_MONSTER,
+	BONUS_CLOUD,
+	BONUS_NO_JUMP_MONSTER,
+	BONUS_BOUNCE_MONSTER,
+	BONUS_CLOAKED_MONSTER,
+	BONUS_RANDOM_BONUS
+} from '/imports/api/games/bonusConstants.js';
 
 export default class BonusFactory {
 
 	/**
 	 * @param {Game} game
-	 * @param {boolean} [excludeRandom=false]
 	 * @returns {BaseBonus}
 	 */
-	static randomBonus(game, excludeRandom) {
-		const bonusClass = this.randomBonusKey(excludeRandom);
-		const bonus = this.fromClassName(bonusClass, game);
+	static randomBonus(game) {
+		const bonus = this.fromClassName(this.randomBonusKey(), game);
 
 		if (bonus instanceof RandomBonus) {
-			bonus.setRandomBonus(this.randomBonus(game, true));
+			bonus.setRandomBonus(
+				this.fromClassName(
+					Random.choice(this.availableBonusesForRandom()),
+					game
+				)
+			);
 		}
 
 		return bonus;
 	}
 
 	/**
-	 * @param {boolean} [excludeRandom=false]
 	 * @returns {string}
 	 */
-	static randomBonusKey(excludeRandom) {
-		const availableBonuses = this.availableBonuses();
-
-		if (!excludeRandom) {
-			availableBonuses.push(Constants.RANDOM_BONUS);
-		}
+	static randomBonusKey() {
+		const availableBonuses = this.availableBonuses().concat(
+			[
+				BONUS_RANDOM_BONUS
+			]
+		);
 
 		return Random.choice(availableBonuses);
 	}
@@ -55,23 +77,31 @@ export default class BonusFactory {
 	 */
 	static availableBonuses() {
 		return [
-			Constants.BONUS_SMALL_BALL,
-			Constants.BONUS_BIG_BALL,
-			Constants.BONUS_INVISIBLE_BALL,
-			Constants.BONUS_SMALL_MONSTER,
-			Constants.BONUS_BIG_MONSTER,
-			Constants.BONUS_BIG_JUMP_MONSTER,
-			Constants.BONUS_SLOW_MONSTER,
-			Constants.BONUS_FAST_MONSTER,
-			Constants.BONUS_FREEZE_MONSTER,
-			Constants.BONUS_REVERSE_MOVE_MONSTER,
-			Constants.BONUS_INVISIBLE_MONSTER,
-			Constants.BONUS_INVISIBLE_OPPONENT_MONSTER,
-			Constants.BONUS_CLOUD,
-			Constants.BONUS_NO_JUMP_MONSTER,
-			Constants.BONUS_BOUNCE_MONSTER,
-			Constants.BONUS_CLOAKED_MONSTER
+			BONUS_SMALL_BALL,
+			BONUS_BIG_BALL,
+			BONUS_INVISIBLE_BALL,
+			BONUS_SMALL_MONSTER,
+			BONUS_BIG_MONSTER,
+			BONUS_BIG_JUMP_MONSTER,
+			BONUS_SLOW_MONSTER,
+			BONUS_FAST_MONSTER,
+			BONUS_FREEZE_MONSTER,
+			BONUS_REVERSE_MOVE_MONSTER,
+			BONUS_INVISIBLE_MONSTER,
+			BONUS_INVISIBLE_OPPONENT_MONSTER,
+			BONUS_CLOUD,
+			BONUS_NO_JUMP_MONSTER,
+			BONUS_BOUNCE_MONSTER,
+			BONUS_CLOAKED_MONSTER
 		];
+	}
+
+	static availableBonusesForRandom() {
+		return this.availableBonuses().concat(
+			[
+				BONUS_INVINCIBLE_MONSTER
+			]
+		);
 	}
 
 	/**
@@ -81,39 +111,41 @@ export default class BonusFactory {
 	 */
 	static fromClassName(bonusClass, game) {
 		switch (bonusClass) {
-			case Constants.BONUS_SMALL_BALL:
+			case BONUS_SMALL_BALL:
 				return new SmallBallBonus(game, bonusClass);
-			case Constants.BONUS_BIG_BALL:
+			case BONUS_BIG_BALL:
 				return new BigBallBonus(game, bonusClass);
-			case Constants.BONUS_INVISIBLE_BALL:
+			case BONUS_INVISIBLE_BALL:
 				return new InvisibleBallBonus(game, bonusClass);
-			case Constants.BONUS_SMALL_MONSTER:
+			case BONUS_SMALL_MONSTER:
 				return new SmallMonsterBonus(game, bonusClass);
-			case Constants.BONUS_BIG_MONSTER:
+			case BONUS_BIG_MONSTER:
 				return new BigMonsterBonus(game, bonusClass);
-			case Constants.BONUS_BIG_JUMP_MONSTER:
+			case BONUS_BIG_JUMP_MONSTER:
 				return new BigJumpMonsterBonus(game, bonusClass);
-			case Constants.BONUS_SLOW_MONSTER:
+			case BONUS_SLOW_MONSTER:
 				return new SlowMonsterBonus(game, bonusClass);
-			case Constants.BONUS_FAST_MONSTER:
+			case BONUS_FAST_MONSTER:
 				return new FastMonsterBonus(game, bonusClass);
-			case Constants.BONUS_FREEZE_MONSTER:
+			case BONUS_FREEZE_MONSTER:
 				return new FreezeMonsterBonus(game, bonusClass);
-			case Constants.BONUS_REVERSE_MOVE_MONSTER:
+			case BONUS_REVERSE_MOVE_MONSTER:
 				return new ReverseMoveMonsterBonus(game, bonusClass);
-			case Constants.BONUS_INVISIBLE_MONSTER:
+			case BONUS_INVINCIBLE_MONSTER:
+				return new InvincibleMonsterBonus(game, bonusClass);
+			case BONUS_INVISIBLE_MONSTER:
 				return new InvisibleMonsterBonus(game, bonusClass);
-			case Constants.BONUS_INVISIBLE_OPPONENT_MONSTER:
+			case BONUS_INVISIBLE_OPPONENT_MONSTER:
 				return new InvisibleOpponentMonsterBonus(game, bonusClass);
-			case Constants.BONUS_CLOUD:
+			case BONUS_CLOUD:
 				return new CloudBonus(game, bonusClass);
-			case Constants.BONUS_NO_JUMP_MONSTER:
+			case BONUS_NO_JUMP_MONSTER:
 				return new NoJumpMonsterBonus(game, bonusClass);
-			case Constants.BONUS_BOUNCE_MONSTER:
+			case BONUS_BOUNCE_MONSTER:
 				return new BounceMonsterBonus(game, bonusClass);
-			case Constants.BONUS_CLOAKED_MONSTER:
+			case BONUS_CLOAKED_MONSTER:
 				return new CloakedMonsterBonus(game, bonusClass);
-			case Constants.RANDOM_BONUS:
+			case BONUS_RANDOM_BONUS:
 				return new RandomBonus(game, bonusClass);
 		}
 

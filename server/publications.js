@@ -3,7 +3,7 @@ import {EloScores} from '/imports/api/games/eloscores.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
-import {Constants} from '/imports/lib/constants.js';
+import {GAME_STATUS_REGISTRATION, GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
 
 Meteor.publish('userData', function() {
 	return Meteor.users.find({_id: this.userId});
@@ -27,7 +27,7 @@ Meteor.publish('games', function() {
 		Games.find(
 			{
 				isPrivate: 0,
-				status: {$in: [Constants.GAME_STATUS_REGISTRATION, Constants.GAME_STATUS_STARTED]}
+				status: {$in: [GAME_STATUS_REGISTRATION, GAME_STATUS_STARTED]}
 			},
 			{
 				sort: [['createdAt', 'asc']],

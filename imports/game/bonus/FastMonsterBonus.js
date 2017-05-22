@@ -1,5 +1,5 @@
+import {PLAYER_VELOCITY_X_ON_MOVE} from '/imports/api/games/constants.js';
 import MovementMonsterBonus from '/imports/game/bonus/MovementMonsterBonus.js';
-import { Config } from '/imports/lib/config.js';
 
 export default class FastMonsterBonus extends MovementMonsterBonus {
 
@@ -10,7 +10,7 @@ export default class FastMonsterBonus extends MovementMonsterBonus {
 	}
 
 	start() {
-		this.game.changePlayerProperty.call(this.game, this.activatorPlayerKey, 'velocityXOnMove', Config.playerVelocityXOnMove * 2);
+		this.game.changePlayerProperty.call(this.game, this.activatorPlayerKey, 'velocityXOnMove', PLAYER_VELOCITY_X_ON_MOVE * 2);
 	}
 
 };

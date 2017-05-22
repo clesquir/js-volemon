@@ -5,7 +5,7 @@ import {Random} from 'meteor/random';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import GameData from '/imports/game/client/GameData.js';
-import {Constants} from '/imports/lib/constants.js';
+import {PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_RECTANGLE} from '/imports/api/games/shapeConstants.js';
 
 describe('GameData#getPlayerShapeFromKey', function() {
 	it('returns default shape when player 1 does not exist', function() {
@@ -16,7 +16,7 @@ describe('GameData#getPlayerShapeFromKey', function() {
 		Games.insert({_id: gameId});
 
 		const gameData = new GameData(gameId);
-		chai.assert.strictEqual(Constants.PLAYER_DEFAULT_SHAPE, gameData.getPlayerShapeFromKey('player1'));
+		chai.assert.strictEqual(PLAYER_DEFAULT_SHAPE, gameData.getPlayerShapeFromKey('player1'));
 
 		StubCollections.restore();
 	});
@@ -29,7 +29,7 @@ describe('GameData#getPlayerShapeFromKey', function() {
 		Games.insert({_id: gameId});
 
 		const gameData = new GameData(gameId);
-		chai.assert.strictEqual(Constants.PLAYER_DEFAULT_SHAPE, gameData.getPlayerShapeFromKey('player2'));
+		chai.assert.strictEqual(PLAYER_DEFAULT_SHAPE, gameData.getPlayerShapeFromKey('player2'));
 
 		StubCollections.restore();
 	});
@@ -45,12 +45,12 @@ describe('GameData#getPlayerShapeFromKey', function() {
 			_id: Random.id(5),
 			gameId: gameId,
 			userId: createdByUserId,
-			shape: Constants.PLAYER_SHAPE_RECTANGLE
+			shape: PLAYER_SHAPE_RECTANGLE
 		});
 
 		const gameData = new GameData(gameId);
 		gameData.init();
-		chai.assert.strictEqual(Constants.PLAYER_SHAPE_RECTANGLE, gameData.getPlayerShapeFromKey('player1'));
+		chai.assert.strictEqual(PLAYER_SHAPE_RECTANGLE, gameData.getPlayerShapeFromKey('player1'));
 
 		StubCollections.restore();
 	});
@@ -61,11 +61,11 @@ describe('GameData#getPlayerShapeFromKey', function() {
 
 		const gameId = Random.id(5);
 		Games.insert({_id: gameId, createdBy: 1});
-		Players.insert({_id: Random.id(5), gameId: gameId, userId: 2, shape: Constants.PLAYER_SHAPE_RECTANGLE});
+		Players.insert({_id: Random.id(5), gameId: gameId, userId: 2, shape: PLAYER_SHAPE_RECTANGLE});
 
 		const gameData = new GameData(gameId);
 		gameData.init();
-		chai.assert.strictEqual(Constants.PLAYER_SHAPE_RECTANGLE, gameData.getPlayerShapeFromKey('player2'));
+		chai.assert.strictEqual(PLAYER_SHAPE_RECTANGLE, gameData.getPlayerShapeFromKey('player2'));
 
 		StubCollections.restore();
 	});

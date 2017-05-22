@@ -1,10 +1,27 @@
 import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
+import {
+	GAME_X_SIZE,
+	GAME_Y_SIZE,
+	GAME_GROUND_HEIGHT,
+	BONUS_RADIUS,
+	BONUS_GRAVITY_SCALE,
+	NORMAL_SCALE_BONUS,
+	SMALL_SCALE_PLAYER_BONUS,
+	SMALL_SCALE_BALL_BONUS,
+	BIG_SCALE_BONUS,
+	NORMAL_SCALE_PHYSICS_DATA,
+	SMALL_SCALE_PHYSICS_DATA,
+	BIG_SCALE_PHYSICS_DATA
+} from '/imports/api/games/constants.js';
+import {
+	BONUS_INTERVAL,
+	BONUS_MINIMUM_FREQUENCE,
+	BONUS_MINIMUM_INTERVAL,
+	BONUS_MAXIMUM_INTERVAL
+} from '/imports/api/games/emissionConstants.js';
 import BonusFactory from '/imports/game/BonusFactory.js';
-import {getRandomInt, getRandomFloat} from '/imports/lib/utils.js';
-import {Config} from '/imports/lib/config.js';
-import {Constants} from '/imports/lib/constants.js';
-import {getUTCTimeStamp} from '/imports/lib/utils.js';
+import {getRandomInt, getRandomFloat, getUTCTimeStamp} from '/imports/lib/utils.js';
 
 export default class GameBonus {
 
@@ -29,24 +46,24 @@ export default class GameBonus {
 		this.clouds = [];
 		this.activeBonuses = [];
 
-		this.xSize = Constants.GAME_X_SIZE;
-		this.ySize = Constants.GAME_Y_SIZE;
-		this.groundHeight = Constants.GAME_GROUND_HEIGHT;
+		this.xSize = GAME_X_SIZE;
+		this.ySize = GAME_Y_SIZE;
+		this.groundHeight = GAME_GROUND_HEIGHT;
 	}
 
 	getPolygonKeyFromScale(scale) {
 		let polygonKey = null;
 
 		switch (scale) {
-			case Constants.NORMAL_SCALE_BONUS:
-				polygonKey = Constants.NORMAL_SCALE_PHYSICS_DATA;
+			case NORMAL_SCALE_BONUS:
+				polygonKey = NORMAL_SCALE_PHYSICS_DATA;
 				break;
-			case Constants.SMALL_SCALE_PLAYER_BONUS:
-			case Constants.SMALL_SCALE_BALL_BONUS:
-				polygonKey = Constants.SMALL_SCALE_PHYSICS_DATA;
+			case SMALL_SCALE_PLAYER_BONUS:
+			case SMALL_SCALE_BALL_BONUS:
+				polygonKey = SMALL_SCALE_PHYSICS_DATA;
 				break;
-			case Constants.BIG_SCALE_BONUS:
-				polygonKey = Constants.BIG_SCALE_PHYSICS_DATA;
+			case BIG_SCALE_BONUS:
+				polygonKey = BIG_SCALE_PHYSICS_DATA;
 				break;
 		}
 
@@ -95,6 +112,11 @@ export default class GameBonus {
 
 	initPlayerProperties(player) {
 		player.activeGravity = null;
+		player.isInvincible = false;
+	}
+
+	isPlayerInvincible(player) {
+		return player.isInvincible;
 	}
 
 	resumeGame() {
@@ -136,7 +158,7 @@ export default class GameBonus {
 				case 'player1':
 					player1Count++;
 					this.bonusesGroup.add(this.engine.drawBonus(
-						padding + (player1Count * ((Config.bonusRadius * 2) + padding)),
+						padding + (player1Count * ((BONUS_RADIUS * 2) + padding)),
 						this.ySize - (this.groundHeight / 2),
 						bonus,
 						this.getBonusProgress(activeBonus, bonus.getDuration())
@@ -145,7 +167,7 @@ export default class GameBonus {
 				case 'player2':
 					player2Count++;
 					this.bonusesGroup.add(this.engine.drawBonus(
-						(this.xSize / 2) + padding + (player2Count * ((Config.bonusRadius * 2) + padding)),
+						(this.xSize / 2) + padding + (player2Count * ((BONUS_RADIUS * 2) + padding)),
 						this.ySize - (this.groundHeight / 2),
 						bonus,
 						this.getBonusProgress(activeBonus, bonus.getDuration())
@@ -177,7 +199,7 @@ export default class GameBonus {
 		if (bonusesData.length) {
 			this.lastBonusUpdate = this.gameStreamBundler.addToBundledStreamsAtFrequence(
 				this.lastBonusUpdate,
-				Config.bonusInterval,
+				BONUS_INTERVAL,
 				'moveClientBonuses',
 				bonusesData
 			);
@@ -263,7 +285,7 @@ export default class GameBonus {
 	}
 
 	resetBallScale() {
-		this.scaleBall(Constants.NORMAL_SCALE_BONUS);
+		this.scaleBall(NORMAL_SCALE_BONUS);
 	}
 
 	setBallGravity(gravity) {
@@ -445,7 +467,7 @@ export default class GameBonus {
 
 		const layers = ['white-cloud', 'white-cloud', 'dark-cloud', 'dark-cloud'];
 		for (let i = 1; i < 6; i++) {
-			let x = Constants.GAME_X_SIZE / 6 * i;
+			let x = GAME_X_SIZE / 6 * i;
 
 			for (let layer of layers) {
 				let scale = getRandomFloat(1, 2);
@@ -472,14 +494,14 @@ export default class GameBonus {
 
 	regenerateLastBonusCreatedAndFrequenceTime() {
 		this.lastBonusCreated = getUTCTimeStamp();
-		this.bonusFrequenceTime = getRandomInt(Config.bonusMinimumInterval, Config.bonusMaximumInterval);
+		this.bonusFrequenceTime = getRandomInt(BONUS_MINIMUM_INTERVAL, BONUS_MAXIMUM_INTERVAL);
 	}
 
 	createBonusIfTimeHasElapsed() {
 		let frequenceTime = this.bonusFrequenceTime - Math.round((getUTCTimeStamp() - this.lastGameRespawn) / 10);
 
-		if (frequenceTime < Config.bonusMinimumFrequence) {
-			frequenceTime = Config.bonusMinimumFrequence;
+		if (frequenceTime < BONUS_MINIMUM_FREQUENCE) {
+			frequenceTime = BONUS_MINIMUM_FREQUENCE;
 		}
 
 		if (getUTCTimeStamp() - this.lastBonusCreated >= frequenceTime) {
@@ -498,7 +520,7 @@ export default class GameBonus {
 	createBonus(data) {
 		const bonus = BonusFactory.fromData(data, this);
 		const bonusSprite = this.engine.addBonus(
-			data.initialX, Config.bonusGravityScale, this.bonusMaterial, this.bonusCollisionGroup, bonus
+			data.initialX, BONUS_GRAVITY_SCALE, this.bonusMaterial, this.bonusCollisionGroup, bonus
 		);
 
 		bonusSprite.identifier = data.bonusIdentifier;
