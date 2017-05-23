@@ -4,6 +4,8 @@ import {Session} from 'meteor/session';
 import '/imports/ui/util/form.js';
 import '/imports/ui/util/error-messages.js';
 
+import './passwordChange.html';
+
 Template.passwordChange.events({
 	'focus input.field-in-error': function(e) {
 		removeFieldInvalidMark($(e.target));

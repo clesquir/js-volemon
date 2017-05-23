@@ -22,6 +22,9 @@ import {
 	currentPlayerAcceptedRematch
 } from '/imports/lib/client/gameSetup.js';
 import {serverNormalizedTime} from '/imports/startup/client/routes.js';
+import {padNumber} from '/imports/lib/utils.js';
+
+import './game.html';
 
 Template.game.helpers({
 	isHost: function() {

@@ -5,23 +5,6 @@ import {Players} from '/imports/api/games/players.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
 import {GAME_STATUS_REGISTRATION, GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
 
-Meteor.publish('userData', function() {
-	return Meteor.users.find({_id: this.userId});
-});
-
-Meteor.publish('ranks', function() {
-	return [
-		Meteor.users.find({}, {fields: {'profile.name': 1}}),
-		Profiles.find()
-	];
-});
-
-Meteor.publish('ranks-chart', function(minDate) {
-	return [
-		EloScores.find({timestamp: {$gt: minDate}})
-	];
-});
-
 Meteor.publish('games', function() {
 	return [
 		Games.find(

@@ -1,4 +1,5 @@
 import Chart from "chart.js";
+import {getRainbowColor} from '/imports/lib/utils.js';
 
 export default class RankChart {
 

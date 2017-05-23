@@ -1,9 +1,9 @@
-import '/imports/ui/components/achievementPopup.html';
-
 import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
 import {Session} from 'meteor/session';
 import {formatAchievementNumber} from '/imports/api/achievements/utils.js';
+
+import './achievementPopup.html';
 
 Template.achievementPopup.helpers({
 	visible: function() {

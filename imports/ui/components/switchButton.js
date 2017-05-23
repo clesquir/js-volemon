@@ -1,5 +1,7 @@
+import './switchButton.html';
+
 switchTargetButton = function(e, value) {
-	var switchButton = $(e.target);
+	let switchButton = $(e.target);
 
 	if (!switchButton.is('.switch-button')) {
 		switchButton = $(e.target).find('.switch-button');

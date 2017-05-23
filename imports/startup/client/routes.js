@@ -13,15 +13,26 @@ import GameRematch from '/imports/game/client/GameRematch.js';
 import ServerNormalizedTime from '/imports/game/client/ServerNormalizedTime.js';
 import ClientSocketIo from '/imports/lib/stream/client/ClientSocketIo.js';
 
-import '/imports/ui/pages/home.js';
+import '/imports/ui/pages/app.js';
+import '/imports/ui/pages/game.js';
 import '/imports/ui/pages/gamesList.js';
+import '/imports/ui/pages/home.js';
+import '/imports/ui/pages/login.js';
+import '/imports/ui/pages/passwordChange.js';
 import '/imports/ui/pages/rank.js';
+import '/imports/ui/pages/testEnvironment.js';
+import '/imports/ui/pages/username.js';
 
 import '/imports/ui/components/achievementPopup.js';
 import '/imports/ui/components/achievements.js';
+import '/imports/ui/components/eloRatingChange.js';
+import '/imports/ui/components/lightbox.js';
+import '/imports/ui/components/loading.js';
 import '/imports/ui/components/reactions.js';
 import '/imports/ui/components/recentGames.js';
+import '/imports/ui/components/shapeSelector.js';
 import '/imports/ui/components/statistics.js';
+import '/imports/ui/components/switchButton.js';
 
 Router.configure({
 	layoutTemplate: 'app',

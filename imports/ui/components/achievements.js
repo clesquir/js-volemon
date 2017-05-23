@@ -1,8 +1,8 @@
-import '/imports/ui/components/achievements.html';
-
 import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
 import {formatAchievementNumber} from '/imports/api/achievements/utils.js';
+
+import './achievements.html';
 
 Template.achievements.helpers({
 	achievementLevel: function(level) {

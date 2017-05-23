@@ -4,6 +4,8 @@ import {Session} from 'meteor/session';
 import '/imports/ui/util/form.js';
 import '/imports/ui/util/error-messages.js';
 
+import './username.html';
+
 Template.username.helpers({
 	value: function() {
 		const user = Meteor.user();

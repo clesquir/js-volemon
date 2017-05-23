@@ -1,4 +1,4 @@
-import {startKeepAlive} from '/server/keepAlive.js';
+import {startKeepAlive} from '/imports/api/games/server/keepAlive.js';
 
 export default class GameStreamInitiator {
 

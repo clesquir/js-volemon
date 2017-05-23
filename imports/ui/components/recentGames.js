@@ -2,7 +2,7 @@ import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
 import {ReactiveVar} from 'meteor/reactive-var';
 import * as Moment from 'meteor/momentjs:moment';
-import {getUTCTimeStamp, timeElapsedSince} from '/imports/lib/utils.js';
+import {getUTCTimeStamp, padNumber, timeElapsedSince} from '/imports/lib/utils.js';
 
 import './recentGames.html';
 

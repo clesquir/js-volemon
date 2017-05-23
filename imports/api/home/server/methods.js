@@ -1,6 +1,6 @@
 import {Meteor} from 'meteor/meteor';
 import {EloScores} from '/imports/api/games/eloscores.js';
-import {longestGame, longestPoint} from '/imports/api/home/lib/utils.js';
+import {longestGame, longestPoint} from '/imports/api/home/utils.js';
 
 Meteor.methods({
 	longestGame: function(userId) {
