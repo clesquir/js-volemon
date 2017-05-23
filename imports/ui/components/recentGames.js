@@ -39,23 +39,17 @@ Template.recentGames.helpers({
 	},
 
 	getScore: function() {
-		let hostPoints;
-		let clientPoints;
+		const hostPoints = this.hostPoints;
+		const clientPoints = this.clientPoints;
 		let hostScoreClass = '';
 		let clientScoreClass = '';
 
 		if (Meteor.userId() === this.createdBy) {
-			hostPoints = this.hostPoints;
-			clientPoints = this.clientPoints;
-
 			hostScoreClass = 'loosing-score';
 			if (hostPoints > clientPoints) {
 				hostScoreClass = 'winning-score';
 			}
 		} else {
-			hostPoints = this.clientPoints;
-			clientPoints = this.hostPoints;
-
 			clientScoreClass = 'loosing-score';
 			if (clientPoints > hostPoints) {
 				clientScoreClass = 'winning-score';
