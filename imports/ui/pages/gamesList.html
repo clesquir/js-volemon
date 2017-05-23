@@ -12,11 +12,11 @@
 					<div class="card clickable-card" data-action="go-to-game">
 						<div class="card-row card-row-top">
 							{{#if hasOpponent}}
-								<div class="card-cell card-title">{{hostName}}</div>
+								<div class="card-cell card-title card-cell-ellipsis">{{hostName}}</div>
 								<div class="card-cell card-title" style="flex: 0;">vs</div>
-								<div class="card-cell card-title">{{clientName}}</div>
+								<div class="card-cell card-title card-cell-ellipsis">{{clientName}}</div>
 							{{else}}
-								<div class="card-cell card-title">{{hostName}}</div>
+								<div class="card-cell card-title card-cell-ellipsis">{{hostName}}</div>
 							{{/if}}
 						</div>
 						<div class="card-row card-row-bottom">

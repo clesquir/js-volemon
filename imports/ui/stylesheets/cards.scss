@@ -68,7 +68,12 @@ $card-radius: 3px;
 			}
 
 			&.card-title {
-				font-size: 20px;
+				font-size: 18px;
+			}
+
+			&.card-cell-ellipsis {
+				text-overflow: ellipsis;
+				overflow: hidden;
 			}
 		}
 	}

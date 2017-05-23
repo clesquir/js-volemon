@@ -5,9 +5,9 @@
 		{{#each games}}
 			<div class="card">
 				<div class="card-row card-row-top">
-					<div class="card-cell card-title">{{{getPlayerName ../players true}}}</div>
+					<div class="card-cell card-title card-cell-ellipsis">{{{getPlayerName ../players true}}}</div>
 					<div class="card-cell card-title" style="flex: 0;">{{{getScore}}}</div>
-					<div class="card-cell card-title">{{getPlayerName ../players false}}</div>
+					<div class="card-cell card-title card-cell-ellipsis">{{getPlayerName ../players false}}</div>
 				</div>
 				<div class="card-row card-row-bottom">
 					<div class="card-cell card-left"><span data-tooltip="{{getStartedAtDateTime}}">{{getStartedAtDate}}</span></div>
