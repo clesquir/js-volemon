@@ -1,6 +1,8 @@
 import {Template} from 'meteor/templating';
 import TestEnvironment from '/imports/game/client/TestEnvironment.js';
 
+import './testEnvironment.html';
+
 /** @type {TestEnvironment}|null */
 let testEnvironment = null;
 

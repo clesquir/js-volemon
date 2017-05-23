@@ -7,7 +7,7 @@ import {
 	ACHIEVEMENT_SHUTOUTS
 } from '/imports/api/achievements/constants.js';
 import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
-import {longestGame, longestPoint} from '/imports/api/home/lib/utils.js';
+import {longestGame, longestPoint} from '/imports/api/home/utils.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 

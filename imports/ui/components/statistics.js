@@ -2,6 +2,7 @@ import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
 import * as Moment from 'meteor/momentjs:moment';
 import {Session} from 'meteor/session';
+import {getWinRate} from '/imports/lib/utils.js';
 
 import './statistics.html';
 

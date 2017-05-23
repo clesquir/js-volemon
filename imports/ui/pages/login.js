@@ -5,6 +5,8 @@ import {Session} from 'meteor/session';
 import '/imports/ui/util/form.js';
 import '/imports/ui/util/error-messages.js';
 
+import './login.html';
+
 Template.login.events({
 	'click [data-action=switch-for-create-account]': function() {
 		const loginForm = document.getElementById('login-form');

@@ -1,6 +1,11 @@
+import {Template} from 'meteor/templating';
+import {Session} from 'meteor/session';
+
+import './lightbox.html';
+
 Template.lightbox.rendered = function() {
 	$(window).on('keydown', function(e) {
-		if (e.which == 27) {
+		if (e.which === 27) {
 			Session.set('lightbox', null);
 
 			if (actionOnLighboxClose) {

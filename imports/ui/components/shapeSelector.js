@@ -3,6 +3,8 @@ import {Template} from 'meteor/templating';
 import {Session} from 'meteor/session';
 import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
 
+import './shapeSelector.html';
+
 const incrementShape = function(increment) {
 	const listOfShapes = PLAYER_LIST_OF_SHAPES;
 	let index = listOfShapes.indexOf(this.shape);

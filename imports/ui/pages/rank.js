@@ -1,9 +1,10 @@
 import {Meteor} from 'meteor/meteor';
 import {Mongo} from 'meteor/mongo';
 import {Template} from 'meteor/templating';
-import RankChart from '/client/lib/RankChart.js';
 import {EloScores} from '/imports/api/games/eloscores.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
+import RankChart from '/imports/lib/client/RankChart.js';
+import {getWinRate} from '/imports/lib/utils.js';
 
 import './rank.html';
 

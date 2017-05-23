@@ -12,9 +12,8 @@ import {
 	GAME_STATUS_TIMEOUT
 } from '/imports/api/games/statusConstants.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
-import {gameMethods} from '/server/methods/gameMethods.js';
 
-describe('GameMethods#leaveGame', function() {
+describe('games/methods#leaveGame', function() {
 	const sandbox = sinon.sandbox.create();
 	const userId = Random.id(4);
 
