@@ -41,7 +41,7 @@ Template.rank.helpers({
 	},
 
 	achievementsRanking: function() {
-		return AchievementsRanking.find();
+		return AchievementsRanking.find({}, {sort: [['rank', 'desc']]});
 	}
 });
 

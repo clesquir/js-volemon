@@ -13,18 +13,11 @@ Meteor.publish('userAchievements', function(userId) {
 });
 
 Meteor.publish('achievementsRanking', function() {
-	const achievementsByUserId = {};
+	let achievementsByUserId = {};
 
 	//Gather profiles
 	Profiles.find().forEach((profile) => {
-		if (!achievementsByUserId[profile.userId]) {
-			achievementsByUserId[profile.userId] = {
-				userId: profile.userId,
-				level1: 0,
-				level2: 0,
-				level3: 0
-			};
-		}
+		achievementsByUserId = initializeAchievementsByUserId(achievementsByUserId, profile.userId);
 	});
 
 	//Prefetch achievements
@@ -34,28 +27,91 @@ Meteor.publish('achievementsRanking', function() {
 		achievementsById[achievement._id] = achievement;
 	});
 
-	//Gather achievement count for each level
-	UserAchievements.find().forEach((userAchievement) => {
-		if (achievementsById[userAchievement.achievementId]) {
-			for (let level of achievementsById[userAchievement.achievementId].levels) {
-				if (userAchievement.number >= level.number) {
-					achievementsByUserId[userAchievement.userId]['level' + level.level] += 1;
-				}
+	for (let userId in achievementsByUserId) {
+		if (achievementsByUserId.hasOwnProperty(userId)) {
+			this.added('achievementsranking', userId, achievementsByUserId[userId]);
+		}
+	}
+
+	this.userAchievementsTracker = UserAchievements.find().observe({
+		added: (userAchievement) => {
+			const userId = userAchievement.userId;
+
+			let useChanged = true;
+			if (achievementsByUserId[userId] === undefined) {
+				useChanged = false;
+			}
+
+			achievementsByUserId = updateAchievementsByUserId(
+				achievementsByUserId,
+				achievementsById,
+				userId,
+				userAchievement.achievementId,
+				userAchievement.number,
+				0
+			);
+
+			if (useChanged) {
+				this.changed('achievementsranking', userId, achievementsByUserId[userId]);
+			} else {
+				this.added('achievementsranking', userId, achievementsByUserId[userId]);
+			}
+		},
+		changed: (userAchievement, oldUserAchievement) => {
+			if (userAchievement.number !== oldUserAchievement.number) {
+				const userId = userAchievement.userId;
+				achievementsByUserId = updateAchievementsByUserId(
+					achievementsByUserId,
+					achievementsById,
+					userId,
+					userAchievement.achievementId,
+					userAchievement.number,
+					oldUserAchievement.number
+				);
+				this.changed('achievementsranking', userId, achievementsByUserId[userId]);
 			}
 		}
 	});
 
-	const achievementsRanking = Object.keys(achievementsByUserId).map(userId => achievementsByUserId[userId]);
-	achievementsRanking.sort((a, b) => {
-		const levelA = a.level1 + a.level2 * 2 + a.level3 * 3;
-		const levelB = b.level1 + b.level2 * 2 + b.level3 * 3;
-
-		return levelA > levelB ? -1 : 1;
-	});
-
-	achievementsRanking.forEach((achievementRanking) => {
-		this.added('achievementsranking', achievementRanking.userId, achievementRanking);
-	});
-
 	this.ready();
+
+	this.onStop(() => {
+		this.userAchievementsTracker.stop();
+	});
 });
+
+const initializeAchievementsByUserId = function(achievementsByUserId, userId) {
+	if (!achievementsByUserId[userId]) {
+		achievementsByUserId[userId] = {
+			userId: userId,
+			level1: 0,
+			level2: 0,
+			level3: 0,
+			rank: 0
+		};
+	}
+
+	return achievementsByUserId;
+};
+
+const updateAchievementsByUserId = function(
+	achievementsByUserId,
+	achievementsById,
+	userId,
+	achievementId,
+	afterNumber,
+	beforeNumber
+) {
+	achievementsByUserId = initializeAchievementsByUserId(achievementsByUserId, userId);
+
+	if (achievementsById[achievementId]) {
+		for (let level of achievementsById[achievementId].levels) {
+			if (afterNumber >= level.number && beforeNumber < level.number) {
+				achievementsByUserId[userId]['level' + level.level] += 1;
+				achievementsByUserId[userId]['rank'] += level.level;
+			}
+		}
+	}
+
+	return achievementsByUserId;
+};
