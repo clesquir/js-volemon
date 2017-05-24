@@ -4,7 +4,8 @@ import {
 	ACHIEVEMENT_PAUSE_IN_A_POINT,
 	ACHIEVEMENT_PAUSE_IN_A_GAME,
 	ACHIEVEMENT_INVISIBLE_IN_A_POINT,
-	ACHIEVEMENT_INVISIBLE_IN_A_GAME
+	ACHIEVEMENT_INVISIBLE_IN_A_GAME,
+	ACHIEVEMENT_ALL_BONUSES_IN_A_GAME
 } from '/imports/api/achievements/constants.js'
 
 Meteor.startup(function () {
@@ -40,6 +41,17 @@ Meteor.startup(function () {
 		Achievements.update(
 			{_id: ACHIEVEMENT_INVISIBLE_IN_A_GAME},
 			{$set: {levels: [{"level": 1, "number": 4}, {"level": 2, "number": 8}, {"level": 3, "number": 12}]}}
+		);
+	}
+
+	/**
+	 * Migration for updating levels for Caugh all bonuses in a game
+	 */
+	const allBonusesInAGame = Achievements.findOne({_id: ACHIEVEMENT_ALL_BONUSES_IN_A_GAME});
+	if (allBonusesInAGame !== undefined && allBonusesInAGame.levels[0].number === 3) {
+		Achievements.update(
+			{_id: ACHIEVEMENT_ALL_BONUSES_IN_A_GAME},
+			{$set: {levels: [{"level": 1, "number": 1}, {"level": 2, "number": 3}, {"level": 3, "number": 5}]}}
 		);
 	}
 });
