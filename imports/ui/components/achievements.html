@@ -22,7 +22,14 @@
 					</div>
 					<div class="achievement-level-info">{{achievementLevel 3}}</div>
 				</div>
-				<div class="achievement-description">{{name}}: {{achievementProgress ../userAchievements}}</div>
+				<div class="achievement-information">
+					<div class="achievement-name">{{name}}</div>
+					{{#unless isSecret}}
+						<div class="achievement-description">
+							{{description}}: {{achievementProgress ../userAchievements}}
+						</div>
+					{{/unless}}
+				</div>
 			</div>
 		{{/each}}
 	</div>

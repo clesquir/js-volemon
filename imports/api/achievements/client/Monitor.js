@@ -66,6 +66,7 @@ export default class Monitor {
 				level: levelReached.level,
 				levelNumber: levelReached.number,
 				name: achievement.name,
+				description: achievement.description,
 				number: newNumber
 			});
 

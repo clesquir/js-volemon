@@ -2,103 +2,120 @@
   "achievements": [
     {
       "_id": "POINT_TIME",
-      "name": "Time for a point",
+      "name": "Why won't you die?",
+      "description": "Time for a point",
       "type": "MS",
       "levels": [{"level": 1, "number": 120000}, {"level": 2, "number": 150000}, {"level": 3, "number": 180000}]
     },
     {
       "_id": "GAME_TIME",
-      "name": "Time for a game",
+      "name": "It is never ending!",
+      "description": "Time for a game",
       "type": "MS",
       "levels": [{"level": 1, "number": 300000}, {"level": 2, "number": 450000}, {"level": 3, "number": 600000}]
     },
     {
       "_id": "GAMES_PLAYED",
-      "name": "# of games played",
+      "name": "Warm-up",
+      "description": "# of games played",
       "type": "QUANTITY",
       "levels": [{"level": 1, "number": 250}, {"level": 2, "number": 500}, {"level": 3, "number": 1000}]
     },
     {
       "_id": "SHUTOUTS",
-      "name": "# of shutouts",
+      "name": "Bulletproof",
+      "description": "# of shutouts",
       "type": "QUANTITY",
       "levels": [{"level": 1, "number": 50}, {"level": 2, "number": 100}, {"level": 3, "number": 200}]
     },
     {
       "_id": "CONSECUTIVE_WON_GAMES",
-      "name": "# of consecutive won games",
+      "name": "Undefeatable",
+      "description": "# of consecutive won games",
       "type": "QUANTITY",
       "levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 25}]
     },
     {
       "_id": "CONSECUTIVE_DAYS_PLAYED",
-      "name": "# of consecutive days played",
+      "name": "I'm an addict...",
+      "description": "# of consecutive days played",
       "type": "QUANTITY",
       "levels": [{"level": 1, "number": 7}, {"level": 2, "number": 14}, {"level": 3, "number": 30}]
     },
     {
       "_id": "PAUSE_IN_A_POINT",
-      "name": "# of pause bonuses caught in a point",
+      "name": "Ice baby",
+      "description": "# of pause bonuses caught in a point",
       "type": "QUANTITY",
       "levels": [{"level": 1, "number": 2}, {"level": 2, "number": 4}, {"level": 3, "number": 6}]
     },
     {
       "_id": "PAUSE_IN_A_GAME",
-      "name": "# of pause bonuses caught in a game",
+      "name": "Barely moving",
+      "description": "# of pause bonuses caught in a game",
       "type": "QUANTITY",
       "levels": [{"level": 1, "number": 3}, {"level": 2, "number": 6}, {"level": 3, "number": 9}]
     },
     {
       "_id": "PAUSE_IN_A_LIFETIME",
-      "name": "# of pause bonuses caught in a lifetime",
+      "name": "Frozen fossil",
+      "description": "# of pause bonuses caught in a lifetime",
       "type": "QUANTITY",
       "levels": [{"level": 1, "number": 50}, {"level": 2, "number": 100}, {"level": 3, "number": 200}]
     },
     {
       "_id": "INVISIBLE_IN_A_POINT",
-      "name": "# of invisible bonuses caught in a point",
+      "name": "Blindfolded",
+      "description": "# of invisible bonuses caught in a point",
       "type": "QUANTITY",
       "levels": [{"level": 1, "number": 3}, {"level": 2, "number": 6}, {"level": 3, "number": 9}]
     },
     {
       "_id": "INVISIBLE_IN_A_GAME",
-      "name": "# of invisible bonuses caught in a game",
+      "name": "Vision loss",
+      "description": "# of invisible bonuses caught in a game",
       "type": "QUANTITY",
       "levels": [{"level": 1, "number": 4}, {"level": 2, "number": 8}, {"level": 3, "number": 12}]
     },
     {
       "_id": "INVISIBLE_IN_A_LIFETIME",
-      "name": "# of invisible bonuses caught in a lifetime",
+      "name": "No idea what I'm doing",
+      "description": "# of invisible bonuses caught in a lifetime",
       "type": "QUANTITY",
       "levels": [{"level": 1, "number": 50}, {"level": 2, "number": 100}, {"level": 3, "number": 200}]
     },
     {
       "_id": "BONUSES_IN_A_POINT",
-      "name": "# of bonuses caught in a point",
+      "name": "Mine, mine",
+      "description": "# of bonuses caught in a point",
       "type": "QUANTITY",
       "levels": [{"level": 1, "number": 10}, {"level": 2, "number": 15}, {"level": 3, "number": 20}]
     },
     {
       "_id": "BONUSES_IN_A_GAME",
-      "name": "# of bonuses caught in a game",
+      "name": "All mine!",
+      "description": "# of bonuses caught in a game",
       "type": "QUANTITY",
       "levels": [{"level": 1, "number": 15}, {"level": 2, "number": 30}, {"level": 3, "number": 50}]
     },
     {
       "_id": "BONUSES_IN_A_LIFETIME",
-      "name": "# of bonuses caught in a lifetime",
+      "name": "Bonuses magnet",
+      "description": "# of bonuses caught in a lifetime",
       "type": "QUANTITY",
       "levels": [{"level": 1, "number": 250}, {"level": 2, "number": 750}, {"level": 3, "number": 1500}]
     },
     {
       "_id": "SIMULTANEOUS_ACTIVATED_BONUSES",
-      "name": "# of simultaneously active bonuses",
+      "name": "Fully equipped",
+      "description": "# of simultaneously active bonuses",
       "type": "QUANTITY",
       "levels": [{"level": 1, "number": 3}, {"level": 2, "number": 4}, {"level": 3, "number": 5}]
     },
     {
       "_id": "ALL_BONUSES_IN_A_GAME",
-      "name": "Caught all bonuses in a game",
+      "name": "Catch'em all",
+      "description": "Caught all bonuses in a game",
       "type": "TIMES",
       "levels": [{"level": 1, "number": 3}, {"level": 2, "number": 5}, {"level": 3, "number": 10}]
     }
