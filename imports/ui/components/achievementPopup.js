@@ -26,10 +26,18 @@ Template.achievementPopup.helpers({
 		return '';
 	},
 
-	achievementText: function() {
+	achievementName: function() {
 		const achievement = Session.get('achievement-reached');
 		if (achievement) {
-			return achievement.name + ': ' + formatAchievementNumber(achievement.type, achievement.number);
+			return achievement.name;
+		}
+		return '';
+	},
+
+	achievementDescription: function() {
+		const achievement = Session.get('achievement-reached');
+		if (achievement) {
+			return achievement.description + ': ' + formatAchievementNumber(achievement.type, achievement.number);
 		}
 		return '';
 	}

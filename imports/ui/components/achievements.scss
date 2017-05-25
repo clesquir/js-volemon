@@ -15,10 +15,6 @@ $gold-color: #eadc5e;
 .achievement-item {
 	margin: 0 10px 0 0;
 	position: relative;
-
-	@include breakpoint(mobile) {
-		margin-right: 15px;
-	}
 }
 
 .achievement-star {
@@ -98,14 +94,25 @@ $gold-color: #eadc5e;
 	}
 }
 
-.achievement-description {
+.achievement-information {
 	flex: 1 0 0;
 	text-align: left;
-	font-size: 20px;
 	margin-left: 10px;
 
-	@include breakpoint(mobile) {
+	.achievement-name {
+		font-size: 20px;
+
+		@include breakpoint(mobile) {
+			font-size: 15px;
+		}
+	}
+
+	.achievement-description {
 		font-size: 15px;
+
+		@include breakpoint(mobile) {
+			font-size: 12px;
+		}
 	}
 }
 
@@ -130,8 +137,15 @@ $gold-color: #eadc5e;
 		}
 	}
 
-	.achievement-description {
+	.achievement-information {
 		margin-left: 0;
-		font-size: 15px;
+
+		.achievement-name {
+			font-size: 15px;
+		}
+
+		.achievement-description {
+			font-size: 12px;
+		}
 	}
 }
