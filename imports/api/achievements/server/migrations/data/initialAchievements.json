@@ -118,6 +118,14 @@
       "description": "Caught all bonuses in a game",
       "type": "TIMES",
       "levels": [{"level": 1, "number": 3}, {"level": 2, "number": 5}, {"level": 3, "number": 10}]
+    },
+    {
+      "_id": "GAMES_WON_WITH_X_SHAPE",
+      "isSecret": true,
+      "name": "Letter, number or operator",
+      "description": "# on won games with the X shape",
+      "type": "QUANTITY",
+      "levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 25}]
     }
   ]
 }
