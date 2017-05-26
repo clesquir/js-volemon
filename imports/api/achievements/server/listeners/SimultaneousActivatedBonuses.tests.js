@@ -32,7 +32,7 @@ describe('AchievementListener#SimultaneousActivatedBonuses', function() {
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1', 'a'));
 
 		assert.strictEqual(1, listener.numberOfActivatedBonuses());
 		assertSimultaneousActivatedBonusesUserAchievementNumberEquals(1);
@@ -43,13 +43,13 @@ describe('AchievementListener#SimultaneousActivatedBonuses', function() {
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1', 'a'));
 
 		assert.strictEqual(1, listener.numberOfActivatedBonuses());
 		assert.equal(1, UserAchievements.find().count());
 		assertSimultaneousActivatedBonusesUserAchievementNumberEquals(1);
 
-		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1', 'a'));
 
 		assert.strictEqual(1, listener.numberOfActivatedBonuses());
 		assertSimultaneousActivatedBonusesUserAchievementNumberEquals(1);
@@ -60,7 +60,7 @@ describe('AchievementListener#SimultaneousActivatedBonuses', function() {
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusCaught(new BonusCaught(Random.id(5), 'a', 'player1', 'a', 'player1'));
+		listener.onBonusCaught(new BonusCaught(Random.id(5), 'a', 'player1', 'a', 'player1', 'a'));
 		assert.equal(0, UserAchievements.find().count());
 	});
 
@@ -69,7 +69,7 @@ describe('AchievementListener#SimultaneousActivatedBonuses', function() {
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player2', 'a', 'player2'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player2', 'a', 'player2', 'a'));
 		assert.equal(0, UserAchievements.find().count());
 	});
 
@@ -77,7 +77,7 @@ describe('AchievementListener#SimultaneousActivatedBonuses', function() {
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1'), 'a');
 		assert.strictEqual(1, listener.numberOfActivatedBonuses());
 
 		listener.onBonusRemoved(new BonusRemoved(gameId, 'a', 'player1', 'a', 'player1'));
@@ -88,7 +88,7 @@ describe('AchievementListener#SimultaneousActivatedBonuses', function() {
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1', 'a'));
 		assert.strictEqual(1, listener.numberOfActivatedBonuses());
 
 		listener.onBonusRemoved(new BonusRemoved(gameId, 'b', 'player1', 'b', 'player1'));
@@ -99,7 +99,7 @@ describe('AchievementListener#SimultaneousActivatedBonuses', function() {
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1', 'a'));
 		assert.strictEqual(1, listener.numberOfActivatedBonuses());
 
 		listener.onBonusRemoved(new BonusRemoved(Random.id(5), 'a', 'player1', 'a', 'player1'));
@@ -110,7 +110,7 @@ describe('AchievementListener#SimultaneousActivatedBonuses', function() {
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1', 'a'));
 		assert.strictEqual(1, listener.numberOfActivatedBonuses());
 
 		listener.onBonusRemoved(new BonusRemoved(gameId, 'a', 'player2', 'a', 'player2'));
@@ -121,7 +121,7 @@ describe('AchievementListener#SimultaneousActivatedBonuses', function() {
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1', 'a'));
 		assert.strictEqual(1, listener.numberOfActivatedBonuses());
 
 		listener.onPointTaken(new PointTaken(gameId, 2000));
@@ -132,7 +132,7 @@ describe('AchievementListener#SimultaneousActivatedBonuses', function() {
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1', 'a'));
 		assert.strictEqual(1, listener.numberOfActivatedBonuses());
 
 		listener.onPointTaken(new PointTaken(Random.id(5), 2000));
@@ -142,7 +142,7 @@ describe('AchievementListener#SimultaneousActivatedBonuses', function() {
 	it('do not reset if user is not game player', function() {
 		Games.insert({_id: gameId, createdBy: userId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1', 'a'));
 		assert.strictEqual(1, listener.numberOfActivatedBonuses());
 
 		listener.onPointTaken(new PointTaken(gameId, 2000));

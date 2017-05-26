@@ -17,6 +17,7 @@ import PauseInAGame from '/imports/api/achievements/server/listeners/PauseInAGam
 import PauseInALifetime from '/imports/api/achievements/server/listeners/PauseInALifetime.js';
 import PauseInAPoint from '/imports/api/achievements/server/listeners/PauseInAPoint.js';
 import PointTime from '/imports/api/achievements/server/listeners/PointTime.js';
+import RandomInAGame from '/imports/api/achievements/server/listeners/RandomInAGame.js';
 import Shutouts from '/imports/api/achievements/server/listeners/Shutouts.js';
 import SimultaneousActivatedBonuses from '/imports/api/achievements/server/listeners/SimultaneousActivatedBonuses.js';
 import {Games} from '/imports/api/games/games.js';
@@ -66,6 +67,7 @@ export default class Listeners {
 			this.listeners.push(new InvincibleInALifetime(this.gameId, player.userId));
 			this.listeners.push(new ConsecutiveLostGames(this.gameId, player.userId));
 			this.listeners.push(new GamesWonUnderAMinute(this.gameId, player.userId));
+			this.listeners.push(new RandomInAGame(this.gameId, player.userId));
 		});
 	}
 

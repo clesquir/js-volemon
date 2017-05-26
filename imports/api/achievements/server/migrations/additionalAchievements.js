@@ -4,7 +4,8 @@ import {
 	ACHIEVEMENT_GAMES_WON_WITH_X_SHAPE,
 	ACHIEVEMENT_INVINCIBLE_IN_A_LIFETIME,
 	ACHIEVEMENT_CONSECUTIVE_LOST_GAMES,
-	ACHIEVEMENT_GAMES_WON_UNDER_A_MINUTE
+	ACHIEVEMENT_GAMES_WON_UNDER_A_MINUTE,
+	ACHIEVEMENT_RANDOM_IN_A_GAME
 } from '/imports/api/achievements/constants.js';
 
 Meteor.startup(function () {
@@ -53,6 +54,17 @@ Meteor.startup(function () {
 			"type": "TIMES",
 			"displayOrder": 21,
 			"levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 15}]
+		});
+	}
+	if (!Achievements.findOne({_id: ACHIEVEMENT_RANDOM_IN_A_GAME})) {
+		Achievements.insert({
+			"_id": ACHIEVEMENT_RANDOM_IN_A_GAME,
+			"isSecret": true,
+			"name": "Gambler",
+			"description": "# of random bonuses caught in a game",
+			"type": "QUANTITY",
+			"displayOrder": 22,
+			"levels": [{"level": 1, "number": 4}, {"level": 2, "number": 8}, {"level": 3, "number": 12}]
 		});
 	}
 });
