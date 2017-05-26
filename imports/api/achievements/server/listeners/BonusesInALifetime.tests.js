@@ -9,7 +9,7 @@ import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 
-describe('BonusesInALifetime', function() {
+describe('AchievementListener#BonusesInALifetime', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
 	const listener = new BonusesInALifetime(gameId, userId);

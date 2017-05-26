@@ -38,7 +38,7 @@ export const HomeController = RouteController.extend({
 	},
 	data: function() {
 		return {
-			achievements: Achievements.find(),
+			achievements: Achievements.find({}, {sort: [['displayOrder', 'asc']]}),
 			userAchievements: UserAchievements.find({userId: Meteor.userId()}),
 			profile: Profiles.findOne({userId: Meteor.userId()}),
 			games: Games.find({}, {sort: [['startedAt', 'desc']]}),

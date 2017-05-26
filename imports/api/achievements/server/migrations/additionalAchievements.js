@@ -3,7 +3,8 @@ import {Achievements} from '/imports/api/achievements/achievements.js';
 import {
 	ACHIEVEMENT_GAMES_WON_WITH_X_SHAPE,
 	ACHIEVEMENT_INVINCIBLE_IN_A_LIFETIME,
-	ACHIEVEMENT_CONSECUTIVE_LOST_GAMES
+	ACHIEVEMENT_CONSECUTIVE_LOST_GAMES,
+	ACHIEVEMENT_GAMES_WON_UNDER_A_MINUTE
 } from '/imports/api/achievements/constants.js';
 
 Meteor.startup(function () {
@@ -17,6 +18,7 @@ Meteor.startup(function () {
 			"name": "Letter, number or operator",
 			"description": "# on won games with the X shape",
 			"type": "QUANTITY",
+			"displayOrder": 18,
 			"levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 25}]
 		});
 	}
@@ -27,6 +29,7 @@ Meteor.startup(function () {
 			"name": "Always my armor on",
 			"description": "# of invincible bonuses caught in a game",
 			"type": "QUANTITY",
+			"displayOrder": 19,
 			"levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 25}]
 		});
 	}
@@ -37,7 +40,19 @@ Meteor.startup(function () {
 			"name": "Master of nothing",
 			"description": "# of consecutive lost games",
 			"type": "QUANTITY",
+			"displayOrder": 20,
 			"levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 25}]
+		});
+	}
+	if (!Achievements.findOne({_id: ACHIEVEMENT_GAMES_WON_UNDER_A_MINUTE})) {
+		Achievements.insert({
+			"_id": ACHIEVEMENT_GAMES_WON_UNDER_A_MINUTE,
+			"isSecret": true,
+			"name": "Birdie",
+			"description": "# of games won under a minute",
+			"type": "TIMES",
+			"displayOrder": 21,
+			"levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 15}]
 		});
 	}
 });

@@ -11,7 +11,7 @@ import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {BONUS_INVISIBLE_MONSTER, BONUS_INVISIBLE_OPPONENT_MONSTER} from '/imports/api/games/bonusConstants.js';
 
-describe('InvisibleInAGame', function() {
+describe('AchievementListener#InvisibleInAGame', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
 	const assertInvisibleInAPointUserAchievementNumberEquals = function(number) {

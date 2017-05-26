@@ -10,7 +10,7 @@ import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 
-describe('SimultaneousActivatedBonuses', function() {
+describe('AchievementListener#SimultaneousActivatedBonuses', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
 	const listener = new SimultaneousActivatedBonuses(gameId, userId);

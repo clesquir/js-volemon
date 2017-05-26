@@ -9,7 +9,7 @@ import GameFinished from '/imports/api/games/events/GameFinished.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 
-describe('GameTime', function() {
+describe('AchievementListener#GameTime', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
 	const listener = new GameTime(gameId, userId);

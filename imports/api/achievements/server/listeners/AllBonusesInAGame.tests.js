@@ -8,7 +8,7 @@ import {ACHIEVEMENT_ALL_BONUSES_IN_A_GAME} from '/imports/api/achievements/const
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import {Games} from '/imports/api/games/games.js';
 
-describe('AllBonusesInAGame', function() {
+describe('AchievementListener#AllBonusesInAGame', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
 	const listener = new AllBonusesInAGame(gameId, userId);

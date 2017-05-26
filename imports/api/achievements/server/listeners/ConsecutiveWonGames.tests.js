@@ -10,7 +10,7 @@ import PlayerWon from '/imports/api/games/events/PlayerWon.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 
-describe('ConsecutiveWonGames', function() {
+describe('AchievementListener#ConsecutiveWonGames', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
 	const assertConsecutiveWonGamesUserAchievementNumberEquals = function(number) {

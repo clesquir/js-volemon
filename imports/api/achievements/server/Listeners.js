@@ -7,6 +7,7 @@ import ConsecutiveLostGames from '/imports/api/achievements/server/listeners/Con
 import ConsecutiveWonGames from '/imports/api/achievements/server/listeners/ConsecutiveWonGames.js';
 import GamesPlayed from '/imports/api/achievements/server/listeners/GamesPlayed.js';
 import GameTime from '/imports/api/achievements/server/listeners/GameTime.js';
+import GamesWonUnderAMinute from '/imports/api/achievements/server/listeners/GamesWonUnderAMinute.js';
 import GamesWonWithXShape from '/imports/api/achievements/server/listeners/GamesWonWithXShape.js';
 import InvincibleInALifetime from '/imports/api/achievements/server/listeners/InvincibleInALifetime.js';
 import InvisibleInAGame from '/imports/api/achievements/server/listeners/InvisibleInAGame.js';
@@ -64,6 +65,7 @@ export default class Listeners {
 			this.listeners.push(new GamesWonWithXShape(this.gameId, player.userId));
 			this.listeners.push(new InvincibleInALifetime(this.gameId, player.userId));
 			this.listeners.push(new ConsecutiveLostGames(this.gameId, player.userId));
+			this.listeners.push(new GamesWonUnderAMinute(this.gameId, player.userId));
 		});
 	}
 

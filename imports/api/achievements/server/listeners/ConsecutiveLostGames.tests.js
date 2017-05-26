@@ -10,7 +10,7 @@ import PlayerWon from '/imports/api/games/events/PlayerWon.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 
-describe('ConsecutiveLostGames', function() {
+describe('AchievementListener#ConsecutiveLostGames', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
 	const assertConsecutiveLostGamesUserAchievementNumberEquals = function(number) {
