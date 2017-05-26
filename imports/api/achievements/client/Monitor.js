@@ -72,7 +72,7 @@ export default class Monitor {
 
 			this.removeAchievementTimeout = Meteor.setTimeout(() => {
 				Session.set('achievement-reached-visible', false);
-			}, 5000);
+			}, 10000);
 		}
 	}
 
