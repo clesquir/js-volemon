@@ -47,21 +47,21 @@
       "name": "Ice baby",
       "description": "# of pause bonuses caught in a point",
       "type": "QUANTITY",
-      "levels": [{"level": 1, "number": 2}, {"level": 2, "number": 4}, {"level": 3, "number": 6}]
+      "levels": [{"level": 1, "number": 2}, {"level": 2, "number": 3}, {"level": 3, "number": 4}]
     },
     {
       "_id": "PAUSE_IN_A_GAME",
       "name": "Barely moving",
       "description": "# of pause bonuses caught in a game",
       "type": "QUANTITY",
-      "levels": [{"level": 1, "number": 3}, {"level": 2, "number": 6}, {"level": 3, "number": 9}]
+      "levels": [{"level": 1, "number": 3}, {"level": 2, "number": 5}, {"level": 3, "number": 7}]
     },
     {
       "_id": "PAUSE_IN_A_LIFETIME",
       "name": "Frozen fossil",
       "description": "# of pause bonuses caught in a lifetime",
       "type": "QUANTITY",
-      "levels": [{"level": 1, "number": 50}, {"level": 2, "number": 100}, {"level": 3, "number": 200}]
+      "levels": [{"level": 1, "number": 25}, {"level": 2, "number": 50}, {"level": 3, "number": 100}]
     },
     {
       "_id": "INVISIBLE_IN_A_POINT",
@@ -96,7 +96,7 @@
       "name": "All mine!",
       "description": "# of bonuses caught in a game",
       "type": "QUANTITY",
-      "levels": [{"level": 1, "number": 15}, {"level": 2, "number": 30}, {"level": 3, "number": 50}]
+      "levels": [{"level": 1, "number": 15}, {"level": 2, "number": 30}, {"level": 3, "number": 45}]
     },
     {
       "_id": "BONUSES_IN_A_LIFETIME",
