@@ -9,7 +9,7 @@ import {ACHIEVEMENT_CONSECUTIVE_DAYS_PLAYED} from '/imports/api/achievements/con
 import GameFinished from '/imports/api/games/events/GameFinished.js';
 import {Players} from '/imports/api/games/players.js';
 
-describe('ConsecutiveDaysPlayed', function() {
+describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
 	const listener = new ConsecutiveDaysPlayed(gameId, userId);

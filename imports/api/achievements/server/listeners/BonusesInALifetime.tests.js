@@ -9,7 +9,7 @@ import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 
-describe('BonusesInALifetime', function() {
+describe('AchievementListener#BonusesInALifetime', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
 	const listener = new BonusesInALifetime(gameId, userId);
@@ -31,7 +31,7 @@ describe('BonusesInALifetime', function() {
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1', 'a'));
 
 		assert.equal(1, UserAchievements.find().count());
 		assertBonusesInALifetimeUserAchievementNumberEquals(1);
@@ -42,7 +42,7 @@ describe('BonusesInALifetime', function() {
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusCaught(new BonusCaught(Random.id(5), 'a', 'player1', 'a', 'player1'));
+		listener.onBonusCaught(new BonusCaught(Random.id(5), 'a', 'player1', 'a', 'player1', 'a'));
 		assert.equal(0, UserAchievements.find().count());
 	});
 
@@ -51,7 +51,7 @@ describe('BonusesInALifetime', function() {
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player2', 'a', 'player2'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player2', 'a', 'player2', 'a'));
 		assert.equal(0, UserAchievements.find().count());
 	});
 
@@ -60,7 +60,7 @@ describe('BonusesInALifetime', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_BONUSES_IN_A_LIFETIME, number: 1});
 
-		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1', 'a'));
 
 		assertBonusesInALifetimeUserAchievementNumberEquals(2);
 	});
@@ -70,7 +70,7 @@ describe('BonusesInALifetime', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_BONUSES_IN_A_LIFETIME, number: 1});
 
-		listener.onBonusCaught(new BonusCaught(Random.id(5), 'a', 'player1', 'a', 'player1'));
+		listener.onBonusCaught(new BonusCaught(Random.id(5), 'a', 'player1', 'a', 'player1', 'a'));
 
 		assertBonusesInALifetimeUserAchievementNumberEquals(1);
 	});
@@ -80,7 +80,7 @@ describe('BonusesInALifetime', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_BONUSES_IN_A_LIFETIME, number: 1});
 
-		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player2', 'a', 'player2'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player2', 'a', 'player2', 'a'));
 
 		assertBonusesInALifetimeUserAchievementNumberEquals(1);
 	});

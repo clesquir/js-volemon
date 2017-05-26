@@ -552,24 +552,26 @@ export default class GameBonus {
 			return;
 		}
 
-		let bonus = correspondingBonusSprite.bonus.bonusToActivate();
+		const bonus = correspondingBonusSprite.bonus;
+		let bonusToActivate = bonus.bonusToActivate();
 
-		bonus.activate(playerKey, activatedAt);
-		bonus.start();
+		bonusToActivate.activate(playerKey, activatedAt);
+		bonusToActivate.start();
 
-		this.deactivateSimilarBonusForPlayerKey(bonus, playerKey);
+		this.deactivateSimilarBonusForPlayerKey(bonusToActivate, playerKey);
 
-		this.activeBonuses.push(bonus);
+		this.activeBonuses.push(bonusToActivate);
 		if (this.gameData.isUserHost()) {
 			Meteor.call(
 				'addActiveBonusToGame',
 				this.game.gameId,
-				bonus.getIdentifier(),
-				bonus.classNameToActivate(),
+				bonusToActivate.getIdentifier(),
+				bonusToActivate.classNameToActivate(),
 				activatedAt,
-				bonus.getTargetPlayerKey(),
-				bonus.getClassName(),
-				bonus.getActivatorPlayerKey()
+				bonusToActivate.getTargetPlayerKey(),
+				bonusToActivate.getClassName(),
+				bonusToActivate.getActivatorPlayerKey(),
+				bonus.getClassName()
 			);
 		}
 

@@ -5,22 +5,22 @@
 		{{#each achievements}}
 			<div class="achievement-row">
 				<div class="achievement-item">
-					<div class="achievement-star achievement-star-level-1 {{achievementStarClass ../userAchievements 1}}">
+					<div class="achievement-star achievement-star-level-1 {{#if achievementLevelReached ../userAchievements 1}}level-completed{{else}}level-not-completed{{/if}}">
 						<i class="fa fa-star-o" aria-hidden="true"></i>
 					</div>
-					<div class="achievement-level-info">{{achievementLevel 1}}</div>
+					<div class="achievement-level-info">{{achievementLevel ../userAchievements 1}}</div>
 				</div>
 				<div class="achievement-item">
-					<div class="achievement-star achievement-star-level-2 {{achievementStarClass ../userAchievements 2}}">
+					<div class="achievement-star achievement-star-level-2 {{#if achievementLevelReached ../userAchievements 2}}level-completed{{else}}level-not-completed{{/if}}">
 						<i class="fa fa-star-o" aria-hidden="true"></i>
 					</div>
-					<div class="achievement-level-info">{{achievementLevel 2}}</div>
+					<div class="achievement-level-info">{{achievementLevel ../userAchievements 2}}</div>
 				</div>
 				<div class="achievement-item">
-					<div class="achievement-star achievement-star-level-3 {{achievementStarClass ../userAchievements 3}}">
+					<div class="achievement-star achievement-star-level-3 {{#if achievementLevelReached ../userAchievements 3}}level-completed{{else}}level-not-completed{{/if}}">
 						<i class="fa fa-star-o" aria-hidden="true"></i>
 					</div>
-					<div class="achievement-level-info">{{achievementLevel 3}}</div>
+					<div class="achievement-level-info">{{achievementLevel ../userAchievements 3}}</div>
 				</div>
 				<div class="achievement-information">
 					<div class="achievement-name">{{name}}</div>

@@ -4,11 +4,11 @@ import initialAchievements from '/imports/api/achievements/server/migrations/dat
 
 Meteor.startup(function () {
 	/**
-	 * Migration for initial achievements insertion
+	 * Migration for adding displayOrder to the achievements
 	 */
-	if (Achievements.find().count() === 0) {
+	if (Achievements.find({displayOrder: {$exists: true}}).count() === 0) {
 		initialAchievements.achievements.forEach(function(achievement) {
-			Achievements.insert(achievement);
+			Achievements.update({_id: achievement._id}, {$set: {displayOrder: achievement.displayOrder}});
 		});
 	}
 });

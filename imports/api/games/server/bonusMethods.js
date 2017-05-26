@@ -25,7 +25,7 @@ Meteor.methods({
 		Games.update({_id: game._id}, {$set: {hasBonuses: hasBonuses ? 1 : 0}});
 	},
 
-	addActiveBonusToGame: function(gameId, bonusIdentifier, activatedBonusClass, activatedAt, targetPlayerKey, bonusClass, activatorPlayerKey) {
+	addActiveBonusToGame: function(gameId, bonusIdentifier, activatedBonusClass, activatedAt, targetPlayerKey, bonusClass, activatorPlayerKey, initialBonusClass) {
 		const game = Games.findOne(gameId);
 		const data = {};
 
@@ -43,13 +43,14 @@ Meteor.methods({
 			activatedAt: activatedAt,
 			targetPlayerKey: targetPlayerKey,
 			bonusClass: bonusClass,
-			activatorPlayerKey: activatorPlayerKey
+			activatorPlayerKey: activatorPlayerKey,
+			initialBonusClass: initialBonusClass
 		}]);
 
 		Games.update({_id: game._id}, {$set: data});
 
 		EventPublisher.publish(new BonusCaught(
-			game._id, activatedBonusClass, targetPlayerKey, bonusClass, activatorPlayerKey
+			game._id, activatedBonusClass, targetPlayerKey, bonusClass, activatorPlayerKey, initialBonusClass
 		));
 	},
 

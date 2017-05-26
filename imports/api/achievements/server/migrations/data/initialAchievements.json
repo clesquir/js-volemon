@@ -5,6 +5,7 @@
       "name": "Why won't you die?",
       "description": "Time for a point",
       "type": "MS",
+      "displayOrder": 1,
       "levels": [{"level": 1, "number": 120000}, {"level": 2, "number": 150000}, {"level": 3, "number": 180000}]
     },
     {
@@ -12,6 +13,7 @@
       "name": "It is never ending!",
       "description": "Time for a game",
       "type": "MS",
+      "displayOrder": 2,
       "levels": [{"level": 1, "number": 300000}, {"level": 2, "number": 450000}, {"level": 3, "number": 600000}]
     },
     {
@@ -19,6 +21,7 @@
       "name": "Warm-up",
       "description": "# of games played",
       "type": "QUANTITY",
+      "displayOrder": 3,
       "levels": [{"level": 1, "number": 250}, {"level": 2, "number": 500}, {"level": 3, "number": 1000}]
     },
     {
@@ -26,6 +29,7 @@
       "name": "Bulletproof",
       "description": "# of shutouts",
       "type": "QUANTITY",
+      "displayOrder": 4,
       "levels": [{"level": 1, "number": 50}, {"level": 2, "number": 100}, {"level": 3, "number": 200}]
     },
     {
@@ -33,6 +37,7 @@
       "name": "Undefeatable",
       "description": "# of consecutive won games",
       "type": "QUANTITY",
+      "displayOrder": 5,
       "levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 25}]
     },
     {
@@ -40,6 +45,7 @@
       "name": "I'm an addict...",
       "description": "# of consecutive days played",
       "type": "QUANTITY",
+      "displayOrder": 6,
       "levels": [{"level": 1, "number": 7}, {"level": 2, "number": 14}, {"level": 3, "number": 30}]
     },
     {
@@ -47,6 +53,7 @@
       "name": "Ice baby",
       "description": "# of pause bonuses caught in a point",
       "type": "QUANTITY",
+      "displayOrder": 7,
       "levels": [{"level": 1, "number": 2}, {"level": 2, "number": 3}, {"level": 3, "number": 4}]
     },
     {
@@ -54,6 +61,7 @@
       "name": "Barely moving",
       "description": "# of pause bonuses caught in a game",
       "type": "QUANTITY",
+      "displayOrder": 8,
       "levels": [{"level": 1, "number": 3}, {"level": 2, "number": 5}, {"level": 3, "number": 7}]
     },
     {
@@ -61,6 +69,7 @@
       "name": "Frozen fossil",
       "description": "# of pause bonuses caught in a lifetime",
       "type": "QUANTITY",
+      "displayOrder": 9,
       "levels": [{"level": 1, "number": 25}, {"level": 2, "number": 50}, {"level": 3, "number": 100}]
     },
     {
@@ -68,6 +77,7 @@
       "name": "Blindfolded",
       "description": "# of invisible bonuses caught in a point",
       "type": "QUANTITY",
+      "displayOrder": 10,
       "levels": [{"level": 1, "number": 3}, {"level": 2, "number": 6}, {"level": 3, "number": 9}]
     },
     {
@@ -75,6 +85,7 @@
       "name": "Vision loss",
       "description": "# of invisible bonuses caught in a game",
       "type": "QUANTITY",
+      "displayOrder": 11,
       "levels": [{"level": 1, "number": 4}, {"level": 2, "number": 8}, {"level": 3, "number": 12}]
     },
     {
@@ -82,6 +93,7 @@
       "name": "No idea what I'm doing",
       "description": "# of invisible bonuses caught in a lifetime",
       "type": "QUANTITY",
+      "displayOrder": 12,
       "levels": [{"level": 1, "number": 50}, {"level": 2, "number": 100}, {"level": 3, "number": 200}]
     },
     {
@@ -89,6 +101,7 @@
       "name": "Mine, mine",
       "description": "# of bonuses caught in a point",
       "type": "QUANTITY",
+      "displayOrder": 13,
       "levels": [{"level": 1, "number": 10}, {"level": 2, "number": 15}, {"level": 3, "number": 20}]
     },
     {
@@ -96,6 +109,7 @@
       "name": "All mine!",
       "description": "# of bonuses caught in a game",
       "type": "QUANTITY",
+      "displayOrder": 14,
       "levels": [{"level": 1, "number": 15}, {"level": 2, "number": 30}, {"level": 3, "number": 45}]
     },
     {
@@ -103,6 +117,7 @@
       "name": "Bonuses magnet",
       "description": "# of bonuses caught in a lifetime",
       "type": "QUANTITY",
+      "displayOrder": 15,
       "levels": [{"level": 1, "number": 250}, {"level": 2, "number": 750}, {"level": 3, "number": 1500}]
     },
     {
@@ -110,6 +125,7 @@
       "name": "Fully equipped",
       "description": "# of simultaneously active bonuses",
       "type": "QUANTITY",
+      "displayOrder": 16,
       "levels": [{"level": 1, "number": 3}, {"level": 2, "number": 4}, {"level": 3, "number": 5}]
     },
     {
@@ -117,7 +133,53 @@
       "name": "Catch'em all",
       "description": "Caught all bonuses in a game",
       "type": "TIMES",
+      "displayOrder": 17,
       "levels": [{"level": 1, "number": 3}, {"level": 2, "number": 5}, {"level": 3, "number": 10}]
+    },
+    {
+      "_id": "GAMES_WON_WITH_X_SHAPE",
+      "isSecret": true,
+      "name": "Letter, number or operator",
+      "description": "# on won games with the X shape",
+      "type": "QUANTITY",
+      "displayOrder": 18,
+      "levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 25}]
+    },
+    {
+      "_id": "INVINCIBLE_IN_A_LIFETIME",
+      "isSecret": true,
+      "name": "Always my armor on",
+      "description": "# of invincible bonuses caught in a lifetime",
+      "type": "QUANTITY",
+      "displayOrder": 19,
+      "levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 25}]
+    },
+    {
+      "_id": "CONSECUTIVE_LOST_GAMES",
+      "isSecret": true,
+      "name": "Master of nothing",
+      "description": "# of consecutive lost games",
+      "type": "QUANTITY",
+      "displayOrder": 20,
+      "levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 25}]
+    },
+    {
+      "_id": "GAMES_WON_UNDER_A_MINUTE",
+      "isSecret": true,
+      "name": "Birdie",
+      "description": "# of games won under a minute",
+      "type": "TIMES",
+      "displayOrder": 21,
+      "levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 15}]
+    },
+    {
+      "_id": "RANDOM_IN_A_GAME",
+      "isSecret": true,
+      "name": "Gambler",
+      "description": "# of random bonuses caught in a game",
+      "type": "QUANTITY",
+      "displayOrder": 22,
+      "levels": [{"level": 1, "number": 4}, {"level": 2, "number": 8}, {"level": 3, "number": 12}]
     }
   ]
 }

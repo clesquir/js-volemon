@@ -8,7 +8,7 @@ import {ACHIEVEMENT_ALL_BONUSES_IN_A_GAME} from '/imports/api/achievements/const
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import {Games} from '/imports/api/games/games.js';
 
-describe('AllBonusesInAGame', function() {
+describe('AchievementListener#AllBonusesInAGame', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
 	const listener = new AllBonusesInAGame(gameId, userId);
@@ -31,9 +31,9 @@ describe('AllBonusesInAGame', function() {
 		});
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1', 'a'));
 		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusCaught(new BonusCaught(gameId, 'b', 'player1', 'b', 'player1'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'b', 'player1', 'b', 'player1', 'a'));
 
 		assert.equal(1, UserAchievements.find().count());
 		const achievement = UserAchievements.findOne();
@@ -53,7 +53,7 @@ describe('AllBonusesInAGame', function() {
 		});
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusCaught(new BonusCaught(Random.id(5), 'a', 'player1', 'a', 'player1'));
+		listener.onBonusCaught(new BonusCaught(Random.id(5), 'a', 'player1', 'a', 'player1', 'a'));
 		assert.equal(0, UserAchievements.find().count());
 	});
 
@@ -66,7 +66,7 @@ describe('AllBonusesInAGame', function() {
 		});
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player2', 'a', 'player2'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player2', 'a', 'player2', 'a'));
 		assert.equal(0, UserAchievements.find().count());
 	});
 
@@ -80,9 +80,9 @@ describe('AllBonusesInAGame', function() {
 		});
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1', 'a'));
 		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1', 'a'));
 		assert.equal(0, UserAchievements.find().count());
 	});
 });

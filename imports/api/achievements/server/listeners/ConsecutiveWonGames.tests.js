@@ -10,7 +10,7 @@ import PlayerWon from '/imports/api/games/events/PlayerWon.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 
-describe('ConsecutiveWonGames', function() {
+describe('AchievementListener#ConsecutiveWonGames', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
 	const assertConsecutiveWonGamesUserAchievementNumberEquals = function(number) {
@@ -111,7 +111,7 @@ describe('ConsecutiveWonGames', function() {
 		assert.equal(2, listener.numberSinceLastReset);
 	});
 
-	it('achievement will be incremented only if win strikes are greater than previous win strikes after a loss', function() {
+	it('achievement will be incremented only if win streaks are greater than previous win streaks after a loss', function() {
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 

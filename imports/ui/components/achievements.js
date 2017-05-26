@@ -4,38 +4,48 @@ import {formatAchievementNumber} from '/imports/api/achievements/utils.js';
 
 import './achievements.html';
 
-Template.achievements.helpers({
-	achievementLevel: function(level) {
-		let number = null;
-		this.levels.forEach(function(achievementLevel) {
-			if (achievementLevel.level === level) {
-				number = achievementLevel.number;
-			}
-		});
+const getAchievementNumber = function(achievement, level) {
+	let achievementNumber = null;
+	achievement.levels.forEach(function(achievementLevel) {
+		if (achievementLevel.level === level) {
+			achievementNumber = achievementLevel.number;
+		}
+	});
 
-		return formatAchievementNumber(this.type, number);
+	return achievementNumber;
+};
+
+const getUserAchievementNumber = function(achievement, userAchievements) {
+	let userAchievementNumber = 0;
+	userAchievements.forEach((userAchievement) => {
+		if (userAchievement.achievementId === achievement._id) {
+			userAchievementNumber = userAchievement.number;
+		}
+	});
+
+	return userAchievementNumber;
+};
+
+const achievementLevelReached = function(achievement, userAchievements, level) {
+	const achievementNumber = getAchievementNumber(achievement, level);
+	const userAchievementNumber = getUserAchievementNumber(achievement, userAchievements);
+
+	return (userAchievementNumber >= achievementNumber);
+};
+
+Template.achievements.helpers({
+	achievementLevel: function(userAchievements, level) {
+		if (this.isSecret && !achievementLevelReached(this, userAchievements, level)) {
+			return '?';
+		}
+
+		const achievementNumber = getAchievementNumber(this, level);
+
+		return formatAchievementNumber(this.type, achievementNumber);
 	},
 
-	achievementStarClass: function(userAchievements, level) {
-		let achievement = 0;
-		this.levels.forEach(function(achievementLevel) {
-			if (achievementLevel.level === level) {
-				achievement = achievementLevel.number;
-			}
-		});
-
-		let number = 0;
-		userAchievements.forEach((userAchievement) => {
-			if (userAchievement.achievementId === this._id) {
-				number = userAchievement.number;
-			}
-		});
-
-		if (number < achievement) {
-			return 'level-not-completed';
-		} else {
-			return 'level-completed';
-		}
+	achievementLevelReached: function(userAchievements, level) {
+		return achievementLevelReached(this, userAchievements, level);
 	},
 
 	achievementProgress: function(userAchievements) {
@@ -46,6 +56,8 @@ Template.achievements.helpers({
 			}
 		});
 
-		return formatAchievementNumber(this.type, number);
+		const userAchievementNumber = getUserAchievementNumber(this, userAchievements);
+
+		return formatAchievementNumber(this.type, userAchievementNumber);
 	}
 });

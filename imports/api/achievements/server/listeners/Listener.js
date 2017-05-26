@@ -110,6 +110,31 @@ export default class Listener {
 	}
 
 	/**
+	 * @param achievementId
+	 */
+	initNumberSinceLastReset(achievementId) {
+		const userAchievement = this.userAchievement(achievementId);
+
+		this.numberSinceLastReset = 0;
+		if (userAchievement) {
+			this.numberSinceLastReset = userAchievement.numberSinceLastReset;
+		}
+	}
+
+	/**
+	 * @param achievementId
+	 */
+	updatetNumberSinceLastReset(achievementId) {
+		const userAchievement = this.userAchievement(achievementId);
+
+		if (!userAchievement) {
+			this.insertAchievement(achievementId, {numberSinceLastReset: this.numberSinceLastReset});
+		} else {
+			this.updateAchievement(achievementId, {numberSinceLastReset: this.numberSinceLastReset});
+		}
+	}
+
+	/**
 	 * @protected
 	 * @param userAchievement
 	 * @param achievementId
