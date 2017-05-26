@@ -22,12 +22,15 @@ export default class ConsecutiveWonGames extends Listener {
 			event.gameId === this.gameId &&
 			event.userId === this.userId
 		) {
-			this.initNumberSinceLastReset();
+			this.initNumberSinceLastReset(ACHIEVEMENT_CONSECUTIVE_WON_GAMES);
 			this.incrementNumberIfHigherWithNumberSinceLastReset(ACHIEVEMENT_CONSECUTIVE_WON_GAMES);
-			this.updatetNumberSinceLastReset();
+			this.updatetNumberSinceLastReset(ACHIEVEMENT_CONSECUTIVE_WON_GAMES);
 		}
 	}
 
+	/**
+	 * @param {PlayerLost} event
+	 */
 	onPlayerLost(event) {
 		if (
 			event.gameId === this.gameId &&
@@ -45,25 +48,6 @@ export default class ConsecutiveWonGames extends Listener {
 			this.insertAchievement(ACHIEVEMENT_CONSECUTIVE_WON_GAMES, {number: 0, numberSinceLastReset: 0});
 		} else {
 			this.updateAchievement(ACHIEVEMENT_CONSECUTIVE_WON_GAMES, {numberSinceLastReset: 0});
-		}
-	}
-
-	initNumberSinceLastReset() {
-		const userAchievement = this.userAchievement(ACHIEVEMENT_CONSECUTIVE_WON_GAMES);
-
-		this.numberSinceLastReset = 0;
-		if (userAchievement) {
-			this.numberSinceLastReset = userAchievement.numberSinceLastReset;
-		}
-	}
-
-	updatetNumberSinceLastReset() {
-		const userAchievement = this.userAchievement(ACHIEVEMENT_CONSECUTIVE_WON_GAMES);
-
-		if (!userAchievement) {
-			this.insertAchievement(ACHIEVEMENT_CONSECUTIVE_WON_GAMES, {numberSinceLastReset: this.numberSinceLastReset});
-		} else {
-			this.updateAchievement(ACHIEVEMENT_CONSECUTIVE_WON_GAMES, {numberSinceLastReset: this.numberSinceLastReset});
 		}
 	}
 }
