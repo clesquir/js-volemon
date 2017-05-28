@@ -11,6 +11,7 @@ import {
 	GAME_STATUS_FINISHED,
 	GAME_STATUS_TIMEOUT
 } from '/imports/api/games/statusConstants.js';
+import '/imports/api/games/server/methods.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 
 describe('games/methods#leaveGame', function() {

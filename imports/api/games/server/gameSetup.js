@@ -7,7 +7,7 @@ import {PLAYER_DEFAULT_SHAPE} from '/imports/api/games/shapeConstants.js';
 import {GAME_STATUS_REGISTRATION, GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
 import {isGameStatusTimeout, isGameStatusFinished} from '/imports/api/games/utils.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
-import GameInitiator from '/imports/game/server/GameInitiator.js';
+import GameInitiator from '/imports/api/games/server/GameInitiator.js';
 
 /**
  * @param user

@@ -6,11 +6,11 @@ import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
 import {HomeController} from '/imports/startup/client/controllers/HomeController.js';
-import GameData from '/imports/game/client/GameData.js';
-import GameInitiator from '/imports/game/client/GameInitiator.js';
-import GameReaction from '/imports/game/client/GameReaction.js';
-import GameRematch from '/imports/game/client/GameRematch.js';
-import ServerNormalizedTime from '/imports/game/client/ServerNormalizedTime.js';
+import GameData from '/imports/api/games/client/GameData.js';
+import GameInitiator from '/imports/api/games/client/GameInitiator.js';
+import GameReaction from '/imports/api/games/client/GameReaction.js';
+import GameRematch from '/imports/api/games/client/GameRematch.js';
+import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
 import ClientSocketIo from '/imports/lib/stream/client/ClientSocketIo.js';
 
 import '/imports/ui/pages/app.js';

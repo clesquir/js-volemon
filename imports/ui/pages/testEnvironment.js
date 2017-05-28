@@ -1,5 +1,5 @@
 import {Template} from 'meteor/templating';
-import TestEnvironment from '/imports/game/client/TestEnvironment.js';
+import TestEnvironment from '/imports/api/games/client/TestEnvironment.js';
 
 import './testEnvironment.html';
 
