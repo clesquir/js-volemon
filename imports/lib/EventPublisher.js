@@ -16,12 +16,16 @@ export const EventPublisher = {
 
 		const listeners = [];
 		this.listeners[eventName].forEach(function(listener) {
-			if (listener.listner === listenerToRemove && listener.scope === scope) {
+			if (listener.listener !== listenerToRemove || listener.scope !== scope) {
 				listeners.push(listener);
 			}
 		});
 
-		this.listeners[eventName] = listeners;
+		if (listeners.length === 0) {
+			delete this.listeners[eventName];
+		} else {
+			this.listeners[eventName] = listeners;
+		}
 	},
 
 	publish: function(event) {
