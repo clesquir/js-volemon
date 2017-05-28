@@ -762,7 +762,7 @@ export default class Game {
 
 		player.doingDropShot = data.doingDropShot;
 
-		data = this.engine.interpolateFromTimestamp(this.serverNormalizedTime.getServerNormalizedTimestamp(), player, data);
+		data = this.engine.interpolateFromTimestamp(this.serverNormalizedTime.getServerNormalizedTimestampForInterpolation(), player, data);
 
 		this.engine.move(player, data);
 	}
@@ -772,7 +772,7 @@ export default class Game {
 			return;
 		}
 
-		data = this.engine.interpolateFromTimestamp(this.serverNormalizedTime.getServerNormalizedTimestamp(), this.ball, data);
+		data = this.engine.interpolateFromTimestamp(this.serverNormalizedTime.getServerNormalizedTimestampForInterpolation(), this.ball, data);
 
 		this.engine.move(this.ball, data);
 	}

@@ -120,6 +120,7 @@ Router.map(function() {
 				gameData = new GameData(Session.get('game'));
 				gameData.init();
 				serverNormalizedTime = new ServerNormalizedTime();
+				serverNormalizedTime.init();
 				gameInitiator = new GameInitiator(Session.get('game'), stream, gameData, serverNormalizedTime);
 				gameInitiator.init();
 				gameRematch = new GameRematch(Session.get('game'), gameData);
@@ -131,6 +132,9 @@ Router.map(function() {
 					if (Session.get('game')) {
 						Meteor.call('quitGame', Session.get('game'), function() {});
 
+						if (serverNormalizedTime) {
+							serverNormalizedTime.stop();
+						}
 						if (gameInitiator) {
 							gameInitiator.stop();
 						}
@@ -178,6 +182,9 @@ Router.map(function() {
 		onStop: function() {
 			Meteor.call('quitGame', Session.get('game'), function() {});
 
+			if (serverNormalizedTime) {
+				serverNormalizedTime.stop();
+			}
 			if (gameInitiator) {
 				gameInitiator.stop();
 			}

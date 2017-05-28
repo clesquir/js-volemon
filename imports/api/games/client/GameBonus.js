@@ -214,7 +214,7 @@ export default class GameBonus {
 			correspondingBonusSprite = this.createBonus(data);
 		}
 
-		data = this.engine.interpolateFromTimestamp(this.serverNormalizedTime.getServerNormalizedTimestamp(), correspondingBonusSprite, data);
+		data = this.engine.interpolateFromTimestamp(this.serverNormalizedTime.getServerNormalizedTimestampForInterpolation(), correspondingBonusSprite, data);
 
 		this.engine.move(correspondingBonusSprite, data);
 	}
