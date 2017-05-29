@@ -178,7 +178,7 @@ export default class GameBonus {
 	}
 
 	getBonusProgress(activeBonus, duration) {
-		return 1 - ((this.serverNormalizedTime.getServerNormalizedTimestamp() - activeBonus.activatedAt) / duration);
+		return 1 - ((this.serverNormalizedTime.getServerTimestamp() - activeBonus.activatedAt) / duration);
 	}
 
 	sendBonusesPosition() {
@@ -188,7 +188,7 @@ export default class GameBonus {
 			let bonusPositionData = this.engine.getPositionData(bonus);
 
 			bonusPositionData = Object.assign(bonusPositionData, bonus.bonus.dataToStream());
-			bonusPositionData['timestamp'] = this.serverNormalizedTime.getServerNormalizedTimestamp();
+			bonusPositionData['timestamp'] = this.serverNormalizedTime.getServerTimestamp();
 
 			bonusesData.push([
 				bonus.identifier,
@@ -214,7 +214,8 @@ export default class GameBonus {
 			correspondingBonusSprite = this.createBonus(data);
 		}
 
-		data = this.engine.interpolateFromTimestamp(this.serverNormalizedTime.getServerNormalizedTimestampForInterpolation(), correspondingBonusSprite, data);
+		let serverNormalizedTimestamp = this.serverNormalizedTime.getServerTimestamp();
+		data = this.engine.interpolateFromTimestamp(serverNormalizedTimestamp, correspondingBonusSprite, data);
 
 		this.engine.move(correspondingBonusSprite, data);
 	}
@@ -530,7 +531,7 @@ export default class GameBonus {
 
 		this.game.collidesWithPlayer(bonusSprite, (bonusItem, player) => {
 			if (this.gameData.isUserHost()) {
-				const activatedAt = this.serverNormalizedTime.getServerNormalizedTimestamp();
+				const activatedAt = this.serverNormalizedTime.getServerTimestamp();
 				//Activate bonus
 				this.activateBonus(bonusSprite.identifier, this.engine.getKey(player), activatedAt);
 				//Send to client
@@ -604,7 +605,7 @@ export default class GameBonus {
 		const stillActiveBonuses = [];
 
 		for (let bonus of this.activeBonuses) {
-			if (bonus.check(this.serverNormalizedTime.getServerNormalizedTimestamp())) {
+			if (bonus.check(this.serverNormalizedTime.getServerTimestamp())) {
 				stillActiveBonuses.push(bonus);
 			} else if (this.gameData.isUserHost()) {
 				Meteor.call('removeActiveBonusFromGame', this.game.gameId, bonus.getIdentifier());

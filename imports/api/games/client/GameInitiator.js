@@ -144,12 +144,12 @@ export default class GameInitiator {
 
 	updateTimer() {
 		if (this.gameData.isGameStatusStarted()) {
-			let matchTimer = this.serverNormalizedTime.getServerNormalizedTimestamp() - this.gameData.startedAt;
+			let matchTimer = this.serverNormalizedTime.getServerTimestamp() - this.gameData.startedAt;
 			if (matchTimer < 0 || isNaN(matchTimer)) {
 				matchTimer = 0;
 			}
 
-			let pointTimer = this.serverNormalizedTime.getServerNormalizedTimestamp() - this.gameData.lastPointAt;
+			let pointTimer = this.serverNormalizedTime.getServerTimestamp() - this.gameData.lastPointAt;
 			if (pointTimer < 0 || isNaN(pointTimer)) {
 				pointTimer = 0;
 			}

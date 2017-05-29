@@ -423,7 +423,7 @@ export default class Game {
 		}
 
 		//Calculate what's left
-		let timerLeft = timerDuration - (this.serverNormalizedTime.getServerNormalizedTimestamp() - this.gameData.lastPointAt) / 1000;
+		let timerLeft = timerDuration - (this.serverNormalizedTime.getServerTimestamp() - this.gameData.lastPointAt) / 1000;
 		if (timerLeft > timerDuration) {
 			timerLeft = timerDuration;
 		}
@@ -536,7 +536,7 @@ export default class Game {
 			ballInterval *= 2;
 		}
 		this.lastBallPositionData = Object.assign({}, ballPositionData);
-		ballPositionData['timestamp'] = this.serverNormalizedTime.getServerNormalizedTimestamp();
+		ballPositionData['timestamp'] = this.serverNormalizedTime.getServerTimestamp();
 
 		this.lastBallUpdate = this.gameStreamBundler.addToBundledStreamsAtFrequence(
 			this.lastBallUpdate,
@@ -557,7 +557,7 @@ export default class Game {
 			playerInterval *= 2;
 		}
 		this.lastPlayerPositionData = Object.assign({}, playerPositionData);
-		playerPositionData['timestamp'] = this.serverNormalizedTime.getServerNormalizedTimestamp();
+		playerPositionData['timestamp'] = this.serverNormalizedTime.getServerTimestamp();
 
 		this.lastPlayerUpdate = this.gameStreamBundler.addToBundledStreamsAtFrequence(
 			this.lastPlayerUpdate,
@@ -762,7 +762,8 @@ export default class Game {
 
 		player.doingDropShot = data.doingDropShot;
 
-		data = this.engine.interpolateFromTimestamp(this.serverNormalizedTime.getServerNormalizedTimestampForInterpolation(), player, data);
+		let serverNormalizedTimestamp = this.serverNormalizedTime.getServerTimestamp();
+		data = this.engine.interpolateFromTimestamp(serverNormalizedTimestamp, player, data);
 
 		this.engine.move(player, data);
 	}
@@ -772,7 +773,8 @@ export default class Game {
 			return;
 		}
 
-		data = this.engine.interpolateFromTimestamp(this.serverNormalizedTime.getServerNormalizedTimestampForInterpolation(), this.ball, data);
+		let serverNormalizedTimestamp = this.serverNormalizedTime.getServerTimestamp();
+		data = this.engine.interpolateFromTimestamp(serverNormalizedTimestamp, this.ball, data);
 
 		this.engine.move(this.ball, data);
 	}

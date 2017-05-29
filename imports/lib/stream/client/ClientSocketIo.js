@@ -5,7 +5,6 @@ const isWebRTCSupported = !!require('get-browser-rtc')();
 const rtcSupport = require('webrtcsupport');
 
 export default class ClientSocketIo extends Stream {
-
 	/**
 	 * @param {string} channel
 	 */
@@ -98,8 +97,9 @@ export default class ClientSocketIo extends Stream {
 	on(eventName, callback) {
 		if (this.p2pAdapter) {
 			const adapter = this.p2pAdapter;
+			const me = this;
 			adapter.on(eventName, function(data) {
-				if (!data.broadcast || (adapter && !adapter.usePeerConnection) || data.webRTCUnsupportedClient) {
+				if (me.allowP2PListener(adapter, data)) {
 					callback.apply(this, arguments);
 				}
 			});
@@ -118,4 +118,11 @@ export default class ClientSocketIo extends Stream {
 		this.socketAdapter.removeListener(eventName);
 	}
 
+	allowP2PListener(adapter, data) {
+		return (
+			!data.broadcast ||
+			(adapter && !adapter.usePeerConnection) ||
+			data.webRTCUnsupportedClient
+		);
+	}
 }
