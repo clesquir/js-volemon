@@ -177,7 +177,8 @@ export default class Game {
 	createCollisionGroupsAndMaterials() {
 		this.playerCollisionGroup = this.engine.createCollisionGroup();
 		this.ballCollisionGroup = this.engine.createCollisionGroup();
-		this.playerDelimiterCollisionGroup = this.engine.createCollisionGroup();
+		this.hostPlayerDelimiterCollisionGroup = this.engine.createCollisionGroup();
+		this.clientPlayerDelimiterCollisionGroup = this.engine.createCollisionGroup();
 		this.netHitDelimiterCollisionGroup = this.engine.createCollisionGroup();
 		this.groundHitDelimiterCollisionGroup = this.engine.createCollisionGroup();
 
@@ -207,7 +208,11 @@ export default class Game {
 	}
 
 	collidesWithPlayerDelimiter(sprite, callback, scope) {
-		this.engine.collidesWith(sprite, this.playerDelimiterCollisionGroup, callback, scope);
+		if (sprite === this.player1) {
+			this.engine.collidesWith(sprite, this.hostPlayerDelimiterCollisionGroup, callback, scope);
+		} else {
+			this.engine.collidesWith(sprite, this.clientPlayerDelimiterCollisionGroup, callback, scope);
+		}
 	}
 
 	collidesWithNetHitDelimiter(sprite, callback, scope) {
@@ -319,7 +324,7 @@ export default class Game {
 		);
 
 		/**
-		 * Player delimiter
+		 * Host player delimiter
 		 */
 		groupItem = this.engine.addTileSprite(
 			this.xSize / 2,
@@ -331,7 +336,23 @@ export default class Game {
 
 		this.engine.setStatic(groupItem, true);
 		this.engine.setMaterial(groupItem, this.playerDelimiterMaterial);
-		this.engine.setCollisionGroup(groupItem, this.playerDelimiterCollisionGroup);
+		this.engine.setCollisionGroup(groupItem, this.hostPlayerDelimiterCollisionGroup);
+		this.collidesWithPlayer(groupItem);
+
+		/**
+		 * Client player delimiter
+		 */
+		groupItem = this.engine.addTileSprite(
+			this.xSize / 2,
+			this.ySize - (this.groundHeight / 2),
+			this.xSize,
+			this.groundHeight,
+			'delimiter'
+		);
+
+		this.engine.setStatic(groupItem, true);
+		this.engine.setMaterial(groupItem, this.playerDelimiterMaterial);
+		this.engine.setCollisionGroup(groupItem, this.clientPlayerDelimiterCollisionGroup);
 		this.collidesWithPlayer(groupItem);
 
 		/**
@@ -368,19 +389,35 @@ export default class Game {
 		);
 
 		/**
-		 * Player delimiter
+		 * Host player delimiter
 		 */
 		groupItem = this.engine.addTileSprite(
-			(this.xSize / 2),
+			(this.xSize / 4) * 3 - (GAME_NET_THICKNESS / 4),
 			(this.ySize / 2),
-			GAME_NET_THICKNESS,
+			(this.xSize + GAME_NET_THICKNESS) / 2,
 			this.ySize,
 			'delimiter'
 		);
 
 		this.engine.setStatic(groupItem, true);
 		this.engine.setMaterial(groupItem, this.playerDelimiterMaterial);
-		this.engine.setCollisionGroup(groupItem, this.playerDelimiterCollisionGroup);
+		this.engine.setCollisionGroup(groupItem, this.hostPlayerDelimiterCollisionGroup);
+		this.collidesWithPlayer(groupItem);
+
+		/**
+		 * Client player delimiter
+		 */
+		groupItem = this.engine.addTileSprite(
+			(this.xSize / 4) + (GAME_NET_THICKNESS / 4),
+			(this.ySize / 2),
+			(this.xSize + GAME_NET_THICKNESS) / 2,
+			this.ySize,
+			'delimiter'
+		);
+
+		this.engine.setStatic(groupItem, true);
+		this.engine.setMaterial(groupItem, this.playerDelimiterMaterial);
+		this.engine.setCollisionGroup(groupItem, this.clientPlayerDelimiterCollisionGroup);
 		this.collidesWithPlayer(groupItem);
 
 		/**
