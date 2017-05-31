@@ -26,6 +26,10 @@ describe('AchievementListener#ConsecutiveWonGames', function() {
 		resetDatabase();
 	});
 
+	afterEach(function() {
+		resetDatabase();
+	});
+
 	it('creates achievement to 1 if not created on player won', function() {
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});

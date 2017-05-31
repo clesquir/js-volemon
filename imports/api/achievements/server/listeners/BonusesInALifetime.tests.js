@@ -26,6 +26,10 @@ describe('AchievementListener#BonusesInALifetime', function() {
 		resetDatabase();
 	});
 
+	afterEach(function() {
+		resetDatabase();
+	});
+
 	it('creates achievement with 1 if not created on bonus caught', function() {
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
