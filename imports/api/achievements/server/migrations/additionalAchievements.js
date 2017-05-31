@@ -1,70 +1,82 @@
 import {Meteor} from 'meteor/meteor';
 import {Achievements} from '/imports/api/achievements/achievements.js';
 import {
-	ACHIEVEMENT_GAMES_WON_WITH_X_SHAPE,
-	ACHIEVEMENT_INVINCIBLE_IN_A_LIFETIME,
-	ACHIEVEMENT_CONSECUTIVE_LOST_GAMES,
-	ACHIEVEMENT_GAMES_WON_UNDER_A_MINUTE,
-	ACHIEVEMENT_RANDOM_IN_A_GAME
+	ACHIEVEMENT_HOW_TO_TIE_A_TIE,
+	ACHIEVEMENT_BATTLE_OF_THE_GIANTS,
+	ACHIEVEMENT_NINJA,
+	ACHIEVEMENT_I_WAS_THERE_WAITING,
+	ACHIEVEMENT_TO_THE_SKY,
+	ACHIEVEMENT_BLANK_SCREEN
 } from '/imports/api/achievements/constants.js';
 
 Meteor.startup(function () {
 	/**
 	 * Migration for additional achievements
 	 */
-	if (!Achievements.findOne({_id: ACHIEVEMENT_GAMES_WON_WITH_X_SHAPE})) {
+	if (!Achievements.findOne({_id: ACHIEVEMENT_HOW_TO_TIE_A_TIE})) {
 		Achievements.insert({
-			"_id": ACHIEVEMENT_GAMES_WON_WITH_X_SHAPE,
+			"_id": ACHIEVEMENT_HOW_TO_TIE_A_TIE,
 			"isSecret": true,
-			"name": "Letter, number or operator",
-			"description": "# on won games with the X shape",
+			"name": "How to tie a tie",
+			"description": "# of tie games",
 			"type": "QUANTITY",
-			"displayOrder": 18,
-			"levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 25}]
+			"displayOrder": 23,
+			"levels": [{"level": 1, "number": 10}, {"level": 2, "number": 25}, {"level": 3, "number": 50}]
 		});
 	}
-	if (!Achievements.findOne({_id: ACHIEVEMENT_INVINCIBLE_IN_A_LIFETIME})) {
+	if (!Achievements.findOne({_id: ACHIEVEMENT_BATTLE_OF_THE_GIANTS})) {
 		Achievements.insert({
-			"_id": ACHIEVEMENT_INVINCIBLE_IN_A_LIFETIME,
+			"_id": ACHIEVEMENT_BATTLE_OF_THE_GIANTS,
 			"isSecret": true,
-			"name": "Always my armor on",
-			"description": "# of invincible bonuses caught in a game",
+			"name": "Battle of the giants",
+			"description": "# of points scored when both players are big",
 			"type": "QUANTITY",
-			"displayOrder": 19,
-			"levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 25}]
+			"displayOrder": 24,
+			"levels": [{"level": 1, "number": 1}, {"level": 2, "number": 5}, {"level": 3, "number": 10}]
 		});
 	}
-	if (!Achievements.findOne({_id: ACHIEVEMENT_CONSECUTIVE_LOST_GAMES})) {
+	if (!Achievements.findOne({_id: ACHIEVEMENT_NINJA})) {
 		Achievements.insert({
-			"_id": ACHIEVEMENT_CONSECUTIVE_LOST_GAMES,
+			"_id": ACHIEVEMENT_NINJA,
 			"isSecret": true,
-			"name": "Master of nothing",
-			"description": "# of consecutive lost games",
+			"name": "Ninja",
+			"description": "# of games without activating any bonuses",
 			"type": "QUANTITY",
-			"displayOrder": 20,
-			"levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 25}]
+			"displayOrder": 25,
+			"levels": [{"level": 1, "number": 1}, {"level": 2, "number": 5}, {"level": 3, "number": 10}]
 		});
 	}
-	if (!Achievements.findOne({_id: ACHIEVEMENT_GAMES_WON_UNDER_A_MINUTE})) {
+	if (!Achievements.findOne({_id: ACHIEVEMENT_I_WAS_THERE_WAITING})) {
 		Achievements.insert({
-			"_id": ACHIEVEMENT_GAMES_WON_UNDER_A_MINUTE,
+			"_id": ACHIEVEMENT_I_WAS_THERE_WAITING,
 			"isSecret": true,
-			"name": "Birdie",
-			"description": "# of games won under a minute",
+			"name": "I was there waiting...",
+			"description": "# of points scored when paused",
+			"type": "QUANTITY",
+			"displayOrder": 26,
+			"levels": [{"level": 1, "number": 1}, {"level": 2, "number": 10}, {"level": 3, "number": 20}]
+		});
+	}
+	if (!Achievements.findOne({_id: ACHIEVEMENT_TO_THE_SKY})) {
+		Achievements.insert({
+			"_id": ACHIEVEMENT_TO_THE_SKY,
+			"isSecret": true,
+			"name": "To the sky",
+			"description": "Bonuses combo: Small monster, big jump and bouncy",
 			"type": "TIMES",
-			"displayOrder": 21,
-			"levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 15}]
+			"displayOrder": 27,
+			"levels": [{"level": 1, "number": 1}, {"level": 2, "number": 3}, {"level": 3, "number": 6}]
 		});
 	}
-	if (!Achievements.findOne({_id: ACHIEVEMENT_RANDOM_IN_A_GAME})) {
+	if (!Achievements.findOne({_id: ACHIEVEMENT_BLANK_SCREEN})) {
 		Achievements.insert({
-			"_id": ACHIEVEMENT_RANDOM_IN_A_GAME,
+			"_id": ACHIEVEMENT_BLANK_SCREEN,
 			"isSecret": true,
-			"name": "Gambler",
-			"description": "# of random bonuses caught in a game",
-			"type": "QUANTITY",
-			"displayOrder": 22,
-			"levels": [{"level": 1, "number": 4}, {"level": 2, "number": 8}, {"level": 3, "number": 12}]
+			"name": "Blank screen",
+			"description": "Bonuses combo: Invisible ball, both players either invisible or cloaked",
+			"type": "TIMES",
+			"displayOrder": 28,
+			"levels": [{"level": 1, "number": 1}, {"level": 2, "number": 2}, {"level": 3, "number": 3}]
 		});
 	}
 });

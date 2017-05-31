@@ -34,6 +34,7 @@ describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 			stub.restore();
 			stub = null;
 		}
+		resetDatabase();
 	});
 
 	it('creates achievement if not created', function() {

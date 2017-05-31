@@ -353,9 +353,11 @@ Meteor.methods({
 
 		data[columnName] = game[columnName] + 1;
 
+		let pointScoredByHost = false;
 		switch (columnName) {
 			case HOST_POINTS_COLUMN:
 				data['lastPointTaken'] = LAST_POINT_TAKEN_HOST;
+				pointScoredByHost = true;
 				break;
 			case CLIENT_POINTS_COLUMN:
 				data['lastPointTaken'] = LAST_POINT_TAKEN_CLIENT;
@@ -377,7 +379,16 @@ Meteor.methods({
 
 		Games.update({_id: game._id}, {$set: data});
 
-		EventPublisher.publish(new PointTaken(game._id, pointDuration));
+		let hostPoints = game.hostPoints;
+		if (data[HOST_POINTS_COLUMN] !== undefined) {
+			hostPoints = data[HOST_POINTS_COLUMN];
+		}
+		let clientPoints = game.clientPoints;
+		if (data[CLIENT_POINTS_COLUMN] !== undefined) {
+			clientPoints = data[CLIENT_POINTS_COLUMN];
+		}
+
+		EventPublisher.publish(new PointTaken(game._id, pointDuration, pointScoredByHost, hostPoints, clientPoints));
 
 		if (isGameFinished && !game.isPracticeGame) {
 			const clientPlayer = Players.findOne({gameId: game._id, userId: {$ne: game.createdBy}});

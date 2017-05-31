@@ -24,7 +24,7 @@ export default class Listener {
 	}
 
 	/**
-	 * @param eventName
+	 * @param {string} eventName
 	 * @param listener
 	 */
 	addListener(eventName, listener) {
@@ -35,7 +35,7 @@ export default class Listener {
 	}
 
 	/**
-	 * @param eventName
+	 * @param {string} eventName
 	 * @param listener
 	 */
 	removeListener(eventName, listener) {
@@ -43,7 +43,7 @@ export default class Listener {
 	}
 
 	/**
-	 * @param achievementId
+	 * @param {string} achievementId
 	 */
 	incrementNumber(achievementId) {
 		const userAchievement = this.userAchievement(achievementId);
@@ -57,8 +57,8 @@ export default class Listener {
 	}
 
 	/**
-	 * @param achievementId
-	 * @param number
+	 * @param {string} achievementId
+	 * @param {integer} number
 	 */
 	updateNumberIfHigher(achievementId, number) {
 		const userAchievement = this.userAchievement(achievementId);
@@ -78,10 +78,9 @@ export default class Listener {
 	}
 
 	/**
-	 * @param {string} playerKey
-	 * @returns {boolean}
+	 * @returns {string|null}
 	 */
-	playerKeyIsUser(playerKey) {
+	userPlayerKey() {
 		const game = Games.findOne({_id: this.gameId});
 
 		let userPlayerKey = null;
@@ -93,9 +92,44 @@ export default class Listener {
 			}
 		}
 
-		return playerKey === userPlayerKey;
+		return userPlayerKey;
 	}
 
+	/**
+	 * @param {string} playerKey
+	 * @returns {boolean}
+	 */
+	playerKeyIsUser(playerKey) {
+		return playerKey === this.userPlayerKey();
+	}
+
+	/**
+	 * @param {string} playerKey
+	 * @returns {boolean}
+	 */
+	playerKeyIsOpponent(playerKey) {
+		const userPlayerKey = this.userPlayerKey();
+
+		return userPlayerKey !== null && playerKey !== userPlayerKey;
+	}
+
+	/**
+	 * @returns {boolean}
+	 */
+	playerIsHost() {
+		return 'player1' === this.userPlayerKey();
+	}
+
+	/**
+	 * @returns {boolean}
+	 */
+	playerIsClient() {
+		return 'player2' === this.userPlayerKey();
+	}
+
+	/**
+	 * @param {string} achievementId
+	 */
 	incrementNumberIfHigherWithNumberSinceLastReset(achievementId) {
 		if (this.numberSinceLastReset === undefined) {
 			this.resetNumberSinceLastReset();
@@ -110,7 +144,7 @@ export default class Listener {
 	}
 
 	/**
-	 * @param achievementId
+	 * @param {string} achievementId
 	 */
 	initNumberSinceLastReset(achievementId) {
 		const userAchievement = this.userAchievement(achievementId);
@@ -122,7 +156,7 @@ export default class Listener {
 	}
 
 	/**
-	 * @param achievementId
+	 * @param {string} achievementId
 	 */
 	updatetNumberSinceLastReset(achievementId) {
 		const userAchievement = this.userAchievement(achievementId);

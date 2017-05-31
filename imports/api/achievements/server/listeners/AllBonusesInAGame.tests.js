@@ -11,17 +11,17 @@ import {Games} from '/imports/api/games/games.js';
 describe('AchievementListener#AllBonusesInAGame', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
-	const listener = new AllBonusesInAGame(gameId, userId);
 
 	beforeEach(function() {
 		resetDatabase();
 	});
 
 	afterEach(function() {
-		listener.availableBonuses.restore();
+		resetDatabase();
 	});
 
 	it('add achievement if none is there and all bonuses are caught', function() {
+		const listener = new AllBonusesInAGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		sinon.stub(listener, 'availableBonuses', function() {
 			return [
@@ -45,6 +45,7 @@ describe('AchievementListener#AllBonusesInAGame', function() {
 	});
 
 	it('do not add achievement if different gameId', function() {
+		const listener = new AllBonusesInAGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		sinon.stub(listener, 'availableBonuses', function() {
 			return [
@@ -58,6 +59,7 @@ describe('AchievementListener#AllBonusesInAGame', function() {
 	});
 
 	it('do not add achievement if different userId', function() {
+		const listener = new AllBonusesInAGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		sinon.stub(listener, 'availableBonuses', function() {
 			return [
@@ -71,6 +73,7 @@ describe('AchievementListener#AllBonusesInAGame', function() {
 	});
 
 	it('do not increment achievement if same bonus twice but not all', function() {
+		const listener = new AllBonusesInAGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		sinon.stub(listener, 'availableBonuses', function() {
 			return [

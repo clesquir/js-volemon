@@ -26,6 +26,10 @@ describe('AchievementListener#GamesWonUnderAMinute', function() {
 		resetDatabase();
 	});
 
+	afterEach(function() {
+		resetDatabase();
+	});
+
 	it('creates achievement if not created on player won', function() {
 		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000});
 		Players.insert({gameId: gameId, userId: userId});

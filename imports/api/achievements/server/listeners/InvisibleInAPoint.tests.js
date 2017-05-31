@@ -27,6 +27,10 @@ describe('AchievementListener#InvisibleInAGame', function() {
 		resetDatabase();
 	});
 
+	afterEach(function() {
+		resetDatabase();
+	});
+
 	it('creates achievement if not created on invisible bonus caught', function() {
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});

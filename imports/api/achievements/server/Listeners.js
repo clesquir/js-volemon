@@ -1,4 +1,6 @@
 import AllBonusesInAGame from '/imports/api/achievements/server/listeners/AllBonusesInAGame.js';
+import BattleOfTheGiants from '/imports/api/achievements/server/listeners/BattleOfTheGiants.js';
+import BlankScreen from '/imports/api/achievements/server/listeners/BlankScreen.js';
 import BonusesInAGame from '/imports/api/achievements/server/listeners/BonusesInAGame.js';
 import BonusesInALifetime from '/imports/api/achievements/server/listeners/BonusesInALifetime.js';
 import BonusesInAPoint from '/imports/api/achievements/server/listeners/BonusesInAPoint.js';
@@ -9,10 +11,13 @@ import GamesPlayed from '/imports/api/achievements/server/listeners/GamesPlayed.
 import GameTime from '/imports/api/achievements/server/listeners/GameTime.js';
 import GamesWonUnderAMinute from '/imports/api/achievements/server/listeners/GamesWonUnderAMinute.js';
 import GamesWonWithXShape from '/imports/api/achievements/server/listeners/GamesWonWithXShape.js';
+import HowToTieATie from '/imports/api/achievements/server/listeners/HowToTieATie.js';
 import InvincibleInALifetime from '/imports/api/achievements/server/listeners/InvincibleInALifetime.js';
 import InvisibleInAGame from '/imports/api/achievements/server/listeners/InvisibleInAGame.js';
 import InvisibleInALifetime from '/imports/api/achievements/server/listeners/InvisibleInALifetime.js';
 import InvisibleInAPoint from '/imports/api/achievements/server/listeners/InvisibleInAPoint.js';
+import IWasThereWaiting from '/imports/api/achievements/server/listeners/IWasThereWaiting.js';
+import Ninja from '/imports/api/achievements/server/listeners/Ninja.js';
 import PauseInAGame from '/imports/api/achievements/server/listeners/PauseInAGame.js';
 import PauseInALifetime from '/imports/api/achievements/server/listeners/PauseInALifetime.js';
 import PauseInAPoint from '/imports/api/achievements/server/listeners/PauseInAPoint.js';
@@ -20,6 +25,7 @@ import PointTime from '/imports/api/achievements/server/listeners/PointTime.js';
 import RandomInAGame from '/imports/api/achievements/server/listeners/RandomInAGame.js';
 import Shutouts from '/imports/api/achievements/server/listeners/Shutouts.js';
 import SimultaneousActivatedBonuses from '/imports/api/achievements/server/listeners/SimultaneousActivatedBonuses.js';
+import ToTheSky from '/imports/api/achievements/server/listeners/ToTheSky.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 
@@ -68,6 +74,12 @@ export default class Listeners {
 			this.listeners.push(new ConsecutiveLostGames(this.gameId, player.userId));
 			this.listeners.push(new GamesWonUnderAMinute(this.gameId, player.userId));
 			this.listeners.push(new RandomInAGame(this.gameId, player.userId));
+			this.listeners.push(new HowToTieATie(this.gameId, player.userId));
+			this.listeners.push(new BattleOfTheGiants(this.gameId, player.userId));
+			this.listeners.push(new Ninja(this.gameId, player.userId));
+			this.listeners.push(new IWasThereWaiting(this.gameId, player.userId));
+			this.listeners.push(new ToTheSky(this.gameId, player.userId));
+			this.listeners.push(new BlankScreen(this.gameId, player.userId));
 		});
 	}
 
