@@ -24,11 +24,11 @@
 				</div>
 				<div class="achievement-information">
 					<div class="achievement-name">{{name}}</div>
-					{{#unless isSecret}}
+					{{#if showDescription ../userAchievements}}
 						<div class="achievement-description">
 							{{description}}: {{achievementProgress ../userAchievements}}
 						</div>
-					{{/unless}}
+					{{/if}}
 				</div>
 			</div>
 		{{/each}}

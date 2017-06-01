@@ -48,6 +48,10 @@ Template.achievements.helpers({
 		return achievementLevelReached(this, userAchievements, level);
 	},
 
+	showDescription: function(userAchievements) {
+		return (!this.isSecret || achievementLevelReached(this, userAchievements, 1));
+	},
+
 	achievementProgress: function(userAchievements) {
 		let number = 0;
 		userAchievements.forEach((userAchievement) => {
