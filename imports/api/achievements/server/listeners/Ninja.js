@@ -33,6 +33,7 @@ export default class Ninja extends Listener {
 		if (
 			event.gameId === this.gameId &&
 			!this.hasCaughtBonus &&
+			event.gameDuration > 120000 &&
 			this.userIsGamePlayer()
 		) {
 			this.incrementNumber(ACHIEVEMENT_NINJA);

@@ -38,7 +38,7 @@ describe('AchievementListener#Ninja', function() {
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onGameFinished(new GameFinished(gameId, 0));
+		listener.onGameFinished(new GameFinished(gameId, 121000));
 
 		assert.equal(1, UserAchievements.find().count());
 		assertNinjaUserAchievementNumberEquals(1);
@@ -53,7 +53,7 @@ describe('AchievementListener#Ninja', function() {
 		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player2', 'a', 'player2', 'a'));
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onGameFinished(new GameFinished(gameId, 0));
+		listener.onGameFinished(new GameFinished(gameId, 121000));
 
 		assert.equal(1, UserAchievements.find().count());
 		assertNinjaUserAchievementNumberEquals(1);
@@ -68,10 +68,21 @@ describe('AchievementListener#Ninja', function() {
 		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1', 'a'));
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onGameFinished(new GameFinished(gameId, 0));
+		listener.onGameFinished(new GameFinished(gameId, 121000));
 
 		assert.equal(1, UserAchievements.find().count());
 		assertNinjaUserAchievementNumberEquals(1);
+	});
+
+	it('do not increment achievement if no activated bonus in the game but game is under 2:00', function() {
+		const listener = new Ninja(gameId, userId);
+		Games.insert({_id: gameId, createdBy: userId});
+		Players.insert({gameId: gameId, userId: userId});
+		Players.insert({gameId: gameId, userId: opponentUserId});
+
+		assert.equal(0, UserAchievements.find().count());
+		listener.onGameFinished(new GameFinished(gameId, 120000));
+		assert.equal(0, UserAchievements.find().count());
 	});
 
 	it('do not increment achievement if there was an activated bonus in the game and user is host', function() {
@@ -83,7 +94,7 @@ describe('AchievementListener#Ninja', function() {
 		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1', 'a'));
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onGameFinished(new GameFinished(gameId, 0));
+		listener.onGameFinished(new GameFinished(gameId, 121000));
 		assert.equal(0, UserAchievements.find().count());
 	});
 
@@ -96,7 +107,7 @@ describe('AchievementListener#Ninja', function() {
 		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player2', 'a', 'player2', 'a'));
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onGameFinished(new GameFinished(gameId, 0));
+		listener.onGameFinished(new GameFinished(gameId, 121000));
 		assert.equal(0, UserAchievements.find().count());
 	});
 
@@ -116,7 +127,7 @@ describe('AchievementListener#Ninja', function() {
 		Games.insert({_id: gameId, createdBy: userId});
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onGameFinished(new GameFinished(gameId, 0));
+		listener.onGameFinished(new GameFinished(gameId, 121000));
 		assert.equal(0, UserAchievements.find().count());
 	});
 });
