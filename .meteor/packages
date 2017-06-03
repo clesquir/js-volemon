@@ -32,9 +32,7 @@ momentjs:moment
 mizzao:timesync
 practicalmeteor:mocha
 hwillson:stub-collections
-practicalmeteor:sinon
 xolvio:cleaner
 shell-server
 email
-vrakfall:phaser
 reactive-var

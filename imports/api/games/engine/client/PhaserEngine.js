@@ -1,3 +1,6 @@
+PIXI = require('phaser-ce/build/custom/pixi');
+p2 = require('phaser-ce/build/custom/p2');
+Phaser = require('phaser-ce/build/custom/phaser-split');
 import Engine from '/imports/api/games/engine/Engine.js';
 import {
 	WORLD_GRAVITY,

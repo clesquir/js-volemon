@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {sinon} from 'meteor/practicalmeteor:sinon';
+import sinon from 'sinon';
 import {Random} from 'meteor/random';
 import GameData from '/imports/api/games/client/GameData.js';
 import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
@@ -56,12 +56,12 @@ describe('GameBonus#createBonusIfTimeHasElapsed', function() {
 	const serverNormalizedTime = new ServerNormalizedTime();
 	const game = new Game(gameId, engine, gameData, gameStreamBundler, serverNormalizedTime);
 
-	sinon.stub(game, 'collidesWithNetHitDelimiter', function() {});
-	sinon.stub(game, 'collidesWithGroundHitDelimiter', function() {});
-	sinon.stub(game, 'collidesWithBall', function() {});
+	sinon.stub(game, 'collidesWithNetHitDelimiter').callsFake(function() {});
+	sinon.stub(game, 'collidesWithGroundHitDelimiter').callsFake(function() {});
+	sinon.stub(game, 'collidesWithBall').callsFake(function() {});
 
-	sinon.stub(engine, 'addBonus', function() {return new BaseBonus();});
-	sinon.stub(engine, 'collidesWith', function() {});
+	sinon.stub(engine, 'addBonus').callsFake(function() {return new BaseBonus();});
+	sinon.stub(engine, 'collidesWith').callsFake(function() {});
 
 	beforeEach(function() {
 		gameStreamBundler.resetBundledStreams();
