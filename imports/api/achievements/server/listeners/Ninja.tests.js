@@ -1,5 +1,4 @@
 import {assert} from 'chai';
-import {sinon} from 'meteor/practicalmeteor:sinon';
 import {resetDatabase} from 'meteor/xolvio:cleaner';
 import {Random} from 'meteor/random';
 import Ninja from '/imports/api/achievements/server/listeners/Ninja.js';

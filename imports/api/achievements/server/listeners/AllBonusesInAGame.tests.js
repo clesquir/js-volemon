@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {sinon} from 'meteor/practicalmeteor:sinon';
+import sinon from 'sinon';
 import {resetDatabase} from 'meteor/xolvio:cleaner';
 import {Random} from 'meteor/random';
 import AllBonusesInAGame from '/imports/api/achievements/server/listeners/AllBonusesInAGame.js';
@@ -23,7 +23,7 @@ describe('AchievementListener#AllBonusesInAGame', function() {
 	it('add achievement if none is there and all bonuses are caught', function() {
 		const listener = new AllBonusesInAGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
-		sinon.stub(listener, 'availableBonuses', function() {
+		sinon.stub(listener, 'availableBonuses').callsFake(function() {
 			return [
 				'a',
 				'b'
@@ -47,7 +47,7 @@ describe('AchievementListener#AllBonusesInAGame', function() {
 	it('do not add achievement if different gameId', function() {
 		const listener = new AllBonusesInAGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
-		sinon.stub(listener, 'availableBonuses', function() {
+		sinon.stub(listener, 'availableBonuses').callsFake(function() {
 			return [
 				'a'
 			];
@@ -61,7 +61,7 @@ describe('AchievementListener#AllBonusesInAGame', function() {
 	it('do not add achievement if different userId', function() {
 		const listener = new AllBonusesInAGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
-		sinon.stub(listener, 'availableBonuses', function() {
+		sinon.stub(listener, 'availableBonuses').callsFake(function() {
 			return [
 				'a'
 			];
@@ -75,7 +75,7 @@ describe('AchievementListener#AllBonusesInAGame', function() {
 	it('do not increment achievement if same bonus twice but not all', function() {
 		const listener = new AllBonusesInAGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
-		sinon.stub(listener, 'availableBonuses', function() {
+		sinon.stub(listener, 'availableBonuses').callsFake(function() {
 			return [
 				'a',
 				'b'

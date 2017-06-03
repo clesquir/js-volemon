@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {sinon} from 'meteor/practicalmeteor:sinon';
+import sinon from 'sinon';
 import {resetDatabase} from 'meteor/xolvio:cleaner';
 import {Random} from 'meteor/random';
 import * as Moment from 'meteor/momentjs:moment';
@@ -40,7 +40,7 @@ describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 	it('creates achievement if not created', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		let lastDatePlayed = Moment.moment([2017, 0, 1]).valueOf();
-		stub = sinon.stub(listener, 'todaysDate', function() {
+		stub = sinon.stub(listener, 'todaysDate').callsFake(function() {
 			return lastDatePlayed;
 		});
 
@@ -66,7 +66,7 @@ describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 	it('increment achievement if last increment was yesterday', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		let lastDatePlayed = Moment.moment([2017, 0, 1]).valueOf();
-		stub = sinon.stub(listener, 'todaysDate', function() {
+		stub = sinon.stub(listener, 'todaysDate').callsFake(function() {
 			return lastDatePlayed;
 		});
 
@@ -86,7 +86,7 @@ describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 	it('do not reset nor increase achievement if last increment was today', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		let lastDatePlayed = Moment.moment([2017, 0, 1]).valueOf();
-		stub = sinon.stub(listener, 'todaysDate', function() {
+		stub = sinon.stub(listener, 'todaysDate').callsFake(function() {
 			return lastDatePlayed;
 		});
 
@@ -104,7 +104,7 @@ describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 	it('reset achievement if last increment was before yesterday', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		let lastDatePlayed = Moment.moment([2017, 0, 1]).valueOf();
-		stub = sinon.stub(listener, 'todaysDate', function() {
+		stub = sinon.stub(listener, 'todaysDate').callsFake(function() {
 			return lastDatePlayed;
 		});
 
@@ -124,7 +124,7 @@ describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 	it('do not increment achievement if consecutive days have already been higher', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		let lastDatePlayed = Moment.moment([2017, 0, 1]).valueOf();
-		stub = sinon.stub(listener, 'todaysDate', function() {
+		stub = sinon.stub(listener, 'todaysDate').callsFake(function() {
 			return lastDatePlayed;
 		});
 

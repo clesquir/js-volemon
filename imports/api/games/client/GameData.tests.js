@@ -1,6 +1,5 @@
 import StubCollections from 'meteor/hwillson:stub-collections';
 import {assert} from 'chai';
-import {sinon} from 'meteor/practicalmeteor:sinon';
 import {Random} from 'meteor/random';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';

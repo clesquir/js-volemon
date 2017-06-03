@@ -2,7 +2,7 @@ import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
 import {resetDatabase} from 'meteor/xolvio:cleaner';
 import {assert} from 'chai';
-import {sinon} from 'meteor/practicalmeteor:sinon';
+import sinon from 'sinon';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {
@@ -20,7 +20,7 @@ describe('games/methods#leaveGame', function() {
 
 	beforeEach(function() {
 		resetDatabase();
-		sandbox.stub(Meteor, 'user', function() {
+		sandbox.stub(Meteor, 'user').callsFake(function() {
 			return {_id: userId};
 		});
 	});
@@ -144,7 +144,7 @@ describe('GameMethods#quitGame', function() {
 
 	beforeEach(function() {
 		resetDatabase();
-		sandbox.stub(Meteor, 'user', function() {
+		sandbox.stub(Meteor, 'user').callsFake(function() {
 			return {_id: userId};
 		});
 	});
