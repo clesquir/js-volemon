@@ -4,6 +4,7 @@
   "description": "HTML5 version of the Volemon (or Slime Volley) game implemented in Meteor",
   "main": "index.js",
   "dependencies": {
+    "babel-runtime": "^6.23.0",
     "bcrypt": "^0.8.7",
     "chai": "^3.5.0",
     "chart.js": "^2.5.0",
