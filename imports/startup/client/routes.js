@@ -4,14 +4,10 @@ import {Template} from 'meteor/templating';
 import {EloScores} from '/imports/api/games/eloscores.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
+import {updateConnectionIndicator, destroyConnectionIndicator} from '/imports/api/games/client/connectionIndicator.js';
+import {initGame, quitGame, destroyGame, unsetGameSessions} from '/imports/api/games/client/routeInitiator.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
 import {HomeController} from '/imports/startup/client/controllers/HomeController.js';
-import GameData from '/imports/api/games/client/GameData.js';
-import GameInitiator from '/imports/api/games/client/GameInitiator.js';
-import GameReaction from '/imports/api/games/client/GameReaction.js';
-import GameRematch from '/imports/api/games/client/GameRematch.js';
-import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
-import ClientSocketIo from '/imports/lib/stream/client/ClientSocketIo.js';
 
 import '/imports/ui/pages/app.js';
 import '/imports/ui/pages/game.js';
@@ -111,108 +107,24 @@ Router.map(function() {
 		action: function() {
 			this.render('game');
 
-			let connectionIndicatorTimer;
-
 			Template.game.rendered = function() {
-				stream = new ClientSocketIo();
-				stream.init();
-				stream.connect(Session.get('game'));
-				gameData = new GameData(Session.get('game'));
-				gameData.init();
-				serverNormalizedTime = new ServerNormalizedTime();
-				serverNormalizedTime.init();
-				gameInitiator = new GameInitiator(Session.get('game'), stream, gameData, serverNormalizedTime);
-				gameInitiator.init();
-				gameRematch = new GameRematch(Session.get('game'), gameData);
-				gameRematch.init();
-				gameReaction = new GameReaction(Session.get('game'), stream, gameData, gameInitiator);
-				gameReaction.init();
+				initGame(Session.get('game'));
 
 				$(window).bind('beforeunload', function() {
-					if (Session.get('game')) {
-						Meteor.call('quitGame', Session.get('game'), function() {});
-
-						if (serverNormalizedTime) {
-							serverNormalizedTime.stop();
-						}
-						if (gameInitiator) {
-							gameInitiator.stop();
-						}
-						if (gameRematch) {
-							gameRematch.stop();
-						}
-						if (gameReaction) {
-							gameReaction.stop();
-						}
-						if (stream) {
-							stream.disconnect(Session.get('game'));
-						}
-					}
+					quitGame(Session.get('game'));
+					destroyGame(Session.get('game'));
 				});
 
-				const setConnectionIndicatorClass = function() {
-					let connectionIndicatorClass = 'connection-indicator-light-gray';
-
-					if (stream) {
-						if (stream.usingPeerConnection) {
-							connectionIndicatorClass = 'connection-indicator-light-green';
-						} else if (stream.usingP2P) {
-							connectionIndicatorClass = 'connection-indicator-light-yellow';
-						} else if (stream.usingSocket) {
-							connectionIndicatorClass = 'connection-indicator-light-red';
-						}
-					}
-
-					Session.set('connection-indicator-class', connectionIndicatorClass);
-
-					connectionIndicatorTimer = Meteor.setTimeout(setConnectionIndicatorClass, 1000);
-				};
-
-				connectionIndicatorTimer = Meteor.setTimeout(setConnectionIndicatorClass, 1000);
+				updateConnectionIndicator();
 
 				Template.game.rendered = null;
 			};
-
-			Template.game.destroyed = function() {
-				Meteor.clearTimeout(connectionIndicatorTimer);
-
-				Template.game.destroyed = null;
-			};
 		},
 		onStop: function() {
-			Meteor.call('quitGame', Session.get('game'), function() {});
-
-			if (serverNormalizedTime) {
-				serverNormalizedTime.stop();
-			}
-			if (gameInitiator) {
-				gameInitiator.stop();
-			}
-			if (gameRematch) {
-				gameRematch.stop();
-			}
-			if (gameReaction) {
-				gameReaction.stop();
-			}
-			if (stream) {
-				stream.disconnect(Session.get('game'));
-			}
-
-			Session.set('game', undefined);
-			Session.set('userCurrentlyPlaying', false);
+			quitGame(Session.get('game'));
+			destroyGame(Session.get('game'));
+			destroyConnectionIndicator();
+			unsetGameSessions();
 		}
 	});
 });
-
-/** @type {Stream} */
-export let stream = null;
-/** @type {GameData} */
-let gameData = null;
-/** @type {ServerNormalizedTime} */
-export let serverNormalizedTime = null;
-/** @type {GameInitiator}|null */
-let gameInitiator = null;
-/** @type {GameRematch}|null */
-let gameRematch = null;
-/** @type {GameReaction} */
-export let gameReaction = null;

@@ -21,7 +21,7 @@ import {
 	currentPlayerHasRepliedRematch,
 	currentPlayerAcceptedRematch
 } from '/imports/lib/client/gameSetup.js';
-import {serverNormalizedTime} from '/imports/startup/client/routes.js';
+import {serverNormalizedTime} from '/imports/api/games/client/routeInitiator.js';
 import {padNumber} from '/imports/lib/utils.js';
 
 import './game.html';
