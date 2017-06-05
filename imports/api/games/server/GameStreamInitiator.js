@@ -13,6 +13,7 @@ export default class GameStreamInitiator {
 
 	init() {
 		this.stream.connect(this.gameId);
+		this.stream.broadcastOnEvent('showBallHitPoint-' + this.gameId);
 		this.stream.broadcastOnEvent('activateBonus-' + this.gameId);
 		this.stream.broadcastOnEvent('sendBundledData-' + this.gameId);
 		this.stream.broadcastOnEvent('reaction-' + this.gameId);
@@ -29,6 +30,7 @@ export default class GameStreamInitiator {
 		this.stream.off('reaction-' + this.gameId);
 		this.stream.off('sendBundledData-' + this.gameId);
 		this.stream.off('activateBonus-' + this.gameId);
+		this.stream.off('showBallHitPoint-' + this.gameId);
 		this.stream.disconnect(this.gameId);
 	}
 

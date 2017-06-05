@@ -3,7 +3,6 @@ import {BONUS_DURATION} from '/imports/api/games/emissionConstants.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 
 export default class BaseBonus {
-
 	constructor(game, className) {
 		this.game = game;
 		this.className = className;
@@ -65,7 +64,7 @@ export default class BaseBonus {
 	}
 
 	backgroundToDraw(engine) {
-		return [engine.drawCircle(0, 0, 0xFFFFFF, BONUS_RADIUS * 2 - 2)];
+		return [engine.drawCircle(0, 0, null, {color: 0xFFFFFF}, BONUS_RADIUS * 2 - 2)];
 	}
 
 	contentToDraw(engine) {
@@ -153,5 +152,4 @@ export default class BaseBonus {
 	stop() {
 		this.deactivate();
 	}
-
 };

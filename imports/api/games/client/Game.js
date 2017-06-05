@@ -28,7 +28,6 @@ import {PLAYER_INTERVAL, BALL_INTERVAL} from '/imports/api/games/emissionConstan
 import GameBonus from '/imports/api/games/client/GameBonus.js';
 
 export default class Game {
-
 	/**
 	 * @param {string} gameId
 	 * @param {PhaserEngine} engine
@@ -703,6 +702,23 @@ export default class Game {
 			}
 
 			this.gameResumed = false;
+
+
+			//Send to client
+			this.gameStreamBundler.emitStream(
+				'showBallHitPoint-' + this.gameId,
+				{
+					x: this.engine.getXPosition(this.ball),
+					y: this.engine.getYPosition(this.ball),
+					diameter: this.engine.getHeight(this.ball)
+				}
+			);
+			this.showBallHitPoint(
+				this.engine.getXPosition(this.ball),
+				this.engine.getYPosition(this.ball),
+				this.engine.getHeight(this.ball)
+			);
+
 			Meteor.apply('addGamePoints', [this.gameId, pointSide], {noRetry: true}, () => {});
 		}
 	}
@@ -824,12 +840,12 @@ export default class Game {
 		this.gameBonus.createBonus(data);
 	}
 
-	activateBonus(bonusIdentifier, playerKey, activatedAt) {
+	activateBonus(bonusIdentifier, playerKey, activatedAt, x, y) {
 		if (!this.gameInitiated || !this.gameData.isGameStatusStarted()) {
 			return;
 		}
 
-		this.gameBonus.activateBonus(bonusIdentifier, playerKey, activatedAt);
+		this.gameBonus.activateBonus(bonusIdentifier, playerKey, activatedAt, x, y);
 	}
 
 	moveClientBonus(bonusIdentifier, data) {
@@ -878,8 +894,19 @@ export default class Game {
 		);
 	}
 
+	showBallHitPoint(x, y, diameter) {
+		this.engine.activateAnimation(
+			this.engine.drawCircle(
+				x,
+				y,
+				{color: 0xffffff, width: 2},
+				null,
+				diameter
+			)
+		);
+	}
+
 	shakeLevel() {
 		this.engine.shake(this.level, 5, 20, 0, 0);
 	}
-
 };
