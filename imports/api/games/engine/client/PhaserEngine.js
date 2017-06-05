@@ -15,7 +15,6 @@ import {
 import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
 
 export default class PhaserEngine extends Engine {
-
 	start(width, height, parent, preloadGame, createGame, updateGame, scope) {
 		this.game = new Phaser.Game({
 			width: width,
@@ -164,10 +163,26 @@ export default class PhaserEngine extends Engine {
 		return textObject;
 	}
 
-	drawCircle(x, y, decimalColor, diameter) {
+	/**
+	 * @param x
+	 * @param y
+	 * @param lineConfig
+	 * @param lineConfig.width
+	 * @param lineConfig.color
+	 * @param fillConfig
+	 * @param fillConfig.color
+	 * @param diameter
+	 * @returns {*}
+	 */
+	drawCircle(x, y, lineConfig, fillConfig, diameter) {
 		const circle = this.addGraphics(x, y);
 
-		circle.beginFill(decimalColor);
+		if (lineConfig !== null) {
+			circle.lineStyle(lineConfig.width, lineConfig.color);
+		}
+		if (fillConfig !== null) {
+			circle.beginFill(fillConfig.color);
+		}
 		circle.drawCircle(0, 0, diameter);
 		circle.endFill();
 
@@ -386,6 +401,10 @@ export default class PhaserEngine extends Engine {
 		return sprite.body.y;
 	}
 
+	getHeight(sprite) {
+		return sprite.height;
+	}
+
 	setAnchor(sprite, anchor) {
 		sprite.anchor.set(anchor);
 	}
@@ -485,6 +504,19 @@ export default class PhaserEngine extends Engine {
 			.start();
 	}
 
+	activateAnimation(sprite) {
+		const duration = 250;
+		const scale = 4;
+
+		this.scale(sprite, 1, 1);
+		this.setOpacity(sprite, 0.5);
+		this.game.add.tween(sprite.scale).to({x: scale, y: scale}, duration).start();
+		this.game.add.tween(sprite).to({alpha: 0}, duration).start();
+		setTimeout(() => {
+			sprite.destroy();
+		}, duration);
+	}
+
 	drawBonus(x, y, bonus, bonusProgress) {
 		const bonusSprite = this.getBonusSprite(x, y, bonus);
 
@@ -536,6 +568,15 @@ export default class PhaserEngine extends Engine {
 		return bonusSprite;
 	}
 
+	activateAnimationBonus(x, y, bonus) {
+		const bonusSprite = this.getBonusSprite(x, y, bonus);
+
+		bonusSprite.bringToTop();
+		this.setStatic(bonusSprite, true);
+
+		this.activateAnimation(bonusSprite);
+	}
+
 	getBonusSprite(x, y, bonus) {
 		const bonusSprite = this.addSprite(x, y, 'delimiter', undefined);
 
@@ -549,5 +590,4 @@ export default class PhaserEngine extends Engine {
 
 		return bonusSprite;
 	}
-
 }

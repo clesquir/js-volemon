@@ -18,7 +18,17 @@ export default class GameStreamInitiator {
 		});
 
 		this.stream.on('activateBonus-' + gameId, (data) => {
-			this.activateBonus(data.identifier, data.player, data.activatedAt);
+			this.activateBonus(
+				data.identifier,
+				data.player,
+				data.activatedAt,
+				data.x,
+				data.y
+			);
+		});
+
+		this.stream.on('showBallHitPoint-' + gameId, (data) => {
+			this.showBallHitPoint(data.x, data.y, data.diameter);
 		});
 
 		this.stream.on('sendBundledData-' + gameId, (bundledData) => {
@@ -63,11 +73,19 @@ export default class GameStreamInitiator {
 		}
 	}
 
-	activateBonus(bonusIdentifier, playerKey, activatedAt) {
+	activateBonus(bonusIdentifier, playerKey, activatedAt, x, y) {
 		let gameInitiator = this.gameInitiator;
 
 		if (gameInitiator.hasActiveGame()) {
-			gameInitiator.currentGame.activateBonus(bonusIdentifier, playerKey, activatedAt);
+			gameInitiator.currentGame.activateBonus(bonusIdentifier, playerKey, activatedAt, x, y);
+		}
+	}
+
+	showBallHitPoint(x, y, diameter) {
+		let gameInitiator = this.gameInitiator;
+
+		if (gameInitiator.hasActiveGame()) {
+			gameInitiator.currentGame.showBallHitPoint(x, y, diameter);
 		}
 	}
 
@@ -86,6 +104,7 @@ export default class GameStreamInitiator {
 		this.stream.off('play-' + gameId);
 		this.stream.off('activateBonus-' + gameId);
 		this.stream.off('sendBundledData-' + gameId);
+		this.stream.off('showBallHitPoint-' + gameId);
 	}
 
 }

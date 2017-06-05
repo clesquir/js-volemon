@@ -532,10 +532,26 @@ export default class GameBonus {
 		this.game.collidesWithPlayer(bonusSprite, (bonusItem, player) => {
 			if (this.gameData.isUserHost()) {
 				const activatedAt = this.serverNormalizedTime.getServerTimestamp();
-				//Activate bonus
-				this.activateBonus(bonusSprite.identifier, this.engine.getKey(player), activatedAt);
+
 				//Send to client
-				this.gameStreamBundler.emitStream('activateBonus-' + this.game.gameId, {identifier: bonusSprite.identifier, player: this.engine.getKey(player), activatedAt: activatedAt});
+				this.gameStreamBundler.emitStream(
+					'activateBonus-' + this.game.gameId,
+					{
+						identifier: bonusSprite.identifier,
+						player: this.engine.getKey(player),
+						activatedAt: activatedAt,
+						x: this.engine.getXPosition(bonusSprite),
+						y: this.engine.getYPosition(bonusSprite)
+					}
+				);
+				//Activate bonus
+				this.activateBonus(
+					bonusSprite.identifier,
+					this.engine.getKey(player),
+					activatedAt,
+					this.engine.getXPosition(bonusSprite),
+					this.engine.getYPosition(bonusSprite)
+				);
 			}
 		}, this);
 		this.game.collidesWithNetHitDelimiter(bonusSprite);
@@ -546,7 +562,7 @@ export default class GameBonus {
 		return bonusSprite;
 	}
 
-	activateBonus(bonusIdentifier, playerKey, activatedAt) {
+	activateBonus(bonusIdentifier, playerKey, activatedAt, x, y) {
 		const correspondingBonusSprite = this.getBonusSpriteFromIdentifier(bonusIdentifier);
 
 		if (!correspondingBonusSprite) {
@@ -558,6 +574,9 @@ export default class GameBonus {
 
 		bonusToActivate.activate(playerKey, activatedAt);
 		bonusToActivate.start();
+
+		//Show bonus activation animation
+		this.engine.activateAnimationBonus(x, y, bonusToActivate);
 
 		this.deactivateSimilarBonusForPlayerKey(bonusToActivate, playerKey);
 
