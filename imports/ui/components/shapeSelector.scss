@@ -9,7 +9,7 @@
 	.shape-content-scroller {
 		background-image: url("/assets/player-shapes-small.png");
 		transition: 0.5s ease-in-out;
-		height: 147px;
+		height: 189px;
 		width: 32px;
 	}
 
@@ -29,16 +29,24 @@
 		transform: translateY(-63px);
 	}
 
-	&.shape-rhombus .shape-content-scroller {
+	&.shape-equal .shape-content-scroller {
 		transform: translateY(-84px);
 	}
 
-	&.shape-hexagon .shape-content-scroller {
+	&.shape-crown .shape-content-scroller {
 		transform: translateY(-105px);
 	}
 
-	&.shape-ellipse .shape-content-scroller {
+	&.shape-rhombus .shape-content-scroller {
 		transform: translateY(-126px);
+	}
+
+	&.shape-hexagon .shape-content-scroller {
+		transform: translateY(-147px);
+	}
+
+	&.shape-ellipse .shape-content-scroller {
+		transform: translateY(-168px);
 	}
 }
 
