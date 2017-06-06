@@ -30,7 +30,6 @@ export const createGame = function(user, gameInitiators) {
 				clientName: null,
 				isPracticeGame: 0,
 				isPrivate: 0,
-				hasBonuses: 1,
 				hostPoints: 0,
 				clientPoints: 0,
 				lastPointTaken: null,
@@ -160,7 +159,7 @@ export const replyRematch = function(userId, gameId, accepted, gameInitiators) {
 
 		Games.update(
 			{_id: gameRematchId},
-			{$set: {isPracticeGame: game.isPracticeGame, isPrivate: game.isPrivate, hasBonuses: game.hasBonuses}}
+			{$set: {isPracticeGame: game.isPracticeGame, isPrivate: game.isPrivate}}
 		);
 
 		joinGame(clientUser, gameRematchId, true);

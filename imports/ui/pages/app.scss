@@ -183,6 +183,14 @@
 	box-sizing: border-box;
 	text-align: center;
 
+	&.app-section-min-width .app-section-inner {
+		min-width: 300px;
+
+		@include breakpoint(mobileportrait) {
+			min-width: 250px;
+		}
+	}
+
 	&.app-section-center {
 		align-items: center;
 	}

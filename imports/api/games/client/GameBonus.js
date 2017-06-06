@@ -128,7 +128,7 @@ export default class GameBonus {
 		this.checkBonuses();
 		this.updatePlayerBonuses();
 
-		if (this.gameData.isUserHost() && this.gameData.hasBonuses) {
+		if (this.gameData.isUserHost()) {
 			this.createBonusIfTimeHasElapsed();
 			this.sendBonusesPosition();
 		}

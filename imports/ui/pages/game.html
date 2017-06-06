@@ -1,6 +1,6 @@
 <template name="game">
 
-	<div class="app-section app-section-center">
+	<div class="app-section app-section-min-width app-section-center">
 
 		<div class="app-section-inner">
 
@@ -127,12 +127,6 @@
 
 						<p class="{{#unless isHost}}not-editable{{/unless}}">
 							{{> switchButton label="Practice game" dataAction="update-practice-game" onOffMethod=isPracticeGame}}
-						</p>
-					</div>
-
-					<div>
-						<p class="{{#unless isHost}}not-editable{{/unless}}" style="text-align: right;">
-							{{> switchButton label="Bonus" dataAction="update-has-bonuses" onOffMethod=hasBonusesGame}}
 						</p>
 					</div>
 				</div>

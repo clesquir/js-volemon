@@ -92,18 +92,6 @@
 		width: 115px;
 		display: inline-block;
 	}
-
-	@include breakpoint(mobile) {
-		.switch-label {
-			width: 100%;
-			display: block;
-			margin-bottom: 5px;
-		}
-
-		.switch-button {
-			margin-left: 0;
-		}
-	}
 }
 
 .copyable-url-input {
@@ -115,6 +103,7 @@
 		background-color: $background-color-dark;
 		box-shadow: 0 0 0 $input-border-width $background-color-darker;
 		cursor: pointer;
+		padding-right: 40px;
 	}
 
 	.fa-clipboard {

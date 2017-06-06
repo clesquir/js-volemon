@@ -12,14 +12,12 @@ import {
 } from '/imports/api/games/utils.js';
 
 export default class GameData {
-
 	/**
 	 * @param {string} gameId
 	 */
 	constructor(gameId) {
 		this.gameId = gameId;
 
-		this.hasBonuses = false;
 		this.activeBonuses = [];
 	}
 
@@ -110,7 +108,6 @@ export default class GameData {
 		this.updateLastPointTaken(game.lastPointTaken);
 		this.updateLastPointAt(game.lastPointAt);
 		this.updateStatus(game.status);
-		this.updateHasBonuses(game.hasBonuses);
 		this.updateActiveBonuses(game.activeBonuses);
 
 		this.initPlayers();
@@ -164,12 +161,7 @@ export default class GameData {
 		this.status = status;
 	}
 
-	updateHasBonuses(hasBonuses) {
-		this.hasBonuses = hasBonuses;
-	}
-
 	updateActiveBonuses(activeBonuses) {
 		this.activeBonuses = activeBonuses;
 	}
-
 }

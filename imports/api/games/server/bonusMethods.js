@@ -6,25 +6,6 @@ import {GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
 import {EventPublisher} from '/imports/lib/EventPublisher.js';
 
 Meteor.methods({
-	updateGameHasBonuses: function(gameId, hasBonuses) {
-		const user = Meteor.user();
-		const game = Games.findOne(gameId);
-
-		if (!user) {
-			throw new Meteor.Error(401, 'You need to login to update game bonus property');
-		}
-
-		if (!game) {
-			throw new Meteor.Error(404, 'Game not found');
-		}
-
-		if (game.createdBy !== user._id) {
-			throw new Meteor.Error('not-allowed', 'Only the creator can update this game property');
-		}
-
-		Games.update({_id: game._id}, {$set: {hasBonuses: hasBonuses ? 1 : 0}});
-	},
-
 	addActiveBonusToGame: function(gameId, bonusIdentifier, activatedBonusClass, activatedAt, targetPlayerKey, bonusClass, activatorPlayerKey, initialBonusClass) {
 		const game = Games.findOne(gameId);
 		const data = {};
