@@ -520,12 +520,29 @@ export default class PhaserEngine extends Engine {
 	drawBonus(x, y, bonus, bonusProgress) {
 		const bonusSprite = this.getBonusSprite(x, y, bonus);
 
-		//Add pie progress
-		let radius = 14;
-		let pieProgress = this.game.add.bitmapData(radius * 2, radius * 2);
+		bonusSprite.addChild(this.createBonusProgressComponent(bonusProgress));
 
-		//Calculate progress
-		let progress = Phaser.Math.clamp(bonusProgress, 0.00001, 0.99999);
+		bonusSprite.bringToTop();
+		this.setStatic(bonusSprite, true);
+
+		return bonusSprite;
+	}
+
+	updateBonusProgress(x, bonusSprite, bonusProgress) {
+		bonusSprite.body.x = x;
+
+		for (let i = 0; i < bonusSprite.children.length; i++) {
+			if (bonusSprite.children[i].isProgress) {
+				bonusSprite.removeChild(bonusSprite.children[i]);
+				bonusSprite.addChild(this.createBonusProgressComponent(bonusProgress));
+			}
+		}
+	}
+
+	createBonusProgressComponent(bonusProgress) {
+		const radius = BONUS_RADIUS - 1;
+		const pieProgress = this.game.add.bitmapData(radius * 2, radius * 2);
+		const progress = Phaser.Math.clamp(bonusProgress, 0.00001, 0.99999);
 
 		let color = '#000000';
 		let opacity = 0.25;
@@ -540,17 +557,13 @@ export default class PhaserEngine extends Engine {
 		pieProgress.ctx.closePath();
 		pieProgress.ctx.fill();
 
-		let pieProgressSprite = this.game.add.sprite(0, 0, pieProgress);
+		const pieProgressSprite = this.game.add.sprite(0, 0, pieProgress);
 		this.setAnchor(pieProgressSprite, 0.5);
 		this.setOpacity(pieProgressSprite, opacity);
 		pieProgressSprite.angle = -90;
+		pieProgressSprite.isProgress = true;
 
-		bonusSprite.addChild(pieProgressSprite);
-
-		bonusSprite.bringToTop();
-		this.setStatic(bonusSprite, true);
-
-		return bonusSprite;
+		return pieProgressSprite;
 	}
 
 	addBonus(x, bonusGravityScale, bonusMaterial, bonusCollisionGroup, bonus) {

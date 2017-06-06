@@ -24,7 +24,6 @@ import BonusFactory from '/imports/api/games/BonusFactory.js';
 import {getRandomInt, getRandomFloat, getUTCTimeStamp} from '/imports/lib/utils.js';
 
 export default class GameBonus {
-
 	/**
 	 * @param {Game} game
 	 * @param {PhaserEngine} engine
@@ -145,36 +144,65 @@ export default class GameBonus {
 	}
 
 	updatePlayerBonuses() {
-		this.bonusesGroup.removeAll(true);
-
-		let padding = 5;
+		const padding = 5;
 		let player1Count = 0;
 		let player2Count = 0;
 
-		for (let activeBonus of this.gameData.activeBonuses) {
-			let bonus = BonusFactory.fromClassName(activeBonus.activatedBonusClass, this);
+		this.activeBonuses.forEach((bonus) => {
+			if (bonus.getTargetPlayerKey()) {
+				let bonusSprite = this.activatedBonusSpriteWithIdentifier(bonus.activationIdentifier());
 
-			switch (activeBonus.targetPlayerKey) {
-				case 'player1':
-					player1Count++;
-					this.bonusesGroup.add(this.engine.drawBonus(
-						padding + (player1Count * ((BONUS_RADIUS * 2) + padding)),
+				let xModifier = 0;
+				let sideCount = 0;
+				switch (bonus.getTargetPlayerKey()) {
+					case 'player1':
+						player1Count++;
+						sideCount = player1Count;
+						break;
+					case 'player2':
+						player2Count++;
+						xModifier = (this.xSize / 2);
+						sideCount = player2Count;
+						break;
+				}
+				const x = xModifier + padding + (sideCount * ((BONUS_RADIUS * 2) + padding));
+
+				if (bonusSprite === null) {
+					const bonusSprite = this.engine.drawBonus(
+						x,
 						this.ySize - (this.groundHeight / 2),
 						bonus,
-						this.getBonusProgress(activeBonus, bonus.getDuration())
-					));
-					break;
-				case 'player2':
-					player2Count++;
-					this.bonusesGroup.add(this.engine.drawBonus(
-						(this.xSize / 2) + padding + (player2Count * ((BONUS_RADIUS * 2) + padding)),
-						this.ySize - (this.groundHeight / 2),
-						bonus,
-						this.getBonusProgress(activeBonus, bonus.getDuration())
-					));
-					break;
+						this.getBonusProgress(bonus, bonus.getDuration())
+					);
+					bonusSprite.activationIdentifier = bonus.activationIdentifier();
+					this.bonusesGroup.add(bonusSprite);
+				} else {
+					this.engine.updateBonusProgress(
+						x,
+						bonusSprite,
+						this.getBonusProgress(bonus, bonus.getDuration())
+					);
+				}
+			}
+		});
+	}
+
+	removeActiveBonusWithIdentifier(activationIdentifier) {
+		const bonus = this.activatedBonusSpriteWithIdentifier(activationIdentifier);
+
+		if (bonus) {
+			this.bonusesGroup.remove(bonus, true);
+		}
+	}
+
+	activatedBonusSpriteWithIdentifier(activationIdentifier) {
+		for (let i = 0; i < this.bonusesGroup.children.length; i++) {
+			if (activationIdentifier === this.bonusesGroup.children[i].activationIdentifier) {
+				return this.bonusesGroup.children[i];
 			}
 		}
+
+		return null;
 	}
 
 	getBonusProgress(activeBonus, duration) {
@@ -626,8 +654,12 @@ export default class GameBonus {
 		for (let bonus of this.activeBonuses) {
 			if (bonus.check(this.serverNormalizedTime.getServerTimestamp())) {
 				stillActiveBonuses.push(bonus);
-			} else if (this.gameData.isUserHost()) {
-				Meteor.call('removeActiveBonusFromGame', this.game.gameId, bonus.getIdentifier());
+			} else {
+				if (this.gameData.isUserHost()) {
+					Meteor.call('removeActiveBonusFromGame', this.game.gameId, bonus.getIdentifier());
+				}
+
+				this.removeActiveBonusWithIdentifier(bonus.activationIdentifier());
 			}
 		}
 
@@ -644,8 +676,9 @@ export default class GameBonus {
 		//Remove active bonuses
 		for (let bonus of this.activeBonuses) {
 			bonus.stop();
+
+			this.removeActiveBonusWithIdentifier(bonus.activationIdentifier());
 		}
 		this.activeBonuses = [];
 	}
-
 }

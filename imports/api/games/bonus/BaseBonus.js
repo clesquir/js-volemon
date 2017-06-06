@@ -28,6 +28,10 @@ export default class BaseBonus {
 		return this.className + '_' + this.createdAt;
 	}
 
+	activationIdentifier() {
+		return this.className + '_' + this.activatorPlayerKey + '_' + this.activatedAt;
+	}
+
 	getClassName() {
 		return this.className;
 	}
