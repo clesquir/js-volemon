@@ -26,6 +26,7 @@ import PointTime from '/imports/api/achievements/server/listeners/PointTime.js';
 import RandomInAGame from '/imports/api/achievements/server/listeners/RandomInAGame.js';
 import Shutouts from '/imports/api/achievements/server/listeners/Shutouts.js';
 import SimultaneousActivatedBonuses from '/imports/api/achievements/server/listeners/SimultaneousActivatedBonuses.js';
+import Snoozer from '/imports/api/achievements/server/listeners/Snoozer.js';
 import ToTheSky from '/imports/api/achievements/server/listeners/ToTheSky.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
@@ -82,6 +83,7 @@ export default class Listeners {
 			this.listeners.push(new ToTheSky(this.gameId, player.userId));
 			this.listeners.push(new BlankScreen(this.gameId, player.userId));
 			this.listeners.push(new DavidVsGoliath(this.gameId, player.userId));
+			this.listeners.push(new Snoozer(this.gameId, player.userId));
 		});
 	}
 

@@ -8,6 +8,7 @@ import {
 	getEloScore,
 	getEloRating
 } from '/imports/api/games/server/onGameFinished.js';
+import {GAME_MAXIMUM_POINTS} from '/imports/api/games/constants.js';
 import {EloScores} from '/imports/api/games/eloscores.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
@@ -174,7 +175,7 @@ describe('onGameFinished', function() {
 		 */
 		let gameId = Random.id(5);
 		Players.insert({gameId: gameId, userId: clientUserId});
-		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED, hostPoints: 5, clientPoints: 1});
+		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED, hostPoints: GAME_MAXIMUM_POINTS, clientPoints: 1});
 
 		updateProfilesOnGameFinished(Games.findOne({_id: gameId}), Profiles.findOne({_id: hostProfileId}), Profiles.findOne({_id: clientProfileId}));
 
@@ -193,7 +194,7 @@ describe('onGameFinished', function() {
 		 */
 		gameId = Random.id(5);
 		Players.insert({gameId: gameId, userId: clientUserId});
-		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED, hostPoints: 1, clientPoints: 5});
+		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED, hostPoints: 1, clientPoints: GAME_MAXIMUM_POINTS});
 
 		updateProfilesOnGameFinished(Games.findOne({_id: gameId}), Profiles.findOne({_id: clientProfileId}), Profiles.findOne({_id: hostProfileId}));
 
@@ -212,7 +213,7 @@ describe('onGameFinished', function() {
 		 */
 		gameId = Random.id(5);
 		Players.insert({gameId: gameId, userId: clientUserId});
-		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED, hostPoints: 5, clientPoints: 0});
+		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED, hostPoints: GAME_MAXIMUM_POINTS, clientPoints: 0});
 
 		updateProfilesOnGameFinished(Games.findOne({_id: gameId}), Profiles.findOne({_id: hostProfileId}), Profiles.findOne({_id: clientProfileId}));
 
@@ -231,7 +232,7 @@ describe('onGameFinished', function() {
 		 */
 		gameId = Random.id(5);
 		Players.insert({gameId: gameId, userId: clientUserId});
-		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED, hostPoints: 0, clientPoints: 5});
+		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED, hostPoints: 0, clientPoints: GAME_MAXIMUM_POINTS});
 
 		updateProfilesOnGameFinished(Games.findOne({_id: gameId}), Profiles.findOne({_id: clientProfileId}), Profiles.findOne({_id: hostProfileId}));
 
