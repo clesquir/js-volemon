@@ -7,6 +7,7 @@ import BonusesInAPoint from '/imports/api/achievements/server/listeners/BonusesI
 import ConsecutiveDaysPlayed from '/imports/api/achievements/server/listeners/ConsecutiveDaysPlayed.js';
 import ConsecutiveLostGames from '/imports/api/achievements/server/listeners/ConsecutiveLostGames.js';
 import ConsecutiveWonGames from '/imports/api/achievements/server/listeners/ConsecutiveWonGames.js';
+import DavidVsGoliath from '/imports/api/achievements/server/listeners/DavidVsGoliath.js';
 import GamesPlayed from '/imports/api/achievements/server/listeners/GamesPlayed.js';
 import GameTime from '/imports/api/achievements/server/listeners/GameTime.js';
 import GamesWonUnderAMinute from '/imports/api/achievements/server/listeners/GamesWonUnderAMinute.js';
@@ -80,6 +81,7 @@ export default class Listeners {
 			this.listeners.push(new IWasThereWaiting(this.gameId, player.userId));
 			this.listeners.push(new ToTheSky(this.gameId, player.userId));
 			this.listeners.push(new BlankScreen(this.gameId, player.userId));
+			this.listeners.push(new DavidVsGoliath(this.gameId, player.userId));
 		});
 	}
 

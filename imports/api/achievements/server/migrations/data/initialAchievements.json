@@ -234,6 +234,15 @@
       "type": "TIMES",
       "displayOrder": 28,
       "levels": [{"level": 1, "number": 1}, {"level": 2, "number": 2}, {"level": 3, "number": 3}]
+    },
+    {
+      "_id": "DAVID_VS_GOLIATH",
+      "isSecret": true,
+      "name": "David VS Goliath",
+      "description": "# of won games against opponent with ELO 150 points higher",
+      "type": "TIMES",
+      "displayOrder": 29,
+      "levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 20}]
     }
   ]
 }
