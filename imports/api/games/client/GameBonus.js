@@ -171,7 +171,7 @@ export default class GameBonus {
 					const bonusSprite = this.engine.drawBonus(
 						x,
 						this.ySize - (this.groundHeight / 2),
-						bonus,
+						BonusFactory.fromClassName(bonus.classNameToActivate(), this),
 						this.getBonusProgress(bonus, bonus.getDuration())
 					);
 					bonusSprite.activationIdentifier = bonus.activationIdentifier();
