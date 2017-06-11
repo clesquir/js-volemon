@@ -132,6 +132,10 @@ export default class PhaserEngine extends Engine {
 		return sprite;
 	}
 
+	loadSpriteTexture(sprite, key) {
+		sprite.loadTexture(key);
+	}
+
 	addTileSprite(x, y, width, height, key, group, disableBody) {
 		const tileSprite = this.game.add.tileSprite(
 			x,
@@ -266,7 +270,7 @@ export default class PhaserEngine extends Engine {
 	}
 
 	getKey(spriteBody) {
-		return spriteBody.sprite.key;
+		return spriteBody.sprite.data.key;
 	}
 
 	getPositionData(sprite) {
@@ -348,7 +352,7 @@ export default class PhaserEngine extends Engine {
 	}
 	
 	unfreeze(sprite) {
-		this.setGravity(sprite, sprite.initialGravity);
+		this.setGravity(sprite, sprite.data.initialGravity);
 	}
 
 	spawn(sprite, x, y) {
@@ -569,11 +573,11 @@ export default class PhaserEngine extends Engine {
 	addBonus(x, bonusGravityScale, bonusMaterial, bonusCollisionGroup, bonus) {
 		const bonusSprite = this.getBonusSprite(x, 0, bonus);
 
-		bonusSprite.initialGravity = bonusGravityScale;
+		bonusSprite.data.initialGravity = bonusGravityScale;
 		bonusSprite.sendToBack();
 
 		this.setFixedRotation(bonusSprite, false);
-		this.setGravity(bonusSprite, bonusSprite.initialGravity);
+		this.setGravity(bonusSprite, bonusSprite.data.initialGravity);
 		this.setDamping(bonusSprite, 0);
 		this.setMaterial(bonusSprite, bonusMaterial);
 		this.setCollisionGroup(bonusSprite, bonusCollisionGroup);

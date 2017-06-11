@@ -25,6 +25,7 @@ import {
 	HOST_POINTS_COLUMN
 } from '/imports/api/games/constants.js';
 import {PLAYER_INTERVAL, BALL_INTERVAL} from '/imports/api/games/emissionConstants.js';
+import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
 import GameBonus from '/imports/api/games/client/GameBonus.js';
 
 export default class Game {
@@ -75,6 +76,16 @@ export default class Game {
 		}
 	}
 
+	playerInitialPolygonObjectFromKey(playerKey) {
+		const player = this.getPlayerFromKey(playerKey);
+
+		if (player) {
+			return player.data.initialPolygonObject;
+		}
+
+		return null;
+	}
+
 	start() {
 		this.engine.start(
 			this.xSize, this.ySize, 'gameContainer',
@@ -102,8 +113,10 @@ export default class Game {
 	preloadGame() {
 		this.engine.preloadGame();
 
-		this.engine.loadImage('player1', 'assets/player-' + this.gameData.getPlayerShapeFromKey('player1') + '.png');
-		this.engine.loadImage('player2', 'assets/player-' + this.gameData.getPlayerShapeFromKey('player2') + '.png');
+		for (let shape of PLAYER_LIST_OF_SHAPES) {
+			this.engine.loadImage('shape-' + shape, 'assets/player-' + shape + '.png');
+		}
+
 		this.engine.loadImage('ball', 'assets/ball.png');
 		this.engine.loadImage('net', 'assets/net.png');
 		this.engine.loadImage('ground', 'assets/ground.png');
@@ -143,14 +156,16 @@ export default class Game {
 		/**
 		 * Player 1
 		 */
-		this.player1 = this.engine.addSprite(initialXLocation, initialYLocation, 'player1', undefined);
+		this.player1 = this.engine.addSprite(initialXLocation, initialYLocation, 'shape-' + this.gameData.getPlayerShapeFromKey('player1'), undefined);
+		this.player1.data.key = 'player1';
 		this.createPlayer(this.player1, initialXLocation, initialYLocation, 'player1');
 
 		/**
 		 * Player 2
 		 */
 		initialXLocation = this.xSize - PLAYER_INITIAL_LOCATION;
-		this.player2 = this.engine.addSprite(initialXLocation, initialYLocation, 'player2', undefined);
+		this.player2 = this.engine.addSprite(initialXLocation, initialYLocation, 'shape-' + this.gameData.getPlayerShapeFromKey('player2'), undefined);
+		this.player2.data.key = 'player2';
 		this.createPlayer(this.player2, initialXLocation, initialYLocation, 'player2');
 
 		/**
@@ -231,35 +246,41 @@ export default class Game {
 	}
 
 	createPlayer(player, initialXLocation, initialYLocation, playerKey) {
-		player.initialXLocation = initialXLocation;
-		player.initialYLocation = initialYLocation;
-		player.initialMass = PLAYER_MASS;
-		player.initialGravity = PLAYER_GRAVITY_SCALE;
-		player.velocityXOnMove = PLAYER_VELOCITY_X_ON_MOVE;
-		player.velocityYOnJump = PLAYER_VELOCITY_Y_ON_JUMP;
-		player.doingDropShot = false;
+		player.data.initialXLocation = initialXLocation;
+		player.data.initialYLocation = initialYLocation;
+		player.data.initialMass = PLAYER_MASS;
+		player.data.initialGravity = PLAYER_GRAVITY_SCALE;
+		player.data.velocityXOnMove = PLAYER_VELOCITY_X_ON_MOVE;
+		player.data.velocityYOnJump = PLAYER_VELOCITY_Y_ON_JUMP;
+		player.data.doingDropShot = false;
 		//These are related to bonus but managed in this class
-		player.moveModifier = 1;
-		player.isFrozen = false;
-		player.canJump = true;
-		player.alwaysJump = false;
+		player.data.moveModifier = 1;
+		player.data.isFrozen = false;
+		player.data.canJump = true;
+		player.data.alwaysJump = false;
 
 		this.gameBonus.initPlayerProperties(player);
 
-		player.polygonObject = 'player-' + this.gameData.getPlayerShapeFromKey(playerKey);
-		this.engine.loadPolygon(player, NORMAL_SCALE_PHYSICS_DATA, player.polygonObject);
+		player.data.initialTextureKey = 'shape-' + this.gameData.getPlayerShapeFromKey(playerKey);
+		player.data.currentTextureKey = player.data.initialTextureKey;
+		player.data.initialPolygonObject = 'player-' + this.gameData.getPlayerShapeFromKey(playerKey);
+		player.data.currentPolygonObject = player.data.initialPolygonObject;
+		player.data.initialPolygonKey = NORMAL_SCALE_PHYSICS_DATA;
+		player.data.currentPolygonKey = player.data.initialPolygonKey;
+		this.engine.loadPolygon(player, player.data.currentPolygonKey, player.data.currentPolygonObject);
 
 		this.setupPlayerBody(player);
 	}
 
 	setupPlayerBody(player) {
+		this.engine.loadSpriteTexture(player, player.data.currentTextureKey);
 		this.engine.setFixedRotation(player, true);
-		this.engine.setMass(player, player.initialMass);
+		this.engine.setMass(player, player.data.initialMass);
 
-		if (player.isFrozen) {
+		if (player.data.isFrozen) {
 			this.engine.setGravity(player, 0);
 		} else {
-			this.engine.setGravity(player, player.initialGravity);
+			this.engine.setGravity(player, player.data.initialGravity);
 		}
 
 		this.engine.setMaterial(player, this.playerMaterial);
@@ -273,21 +294,24 @@ export default class Game {
 	createBall(initialXLocation, initialYLocation) {
 		this.ball = this.engine.addSprite(initialXLocation, initialYLocation, 'ball', undefined);
 
-		this.ball.initialGravity = BALL_GRAVITY_SCALE;
-		this.ball.isFrozen = false;
+		this.ball.data.initialGravity = BALL_GRAVITY_SCALE;
+		this.ball.data.isFrozen = false;
 
-		this.ball.polygonObject = 'ball';
-		this.engine.loadPolygon(this.ball, NORMAL_SCALE_PHYSICS_DATA, 'ball');
+		this.ball.data.initialPolygonObject = 'ball';
+		this.ball.data.currentPolygonObject = this.ball.data.initialPolygonObject;
+		this.ball.data.initialPolygonKey = NORMAL_SCALE_PHYSICS_DATA;
+		this.ball.data.currentPolygonKey = this.ball.data.initialPolygonKey;
+		this.engine.loadPolygon(this.ball, this.ball.data.currentPolygonKey, this.ball.data.currentPolygonObject);
 
 		this.setupBallBody();
 	}
 
 	setupBallBody() {
 		this.engine.setFixedRotation(this.ball, true);
-		if (this.ball.isFrozen) {
+		if (this.ball.data.isFrozen) {
 			this.engine.setGravity(this.ball, 0);
 		} else {
-			this.engine.setGravity(this.ball, this.ball.initialGravity);
+			this.engine.setGravity(this.ball, this.ball.data.initialGravity);
 		}
 		this.engine.setDamping(this.ball, 0.1);
 		this.engine.setMaterial(this.ball, this.ballMaterial);
@@ -483,7 +507,7 @@ export default class Game {
 	}
 
 	spawnPlayer(player) {
-		this.engine.spawn(player, player.initialXLocation, player.initialYLocation);
+		this.engine.spawn(player, player.data.initialXLocation, player.data.initialYLocation);
 	}
 
 	spawnBall() {
@@ -516,7 +540,7 @@ export default class Game {
 		this.gameStreamBundler.resetBundledStreams();
 
 		//Do not allow ball movement if it is frozen
-		if (this.gameData.isUserHost() && this.ball.isFrozen) {
+		if (this.gameData.isUserHost() && this.ball.data.isFrozen) {
 			this.engine.setHorizontalSpeed(this.ball, 0);
 			this.engine.setVerticalSpeed(this.ball, 0);
 		}
@@ -587,7 +611,7 @@ export default class Game {
 		let playerInterval = PLAYER_INTERVAL;
 
 		playerPositionData.isHost = this.gameData.isUserHost();
-		playerPositionData.doingDropShot = player.doingDropShot;
+		playerPositionData.doingDropShot = player.data.doingDropShot;
 
 		if (JSON.stringify(this.lastPlayerPositionData) === JSON.stringify(playerPositionData)) {
 			playerInterval *= 2;
@@ -653,7 +677,7 @@ export default class Game {
 
 	isPlayerDoingDropShot(ball, player, playerKey) {
 		return (
-			player.doingDropShot && this.isBallInFrontOfPlayer(ball, player, playerKey) && !this.isPlayerAtGroundLevel(player)
+			player.data.doingDropShot && this.isBallInFrontOfPlayer(ball, player, playerKey) && !this.isPlayerAtGroundLevel(player)
 		);
 	}
 
@@ -730,28 +754,28 @@ export default class Game {
 			return false;
 		}
 
-		player.doingDropShot = false;
+		player.data.doingDropShot = false;
 
-		if (player.isFrozen) {
+		if (player.data.isFrozen) {
 			this.engine.setHorizontalSpeed(player, 0);
 			this.engine.setVerticalSpeed(player, 0);
 		} else {
 			if (this.isLeftKeyDown()) {
-				this.engine.setHorizontalSpeed(player, player.moveModifier * -player.velocityXOnMove);
+				this.engine.setHorizontalSpeed(player, player.data.moveModifier * -player.data.velocityXOnMove);
 			} else if (this.isRightKeyDown()) {
-				this.engine.setHorizontalSpeed(player, player.moveModifier * player.velocityXOnMove);
+				this.engine.setHorizontalSpeed(player, player.data.moveModifier * player.data.velocityXOnMove);
 			} else {
 				this.engine.setHorizontalSpeed(player, 0);
 			}
 
 			if (this.isPlayerAtGroundLevel(player)) {
-				if (player.alwaysJump || (this.isUpKeyDown() && player.canJump)) {
-					this.engine.setVerticalSpeed(player, -player.velocityYOnJump);
+				if (player.data.alwaysJump || (this.isUpKeyDown() && player.data.canJump)) {
+					this.engine.setVerticalSpeed(player, -player.data.velocityYOnJump);
 				} else {
 					this.engine.setVerticalSpeed(player, 0);
 				}
 			} else {
-				player.doingDropShot = this.isDropShotKeyDown();
+				player.data.doingDropShot = this.isDropShotKeyDown();
 			}
 		}
 
@@ -813,7 +837,7 @@ export default class Game {
 			return;
 		}
 
-		player.doingDropShot = data.doingDropShot;
+		player.data.doingDropShot = data.doingDropShot;
 
 		let serverNormalizedTimestamp = this.serverNormalizedTime.getServerTimestamp();
 		data = this.engine.interpolateFromTimestamp(serverNormalizedTimestamp, player, data);
@@ -840,12 +864,12 @@ export default class Game {
 		this.gameBonus.createBonus(data);
 	}
 
-	activateBonus(bonusIdentifier, playerKey, activatedAt, x, y) {
+	activateBonus(bonusIdentifier, playerKey, activatedAt, x, y, beforeActivationData) {
 		if (!this.gameInitiated || !this.gameData.isGameStatusStarted()) {
 			return;
 		}
 
-		this.gameBonus.activateBonus(bonusIdentifier, playerKey, activatedAt, x, y);
+		this.gameBonus.activateBonus(bonusIdentifier, playerKey, activatedAt, x, y, beforeActivationData);
 	}
 
 	moveClientBonus(bonusIdentifier, data) {
@@ -858,21 +882,21 @@ export default class Game {
 
 	pauseGame() {
 		this.engine.freeze(this.ball);
-		this.ball.isFrozen = true;
+		this.ball.data.isFrozen = true;
 	}
 
 	stopGame() {
 		this.engine.freeze(this.player1);
 		this.engine.freeze(this.player2);
 		this.engine.freeze(this.ball);
-		this.ball.isFrozen = true;
+		this.ball.data.isFrozen = true;
 
 		this.gameBonus.onGameStop();
 	}
 
 	resumeGame() {
 		this.engine.unfreeze(this.ball);
-		this.ball.isFrozen = false;
+		this.ball.data.isFrozen = false;
 		this.gameResumed = true;
 	}
 

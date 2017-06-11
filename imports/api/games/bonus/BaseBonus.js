@@ -107,6 +107,23 @@ export default class BaseBonus {
 		return [bonusBorder];
 	}
 
+	beforeActivation(playerKey, activatedAt) {
+		if (this.bonusToActivate() !== this) {
+			this.bonusToActivate().beforeActivation(playerKey, activatedAt);
+		}
+	}
+
+	beforeActivationData() {
+		if (this.bonusToActivate() !== this) {
+			return this.bonusToActivate().beforeActivationData();
+		}
+
+		return {};
+	}
+
+	reassignBeforeActivationData(beforeActivationData) {
+	}
+
 	/**
 	 * Sets the bonus active and keep reference of the activator player and date
 	 * @param {string} playerKey
@@ -116,6 +133,20 @@ export default class BaseBonus {
 		this.isActive = true;
 		this.activatorPlayerKey = playerKey;
 		this.activatedAt = activatedAt;
+	}
+
+	/**
+	 * @returns {Object}
+	 */
+	activationData() {
+		return {
+			bonusIdentifier: this.getIdentifier(),
+			activatedBonusClass: this.classNameToActivate(),
+			targetPlayerKey: this.getTargetPlayerKey(),
+			bonusClass: this.getClassName(),
+			activatorPlayerKey: this.getActivatorPlayerKey(),
+			beforeActivationData: this.beforeActivationData()
+		};
 	}
 
 	deactivate() {
