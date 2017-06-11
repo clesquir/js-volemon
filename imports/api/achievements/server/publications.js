@@ -85,8 +85,11 @@ const initializeAchievementsByUserId = function(achievementsByUserId, userId) {
 		achievementsByUserId[userId] = {
 			userId: userId,
 			level1: 0,
+			achievementsLevel1: [],
 			level2: 0,
+			achievementsLevel2: [],
 			level3: 0,
+			achievementsLevel3: [],
 			rank: 0
 		};
 	}
@@ -104,10 +107,12 @@ const updateAchievementsByUserId = function(
 ) {
 	achievementsByUserId = initializeAchievementsByUserId(achievementsByUserId, userId);
 
-	if (achievementsById[achievementId]) {
-		for (let level of achievementsById[achievementId].levels) {
+	const achievement = achievementsById[achievementId];
+	if (achievement) {
+		for (let level of achievement.levels) {
 			if (afterNumber >= level.number && beforeNumber < level.number) {
 				achievementsByUserId[userId]['level' + level.level] += 1;
+				achievementsByUserId[userId]['achievementsLevel' + level.level].push(achievementId);
 				achievementsByUserId[userId]['rank'] += level.level;
 			}
 		}
