@@ -15,4 +15,5 @@ export const BONUS_CLOUD = 'CloudBonus';
 export const BONUS_NO_JUMP_MONSTER = 'NoJumpMonsterBonus';
 export const BONUS_BOUNCE_MONSTER = 'BounceMonsterBonus';
 export const BONUS_CLOAKED_MONSTER = 'CloakedMonsterBonus';
-export const BONUS_RANDOM_BONUS = 'RandomBonus';
+export const BONUS_RANDOM = 'RandomBonus';
+export const BONUS_SHAPE_SHIFT = 'ShapeShiftBonus';

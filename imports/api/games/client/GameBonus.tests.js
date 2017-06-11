@@ -60,7 +60,9 @@ describe('GameBonus#createBonusIfTimeHasElapsed', function() {
 	sinon.stub(game, 'collidesWithGroundHitDelimiter').callsFake(function() {});
 	sinon.stub(game, 'collidesWithBall').callsFake(function() {});
 
-	sinon.stub(engine, 'addBonus').callsFake(function() {return new BaseBonus();});
+	sinon.stub(engine, 'addBonus').callsFake(function() {
+		return {data: {}};
+	});
 	sinon.stub(engine, 'collidesWith').callsFake(function() {});
 
 	beforeEach(function() {
@@ -201,7 +203,9 @@ describe('GameBonus#setPlayerGravity', function() {
 		const gravity = 2;
 
 		game.player1 = {
-			isFrozen: false,
+			data: {
+				isFrozen: false
+			},
 			body: {
 				data: {
 					gravityScale: 1
@@ -220,7 +224,9 @@ describe('GameBonus#setPlayerGravity', function() {
 		const gravity = 2;
 
 		game.player1 = {
-			isFrozen: true,
+			data: {
+				isFrozen: true
+			},
 			body: {
 				data: {
 					gravityScale: initialGravity
@@ -248,8 +254,10 @@ describe('GameBonus#resetPlayerGravity', function() {
 		const actualGravity = 2;
 
 		game.player1 = {
-			isFrozen: false,
-			initialGravity: initialGravity,
+			data: {
+				isFrozen: false,
+				initialGravity: initialGravity
+			},
 			body: {
 				data: {
 					gravityScale: actualGravity
@@ -268,8 +276,10 @@ describe('GameBonus#resetPlayerGravity', function() {
 		const actualGravity = 2;
 
 		game.player1 = {
-			isFrozen: true,
-			initialGravity: initialGravity,
+			data: {
+				isFrozen: true,
+				initialGravity: initialGravity
+			},
 			body: {
 				data: {
 					gravityScale: actualGravity
@@ -297,9 +307,11 @@ describe('GameBonus#unFreezePlayer', function() {
 		const initialGravity = 1;
 
 		game.player1 = {
-			initialMass: initialMass,
-			initialGravity: initialGravity,
-			activeGravity: null,
+			data: {
+				initialMass: initialMass,
+				initialGravity: initialGravity,
+				activeGravity: null
+			},
 			body: {
 				mass: 0,
 				data: {
@@ -321,9 +333,11 @@ describe('GameBonus#unFreezePlayer', function() {
 		const activeGravity = 2;
 
 		game.player1 = {
-			initialMass: initialMass,
-			initialGravity: initialGravity,
-			activeGravity: activeGravity,
+			data: {
+				initialMass: initialMass,
+				initialGravity: initialGravity,
+				activeGravity: activeGravity
+			},
 			body: {
 				mass: 0,
 				data: {

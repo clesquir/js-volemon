@@ -50,6 +50,10 @@ export default class GameBonus {
 		this.groundHeight = GAME_GROUND_HEIGHT;
 	}
 
+	playerInitialPolygonObjectFromKey(playerKey) {
+		return this.game.playerInitialPolygonObjectFromKey(playerKey);
+	}
+
 	getPolygonKeyFromScale(scale) {
 		let polygonKey = null;
 
@@ -110,12 +114,12 @@ export default class GameBonus {
 	}
 
 	initPlayerProperties(player) {
-		player.activeGravity = null;
-		player.isInvincible = false;
+		player.data.activeGravity = null;
+		player.data.isInvincible = false;
 	}
 
 	isPlayerInvincible(player) {
-		return player.isInvincible;
+		return player.data.isInvincible;
 	}
 
 	resumeGame() {
@@ -137,6 +141,7 @@ export default class GameBonus {
 	applyActiveBonuses() {
 		for (let activeBonus of this.gameData.activeBonuses) {
 			let bonus = BonusFactory.fromClassName(activeBonus.activatedBonusClass, this);
+			bonus.reassignBeforeActivationData(activeBonus.beforeActivationData);
 			bonus.activate(activeBonus.targetPlayerKey, activeBonus.activatedAt);
 			bonus.start();
 			this.activeBonuses.push(bonus);
@@ -215,7 +220,7 @@ export default class GameBonus {
 		for (let bonus of this.bonuses) {
 			let bonusPositionData = this.engine.getPositionData(bonus);
 
-			bonusPositionData = Object.assign(bonusPositionData, bonus.bonus.dataToStream());
+			bonusPositionData = Object.assign(bonusPositionData, bonus.data.bonus.dataToStream());
 			bonusPositionData['timestamp'] = this.serverNormalizedTime.getServerTimestamp();
 
 			bonusesData.push([
@@ -262,8 +267,10 @@ export default class GameBonus {
 			return;
 		}
 
+		player.data.currentPolygonKey = polygonKey;
+
 		this.engine.scale(player, scale, scale);
-		this.engine.loadPolygon(player, polygonKey, player.polygonObject);
+		this.engine.loadPolygon(player, player.data.currentPolygonKey, player.data.currentPolygonObject);
 		this.game.setupPlayerBody(player);
 	}
 
@@ -274,7 +281,35 @@ export default class GameBonus {
 			return;
 		}
 
-		this.scalePlayer(playerKey, 1);
+		this.scalePlayer(playerKey, NORMAL_SCALE_BONUS);
+	}
+
+	shiftPlayerShape(playerKey, playerShape) {
+		const player = this.game.getPlayerFromKey(playerKey);
+
+		if (!player) {
+			return;
+		}
+
+		player.data.currentTextureKey = 'shape-' + playerShape;
+		player.data.currentPolygonObject = 'player-' + playerShape;
+
+		this.engine.loadPolygon(player, player.data.currentPolygonKey, player.data.currentPolygonObject);
+		this.game.setupPlayerBody(player);
+	}
+
+	resetPlayerShape(playerKey) {
+		const player = this.game.getPlayerFromKey(playerKey);
+
+		if (!player) {
+			return;
+		}
+
+		player.data.currentTextureKey = player.data.initialTextureKey;
+		player.data.currentPolygonObject = player.data.initialPolygonObject;
+
+		this.engine.loadPolygon(player, player.data.currentPolygonKey, player.data.currentPolygonObject);
+		this.game.setupPlayerBody(player);
 	}
 
 	setPlayerGravity(playerKey, gravity) {
@@ -284,7 +319,7 @@ export default class GameBonus {
 			return;
 		}
 
-		if (!player.isFrozen) {
+		if (!player.data.isFrozen) {
 			this.engine.setGravity(player, gravity);
 		}
 	}
@@ -296,8 +331,8 @@ export default class GameBonus {
 			return;
 		}
 
-		if (!player.isFrozen) {
-			this.engine.setGravity(player, player.initialGravity);
+		if (!player.data.isFrozen) {
+			this.engine.setGravity(player, player.data.initialGravity);
 		}
 	}
 
@@ -308,8 +343,10 @@ export default class GameBonus {
 			return;
 		}
 
+		this.game.ball.data.currentPolygonKey = polygonKey;
+
 		this.engine.scale(this.game.ball, scale, scale);
-		this.engine.loadPolygon(this.game.ball, polygonKey, this.game.ball.polygonObject);
+		this.engine.loadPolygon(this.game.ball, this.game.ball.data.currentPolygonKey, this.game.ball.data.currentPolygonObject);
 		this.game.setupBallBody();
 	}
 
@@ -322,7 +359,7 @@ export default class GameBonus {
 	}
 
 	resetBallGravity() {
-		this.setBallGravity(this.game.ball.initialGravity);
+		this.setBallGravity(this.game.ball.data.initialGravity);
 	}
 
 	changePlayerProperty(playerKey, property, value) {
@@ -332,7 +369,7 @@ export default class GameBonus {
 			return;
 		}
 
-		player[property] = value;
+		player.data[property] = value;
 	}
 
 	hideBall() {
@@ -456,7 +493,7 @@ export default class GameBonus {
 
 		this.engine.setMass(player, 2000);
 		this.engine.freeze(player);
-		player.isFrozen = true;
+		player.data.isFrozen = true;
 	}
 
 	unFreezePlayer(playerKey) {
@@ -466,13 +503,13 @@ export default class GameBonus {
 			return;
 		}
 
-		this.engine.setMass(player, player.initialMass);
-		if (player.activeGravity !== null) {
-			this.engine.setGravity(player, player.activeGravity);
+		this.engine.setMass(player, player.data.initialMass);
+		if (player.data.activeGravity !== null) {
+			this.engine.setGravity(player, player.data.activeGravity);
 		} else {
-			this.engine.setGravity(player, player.initialGravity);
+			this.engine.setGravity(player, player.data.initialGravity);
 		}
-		player.isFrozen = false;
+		player.data.isFrozen = false;
 	}
 
 	drawCloud() {
@@ -553,32 +590,38 @@ export default class GameBonus {
 		);
 
 		bonusSprite.identifier = data.bonusIdentifier;
-		bonusSprite.bonus = bonus;
+		bonusSprite.data.bonus = bonus;
 
 		this.bonuses.push(bonusSprite);
 
 		this.game.collidesWithPlayer(bonusSprite, (bonusItem, player) => {
 			if (this.gameData.isUserHost()) {
+				const playerKey = this.engine.getKey(player);
 				const activatedAt = this.serverNormalizedTime.getServerTimestamp();
+
+				bonusSprite.data.bonus.beforeActivation(playerKey, activatedAt);
+				const beforeActivationData = bonusSprite.data.bonus.beforeActivationData();
 
 				//Send to client
 				this.gameStreamBundler.emitStream(
 					'activateBonus-' + this.game.gameId,
 					{
 						identifier: bonusSprite.identifier,
-						player: this.engine.getKey(player),
+						player: playerKey,
 						activatedAt: activatedAt,
 						x: this.engine.getXPosition(bonusSprite),
-						y: this.engine.getYPosition(bonusSprite)
+						y: this.engine.getYPosition(bonusSprite),
+						beforeActivationData: beforeActivationData
 					}
 				);
 				//Activate bonus
 				this.activateBonus(
 					bonusSprite.identifier,
-					this.engine.getKey(player),
+					playerKey,
 					activatedAt,
 					this.engine.getXPosition(bonusSprite),
-					this.engine.getYPosition(bonusSprite)
+					this.engine.getYPosition(bonusSprite),
+					beforeActivationData
 				);
 			}
 		}, this);
@@ -590,16 +633,17 @@ export default class GameBonus {
 		return bonusSprite;
 	}
 
-	activateBonus(bonusIdentifier, playerKey, activatedAt, x, y) {
+	activateBonus(bonusIdentifier, playerKey, activatedAt, x, y, beforeActivationData) {
 		const correspondingBonusSprite = this.getBonusSpriteFromIdentifier(bonusIdentifier);
 
 		if (!correspondingBonusSprite) {
 			return;
 		}
 
-		const bonus = correspondingBonusSprite.bonus;
+		const bonus = correspondingBonusSprite.data.bonus;
 		let bonusToActivate = bonus.bonusToActivate();
 
+		bonusToActivate.reassignBeforeActivationData(beforeActivationData);
 		bonusToActivate.activate(playerKey, activatedAt);
 		bonusToActivate.start();
 
@@ -613,13 +657,9 @@ export default class GameBonus {
 			Meteor.call(
 				'addActiveBonusToGame',
 				this.game.gameId,
-				bonusToActivate.getIdentifier(),
-				bonusToActivate.classNameToActivate(),
 				activatedAt,
-				bonusToActivate.getTargetPlayerKey(),
-				bonusToActivate.getClassName(),
-				bonusToActivate.getActivatorPlayerKey(),
-				bonus.getClassName()
+				bonus.getClassName(),
+				bonusToActivate.activationData()
 			);
 		}
 

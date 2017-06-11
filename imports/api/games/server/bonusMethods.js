@@ -6,7 +6,7 @@ import {GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
 import {EventPublisher} from '/imports/lib/EventPublisher.js';
 
 Meteor.methods({
-	addActiveBonusToGame: function(gameId, bonusIdentifier, activatedBonusClass, activatedAt, targetPlayerKey, bonusClass, activatorPlayerKey, initialBonusClass) {
+	addActiveBonusToGame: function(gameId, activatedAt, initialBonusClass, activationData) {
 		const game = Games.findOne(gameId);
 		const data = {};
 
@@ -18,21 +18,30 @@ Meteor.methods({
 			throw new Meteor.Error('not-allowed', 'Only active games can have active bonus added to');
 		}
 
-		data['activeBonuses'] = [].concat(game.activeBonuses).concat([{
-			bonusIdentifier: bonusIdentifier,
-			activatedBonusClass: activatedBonusClass,
-			activatedAt: activatedAt,
-			targetPlayerKey: targetPlayerKey,
-			bonusClass: bonusClass,
-			activatorPlayerKey: activatorPlayerKey,
-			initialBonusClass: initialBonusClass
-		}]);
+		data['activeBonuses'] = [].concat(game.activeBonuses).concat(
+			[
+				Object.assign(
+					{
+						activatedAt: activatedAt,
+						initialBonusClass: initialBonusClass
+					},
+					activationData
+				)
+			]
+		);
 
 		Games.update({_id: game._id}, {$set: data});
 
-		EventPublisher.publish(new BonusCaught(
-			game._id, activatedBonusClass, targetPlayerKey, bonusClass, activatorPlayerKey, initialBonusClass
-		));
+		EventPublisher.publish(
+			new BonusCaught(
+				game._id,
+				activationData.activatedBonusClass,
+				activationData.targetPlayerKey,
+				activationData.bonusClass,
+				activationData.activatorPlayerKey,
+				initialBonusClass
+			)
+		);
 	},
 
 	removeActiveBonusFromGame: function(gameId, bonusIdentifier) {

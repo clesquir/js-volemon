@@ -16,6 +16,7 @@ import CloudBonus from '/imports/api/games/bonus/CloudBonus.js';
 import NoJumpMonsterBonus from '/imports/api/games/bonus/NoJumpMonsterBonus.js';
 import BounceMonsterBonus from '/imports/api/games/bonus/BounceMonsterBonus.js';
 import CloakedMonsterBonus from '/imports/api/games/bonus/CloakedMonsterBonus.js';
+import ShapeShiftBonus from '/imports/api/games/bonus/ShapeShiftBonus.js';
 import RandomBonus from '/imports/api/games/bonus/RandomBonus.js';
 import {
 	BONUS_SMALL_BALL,
@@ -35,7 +36,8 @@ import {
 	BONUS_NO_JUMP_MONSTER,
 	BONUS_BOUNCE_MONSTER,
 	BONUS_CLOAKED_MONSTER,
-	BONUS_RANDOM_BONUS
+	BONUS_SHAPE_SHIFT,
+	BONUS_RANDOM
 } from '/imports/api/games/bonusConstants.js';
 
 export default class BonusFactory {
@@ -65,7 +67,7 @@ export default class BonusFactory {
 	static randomBonusKey() {
 		const availableBonuses = this.availableBonuses().concat(
 			[
-				BONUS_RANDOM_BONUS
+				BONUS_RANDOM
 			]
 		);
 
@@ -92,7 +94,8 @@ export default class BonusFactory {
 			BONUS_CLOUD,
 			BONUS_NO_JUMP_MONSTER,
 			BONUS_BOUNCE_MONSTER,
-			BONUS_CLOAKED_MONSTER
+			BONUS_CLOAKED_MONSTER,
+			BONUS_SHAPE_SHIFT
 		];
 	}
 
@@ -145,7 +148,9 @@ export default class BonusFactory {
 				return new BounceMonsterBonus(game, bonusClass);
 			case BONUS_CLOAKED_MONSTER:
 				return new CloakedMonsterBonus(game, bonusClass);
-			case BONUS_RANDOM_BONUS:
+			case BONUS_SHAPE_SHIFT:
+				return new ShapeShiftBonus(game, bonusClass);
+			case BONUS_RANDOM:
 				return new RandomBonus(game, bonusClass);
 		}
 

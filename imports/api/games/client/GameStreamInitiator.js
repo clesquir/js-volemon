@@ -23,7 +23,8 @@ export default class GameStreamInitiator {
 				data.player,
 				data.activatedAt,
 				data.x,
-				data.y
+				data.y,
+				data.beforeActivationData
 			);
 		});
 
@@ -73,11 +74,11 @@ export default class GameStreamInitiator {
 		}
 	}
 
-	activateBonus(bonusIdentifier, playerKey, activatedAt, x, y) {
+	activateBonus(bonusIdentifier, playerKey, activatedAt, x, y, beforeActivationData) {
 		let gameInitiator = this.gameInitiator;
 
 		if (gameInitiator.hasActiveGame()) {
-			gameInitiator.currentGame.activateBonus(bonusIdentifier, playerKey, activatedAt, x, y);
+			gameInitiator.currentGame.activateBonus(bonusIdentifier, playerKey, activatedAt, x, y, beforeActivationData);
 		}
 	}
 

@@ -384,7 +384,11 @@ describe('Game#isPlayerDoingDropShot', function() {
 
 		assert.isTrue(game.isPlayerDoingDropShot(
 			{},
-			{doingDropShot: true},
+			{
+				data: {
+					doingDropShot: true
+				}
+			},
 			'player1'
 		));
 	});
@@ -397,7 +401,11 @@ describe('Game#isPlayerDoingDropShot', function() {
 
 		assert.isFalse(game.isPlayerDoingDropShot(
 			{},
-			{doingDropShot: false},
+			{
+				data: {
+					doingDropShot: false
+				}
+			},
 			'player1'
 		));
 	});
@@ -410,7 +418,11 @@ describe('Game#isPlayerDoingDropShot', function() {
 
 		assert.isFalse(game.isPlayerDoingDropShot(
 			{},
-			{doingDropShot: true},
+			{
+				data: {
+					doingDropShot: true
+				}
+			},
 			'player1'
 		));
 	});
@@ -423,7 +435,11 @@ describe('Game#isPlayerDoingDropShot', function() {
 
 		assert.isFalse(game.isPlayerDoingDropShot(
 			{},
-			{doingDropShot: true},
+			{
+				data: {
+					doingDropShot: true
+				}
+			},
 			'player1'
 		));
 	});
@@ -715,7 +731,11 @@ describe('Game#inputs', function() {
 			verticalSpeedValue = null;
 
 		sinon.stub(game, 'getCurrentPlayer').callsFake(function() {
-			return {isFrozen: true};
+			return {
+				data: {
+					isFrozen: true
+				}
+			};
 		});
 		let sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
 
@@ -743,10 +763,12 @@ describe('Game#inputs', function() {
 
 		sinon.stub(game, 'getCurrentPlayer').callsFake(function() {
 			return {
-				isFrozen: false,
-				moveModifier: moveModifier,
-				velocityXOnMove: velocity,
-				velocityYOnJump: velocity
+				data: {
+					isFrozen: false,
+					moveModifier: moveModifier,
+					velocityXOnMove: velocity,
+					velocityYOnJump: velocity
+				}
 			};
 		});
 		sinon.stub(game, 'isLeftKeyDown').callsFake(function() {return true;});
@@ -780,10 +802,12 @@ describe('Game#inputs', function() {
 
 		sinon.stub(game, 'getCurrentPlayer').callsFake(function() {
 			return {
-				isFrozen: false,
-				moveModifier: moveModifier,
-				velocityXOnMove: velocity,
-				velocityYOnJump: velocity
+				data: {
+					isFrozen: false,
+					moveModifier: moveModifier,
+					velocityXOnMove: velocity,
+					velocityYOnJump: velocity
+				}
 			};
 		});
 		sinon.stub(game, 'isLeftKeyDown').callsFake(function() {return false;});
@@ -817,10 +841,12 @@ describe('Game#inputs', function() {
 
 		sinon.stub(game, 'getCurrentPlayer').callsFake(function() {
 			return {
-				isFrozen: false,
-				moveModifier: moveModifier,
-				velocityXOnMove: velocity,
-				velocityYOnJump: velocity
+				data: {
+					isFrozen: false,
+					moveModifier: moveModifier,
+					velocityXOnMove: velocity,
+					velocityYOnJump: velocity
+				}
 			};
 		});
 		sinon.stub(game, 'isLeftKeyDown').callsFake(function() {return false;});
@@ -854,11 +880,13 @@ describe('Game#inputs', function() {
 
 		sinon.stub(game, 'getCurrentPlayer').callsFake(function() {
 			return {
-				isFrozen: false,
-				canJump: true,
-				moveModifier: moveModifier,
-				velocityXOnMove: velocity,
-				velocityYOnJump: velocity
+				data: {
+					isFrozen: false,
+					canJump: true,
+					moveModifier: moveModifier,
+					velocityXOnMove: velocity,
+					velocityYOnJump: velocity
+				}
 			};
 		});
 		sinon.stub(game, 'isLeftKeyDown').callsFake(function() {return false;});
@@ -892,10 +920,12 @@ describe('Game#inputs', function() {
 
 		sinon.stub(game, 'getCurrentPlayer').callsFake(function() {
 			return {
-				isFrozen: false,
-				moveModifier: moveModifier,
-				velocityXOnMove: velocity,
-				velocityYOnJump: velocity
+				data: {
+					isFrozen: false,
+					moveModifier: moveModifier,
+					velocityXOnMove: velocity,
+					velocityYOnJump: velocity
+				}
 			};
 		});
 		sinon.stub(game, 'isLeftKeyDown').callsFake(function() {return false;});
@@ -928,10 +958,12 @@ describe('Game#inputs', function() {
 
 		sinon.stub(game, 'getCurrentPlayer').callsFake(function() {
 			return {
-				isFrozen: false,
-				moveModifier: moveModifier,
-				velocityXOnMove: velocity,
-				velocityYOnJump: velocity
+				data: {
+					isFrozen: false,
+					moveModifier: moveModifier,
+					velocityXOnMove: velocity,
+					velocityYOnJump: velocity
+				}
 			};
 		});
 		sinon.stub(game, 'isLeftKeyDown').callsFake(function() {return false;});
