@@ -50,8 +50,8 @@ export default class GameBonus {
 		this.groundHeight = GAME_GROUND_HEIGHT;
 	}
 
-	playerInitialPolygonObjectFromKey(playerKey) {
-		return this.game.playerInitialPolygonObjectFromKey(playerKey);
+	playerInitialShapeFromKey(playerKey) {
+		return this.game.playerInitialShapeFromKey(playerKey);
 	}
 
 	getPolygonKeyFromScale(scale) {

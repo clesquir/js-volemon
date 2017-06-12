@@ -76,11 +76,11 @@ export default class Game {
 		}
 	}
 
-	playerInitialPolygonObjectFromKey(playerKey) {
+	playerInitialShapeFromKey(playerKey) {
 		const player = this.getPlayerFromKey(playerKey);
 
 		if (player) {
-			return player.data.initialPolygonObject;
+			return player.data.initialPolygonObject.substring(7);
 		}
 
 		return null;

@@ -17,7 +17,7 @@ export default class ShapeShiftBonus extends MonsterBonus {
 	beforeActivation(playerKey, activatedAt) {
 		//Define the player random shape different from the player initial one
 		let listOfShapes = Array.from(PLAYER_LIST_OF_SHAPES);
-		const initialPolygonObjectIndex = listOfShapes.indexOf(this.game.playerInitialPolygonObjectFromKey(playerKey));
+		const initialPolygonObjectIndex = listOfShapes.indexOf(this.game.playerInitialShapeFromKey(playerKey));
 		listOfShapes.splice(initialPolygonObjectIndex, 1);
 		this.playerShape = Random.choice(listOfShapes);
 	}
