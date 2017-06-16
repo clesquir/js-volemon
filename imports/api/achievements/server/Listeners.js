@@ -4,6 +4,7 @@ import BlankScreen from '/imports/api/achievements/server/listeners/BlankScreen.
 import BonusesInAGame from '/imports/api/achievements/server/listeners/BonusesInAGame.js';
 import BonusesInALifetime from '/imports/api/achievements/server/listeners/BonusesInALifetime.js';
 import BonusesInAPoint from '/imports/api/achievements/server/listeners/BonusesInAPoint.js';
+import CarefullyRandomlyPicked from '/imports/api/achievements/server/listeners/CarefullyRandomlyPicked.js';
 import ConsecutiveDaysPlayed from '/imports/api/achievements/server/listeners/ConsecutiveDaysPlayed.js';
 import ConsecutiveLostGames from '/imports/api/achievements/server/listeners/ConsecutiveLostGames.js';
 import ConsecutiveWonGames from '/imports/api/achievements/server/listeners/ConsecutiveWonGames.js';
@@ -84,6 +85,7 @@ export default class Listeners {
 			this.listeners.push(new BlankScreen(this.gameId, player.userId));
 			this.listeners.push(new DavidVsGoliath(this.gameId, player.userId));
 			this.listeners.push(new Snoozer(this.gameId, player.userId));
+			this.listeners.push(new CarefullyRandomlyPicked(this.gameId, player.userId));
 		});
 	}
 

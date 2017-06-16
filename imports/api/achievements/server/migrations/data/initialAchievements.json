@@ -252,6 +252,15 @@
       "type": "QUANTITY",
       "displayOrder": 30,
       "levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 20}]
+    },
+    {
+      "_id": "CAREFULLY_RANDOMLY_PICKED",
+      "isSecret": true,
+      "name": "Carefully randomly picked",
+      "description": "# of won games with every shape when selecting random shape",
+      "type": "QUANTITY",
+      "displayOrder": 31,
+      "levels": [{"level": 1, "number": 1}, {"level": 2, "number": 2}, {"level": 3, "number": 3}]
     }
   ]
 }
