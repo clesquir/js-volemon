@@ -20,7 +20,7 @@ import {
 	LAST_POINT_TAKEN_CLIENT,
 	GAME_MAXIMUM_POINTS
 } from '/imports/api/games/constants.js';
-import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
+import {PLAYER_LIST_OF_SHAPES, PLAYER_ALLOWED_LIST_OF_SHAPES, PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
 import {
 	GAME_STATUS_REGISTRATION,
 	GAME_STATUS_STARTED,
@@ -96,7 +96,7 @@ Meteor.methods({
 		return joinGame(user, gameId, isReady);
 	},
 
-	updatePlayerShape: function(gameId, shape) {
+	updatePlayerShape: function(gameId, selectedShape) {
 		const user = Meteor.user();
 		const game = Games.findOne(gameId);
 		let player;
@@ -118,15 +118,20 @@ Meteor.methods({
 			throw new Meteor.Error(404, 'Player not found');
 		}
 
-		if (PLAYER_LIST_OF_SHAPES.indexOf(shape) === -1) {
+		if (PLAYER_ALLOWED_LIST_OF_SHAPES.indexOf(selectedShape) === -1) {
 			throw new Meteor.Error(
 				'not-allowed',
 				'The requested shape is not allowed'
 			);
 		}
 
-		Players.update({_id: player._id}, {$set: {shape: shape}});
-		Profiles.update({userId: this.userId}, {$set: {'lastShapeUsed': shape}});
+		let shape = selectedShape;
+		if (selectedShape === PLAYER_SHAPE_RANDOM) {
+			shape = Random.choice(PLAYER_LIST_OF_SHAPES);
+		}
+
+		Players.update({_id: player._id}, {$set: {selectedShape: selectedShape, shape: shape}});
+		Profiles.update({userId: this.userId}, {$set: {'lastShapeUsed': selectedShape}});
 	},
 
 	setPlayerIsReady: function(gameId) {

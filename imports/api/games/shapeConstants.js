@@ -1,3 +1,4 @@
+export const PLAYER_SHAPE_RANDOM = 'random';
 export const PLAYER_SHAPE_HALF_CIRCLE = 'half-circle';
 export const PLAYER_SHAPE_TRIANGLE = 'triangle';
 export const PLAYER_SHAPE_X = 'x';
@@ -19,3 +20,4 @@ export const PLAYER_LIST_OF_SHAPES = [
 	PLAYER_SHAPE_HEXAGON,
 	PLAYER_SHAPE_ELLIPSE
 ];
+export const PLAYER_ALLOWED_LIST_OF_SHAPES = [PLAYER_SHAPE_RANDOM].concat(PLAYER_LIST_OF_SHAPES);

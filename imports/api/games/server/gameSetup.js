@@ -3,7 +3,7 @@ import {Random} from 'meteor/random';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
-import {PLAYER_DEFAULT_SHAPE} from '/imports/api/games/shapeConstants.js';
+import {PLAYER_LIST_OF_SHAPES, PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
 import {GAME_STATUS_REGISTRATION, GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
 import {isGameStatusTimeout, isGameStatusFinished} from '/imports/api/games/utils.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
@@ -69,9 +69,9 @@ export const joinGame = function(user, gameId, isReady) {
 	}
 
 	const profile = Profiles.findOne({userId: user._id});
-	let shape = PLAYER_DEFAULT_SHAPE;
+	let selectedShape = PLAYER_DEFAULT_SHAPE;
 	if (profile && profile.lastShapeUsed) {
-		shape = profile.lastShapeUsed;
+		selectedShape = profile.lastShapeUsed;
 	}
 
 	if (isReady === undefined) {
@@ -88,6 +88,11 @@ export const joinGame = function(user, gameId, isReady) {
 		);
 	}
 
+	let shape = selectedShape;
+	if (selectedShape === PLAYER_SHAPE_RANDOM) {
+		shape = Random.choice(PLAYER_LIST_OF_SHAPES);
+	}
+
 	return Players.insert({
 		userId: user._id,
 		name: user.profile.name,
@@ -96,6 +101,7 @@ export const joinGame = function(user, gameId, isReady) {
 		isReady: isReady,
 		askedForRematch: undefined,
 		hasQuit: false,
+		selectedShape: selectedShape,
 		shape: shape
 	});
 };

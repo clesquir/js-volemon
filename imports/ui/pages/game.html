@@ -144,9 +144,11 @@
 						<div class="table-list-cell">{{name}}</div>
 						<div class="table-list-cell" style="flex: 0 0 75px;">
 							{{#if isCurentPlayer}}
-								{{> shapeSelector player=this shape=shape}}
+								{{> shapeSelector player=this selectedShape=selectedShape}}
 							{{else}}
-								<img src="/assets/player-{{shape}}-small.png" />
+								<div class="shape-selector-container shape-{{selectedShape}}">
+									<div class="shape-content-scroller"></div>
+								</div>
 							{{/if}}
 						</div>
 					</div>

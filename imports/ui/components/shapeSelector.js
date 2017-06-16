@@ -1,13 +1,13 @@
 import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
 import {Session} from 'meteor/session';
-import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
+import {PLAYER_ALLOWED_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
 
 import './shapeSelector.html';
 
 const incrementShape = function(increment) {
-	const listOfShapes = PLAYER_LIST_OF_SHAPES;
-	let index = listOfShapes.indexOf(this.shape);
+	const listOfShapes = PLAYER_ALLOWED_LIST_OF_SHAPES;
+	let index = listOfShapes.indexOf(this.selectedShape);
 
 	index = index + increment;
 
@@ -19,9 +19,9 @@ const incrementShape = function(increment) {
 		index = 0;
 	}
 
-	let shape = listOfShapes[index];
+	let selectedShape = listOfShapes[index];
 
-	Meteor.call('updatePlayerShape', Session.get('game'), shape);
+	Meteor.call('updatePlayerShape', Session.get('game'), selectedShape);
 };
 
 Template.shapeSelector.events({

@@ -1,52 +1,59 @@
 .shape-selector-container {
 	display: inline-block;
-	cursor: pointer;
 	position: relative;
 	overflow: hidden;
 	width: 32px;
 	height: 16px;
 
+	&.shape-selectable {
+		cursor: pointer;
+	}
+
 	.shape-content-scroller {
 		background-image: url("/assets/player-shapes-small.png");
 		transition: 0.5s ease-in-out;
-		height: 189px;
+		height: 210px;
 		width: 32px;
 	}
 
-	&.shape-half-circle .shape-content-scroller {
+	&.shape-random .shape-content-scroller {
 		transform: translateY(0px);
 	}
 
-	&.shape-triangle .shape-content-scroller {
+	&.shape-half-circle .shape-content-scroller {
 		transform: translateY(-21px);
 	}
 
-	&.shape-x .shape-content-scroller {
+	&.shape-triangle .shape-content-scroller {
 		transform: translateY(-42px);
 	}
 
-	&.shape-rectangle .shape-content-scroller {
+	&.shape-x .shape-content-scroller {
 		transform: translateY(-63px);
 	}
 
-	&.shape-equal .shape-content-scroller {
+	&.shape-rectangle .shape-content-scroller {
 		transform: translateY(-84px);
 	}
 
-	&.shape-crown .shape-content-scroller {
+	&.shape-equal .shape-content-scroller {
 		transform: translateY(-105px);
 	}
 
-	&.shape-rhombus .shape-content-scroller {
+	&.shape-crown .shape-content-scroller {
 		transform: translateY(-126px);
 	}
 
-	&.shape-hexagon .shape-content-scroller {
+	&.shape-rhombus .shape-content-scroller {
 		transform: translateY(-147px);
 	}
 
-	&.shape-ellipse .shape-content-scroller {
+	&.shape-hexagon .shape-content-scroller {
 		transform: translateY(-168px);
+	}
+
+	&.shape-ellipse .shape-content-scroller {
+		transform: translateY(-189px);
 	}
 }
 
