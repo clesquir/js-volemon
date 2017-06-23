@@ -24,11 +24,13 @@ import PauseInAGame from '/imports/api/achievements/server/listeners/PauseInAGam
 import PauseInALifetime from '/imports/api/achievements/server/listeners/PauseInALifetime.js';
 import PauseInAPoint from '/imports/api/achievements/server/listeners/PauseInAPoint.js';
 import PointTime from '/imports/api/achievements/server/listeners/PointTime.js';
+import Rakshasa from '/imports/api/achievements/server/listeners/Rakshasa.js';
 import RandomInAGame from '/imports/api/achievements/server/listeners/RandomInAGame.js';
 import Shutouts from '/imports/api/achievements/server/listeners/Shutouts.js';
 import SimultaneousActivatedBonuses from '/imports/api/achievements/server/listeners/SimultaneousActivatedBonuses.js';
 import Snoozer from '/imports/api/achievements/server/listeners/Snoozer.js';
 import ToTheSky from '/imports/api/achievements/server/listeners/ToTheSky.js';
+import TripleColon from '/imports/api/achievements/server/listeners/TripleColon.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 
@@ -86,6 +88,8 @@ export default class Listeners {
 			this.listeners.push(new DavidVsGoliath(this.gameId, player.userId));
 			this.listeners.push(new Snoozer(this.gameId, player.userId));
 			this.listeners.push(new CarefullyRandomlyPicked(this.gameId, player.userId));
+			this.listeners.push(new Rakshasa(this.gameId, player.userId));
+			this.listeners.push(new TripleColon(this.gameId, player.userId));
 		});
 	}
 

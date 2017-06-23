@@ -49,7 +49,7 @@ describe('AchievementListener#Ninja', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player2', 'a', 'player2', 'a'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: 'a', targetPlayerKey: 'player2', bonusClass: 'a', activatorPlayerKey: 'player2'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onGameFinished(new GameFinished(gameId, 121000));
@@ -64,7 +64,7 @@ describe('AchievementListener#Ninja', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1', 'a'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: 'a', targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onGameFinished(new GameFinished(gameId, 121000));
@@ -90,7 +90,7 @@ describe('AchievementListener#Ninja', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1', 'a'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: 'a', targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onGameFinished(new GameFinished(gameId, 121000));
@@ -103,7 +103,7 @@ describe('AchievementListener#Ninja', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player2', 'a', 'player2', 'a'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: 'a', targetPlayerKey: 'player2', bonusClass: 'a', activatorPlayerKey: 'player2'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onGameFinished(new GameFinished(gameId, 121000));

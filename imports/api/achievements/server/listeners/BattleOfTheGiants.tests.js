@@ -38,8 +38,8 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER));
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, {activatedBonusClass: BONUS_BIG_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BIG_MONSTER, activatorPlayerKey: 'player1'}));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, {activatedBonusClass: BONUS_BIG_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BIG_MONSTER, activatorPlayerKey: 'player2'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onPointTaken(new PointTaken(gameId, 0, true, 1, 0));
@@ -54,8 +54,8 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER));
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, {activatedBonusClass: BONUS_BIG_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BIG_MONSTER, activatorPlayerKey: 'player1'}));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, {activatedBonusClass: BONUS_BIG_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BIG_MONSTER, activatorPlayerKey: 'player2'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onPointTaken(new PointTaken(gameId, 0, false, 0, 1));
@@ -70,8 +70,8 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER));
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, {activatedBonusClass: BONUS_BIG_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BIG_MONSTER, activatorPlayerKey: 'player1'}));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, {activatedBonusClass: BONUS_BIG_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BIG_MONSTER, activatorPlayerKey: 'player2'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onPointTaken(new PointTaken(gameId, 0, false, 0, 1));
@@ -84,8 +84,8 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER));
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, {activatedBonusClass: BONUS_BIG_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BIG_MONSTER, activatorPlayerKey: 'player1'}));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, {activatedBonusClass: BONUS_BIG_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BIG_MONSTER, activatorPlayerKey: 'player2'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onPointTaken(new PointTaken(gameId, 0, true, 1, 0));
@@ -98,7 +98,7 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, {activatedBonusClass: BONUS_BIG_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BIG_MONSTER, activatorPlayerKey: 'player1'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onPointTaken(new PointTaken(gameId, 0, true, 1, 0));
@@ -111,7 +111,7 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, {activatedBonusClass: BONUS_BIG_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BIG_MONSTER, activatorPlayerKey: 'player2'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onPointTaken(new PointTaken(gameId, 0, false, 0, 1));
@@ -124,7 +124,7 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, {activatedBonusClass: BONUS_BIG_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BIG_MONSTER, activatorPlayerKey: 'player2'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onPointTaken(new PointTaken(gameId, 0, true, 1, 0));
@@ -137,7 +137,7 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, {activatedBonusClass: BONUS_BIG_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BIG_MONSTER, activatorPlayerKey: 'player1'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onPointTaken(new PointTaken(gameId, 0, false, 0, 1));
@@ -150,8 +150,8 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER));
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, {activatedBonusClass: BONUS_BIG_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BIG_MONSTER, activatorPlayerKey: 'player1'}));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, {activatedBonusClass: BONUS_BIG_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BIG_MONSTER, activatorPlayerKey: 'player2'}));
 		listener.onBonusRemoved(new BonusRemoved(gameId, BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER));
 
 		assert.equal(0, UserAchievements.find().count());
@@ -165,8 +165,8 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER));
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, {activatedBonusClass: BONUS_BIG_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BIG_MONSTER, activatorPlayerKey: 'player2'}));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, {activatedBonusClass: BONUS_BIG_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BIG_MONSTER, activatorPlayerKey: 'player1'}));
 		listener.onBonusRemoved(new BonusRemoved(gameId, BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER));
 
 		assert.equal(0, UserAchievements.find().count());
@@ -180,8 +180,8 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER));
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, {activatedBonusClass: BONUS_BIG_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BIG_MONSTER, activatorPlayerKey: 'player2'}));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, {activatedBonusClass: BONUS_BIG_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BIG_MONSTER, activatorPlayerKey: 'player1'}));
 		listener.onBonusRemoved(new BonusRemoved(gameId, BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER));
 
 		assert.equal(0, UserAchievements.find().count());
@@ -195,8 +195,8 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER));
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, {activatedBonusClass: BONUS_BIG_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BIG_MONSTER, activatorPlayerKey: 'player1'}));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, {activatedBonusClass: BONUS_BIG_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BIG_MONSTER, activatorPlayerKey: 'player2'}));
 		listener.onBonusRemoved(new BonusRemoved(gameId, BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER));
 
 		assert.equal(0, UserAchievements.find().count());
@@ -210,13 +210,13 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, {activatedBonusClass: BONUS_BIG_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BIG_MONSTER, activatorPlayerKey: 'player2'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onPointTaken(new PointTaken(gameId, 0, true, 1, 0));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, {activatedBonusClass: BONUS_BIG_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BIG_MONSTER, activatorPlayerKey: 'player1'}));
 
 		//Does not increment
 		listener.onPointTaken(new PointTaken(gameId, 0, true, 2, 0));
@@ -229,13 +229,13 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, {activatedBonusClass: BONUS_BIG_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BIG_MONSTER, activatorPlayerKey: 'player1'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onPointTaken(new PointTaken(gameId, 0, false, 0, 1));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, {activatedBonusClass: BONUS_BIG_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BIG_MONSTER, activatorPlayerKey: 'player2'}));
 
 		//Does not increment
 		listener.onPointTaken(new PointTaken(gameId, 0, false, 0, 1));
@@ -248,13 +248,13 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, {activatedBonusClass: BONUS_BIG_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BIG_MONSTER, activatorPlayerKey: 'player1'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onPointTaken(new PointTaken(gameId, 0, true, 1, 0));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, {activatedBonusClass: BONUS_BIG_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BIG_MONSTER, activatorPlayerKey: 'player2'}));
 
 		//Does not increment
 		listener.onPointTaken(new PointTaken(gameId, 0, true, 2, 0));
@@ -267,13 +267,13 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER, 'player2', BONUS_BIG_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, {activatedBonusClass: BONUS_BIG_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BIG_MONSTER, activatorPlayerKey: 'player2'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onPointTaken(new PointTaken(gameId, 0, false, 0, 1));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER, 'player1', BONUS_BIG_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_MONSTER, {activatedBonusClass: BONUS_BIG_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BIG_MONSTER, activatorPlayerKey: 'player1'}));
 
 		//Does not increment
 		listener.onPointTaken(new PointTaken(gameId, 0, false, 0, 2));

@@ -36,7 +36,7 @@ describe('AchievementListener#InvisibleInAGame', function() {
 		const listener = new InvisibleInAPoint(gameId, userId);
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_INVISIBLE_MONSTER, 'player1', 'a', 'player1', 'a'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: BONUS_INVISIBLE_MONSTER, targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
 
 		assert.equal(1, UserAchievements.find().count());
 		assertInvisibleInAPointUserAchievementNumberEquals(1);
@@ -48,7 +48,7 @@ describe('AchievementListener#InvisibleInAGame', function() {
 		const listener = new InvisibleInAPoint(gameId, userId);
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_INVISIBLE_MONSTER, 'player1', BONUS_INVISIBLE_OPPONENT_MONSTER, 'player2', 'a'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: BONUS_INVISIBLE_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_INVISIBLE_OPPONENT_MONSTER, activatorPlayerKey: 'player2'}));
 
 		assert.equal(1, UserAchievements.find().count());
 		assertInvisibleInAPointUserAchievementNumberEquals(1);
@@ -60,7 +60,7 @@ describe('AchievementListener#InvisibleInAGame', function() {
 		const listener = new InvisibleInAPoint(gameId, userId);
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusCaught(new BonusCaught(Random.id(5), BONUS_INVISIBLE_MONSTER, 'player1', 'a', 'player1', 'a'));
+		listener.onBonusCaught(new BonusCaught(Random.id(5), 'a', {activatedBonusClass: BONUS_INVISIBLE_MONSTER, targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
 		assert.equal(0, UserAchievements.find().count());
 	});
 
@@ -70,7 +70,7 @@ describe('AchievementListener#InvisibleInAGame', function() {
 		const listener = new InvisibleInAPoint(gameId, userId);
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1', 'a'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: 'a', targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
 		assert.equal(0, UserAchievements.find().count());
 	});
 
@@ -80,7 +80,7 @@ describe('AchievementListener#InvisibleInAGame', function() {
 		const listener = new InvisibleInAPoint(gameId, userId);
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_INVISIBLE_MONSTER, 'player2', 'a', 'player2', 'a'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: BONUS_INVISIBLE_MONSTER, targetPlayerKey: 'player2', bonusClass: 'a', activatorPlayerKey: 'player2'}));
 		assert.equal(0, UserAchievements.find().count());
 	});
 
@@ -90,11 +90,11 @@ describe('AchievementListener#InvisibleInAGame', function() {
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_INVISIBLE_IN_A_POINT, number: 1});
 		const listener = new InvisibleInAPoint(gameId, userId);
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_INVISIBLE_MONSTER, 'player1', 'a', 'player1', 'a'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: BONUS_INVISIBLE_MONSTER, targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
 
 		assertInvisibleInAPointUserAchievementNumberEquals(1);
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_INVISIBLE_MONSTER, 'player1', 'a', 'player1', 'a'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: BONUS_INVISIBLE_MONSTER, targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
 
 		assertInvisibleInAPointUserAchievementNumberEquals(2);
 	});
@@ -104,7 +104,7 @@ describe('AchievementListener#InvisibleInAGame', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		const listener = new InvisibleInAPoint(gameId, userId);
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_INVISIBLE_MONSTER, 'player1', 'a', 'player1', 'a'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: BONUS_INVISIBLE_MONSTER, targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
 
 		assertInvisibleInAPointUserAchievementNumberEquals(1);
 
@@ -112,11 +112,11 @@ describe('AchievementListener#InvisibleInAGame', function() {
 
 		assertInvisibleInAPointUserAchievementNumberEquals(1);
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_INVISIBLE_MONSTER, 'player1', 'a', 'player1', 'a'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: BONUS_INVISIBLE_MONSTER, targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
 
 		assertInvisibleInAPointUserAchievementNumberEquals(1);
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_INVISIBLE_MONSTER, 'player1', 'a', 'player1', 'a'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: BONUS_INVISIBLE_MONSTER, targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
 
 		assertInvisibleInAPointUserAchievementNumberEquals(2);
 	});
@@ -126,11 +126,11 @@ describe('AchievementListener#InvisibleInAGame', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		const listener = new InvisibleInAPoint(gameId, userId);
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_INVISIBLE_MONSTER, 'player1', 'a', 'player1', 'a'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: BONUS_INVISIBLE_MONSTER, targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
 
 		assertInvisibleInAPointUserAchievementNumberEquals(1);
 
-		listener.onBonusCaught(new BonusCaught(Random.id(5), BONUS_INVISIBLE_MONSTER, 'player1', 'a', 'player1', 'a'));
+		listener.onBonusCaught(new BonusCaught(Random.id(5), 'a', {activatedBonusClass: BONUS_INVISIBLE_MONSTER, targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
 
 		assertInvisibleInAPointUserAchievementNumberEquals(1);
 	});
@@ -140,11 +140,11 @@ describe('AchievementListener#InvisibleInAGame', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		const listener = new InvisibleInAPoint(gameId, userId);
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_INVISIBLE_MONSTER, 'player1', 'a', 'player1', 'a'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: BONUS_INVISIBLE_MONSTER, targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
 
 		assertInvisibleInAPointUserAchievementNumberEquals(1);
 
-		listener.onBonusCaught(new BonusCaught(gameId, 'a', 'player1', 'a', 'player1', 'a'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: 'a', targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
 
 		assertInvisibleInAPointUserAchievementNumberEquals(1);
 	});
@@ -154,11 +154,11 @@ describe('AchievementListener#InvisibleInAGame', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		const listener = new InvisibleInAPoint(gameId, userId);
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_INVISIBLE_MONSTER, 'player1', 'a', 'player1', 'a'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: BONUS_INVISIBLE_MONSTER, targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
 
 		assertInvisibleInAPointUserAchievementNumberEquals(1);
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_INVISIBLE_MONSTER, 'player2', 'a', 'player2', 'a'));
+		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: BONUS_INVISIBLE_MONSTER, targetPlayerKey: 'player2', bonusClass: 'a', activatorPlayerKey: 'player2'}));
 
 		assertInvisibleInAPointUserAchievementNumberEquals(1);
 	});

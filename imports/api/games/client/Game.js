@@ -86,6 +86,16 @@ export default class Game {
 		return null;
 	}
 
+	playerCurrentShapeFromKey(playerKey) {
+		const player = this.getPlayerFromKey(playerKey);
+
+		if (player) {
+			return player.data.currentPolygonObject.substring(7);
+		}
+
+		return null;
+	}
+
 	start() {
 		this.engine.start(
 			this.xSize, this.ySize, 'gameContainer',

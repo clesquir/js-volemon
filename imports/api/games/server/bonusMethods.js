@@ -35,11 +35,8 @@ Meteor.methods({
 		EventPublisher.publish(
 			new BonusCaught(
 				game._id,
-				activationData.activatedBonusClass,
-				activationData.targetPlayerKey,
-				activationData.bonusClass,
-				activationData.activatorPlayerKey,
-				initialBonusClass
+				initialBonusClass,
+				activationData
 			)
 		);
 	},

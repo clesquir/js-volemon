@@ -38,7 +38,7 @@ describe('AchievementListener#IWasThereWaiting', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, 'player1', BONUS_FREEZE_MONSTER, 'player1', BONUS_FREEZE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, {activatedBonusClass: BONUS_FREEZE_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_FREEZE_MONSTER, activatorPlayerKey: 'player1'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onPointTaken(new PointTaken(gameId, 0, true, 1, 0));
@@ -53,7 +53,7 @@ describe('AchievementListener#IWasThereWaiting', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, 'player2', BONUS_FREEZE_MONSTER, 'player2', BONUS_FREEZE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, {activatedBonusClass: BONUS_FREEZE_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_FREEZE_MONSTER, activatorPlayerKey: 'player2'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onPointTaken(new PointTaken(gameId, 0, false, 0, 1));
@@ -68,7 +68,7 @@ describe('AchievementListener#IWasThereWaiting', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, 'player1', BONUS_FREEZE_MONSTER, 'player1', BONUS_FREEZE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, {activatedBonusClass: BONUS_FREEZE_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_FREEZE_MONSTER, activatorPlayerKey: 'player1'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onPointTaken(new PointTaken(gameId, 0, false, 0, 1));
@@ -81,7 +81,7 @@ describe('AchievementListener#IWasThereWaiting', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, 'player2', BONUS_FREEZE_MONSTER, 'player2', BONUS_FREEZE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, {activatedBonusClass: BONUS_FREEZE_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_FREEZE_MONSTER, activatorPlayerKey: 'player2'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onPointTaken(new PointTaken(gameId, 0, true, 1, 0));
@@ -94,7 +94,7 @@ describe('AchievementListener#IWasThereWaiting', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, 'player2', BONUS_FREEZE_MONSTER, 'player2', BONUS_FREEZE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, {activatedBonusClass: BONUS_FREEZE_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_FREEZE_MONSTER, activatorPlayerKey: 'player2'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onPointTaken(new PointTaken(gameId, 0, true, 1, 0));
@@ -107,7 +107,7 @@ describe('AchievementListener#IWasThereWaiting', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, 'player1', BONUS_FREEZE_MONSTER, 'player1', BONUS_FREEZE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, {activatedBonusClass: BONUS_FREEZE_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_FREEZE_MONSTER, activatorPlayerKey: 'player1'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onPointTaken(new PointTaken(gameId, 0, false, 0, 1));
@@ -120,7 +120,7 @@ describe('AchievementListener#IWasThereWaiting', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, 'player1', BONUS_FREEZE_MONSTER, 'player1', BONUS_FREEZE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, {activatedBonusClass: BONUS_FREEZE_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_FREEZE_MONSTER, activatorPlayerKey: 'player1'}));
 		listener.onBonusRemoved(new BonusRemoved(gameId, BONUS_FREEZE_MONSTER, 'player1', BONUS_FREEZE_MONSTER, 'player1', BONUS_FREEZE_MONSTER));
 
 		assert.equal(0, UserAchievements.find().count());
@@ -134,7 +134,7 @@ describe('AchievementListener#IWasThereWaiting', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, 'player2', BONUS_FREEZE_MONSTER, 'player2', BONUS_FREEZE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, {activatedBonusClass: BONUS_FREEZE_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_FREEZE_MONSTER, activatorPlayerKey: 'player2'}));
 		listener.onBonusRemoved(new BonusRemoved(gameId, BONUS_FREEZE_MONSTER, 'player2', BONUS_FREEZE_MONSTER, 'player2', BONUS_FREEZE_MONSTER));
 
 		assert.equal(0, UserAchievements.find().count());
@@ -148,7 +148,7 @@ describe('AchievementListener#IWasThereWaiting', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, 'player1', BONUS_FREEZE_MONSTER, 'player1', BONUS_FREEZE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, {activatedBonusClass: BONUS_FREEZE_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_FREEZE_MONSTER, activatorPlayerKey: 'player1'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onPointTaken(new PointTaken(gameId, 0, true, 1, 0));
@@ -167,7 +167,7 @@ describe('AchievementListener#IWasThereWaiting', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, 'player2', BONUS_FREEZE_MONSTER, 'player2', BONUS_FREEZE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, {activatedBonusClass: BONUS_FREEZE_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_FREEZE_MONSTER, activatorPlayerKey: 'player2'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onPointTaken(new PointTaken(gameId, 0, false, 0, 1));

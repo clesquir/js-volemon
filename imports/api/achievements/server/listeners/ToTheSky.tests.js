@@ -44,13 +44,13 @@ describe('AchievementListener#ToTheSky', function() {
 
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, {activatedBonusClass: BONUS_SMALL_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_SMALL_MONSTER, activatorPlayerKey: 'player1'}));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, {activatedBonusClass: BONUS_BIG_JUMP_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BIG_JUMP_MONSTER, activatorPlayerKey: 'player1'}));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, 'player1', BONUS_BOUNCE_MONSTER, 'player1', BONUS_BOUNCE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, {activatedBonusClass: BONUS_BOUNCE_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BOUNCE_MONSTER, activatorPlayerKey: 'player1'}));
 		assert.equal(1, UserAchievements.find().count());
 		assertToTheSkyUserAchievementNumberEquals(1);
 	});
@@ -63,13 +63,13 @@ describe('AchievementListener#ToTheSky', function() {
 
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, {activatedBonusClass: BONUS_SMALL_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_SMALL_MONSTER, activatorPlayerKey: 'player1'}));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, 'player1', BONUS_BOUNCE_MONSTER, 'player1', BONUS_BOUNCE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, {activatedBonusClass: BONUS_BOUNCE_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BOUNCE_MONSTER, activatorPlayerKey: 'player1'}));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, {activatedBonusClass: BONUS_BIG_JUMP_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BIG_JUMP_MONSTER, activatorPlayerKey: 'player1'}));
 		assert.equal(1, UserAchievements.find().count());
 		assertToTheSkyUserAchievementNumberEquals(1);
 	});
@@ -82,13 +82,13 @@ describe('AchievementListener#ToTheSky', function() {
 
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, {activatedBonusClass: BONUS_BIG_JUMP_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BIG_JUMP_MONSTER, activatorPlayerKey: 'player1'}));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, {activatedBonusClass: BONUS_SMALL_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_SMALL_MONSTER, activatorPlayerKey: 'player1'}));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, 'player1', BONUS_BOUNCE_MONSTER, 'player1', BONUS_BOUNCE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, {activatedBonusClass: BONUS_BOUNCE_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BOUNCE_MONSTER, activatorPlayerKey: 'player1'}));
 		assert.equal(1, UserAchievements.find().count());
 		assertToTheSkyUserAchievementNumberEquals(1);
 	});
@@ -101,13 +101,13 @@ describe('AchievementListener#ToTheSky', function() {
 
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, {activatedBonusClass: BONUS_BIG_JUMP_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BIG_JUMP_MONSTER, activatorPlayerKey: 'player1'}));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, 'player1', BONUS_BOUNCE_MONSTER, 'player1', BONUS_BOUNCE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, {activatedBonusClass: BONUS_BOUNCE_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BOUNCE_MONSTER, activatorPlayerKey: 'player1'}));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, {activatedBonusClass: BONUS_SMALL_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_SMALL_MONSTER, activatorPlayerKey: 'player1'}));
 		assert.equal(1, UserAchievements.find().count());
 		assertToTheSkyUserAchievementNumberEquals(1);
 	});
@@ -120,13 +120,13 @@ describe('AchievementListener#ToTheSky', function() {
 
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, 'player1', BONUS_BOUNCE_MONSTER, 'player1', BONUS_BOUNCE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, {activatedBonusClass: BONUS_BOUNCE_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BOUNCE_MONSTER, activatorPlayerKey: 'player1'}));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, {activatedBonusClass: BONUS_SMALL_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_SMALL_MONSTER, activatorPlayerKey: 'player1'}));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, {activatedBonusClass: BONUS_BIG_JUMP_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BIG_JUMP_MONSTER, activatorPlayerKey: 'player1'}));
 		assert.equal(1, UserAchievements.find().count());
 		assertToTheSkyUserAchievementNumberEquals(1);
 	});
@@ -139,13 +139,13 @@ describe('AchievementListener#ToTheSky', function() {
 
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, 'player1', BONUS_BOUNCE_MONSTER, 'player1', BONUS_BOUNCE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, {activatedBonusClass: BONUS_BOUNCE_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BOUNCE_MONSTER, activatorPlayerKey: 'player1'}));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, {activatedBonusClass: BONUS_BIG_JUMP_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BIG_JUMP_MONSTER, activatorPlayerKey: 'player1'}));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, {activatedBonusClass: BONUS_SMALL_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_SMALL_MONSTER, activatorPlayerKey: 'player1'}));
 		assert.equal(1, UserAchievements.find().count());
 		assertToTheSkyUserAchievementNumberEquals(1);
 	});
@@ -158,13 +158,13 @@ describe('AchievementListener#ToTheSky', function() {
 
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, 'player2', BONUS_SMALL_MONSTER, 'player2', BONUS_SMALL_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, {activatedBonusClass: BONUS_SMALL_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_SMALL_MONSTER, activatorPlayerKey: 'player2'}));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, 'player2', BONUS_BIG_JUMP_MONSTER, 'player2', BONUS_BIG_JUMP_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, {activatedBonusClass: BONUS_BIG_JUMP_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BIG_JUMP_MONSTER, activatorPlayerKey: 'player2'}));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, 'player2', BONUS_BOUNCE_MONSTER, 'player2', BONUS_BOUNCE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, {activatedBonusClass: BONUS_BOUNCE_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BOUNCE_MONSTER, activatorPlayerKey: 'player2'}));
 		assert.equal(1, UserAchievements.find().count());
 		assertToTheSkyUserAchievementNumberEquals(1);
 	});
@@ -177,13 +177,13 @@ describe('AchievementListener#ToTheSky', function() {
 
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, 'player2', BONUS_SMALL_MONSTER, 'player2', BONUS_SMALL_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, {activatedBonusClass: BONUS_SMALL_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_SMALL_MONSTER, activatorPlayerKey: 'player2'}));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, 'player2', BONUS_BOUNCE_MONSTER, 'player2', BONUS_BOUNCE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, {activatedBonusClass: BONUS_BOUNCE_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BOUNCE_MONSTER, activatorPlayerKey: 'player2'}));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, 'player2', BONUS_BIG_JUMP_MONSTER, 'player2', BONUS_BIG_JUMP_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, {activatedBonusClass: BONUS_BIG_JUMP_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BIG_JUMP_MONSTER, activatorPlayerKey: 'player2'}));
 		assert.equal(1, UserAchievements.find().count());
 		assertToTheSkyUserAchievementNumberEquals(1);
 	});
@@ -196,13 +196,13 @@ describe('AchievementListener#ToTheSky', function() {
 
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, 'player2', BONUS_BIG_JUMP_MONSTER, 'player2', BONUS_BIG_JUMP_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, {activatedBonusClass: BONUS_BIG_JUMP_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BIG_JUMP_MONSTER, activatorPlayerKey: 'player2'}));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, 'player2', BONUS_SMALL_MONSTER, 'player2', BONUS_SMALL_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, {activatedBonusClass: BONUS_SMALL_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_SMALL_MONSTER, activatorPlayerKey: 'player2'}));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, 'player2', BONUS_BOUNCE_MONSTER, 'player2', BONUS_BOUNCE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, {activatedBonusClass: BONUS_BOUNCE_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BOUNCE_MONSTER, activatorPlayerKey: 'player2'}));
 		assert.equal(1, UserAchievements.find().count());
 		assertToTheSkyUserAchievementNumberEquals(1);
 	});
@@ -215,13 +215,13 @@ describe('AchievementListener#ToTheSky', function() {
 
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, 'player2', BONUS_BIG_JUMP_MONSTER, 'player2', BONUS_BIG_JUMP_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, {activatedBonusClass: BONUS_BIG_JUMP_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BIG_JUMP_MONSTER, activatorPlayerKey: 'player2'}));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, 'player2', BONUS_BOUNCE_MONSTER, 'player2', BONUS_BOUNCE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, {activatedBonusClass: BONUS_BOUNCE_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BOUNCE_MONSTER, activatorPlayerKey: 'player2'}));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, 'player2', BONUS_SMALL_MONSTER, 'player2', BONUS_SMALL_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, {activatedBonusClass: BONUS_SMALL_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_SMALL_MONSTER, activatorPlayerKey: 'player2'}));
 		assert.equal(1, UserAchievements.find().count());
 		assertToTheSkyUserAchievementNumberEquals(1);
 	});
@@ -234,13 +234,13 @@ describe('AchievementListener#ToTheSky', function() {
 
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, 'player2', BONUS_BOUNCE_MONSTER, 'player2', BONUS_BOUNCE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, {activatedBonusClass: BONUS_BOUNCE_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BOUNCE_MONSTER, activatorPlayerKey: 'player2'}));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, 'player2', BONUS_SMALL_MONSTER, 'player2', BONUS_SMALL_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, {activatedBonusClass: BONUS_SMALL_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_SMALL_MONSTER, activatorPlayerKey: 'player2'}));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, 'player2', BONUS_BIG_JUMP_MONSTER, 'player2', BONUS_BIG_JUMP_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, {activatedBonusClass: BONUS_BIG_JUMP_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BIG_JUMP_MONSTER, activatorPlayerKey: 'player2'}));
 		assert.equal(1, UserAchievements.find().count());
 		assertToTheSkyUserAchievementNumberEquals(1);
 	});
@@ -253,13 +253,13 @@ describe('AchievementListener#ToTheSky', function() {
 
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, 'player2', BONUS_BOUNCE_MONSTER, 'player2', BONUS_BOUNCE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, {activatedBonusClass: BONUS_BOUNCE_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BOUNCE_MONSTER, activatorPlayerKey: 'player2'}));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, 'player2', BONUS_BIG_JUMP_MONSTER, 'player2', BONUS_BIG_JUMP_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, {activatedBonusClass: BONUS_BIG_JUMP_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BIG_JUMP_MONSTER, activatorPlayerKey: 'player2'}));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, 'player2', BONUS_SMALL_MONSTER, 'player2', BONUS_SMALL_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, {activatedBonusClass: BONUS_SMALL_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_SMALL_MONSTER, activatorPlayerKey: 'player2'}));
 		assert.equal(1, UserAchievements.find().count());
 		assertToTheSkyUserAchievementNumberEquals(1);
 	});
@@ -270,28 +270,28 @@ describe('AchievementListener#ToTheSky', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, {activatedBonusClass: BONUS_SMALL_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_SMALL_MONSTER, activatorPlayerKey: 'player1'}));
 		listener.onBonusRemoved(new BonusRemoved(gameId, BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER));
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER));
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, 'player1', BONUS_BOUNCE_MONSTER, 'player1', BONUS_BOUNCE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, {activatedBonusClass: BONUS_BIG_JUMP_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BIG_JUMP_MONSTER, activatorPlayerKey: 'player1'}));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, {activatedBonusClass: BONUS_BOUNCE_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BOUNCE_MONSTER, activatorPlayerKey: 'player1'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onPointTaken(new PointTaken(gameId, 0, true, 1, 0));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, {activatedBonusClass: BONUS_BIG_JUMP_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BIG_JUMP_MONSTER, activatorPlayerKey: 'player1'}));
 		listener.onBonusRemoved(new BonusRemoved(gameId, BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER));
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER));
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, 'player1', BONUS_BOUNCE_MONSTER, 'player1', BONUS_BOUNCE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, {activatedBonusClass: BONUS_SMALL_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_SMALL_MONSTER, activatorPlayerKey: 'player1'}));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, {activatedBonusClass: BONUS_BOUNCE_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BOUNCE_MONSTER, activatorPlayerKey: 'player1'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onPointTaken(new PointTaken(gameId, 0, true, 1, 0));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, 'player1', BONUS_BOUNCE_MONSTER, 'player1', BONUS_BOUNCE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, {activatedBonusClass: BONUS_BOUNCE_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BOUNCE_MONSTER, activatorPlayerKey: 'player1'}));
 		listener.onBonusRemoved(new BonusRemoved(gameId, BONUS_BOUNCE_MONSTER, 'player1', BONUS_BOUNCE_MONSTER, 'player1', BONUS_BOUNCE_MONSTER));
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER));
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, {activatedBonusClass: BONUS_SMALL_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_SMALL_MONSTER, activatorPlayerKey: 'player1'}));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, {activatedBonusClass: BONUS_BIG_JUMP_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BIG_JUMP_MONSTER, activatorPlayerKey: 'player1'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onPointTaken(new PointTaken(gameId, 0, true, 1, 0));
@@ -304,28 +304,28 @@ describe('AchievementListener#ToTheSky', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, 'player2', BONUS_SMALL_MONSTER, 'player2', BONUS_SMALL_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, {activatedBonusClass: BONUS_SMALL_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_SMALL_MONSTER, activatorPlayerKey: 'player2'}));
 		listener.onBonusRemoved(new BonusRemoved(gameId, BONUS_SMALL_MONSTER, 'player2', BONUS_SMALL_MONSTER, 'player2', BONUS_SMALL_MONSTER));
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, 'player2', BONUS_BIG_JUMP_MONSTER, 'player2', BONUS_BIG_JUMP_MONSTER));
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, 'player2', BONUS_BOUNCE_MONSTER, 'player2', BONUS_BOUNCE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, {activatedBonusClass: BONUS_BIG_JUMP_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BIG_JUMP_MONSTER, activatorPlayerKey: 'player2'}));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, {activatedBonusClass: BONUS_BOUNCE_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BOUNCE_MONSTER, activatorPlayerKey: 'player2'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onPointTaken(new PointTaken(gameId, 0, false, 0, 1));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, 'player2', BONUS_BIG_JUMP_MONSTER, 'player2', BONUS_BIG_JUMP_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, {activatedBonusClass: BONUS_BIG_JUMP_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BIG_JUMP_MONSTER, activatorPlayerKey: 'player2'}));
 		listener.onBonusRemoved(new BonusRemoved(gameId, BONUS_BIG_JUMP_MONSTER, 'player2', BONUS_BIG_JUMP_MONSTER, 'player2', BONUS_BIG_JUMP_MONSTER));
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, 'player2', BONUS_SMALL_MONSTER, 'player2', BONUS_SMALL_MONSTER));
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, 'player2', BONUS_BOUNCE_MONSTER, 'player2', BONUS_BOUNCE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, {activatedBonusClass: BONUS_SMALL_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_SMALL_MONSTER, activatorPlayerKey: 'player2'}));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, {activatedBonusClass: BONUS_BOUNCE_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BOUNCE_MONSTER, activatorPlayerKey: 'player2'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onPointTaken(new PointTaken(gameId, 0, false, 0, 1));
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, 'player2', BONUS_BOUNCE_MONSTER, 'player2', BONUS_BOUNCE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, {activatedBonusClass: BONUS_BOUNCE_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BOUNCE_MONSTER, activatorPlayerKey: 'player2'}));
 		listener.onBonusRemoved(new BonusRemoved(gameId, BONUS_BOUNCE_MONSTER, 'player2', BONUS_BOUNCE_MONSTER, 'player2', BONUS_BOUNCE_MONSTER));
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, 'player2', BONUS_SMALL_MONSTER, 'player2', BONUS_SMALL_MONSTER));
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, 'player2', BONUS_BIG_JUMP_MONSTER, 'player2', BONUS_BIG_JUMP_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, {activatedBonusClass: BONUS_SMALL_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_SMALL_MONSTER, activatorPlayerKey: 'player2'}));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, {activatedBonusClass: BONUS_BIG_JUMP_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BIG_JUMP_MONSTER, activatorPlayerKey: 'player2'}));
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onPointTaken(new PointTaken(gameId, 0, false, 0, 1));
@@ -340,27 +340,27 @@ describe('AchievementListener#ToTheSky', function() {
 
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER));
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER));
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, 'player1', BONUS_BOUNCE_MONSTER, 'player1', BONUS_BOUNCE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, {activatedBonusClass: BONUS_SMALL_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_SMALL_MONSTER, activatorPlayerKey: 'player1'}));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, {activatedBonusClass: BONUS_BIG_JUMP_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BIG_JUMP_MONSTER, activatorPlayerKey: 'player1'}));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, {activatedBonusClass: BONUS_BOUNCE_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BOUNCE_MONSTER, activatorPlayerKey: 'player1'}));
 		assert.equal(1, UserAchievements.find().count());
 		assertToTheSkyUserAchievementNumberEquals(1);
 
 		listener.onPointTaken(new PointTaken(gameId, 0, true, 1, 0));
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, {activatedBonusClass: BONUS_SMALL_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_SMALL_MONSTER, activatorPlayerKey: 'player1'}));
 		assert.equal(1, UserAchievements.find().count());
 		assertToTheSkyUserAchievementNumberEquals(1);
 
 		listener.onPointTaken(new PointTaken(gameId, 0, true, 1, 0));
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, {activatedBonusClass: BONUS_BIG_JUMP_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BIG_JUMP_MONSTER, activatorPlayerKey: 'player1'}));
 		assert.equal(1, UserAchievements.find().count());
 		assertToTheSkyUserAchievementNumberEquals(1);
 
 		listener.onPointTaken(new PointTaken(gameId, 0, true, 1, 0));
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, 'player1', BONUS_BOUNCE_MONSTER, 'player1', BONUS_BOUNCE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, {activatedBonusClass: BONUS_BOUNCE_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BOUNCE_MONSTER, activatorPlayerKey: 'player1'}));
 		assert.equal(1, UserAchievements.find().count());
 		assertToTheSkyUserAchievementNumberEquals(1);
 	});
@@ -373,27 +373,27 @@ describe('AchievementListener#ToTheSky', function() {
 
 		assert.equal(0, UserAchievements.find().count());
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, 'player2', BONUS_SMALL_MONSTER, 'player2', BONUS_SMALL_MONSTER));
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, 'player2', BONUS_BIG_JUMP_MONSTER, 'player2', BONUS_BIG_JUMP_MONSTER));
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, 'player2', BONUS_BOUNCE_MONSTER, 'player2', BONUS_BOUNCE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, {activatedBonusClass: BONUS_SMALL_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_SMALL_MONSTER, activatorPlayerKey: 'player2'}));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, {activatedBonusClass: BONUS_BIG_JUMP_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BIG_JUMP_MONSTER, activatorPlayerKey: 'player2'}));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, {activatedBonusClass: BONUS_BOUNCE_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BOUNCE_MONSTER, activatorPlayerKey: 'player2'}));
 		assert.equal(1, UserAchievements.find().count());
 		assertToTheSkyUserAchievementNumberEquals(1);
 
 		listener.onPointTaken(new PointTaken(gameId, 0, false, 0, 1));
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, 'player2', BONUS_SMALL_MONSTER, 'player2', BONUS_SMALL_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, {activatedBonusClass: BONUS_SMALL_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_SMALL_MONSTER, activatorPlayerKey: 'player2'}));
 		assert.equal(1, UserAchievements.find().count());
 		assertToTheSkyUserAchievementNumberEquals(1);
 
 		listener.onPointTaken(new PointTaken(gameId, 0, false, 0, 2));
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, 'player2', BONUS_BIG_JUMP_MONSTER, 'player2', BONUS_BIG_JUMP_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, {activatedBonusClass: BONUS_BIG_JUMP_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BIG_JUMP_MONSTER, activatorPlayerKey: 'player2'}));
 		assert.equal(1, UserAchievements.find().count());
 		assertToTheSkyUserAchievementNumberEquals(1);
 
 		listener.onPointTaken(new PointTaken(gameId, 0, false, 0, 2));
 
-		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, 'player2', BONUS_BOUNCE_MONSTER, 'player2', BONUS_BOUNCE_MONSTER));
+		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BOUNCE_MONSTER, {activatedBonusClass: BONUS_BOUNCE_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_BOUNCE_MONSTER, activatorPlayerKey: 'player2'}));
 		assert.equal(1, UserAchievements.find().count());
 		assertToTheSkyUserAchievementNumberEquals(1);
 	});

@@ -95,6 +95,26 @@ export default class Listener {
 		return userPlayerKey;
 	}
 
+	currentPlayerShape() {
+		const player = Players.findOne({gameId: this.gameId, userId: this.userId});
+
+		if (player) {
+			return player.shape;
+		}
+
+		return null;
+	}
+
+	oppositePlayerShape() {
+		const player = Players.findOne({gameId: this.gameId, userId: {$ne: this.userId}});
+
+		if (player) {
+			return player.shape;
+		}
+
+		return null;
+	}
+
 	/**
 	 * @param {string} playerKey
 	 * @returns {boolean}

@@ -54,6 +54,10 @@ export default class GameBonus {
 		return this.game.playerInitialShapeFromKey(playerKey);
 	}
 
+	playerCurrentShapeFromKey(playerKey) {
+		return this.game.playerCurrentShapeFromKey(playerKey);
+	}
+
 	getPolygonKeyFromScale(scale) {
 		let polygonKey = null;
 

@@ -1,9 +1,9 @@
 import Listener from '/imports/api/achievements/server/listeners/Listener.js';
-import {ACHIEVEMENT_GAMES_WON_WITH_X_SHAPE} from '/imports/api/achievements/constants.js';
+import {ACHIEVEMENT_TRIPLE_COLON} from '/imports/api/achievements/constants.js';
 import PlayerWon from '/imports/api/games/events/PlayerWon.js';
-import {PLAYER_SHAPE_X} from '/imports/api/games/shapeConstants.js'
+import {PLAYER_SHAPE_DOT} from '/imports/api/games/shapeConstants.js'
 
-export default class GamesWonWithXShape extends Listener {
+export default class TripleColon extends Listener {
 	addListeners() {
 		this.addListener(PlayerWon.prototype.constructor.name, this.onPlayerWon);
 	}
@@ -19,9 +19,10 @@ export default class GamesWonWithXShape extends Listener {
 		if (
 			event.gameId === this.gameId &&
 			event.userId === this.userId &&
-			this.currentPlayerShape() === PLAYER_SHAPE_X
+			this.currentPlayerShape() === PLAYER_SHAPE_DOT &&
+			this.oppositePlayerShape() !== PLAYER_SHAPE_DOT
 		) {
-			this.incrementNumber(ACHIEVEMENT_GAMES_WON_WITH_X_SHAPE);
+			this.incrementNumber(ACHIEVEMENT_TRIPLE_COLON);
 		}
 	}
 }
