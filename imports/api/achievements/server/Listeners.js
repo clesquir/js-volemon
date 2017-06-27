@@ -9,6 +9,7 @@ import ConsecutiveDaysPlayed from '/imports/api/achievements/server/listeners/Co
 import ConsecutiveLostGames from '/imports/api/achievements/server/listeners/ConsecutiveLostGames.js';
 import ConsecutiveWonGames from '/imports/api/achievements/server/listeners/ConsecutiveWonGames.js';
 import DavidVsGoliath from '/imports/api/achievements/server/listeners/DavidVsGoliath.js';
+import FullStop from '/imports/api/achievements/server/listeners/FullStop.js';
 import GamesPlayed from '/imports/api/achievements/server/listeners/GamesPlayed.js';
 import GameTime from '/imports/api/achievements/server/listeners/GameTime.js';
 import GamesWonUnderAMinute from '/imports/api/achievements/server/listeners/GamesWonUnderAMinute.js';
@@ -90,6 +91,7 @@ export default class Listeners {
 			this.listeners.push(new CarefullyRandomlyPicked(this.gameId, player.userId));
 			this.listeners.push(new Rakshasa(this.gameId, player.userId));
 			this.listeners.push(new TripleColon(this.gameId, player.userId));
+			this.listeners.push(new FullStop(this.gameId, player.userId));
 		});
 	}
 

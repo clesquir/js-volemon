@@ -642,17 +642,13 @@ export default class Game {
 	}
 
 	onBallHitPlayer(ball, player, playerKey) {
-		if (this.isPlayerJumpingForward(player, playerKey) && this.isBallInFrontOfPlayer(ball, player, playerKey)) {
-			if (this.isPlayerDoingDropShot(ball, player, playerKey)) {
-				this.dropShotBallOnPlayerHit(ball);
-			} else {
-				this.smashBallOnPlayerHit(ball, playerKey);
-			}
+		if (this.isPlayerDoingDropShot(ball, player, playerKey)) {
+			this.dropShotBallOnPlayerHit(ball);
 		} else {
-			if (!this.isBallBelowPlayer(ball, player)) {
-				if (this.isPlayerDoingDropShot(ball, player, playerKey)) {
-					this.dropShotBallOnPlayerHit(ball);
-				} else {
+			if (this.isPlayerJumpingForward(player, playerKey) && this.isBallInFrontOfPlayer(ball, player, playerKey)) {
+				this.smashBallOnPlayerHit(ball, playerKey);
+			} else {
+				if (!this.isBallBelowPlayer(ball, player)) {
 					this.reboundBallOnPlayerHit(ball);
 				}
 			}
@@ -687,7 +683,7 @@ export default class Game {
 
 	isPlayerDoingDropShot(ball, player, playerKey) {
 		return (
-			player.data.doingDropShot && this.isBallInFrontOfPlayer(ball, player, playerKey) && !this.isPlayerAtGroundLevel(player)
+			player.data.doingDropShot && !this.isPlayerAtGroundLevel(player)
 		);
 	}
 
