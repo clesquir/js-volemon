@@ -410,13 +410,13 @@ describe('Game#isPlayerDoingDropShot', function() {
 		));
 	});
 
-	it('returns false if ball is not in front of player', function() {
+	it('returns true even if ball is not in front of player', function() {
 		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
 
 		sinon.stub(game, 'isBallInFrontOfPlayer').callsFake(function() {return false;});
 		sinon.stub(game, 'isPlayerAtGroundLevel').callsFake(function() {return false;});
 
-		assert.isFalse(game.isPlayerDoingDropShot(
+		assert.isTrue(game.isPlayerDoingDropShot(
 			{},
 			{
 				data: {
