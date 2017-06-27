@@ -12,7 +12,7 @@
 	.shape-content-scroller {
 		background-image: url("/assets/player-shapes-small.png");
 		transition: 0.5s ease-in-out;
-		height: 252px;
+		height: 273px;
 		width: 32px;
 	}
 
@@ -40,28 +40,32 @@
 		transform: translateY(-105px);
 	}
 
-	&.shape-crown .shape-content-scroller {
+	&.shape-magnet .shape-content-scroller {
 		transform: translateY(-126px);
 	}
 
-	&.shape-rhombus .shape-content-scroller {
+	&.shape-crown .shape-content-scroller {
 		transform: translateY(-147px);
 	}
 
-	&.shape-hexagon .shape-content-scroller {
+	&.shape-rhombus .shape-content-scroller {
 		transform: translateY(-168px);
 	}
 
-	&.shape-dot .shape-content-scroller {
+	&.shape-hexagon .shape-content-scroller {
 		transform: translateY(-189px);
 	}
 
-	&.shape-ellipse .shape-content-scroller {
+	&.shape-dot .shape-content-scroller {
 		transform: translateY(-210px);
 	}
 
-	&.shape-triple-colon .shape-content-scroller {
+	&.shape-ellipse .shape-content-scroller {
 		transform: translateY(-231px);
+	}
+
+	&.shape-triple-colon .shape-content-scroller {
+		transform: translateY(-252px);
 	}
 }
 
