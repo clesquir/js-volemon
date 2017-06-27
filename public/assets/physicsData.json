@@ -221,6 +221,27 @@
       ]
     }
   ],
+  "player-dot": [
+    {
+      "density": 20,
+      "friction": 0,
+      "bounce": 0,
+      "filter": {
+        "categoryBits": 1,
+        "maskBits": 65535
+      },
+      "shape": [
+        73.5, 16,
+        73.5, 32,
+        56.5, 49,
+        40.5, 49,
+        24.5, 32,
+        24.5, 16,
+        40.5, 0,
+        56.5, 0
+      ]
+    }
+  ],
   "player-ellipse": [
     {
       "density": 20,

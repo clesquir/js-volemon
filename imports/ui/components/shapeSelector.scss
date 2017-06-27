@@ -12,7 +12,7 @@
 	.shape-content-scroller {
 		background-image: url("/assets/player-shapes-small.png");
 		transition: 0.5s ease-in-out;
-		height: 231px;
+		height: 252px;
 		width: 32px;
 	}
 
@@ -52,12 +52,16 @@
 		transform: translateY(-168px);
 	}
 
-	&.shape-ellipse .shape-content-scroller {
+	&.shape-dot .shape-content-scroller {
 		transform: translateY(-189px);
 	}
 
-	&.shape-triple-colon .shape-content-scroller {
+	&.shape-ellipse .shape-content-scroller {
 		transform: translateY(-210px);
+	}
+
+	&.shape-triple-colon .shape-content-scroller {
+		transform: translateY(-231px);
 	}
 }
 

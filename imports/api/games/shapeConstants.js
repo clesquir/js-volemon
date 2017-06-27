@@ -7,6 +7,7 @@ export const PLAYER_SHAPE_EQUAL = 'equal';
 export const PLAYER_SHAPE_CROWN = 'crown';
 export const PLAYER_SHAPE_RHOMBUS = 'rhombus';
 export const PLAYER_SHAPE_HEXAGON = 'hexagon';
+export const PLAYER_SHAPE_DOT = 'dot';
 export const PLAYER_SHAPE_ELLIPSE = 'ellipse';
 export const PLAYER_SHAPE_TRIPLE_COLON = 'triple-colon';
 export const PLAYER_DEFAULT_SHAPE = PLAYER_SHAPE_HALF_CIRCLE;
@@ -19,6 +20,7 @@ export const PLAYER_LIST_OF_SHAPES = [
 	PLAYER_SHAPE_CROWN,
 	PLAYER_SHAPE_RHOMBUS,
 	PLAYER_SHAPE_HEXAGON,
+	PLAYER_SHAPE_DOT,
 	PLAYER_SHAPE_ELLIPSE,
 	PLAYER_SHAPE_TRIPLE_COLON
 ];
