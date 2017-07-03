@@ -1,12 +1,25 @@
 import {Meteor} from 'meteor/meteor';
+import {Mongo} from 'meteor/mongo';
 import {Template} from 'meteor/templating';
-import {ReactiveVar} from 'meteor/reactive-var';
+import {ReactiveDict} from 'meteor/reactive-dict';
+import {Session} from 'meteor/session';
 import * as Moment from 'meteor/momentjs:moment';
 import {getUTCTimeStamp, padNumber, timeElapsedSince} from '/imports/lib/utils.js';
 
 import './recentGames.html';
 
+const RECENT_GAMES_LIMIT = 5;
+const RECENT_GAMES_INCREMENT = 5;
+
+class RecentGamesCollection extends Mongo.Collection {}
+const RecentGames = new RecentGamesCollection(null);
+const RecentGamesState = new ReactiveDict();
+
 Template.recentGames.helpers({
+	recentGames: function() {
+		return RecentGames.find({}, {sort: [['startedAt', 'desc']]});
+	},
+
 	getStartedAtDate: function() {
 		Template.instance().uptime.get();
 		return timeElapsedSince(this.startedAt);
@@ -14,28 +27,6 @@ Template.recentGames.helpers({
 
 	getStartedAtDateTime: function() {
 		return Moment.moment(this.startedAt).format('YYYY-MM-DD HH:mm');
-	},
-
-	getPlayerName: function(players, host) {
-		let playerName;
-
-		if (host && this.createdBy === Meteor.userId()) {
-			return Meteor.user().profile.name;
-		} else if (!host && this.createdBy !== Meteor.userId()) {
-			return Meteor.user().profile.name;
-		}
-
-		players.forEach((player) => {
-			if (this._id === player.gameId) {
-				playerName = player.name;
-			}
-		});
-
-		if (playerName) {
-			return playerName;
-		} else {
-			return 'N/A';
-		}
 	},
 
 	getScore: function() {
@@ -60,31 +51,17 @@ Template.recentGames.helpers({
 			'<span class="' + clientScoreClass + '">' + padNumber(clientPoints) + '</span>';
 	},
 
-	getEloRatingChange: function(eloScores) {
-		let gameEloScoreChange = null;
-
-		eloScores.forEach((eloScore) => {
-			if (this._id === eloScore.gameId) {
-				gameEloScoreChange = eloScore.eloRatingChange;
-			}
-		});
-
-		return gameEloScoreChange;
-	},
-
 	hasMoreGames: function() {
-		const controller = Iron.controller();
-
-		return controller.gamesCount() >= controller.state.get('gamesLimit');
+		return RecentGamesState.get('hasMoreGames');
 	}
 });
 
 Template.recentGames.events({
 	'click [data-action="show-more-games"]': function(e) {
-		const controller = Iron.controller();
-
 		e.preventDefault();
-		controller.state.set('gamesLimit', controller.state.get('gamesLimit') + controller.gamesIncrement());
+
+		RecentGamesState.set('currentSkip', RecentGamesState.get('currentSkip') + RECENT_GAMES_INCREMENT);
+		updateRecentGames();
 	}
 });
 
@@ -97,4 +74,34 @@ Template.recentGames.onCreated(function() {
 
 Template.recentGames.destroyed = function() {
 	Meteor.clearInterval(this.uptimeInterval);
+};
+
+export const initRecentGames = function() {
+	RecentGames.remove({});
+	RecentGamesState.set('currentSkip', 0);
+	RecentGamesState.set('hasMoreGames', true);
+
+	updateRecentGames();
+};
+
+export const updateRecentGames = function() {
+	Session.set('loadingmask', true);
+	Meteor.call(
+		'recentGames',
+		Meteor.userId(),
+		RecentGamesState.get('currentSkip'),
+		RECENT_GAMES_LIMIT,
+		function(error, games) {
+			Session.set('loadingmask', false);
+			if (games) {
+				for (let game of games) {
+					RecentGames.insert(game);
+				}
+
+				if (games.length < RECENT_GAMES_LIMIT) {
+					RecentGamesState.set('hasMoreGames', false);
+				}
+			}
+		}
+	);
 };

@@ -3,7 +3,10 @@ import {EloScores} from '/imports/api/games/eloscores.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
-import {GAME_STATUS_REGISTRATION, GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
+import {
+	GAME_STATUS_REGISTRATION,
+	GAME_STATUS_STARTED
+} from '/imports/api/games/statusConstants.js';
 
 Meteor.publish('games', function() {
 	return [

@@ -1,6 +1,6 @@
 import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
-import {Session} from 'meteor/session';
+import {initRecentGames} from '/imports/ui/components/recentGames.js';
 import {loadStatistics} from '/imports/ui/components/statistics.js';
 
 import './home.html';
@@ -38,6 +38,8 @@ Template.home.events({
 		if (!$(homeContents).is('.user-recent-games-shown')) {
 			removeShownClasses(homeContents);
 			$(homeContents).addClass('user-recent-games-shown');
+
+			initRecentGames();
 		}
 	}
 });
