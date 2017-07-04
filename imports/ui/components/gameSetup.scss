@@ -1,0 +1,46 @@
+.game-client-buttons .ready-button {
+	font-size: 18px;
+}
+
+.switch-containers {
+	display: flex;
+
+	& > div {
+		flex: 1 0 0;
+		text-align: left;
+	}
+
+	.switch-label {
+		width: 115px;
+		display: inline-block;
+	}
+}
+
+.copyable-url-input {
+	position: relative;
+	display: flex;
+
+	input {
+		flex: 1 1 auto;
+		background-color: $background-color-dark;
+		box-shadow: 0 0 0 $input-border-width $background-color-darker;
+		cursor: pointer;
+		padding-right: 40px;
+	}
+
+	.fa-clipboard {
+		cursor: pointer;
+		position: absolute;
+		opacity: 0.5;
+		top: 16px;
+		right: 16px;
+
+		&:hover {
+			opacity: 1;
+		}
+
+		&:active {
+			color: $header-text-color;
+		}
+	}
+}
