@@ -32,57 +32,7 @@
 
 					<div id="gameContainer" class="page game"></div>
 
-					<div id="afterGameContainer" class="after-game-container">
-						<div>
-							<div>
-								<div class="after-game-item after-game-title">{{getAfterGameTitle}}</div>
-
-								{{#if showEloChangeAfterGame}}
-									<div class="after-game-item after-game-elo">
-										{{#each players}}
-											<div>
-												<div class="player-name">{{name}}</div>
-												<div>{{getPlayerEloRating this ../eloScores}}</div>
-												<div>{{> eloRatingChange eloRatingChange=(getPlayerGameEloRatingChange this ../eloScores)}}</div>
-											</div>
-										{{/each}}
-									</div>
-								{{/if}}
-
-								{{#if isGamePlayer}}
-									<div class="after-game-item after-game-actions">
-										{{#if showOpponentDeclinedRematch}}
-											<div class="rematch-declined">Your opponent declined a rematch...</div>
-										{{/if}}
-										{{#if showPlayerLeftTheGame}}
-											<div class="rematch-declined">Your opponent left the game...</div>
-										{{/if}}
-										{{#if showWaitingForReply}}
-											<div>Waiting for your opponent to accept...</div>
-										{{/if}}
-										{{#if showCreatingGame}}
-											<div>Creating game...</div>
-										{{/if}}
-										{{#if askForRematchReply}}
-											<div>
-												Your opponent is asking for a rematch. Do you accept?<br />
-												<a href="#" class="button" data-action="game-rematch">Yes</a>
-												<a href="#" class="button" data-action="declined-game-rematch">No</a>
-											</div>
-										{{/if}}
-										{{#if showActionAfterGame}}
-											<strong>What do you want to do next?</strong>
-											{{#if showAskForRematch}}
-												<div><a href="#" data-action="game-rematch">Ask for a rematch</a></div>
-											{{/if}}
-											<div><a href="{{pathFor 'home'}}">Go to the homepage</a></div>
-											<div><a href="{{pathFor 'rank'}}">View rank</a></div>
-										{{/if}}
-									</div>
-								{{/if}}
-							</div>
-						</div>
-					</div>
+					{{> afterGame}}
 
 					<div class="expand-extra-big-game-size-container">
 						<div class="expand-extra-big-game-size" data-action="expand-extra-big-game">
@@ -103,95 +53,7 @@
 
 			{{else}}
 
-				{{! Share URL }}
-
-				{{#if isHost}}
-					<h1>Creating a game</h1>
-
-					<p>Share this link with someone</p>
-					<p>
-						<div class="copyable-url-input">
-							<input type="text" value="{{urlFor 'game' _id=game._id}}" readonly="readonly" name="url" />
-							<i class="fa fa-clipboard" data-action="copy-url" data-tooltip="Copy to clipboard" data-tooltip-direction="s"></i>
-						</div>
-					</p>
-				{{else}}
-					<h1>Joining a game</h1>
-				{{/if}}
-
-				<div class="switch-containers">
-					<div>
-						<p class="{{#unless isHost}}not-editable{{/unless}}">
-							{{> switchButton label="Private" dataAction="update-privacy" onOffMethod=isPrivateGame}}
-						</p>
-
-						<p class="{{#unless isHost}}not-editable{{/unless}}">
-							{{> switchButton label="Practice game" dataAction="update-practice-game" onOffMethod=isPracticeGame}}
-						</p>
-					</div>
-				</div>
-
-				{{! Players list }}
-
-				<div class="table-list constrained-table">
-					<div class="table-list-row table-list-header">
-						<div class="table-list-cell">Players</div>
-						<div class="table-list-cell" style="flex: 0 0 75px;">Shape</div>
-					</div>
-
-					{{#each players}}
-					<div class="table-list-row">
-						<div class="table-list-cell">{{name}}</div>
-						<div class="table-list-cell" style="flex: 0 0 75px;">
-							{{#if isCurentPlayer}}
-								{{> shapeSelector player=this selectedShape=selectedShape}}
-							{{else}}
-								<div class="shape-selector-container shape-{{selectedShape}}">
-									<div class="shape-content-scroller"></div>
-								</div>
-							{{/if}}
-						</div>
-					</div>
-					{{/each}}
-				</div>
-
-				<br />
-
-				{{! Buttons }}
-
-				{{#if isHost}}
-
-					{{#if hasEnoughPlayers}}
-
-						{{#if allPlayersAreReady}}
-							<a href="#" data-action="start" class="button">Start game</a>
-						{{else}}
-							<p>Waiting for all players to be ready...</p>
-						{{/if}}
-
-					{{else}}
-						<p>Waiting for a player to join the game...</p>
-					{{/if}}
-
-				{{else}}
-
-					<div class="game-client-buttons">
-						{{#if canSetReadyOrLeave}}
-							<a href="#" data-action="set-player-is-ready" class="button ready-button">Ready!</a>
-							<a href="#" data-action="leave" class="button">Leave</a>
-						{{/if}}
-
-						{{#if canJoin}}
-							<a href="#" data-action="join" class="button">Join</a>
-						{{/if}}
-
-						{{#if waitingForGameToStart}}
-							<p>Waiting for the host to start the game...</p>
-						{{/if}}
-
-					</div>
-
-				{{/if}}
+				{{> gameSetup}}
 
 			{{/if}}
 
