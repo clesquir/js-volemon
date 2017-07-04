@@ -1,0 +1,15 @@
+#game-statistics-contents {
+	width: 350px;
+	margin: 10px auto;
+
+	@include breakpoint(mobileportrait) {
+		width: initial;
+	}
+
+	.view-selector {
+		margin-bottom: 5px;
+	}
+}
+
+@include view-selector-shown(after-game-elo-scores-shown, view-elo-scores, after-game-elo-scores);
+@include view-selector-shown(after-game-durations-shown, view-game-durations, after-game-durations);

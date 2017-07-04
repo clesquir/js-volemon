@@ -1,6 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
 import {Session} from 'meteor/session';
+import * as Moment from 'meteor/momentjs:moment';
 import {Players} from '/imports/api/games/players.js';
 import {
 	isGamePlayer,
@@ -24,8 +25,22 @@ Template.afterGame.helpers({
 		return isGamePlayer(Session.get('game'));
 	},
 
-	showEloChangeAfterGame: function() {
-		return !this.game.isPracticeGame && isGameStatusFinished(this.game.status);
+	gameIsFinished: function() {
+		return isGameStatusFinished(this.game.status);
+	},
+
+	isPracticeGame: function() {
+		return this.game.isPracticeGame;
+	},
+
+	isNotAPracticeGame: function() {
+		return !this.game.isPracticeGame;
+	},
+
+	gameDurations: function() {
+		return Array.from(this.game.pointsDuration).map(function(value, index) {
+			return Moment.moment(value).format('mm:ss');
+		}).join(' / ');
 	},
 
 	getAfterGameTitle: function() {
@@ -136,6 +151,29 @@ Template.afterGame.events({
 
 	'click [data-action="declined-game-rematch"]': function() {
 		Meteor.call('replyRematch', Session.get('game'), false);
+	},
+
+	'click [data-action=view-elo-scores]': function(e) {
+		const gameStatisticsContents = document.getElementById('game-statistics-contents');
+
+		if (!$(gameStatisticsContents).is('.after-game-elo-scores-shown')) {
+			removeShownClasses(gameStatisticsContents);
+			$(gameStatisticsContents).addClass('after-game-elo-scores-shown');
+		}
+	},
+
+	'click [data-action=view-game-durations]': function(e) {
+		const gameStatisticsContents = document.getElementById('game-statistics-contents');
+
+		if (!$(gameStatisticsContents).is('.after-game-durations-shown')) {
+			removeShownClasses(gameStatisticsContents);
+			$(gameStatisticsContents).addClass('after-game-durations-shown');
+		}
 	}
 });
+
+const removeShownClasses = function(gameStatisticsContents) {
+	$(gameStatisticsContents).removeClass('after-game-elo-scores-shown');
+	$(gameStatisticsContents).removeClass('after-game-durations-shown');
+};
 
