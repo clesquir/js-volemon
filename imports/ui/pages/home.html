@@ -6,22 +6,22 @@
 
 			{{#if currentUser}}
 
-				<div id="home-contents" class="home-contents user-statistics-shown">
-					<div class="home-display-selection">
+				<div id="home-contents" class="view-selector-contents user-statistics-shown">
+					<div class="view-selector">
 						<i class="fa fa-pie-chart view-user-statistics" data-action="view-user-statistics" data-tooltip="Statistics"></i>
 						<i class="fa fa-trophy view-user-achievements" data-action="view-user-achievements" data-tooltip="Achievements"></i>
 						<i class="fa fa-list view-user-recent-games" data-action="view-user-recent-games" data-tooltip="Recent games"></i>
 					</div>
 
-					<div class="home-content user-statistics">
+					<div class="view-selector-content user-statistics">
 						{{> statistics}}
 					</div>
 
-					<div class="home-content user-achievements">
+					<div class="view-selector-content user-achievements">
 						{{> achievements}}
 					</div>
 
-					<div class="home-content user-recent-games">
+					<div class="view-selector-content user-recent-games">
 						{{> recentGames}}
 					</div>
 				</div>

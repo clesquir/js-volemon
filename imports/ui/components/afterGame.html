@@ -4,15 +4,30 @@
 			<div>
 				<div class="after-game-item after-game-title">{{getAfterGameTitle}}</div>
 
-				{{#if showEloChangeAfterGame}}
-					<div class="after-game-item after-game-elo">
-						{{#each players}}
-							<div>
-								<div class="player-name">{{name}}</div>
-								<div>{{getPlayerEloRating this ../eloScores}}</div>
-								<div>{{> eloRatingChange eloRatingChange=(getPlayerGameEloRatingChange this ../eloScores)}}</div>
+				{{#if gameIsFinished}}
+					<div id="game-statistics-contents" class="after-game-item view-selector-contents {{#if isNotAPracticeGame}}after-game-elo-scores-shown{{else}}after-game-durations-shown{{/if}}">
+						<div class="view-selector">
+							{{#if isNotAPracticeGame}}
+								<i class="fa fa-arrow-circle-up view-elo-scores" data-action="view-elo-scores" data-tooltip="ELO"></i>
+							{{/if}}
+							<i class="fa fa-clock-o view-game-durations" data-action="view-game-durations" data-tooltip="Durations"></i>
+						</div>
+
+						{{#if isNotAPracticeGame}}
+							<div class="view-selector-content after-game-elo-scores">
+								<div class="after-game-elo">
+									{{#each players}}
+									<div>
+										<div class="player-name">{{name}}</div>
+										<div>{{getPlayerEloRating this ../eloScores}}</div>
+										<div>{{> eloRatingChange eloRatingChange=(getPlayerGameEloRatingChange this ../eloScores)}}</div>
+									</div>
+									{{/each}}
+								</div>
 							</div>
-						{{/each}}
+						{{/if}}
+
+						<div class="view-selector-content after-game-durations">{{gameDurations}}</div>
 					</div>
 				{{/if}}
 

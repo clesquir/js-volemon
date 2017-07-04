@@ -1,0 +1,39 @@
+.view-selector {
+	margin-bottom: 10px;
+	text-align: right;
+
+	i {
+		cursor: pointer;
+		opacity: .25;
+
+		& + & {
+			margin-left: 10px;
+		}
+
+		&:hover {
+			opacity: 1;
+		}
+	}
+}
+
+@mixin view-selector-shown($shown-class, $menu-class, $content-class) {
+	.view-selector-contents {
+		&.#{$shown-class} {
+			.#{$menu-class} {
+				opacity: 1;
+			}
+
+			.#{$content-class} {
+				display: block;
+			}
+		}
+	}
+}
+
+.view-selector-contents {
+	margin-bottom: 10px;
+
+	.view-selector-content {
+		display: none;
+	}
+}

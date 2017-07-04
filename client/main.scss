@@ -32,6 +32,7 @@ $desktop-max-width: 70em;
 @import "{}/imports/ui/stylesheets/form.scss";
 @import "{}/imports/ui/stylesheets/cards.scss";
 @import "{}/imports/ui/stylesheets/table-list.scss";
+@import "{}/imports/ui/stylesheets/view-selector.scss";
 
 @mixin mask {
 	background: rgba($background-color, .95);
@@ -49,6 +50,7 @@ $desktop-max-width: 70em;
 //Pages
 @import "{}/imports/ui/components/achievementPopup.scss";
 @import "{}/imports/ui/components/achievements.scss";
+@import "{}/imports/ui/components/afterGame.scss";
 @import "{}/imports/ui/components/lightbox.scss";
 @import "{}/imports/ui/components/loading.scss";
 @import "{}/imports/ui/components/reactions.scss";
