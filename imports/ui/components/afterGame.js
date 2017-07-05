@@ -38,8 +38,18 @@ Template.afterGame.helpers({
 	},
 
 	gameDurations: function() {
-		return Array.from(this.game.pointsDuration).map(function(value, index) {
-			return Moment.moment(value).format('mm:ss');
+		const durationsSorted = Array.from(this.game.pointsDuration).sort(function(a, b) {
+			return a - b;
+		});
+
+		return Array.from(this.game.pointsDuration).map(function(value) {
+			let durationClass = '';
+			if (durationsSorted[0] === value) {
+				durationClass = 'lowest-game-duration';
+			} else if (durationsSorted[durationsSorted.length - 1] === value) {
+				durationClass = 'highest-game-duration';
+			}
+			return '<span class="' + durationClass + '">' + Moment.moment(value).format('mm:ss') + "</span>";
 		}).join(' / ');
 	},
 

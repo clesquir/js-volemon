@@ -81,3 +81,11 @@
 
 @include view-selector-shown(after-game-elo-scores-shown, view-elo-scores, after-game-elo-scores);
 @include view-selector-shown(after-game-durations-shown, view-game-durations, after-game-durations);
+
+.lowest-game-duration {
+	color: $negative;
+}
+
+.highest-game-duration {
+	color: $positive;
+}
