@@ -20,7 +20,7 @@ export default class GameReaction {
 
 	init() {
 		this.stream.on('reaction-' + this.gameId, (data) => {
-			this.showReaction(data.isHost, data.reactionIcon, data.reactionText);
+			this.triggerReaction(data.isHost, data.reactionIcon, data.reactionText);
 		});
 
 		this.stream.on('cheer-' + this.gameId, (data) => {
@@ -37,7 +37,7 @@ export default class GameReaction {
 						this.onReactionSelection($(`div[data-reaction-key-map="${keyMap}"]:first`), this.gameData.isUserHost());
 					}
 				},
-				2200,
+				700,
 				{trailing: false}
 			)
 		);
@@ -82,7 +82,7 @@ export default class GameReaction {
 				reactionText: reactionText
 			}
 		);
-		this.showReaction(isHost, reactionIcon, reactionText);
+		this.triggerReaction(isHost, reactionIcon, reactionText);
 	}
 
 	cheerPlayer(forHost) {
@@ -107,7 +107,7 @@ export default class GameReaction {
 	 * @param {string} reactionIcon
 	 * @param {string} reactionText
 	 */
-	showReaction(isHost, reactionIcon, reactionText) {
+	triggerReaction(isHost, reactionIcon, reactionText) {
 		let selector = '#reaction-from-client .received-reaction-item';
 		if (isHost) {
 			selector = '#reaction-from-host .received-reaction-item';
@@ -117,7 +117,18 @@ export default class GameReaction {
 		}
 
 		const reactionListItem = $(selector).first();
-		reactionListItem.removeClass('reaction-shown');
+		if (reactionListItem.is('.reaction-shown')) {
+			reactionListItem.removeClass('reaction-shown');
+
+			Meteor.setTimeout(() => {
+				this.showReaction(reactionListItem, isHost, reactionIcon, reactionText);
+			}, 200);
+		} else {
+			this.showReaction(reactionListItem, isHost, reactionIcon, reactionText);
+		}
+	}
+
+	showReaction(reactionListItem, isHost, reactionIcon, reactionText) {
 		reactionListItem.addClass('reaction-shown');
 		reactionListItem.empty();
 
