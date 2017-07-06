@@ -42,15 +42,21 @@ Template.afterGame.helpers({
 			return a - b;
 		});
 
-		return Array.from(this.game.pointsDuration).map(function(value) {
+		return Array.from(this.game.pointsDuration).map((value, index) => {
 			let durationClass = '';
+
 			if (durationsSorted[0] === value) {
-				durationClass = 'lowest-game-duration';
+				durationClass += 'lowest-game-duration ';
 			} else if (durationsSorted[durationsSorted.length - 1] === value) {
-				durationClass = 'highest-game-duration';
+				durationClass += 'highest-game-duration ';
 			}
+
+			if (this.game.pointsSide[index]) {
+				durationClass += 'game-duration-winner-' + this.game.pointsSide[index] + ' ';
+			}
+
 			return '<span class="' + durationClass + '">' + Moment.moment(value).format('mm:ss') + "</span>";
-		}).join(' / ');
+		}).join('<span class="game-duration-separator"> &#8226; </span>');
 	},
 
 	getAfterGameTitle: function() {

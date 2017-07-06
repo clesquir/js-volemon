@@ -4,8 +4,8 @@ import {Games} from '/imports/api/games/games.js';
 import {
 	HOST_POINTS_COLUMN,
 	CLIENT_POINTS_COLUMN,
-	LAST_POINT_TAKEN_HOST,
-	LAST_POINT_TAKEN_CLIENT,
+	HOST_SIDE,
+	CLIENT_SIDE,
 	GAME_MAXIMUM_POINTS
 } from '/imports/api/games/constants.js';
 import {GAME_STATUS_STARTED, GAME_STATUS_FINISHED} from '/imports/api/games/statusConstants.js';
@@ -24,10 +24,10 @@ Meteor.methods({
 
 			switch (columnName) {
 				case HOST_POINTS_COLUMN:
-					data['lastPointTaken'] = LAST_POINT_TAKEN_HOST;
+					data['lastPointTaken'] = HOST_SIDE;
 					break;
 				case CLIENT_POINTS_COLUMN:
-					data['lastPointTaken'] = LAST_POINT_TAKEN_CLIENT;
+					data['lastPointTaken'] = CLIENT_SIDE;
 					break;
 			}
 
