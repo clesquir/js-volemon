@@ -3,7 +3,7 @@
 	height: 100%;
 	top: 0;
 	position: absolute;
-	background: rgba(256, 256, 256, 0.25);
+	background: rgba(256, 256, 256, 0.5);
 	display: flex;
 	justify-content: center;
 	box-sizing: border-box;
@@ -55,13 +55,21 @@
 	z-index: 1;
 }
 
-@media (max-width: $mobile-max-width) {
-	.after-game-container {
-		& .after-game-item {
+.after-game-container {
+	& .after-game-item {
+		@include breakpoint(mobile) {
 			font-size: 0.75rem;
 		}
-		& .after-game-title {
+		@include breakpoint(mobileportrait) {
+			font-size: 0.5rem;
+		}
+	}
+	& .after-game-title {
+		@include breakpoint(mobile) {
 			font-size: 1.75rem;
+		}
+		@include breakpoint(mobileportrait) {
+			font-size: 1.25rem;
 		}
 	}
 }
