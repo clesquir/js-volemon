@@ -83,9 +83,21 @@
 @include view-selector-shown(after-game-durations-shown, view-game-durations, after-game-durations);
 
 .lowest-game-duration {
-	color: $negative;
+	font-size: 0.5rem;
 }
 
 .highest-game-duration {
-	color: $positive;
+	font-size: 1.5rem;
+}
+
+.game-duration-winner-host {
+	color: $host-color;
+}
+
+.game-duration-winner-client {
+	color: $client-color;
+}
+
+.game-duration-separator {
+	font-size: .75rem;
 }

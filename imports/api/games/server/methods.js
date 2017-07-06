@@ -16,8 +16,8 @@ import {Profiles} from '/imports/api/profiles/profiles.js';
 import {
 	HOST_POINTS_COLUMN,
 	CLIENT_POINTS_COLUMN,
-	LAST_POINT_TAKEN_HOST,
-	LAST_POINT_TAKEN_CLIENT,
+	HOST_SIDE,
+	CLIENT_SIDE,
 	GAME_MAXIMUM_POINTS
 } from '/imports/api/games/constants.js';
 import {PLAYER_LIST_OF_SHAPES, PLAYER_ALLOWED_LIST_OF_SHAPES, PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
@@ -361,17 +361,18 @@ Meteor.methods({
 		let pointScoredByHost = false;
 		switch (columnName) {
 			case HOST_POINTS_COLUMN:
-				data['lastPointTaken'] = LAST_POINT_TAKEN_HOST;
+				data['lastPointTaken'] = HOST_SIDE;
 				pointScoredByHost = true;
 				break;
 			case CLIENT_POINTS_COLUMN:
-				data['lastPointTaken'] = LAST_POINT_TAKEN_CLIENT;
+				data['lastPointTaken'] = CLIENT_SIDE;
 				break;
 		}
 
 		data['activeBonuses'] = [];
 		data['lastPointAt'] = getUTCTimeStamp();
 		const pointDuration = data['lastPointAt'] - game.lastPointAt;
+		data['pointsSide'] = [].concat(game.pointsSide).concat([data['lastPointTaken']]);
 		data['pointsDuration'] = [].concat(game.pointsDuration).concat([pointDuration]);
 
 		let isGameFinished = false;

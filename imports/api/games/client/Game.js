@@ -19,8 +19,8 @@ import {
 	BALL_VERTICAL_SPEED_ON_PLAYER_HIT,
 	BALL_GRAVITY_SCALE,
 	NORMAL_SCALE_PHYSICS_DATA,
-	LAST_POINT_TAKEN_CLIENT,
-	LAST_POINT_TAKEN_HOST,
+	CLIENT_SIDE,
+	HOST_SIDE,
 	CLIENT_POINTS_COLUMN,
 	HOST_POINTS_COLUMN
 } from '/imports/api/games/constants.js';
@@ -526,10 +526,10 @@ export default class Game {
 		let xBallPosition;
 
 		switch (this.gameData.lastPointTaken) {
-			case LAST_POINT_TAKEN_CLIENT:
+			case CLIENT_SIDE:
 				xBallPosition = xBallPositionHostSide;
 				break;
-			case LAST_POINT_TAKEN_HOST:
+			case HOST_SIDE:
 				xBallPosition = xBallPositionClientSide;
 				break;
 			default:

@@ -121,7 +121,8 @@ export const startGame = function(gameId, gameInitiators) {
 		status: GAME_STATUS_STARTED,
 		startedAt: getUTCTimeStamp(),
 		lastPointAt: getUTCTimeStamp(),
-		pointsDuration: []
+		pointsDuration: [],
+		pointsSide: []
 	};
 
 	Games.update({_id: gameId}, {$set: data});

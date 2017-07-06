@@ -2,8 +2,8 @@ export const POSSIBLE_NO_PLAYERS = [2];
 export const GAME_MAXIMUM_POINTS = 5;
 export const HOST_POINTS_COLUMN = 'hostPoints';
 export const CLIENT_POINTS_COLUMN = 'clientPoints';
-export const LAST_POINT_TAKEN_HOST = 'host';
-export const LAST_POINT_TAKEN_CLIENT = 'client';
+export const HOST_SIDE = 'host';
+export const CLIENT_SIDE = 'client';
 
 export const GAME_X_SIZE = 840;
 export const GAME_Y_SIZE = 560;
