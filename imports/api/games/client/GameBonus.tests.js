@@ -7,7 +7,7 @@ import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime
 import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
 import Game from '/imports/api/games/client/Game.js';
 import GameBonus from '/imports/api/games/client/GameBonus.js';
-import BaseBonus from '/imports/api/games/bonus/BaseBonus.js';
+import {PLAYER_FROZEN_MASS} from '/imports/api/games/constants.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 
 describe('GameBonus#getBonusSpriteFromIdentifier', function() {
@@ -200,43 +200,62 @@ describe('GameBonus#setPlayerGravity', function() {
 
 	it('sets gravity if player is not frozen', function() {
 		const gameBonus = new GameBonus(game, engine, gameData, gameStreamBundler, serverNormalizedTime);
-		const gravity = 2;
+		const initialGravity = 1;
+		const currentGravity = 2;
+		const gravity = 3;
 
 		game.player1 = {
+			loadTexture: () => {},
 			data: {
-				isFrozen: false
+				isFrozen: false,
+				initialGravity: initialGravity,
+				currentGravity: currentGravity
 			},
 			body: {
+				setZeroRotation: () => {},
+				setZeroVelocity: () => {},
+				setMaterial: () => {},
+				setCollisionGroup: () => {},
+				collides: () => {},
 				data: {
-					gravityScale: 1
+					gravityScale: currentGravity
 				}
 			}
 		};
 
 		gameBonus.setPlayerGravity('player1', gravity);
 
-		assert.equal(gravity, game.player1.body.data.gravityScale);
+		assert.equal(gravity, engine.getGravity(game.player1));
 	});
 
 	it('does not set gravity if player is frozen', function() {
 		const gameBonus = new GameBonus(game, engine, gameData, gameStreamBundler, serverNormalizedTime);
 		const initialGravity = 1;
-		const gravity = 2;
+		const currentGravity = 2;
+		const gravity = 3;
 
 		game.player1 = {
+			loadTexture: () => {},
 			data: {
-				isFrozen: true
+				isFrozen: true,
+				initialGravity: initialGravity,
+				currentGravity: currentGravity
 			},
 			body: {
+				setZeroRotation: () => {},
+				setZeroVelocity: () => {},
+				setMaterial: () => {},
+				setCollisionGroup: () => {},
+				collides: () => {},
 				data: {
-					gravityScale: initialGravity
+					gravityScale: currentGravity
 				}
 			}
 		};
 
 		gameBonus.setPlayerGravity('player1', gravity);
 
-		assert.equal(initialGravity, game.player1.body.data.gravityScale);
+		assert.equal(0, engine.getGravity(game.player1));
 	});
 });
 
@@ -248,48 +267,107 @@ describe('GameBonus#resetPlayerGravity', function() {
 	const serverNormalizedTime = new ServerNormalizedTime();
 	const game = new Game(gameId, engine, gameData, gameStreamBundler, serverNormalizedTime);
 
-	it('resets gravity if player is frozen', function() {
+	it('resets gravity if player is not frozen', function() {
 		const gameBonus = new GameBonus(game, engine, gameData, gameStreamBundler, serverNormalizedTime);
 		const initialGravity = 1;
-		const actualGravity = 2;
+		const currentGravity = 2;
 
 		game.player1 = {
+			loadTexture: () => {},
 			data: {
 				isFrozen: false,
-				initialGravity: initialGravity
+				initialGravity: initialGravity,
+				currentGravity: currentGravity
 			},
 			body: {
+				setZeroRotation: () => {},
+				setZeroVelocity: () => {},
+				setMaterial: () => {},
+				setCollisionGroup: () => {},
+				collides: () => {},
 				data: {
-					gravityScale: actualGravity
+					gravityScale: currentGravity
 				}
 			}
 		};
 
 		gameBonus.resetPlayerGravity('player1');
 
-		assert.equal(initialGravity, game.player1.body.data.gravityScale);
+		assert.equal(initialGravity, engine.getGravity(game.player1));
 	});
 
 	it('does not reset gravity if player is frozen', function() {
 		const gameBonus = new GameBonus(game, engine, gameData, gameStreamBundler, serverNormalizedTime);
 		const initialGravity = 1;
-		const actualGravity = 2;
+		const currentGravity = 2;
 
 		game.player1 = {
+			loadTexture: () => {},
 			data: {
 				isFrozen: true,
-				initialGravity: initialGravity
+				initialGravity: initialGravity,
+				currentGravity: currentGravity
 			},
 			body: {
+				setZeroRotation: () => {},
+				setZeroVelocity: () => {},
+				setMaterial: () => {},
+				setCollisionGroup: () => {},
+				collides: () => {},
 				data: {
-					gravityScale: actualGravity
+					gravityScale: currentGravity
 				}
 			}
 		};
 
 		gameBonus.resetPlayerGravity('player1');
 
-		assert.equal(actualGravity, game.player1.body.data.gravityScale);
+		assert.equal(0, engine.getGravity(game.player1));
+	});
+});
+
+describe('GameBonus#freezePlayer', function() {
+	const gameId = Random.id(5);
+	const engine = new PhaserEngine();
+	const gameData = new GameData(gameId);
+	const gameStreamBundler = new GameStreamBundler();
+	const serverNormalizedTime = new ServerNormalizedTime();
+	const game = new Game(gameId, engine, gameData, gameStreamBundler, serverNormalizedTime);
+
+	it('sets player mass and zeroize gravity on freeze', function() {
+		const gameBonus = new GameBonus(game, engine, gameData, gameStreamBundler, serverNormalizedTime);
+		const initialMass = 200;
+		const currentMass = 500;
+		const initialGravity = 1;
+		const currentGravity = 2;
+
+		game.player1 = {
+			loadTexture: () => {},
+			data: {
+				isFrozen: false,
+				initialMass: initialMass,
+				currentMass: currentMass,
+				initialGravity: initialGravity,
+				currentGravity: currentGravity
+			},
+			body: {
+				setZeroRotation: () => {},
+				setZeroVelocity: () => {},
+				setMaterial: () => {},
+				setCollisionGroup: () => {},
+				collides: () => {},
+				mass: currentMass,
+				data: {
+					gravityScale: currentGravity
+				}
+			}
+		};
+
+		gameBonus.freezePlayer('player1');
+
+		assert.isTrue(engine.getIsFrozen(game.player1));
+		assert.equal(PLAYER_FROZEN_MASS, engine.getMass(game.player1));
+		assert.equal(0, engine.getGravity(game.player1));
 	});
 });
 
@@ -301,54 +379,39 @@ describe('GameBonus#unFreezePlayer', function() {
 	const serverNormalizedTime = new ServerNormalizedTime();
 	const game = new Game(gameId, engine, gameData, gameStreamBundler, serverNormalizedTime);
 
-	it('restores initial player mass and restores initial player gravity if active gravity is not set', function() {
+	it('restores initial player mass and current gravity on unfreeze', function() {
 		const gameBonus = new GameBonus(game, engine, gameData, gameStreamBundler, serverNormalizedTime);
 		const initialMass = 200;
+		const currentMass = 500;
 		const initialGravity = 1;
+		const currentGravity = 2;
 
 		game.player1 = {
+			loadTexture: () => {},
 			data: {
+				isFrozen: true,
 				initialMass: initialMass,
+				currentMass: currentMass,
 				initialGravity: initialGravity,
-				activeGravity: null
+				currentGravity: currentGravity
 			},
 			body: {
-				mass: 0,
+				setZeroRotation: () => {},
+				setZeroVelocity: () => {},
+				setMaterial: () => {},
+				setCollisionGroup: () => {},
+				collides: () => {},
+				mass: currentMass,
 				data: {
-					gravityScale: 0
+					gravityScale: currentGravity
 				}
 			}
 		};
 
 		gameBonus.unFreezePlayer('player1');
 
-		assert.equal(initialMass, game.player1.body.mass);
-		assert.equal(initialGravity, game.player1.body.data.gravityScale);
-	});
-
-	it('restores initial player mass and restores active player gravity if set', function() {
-		const gameBonus = new GameBonus(game, engine, gameData, gameStreamBundler, serverNormalizedTime);
-		const initialMass = 200;
-		const initialGravity = 1;
-		const activeGravity = 2;
-
-		game.player1 = {
-			data: {
-				initialMass: initialMass,
-				initialGravity: initialGravity,
-				activeGravity: activeGravity
-			},
-			body: {
-				mass: 0,
-				data: {
-					gravityScale: 0
-				}
-			}
-		};
-
-		gameBonus.unFreezePlayer('player1');
-
-		assert.equal(initialMass, game.player1.body.mass);
-		assert.equal(activeGravity, game.player1.body.data.gravityScale);
+		assert.isFalse(engine.getIsFrozen(game.player1));
+		assert.equal(initialMass, engine.getMass(game.player1));
+		assert.equal(currentGravity, engine.getGravity(game.player1));
 	});
 });

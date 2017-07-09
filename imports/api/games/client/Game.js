@@ -259,7 +259,9 @@ export default class Game {
 		player.data.initialXLocation = initialXLocation;
 		player.data.initialYLocation = initialYLocation;
 		player.data.initialMass = PLAYER_MASS;
+		player.data.currentMass = player.data.initialMass;
 		player.data.initialGravity = PLAYER_GRAVITY_SCALE;
+		player.data.currentGravity = player.data.initialGravity;
 		player.data.velocityXOnMove = PLAYER_VELOCITY_X_ON_MOVE;
 		player.data.velocityYOnJump = PLAYER_VELOCITY_Y_ON_JUMP;
 		player.data.doingDropShot = false;
@@ -285,12 +287,12 @@ export default class Game {
 	setupPlayerBody(player) {
 		this.engine.loadSpriteTexture(player, player.data.currentTextureKey);
 		this.engine.setFixedRotation(player, true);
-		this.engine.setMass(player, player.data.initialMass);
+		this.engine.setMass(player, player.data.currentMass);
 
-		if (player.data.isFrozen) {
+		if (this.engine.getIsFrozen(player)) {
 			this.engine.setGravity(player, 0);
 		} else {
-			this.engine.setGravity(player, player.data.initialGravity);
+			this.engine.setGravity(player, player.data.currentGravity);
 		}
 
 		this.engine.setMaterial(player, this.playerMaterial);
@@ -305,6 +307,7 @@ export default class Game {
 		this.ball = this.engine.addSprite(initialXLocation, initialYLocation, 'ball', undefined);
 
 		this.ball.data.initialGravity = BALL_GRAVITY_SCALE;
+		this.ball.data.currentGravity = this.ball.data.initialGravity;
 		this.ball.data.isFrozen = false;
 
 		this.ball.data.initialPolygonObject = 'ball';
@@ -318,12 +321,14 @@ export default class Game {
 
 	setupBallBody() {
 		this.engine.setFixedRotation(this.ball, true);
-		if (this.ball.data.isFrozen) {
+		this.engine.setDamping(this.ball, 0.1);
+
+		if (this.engine.getIsFrozen(this.ball)) {
 			this.engine.setGravity(this.ball, 0);
 		} else {
-			this.engine.setGravity(this.ball, this.ball.data.initialGravity);
+			this.engine.setGravity(this.ball, this.ball.data.currentGravity);
 		}
-		this.engine.setDamping(this.ball, 0.1);
+
 		this.engine.setMaterial(this.ball, this.ballMaterial);
 		this.engine.setCollisionGroup(this.ball, this.ballCollisionGroup);
 
@@ -888,21 +893,18 @@ export default class Game {
 
 	pauseGame() {
 		this.engine.freeze(this.ball);
-		this.ball.data.isFrozen = true;
 	}
 
 	stopGame() {
 		this.engine.freeze(this.player1);
 		this.engine.freeze(this.player2);
 		this.engine.freeze(this.ball);
-		this.ball.data.isFrozen = true;
 
 		this.gameBonus.onGameStop();
 	}
 
 	resumeGame() {
 		this.engine.unfreeze(this.ball);
-		this.ball.data.isFrozen = false;
 		this.gameResumed = true;
 	}
 

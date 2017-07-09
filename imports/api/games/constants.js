@@ -17,6 +17,7 @@ export const PLAYER_INITIAL_LOCATION = 140;
 export const PLAYER_VELOCITY_X_ON_MOVE = 280;
 export const PLAYER_VELOCITY_Y_ON_JUMP = 420;
 export const PLAYER_MASS = 200;
+export const PLAYER_FROZEN_MASS = 2000;
 export const PLAYER_GRAVITY_SCALE = 1;
 export const PLAYER_BIG_GRAVITY_SCALE = 3.75;
 export const PLAYER_SMALL_GRAVITY_SCALE = 0.7;
