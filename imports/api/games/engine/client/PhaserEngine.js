@@ -343,16 +343,22 @@ export default class PhaserEngine extends Engine {
 		sprite.body.velocity.y = data.velocityY;
 	}
 
+	getIsFrozen(sprite) {
+		return sprite.data.isFrozen;
+	}
+
 	freeze(sprite) {
 		const body = sprite.body;
 
 		body.setZeroRotation();
 		body.setZeroVelocity();
 		this.setGravity(sprite, 0);
+		sprite.data.isFrozen = true;
 	}
 	
 	unfreeze(sprite) {
-		this.setGravity(sprite, sprite.data.initialGravity);
+		this.setGravity(sprite, sprite.data.currentGravity);
+		sprite.data.isFrozen = false;
 	}
 
 	spawn(sprite, x, y) {
@@ -361,12 +367,20 @@ export default class PhaserEngine extends Engine {
 		sprite.reset(x, y);
 	}
 
+	getMass(sprite) {
+		return sprite.body.mass;
+	}
+
 	setMass(sprite, mass) {
 		sprite.body.mass = mass;
 	}
 
 	setFixedRotation(sprite, fixedRotation) {
 		sprite.body.fixedRotation = fixedRotation;
+	}
+
+	getGravity(sprite) {
+		return sprite.body.data.gravityScale;
 	}
 
 	setGravity(sprite, gravity) {
@@ -574,10 +588,11 @@ export default class PhaserEngine extends Engine {
 		const bonusSprite = this.getBonusSprite(x, 0, bonus);
 
 		bonusSprite.data.initialGravity = bonusGravityScale;
+		bonusSprite.data.currentGravity = bonusSprite.data.initialGravity;
 		bonusSprite.sendToBack();
 
 		this.setFixedRotation(bonusSprite, false);
-		this.setGravity(bonusSprite, bonusSprite.data.initialGravity);
+		this.setGravity(bonusSprite, bonusSprite.data.currentGravity);
 		this.setDamping(bonusSprite, 0);
 		this.setMaterial(bonusSprite, bonusMaterial);
 		this.setCollisionGroup(bonusSprite, bonusCollisionGroup);

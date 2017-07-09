@@ -12,7 +12,8 @@ import {
 	BIG_SCALE_BONUS,
 	NORMAL_SCALE_PHYSICS_DATA,
 	SMALL_SCALE_PHYSICS_DATA,
-	BIG_SCALE_PHYSICS_DATA
+	BIG_SCALE_PHYSICS_DATA,
+	PLAYER_FROZEN_MASS
 } from '/imports/api/games/constants.js';
 import {
 	BONUS_INTERVAL,
@@ -118,7 +119,6 @@ export default class GameBonus {
 	}
 
 	initPlayerProperties(player) {
-		player.data.activeGravity = null;
 		player.data.isInvincible = false;
 	}
 
@@ -323,9 +323,8 @@ export default class GameBonus {
 			return;
 		}
 
-		if (!player.data.isFrozen) {
-			this.engine.setGravity(player, gravity);
-		}
+		player.data.currentGravity = gravity;
+		this.game.setupPlayerBody(player);
 	}
 
 	resetPlayerGravity(playerKey) {
@@ -335,9 +334,8 @@ export default class GameBonus {
 			return;
 		}
 
-		if (!player.data.isFrozen) {
-			this.engine.setGravity(player, player.data.initialGravity);
-		}
+		player.data.currentGravity = player.data.initialGravity;
+		this.game.setupPlayerBody(player);
 	}
 
 	scaleBall(scale) {
@@ -359,11 +357,13 @@ export default class GameBonus {
 	}
 
 	setBallGravity(gravity) {
-		this.engine.setGravity(this.game.ball, gravity);
+		this.game.ball.data.currentGravity = gravity;
+		this.game.setupBallBody();
 	}
 
 	resetBallGravity() {
-		this.setBallGravity(this.game.ball.data.initialGravity);
+		this.game.ball.data.currentGravity = this.game.ball.data.initialGravity;
+		this.game.setupBallBody();
 	}
 
 	changePlayerProperty(playerKey, property, value) {
@@ -495,9 +495,10 @@ export default class GameBonus {
 			return;
 		}
 
-		this.engine.setMass(player, 2000);
 		this.engine.freeze(player);
-		player.data.isFrozen = true;
+		player.data.currentMass = PLAYER_FROZEN_MASS;
+
+		this.game.setupPlayerBody(player);
 	}
 
 	unFreezePlayer(playerKey) {
@@ -507,13 +508,10 @@ export default class GameBonus {
 			return;
 		}
 
-		this.engine.setMass(player, player.data.initialMass);
-		if (player.data.activeGravity !== null) {
-			this.engine.setGravity(player, player.data.activeGravity);
-		} else {
-			this.engine.setGravity(player, player.data.initialGravity);
-		}
-		player.data.isFrozen = false;
+		this.engine.unfreeze(player);
+		player.data.currentMass = player.data.initialMass;
+
+		this.game.setupPlayerBody(player);
 	}
 
 	drawCloud() {
