@@ -70,11 +70,15 @@ export default class Listener {
 		}
 	}
 
+	userPlayer() {
+		return Players.findOne({gameId: this.gameId, userId: this.userId});
+	}
+
 	/**
 	 * @returns {boolean}
 	 */
 	userIsGamePlayer() {
-		return !!Players.findOne({gameId: this.gameId, userId: this.userId});
+		return !!this.userPlayer();
 	}
 
 	/**
@@ -96,7 +100,7 @@ export default class Listener {
 	}
 
 	currentPlayerShape() {
-		const player = Players.findOne({gameId: this.gameId, userId: this.userId});
+		const player = this.userPlayer();
 
 		if (player) {
 			return player.shape;

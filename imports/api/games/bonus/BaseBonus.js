@@ -20,7 +20,8 @@ export default class BaseBonus {
 	dataToStream() {
 		return {
 			bonusClass: this.getClassName(),
-			bonusIdentifier: this.getIdentifier()
+			bonusIdentifier: this.getIdentifier(),
+			createdAt: this.createdAt
 		};
 	}
 

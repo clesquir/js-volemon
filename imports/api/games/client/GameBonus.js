@@ -577,11 +577,17 @@ export default class GameBonus {
 			let data = bonus.dataToStream();
 			data.initialX = this.xSize / 2 + Random.choice([-6, +6]);
 
-			//Create the bonus the host
+			//Create the bonus for host
 			this.createBonus(data);
 			this.regenerateLastBonusCreatedAndFrequenceTime();
-			//Add to bundled stream to send
+			//Add to bundled stream to send to client
 			this.gameStreamBundler.addStreamToBundle('createBonus', data);
+
+			Meteor.call(
+				'createBonus',
+				this.game.gameId,
+				data
+			);
 		}
 	}
 

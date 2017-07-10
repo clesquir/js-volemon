@@ -32,6 +32,7 @@ import SimultaneousActivatedBonuses from '/imports/api/achievements/server/liste
 import Snoozer from '/imports/api/achievements/server/listeners/Snoozer.js';
 import ToTheSky from '/imports/api/achievements/server/listeners/ToTheSky.js';
 import TripleColon from '/imports/api/achievements/server/listeners/TripleColon.js';
+import Undesirable from '/imports/api/achievements/server/listeners/Undesirable.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 
@@ -92,6 +93,7 @@ export default class Listeners {
 			this.listeners.push(new Rakshasa(this.gameId, player.userId));
 			this.listeners.push(new TripleColon(this.gameId, player.userId));
 			this.listeners.push(new FullStop(this.gameId, player.userId));
+			this.listeners.push(new Undesirable(this.gameId, player.userId));
 		});
 	}
 
