@@ -1,12 +1,12 @@
 export const EventPublisher = {
 	listeners: {},
 
-	on: function(eventName, listener, scope) {
+	on: function(eventName, callback, scope) {
 		if (!this.listeners[eventName]) {
 			this.listeners[eventName] = [];
 		}
 
-		this.listeners[eventName].push({listener: listener, scope: scope});
+		this.listeners[eventName].push({callback: callback, scope: scope});
 	},
 
 	off: function(eventName, listenerToRemove, scope) {
@@ -16,7 +16,7 @@ export const EventPublisher = {
 
 		const listeners = [];
 		this.listeners[eventName].forEach(function(listener) {
-			if (listener.listener !== listenerToRemove || listener.scope !== scope) {
+			if (listener.callback !== listenerToRemove || listener.scope !== scope) {
 				listeners.push(listener);
 			}
 		});
@@ -36,7 +36,7 @@ export const EventPublisher = {
 		}
 
 		this.listeners[eventName].forEach(function(listener) {
-			listener.listener.call(listener.scope, event);
+			listener.callback.call(listener.scope, event);
 		});
 	}
 };

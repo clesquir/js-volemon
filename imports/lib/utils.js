@@ -85,3 +85,9 @@ export const getRandomInt = function(min, max) {
 export const getRandomFloat = function(min, max) {
 	return Math.random() * (max - min) + min;
 };
+
+export const getArrayMax = function(array) {
+	return array.reduce(function(a, b) {
+		return Math.max(a, b);
+	});
+};

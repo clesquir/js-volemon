@@ -197,7 +197,7 @@
       "description": "# of points scored when both players are big",
       "type": "QUANTITY",
       "displayOrder": 24,
-      "levels": [{"level": 1, "number": 1}, {"level": 2, "number": 5}, {"level": 3, "number": 10}]
+      "levels": [{"level": 1, "number": 1}, {"level": 2, "number": 2}, {"level": 3, "number": 3}]
     },
     {
       "_id": "NINJA",
@@ -224,7 +224,7 @@
       "description": "Bonuses combo: Small monster, big jump and bouncy",
       "type": "TIMES",
       "displayOrder": 27,
-      "levels": [{"level": 1, "number": 1}, {"level": 2, "number": 3}, {"level": 3, "number": 6}]
+      "levels": [{"level": 1, "number": 1}, {"level": 2, "number": 2}, {"level": 3, "number": 4}]
     },
     {
       "_id": "BLANK_SCREEN",
@@ -288,6 +288,15 @@
       "type": "QUANTITY",
       "displayOrder": 34,
       "levels": [{"level": 1, "number": 1}, {"level": 2, "number": 5}, {"level": 3, "number": 10}]
+    },
+    {
+      "_id": "UNDESIRABLE",
+      "isSecret": true,
+      "name": "Undesirable",
+      "description": "Time a bonus bounces around without being caught",
+      "type": "MS",
+      "displayOrder": 35,
+      "levels": [{"level": 1, "number": 30000}, {"level": 2, "number": 60000}, {"level": 3, "number": 120000}]
     }
   ]
 }

@@ -1,11 +1,21 @@
 import {Meteor} from 'meteor/meteor';
 import {Games} from '/imports/api/games/games.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
+import BonusCreated from '/imports/api/games/events/BonusCreated.js';
 import BonusRemoved from '/imports/api/games/events/BonusRemoved.js';
 import {GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
 import {EventPublisher} from '/imports/lib/EventPublisher.js';
 
 Meteor.methods({
+	createBonus: function(gameId, data) {
+		EventPublisher.publish(
+			new BonusCreated(
+				gameId,
+				data
+			)
+		);
+	},
+
 	addActiveBonusToGame: function(gameId, activatedAt, initialBonusClass, activationData) {
 		const game = Games.findOne(gameId);
 		const data = {};
