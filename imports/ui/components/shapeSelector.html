@@ -1,9 +1,8 @@
 <template name="shapeSelector">
-	<div class="shape-selector-container shape-selectable shape-{{selectedShape}}" data-action="shape-change-down">
-		<div class="shape-content-scroller"></div>
-	</div>
-	<div class="shape-selector-carets">
-		<i class="fa fa-caret-up" data-action="shape-change-up"></i>
-		<i class="fa fa-caret-down" data-action="shape-change-down"></i>
+	<div class="shape-selector shape-selectable" data-action="open-shape-selector" data-selected-shape="{{selectedShape}}">
+		<div class="shape-selector-container shape-{{selectedShape}}">
+			<div class="shape-content-scroller"></div>
+		</div>
+		<i class="fa fa-caret-down shape-selector-caret"></i>
 	</div>
 </template>

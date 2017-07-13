@@ -4,6 +4,8 @@ import {Session} from 'meteor/session';
 
 import './app.html';
 
+export const OPEN_SELECT_BOXES = {};
+
 Template.app.helpers({
 	classForProfileMenu: function() {
 		if (Session.get('userCurrentlyPlaying')) {
@@ -23,11 +25,20 @@ Template.app.events({
 	},
 
 	'click': function(e) {
-		var dropdownList = document.getElementById('username-dialog-dropdown-list'),
-			menuOpen = $(e.target).parents('.username-header-menu-open');
+		for (let key in OPEN_SELECT_BOXES) {
+			if (OPEN_SELECT_BOXES.hasOwnProperty(key)) {
+				const list = document.getElementById(OPEN_SELECT_BOXES[key].listId);
+				const triggerClass = OPEN_SELECT_BOXES[key].triggerClass;
 
-		if (dropdownList && !$(e.target).is('#username-header-menu-open') && !menuOpen.length) {
-			$(dropdownList).hide();
+				if (list && !$(e.target).is(triggerClass) && $(e.target).parents(triggerClass).length === 0) {
+					if (OPEN_SELECT_BOXES[key].hideCallback) {
+						OPEN_SELECT_BOXES[key].hideCallback($(list));
+					} else {
+						$(list).hide();
+					}
+					delete OPEN_SELECT_BOXES[key];
+				}
+			}
 		}
 	},
 
@@ -36,14 +47,44 @@ Template.app.events({
 	},
 
 	'click #username-header-menu-open': function() {
-		var dropdownList = document.getElementById('username-dialog-dropdown-list');
+		const listId = 'username-dialog-dropdown-list';
+		const dropdownList = document.getElementById(listId);
+		$(dropdownList).addClass('menubox-animation');
 
 		if ($(dropdownList).is(":visible")) {
-			$(dropdownList).hide();
+			$(dropdownList).addClass('menubox-animation');
+			Meteor.setTimeout(() => {
+				if ($(dropdownList)) {
+					$(dropdownList).hide();
+					$(dropdownList).removeClass('menubox-animation');
+				}
+			}, 250);
+			delete OPEN_SELECT_BOXES[listId];
 		} else {
 			if (Session.get('userCurrentlyPlaying')) {
 				return;
 			}
+
+			Meteor.setTimeout(() => {
+				if (dropdownList) {
+					$(dropdownList).removeClass('menubox-animation');
+				}
+			}, 0);
+
+			OPEN_SELECT_BOXES[listId] = {
+				triggerClass: '.username-header-menu-open',
+				listId: listId,
+				hideCallback: function(list) {
+					list.addClass('menubox-animation');
+					Meteor.setTimeout(() => {
+						if (list) {
+							list.hide();
+							list.removeClass('menubox-animation');
+						}
+					}, 250);
+				}
+			};
+
 			$(dropdownList).show();
 		}
 	},

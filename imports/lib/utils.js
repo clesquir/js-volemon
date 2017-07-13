@@ -91,3 +91,29 @@ export const getArrayMax = function(array) {
 		return Math.max(a, b);
 	});
 };
+
+export const htmlEncode = function(value) {
+	const charKeys = ['&', '>', '<', '"', "'"];
+	const charToEntityRegex = new RegExp('(' + charKeys.join('|') + ')', 'g');
+	const charToEntity = {
+		'&': '&amp;',
+		'>': '&gt;',
+		'<': '&lt;',
+		'"': '&quot;',
+		"'": '&#39;'
+	};
+
+	return (!value) ? value : String(value).replace(
+		charToEntityRegex,
+		function(match, capture) {
+			return charToEntity[capture];
+		}
+	);
+};
+
+export const elementInRelatedView = function(element, parent) {
+	return (
+		element.position().top + element.height() > 0 &&
+		element.position().top + element.height() < parent.height()
+	);
+};
