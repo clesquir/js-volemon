@@ -47,6 +47,18 @@ $desktop-max-width: 70em;
 	-webkit-backface-visibility: hidden;
 }
 
+@mixin menubox() {
+	background: $selectbox-background-color;
+	color: $text-color;
+	box-shadow: $background-color-darker 0 3px 5px 0;
+	transition: max-height 0.25s ease-in-out;
+	overflow: hidden;
+
+	&.menubox-animation {
+		max-height: 0;
+	}
+}
+
 //Pages
 @import "{}/imports/ui/components/achievementPopup.scss";
 @import "{}/imports/ui/components/achievements.scss";

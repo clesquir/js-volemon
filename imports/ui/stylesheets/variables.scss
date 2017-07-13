@@ -9,14 +9,17 @@ $table-header-color: #9ad3de;
 $input-border-width: 2px;
 $text-color: invert($background-color);
 
+$selectbox-background-color: #dedede;
+$selectbox-background-color-hover: darken($selectbox-background-color, 5%);
+$selectbox-background-color-selected: darken($selectbox-background-color, 10%);
+$selectbox-background-color-selected-hover: darken($selectbox-background-color, 7.5%);
+
 $positive: #34a034;
 $negative: #c94141;
 
 /** Header color **/
 
 $header-background-color: #ffffff;
-$header-username-dialog-background-color: #dedede;
-$header-username-dialog-background-color-hover: darken($header-username-dialog-background-color, 5%);
 $header-text-color: darken($background-color, 30%);
 $header-text-color-light: darken($background-color, 10%);
 $header-border-color: $border-color;

@@ -1,3 +1,23 @@
+$number-of-shapes: 13;
+
+@mixin shape-content($position) {
+	transform: translateY(($position - 1) * -21px);
+}
+
+.shape-selector {
+	display: inline-block;
+
+	.shape-selector-caret {
+		display: inline-block;
+		margin-left: 2px;
+		vertical-align: text-top;
+	}
+
+	&.shape-selectable {
+		cursor: pointer;
+	}
+}
+
 .shape-selector-container {
 	display: inline-block;
 	position: relative;
@@ -5,77 +25,99 @@
 	width: 32px;
 	height: 16px;
 
-	&.shape-selectable {
-		cursor: pointer;
-	}
-
 	.shape-content-scroller {
 		background-image: url("/assets/player-shapes-small.png");
-		transition: 0.5s ease-in-out;
-		height: 273px;
+		height: $number-of-shapes * 21px;
 		width: 32px;
 	}
 
 	&.shape-random .shape-content-scroller {
-		transform: translateY(0px);
+		@include shape-content(1);
 	}
 
 	&.shape-half-circle .shape-content-scroller {
-		transform: translateY(-21px);
+		@include shape-content(2);
 	}
 
 	&.shape-triangle .shape-content-scroller {
-		transform: translateY(-42px);
+		@include shape-content(3);
 	}
 
 	&.shape-x .shape-content-scroller {
-		transform: translateY(-63px);
+		@include shape-content(4);
 	}
 
 	&.shape-rectangle .shape-content-scroller {
-		transform: translateY(-84px);
+		@include shape-content(5);
 	}
 
 	&.shape-equal .shape-content-scroller {
-		transform: translateY(-105px);
+		@include shape-content(6);
 	}
 
 	&.shape-magnet .shape-content-scroller {
-		transform: translateY(-126px);
+		@include shape-content(7);
 	}
 
 	&.shape-crown .shape-content-scroller {
-		transform: translateY(-147px);
+		@include shape-content(8);
 	}
 
 	&.shape-rhombus .shape-content-scroller {
-		transform: translateY(-168px);
+		@include shape-content(9);
 	}
 
 	&.shape-hexagon .shape-content-scroller {
-		transform: translateY(-189px);
+		@include shape-content(10);
 	}
 
 	&.shape-dot .shape-content-scroller {
-		transform: translateY(-210px);
+		@include shape-content(11);
 	}
 
 	&.shape-ellipse .shape-content-scroller {
-		transform: translateY(-231px);
+		@include shape-content(12);
 	}
 
 	&.shape-triple-colon .shape-content-scroller {
-		transform: translateY(-252px);
+		@include shape-content(13);
 	}
 }
 
-.shape-selector-carets {
-	display: inline-block;
-	margin-left: 2px;
+.shape-selector-menu {
+	display: none;
+	position: absolute;
+	padding: 3px;
+	width: 138px;
+	max-height: 80px;
+	@include menubox;
+	overflow: scroll;
 
-	i {
-		display: block;
+	@include breakpoint(mobileportrait) {
+		width: 47px;
+		max-height: 115px;
+	}
+
+	.shape-selector-item {
+		padding: 7px;
+		overflow: hidden;
+		display: inline-block;
 		cursor: pointer;
-		font-size: 10px;
+
+		&:hover {
+			background-color: $selectbox-background-color-hover;
+		}
+
+		&.selected-shape {
+			background-color: $selectbox-background-color-selected;
+
+			&:hover {
+				background-color: $selectbox-background-color-selected-hover;
+			}
+		}
+	}
+
+	.shape-selector-container {
+		display: block;
 	}
 }

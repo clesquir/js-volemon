@@ -27,7 +27,7 @@ import {
 	GAME_STATUS_FINISHED,
 	GAME_STATUS_TIMEOUT
 } from '/imports/api/games/statusConstants.js';
-import {getUTCTimeStamp} from '/imports/lib/utils.js';
+import {htmlEncode, getUTCTimeStamp} from '/imports/lib/utils.js';
 import {EventPublisher} from '/imports/lib/EventPublisher.js';
 
 /** @type {GameInitiator[]} */
@@ -121,7 +121,7 @@ Meteor.methods({
 		if (PLAYER_ALLOWED_LIST_OF_SHAPES.indexOf(selectedShape) === -1) {
 			throw new Meteor.Error(
 				'not-allowed',
-				'The requested shape is not allowed'
+				'The requested shape is not allowed: ' + htmlEncode(selectedShape)
 			);
 		}
 

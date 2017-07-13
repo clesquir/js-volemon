@@ -276,11 +276,10 @@
 	display: none;
 	position: absolute;
 	right: 10px;
-	background: $header-username-dialog-background-color;
-	color: $text-color;
 	padding: 5px 0;
 	top: 50px;
-	box-shadow: $background-color-darker 0 3px 5px 0;
+	max-height: 200px;
+	@include menubox;
 
 	@include breakpoint(tablet) {
 		top: 35px;
@@ -294,7 +293,7 @@
 	white-space: nowrap;
 
 	&:hover {
-		background: $header-username-dialog-background-color-hover;
+		background: $selectbox-background-color-hover;
 	}
 }
 
