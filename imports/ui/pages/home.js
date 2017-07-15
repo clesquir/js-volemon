@@ -2,6 +2,7 @@ import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
 import {initRecentGames} from '/imports/ui/components/recentGames.js';
 import {loadStatistics} from '/imports/ui/components/statistics.js';
+import {browserSupportsWebRTC, onMobileAndTablet} from '/imports/lib/utils.js';
 
 import './home.html';
 
@@ -9,6 +10,16 @@ Template.home.onCreated(function() {
 	this.autorun(() => {
 		loadStatistics(Meteor.userId());
 	});
+});
+
+Template.home.helpers({
+	browserDoNotSupportsWebRTC: function() {
+		return !browserSupportsWebRTC();
+	},
+
+	onMobile: function() {
+		return onMobileAndTablet();
+	}
 });
 
 Template.home.events({

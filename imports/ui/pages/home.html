@@ -4,6 +4,19 @@
 
 		<div class="app-section-inner maximum-responsive-width">
 
+			{{#if browserDoNotSupportsWebRTC}}
+				<div class="warning-message">
+					{{#if onMobile}}
+						<p>Your mobile does not support WebRTC.</p>
+						<p>Your experience may be deteriorated.</p>
+					{{else}}
+						<p>Your browser does not support WebRTC or it is not enabled.</p>
+						<p>Your experience may be deteriorated.</p>
+						<p>Please enable it or use a <em>better</em> browser.</p>
+					{{/if}}
+				</div>
+			{{/if}}
+
 			{{#if currentUser}}
 
 				<div id="home-contents" class="view-selector-contents user-statistics-shown">

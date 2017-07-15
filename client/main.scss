@@ -137,6 +137,17 @@ p {
 	color: $negative;
 }
 
+.warning-message {
+	border: 1px darken($negative, 10%) solid;
+	border-radius: 2px;
+	background: lighten($negative, 20%);
+	margin-bottom: 10px;
+
+	p {
+		margin: 10px;
+	}
+}
+
 .maximum-responsive-width {
 	flex: 1 1 auto;
 	min-width: 275px;

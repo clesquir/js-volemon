@@ -1,8 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import Stream from '/imports/lib/stream/Stream.js';
 import socketIOP2P from '/imports/lib/override/socket.io-p2p.js';
-const isWebRTCSupported = !!require('get-browser-rtc')();
-const rtcSupport = require('webrtcsupport');
+import {browserSupportsWebRTC} from '/imports/lib/utils.js';
 
 export default class ClientSocketIo extends Stream {
 	/**
@@ -17,7 +16,7 @@ export default class ClientSocketIo extends Stream {
 		}
 
 		this.socketAdapter = require('socket.io-client').connect(url);
-		if (isWebRTCSupported && rtcSupport.supportDataChannel) {
+		if (browserSupportsWebRTC()) {
 			this.connectP2pAdapter();
 
 			this.socketAdapter.on('connect', () => {
