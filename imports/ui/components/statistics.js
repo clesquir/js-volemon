@@ -9,6 +9,11 @@ import './statistics.html';
 export const loadStatistics = function(userId) {
 	const profileData = Meteor.subscribe('profileData', userId);
 
+	Session.set('longestGame', null);
+	Session.set('longestPoint', null);
+	Session.set('lowestElo', null);
+	Session.set('highestElo', null);
+
 	Meteor.call('longestGame', userId, function(error, data) {
 		if (!error && data.gameId) {
 			Session.set('longestGame', data);
@@ -69,27 +74,27 @@ Template.statistics.helpers({
 			return 'Game date: ' + Moment.moment(Session.get(statisticName).startedAt).format('YYYY-MM-DD HH:mm') + '<br />' +
 				'Opponent: ' + Session.get(statisticName).playerName;
 		}
-		return '';
+		return '<div class="loading-icon fa fa-spinner fa-pulse" />';
 	},
 
 	longestGameDuration: function(statisticName) {
 		if (Session.get(statisticName)) {
 			return Moment.moment(Session.get(statisticName).duration).format('mm:ss');
 		}
-		return '-';
+		return '<div class="loading-icon fa fa-spinner fa-pulse" />';
 	},
 
 	eloStatInformation: function(statisticName) {
 		if (Session.get(statisticName)) {
 			return 'Game date: ' + Moment.moment(Session.get(statisticName).timestamp).format('YYYY-MM-DD HH:mm');
 		}
-		return '';
+		return '<div class="loading-icon fa fa-spinner fa-pulse" />';
 	},
 
 	eloStat: function(statisticName) {
 		if (Session.get(statisticName)) {
 			return Session.get(statisticName).eloRating;
 		}
-		return '-';
+		return '<div class="loading-icon fa fa-spinner fa-pulse" />';
 	}
 });
