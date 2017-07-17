@@ -17,7 +17,7 @@
 	position: relative;
 	max-height: 55px;
 
-	@include breakpoint(tablet) {
+	@include horizontal-breakpoint(tablet) {
 		max-height: 40px;
 	}
 
@@ -28,7 +28,7 @@
 		left: 0;
 		padding: 5px 0;
 
-		@include breakpoint(mobile) {
+		@include horizontal-breakpoint(mobile) {
 			display: none;
 		}
 
@@ -36,7 +36,7 @@
 			width: 40px;
 			height: 40px;
 
-			@include breakpoint(tablet) {
+			@include horizontal-breakpoint(tablet) {
 				width: 25px;
 				height: 25px;
 			}
@@ -48,7 +48,7 @@
 			height: 40px;
 			text-align: center;
 
-			@include breakpoint(tablet) {
+			@include horizontal-breakpoint(tablet) {
 				height: 25px;
 			}
 
@@ -88,7 +88,7 @@
 	min-height: 50px;
 	z-index: 5;
 
-	@include breakpoint(tablet) {
+	@include horizontal-breakpoint(tablet) {
 		min-height: 35px;
 		padding: 15px 15px;
 		display: flex;
@@ -104,7 +104,7 @@
 		min-width: 80px;
 		padding: 8px;
 
-		@include breakpoint(tablet) {
+		@include horizontal-breakpoint(tablet) {
 			width: 50px;
 			min-width: 50px;
 			padding: 2px;
@@ -124,7 +124,7 @@
 	&.app-header-section-menu {
 		position: relative;
 
-		@include breakpoint(tablet) {
+		@include horizontal-breakpoint(tablet) {
 			padding: 7px 20px;
 		}
 	}
@@ -132,7 +132,7 @@
 	&.app-header-section-button, &.app-header-section-menu {
 		background-color: #ffffff;
 
-		@include breakpoint(mobileportrait) {
+		@include horizontal-breakpoint(mobileportrait) {
 			width: initial;
 			min-width: initial;
 			padding: 2px;
@@ -151,7 +151,7 @@
 	&.app-header-empty-section {
 		flex: 1 1 auto;
 
-		@include breakpoint(mobileportrait) {
+		@include horizontal-breakpoint(mobileportrait) {
 			display: none;
 		}
 	}
@@ -186,7 +186,7 @@
 	&.app-section-min-width .app-section-inner {
 		min-width: 300px;
 
-		@include breakpoint(mobileportrait) {
+		@include horizontal-breakpoint(mobileportrait) {
 			min-width: 250px;
 		}
 	}
@@ -235,7 +235,7 @@
 		.logged-in-user-menu {
 			display: none;
 
-			@include breakpoint(mobileportrait) {
+			@include horizontal-breakpoint(mobileportrait) {
 				display: block;
 			}
 
@@ -246,7 +246,7 @@
 		}
 
 		.logged-in-user-name-menu {
-			@include breakpoint(mobileportrait) {
+			@include horizontal-breakpoint(mobileportrait) {
 				display: none;
 			}
 		}
@@ -255,7 +255,7 @@
 	.log-in-menu {
 		display: none;
 
-		@include breakpoint(mobileportrait) {
+		@include horizontal-breakpoint(mobileportrait) {
 			display: block;
 		}
 
@@ -266,7 +266,7 @@
 	}
 
 	.log-in-text-menu {
-		@include breakpoint(mobileportrait) {
+		@include horizontal-breakpoint(mobileportrait) {
 			display: none;
 		}
 	}
@@ -281,7 +281,7 @@
 	max-height: 200px;
 	@include menubox;
 
-	@include breakpoint(tablet) {
+	@include horizontal-breakpoint(tablet) {
 		top: 35px;
 	}
 }

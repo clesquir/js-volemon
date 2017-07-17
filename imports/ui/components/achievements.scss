@@ -60,7 +60,7 @@ $gold-color: #eadc5e;
 		}
 	}
 
-	@include breakpoint(mobile) {
+	@include horizontal-breakpoint(mobile) {
 		font-size: 20px;
 
 		i.fa {
@@ -87,7 +87,7 @@ $gold-color: #eadc5e;
 		font-size: 22px;
 	}
 
-	@include breakpoint(mobile) {
+	@include horizontal-breakpoint(mobile) {
 		&:hover {
 			font-size: 18px;
 		}
@@ -102,7 +102,7 @@ $gold-color: #eadc5e;
 	.achievement-name {
 		font-size: 20px;
 
-		@include breakpoint(mobile) {
+		@include horizontal-breakpoint(mobile) {
 			font-size: 15px;
 		}
 	}
@@ -110,7 +110,7 @@ $gold-color: #eadc5e;
 	.achievement-description {
 		font-size: 15px;
 
-		@include breakpoint(mobile) {
+		@include horizontal-breakpoint(mobile) {
 			font-size: 12px;
 		}
 	}

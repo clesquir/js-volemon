@@ -89,11 +89,15 @@ $number-of-shapes: 13;
 	position: absolute;
 	padding: 3px;
 	width: 138px;
-	max-height: 80px;
+	max-height: 175px;
 	@include menubox;
 	overflow: scroll;
 
-	@include breakpoint(mobileportrait) {
+	@include vertical-breakpoint(tablet) {
+		max-height: 80px;
+	}
+
+	@include horizontal-breakpoint(mobile) {
 		width: 47px;
 		max-height: 115px;
 	}

@@ -57,18 +57,18 @@
 
 .after-game-container {
 	& .after-game-item {
-		@include breakpoint(mobile) {
+		@include horizontal-breakpoint(mobile) {
 			font-size: 0.75rem;
 		}
-		@include breakpoint(mobileportrait) {
+		@include horizontal-breakpoint(mobileportrait) {
 			font-size: 0.5rem;
 		}
 	}
 	& .after-game-title {
-		@include breakpoint(mobile) {
+		@include horizontal-breakpoint(mobile) {
 			font-size: 1.75rem;
 		}
-		@include breakpoint(mobileportrait) {
+		@include horizontal-breakpoint(mobileportrait) {
 			font-size: 1.25rem;
 		}
 	}
@@ -78,7 +78,7 @@
 	width: 350px;
 	margin: 10px auto;
 
-	@include breakpoint(mobileportrait) {
+	@include horizontal-breakpoint(mobileportrait) {
 		width: initial;
 	}
 

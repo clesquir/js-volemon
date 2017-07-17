@@ -5,7 +5,7 @@
 	flex-wrap: wrap;
 	min-width: 580px;
 
-	@include breakpoint(mobile) {
+	@include horizontal-breakpoint(mobile) {
 		min-width: unset;
 		flex-direction: column;
 	}
@@ -18,7 +18,7 @@
 		border-left: 1px solid $border-color;
 		border-bottom: 1px solid $border-color;
 
-		@include breakpoint(mobile) {
+		@include horizontal-breakpoint(mobile) {
 			padding: 15px 0;
 			margin-bottom: 0;
 			border-top: 1px solid $border-color;

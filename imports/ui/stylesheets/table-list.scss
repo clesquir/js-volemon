@@ -60,7 +60,7 @@ $table-list-radius: 3px;
 	}
 
 	&.hideable-cell {
-		@include breakpoint(mobileportrait) {
+		@include horizontal-breakpoint(mobileportrait) {
 			display: none;
 		}
 	}

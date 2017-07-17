@@ -1,9 +1,9 @@
 $mobile-portrait-max-width: 21.5em;
 $mobile-max-width: 37.5em;
-$tablet-max-width: 50em;
+$tablet-max-width: 45em;
 $desktop-max-width: 70em;
 
-@mixin breakpoint($point) {
+@mixin horizontal-breakpoint($point) {
 	@if $point == desktop {
 		@media (max-width: $desktop-max-width) { @content; }
 	} @else if $point == tablet {
@@ -12,6 +12,23 @@ $desktop-max-width: 70em;
 		@media (max-width: $mobile-max-width) { @content; }
 	} @else if $point == mobileportrait {
 		@media (max-width: $mobile-portrait-max-width) { @content; }
+	}
+}
+
+$mobile-portrait-max-height: 37.5em;
+$mobile-max-height: 21.5em;
+$tablet-max-height: 45em;
+$desktop-max-height: 70em;
+
+@mixin vertical-breakpoint($point) {
+	@if $point == desktop {
+		@media (max-height: $desktop-max-height) { @content; }
+	} @else if $point == tablet {
+		@media (max-height: $tablet-max-height) { @content; }
+	} @else if $point == mobile {
+		@media (max-height: $mobile-max-height) { @content; }
+	} @else if $point == mobileportrait {
+		@media (max-height: $mobile-portrait-max-height) { @content; }
 	}
 }
 
@@ -161,7 +178,7 @@ p {
 	min-width: 350px;
 	max-width: 450px;
 
-	@include breakpoint(mobile) {
+	@include horizontal-breakpoint(mobile) {
 		min-width: 275px;
 	}
 }
