@@ -1,3 +1,23 @@
+$loading-time: 3s;
+
+@keyframes loading-logo-rotation {
+	0% {
+		transform: rotate(0deg) scale(1);
+	}
+	25% {
+		transform: rotate(180deg) scale(0);
+	}
+	50% {
+		transform: rotate(180deg) scale(0);
+	}
+	75% {
+		transform: rotate(180deg) scale(0);
+	}
+	100% {
+		transform: rotate(360deg) scale(1);
+	}
+}
+
 .loading-mask {
 	@include mask;
 	position: absolute;
@@ -9,7 +29,31 @@
 	text-align: center;
 	align-items: center;
 
-	.loading-app-text {
-		color: $text-color;
+	.loading-logo {
+		width: 32px;
+		height: 32px;
+		position: relative;
+		margin-right: 10px;
+
+		& > div {
+			position: absolute;
+			width: 32px;
+			height: 32px;
+		}
+
+		.loading-diagonals {
+			background-image: url("/assets/loading/diagonals.png");
+			animation: loading-logo-rotation $loading-time ease-in-out infinite;
+		}
+
+		.loading-v {
+			background-image: url("/assets/loading/v.png");
+			animation: loading-logo-rotation $loading-time ease-in-out infinite;
+			animation-delay: -$loading-time / 2;
+		}
+	}
+
+	.loading-mask-text {
+		color: $header-logo-color;
 	}
 }
