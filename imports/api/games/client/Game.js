@@ -481,7 +481,7 @@ export default class Game {
 		this.pauseGame();
 		this.respawnSprites();
 
-		if (this.gameData.isGameStatusFinished()) {
+		if (this.gameData.hasGameStatusEndedWithAWinner()) {
 			this.onGameEnd();
 		} else if (this.gameData.isGameStatusStarted()) {
 			this.gameBonus.resumeGame();
@@ -569,7 +569,7 @@ export default class Game {
 			if (this.gameData.isUserHost()) {
 				this.sendBallPosition();
 			}
-		} else if (this.gameData.isGameStatusTimeout()) {
+		} else if (this.gameData.hasGameAborted()) {
 			this.stopGame();
 			this.onGameEnd();
 		}

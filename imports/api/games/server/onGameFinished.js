@@ -4,10 +4,31 @@ import PlayerLost from '/imports/api/games/events/PlayerLost.js';
 import {EloScores} from '/imports/api/games/eloscores.js';
 import {Games} from '/imports/api/games/games.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
+import GameFinished from '/imports/api/games/events/GameFinished.js';
 import {GAME_MAXIMUM_POINTS} from '/imports/api/games/constants.js';
-import {GAME_STATUS_FINISHED} from '/imports/api/games/statusConstants.js';
+import {hasGameStatusEndedWithAWinner, isGameStatusFinished} from '/imports/api/games/utils.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 import {EventPublisher} from '/imports/lib/EventPublisher.js';
+
+export const finishGame = function(gameId, winnerUserId, loserUserId) {
+	const game = Games.findOne(gameId);
+	const data = {};
+
+	if (!game) {
+		throw new Meteor.Error(404, 'Game not found');
+	}
+
+	data['finishedAt'] = getUTCTimeStamp();
+	data['gameDuration'] = data['finishedAt'] - game.startedAt;
+
+	Games.update({_id: game._id}, {$set: data});
+
+	if (!game.isPracticeGame) {
+		onGameFinished(game._id, winnerUserId, loserUserId);
+	}
+
+	EventPublisher.publish(new GameFinished(game._id, data['gameDuration']));
+};
 
 /**
  * @param gameId
@@ -21,7 +42,7 @@ export const onGameFinished = function(gameId, winnerUserId, loserUserId) {
 		throw new Meteor.Error(404, 'Game not found');
 	}
 
-	if (game.status !== GAME_STATUS_FINISHED) {
+	if (!hasGameStatusEndedWithAWinner(game.status)) {
 		throw new Meteor.Error('not-allowed', 'Only finished games can be used for Elo calculations');
 	}
 
@@ -52,7 +73,7 @@ export const updateProfilesOnGameFinished = function(game, winnerProfile, loserP
 	winnerProfileData['numberOfWin'] = winnerProfile.numberOfWin + 1;
 	loserProfileData['numberOfLost'] = loserProfile.numberOfLost + 1;
 
-	if (winnerPoints === GAME_MAXIMUM_POINTS && loserPoints === 0) {
+	if (isGameStatusFinished(game.status) && winnerPoints === GAME_MAXIMUM_POINTS && loserPoints === 0) {
 		winnerProfileData['numberOfShutouts'] = winnerProfile.numberOfShutouts + 1;
 		loserProfileData['numberOfShutoutLosses'] = loserProfile.numberOfShutoutLosses + 1;
 	}

@@ -5,8 +5,11 @@ import * as Moment from 'meteor/momentjs:moment';
 import {Players} from '/imports/api/games/players.js';
 import {
 	isGamePlayer,
+	hasGameStatusEndedWithAWinner,
+	isGameStatusForfeit,
 	isGameStatusFinished,
 	isGameStatusTimeout,
+	forfeitPlayerName,
 	getWinnerName
 } from '/imports/api/games/utils.js';
 import {
@@ -26,7 +29,7 @@ Template.afterGame.helpers({
 	},
 
 	gameIsFinished: function() {
-		return isGameStatusFinished(this.game.status);
+		return hasGameStatusEndedWithAWinner(this.game.status);
 	},
 
 	isPracticeGame: function() {
@@ -62,6 +65,8 @@ Template.afterGame.helpers({
 	getAfterGameTitle: function() {
 		if (isGameStatusTimeout(this.game.status)) {
 			return 'The game has timed out...';
+		} else if (isGameStatusForfeit(this.game.status)) {
+			return forfeitPlayerName(this.game) + ' has forfeited';
 		} else if (isGameStatusFinished(this.game.status)) {
 			return getWinnerName(this.game) + ' wins';
 		}

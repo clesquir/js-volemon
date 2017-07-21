@@ -5,8 +5,9 @@ import {PLAYER_DEFAULT_SHAPE} from '/imports/api/games/shapeConstants.js';
 import {
 	isGameStatusOnGoing,
 	isGameStatusStarted,
-	isGameStatusTimeout,
 	isGameStatusFinished,
+	hasGameAborted,
+	hasGameStatusEndedWithAWinner,
 	isMatchPoint,
 	isDeucePoint
 } from '/imports/api/games/utils.js';
@@ -85,8 +86,12 @@ export default class GameData {
 		return isGameStatusFinished(this.status);
 	}
 
-	isGameStatusTimeout() {
-		return isGameStatusTimeout(this.status);
+	hasGameStatusEndedWithAWinner() {
+		return hasGameStatusEndedWithAWinner(this.status);
+	}
+
+	hasGameAborted() {
+		return hasGameAborted(this.status);
 	}
 
 	isMatchPoint() {

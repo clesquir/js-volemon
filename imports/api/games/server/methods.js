@@ -1,6 +1,6 @@
 import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
-import GameFinished from '/imports/api/games/events/GameFinished.js';
+import GameForfeited from '/imports/api/games/events/GameForfeited.js';
 import GameTimedOut from '/imports/api/games/events/GameTimedOut.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {
@@ -9,7 +9,7 @@ import {
 	startGame,
 	replyRematch
 } from '/imports/api/games/server/gameSetup.js';
-import {onGameFinished} from '/imports/api/games/server/onGameFinished.js';
+import {finishGame} from '/imports/api/games/server/onGameFinished.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
@@ -20,13 +20,19 @@ import {
 	CLIENT_SIDE,
 	GAME_MAXIMUM_POINTS
 } from '/imports/api/games/constants.js';
-import {PLAYER_LIST_OF_SHAPES, PLAYER_ALLOWED_LIST_OF_SHAPES, PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
+import {
+	PLAYER_LIST_OF_SHAPES,
+	PLAYER_ALLOWED_LIST_OF_SHAPES,
+	PLAYER_SHAPE_RANDOM
+} from '/imports/api/games/shapeConstants.js';
 import {
 	GAME_STATUS_REGISTRATION,
 	GAME_STATUS_STARTED,
+	GAME_STATUS_FORFEITED,
 	GAME_STATUS_FINISHED,
 	GAME_STATUS_TIMEOUT
 } from '/imports/api/games/statusConstants.js';
+import {isForfeiting} from '/imports/api/games/utils.js';
 import {htmlEncode, getUTCTimeStamp} from '/imports/lib/utils.js';
 import {EventPublisher} from '/imports/lib/EventPublisher.js';
 
@@ -252,9 +258,21 @@ Meteor.methods({
 
 			Players.update({_id: player._id}, {$set: {hasQuit: getUTCTimeStamp()}});
 
-			if (game.status === GAME_STATUS_STARTED) {
-				Games.update({_id: game._id}, {$set: {status: GAME_STATUS_TIMEOUT}});
+			if (isForfeiting(game)) {
+				Players.update({_id: player._id}, {$set: {hasForfeited: true}});
+				Games.update({_id: game._id}, {$set: {status: GAME_STATUS_FORFEITED}});
 
+				let winnerUserId = null;
+				if (user._id === game.hostId) {
+					winnerUserId = game.clientId;
+				} else {
+					winnerUserId = game.hostId;
+				}
+
+				finishGame(game._id, winnerUserId, user._id);
+				EventPublisher.publish(new GameForfeited(game._id));
+			} else if (game.status === GAME_STATUS_STARTED) {
+				Games.update({_id: game._id}, {$set: {status: GAME_STATUS_TIMEOUT}});
 				EventPublisher.publish(new GameTimedOut(game._id));
 			}
 
@@ -378,8 +396,6 @@ Meteor.methods({
 		let isGameFinished = false;
 		if (data[columnName] >= GAME_MAXIMUM_POINTS) {
 			data['status'] = GAME_STATUS_FINISHED;
-			data['finishedAt'] = getUTCTimeStamp();
-			data['gameDuration'] = data['finishedAt'] - game.startedAt;
 			isGameFinished = true;
 		}
 
@@ -396,24 +412,21 @@ Meteor.methods({
 
 		EventPublisher.publish(new PointTaken(game._id, pointDuration, pointScoredByHost, hostPoints, clientPoints));
 
-		if (isGameFinished && !game.isPracticeGame) {
-			const clientPlayer = Players.findOne({gameId: game._id, userId: {$ne: game.createdBy}});
-
+		if (isGameFinished) {
 			let winnerUserId;
 			let loserUserId;
 			switch (columnName) {
 				case HOST_POINTS_COLUMN:
-					winnerUserId = game.createdBy;
-					loserUserId = clientPlayer.userId;
+					winnerUserId = game.hostId;
+					loserUserId = game.clientId;
 					break;
 				case CLIENT_POINTS_COLUMN:
-					winnerUserId = clientPlayer.userId;
-					loserUserId = game.createdBy;
+					winnerUserId = game.clientId;
+					loserUserId = game.hostId;
 					break;
 			}
 
-			onGameFinished(game._id, winnerUserId, loserUserId);
-			EventPublisher.publish(new GameFinished(game._id, data['gameDuration']));
+			finishGame(game._id, winnerUserId, loserUserId);
 		}
 	},
 
