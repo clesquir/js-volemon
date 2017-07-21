@@ -5,7 +5,7 @@ import {Players} from '/imports/api/games/players.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
 import {PLAYER_LIST_OF_SHAPES, PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
 import {GAME_STATUS_REGISTRATION, GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
-import {isGameStatusTimeout, isGameStatusFinished} from '/imports/api/games/utils.js';
+import {isGameStatusFinished} from '/imports/api/games/utils.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 import GameInitiator from '/imports/api/games/server/GameInitiator.js';
 
@@ -145,8 +145,8 @@ export const replyRematch = function(userId, gameId, accepted, gameInitiators) {
 		throw new Meteor.Error(404, 'Game not found');
 	}
 
-	if (!isGameStatusTimeout(game.status) && !isGameStatusFinished(game.status)) {
-		throw new Meteor.Error('not-allowed', 'Only timeout games and finished games can be rematched');
+	if (!isGameStatusFinished(game.status)) {
+		throw new Meteor.Error('not-allowed', 'Only finished games can be rematched');
 	}
 
 	const player = Players.findOne({gameId: gameId, userId: userId});

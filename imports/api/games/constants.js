@@ -1,4 +1,5 @@
 export const POSSIBLE_NO_PLAYERS = [2];
+export const GAME_FORFEIT_MINIMUM_POINTS = 3;
 export const GAME_MAXIMUM_POINTS = 5;
 export const HOST_POINTS_COLUMN = 'hostPoints';
 export const CLIENT_POINTS_COLUMN = 'clientPoints';

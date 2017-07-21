@@ -1,9 +1,10 @@
 import {Meteor} from 'meteor/meteor';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import {GAME_MAXIMUM_POINTS} from '/imports/api/games/constants.js';
+import {GAME_FORFEIT_MINIMUM_POINTS, GAME_MAXIMUM_POINTS} from '/imports/api/games/constants.js';
 import {
 	GAME_STATUS_STARTED,
+	GAME_STATUS_FORFEITED,
 	GAME_STATUS_FINISHED,
 	GAME_STATUS_TIMEOUT
 } from '/imports/api/games/statusConstants.js';
@@ -19,7 +20,13 @@ export const isGamePlayer = function(gameId) {
 };
 
 export const isGameStatusOnGoing = function(gameStatus) {
-	return [GAME_STATUS_STARTED, GAME_STATUS_FINISHED, GAME_STATUS_TIMEOUT].indexOf(gameStatus) !== -1;
+	const finishedStatuses = [
+		GAME_STATUS_STARTED,
+		GAME_STATUS_FORFEITED,
+		GAME_STATUS_FINISHED,
+		GAME_STATUS_TIMEOUT
+	];
+	return finishedStatuses.indexOf(gameStatus) !== -1;
 };
 
 export const isGameStatusStarted = function(gameStatus) {
@@ -30,8 +37,27 @@ export const isGameStatusTimeout = function(gameStatus) {
 	return (gameStatus === GAME_STATUS_TIMEOUT);
 };
 
+export const isGameStatusForfeit = function(gameStatus) {
+	return (gameStatus === GAME_STATUS_FORFEITED);
+};
+
 export const isGameStatusFinished = function(gameStatus) {
 	return (gameStatus === GAME_STATUS_FINISHED);
+};
+
+export const hasGameStatusEndedWithAWinner = function(gameStatus) {
+	return isGameStatusForfeit(gameStatus) || isGameStatusFinished(gameStatus);
+};
+
+export const hasGameAborted = function(gameStatus) {
+	return isGameStatusForfeit(gameStatus) || isGameStatusTimeout(gameStatus);
+};
+
+export const isForfeiting = function(game) {
+	return (
+		game.status === GAME_STATUS_STARTED &&
+		game.hostPoints + game.clientPoints >= GAME_FORFEIT_MINIMUM_POINTS
+	);
 };
 
 export const isMatchPoint = function(hostPoints, clientPoints) {
@@ -46,12 +72,26 @@ export const isDeucePoint = function(hostPoints, clientPoints) {
 	return (hostPoints === matchPoint && clientPoints === matchPoint);
 };
 
+export const forfeitPlayerName = function(game) {
+	let forfeitName = 'Nobody';
+
+	if (isGameStatusForfeit(game.status)) {
+		const forfeitPlayers = Players.find({gameId: game._id, hasForfeited: true});
+
+		forfeitPlayers.forEach(function(player) {
+			forfeitName = player.name;
+		});
+	}
+
+	return forfeitName;
+};
+
 export const getWinnerName = function(game) {
 	let winnerName = 'Nobody';
 	let winner;
 
 	if (isGameStatusFinished(game.status)) {
-		if (game.hostPoints >= GAME_MAXIMUM_POINTS) {
+		if (game.hostPoints > game.clientPoints) {
 			winner = Players.findOne({gameId: game._id, userId: game.createdBy});
 
 			if (winner) {
@@ -59,7 +99,7 @@ export const getWinnerName = function(game) {
 			} else {
 				winnerName = 'Player 1';
 			}
-		} else if (game.clientPoints >= GAME_MAXIMUM_POINTS) {
+		} else if (game.clientPoints > game.hostPoints) {
 			winner = Players.findOne({gameId: game._id, userId: {$ne: game.createdBy}});
 
 			if (winner) {
