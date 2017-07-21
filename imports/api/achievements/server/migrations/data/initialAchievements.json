@@ -297,6 +297,15 @@
       "type": "MS",
       "displayOrder": 35,
       "levels": [{"level": 1, "number": 30000}, {"level": 2, "number": 60000}, {"level": 3, "number": 120000}]
+    },
+    {
+      "_id": "TEENY_TINY_WORLD",
+      "isSecret": true,
+      "name": "Teeny-tiny world",
+      "description": "Bonuses combo: Small ball, both players are small",
+      "type": "TIMES",
+      "displayOrder": 36,
+      "levels": [{"level": 1, "number": 1}, {"level": 2, "number": 5}, {"level": 3, "number": 10}]
     }
   ]
 }

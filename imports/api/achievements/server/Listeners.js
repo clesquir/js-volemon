@@ -30,6 +30,7 @@ import RandomInAGame from '/imports/api/achievements/server/listeners/RandomInAG
 import Shutouts from '/imports/api/achievements/server/listeners/Shutouts.js';
 import SimultaneousActivatedBonuses from '/imports/api/achievements/server/listeners/SimultaneousActivatedBonuses.js';
 import Snoozer from '/imports/api/achievements/server/listeners/Snoozer.js';
+import TeenyTinyWorld from '/imports/api/achievements/server/listeners/TeenyTinyWorld.js';
 import ToTheSky from '/imports/api/achievements/server/listeners/ToTheSky.js';
 import TripleColon from '/imports/api/achievements/server/listeners/TripleColon.js';
 import Undesirable from '/imports/api/achievements/server/listeners/Undesirable.js';
@@ -94,6 +95,7 @@ export default class Listeners {
 			this.listeners.push(new TripleColon(this.gameId, player.userId));
 			this.listeners.push(new FullStop(this.gameId, player.userId));
 			this.listeners.push(new Undesirable(this.gameId, player.userId));
+			this.listeners.push(new TeenyTinyWorld(this.gameId, player.userId));
 		});
 	}
 
