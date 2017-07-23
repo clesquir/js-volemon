@@ -86,6 +86,17 @@ export const getRandomFloat = function(min, max) {
 	return Math.random() * (max - min) + min;
 };
 
+export const roundTo = function(n, digits) {
+	if (digits === undefined) {
+		digits = 0;
+	}
+
+	const multiplicator = Math.pow(10, digits);
+	n = parseFloat((n * multiplicator).toFixed(11));
+	const value = (Math.round(n) / multiplicator);
+	return +(value.toFixed(digits));
+};
+
 export const getArrayMax = function(array) {
 	return array.reduce(function(a, b) {
 		return Math.max(a, b);

@@ -13,6 +13,7 @@ import {
 	BIG_SCALE_BONUS
 } from '/imports/api/games/constants.js';
 import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
+import {roundTo} from '/imports/lib/utils.js';
 
 export default class PhaserEngine extends Engine {
 	start(width, height, parent, preloadGame, createGame, updateGame, scope) {
@@ -277,10 +278,10 @@ export default class PhaserEngine extends Engine {
 		const body = sprite.body;
 
 		return {
-			x: body.x,
-			y: body.y,
-			velocityX: body.velocity.x,
-			velocityY: body.velocity.y
+			x: roundTo(body.x, 4),
+			y: roundTo(body.y, 4),
+			velocityX: roundTo(body.velocity.x, 4),
+			velocityY: roundTo(body.velocity.y, 4)
 		};
 	}
 
