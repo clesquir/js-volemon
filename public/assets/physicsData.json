@@ -94,6 +94,23 @@
       ]
     }
   ],
+  "player-hyphen": [
+    {
+      "density": 20,
+      "friction": 0,
+      "bounce": 0,
+      "filter": {
+        "categoryBits": 1,
+        "maskBits": 65535
+      },
+      "shape": [
+        0, 11,
+        0, 0,
+        48, 0,
+        48, 11
+      ]
+    }
+  ],
   "player-equal": [
     {
       "density": 20,

@@ -6,7 +6,7 @@ import GameData from '/imports/api/games/client/GameData.js';
 import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
 import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
-import {PLAYER_HEIGHT, BALL_VERTICAL_SPEED_ON_PLAYER_HIT} from '/imports/api/games/constants.js';
+import {BALL_VERTICAL_SPEED_ON_PLAYER_HIT} from '/imports/api/games/constants.js';
 
 describe('Game#isPlayerJumpingForward', function() {
 	const engine = new PhaserEngine();
@@ -332,39 +332,43 @@ describe('Game#isBallBelowPlayer', function() {
 	});
 
 	it('returns false if ball y position is equal than player y position + half its height', function() {
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const playerHeight = 20;
 
 		assert.isFalse(game.isBallBelowPlayer(
 			{
 				body: {
 					x: 200,
-					y: 400 + (PLAYER_HEIGHT / 2)
+					y: 400 + (playerHeight / 2)
 				}
 			},
 			{
 				body: {
 					x: 200,
 					y: 400
-				}
+				},
+				height: playerHeight
 			}
 		));
 	});
 
 	it('returns true if ball y position is greater than player y position + half its height', function() {
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const playerHeight = 20;
 
 		assert.isTrue(game.isBallBelowPlayer(
 			{
 				body: {
 					x: 200,
-					y: 400 + (PLAYER_HEIGHT / 2) + 0.1
+					y: 400 + (playerHeight / 2) + 0.1
 				}
 			},
 			{
 				body: {
 					x: 200,
 					y: 400
-				}
+				},
+				height: playerHeight
 			}
 		));
 	});

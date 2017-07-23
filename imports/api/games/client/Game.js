@@ -682,7 +682,7 @@ export default class Game {
 
 	isBallBelowPlayer(ball, player) {
 		return (
-			this.engine.getYPosition(ball) > this.engine.getYPosition(player) + (PLAYER_HEIGHT / 2)
+			this.engine.getYPosition(ball) > this.engine.getYPosition(player) + (this.engine.getHeight(player) / 2)
 		);
 	}
 

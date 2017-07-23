@@ -1,4 +1,4 @@
-$number-of-shapes: 13;
+$number-of-shapes: 14;
 
 @mixin shape-content($position) {
 	transform: translateY(($position - 1) * -21px);
@@ -51,36 +51,40 @@ $number-of-shapes: 13;
 		@include shape-content(5);
 	}
 
-	&.shape-equal .shape-content-scroller {
+	&.shape-hyphen .shape-content-scroller {
 		@include shape-content(6);
 	}
 
-	&.shape-magnet .shape-content-scroller {
+	&.shape-equal .shape-content-scroller {
 		@include shape-content(7);
 	}
 
-	&.shape-crown .shape-content-scroller {
+	&.shape-magnet .shape-content-scroller {
 		@include shape-content(8);
 	}
 
-	&.shape-rhombus .shape-content-scroller {
+	&.shape-crown .shape-content-scroller {
 		@include shape-content(9);
 	}
 
-	&.shape-hexagon .shape-content-scroller {
+	&.shape-rhombus .shape-content-scroller {
 		@include shape-content(10);
 	}
 
-	&.shape-dot .shape-content-scroller {
+	&.shape-hexagon .shape-content-scroller {
 		@include shape-content(11);
 	}
 
-	&.shape-ellipse .shape-content-scroller {
+	&.shape-dot .shape-content-scroller {
 		@include shape-content(12);
 	}
 
-	&.shape-triple-colon .shape-content-scroller {
+	&.shape-ellipse .shape-content-scroller {
 		@include shape-content(13);
+	}
+
+	&.shape-triple-colon .shape-content-scroller {
+		@include shape-content(14);
 	}
 }
 

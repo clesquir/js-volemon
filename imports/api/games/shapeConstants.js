@@ -3,6 +3,7 @@ export const PLAYER_SHAPE_HALF_CIRCLE = 'half-circle';
 export const PLAYER_SHAPE_TRIANGLE = 'triangle';
 export const PLAYER_SHAPE_X = 'x';
 export const PLAYER_SHAPE_RECTANGLE = 'rectangle';
+export const PLAYER_SHAPE_HYPHEN = 'hyphen';
 export const PLAYER_SHAPE_EQUAL = 'equal';
 export const PLAYER_SHAPE_MAGNET = 'magnet';
 export const PLAYER_SHAPE_CROWN = 'crown';
@@ -17,6 +18,7 @@ export const PLAYER_LIST_OF_SHAPES = [
 	PLAYER_SHAPE_TRIANGLE,
 	PLAYER_SHAPE_X,
 	PLAYER_SHAPE_RECTANGLE,
+	PLAYER_SHAPE_HYPHEN,
 	PLAYER_SHAPE_EQUAL,
 	PLAYER_SHAPE_MAGNET,
 	PLAYER_SHAPE_CROWN,
