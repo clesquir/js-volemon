@@ -1,4 +1,7 @@
-$number-of-shapes: 14;
+$shape-number: 1;
+$shape-list: 'random', 'half-circle', 'triangle', 'x', 'rectangle', 'hyphen', 'obelisk',
+	'equal', 'magnet', 'crown', 'rhombus', 'hexagon', 'dot', 'ellipse', 'triple-colon';
+$number-of-shapes: length($shape-list);
 
 @mixin shape-content($position) {
 	transform: translateY(($position - 1) * -21px);
@@ -31,60 +34,11 @@ $number-of-shapes: 14;
 		width: 32px;
 	}
 
-	&.shape-random .shape-content-scroller {
-		@include shape-content(1);
-	}
-
-	&.shape-half-circle .shape-content-scroller {
-		@include shape-content(2);
-	}
-
-	&.shape-triangle .shape-content-scroller {
-		@include shape-content(3);
-	}
-
-	&.shape-x .shape-content-scroller {
-		@include shape-content(4);
-	}
-
-	&.shape-rectangle .shape-content-scroller {
-		@include shape-content(5);
-	}
-
-	&.shape-hyphen .shape-content-scroller {
-		@include shape-content(6);
-	}
-
-	&.shape-equal .shape-content-scroller {
-		@include shape-content(7);
-	}
-
-	&.shape-magnet .shape-content-scroller {
-		@include shape-content(8);
-	}
-
-	&.shape-crown .shape-content-scroller {
-		@include shape-content(9);
-	}
-
-	&.shape-rhombus .shape-content-scroller {
-		@include shape-content(10);
-	}
-
-	&.shape-hexagon .shape-content-scroller {
-		@include shape-content(11);
-	}
-
-	&.shape-dot .shape-content-scroller {
-		@include shape-content(12);
-	}
-
-	&.shape-ellipse .shape-content-scroller {
-		@include shape-content(13);
-	}
-
-	&.shape-triple-colon .shape-content-scroller {
-		@include shape-content(14);
+	@each $shape in $shape-list {
+		&.shape-#{$shape} .shape-content-scroller {
+			@include shape-content($shape-number);
+		}
+		$shape-number: $shape-number + 1;
 	}
 }
 

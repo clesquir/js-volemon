@@ -111,6 +111,23 @@
       ]
     }
   ],
+  "player-obelisk": [
+    {
+      "density": 20,
+      "friction": 0,
+      "bounce": 0,
+      "filter": {
+        "categoryBits": 1,
+        "maskBits": 65535
+      },
+      "shape": [
+        0, 48,
+        0, 0,
+        11, 0,
+        11, 48
+      ]
+    }
+  ],
   "player-equal": [
     {
       "density": 20,
