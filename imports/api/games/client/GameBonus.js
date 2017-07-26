@@ -298,8 +298,7 @@ export default class GameBonus {
 		player.data.currentTextureKey = 'shape-' + playerShape;
 		player.data.currentPolygonObject = 'player-' + playerShape;
 
-		this.engine.loadPolygon(player, player.data.currentPolygonKey, player.data.currentPolygonObject);
-		this.game.setupPlayerBody(player);
+		this.game.updatePlayerPolygon(player);
 	}
 
 	resetPlayerShape(playerKey) {
@@ -312,8 +311,7 @@ export default class GameBonus {
 		player.data.currentTextureKey = player.data.initialTextureKey;
 		player.data.currentPolygonObject = player.data.initialPolygonObject;
 
-		this.engine.loadPolygon(player, player.data.currentPolygonKey, player.data.currentPolygonObject);
-		this.game.setupPlayerBody(player);
+		this.game.updatePlayerPolygon(player);
 	}
 
 	setPlayerGravity(playerKey, gravity) {

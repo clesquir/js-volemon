@@ -284,6 +284,20 @@ export default class Game {
 		this.setupPlayerBody(player);
 	}
 
+	updatePlayerPolygon(player, ) {
+		this.applyPlayerPolygon(player);
+		this.applyPlayerPolygon(player); //Calling this twice fix a bug where sprite and body are not in sync
+	}
+
+	/**
+	 * @private
+	 * @param player
+	 */
+	applyPlayerPolygon(player) {
+		this.engine.loadPolygon(player, player.data.currentPolygonKey, player.data.currentPolygonObject);
+		this.setupPlayerBody(player);
+	}
+
 	setupPlayerBody(player) {
 		this.engine.loadSpriteTexture(player, player.data.currentTextureKey);
 		this.engine.setFixedRotation(player, true);
