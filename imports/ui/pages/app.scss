@@ -166,7 +166,7 @@
 }
 
 .app-main {
-	flex: 1 1 auto;
+	flex: 0 0 auto;
 	display: flex;
 	align-content: stretch;
 	flex-direction: column;
@@ -175,7 +175,7 @@
 }
 
 .app-section {
-	flex: 1 0 auto;
+	flex: 0 0 auto;
 	flex-direction: row;
 	display: flex;
 	justify-content: center;

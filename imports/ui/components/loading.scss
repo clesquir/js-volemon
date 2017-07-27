@@ -21,7 +21,7 @@ $loading-time: 3s;
 .loading-mask {
 	@include mask;
 	position: absolute;
-	flex: 1 0 auto;
+	flex: 0 0 auto;
 	flex-direction: row;
 	justify-content: center;
 	overflow: auto;

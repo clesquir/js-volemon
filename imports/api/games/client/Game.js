@@ -132,6 +132,10 @@ export default class Game {
 		this.engine.loadImage('ground', 'assets/ground.png');
 		this.engine.loadSpriteSheet('confettis', 'assets/confettis.png', 10, 10);
 
+		this.engine.loadImage('tapButtonLeft', 'assets/tap-button-left.png');
+		this.engine.loadImage('tapButtonRight', 'assets/tap-button-right.png');
+		this.engine.loadImage('tapButtonUp', 'assets/tap-button-up.png');
+		this.engine.loadImage('tapButtonDown', 'assets/tap-button-down.png');
 		this.engine.loadImage('delimiter', 'assets/clear.png');
 		this.engine.loadData(NORMAL_SCALE_PHYSICS_DATA, 'assets/physicsData.json');
 
@@ -566,6 +570,7 @@ export default class Game {
 	}
 
 	updateGame() {
+		this.engine.updateGame();
 		this.gameStreamBundler.resetBundledStreams();
 
 		//Do not allow ball movement if it is frozen

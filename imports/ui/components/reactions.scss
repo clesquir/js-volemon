@@ -57,6 +57,10 @@
 	display: flex;
 	z-index: 1;
 
+	@include horizontal-breakpoint(tablet) {
+		top: 0;
+	}
+
 	.received-reaction {
 		position: absolute;
 		width: 50%;
@@ -64,12 +68,20 @@
 		display: flex;
 		justify-content: center;
 
+		@include horizontal-breakpoint(tablet) {
+			top: 0;
+		}
+
 		.received-reaction-item {
 			transition: transform .2s ease-in-out;
 			transform: scale(0);
 
 			&.reaction-shown {
 				transform: scale(1);
+
+				@include horizontal-breakpoint(tablet) {
+					transform: scale(0.5);
+				}
 			}
 
 			.reaction-list-item {
