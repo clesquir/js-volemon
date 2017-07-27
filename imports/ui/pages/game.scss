@@ -85,6 +85,7 @@
 }
 
 .expand-extra-big-game-size-container {
+	display: none;
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -92,7 +93,6 @@
 }
 
 .expand-extra-big-game-size {
-	display: none;
 	position: absolute;
 	bottom: 10px;
 	left: 10px;
@@ -120,8 +120,11 @@
 }
 
 @media (min-width: 1325px) and (min-height: 910px) {
-	.expand-extra-big-game-size {
+	.expand-extra-big-game-size-container {
 		display: block;
+	}
+
+	.expand-extra-big-game-size {
 		z-index: 2;
 	}
 
@@ -157,6 +160,11 @@
 	bottom: 5px;
 	right: 5px;
 	z-index: 1;
+
+	@include horizontal-breakpoint(tablet) {
+		bottom: -20px;
+		right: 5px;
+	}
 
 	.connection-indicator-light {
 		width: 10px;
