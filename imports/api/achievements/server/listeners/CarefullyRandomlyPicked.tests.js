@@ -13,9 +13,10 @@ import {PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
 describe('AchievementListener#CarefullyRandomlyPicked', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
-	const stubListOfShapes = function(listener, listOfShapes) {
+	let listOfShapesFn = function() {return []};
+	const stubListOfShapes = function(listener) {
 		sinon.stub(listener, 'listOfShapes').callsFake(function() {
-			return listOfShapes;
+			return listOfShapesFn();
 		});
 	};
 	const assertCarefullyRandomlyPickedUserAchievementNumberEquals = function(number) {
@@ -37,7 +38,10 @@ describe('AchievementListener#CarefullyRandomlyPicked', function() {
 
 	it('creates achievement if not created on player won', function() {
 		const listener = new CarefullyRandomlyPicked(gameId, userId);
-		stubListOfShapes(listener, ['a', 'b']);
+		listOfShapesFn = function() {
+			return ['a', 'b'];
+		};
+		stubListOfShapes(listener);
 		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000});
 		Players.insert({gameId: gameId, userId: userId, selectedShape: PLAYER_SHAPE_RANDOM, shape: 'a'});
 
@@ -50,7 +54,10 @@ describe('AchievementListener#CarefullyRandomlyPicked', function() {
 
 	it('update achievement on player won increment if all shapes have been played once', function() {
 		const listener = new CarefullyRandomlyPicked(gameId, userId);
-		stubListOfShapes(listener, ['a', 'b']);
+		listOfShapesFn = function() {
+			return ['a', 'b'];
+		};
+		stubListOfShapes(listener);
 		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000});
 		Players.insert({gameId: gameId, userId: userId, selectedShape: PLAYER_SHAPE_RANDOM, shape: 'b'});
 		UserAchievements.insert({
@@ -65,9 +72,65 @@ describe('AchievementListener#CarefullyRandomlyPicked', function() {
 		assertCarefullyRandomlyPickedUserAchievementNumberEquals(1);
 	});
 
+	it('update achievement on player won increment when all shapes are at same level when shapes are added subsequently', function() {
+		const listener = new CarefullyRandomlyPicked(gameId, userId);
+		listOfShapesFn = function() {
+			return ['a'];
+		};
+		stubListOfShapes(listener);
+		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000});
+		Players.insert({gameId: gameId, userId: userId, selectedShape: PLAYER_SHAPE_RANDOM, shape: 'b'});
+		UserAchievements.insert({
+			userId: userId,
+			achievementId: ACHIEVEMENT_CAREFULLY_RANDOMLY_PICKED,
+			shapes: {a: 2, b: 1},
+			number: 1
+		});
+
+		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
+		assertCarefullyRandomlyPickedUserAchievementNumberEquals(2); //b2
+
+		//d shape has been added
+		listOfShapesFn = function() {
+			return ['a', 'b', 'c'];
+		};
+		Players.update(
+			{gameId: gameId, userId: userId},
+			{$set: {shape: 'c'}}
+		);
+
+		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
+		assertCarefullyRandomlyPickedUserAchievementNumberEquals(2); //c1
+
+		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
+		assertCarefullyRandomlyPickedUserAchievementNumberEquals(2); //c2
+
+		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
+		assertCarefullyRandomlyPickedUserAchievementNumberEquals(2); //c3
+
+		Players.update(
+			{gameId: gameId, userId: userId},
+			{$set: {shape: 'b'}}
+		);
+
+		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
+		assertCarefullyRandomlyPickedUserAchievementNumberEquals(2); //b3
+
+		Players.update(
+			{gameId: gameId, userId: userId},
+			{$set: {shape: 'a'}}
+		);
+
+		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
+		assertCarefullyRandomlyPickedUserAchievementNumberEquals(3); //a3
+	});
+
 	it('update achievement on player won do not increment if there is a shape never played with', function() {
 		const listener = new CarefullyRandomlyPicked(gameId, userId);
-		stubListOfShapes(listener, ['a', 'b']);
+		listOfShapesFn = function() {
+			return ['a', 'b'];
+		};
+		stubListOfShapes(listener);
 		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000});
 		Players.insert({gameId: gameId, userId: userId, selectedShape: PLAYER_SHAPE_RANDOM, shape: 'a'});
 		UserAchievements.insert({
@@ -84,7 +147,10 @@ describe('AchievementListener#CarefullyRandomlyPicked', function() {
 
 	it('update achievement on player won increment if this is the second won for all shapes', function() {
 		const listener = new CarefullyRandomlyPicked(gameId, userId);
-		stubListOfShapes(listener, ['a', 'b']);
+		listOfShapesFn = function() {
+			return ['a', 'b'];
+		};
+		stubListOfShapes(listener);
 		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000});
 		Players.insert({gameId: gameId, userId: userId, selectedShape: PLAYER_SHAPE_RANDOM, shape: 'a'});
 		UserAchievements.insert({
@@ -101,7 +167,10 @@ describe('AchievementListener#CarefullyRandomlyPicked', function() {
 
 	it('update achievement on player won do not increment if one shape has not been won twice', function() {
 		const listener = new CarefullyRandomlyPicked(gameId, userId);
-		stubListOfShapes(listener, ['a', 'b']);
+		listOfShapesFn = function() {
+			return ['a', 'b'];
+		};
+		stubListOfShapes(listener);
 		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000});
 		Players.insert({gameId: gameId, userId: userId, selectedShape: PLAYER_SHAPE_RANDOM, shape: 'a'});
 		UserAchievements.insert({

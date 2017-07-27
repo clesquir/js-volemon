@@ -31,6 +31,7 @@ export default class CarefullyRandomlyPicked extends Listener {
 
 	updateShapesWon(playerShape) {
 		const userAchievement = this.userAchievement(ACHIEVEMENT_CAREFULLY_RANDOMLY_PICKED);
+		let currentNumber = 0;
 		let wonShapes = {};
 
 		if (!userAchievement) {
@@ -41,6 +42,7 @@ export default class CarefullyRandomlyPicked extends Listener {
 				{shapes: wonShapes, number: 0}
 			);
 		} else {
+			currentNumber = userAchievement.number;
 			wonShapes = userAchievement.shapes;
 			if (wonShapes[playerShape] === undefined) {
 				wonShapes[playerShape] = 0;
@@ -53,21 +55,22 @@ export default class CarefullyRandomlyPicked extends Listener {
 			);
 		}
 
-		if (this.allShapesWithEqualOrGreaterThan(wonShapes, playerShape)) {
+		if (this.allShapesUseAreGreaterThan(wonShapes, currentNumber)) {
 			this.incrementNumber(ACHIEVEMENT_CAREFULLY_RANDOMLY_PICKED);
 		}
 	}
 
 	/**
+	 * @private
 	 * @param wonShapes
-	 * @param playerShape
-	 * @returns {boolean} True if all shapes are there with same or greater number of times
+	 * @param {int} currentNumber
+	 * @returns {boolean} True if all shapes are there with greater number of times
 	 */
-	allShapesWithEqualOrGreaterThan(wonShapes, playerShape) {
+	allShapesUseAreGreaterThan(wonShapes, currentNumber) {
 		for (let shape of this.listOfShapes()) {
 			if (wonShapes[shape] === undefined) {
 				return false;
-			} else if (wonShapes[shape] < wonShapes[playerShape]) {
+			} else if (wonShapes[shape] <= currentNumber) {
 				return false;
 			}
 		}
