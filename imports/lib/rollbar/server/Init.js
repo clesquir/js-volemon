@@ -2,9 +2,17 @@ process.env.ROLLBAR_SERVER_ACCESS_TOKEN = Meteor.settings.public.ROLLBAR_SERVER_
 process.env.ROLLBAR_ENVIRONMENT = Meteor.settings.public.ROLLBAR_ENVIRONMENT;
 
 if (process.env.ROLLBAR_SERVER_ACCESS_TOKEN) {
-	const rollbar = require("rollbar");
-	rollbar.init(process.env.ROLLBAR_SERVER_ACCESS_TOKEN, {
-		environment: process.env.ROLLBAR_ENVIRONMENT || 'production'
+	const Rollbar = require("rollbar");
+	const rollbar = new Rollbar({
+		accessToken: process.env.ROLLBAR_SERVER_ACCESS_TOKEN,
+		environment: process.env.ROLLBAR_ENVIRONMENT || 'production',
+		captureUncaught: true,
+		captureUnhandledRejections: true
 	});
-	rollbar.handleUncaughtExceptions();
+	const express = require('express');
+	const app = express();
+
+	app.use(rollbar.errorHandler());
+
+	app.listen(6943);
 }
