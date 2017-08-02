@@ -6,6 +6,7 @@
   "dependencies": {
     "babel-runtime": "^6.25.0",
     "bcrypt": "^1.0.2",
+    "bufferutil": "^3.0.2",
     "chai": "^4.1.0",
     "chart.js": "^2.5.0",
     "express": "^4.14.1",
@@ -17,7 +18,8 @@
     "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.3",
     "socket.io-p2p": "^2.2.0",
-    "socket.io-p2p-server": "^1.2.0"
+    "socket.io-p2p-server": "^1.2.0",
+    "utf-8-validate": "^3.0.3"
   },
   "devDependencies": {},
   "scripts": {
