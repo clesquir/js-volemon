@@ -170,7 +170,7 @@ export default class Game {
 		/**
 		 * Player 1
 		 */
-		this.player1 = this.engine.addSprite(initialXLocation, initialYLocation, 'shape-' + this.gameData.getPlayerShapeFromKey('player1'), undefined);
+		this.player1 = this.engine.addSprite(initialXLocation, initialYLocation, 'shape-' + this.gameData.getPlayerShapeFromKey('player1'));
 		this.player1.data.key = 'player1';
 		this.createPlayer(this.player1, initialXLocation, initialYLocation, 'player1');
 
@@ -178,7 +178,7 @@ export default class Game {
 		 * Player 2
 		 */
 		initialXLocation = this.xSize - PLAYER_INITIAL_LOCATION;
-		this.player2 = this.engine.addSprite(initialXLocation, initialYLocation, 'shape-' + this.gameData.getPlayerShapeFromKey('player2'), undefined);
+		this.player2 = this.engine.addSprite(initialXLocation, initialYLocation, 'shape-' + this.gameData.getPlayerShapeFromKey('player2'));
 		this.player2.data.key = 'player2';
 		this.createPlayer(this.player2, initialXLocation, initialYLocation, 'player2');
 
@@ -324,7 +324,7 @@ export default class Game {
 	}
 
 	createBall(initialXLocation, initialYLocation) {
-		this.ball = this.engine.addSprite(initialXLocation, initialYLocation, 'ball', undefined);
+		this.ball = this.engine.addSprite(initialXLocation, initialYLocation, 'ball');
 
 		this.ball.data.initialGravity = BALL_GRAVITY_SCALE;
 		this.ball.data.currentGravity = this.ball.data.initialGravity;
@@ -483,9 +483,9 @@ export default class Game {
 		 */
 		groupItem = this.engine.addTileSprite(
 			(this.xSize / 2),
-			this.ySize - this.groundHeight - (GAME_NET_HEIGHT / 2),
+			this.ySize - (this.groundHeight + GAME_NET_HEIGHT) / 2,
 			GAME_NET_THICKNESS,
-			GAME_NET_HEIGHT,
+			(this.groundHeight + GAME_NET_HEIGHT),
 			'delimiter'
 		);
 

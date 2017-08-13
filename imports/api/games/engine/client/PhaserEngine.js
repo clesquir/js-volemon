@@ -188,11 +188,11 @@ export default class PhaserEngine extends Engine {
 		return group;
 	}
 
-	addSprite(x, y, key, frame, group, disableBody) {
+	addSprite(x, y, key, frame, group, disableBody, debugBody) {
 		const sprite = this.game.add.sprite(x, y, key, frame, group);
 
 		if (!disableBody) {
-			this.enableBody(sprite);
+			this.enableBody(sprite, debugBody);
 		}
 
 		return sprite;
@@ -202,7 +202,7 @@ export default class PhaserEngine extends Engine {
 		sprite.loadTexture(key);
 	}
 
-	addTileSprite(x, y, width, height, key, group, disableBody) {
+	addTileSprite(x, y, width, height, key, group, disableBody, debugBody) {
 		const tileSprite = this.game.add.tileSprite(
 			x,
 			y,
@@ -214,7 +214,7 @@ export default class PhaserEngine extends Engine {
 		);
 
 		if (!disableBody) {
-			this.enableBody(tileSprite);
+			this.enableBody(tileSprite, debugBody);
 		}
 
 		return tileSprite;
@@ -370,8 +370,8 @@ export default class PhaserEngine extends Engine {
 		sprite.body.loadPolygon(key, object);
 	}
 
-	enableBody(sprite) {
-		this.game.physics.p2.enable(sprite);
+	enableBody(sprite, debug) {
+		this.game.physics.p2.enable(sprite, debug);
 	}
 
 	interpolateFromTimestamp(currentTimestamp, sprite, data) {
@@ -695,7 +695,7 @@ export default class PhaserEngine extends Engine {
 	}
 
 	getBonusSprite(x, y, bonus) {
-		const bonusSprite = this.addSprite(x, y, 'delimiter', undefined);
+		const bonusSprite = this.addSprite(x, y, 'delimiter');
 
 		bonusSprite.body.clearShapes();
 		bonusSprite.body.addCircle(BONUS_RADIUS);

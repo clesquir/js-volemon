@@ -65,7 +65,7 @@ export default class Shape {
 		for (let i = 0; i < PLAYER_LIST_OF_SHAPES.length; i++) {
 			let playerIndex = i + 1;
 
-			this.game['player' + playerIndex] = this.game.engine.addSprite(xPosition, yPosition, 'shape-' + PLAYER_LIST_OF_SHAPES[i], undefined);
+			this.game['player' + playerIndex] = this.game.engine.addSprite(xPosition, yPosition, 'shape-' + PLAYER_LIST_OF_SHAPES[i]);
 			this.game['player' + playerIndex].data.key = 'player' + playerIndex;
 			this.game.createPlayer(this.game['player' + playerIndex], xPosition, yPosition, 'player' + playerIndex);
 

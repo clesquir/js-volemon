@@ -537,7 +537,7 @@ export default class GameBonus {
 
 			for (let layer of layers) {
 				let scale = getRandomFloat(1, 2);
-				let cloud = this.engine.addSprite(x, 200, layer, undefined);
+				let cloud = this.engine.addSprite(x, 200, layer);
 				cloud.opacity = getRandomFloat(0.25, 0.30);
 				cloud.rotateSpeed = getRandomFloat(-6, 6);
 				this.engine.setStatic(cloud, true);

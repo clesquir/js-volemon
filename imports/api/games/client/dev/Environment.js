@@ -56,7 +56,7 @@ export default class Environment {
 		const playerShape = 'half-circle';
 		const yPosition = this.game.ySize - this.game.groundHeight - (PLAYER_HEIGHT / 2);
 
-		this.game.player1 = this.game.engine.addSprite(PLAYER_INITIAL_LOCATION, yPosition, 'shape-' + playerShape, undefined);
+		this.game.player1 = this.game.engine.addSprite(PLAYER_INITIAL_LOCATION, yPosition, 'shape-' + playerShape);
 		this.game.player1.data.key = 'player1';
 		this.game.createPlayer(this.game.player1, PLAYER_INITIAL_LOCATION, yPosition, 'shape-' + playerShape);
 
