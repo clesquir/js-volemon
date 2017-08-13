@@ -223,6 +223,7 @@ export default class Game {
 
 		this.engine.createWorldContactMaterial(this.playerMaterial, {stiffness: 1e20, relaxation: 3, friction: 0});
 		this.engine.createContactMaterial(this.playerMaterial, this.playerDelimiterMaterial, {stiffness: 1e20, relaxation: 3, friction: 0});
+		this.engine.createContactMaterial(this.playerMaterial, this.playerMaterial, {stiffness: 1e20, relaxation: 3, friction: 0});
 
 		this.gameBonus.createCollisionGroupsAndMaterials();
 	}
@@ -316,6 +317,7 @@ export default class Game {
 		this.engine.setMaterial(player, this.playerMaterial);
 		this.engine.setCollisionGroup(player, this.playerCollisionGroup);
 
+		this.collidesWithPlayer(player);
 		this.collidesWithPlayerDelimiter(player);
 		this.collidesWithBall(player);
 		this.gameBonus.collidesWithBonus(player);
@@ -798,7 +800,7 @@ export default class Game {
 				this.engine.setHorizontalSpeed(player, 0);
 			}
 
-			if (this.isPlayerAtGroundLevel(player)) {
+			if (this.engine.canPlayerJump(player)) {
 				if (player.data.alwaysJump || (this.isUpKeyDown() && player.data.canJump)) {
 					this.engine.setVerticalSpeed(player, -player.data.velocityYOnJump);
 				} else {
@@ -848,10 +850,6 @@ export default class Game {
 				this.engine.isDownKeyDown() || this.engine.isSKeyDown() || this.engine.isSpacebarKeyDown()
 			)
 		);
-	}
-
-	isPlayerAtGroundLevel(player) {
-		return (player.bottom >= this.ySize - this.groundHeight);
 	}
 
 	moveOppositePlayer(data) {

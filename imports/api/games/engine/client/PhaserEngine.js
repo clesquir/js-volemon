@@ -529,6 +529,25 @@ export default class PhaserEngine extends Engine {
 		}
 	}
 
+	canPlayerJump(player) {
+		for (let i = 0; i < this.game.physics.p2.world.narrowphase.contactEquations.length; i++) {
+			const contact = this.game.physics.p2.world.narrowphase.contactEquations[i];
+			if (contact.bodyA === player.body.data || contact.bodyB === player.body.data) {
+				let dot = p2.vec2.dot(contact.normalA, p2.vec2.fromValues(0, 1));
+
+				if (contact.bodyA === player.body.data) {
+					dot *= -1;
+				}
+
+				if (dot > 0.5) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
 	getOpacity(sprite) {
 		return sprite.alpha;
 	}

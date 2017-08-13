@@ -11,8 +11,9 @@ import '/imports/ui/pages/home.js';
 import '/imports/ui/pages/login.js';
 import '/imports/ui/pages/passwordChange.js';
 import '/imports/ui/pages/rank.js';
-import '/imports/ui/pages/testEnvironment.js';
 import '/imports/ui/pages/username.js';
+import '/imports/ui/pages/dev/environment.js';
+import '/imports/ui/pages/dev/shape.js';
 
 import '/imports/ui/components/achievementPopup.js';
 import '/imports/ui/components/achievements.js';
@@ -47,8 +48,11 @@ Router.map(function() {
 
 	//This is use for various game environment tests
 	if (Meteor.isDevelopment) {
-		this.route('test-environment', {
-			path: '/test-environment'
+		this.route('environment', {
+			path: '/dev/environment'
+		});
+		this.route('shape', {
+			path: '/dev/shape'
 		});
 	}
 

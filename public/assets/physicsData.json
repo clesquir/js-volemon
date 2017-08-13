@@ -224,6 +224,22 @@
         98, 36,
         98, 49
       ]
+    },
+    {
+      "density": 20,
+      "friction": 0,
+      "bounce": 0,
+      "filter": {
+        "categoryBits": 1,
+        "maskBits": 65535
+      },
+      "shape": [
+        13, 36,
+        3, 36,
+        0, 24.5,
+        3, 13,
+        13, 13
+      ]
     }
   ],
   "player-crown": [
