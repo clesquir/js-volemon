@@ -9,13 +9,15 @@ import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
 import {BALL_VERTICAL_SPEED_ON_PLAYER_HIT} from '/imports/api/games/constants.js';
 
 describe('Game#isPlayerJumpingForward', function() {
-	const engine = new PhaserEngine();
 	const gameData = new GameData();
 	const streamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 
 	it('returns false if vertical speed is 0', function() {
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const engine = new PhaserEngine();
+		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+
+		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
 
 		assert.isFalse(game.isPlayerJumpingForward(
 			{
@@ -33,7 +35,10 @@ describe('Game#isPlayerJumpingForward', function() {
 	});
 
 	it('returns false if vertical speed is positive', function() {
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const engine = new PhaserEngine();
+		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+
+		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
 
 		assert.isFalse(game.isPlayerJumpingForward(
 			{
@@ -51,9 +56,10 @@ describe('Game#isPlayerJumpingForward', function() {
 	});
 
 	it('returns false if vertical speed is negative but player is at ground level', function() {
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const engine = new PhaserEngine();
+		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
 
-		sinon.stub(game, 'isPlayerAtGroundLevel').callsFake(function() {return true;});
+		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return true;});
 
 		assert.isFalse(game.isPlayerJumpingForward(
 			{
@@ -71,7 +77,10 @@ describe('Game#isPlayerJumpingForward', function() {
 	});
 
 	it('returns false if player1 vertical speed is negative but horizontal speed is 0', function() {
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const engine = new PhaserEngine();
+		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+
+		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
 
 		assert.isFalse(game.isPlayerJumpingForward(
 			{
@@ -89,7 +98,10 @@ describe('Game#isPlayerJumpingForward', function() {
 	});
 
 	it('returns false if player1 vertical speed is negative but horizontal speed is negative', function() {
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const engine = new PhaserEngine();
+		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+
+		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
 
 		assert.isFalse(game.isPlayerJumpingForward(
 			{
@@ -107,7 +119,10 @@ describe('Game#isPlayerJumpingForward', function() {
 	});
 
 	it('returns true if player1 vertical speed is negative but horizontal speed is positive', function() {
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const engine = new PhaserEngine();
+		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+
+		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
 
 		assert.isTrue(game.isPlayerJumpingForward(
 			{
@@ -125,7 +140,10 @@ describe('Game#isPlayerJumpingForward', function() {
 	});
 
 	it('returns false if player2 vertical speed is negative but horizontal speed is 0', function() {
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const engine = new PhaserEngine();
+		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+
+		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
 
 		assert.isFalse(game.isPlayerJumpingForward(
 			{
@@ -143,7 +161,10 @@ describe('Game#isPlayerJumpingForward', function() {
 	});
 
 	it('returns false if player2 vertical speed is negative but horizontal speed is positive', function() {
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const engine = new PhaserEngine();
+		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+
+		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
 
 		assert.isFalse(game.isPlayerJumpingForward(
 			{
@@ -161,7 +182,10 @@ describe('Game#isPlayerJumpingForward', function() {
 	});
 
 	it('returns true if player2 vertical speed is negative and horizontal speed is negative', function() {
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const engine = new PhaserEngine();
+		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+
+		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
 
 		assert.isTrue(game.isPlayerJumpingForward(
 			{
@@ -375,16 +399,16 @@ describe('Game#isBallBelowPlayer', function() {
 });
 
 describe('Game#isPlayerDoingDropShot', function() {
-	const engine = new PhaserEngine();
 	const gameData = new GameData();
 	const streamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 
 	it('returns true', function() {
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const engine = new PhaserEngine();
+		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
 
 		sinon.stub(game, 'isBallInFrontOfPlayer').callsFake(function() {return true;});
-		sinon.stub(game, 'isPlayerAtGroundLevel').callsFake(function() {return false;});
+		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
 
 		assert.isTrue(game.isPlayerDoingDropShot(
 			{},
@@ -398,10 +422,11 @@ describe('Game#isPlayerDoingDropShot', function() {
 	});
 
 	it('returns false if player is not doing a drop shot', function() {
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const engine = new PhaserEngine();
+		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
 
 		sinon.stub(game, 'isBallInFrontOfPlayer').callsFake(function() {return true;});
-		sinon.stub(game, 'isPlayerAtGroundLevel').callsFake(function() {return false;});
+		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
 
 		assert.isFalse(game.isPlayerDoingDropShot(
 			{},
@@ -415,10 +440,11 @@ describe('Game#isPlayerDoingDropShot', function() {
 	});
 
 	it('returns true even if ball is not in front of player', function() {
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const engine = new PhaserEngine();
+		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
 
 		sinon.stub(game, 'isBallInFrontOfPlayer').callsFake(function() {return false;});
-		sinon.stub(game, 'isPlayerAtGroundLevel').callsFake(function() {return false;});
+		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
 
 		assert.isTrue(game.isPlayerDoingDropShot(
 			{},
@@ -432,10 +458,11 @@ describe('Game#isPlayerDoingDropShot', function() {
 	});
 
 	it('returns false if player is at ground level', function() {
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const engine = new PhaserEngine();
+		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
 
 		sinon.stub(game, 'isBallInFrontOfPlayer').callsFake(function() {return true;});
-		sinon.stub(game, 'isPlayerAtGroundLevel').callsFake(function() {return true;});
+		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return true;});
 
 		assert.isFalse(game.isPlayerDoingDropShot(
 			{},
@@ -759,11 +786,11 @@ describe('Game#inputs', function() {
 
 	it('sets engine Horizontal speed if left is pressed and sends player position', function() {
 		const engine = new PhaserEngine();
-		var game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime),
-			moveModifier = 1,
-			velocity = 100,
-			horizontalSpeedValue = null,
-			verticalSpeedValue = null;
+		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const moveModifier = 1;
+		const velocity = 100;
+		let horizontalSpeedValue = null;
+		let verticalSpeedValue = null;
 
 		sinon.stub(game, 'getCurrentPlayer').callsFake(function() {
 			return {
@@ -779,9 +806,8 @@ describe('Game#inputs', function() {
 		sinon.stub(game, 'isRightKeyDown').callsFake(function() {return false;});
 		sinon.stub(game, 'isUpKeyDown').callsFake(function() {return false;});
 		sinon.stub(game, 'isDropShotKeyDown').callsFake(function() {return false;});
-		sinon.stub(game, 'isPlayerAtGroundLevel').callsFake(function() {return true;});
-		sinon.stub(engine, 'canPlayerJump').callsFake(function() {return true;});
-		let sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
+		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return true;});
+		const sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
 
 		game.engine.setHorizontalSpeed = function(player, value) {
 			horizontalSpeedValue = value;
@@ -798,11 +824,11 @@ describe('Game#inputs', function() {
 
 	it('sets engine Horizontal speed if right is pressed and sends player position', function() {
 		const engine = new PhaserEngine();
-		var game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime),
-			moveModifier = 1,
-			velocity = 100,
-			horizontalSpeedValue = null,
-			verticalSpeedValue = null;
+		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const moveModifier = 1;
+		const velocity = 100;
+		let horizontalSpeedValue = null;
+		let verticalSpeedValue = null;
 
 		sinon.stub(game, 'getCurrentPlayer').callsFake(function() {
 			return {
@@ -818,9 +844,8 @@ describe('Game#inputs', function() {
 		sinon.stub(game, 'isRightKeyDown').callsFake(function() {return true;});
 		sinon.stub(game, 'isUpKeyDown').callsFake(function() {return false;});
 		sinon.stub(game, 'isDropShotKeyDown').callsFake(function() {return false;});
-		sinon.stub(game, 'isPlayerAtGroundLevel').callsFake(function() {return true;});
-		sinon.stub(engine, 'canPlayerJump').callsFake(function() {return true;});
-		let sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
+		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return true;});
+		const sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
 
 		game.engine.setHorizontalSpeed = function(player, value) {
 			horizontalSpeedValue = value;
@@ -837,11 +862,11 @@ describe('Game#inputs', function() {
 
 	it('sets engine Horizontal speed to 0 if neither left or right is pressed and sends player position', function() {
 		const engine = new PhaserEngine();
-		var game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime),
-			moveModifier = 1,
-			velocity = 100,
-			horizontalSpeedValue = null,
-			verticalSpeedValue = null;
+		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const moveModifier = 1;
+		const velocity = 100;
+		let horizontalSpeedValue = null;
+		let verticalSpeedValue = null;
 
 		sinon.stub(game, 'getCurrentPlayer').callsFake(function() {
 			return {
@@ -857,9 +882,8 @@ describe('Game#inputs', function() {
 		sinon.stub(game, 'isRightKeyDown').callsFake(function() {return false;});
 		sinon.stub(game, 'isUpKeyDown').callsFake(function() {return false;});
 		sinon.stub(game, 'isDropShotKeyDown').callsFake(function() {return false;});
-		sinon.stub(game, 'isPlayerAtGroundLevel').callsFake(function() {return true;});
-		sinon.stub(engine, 'canPlayerJump').callsFake(function() {return true;});
-		let sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
+		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return true;});
+		const sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
 
 		game.engine.setHorizontalSpeed = function(player, value) {
 			horizontalSpeedValue = value;
@@ -876,11 +900,11 @@ describe('Game#inputs', function() {
 
 	it('sets engine Vertical speed if up is pressed and sends player position', function() {
 		const engine = new PhaserEngine();
-		var game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime),
-			moveModifier = 1,
-			velocity = 100,
-			horizontalSpeedValue = null,
-			verticalSpeedValue = null;
+		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const moveModifier = 1;
+		const velocity = 100;
+		let horizontalSpeedValue = null;
+		let verticalSpeedValue = null;
 
 		sinon.stub(game, 'getCurrentPlayer').callsFake(function() {
 			return {
@@ -897,9 +921,8 @@ describe('Game#inputs', function() {
 		sinon.stub(game, 'isRightKeyDown').callsFake(function() {return false;});
 		sinon.stub(game, 'isUpKeyDown').callsFake(function() {return true;});
 		sinon.stub(game, 'isDropShotKeyDown').callsFake(function() {return false;});
-		sinon.stub(game, 'isPlayerAtGroundLevel').callsFake(function() {return true;});
-		sinon.stub(engine, 'canPlayerJump').callsFake(function() {return true;});
-		let sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
+		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return true;});
+		const sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
 
 		game.engine.setHorizontalSpeed = function(player, value) {
 			horizontalSpeedValue = value;
@@ -916,11 +939,11 @@ describe('Game#inputs', function() {
 
 	it('sets engine Vertical speed to 0 if up is not pressed and sends player position', function() {
 		const engine = new PhaserEngine();
-		var game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime),
-			moveModifier = 1,
-			velocity = 100,
-			horizontalSpeedValue = null,
-			verticalSpeedValue = null;
+		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const moveModifier = 1;
+		const velocity = 100;
+		let horizontalSpeedValue = null;
+		let verticalSpeedValue = null;
 
 		sinon.stub(game, 'getCurrentPlayer').callsFake(function() {
 			return {
@@ -936,9 +959,8 @@ describe('Game#inputs', function() {
 		sinon.stub(game, 'isRightKeyDown').callsFake(function() {return false;});
 		sinon.stub(game, 'isUpKeyDown').callsFake(function() {return false;});
 		sinon.stub(game, 'isDropShotKeyDown').callsFake(function() {return false;});
-		sinon.stub(game, 'isPlayerAtGroundLevel').callsFake(function() {return true;});
-		sinon.stub(engine, 'canPlayerJump').callsFake(function() {return true;});
-		let sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
+		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return true;});
+		const sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
 
 		game.engine.setHorizontalSpeed = function(player, value) {
 			horizontalSpeedValue = value;
@@ -955,10 +977,10 @@ describe('Game#inputs', function() {
 
 	it('does not increase engine Vertical speed if player is not at ground level and sends player position', function() {
 		const engine = new PhaserEngine();
-		var game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime),
-			moveModifier = 1,
-			velocity = 100,
-			horizontalSpeedValue = null;
+		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const moveModifier = 1;
+		const velocity = 100;
+		let horizontalSpeedValue = null;
 
 		sinon.stub(game, 'getCurrentPlayer').callsFake(function() {
 			return {
@@ -974,9 +996,8 @@ describe('Game#inputs', function() {
 		sinon.stub(game, 'isRightKeyDown').callsFake(function() {return false;});
 		sinon.stub(game, 'isUpKeyDown').callsFake(function() {return false;});
 		sinon.stub(game, 'isDropShotKeyDown').callsFake(function() {return false;});
-		sinon.stub(game, 'isPlayerAtGroundLevel').callsFake(function() {return false;});
-		sinon.stub(engine, 'canPlayerJump').callsFake(function() {return false;});
-		let sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
+		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
+		const sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
 
 		game.engine.setHorizontalSpeed = function(player, value) {
 			horizontalSpeedValue = value;

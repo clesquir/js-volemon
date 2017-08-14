@@ -326,6 +326,7 @@ export default class Game {
 	createBall(initialXLocation, initialYLocation) {
 		this.ball = this.engine.addSprite(initialXLocation, initialYLocation, 'ball');
 
+		this.ball.data.canPlayerJumpOn = false;
 		this.ball.data.initialGravity = BALL_GRAVITY_SCALE;
 		this.ball.data.currentGravity = this.ball.data.initialGravity;
 		this.ball.data.isFrozen = false;
@@ -686,7 +687,7 @@ export default class Game {
 	isPlayerJumpingForward(player, playerKey) {
 		return (
 			Math.round(this.engine.getVerticalSpeed(player)) < 0 &&
-			!this.isPlayerAtGroundLevel(player) &&
+			!this.engine.hasSurfaceTouchingPlayerBottom(player) &&
 			(
 				(playerKey === 'player1' && Math.round(this.engine.getHorizontalSpeed(player)) > 0) ||
 				(playerKey === 'player2' && Math.round(this.engine.getHorizontalSpeed(player)) < 0)
@@ -709,7 +710,7 @@ export default class Game {
 
 	isPlayerDoingDropShot(ball, player, playerKey) {
 		return (
-			player.data.doingDropShot && !this.isPlayerAtGroundLevel(player)
+			player.data.doingDropShot && !this.engine.hasSurfaceTouchingPlayerBottom(player)
 		);
 	}
 
@@ -800,7 +801,7 @@ export default class Game {
 				this.engine.setHorizontalSpeed(player, 0);
 			}
 
-			if (this.engine.canPlayerJump(player)) {
+			if (this.engine.hasSurfaceTouchingPlayerBottom(player)) {
 				if (player.data.alwaysJump || (this.isUpKeyDown() && player.data.canJump)) {
 					this.engine.setVerticalSpeed(player, -player.data.velocityYOnJump);
 				} else {
@@ -850,10 +851,6 @@ export default class Game {
 				this.engine.isDownKeyDown() || this.engine.isSKeyDown() || this.engine.isSpacebarKeyDown()
 			)
 		);
-	}
-
-	isPlayerAtGroundLevel(player) {
-		return (player.bottom >= this.ySize - this.groundHeight);
 	}
 
 	moveOppositePlayer(data) {

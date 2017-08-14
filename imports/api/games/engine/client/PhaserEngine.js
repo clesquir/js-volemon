@@ -529,7 +529,7 @@ export default class PhaserEngine extends Engine {
 		}
 	}
 
-	canPlayerJump(player) {
+	hasSurfaceTouchingPlayerBottom(player) {
 		for (let i = 0; i < this.game.physics.p2.world.narrowphase.contactEquations.length; i++) {
 			const contact = this.game.physics.p2.world.narrowphase.contactEquations[i];
 			if (contact.bodyA === player.body.data || contact.bodyB === player.body.data) {
@@ -540,12 +540,26 @@ export default class PhaserEngine extends Engine {
 				}
 
 				if (dot > 0.5) {
-					return true;
+					if (
+						(contact.bodyA === player.body.data && this.canPlayerJumpOnBody(contact.bodyB)) ||
+						(contact.bodyB === player.body.data && this.canPlayerJumpOnBody(contact.bodyA))
+					) {
+						return true;
+					}
 				}
 			}
 		}
 
 		return false;
+	}
+
+	canPlayerJumpOnBody(body) {
+		return (
+			!body.parent ||
+			!body.parent.sprite ||
+			!body.parent.sprite.data ||
+			body.parent.sprite.data.canPlayerJumpOn !== false
+		);
 	}
 
 	getOpacity(sprite) {
@@ -672,6 +686,7 @@ export default class PhaserEngine extends Engine {
 	addBonus(x, bonusGravityScale, bonusMaterial, bonusCollisionGroup, bonus) {
 		const bonusSprite = this.getBonusSprite(x, 0, bonus);
 
+		bonusSprite.canPlayerJumpOn = false;
 		bonusSprite.data.initialGravity = bonusGravityScale;
 		bonusSprite.data.currentGravity = bonusSprite.data.initialGravity;
 		bonusSprite.sendToBack();
