@@ -852,6 +852,10 @@ export default class Game {
 		);
 	}
 
+	isPlayerAtGroundLevel(player) {
+		return (player.bottom >= this.ySize - this.groundHeight);
+	}
+
 	moveOppositePlayer(data) {
 		let player;
 

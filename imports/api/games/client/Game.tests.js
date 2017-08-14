@@ -712,12 +712,12 @@ describe('Game#smashBallOnPlayerHit', function() {
 });
 
 describe('Game#inputs', function() {
-	const engine = new PhaserEngine();
 	const gameData = new GameData();
 	const streamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 
 	it('returns false if there is no currentPlayer', function() {
+		const engine = new PhaserEngine();
 		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
 
 		sinon.stub(game, 'getCurrentPlayer').callsFake(function() {
@@ -730,6 +730,7 @@ describe('Game#inputs', function() {
 	});
 
 	it('sets engine Horizontal and Vertical speed to 0 if player is frozen and sends player position', function() {
+		const engine = new PhaserEngine();
 		var game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime),
 			horizontalSpeedValue = null,
 			verticalSpeedValue = null;
@@ -743,13 +744,11 @@ describe('Game#inputs', function() {
 		});
 		let sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
 
-		game.engine = {
-			setHorizontalSpeed(player, value) {
-				horizontalSpeedValue = value;
-			},
-			setVerticalSpeed(player, value) {
-				verticalSpeedValue = value;
-			}
+		game.engine.setHorizontalSpeed = function(player, value) {
+			horizontalSpeedValue = value;
+		};
+		game.engine.setVerticalSpeed = function(player, value) {
+			verticalSpeedValue = value;
 		};
 
 		assert.isTrue(game.inputs());
@@ -759,6 +758,7 @@ describe('Game#inputs', function() {
 	});
 
 	it('sets engine Horizontal speed if left is pressed and sends player position', function() {
+		const engine = new PhaserEngine();
 		var game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime),
 			moveModifier = 1,
 			velocity = 100,
@@ -780,15 +780,14 @@ describe('Game#inputs', function() {
 		sinon.stub(game, 'isUpKeyDown').callsFake(function() {return false;});
 		sinon.stub(game, 'isDropShotKeyDown').callsFake(function() {return false;});
 		sinon.stub(game, 'isPlayerAtGroundLevel').callsFake(function() {return true;});
+		sinon.stub(engine, 'canPlayerJump').callsFake(function() {return true;});
 		let sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
 
-		game.engine = {
-			setHorizontalSpeed(player, value) {
-				horizontalSpeedValue = value;
-			},
-			setVerticalSpeed(player, value) {
-				verticalSpeedValue = value;
-			}
+		game.engine.setHorizontalSpeed = function(player, value) {
+			horizontalSpeedValue = value;
+		};
+		game.engine.setVerticalSpeed = function(player, value) {
+			verticalSpeedValue = value;
 		};
 
 		assert.isTrue(game.inputs());
@@ -798,6 +797,7 @@ describe('Game#inputs', function() {
 	});
 
 	it('sets engine Horizontal speed if right is pressed and sends player position', function() {
+		const engine = new PhaserEngine();
 		var game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime),
 			moveModifier = 1,
 			velocity = 100,
@@ -819,15 +819,14 @@ describe('Game#inputs', function() {
 		sinon.stub(game, 'isUpKeyDown').callsFake(function() {return false;});
 		sinon.stub(game, 'isDropShotKeyDown').callsFake(function() {return false;});
 		sinon.stub(game, 'isPlayerAtGroundLevel').callsFake(function() {return true;});
+		sinon.stub(engine, 'canPlayerJump').callsFake(function() {return true;});
 		let sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
 
-		game.engine = {
-			setHorizontalSpeed(player, value) {
-				horizontalSpeedValue = value;
-			},
-			setVerticalSpeed(player, value) {
-				verticalSpeedValue = value;
-			}
+		game.engine.setHorizontalSpeed = function(player, value) {
+			horizontalSpeedValue = value;
+		};
+		game.engine.setVerticalSpeed = function(player, value) {
+			verticalSpeedValue = value;
 		};
 
 		assert.isTrue(game.inputs());
@@ -837,6 +836,7 @@ describe('Game#inputs', function() {
 	});
 
 	it('sets engine Horizontal speed to 0 if neither left or right is pressed and sends player position', function() {
+		const engine = new PhaserEngine();
 		var game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime),
 			moveModifier = 1,
 			velocity = 100,
@@ -858,15 +858,14 @@ describe('Game#inputs', function() {
 		sinon.stub(game, 'isUpKeyDown').callsFake(function() {return false;});
 		sinon.stub(game, 'isDropShotKeyDown').callsFake(function() {return false;});
 		sinon.stub(game, 'isPlayerAtGroundLevel').callsFake(function() {return true;});
+		sinon.stub(engine, 'canPlayerJump').callsFake(function() {return true;});
 		let sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
 
-		game.engine = {
-			setHorizontalSpeed(player, value) {
-				horizontalSpeedValue = value;
-			},
-			setVerticalSpeed(player, value) {
-				verticalSpeedValue = value;
-			}
+		game.engine.setHorizontalSpeed = function(player, value) {
+			horizontalSpeedValue = value;
+		};
+		game.engine.setVerticalSpeed = function(player, value) {
+			verticalSpeedValue = value;
 		};
 
 		assert.isTrue(game.inputs());
@@ -876,6 +875,7 @@ describe('Game#inputs', function() {
 	});
 
 	it('sets engine Vertical speed if up is pressed and sends player position', function() {
+		const engine = new PhaserEngine();
 		var game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime),
 			moveModifier = 1,
 			velocity = 100,
@@ -898,15 +898,14 @@ describe('Game#inputs', function() {
 		sinon.stub(game, 'isUpKeyDown').callsFake(function() {return true;});
 		sinon.stub(game, 'isDropShotKeyDown').callsFake(function() {return false;});
 		sinon.stub(game, 'isPlayerAtGroundLevel').callsFake(function() {return true;});
+		sinon.stub(engine, 'canPlayerJump').callsFake(function() {return true;});
 		let sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
 
-		game.engine = {
-			setHorizontalSpeed(player, value) {
-				horizontalSpeedValue = value;
-			},
-			setVerticalSpeed(player, value) {
-				verticalSpeedValue = value;
-			}
+		game.engine.setHorizontalSpeed = function(player, value) {
+			horizontalSpeedValue = value;
+		};
+		game.engine.setVerticalSpeed = function(player, value) {
+			verticalSpeedValue = value;
 		};
 
 		assert.isTrue(game.inputs());
@@ -916,6 +915,7 @@ describe('Game#inputs', function() {
 	});
 
 	it('sets engine Vertical speed to 0 if up is not pressed and sends player position', function() {
+		const engine = new PhaserEngine();
 		var game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime),
 			moveModifier = 1,
 			velocity = 100,
@@ -937,15 +937,14 @@ describe('Game#inputs', function() {
 		sinon.stub(game, 'isUpKeyDown').callsFake(function() {return false;});
 		sinon.stub(game, 'isDropShotKeyDown').callsFake(function() {return false;});
 		sinon.stub(game, 'isPlayerAtGroundLevel').callsFake(function() {return true;});
+		sinon.stub(engine, 'canPlayerJump').callsFake(function() {return true;});
 		let sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
 
-		game.engine = {
-			setHorizontalSpeed(player, value) {
-				horizontalSpeedValue = value;
-			},
-			setVerticalSpeed(player, value) {
-				verticalSpeedValue = value;
-			}
+		game.engine.setHorizontalSpeed = function(player, value) {
+			horizontalSpeedValue = value;
+		};
+		game.engine.setVerticalSpeed = function(player, value) {
+			verticalSpeedValue = value;
 		};
 
 		assert.isTrue(game.inputs());
@@ -955,6 +954,7 @@ describe('Game#inputs', function() {
 	});
 
 	it('does not increase engine Vertical speed if player is not at ground level and sends player position', function() {
+		const engine = new PhaserEngine();
 		var game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime),
 			moveModifier = 1,
 			velocity = 100,
@@ -975,14 +975,13 @@ describe('Game#inputs', function() {
 		sinon.stub(game, 'isUpKeyDown').callsFake(function() {return false;});
 		sinon.stub(game, 'isDropShotKeyDown').callsFake(function() {return false;});
 		sinon.stub(game, 'isPlayerAtGroundLevel').callsFake(function() {return false;});
+		sinon.stub(engine, 'canPlayerJump').callsFake(function() {return false;});
 		let sendPlayerPositionStub = sinon.stub(game, 'sendPlayerPosition');
 
-		game.engine = {
-			setHorizontalSpeed(player, value) {
-				horizontalSpeedValue = value;
-			},
-			setVerticalSpeed(player, value) {
-			}
+		game.engine.setHorizontalSpeed = function(player, value) {
+			horizontalSpeedValue = value;
+		};
+		game.engine.setVerticalSpeed = function(player, value) {
 		};
 		let setVerticalSpeedStub = sinon.stub(game.engine, 'setVerticalSpeed');
 
