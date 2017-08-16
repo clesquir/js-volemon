@@ -275,6 +275,7 @@ export default class Game {
 		player.data.isFrozen = false;
 		player.data.canJump = true;
 		player.data.alwaysJump = false;
+		player.data.canPlayerJumpOn = true;
 
 		this.gameBonus.initPlayerProperties(player);
 
@@ -326,7 +327,6 @@ export default class Game {
 	createBall(initialXLocation, initialYLocation) {
 		this.ball = this.engine.addSprite(initialXLocation, initialYLocation, 'ball');
 
-		this.ball.data.canPlayerJumpOn = false;
 		this.ball.data.initialGravity = BALL_GRAVITY_SCALE;
 		this.ball.data.currentGravity = this.ball.data.initialGravity;
 		this.ball.data.isFrozen = false;
@@ -392,6 +392,7 @@ export default class Game {
 			this.groundHeight,
 			'delimiter'
 		);
+		groupItem.data.canPlayerJumpOn = true;
 
 		this.engine.setStatic(groupItem, true);
 		this.engine.setMaterial(groupItem, this.playerDelimiterMaterial);
@@ -408,6 +409,7 @@ export default class Game {
 			this.groundHeight,
 			'delimiter'
 		);
+		groupItem.data.canPlayerJumpOn = true;
 
 		this.engine.setStatic(groupItem, true);
 		this.engine.setMaterial(groupItem, this.playerDelimiterMaterial);

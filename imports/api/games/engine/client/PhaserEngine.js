@@ -555,10 +555,10 @@ export default class PhaserEngine extends Engine {
 
 	canPlayerJumpOnBody(body) {
 		return (
-			!body.parent ||
-			!body.parent.sprite ||
-			!body.parent.sprite.data ||
-			body.parent.sprite.data.canPlayerJumpOn !== false
+			body.parent &&
+			body.parent.sprite &&
+			body.parent.sprite.data &&
+			body.parent.sprite.data.canPlayerJumpOn === true
 		);
 	}
 
@@ -686,7 +686,6 @@ export default class PhaserEngine extends Engine {
 	addBonus(x, bonusGravityScale, bonusMaterial, bonusCollisionGroup, bonus) {
 		const bonusSprite = this.getBonusSprite(x, 0, bonus);
 
-		bonusSprite.canPlayerJumpOn = false;
 		bonusSprite.data.initialGravity = bonusGravityScale;
 		bonusSprite.data.currentGravity = bonusSprite.data.initialGravity;
 		bonusSprite.sendToBack();
