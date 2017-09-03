@@ -541,8 +541,8 @@ export default class PhaserEngine extends Engine {
 
 				if (dot > 0.5) {
 					if (
-						(contact.bodyA === player.body.data && this.canPlayerJumpOnBody(contact.bodyB)) ||
-						(contact.bodyB === player.body.data && this.canPlayerJumpOnBody(contact.bodyA))
+						(contact.bodyA === player.body.data && this.canPlayerJumpOnBody(player, contact.bodyB)) ||
+						(contact.bodyB === player.body.data && this.canPlayerJumpOnBody(player, contact.bodyA))
 					) {
 						return true;
 					}
@@ -553,12 +553,10 @@ export default class PhaserEngine extends Engine {
 		return false;
 	}
 
-	canPlayerJumpOnBody(body) {
+	canPlayerJumpOnBody(player, body) {
 		return (
-			body.parent &&
-			body.parent.sprite &&
-			body.parent.sprite.data &&
-			body.parent.sprite.data.canPlayerJumpOn === true
+			player.data.canJumpOnBodies.indexOf(body) !== -1 ||
+			player.data.canJumpOnBodies.indexOf(body.parent) !== -1
 		);
 	}
 
