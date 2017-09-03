@@ -124,20 +124,20 @@ export default class Game {
 		this.engine.preloadGame();
 
 		for (let shape of PLAYER_LIST_OF_SHAPES) {
-			this.engine.loadImage('shape-' + shape, 'assets/player-' + shape + '.png');
+			this.engine.loadImage('shape-' + shape, '/assets/player-' + shape + '.png');
 		}
 
-		this.engine.loadImage('ball', 'assets/ball.png');
-		this.engine.loadImage('net', 'assets/net.png');
-		this.engine.loadImage('ground', 'assets/ground.png');
-		this.engine.loadSpriteSheet('confettis', 'assets/confettis.png', 10, 10);
+		this.engine.loadImage('ball', '/assets/ball.png');
+		this.engine.loadImage('net', '/assets/net.png');
+		this.engine.loadImage('ground', '/assets/ground.png');
+		this.engine.loadSpriteSheet('confettis', '/assets/confettis.png', 10, 10);
 
-		this.engine.loadImage('tapButtonLeft', 'assets/tap-button-left.png');
-		this.engine.loadImage('tapButtonRight', 'assets/tap-button-right.png');
-		this.engine.loadImage('tapButtonUp', 'assets/tap-button-up.png');
-		this.engine.loadImage('tapButtonDown', 'assets/tap-button-down.png');
-		this.engine.loadImage('delimiter', 'assets/clear.png');
-		this.engine.loadData(NORMAL_SCALE_PHYSICS_DATA, 'assets/physicsData.json');
+		this.engine.loadImage('tapButtonLeft', '/assets/tap-button-left.png');
+		this.engine.loadImage('tapButtonRight', '/assets/tap-button-right.png');
+		this.engine.loadImage('tapButtonUp', '/assets/tap-button-up.png');
+		this.engine.loadImage('tapButtonDown', '/assets/tap-button-down.png');
+		this.engine.loadImage('delimiter', '/assets/clear.png');
+		this.engine.loadData(NORMAL_SCALE_PHYSICS_DATA, '/assets/physicsData.json');
 
 		this.gameBonus.preload();
 	}
@@ -162,9 +162,6 @@ export default class Game {
 
 		this.engine.createGame();
 
-		/**
-		 * Collision groups and materials
-		 */
 		this.createCollisionGroupsAndMaterials();
 
 		/**
@@ -182,24 +179,31 @@ export default class Game {
 		this.player2.data.key = 'player2';
 		this.createPlayer(this.player2, initialXLocation, initialYLocation, 'player2');
 
-		/**
-		 * Ball
-		 */
 		this.createBall(PLAYER_INITIAL_LOCATION, this.ySize - this.groundHeight - BALL_DISTANCE_FROM_GROUND);
 
-		/**
-		 * Level
-		 */
 		this.loadLevel();
 
-		/**
-		 * Countdown text
-		 */
+		this.createCountdownText();
+	}
+
+	createCountdownText() {
 		this.countdownText = this.engine.addText(this.engine.getCenterX(), this.engine.getCenterY(), '', {
 			font: "75px 'Oxygen Mono', sans-serif",
 			fill: '#363636',
 			align: 'center'
 		});
+	}
+
+	addPlayerCanJumpOnBody(player, body) {
+		player.data.canJumpOnBodies.push(body);
+	}
+
+	removePlayerCanJumpOnBody(player, body) {
+		const index = player.data.canJumpOnBodies.indexOf(body);
+
+		if (index !== -1) {
+			player.data.canJumpOnBodies.splice(index, 1);
+		}
 	}
 
 	createCollisionGroupsAndMaterials() {
@@ -275,7 +279,7 @@ export default class Game {
 		player.data.isFrozen = false;
 		player.data.canJump = true;
 		player.data.alwaysJump = false;
-		player.data.canPlayerJumpOn = true;
+		player.data.canJumpOnBodies = [];
 
 		this.gameBonus.initPlayerProperties(player);
 
@@ -392,7 +396,7 @@ export default class Game {
 			this.groundHeight,
 			'delimiter'
 		);
-		groupItem.data.canPlayerJumpOn = true;
+		this.addPlayerCanJumpOnBody(this.player1, groupItem.body);
 
 		this.engine.setStatic(groupItem, true);
 		this.engine.setMaterial(groupItem, this.playerDelimiterMaterial);
@@ -409,7 +413,7 @@ export default class Game {
 			this.groundHeight,
 			'delimiter'
 		);
-		groupItem.data.canPlayerJumpOn = true;
+		this.addPlayerCanJumpOnBody(this.player2, groupItem.body);
 
 		this.engine.setStatic(groupItem, true);
 		this.engine.setMaterial(groupItem, this.playerDelimiterMaterial);
@@ -761,7 +765,6 @@ export default class Game {
 			}
 
 			this.gameResumed = false;
-
 
 			//Send to client
 			this.gameStreamBundler.emitStream(

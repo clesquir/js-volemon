@@ -4,12 +4,7 @@ import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
 import GameData from '/imports/api/games/client/GameData.js';
 import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
-import {
-	NORMAL_SCALE_PHYSICS_DATA,
-	PLAYER_HEIGHT,
-	PLAYER_INITIAL_LOCATION
-} from '/imports/api/games/constants.js';
-import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants';
+import {PLAYER_HEIGHT, PLAYER_INITIAL_LOCATION} from '/imports/api/games/constants.js';
 
 export default class Environment {
 
@@ -19,7 +14,12 @@ export default class Environment {
 
 	start() {
 		const gameId = Random.id(5);
-		this.game = new Game(gameId, new PhaserEngine(), new GameData(gameId), new GameStreamBundler(null), new ServerNormalizedTime());
+		this.gameData = new GameData(gameId);
+		this.gameStreamBundler = new GameStreamBundler(null);
+		this.gameEngine = new PhaserEngine();
+		this.serverNormalizedTime = new ServerNormalizedTime();
+		this.game = new Game(gameId, this.gameEngine, this.gameData, this.gameStreamBundler, this.serverNormalizedTime);
+		this.gameBonus = this.game.gameBonus;
 		this.game.engine.start(
 			this.game.xSize, this.game.ySize, 'environmentGameContainer',
 			this.preloadGame, this.createGame, this.updateGame,
@@ -29,92 +29,97 @@ export default class Environment {
 
 	stop() {
 		if (this.game) {
-			this.game.engine.stop();
+			this.gameEngine.stop();
 		}
 	}
 
 	preloadGame() {
-		this.game.engine.preloadGame();
-
-		for (let shape of PLAYER_LIST_OF_SHAPES) {
-			this.game.engine.loadImage('shape-' + shape, '/assets/player-' + shape + '.png');
-		}
-
-		this.game.engine.loadImage('ball', '/assets/ball.png');
-		this.game.engine.loadImage('ground', '/assets/ground.png');
-		this.game.engine.loadImage('delimiter', '/assets/clear.png');
-		this.game.engine.loadData(NORMAL_SCALE_PHYSICS_DATA, '/assets/physicsData.json');
+		this.game.preloadGame();
 	}
 
 	createGame() {
 		this.overrideGame();
 
-		this.game.engine.createGame();
+		this.createComponents();
+		this.gameBonus.createComponents();
 
+		this.gameEngine.addKeyControllers();
+
+		this.game.gameInitiated = true;
+
+		this.game.resumeOnTimerEnd();
+	}
+
+	createComponents() {
+		this.gameEngine.createGame();
 		this.game.createCollisionGroupsAndMaterials();
 
 		const playerShape = 'half-circle';
+		let xPosition = PLAYER_INITIAL_LOCATION;
 		const yPosition = this.game.ySize - this.game.groundHeight - (PLAYER_HEIGHT / 2);
 
-		this.game.player1 = this.game.engine.addSprite(PLAYER_INITIAL_LOCATION, yPosition, 'shape-' + playerShape);
+		this.game.player1 = this.gameEngine.addSprite(xPosition, yPosition, 'shape-' + playerShape);
 		this.game.player1.data.key = 'player1';
-		this.game.createPlayer(this.game.player1, PLAYER_INITIAL_LOCATION, yPosition, 'shape-' + playerShape);
+		this.game.createPlayer(this.game.player1, xPosition, yPosition, 'shape-' + playerShape);
+
+		xPosition = this.game.xSize - PLAYER_INITIAL_LOCATION;
+		this.game.player2 = this.gameEngine.addSprite(xPosition, yPosition, 'shape-' + playerShape);
+		this.game.player2.data.key = 'player2';
+		this.game.createPlayer(this.game.player2, xPosition, yPosition, 'shape-' + playerShape);
 
 		this.game.createBall(100, 100);
 
 		this.loadLevel();
 
-		this.game.engine.addKeyControllers();
-
-		this.resumeOnTimerEnd();
+		this.game.createCountdownText();
 	}
 
 	overrideGame() {
-		this.game.getCurrentPlayer = () => {
-			return this.game.player1;
-		};
-
-		this.game.sendPlayerPosition = () => {};
-
-		this.game.hitGround = () => {
-			if (this.game.gameResumed === true) {
-				this.game.shakeLevel();
-				this.resumeOnTimerEnd();
-
-				this.game.gameResumed = false;
-			}
-		};
+		this.gameData.isUserHost = () => {return true;};
+		this.gameData.isGameStatusStarted = () => {return true;};
+		this.gameData.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
+		this.gameStreamBundler.emitStream = () => {};
+		this.game.hitGround = this.hitGround;
+		this.gameBonus.createBonusIfTimeHasElapsed = () => {};
 	}
 
 	loadLevel() {
-		this.game.level = this.game.engine.addGroup();
+		this.game.level = this.gameEngine.addGroup();
 
 		this.game.loadGroundLevel();
 	}
 
 	updateGame() {
-		this.game.inputs();
+		this.game.updateGame();
 	}
 
-	resumeOnTimerEnd() {
-		this.game.pauseGame();
-		this.respawnSprites();
-		this.startCountdownTimer();
+	createRandomBonus() {
+		this.gameBonus.createRandomBonus();
 	}
 
-	respawnSprites() {
-		this.game.spawnPlayer(this.game.player1);
-		this.game.spawnBall();
-	}
-
-	startCountdownTimer() {
-		this.countdownTimer = this.game.engine.createTimer(3, this.resumeGame, this);
-		this.countdownTimer.start();
-	}
-
-	resumeGame() {
-		this.game.engine.unfreeze(this.game.ball);
+	enableGroundHit() {
 		this.game.gameResumed = true;
 	}
 
+	disableGroundHit() {
+		this.game.gameResumed = false;
+	}
+
+	enablePlayerCanJumpOnPlayer() {
+		this.game.addPlayerCanJumpOnBody(this.game.player1, this.game.player2.body);
+	}
+
+	disablePlayerCanJumpOnPlayer() {
+		this.game.removePlayerCanJumpOnBody(this.game.player1, this.game.player2.body);
+	}
+
+	hitGround(ball) {
+		if (this.gameResumed === true) {
+			this.gameResumed = false;
+
+			this.gameData.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
+
+			this.onPointTaken();
+		}
+	}
 }
