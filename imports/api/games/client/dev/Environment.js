@@ -80,6 +80,7 @@ export default class Environment {
 		this.gameData.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
 		this.gameStreamBundler.emitStream = () => {};
 		this.game.hitGround = this.hitGround;
+		this.game.groundHitEnabled = true;
 		this.gameBonus.createBonusIfTimeHasElapsed = () => {};
 	}
 
@@ -98,11 +99,11 @@ export default class Environment {
 	}
 
 	enableGroundHit() {
-		this.game.gameResumed = true;
+		this.game.groundHitEnabled = true;
 	}
 
 	disableGroundHit() {
-		this.game.gameResumed = false;
+		this.game.groundHitEnabled = false;
 	}
 
 	enablePlayerCanJumpOnPlayer() {
@@ -114,7 +115,7 @@ export default class Environment {
 	}
 
 	hitGround(ball) {
-		if (this.gameResumed === true) {
+		if (this.groundHitEnabled && this.gameResumed === true) {
 			this.gameResumed = false;
 
 			this.gameData.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
