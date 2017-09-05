@@ -12,7 +12,7 @@
     "express": "^4.14.1",
     "lodash.throttle": "^4.1.1",
     "meteor-node-stubs": "^0.2.5",
-    "phaser-ce": "^2.8.3",
+    "phaser": "^2.6.2",
     "rollbar": "^2.1.0",
     "sinon": "^2.4.1",
     "socket.io": "^2.0.3",
