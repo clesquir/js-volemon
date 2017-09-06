@@ -60,3 +60,30 @@ export const longestPoint = function(userId) {
 
 	return data;
 };
+
+export const favouriteShape = function(userId) {
+	const players = Players.find({userId: userId});
+	const shapes = {};
+	const data = {};
+
+	players.forEach((player) => {
+		if (player.selectedShape !== undefined) {
+			if (!shapes.hasOwnProperty(player.selectedShape)) {
+				shapes[player.selectedShape] = 0;
+			}
+			shapes[player.selectedShape]++;
+		}
+	});
+
+	const shapeKeys = Object.keys(shapes).sort(
+		function(a, b) {
+			return shapes[b] - shapes[a];
+		}
+	);
+
+	if (shapeKeys.length) {
+		data.shape = shapeKeys[0];
+	}
+
+	return data;
+};
