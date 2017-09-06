@@ -13,7 +13,7 @@ export const loadStatistics = function(userId) {
 	Session.set('longestPoint', undefined);
 	Session.set('lowestElo', undefined);
 	Session.set('highestElo', undefined);
-	Session.set('statisticFavouriteShape', undefined);
+	Session.set('statisticFavouriteShapes', undefined);
 
 	Meteor.call('longestGame', userId, function(error, data) {
 		if (!error && data) {
@@ -35,9 +35,9 @@ export const loadStatistics = function(userId) {
 			Session.set('highestElo', data);
 		}
 	});
-	Meteor.call('favouriteShape', userId, function(error, data) {
+	Meteor.call('favouriteShapes', userId, function(error, data) {
 		if (!error && data) {
-			Session.set('statisticFavouriteShape', data);
+			Session.set('statisticFavouriteShapes', data);
 		}
 	});
 };
@@ -112,16 +112,48 @@ Template.statistics.helpers({
 		return '<div class="loading-icon fa fa-spinner fa-pulse" />';
 	},
 
+	hasFavouriteShapesLoaded: function() {
+		return (Session.get('statisticFavouriteShapes'));
+	},
+
+	favouriteShapes: function() {
+		const shapes = Session.get('statisticFavouriteShapes');
+		if (shapes && Object.keys(shapes).length > 0) {
+			const shapeKeys = Object.keys(shapes).sort(
+				function(a, b) {
+					return shapes[b] - shapes[a];
+				}
+			);
+
+			const orderedShapesArray = [];
+			shapeKeys.forEach(function(key) {
+				orderedShapesArray.push({shape: key, number: shapes[key]});
+			});
+
+			return orderedShapesArray;
+		}
+
+		return [];
+	},
+
 	favouriteShape: function() {
-		if (Session.get('statisticFavouriteShape')) {
-			if (Object.keys(Session.get('statisticFavouriteShape')).length > 0) {
-				return '<div class="shape-selector-container shape-' + Session.get('statisticFavouriteShape').shape + '">' +
+		const shapes = Session.get('statisticFavouriteShapes');
+		if (shapes) {
+			const shapeKeys = Object.keys(shapes).sort(
+				function(a, b) {
+					return shapes[b] - shapes[a];
+				}
+			);
+
+			if (shapeKeys.length) {
+				return '<div class="shape-selector-container shape-' + shapeKeys[0] + '">' +
 						'<div class="shape-content-scroller"></div>' +
 					'</div>';
 			} else {
-				return '-';
+				return 'N/A';
 			}
 		}
+
 		return '<div class="loading-icon fa fa-spinner fa-pulse" />';
 	}
 });

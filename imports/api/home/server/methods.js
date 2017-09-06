@@ -1,6 +1,6 @@
 import {Meteor} from 'meteor/meteor';
 import {EloScores} from '/imports/api/games/eloscores.js';
-import {longestGame, longestPoint, favouriteShape} from '/imports/api/home/utils.js';
+import {longestGame, longestPoint, favouriteShapes} from '/imports/api/home/utils.js';
 
 Meteor.methods({
 	longestGame: function(userId) {
@@ -19,7 +19,7 @@ Meteor.methods({
 		return EloScores.findOne({userId: userId}, {sort: [['eloRating', 'desc']], limit: 1});
 	},
 
-	favouriteShape: function(userId) {
-		return favouriteShape(userId);
+	favouriteShapes: function(userId) {
+		return favouriteShapes(userId);
 	}
 });

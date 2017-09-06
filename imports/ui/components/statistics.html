@@ -58,8 +58,29 @@
 			</div>
 		</div>
 		<div class="profile-information-statistic favourite-shape-statistic">
-			<div>
-				<div class="profile-information-statistic-data">{{{favouriteShape}}}</div>
+			<div data-tooltip="
+				{{#if hasFavouriteShapesLoaded}}
+					{{#each favouriteShapes}}
+						<div class='favourite-shapes-list-item'>
+							<div class='shape-selector-container shape-{{shape}}'>
+								<div class='shape-content-scroller'></div>
+							</div>
+							<div class='favourite-shape-number'>{{number}}</div>
+						</div>
+					{{else}}
+						N/A
+					{{/each}}
+				{{else}}
+					<div class='loading-icon fa fa-spinner fa-pulse' />
+				{{/if}}
+			">
+				<div class="profile-information-statistic-data">
+					{{#if hasFavouriteShapesLoaded}}
+						{{{favouriteShape}}}
+					{{else}}
+						<div class="loading-icon fa fa-spinner fa-pulse"></div>
+					{{/if}}
+				</div>
 				<div class="profile-information-statistic-title">Favourite shape</div>
 			</div>
 		</div>

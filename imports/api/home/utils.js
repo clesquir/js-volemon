@@ -1,5 +1,6 @@
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
+import {PLAYER_SHAPE_HALF_CIRCLE} from '/imports/api/games/shapeConstants.js';
 import {GAME_STATUS_FINISHED} from '/imports/api/games/statusConstants.js';
 
 export const longestGame = function(userId) {
@@ -61,29 +62,28 @@ export const longestPoint = function(userId) {
 	return data;
 };
 
-export const favouriteShape = function(userId) {
+export const favouriteShapes = function(userId) {
 	const players = Players.find({userId: userId});
 	const shapes = {};
-	const data = {};
 
 	players.forEach((player) => {
+		//Before selectedShape was implemented
+		let shape = player.shape;
+
 		if (player.selectedShape !== undefined) {
-			if (!shapes.hasOwnProperty(player.selectedShape)) {
-				shapes[player.selectedShape] = 0;
-			}
-			shapes[player.selectedShape]++;
+			shape = player.selectedShape;
 		}
+
+		//Before different shapes were implemented
+		if (shape === undefined) {
+			shape = PLAYER_SHAPE_HALF_CIRCLE;
+		}
+
+		if (!shapes.hasOwnProperty(shape)) {
+			shapes[shape] = 0;
+		}
+		shapes[shape]++;
 	});
 
-	const shapeKeys = Object.keys(shapes).sort(
-		function(a, b) {
-			return shapes[b] - shapes[a];
-		}
-	);
-
-	if (shapeKeys.length) {
-		data.shape = shapeKeys[0];
-	}
-
-	return data;
+	return shapes;
 };
