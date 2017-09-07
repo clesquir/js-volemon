@@ -12,13 +12,12 @@ $card-radius: 3px;
 	display: flex;
 	flex-direction: column;
 	margin-bottom: 10px;
-	padding: 10px;
 	border: 1px solid $table-header-color;
 	border-color: lighten($table-header-color, 15%) $table-header-color darken($table-header-color, 35%);
 	box-shadow: 0 1px 1px 0 rgba(#363636, 0.2);
 	border-radius: $card-radius;
 	background: $card-background-color;
-	min-height: 50px;
+	min-height: 70px;
 
 	&.clickable-card {
 		cursor: pointer;
@@ -37,44 +36,71 @@ $card-radius: 3px;
 			color: $background-color-darker;
 		}
 	}
+}
 
-	.card-row {
-		display: flex;
-		flex: 1;
+.card-row-header .card-title {
+	font-weight: bold;
+	text-shadow: 1px 1px 0 lighten($table-header-color, 15%);
+}
 
-		&.card-row-top .card-cell {
-			align-self: flex-start;
-		}
+.card-row {
+	display: flex;
+	flex: 1;
+	margin: 10px 10px 0;
 
-		&.card-row-bottom .card-cell {
-			align-self: flex-end;
-		}
+	& ~ & {
+		margin-top: 0;
+	}
+
+	&.card-row-header {
+		background: lighten($table-header-color, 22.5%);
+		margin: 0;
+		padding: 5px 10px;
+		border-color: lighten($table-header-color, 15%);
+		border-style: solid;
+		border-width: 0 0 1px;
+	}
+
+	&.card-row-top {
+		margin-top: 10px;
 
 		.card-cell {
-			flex: 1;
-			font-size: 10px;
-			text-align: center;
+			align-self: flex-start;
+		}
+	}
 
-			&.card-vs {
-				flex: 0;
-			}
+	&.card-row-bottom {
+		margin-bottom: 10px;
 
-			&.card-left {
-				text-align: left;
-			}
+		.card-cell {
+			align-self: flex-end;
+		}
+	}
 
-			&.card-right {
-				text-align: right;
-			}
+	.card-cell {
+		flex: 1;
+		font-size: 10px;
+		text-align: center;
 
-			&.card-title {
-				font-size: 18px;
-			}
+		&.card-vs {
+			flex: 0;
+		}
 
-			&.card-cell-ellipsis {
-				text-overflow: ellipsis;
-				overflow: hidden;
-			}
+		&.card-left {
+			text-align: left;
+		}
+
+		&.card-right {
+			text-align: right;
+		}
+
+		&.card-title {
+			font-size: 18px;
+		}
+
+		&.card-cell-ellipsis {
+			text-overflow: ellipsis;
+			overflow: hidden;
 		}
 	}
 }

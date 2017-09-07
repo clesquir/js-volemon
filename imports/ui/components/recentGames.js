@@ -29,6 +29,25 @@ Template.recentGames.helpers({
 		return Moment.moment(this.startedAt).format('YYYY-MM-DD HH:mm');
 	},
 
+	wonOrLoss: function() {
+		const hostPoints = this.hostPoints;
+		const clientPoints = this.clientPoints;
+
+		if (
+			(
+				Meteor.userId() === this.createdBy &&
+				hostPoints > clientPoints
+			) || (
+				Meteor.userId() !== this.createdBy &&
+				clientPoints > hostPoints
+			)
+		) {
+			return '<span class="winning-score">WON</span>';
+		} else {
+			return '<span class="loosing-score">LOST</span>';
+		}
+	},
+
 	getScore: function() {
 		const hostPoints = this.hostPoints;
 		const clientPoints = this.clientPoints;
