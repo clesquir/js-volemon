@@ -46,10 +46,11 @@ $number-of-shapes: length($shape-list);
 	display: none;
 	position: absolute;
 	padding: 3px;
-	width: 138px;
+	width: 153px;
 	max-height: 175px;
 	@include menubox;
-	overflow: scroll;
+	overflow-y: scroll;
+	overflow-x: hidden;
 
 	@include vertical-breakpoint(tablet) {
 		max-height: 80px;
