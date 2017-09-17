@@ -1,7 +1,5 @@
 import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
-import GameForfeited from '/imports/api/games/events/GameForfeited.js';
-import GameTimedOut from '/imports/api/games/events/GameTimedOut.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {
 	createGame,
@@ -28,13 +26,11 @@ import {
 import {
 	GAME_STATUS_REGISTRATION,
 	GAME_STATUS_STARTED,
-	GAME_STATUS_FORFEITED,
-	GAME_STATUS_FINISHED,
-	GAME_STATUS_TIMEOUT
+	GAME_STATUS_FINISHED
 } from '/imports/api/games/statusConstants.js';
-import {isForfeiting} from '/imports/api/games/utils.js';
 import {htmlEncode, getUTCTimeStamp} from '/imports/lib/utils.js';
 import {EventPublisher} from '/imports/lib/EventPublisher.js';
+import {onPlayerQuit} from './gameSetup';
 
 /** @type {GameInitiator[]} */
 let gameInitiators = {};
@@ -258,23 +254,7 @@ Meteor.methods({
 
 			Players.update({_id: player._id}, {$set: {hasQuit: getUTCTimeStamp()}});
 
-			if (isForfeiting(game)) {
-				Players.update({_id: player._id}, {$set: {hasForfeited: true}});
-				Games.update({_id: game._id}, {$set: {status: GAME_STATUS_FORFEITED}});
-
-				let winnerUserId = null;
-				if (user._id === game.hostId) {
-					winnerUserId = game.clientId;
-				} else {
-					winnerUserId = game.hostId;
-				}
-
-				finishGame(game._id, winnerUserId, user._id);
-				EventPublisher.publish(new GameForfeited(game._id));
-			} else if (game.status === GAME_STATUS_STARTED) {
-				Games.update({_id: game._id}, {$set: {status: GAME_STATUS_TIMEOUT}});
-				EventPublisher.publish(new GameTimedOut(game._id));
-			}
+			onPlayerQuit(player);
 
 			//If there is no active players anymore
 			const activePlayers = Players.find({gameId: gameId, hasQuit: false});
@@ -286,16 +266,6 @@ Meteor.methods({
 				}
 			}
 		}
-	},
-
-	keepPlayerAlive: function(playerId) {
-		const player = Players.findOne(playerId);
-
-		if (!player) {
-			throw new Meteor.Error(404, 'Player not found');
-		}
-
-		Players.update({_id: playerId}, {$set: {lastKeepAlive: getUTCTimeStamp()}});
 	},
 
 	removeTimeoutPlayersAndGames: function(timeoutInterval) {
@@ -323,11 +293,9 @@ Meteor.methods({
 				if (timedOutPlayersByGameId[game._id] !== undefined) {
 					for (let player of timedOutPlayersByGameId[game._id]) {
 						Players.update({_id: player._id}, {$set: {hasQuit: player.lastKeepAlive}});
+
+						onPlayerQuit(player);
 					}
-
-					Games.update({_id: game._id}, {$set: {status: GAME_STATUS_TIMEOUT}});
-
-					EventPublisher.publish(new GameTimedOut(game._id));
 				}
 			});
 		}

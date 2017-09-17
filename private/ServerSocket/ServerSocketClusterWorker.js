@@ -1,33 +1,55 @@
-import Stream from '/imports/lib/stream/Stream.js';
-import p2pserver from '/imports/lib/override/socket.io-p2p-server.js';
+'use strict';
 
-export default class ServerSocketIo extends Stream {
-	init() {
+module.exports.run = function (worker) {
+	const app = require('express')();
+
+	const httpServer = worker.httpServer;
+	const scServer = worker.scServer;
+
+	httpServer.on('request', app);
+
+	const serverWorker = new ServerSocketClusterWorker(worker, scServer);
+	serverWorker.init();
+};
+
+class ServerSocketClusterWorker {
+	constructor(worker, server) {
+		this.worker = worker;
+		this.server = server;
 		this.sockets = {};
 		this.socketsRoom = {};
-		this.socketBroadcasts = {};
 		this.broadcastedListeners = {};
-		this.listeners = {};
+		this.socketBroadcasts = {};
+		this.listeners = [];
+	}
 
-		const PORT = 8080;
+	init() {
+		this.worker.on('masterMessage', (data, respond) => {
+			switch (data.action) {
+				case 'emit':
+					this.emit(data.eventName, data.payload);
+					break;
+				case 'broadcastOnEvent':
+					this.broadcastOnEvent(data.eventName);
+					break;
+				case 'on':
+					this.on(data.eventName);
+					break;
+				case 'off':
+					this.off(data.eventName);
+					break;
+				default:
+					respond(null);
+					break;
+			}
+			respond();
+		});
 
-		// Client-side config
-		WebAppInternals.addStaticJs(`window.socketPort = ${PORT};`);
-
-		const express = require('express');
-		const app = express();
-		const server = require('http').createServer(app);
-		this.io = require('socket.io')(server);
-		const p2p = p2pserver.Server;
-
-		this.io.on('connection', (socket) => {
+		this.server.on('connection', (socket) => {
 			this.sockets[socket.id] = socket;
 			this.attachAllListeners(socket);
 
 			socket.on('room', (room) => {
-				socket.join(room);
-				p2p(socket, null, {name: room});
-
 				this.socketsRoom[socket.id] = room;
 			});
 
@@ -37,13 +59,6 @@ export default class ServerSocketIo extends Stream {
 				delete this.socketBroadcasts[socket.id];
 			});
 		});
-
-		// Start server
-		try {
-			server.listen(PORT);
-		} catch (e) {
-			console.error(e);
-		}
 	}
 
 	/**
@@ -51,7 +66,13 @@ export default class ServerSocketIo extends Stream {
 	 * @param {*} payload
 	 */
 	emit(eventName, payload) {
-		this.io.emit(eventName, payload);
+		const sockets = this.sockets;
+		for (let socketId in sockets) {
+			if (sockets.hasOwnProperty(socketId)) {
+				let socket = sockets[socketId];
+				socket.emit(eventName, payload);
+			}
+		}
 	}
 
 	/**
@@ -71,18 +92,23 @@ export default class ServerSocketIo extends Stream {
 
 	/**
 	 * @param {string} eventName
-	 * @param {Function} callback
 	 */
-	on(eventName, callback) {
+	on(eventName) {
 		if (this.listeners[eventName] === undefined) {
-			this.listeners[eventName] = [];
-		}
-		this.listeners[eventName].push(callback);
+			this.listeners[eventName] = (payload) => {
+				this.worker.sendToMaster(
+					{
+						eventName: eventName,
+						payload: payload
+					}
+				);
+			};
 
-		const sockets = this.sockets;
-		for (let socketId in sockets) {
-			if (sockets.hasOwnProperty(socketId)) {
-				sockets[socketId].on(eventName, callback);
+			const sockets = this.sockets;
+			for (let socketId in sockets) {
+				if (sockets.hasOwnProperty(socketId)) {
+					sockets[socketId].on(eventName, this.listeners[eventName]);
+				}
 			}
 		}
 	}
@@ -103,12 +129,8 @@ export default class ServerSocketIo extends Stream {
 		/**
 		 * Attach listeners
 		 */
-		for (let eventName in this.listeners) {
-			if (this.listeners.hasOwnProperty(eventName)) {
-				for (let listener of this.listeners[eventName]) {
-					socket.on(eventName, listener);
-				}
-			}
+		for (let eventName of this.listeners) {
+			socket.on(eventName, this.listeners[eventName]);
 		}
 	}
 
@@ -122,14 +144,33 @@ export default class ServerSocketIo extends Stream {
 			this.socketBroadcasts[socket.id] = {};
 		}
 
-		const socketsRoom = this.socketsRoom;
+		const worker = this;
 		this.socketBroadcasts[socket.id][eventName] = function(data) {
 			data.broadcast = true;
 
-			socket.broadcast.to(socketsRoom[socket.id]).emit(eventName, data);
+			worker.broadcastToSameRoomSockets(worker, socket, eventName, data);
 		};
 
 		return this.socketBroadcasts[socket.id][eventName];
+	}
+
+	/**
+	 * @private
+	 * @param worker
+	 * @param socket
+	 * @param eventName
+	 * @param data
+	 */
+	broadcastToSameRoomSockets(worker, socket, eventName, data) {
+		for (let socketId in worker.sockets) {
+			if (
+				worker.sockets.hasOwnProperty(socketId) &&
+				socketId !== socket.id &&
+				worker.socketsRoom[socketId] === worker.socketsRoom[socket.id]
+			) {
+				worker.sockets[socketId].emit(eventName, data);
+			}
+		}
 	}
 
 	/**
@@ -152,9 +193,7 @@ export default class ServerSocketIo extends Stream {
 				 * Remove listeners
 				 */
 				if (this.listeners[eventName] !== undefined) {
-					for (let listener of this.listeners[eventName]) {
-						sockets[socketId].removeListener(eventName, listener);
-					}
+					sockets[socketId].removeListener(eventName, this.listeners[eventName]);
 				}
 			}
 		}

@@ -5,7 +5,8 @@ import GameInitiator from '/imports/api/games/client/GameInitiator.js';
 import GameReaction from '/imports/api/games/client/GameReaction.js';
 import GameRematch from '/imports/api/games/client/GameRematch.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
-import ClientSocketIo from '/imports/lib/stream/client/ClientSocketIo.js';
+import ClientStreamFactory from '/imports/lib/stream/client/ClientStreamFactory.js';
+import StreamConfiguration from '/imports/lib/stream/StreamConfiguration.js';
 
 /** @type {Stream} */
 export let stream = null;
@@ -24,7 +25,7 @@ export const initGame = function(gameId) {
 	//Destroy if existent
 	destroyGame(gameId);
 
-	stream = new ClientSocketIo();
+	stream = ClientStreamFactory.fromConfiguration(StreamConfiguration.alias());
 	stream.init();
 	stream.connect(gameId);
 	gameData = new GameData(gameId);

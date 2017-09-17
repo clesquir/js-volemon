@@ -4,6 +4,9 @@
 	flex-direction: column;
 }
 
+$logo-height: 40px;
+$small-logo-height: 25px;
+
 .app-header {
 	background: $header-background-color;
 	color: $header-text-color;
@@ -33,28 +36,28 @@
 		}
 
 		.volemon-logo {
-			width: 40px;
-			height: 40px;
+			width: $logo-height;
+			height: $logo-height;
 
 			@include horizontal-breakpoint(tablet) {
-				width: 25px;
-				height: 25px;
+				width: $small-logo-height;
+				height: $small-logo-height;
 			}
 		}
 
 		.logo-shifter {
 			position: relative;
 			overflow: hidden;
-			height: 40px;
+			height: $logo-height;
 			text-align: center;
 
 			@include horizontal-breakpoint(tablet) {
-				height: 25px;
+				height: $small-logo-height;
 			}
 
 			em {
 				position: absolute;
-				height: 40px;
+				height: $logo-height;
 				transition: 0.25s ease-in-out;
 				left: 0;
 				right: 0;
@@ -65,11 +68,15 @@
 			}
 
 			& > :last-child {
-				top: 40px;
+				top: $logo-height;
 				font-weight: 900;
 				font-style: normal;
-				line-height: 45px;
+				line-height: $logo-height + 5px;
 				color: $header-logo-color;
+
+				@include horizontal-breakpoint(tablet) {
+					line-height: $small-logo-height + 5px;
+				}
 
 				.v-logo {
 					height: 20px;

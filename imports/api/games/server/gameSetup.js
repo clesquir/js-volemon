@@ -4,10 +4,20 @@ import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
 import {PLAYER_LIST_OF_SHAPES, PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
-import {GAME_STATUS_REGISTRATION, GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
+import {
+	GAME_STATUS_FORFEITED,
+	GAME_STATUS_REGISTRATION,
+	GAME_STATUS_STARTED,
+	GAME_STATUS_TIMEOUT
+} from '/imports/api/games/statusConstants.js';
 import {isGameStatusFinished} from '/imports/api/games/utils.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 import GameInitiator from '/imports/api/games/server/GameInitiator.js';
+import {isForfeiting} from '/imports/api/games/utils.js';
+import {finishGame} from '/imports/api/games/server/onGameFinished.js';
+import {EventPublisher} from '/imports/lib/EventPublisher.js';
+import GameForfeited from '/imports/api/games/events/GameForfeited.js';
+import GameTimedOut from '/imports/api/games/events/GameTimedOut.js';
 
 /**
  * @param user
@@ -177,5 +187,29 @@ export const replyRematch = function(userId, gameId, accepted, gameInitiators) {
 		Meteor.setTimeout(() => {
 			startGame(gameRematchId, gameInitiators);
 		}, 3000);
+	}
+};
+
+export const onPlayerQuit = function(player) {
+	const game = Games.findOne(player.gameId);
+
+	if (game.status !== GAME_STATUS_REGISTRATION) {
+		if (isForfeiting(game)) {
+			Players.update({_id: player._id}, {$set: {hasForfeited: true}});
+			Games.update({_id: game._id}, {$set: {status: GAME_STATUS_FORFEITED}});
+
+			let winnerUserId = null;
+			if (player.userId === game.hostId) {
+				winnerUserId = game.clientId;
+			} else {
+				winnerUserId = game.hostId;
+			}
+
+			finishGame(game._id, winnerUserId, player.userId);
+			EventPublisher.publish(new GameForfeited(game._id));
+		} else if (game.status === GAME_STATUS_STARTED) {
+			Games.update({_id: game._id}, {$set: {status: GAME_STATUS_TIMEOUT}});
+			EventPublisher.publish(new GameTimedOut(game._id));
+		}
 	}
 };
