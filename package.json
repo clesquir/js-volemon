@@ -14,16 +14,20 @@
     "meteor-node-stubs": "^0.2.5",
     "phaser": "^2.6.2",
     "rollbar": "^2.1.0",
+    "sc-cluster-broker-client": "^1.0.5",
     "sinon": "^2.4.1",
     "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.3",
     "socket.io-p2p": "^2.2.0",
     "socket.io-p2p-server": "^1.2.0",
+    "socketcluster": "^7.1.1",
+    "socketcluster-client": "^7.0.1",
     "utf-8-validate": "^3.0.3"
   },
   "devDependencies": {},
   "scripts": {
     "test": "meteor test --driver-package=practicalmeteor:mocha --port 4000",
+    "tests": "meteor test --driver-package=practicalmeteor:mocha --port 4000",
     "sshkey": "eval \"$(ssh-agent -s)\" && ssh-add ~/.ssh/id_rsa",
     "setup": "mup setup",
     "deploy": "mup deploy --settings=settings-prod.json"

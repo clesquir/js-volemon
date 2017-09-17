@@ -1,0 +1,182 @@
+'use strict';
+
+module.exports.run = function (worker) {
+	const app = require('express')();
+
+	const httpServer = worker.httpServer;
+	const scServer = worker.scServer;
+
+	httpServer.on('request', app);
+
+	const serverWorker = new ServerSocketClusterWorker(worker, scServer);
+	serverWorker.init();
+};
+
+class ServerSocketClusterWorker {
+	constructor(worker, server) {
+		this.worker = worker;
+		this.server = server;
+		this.sockets = {};
+		this.broadcastedListeners = {};
+		this.socketBroadcasts = {};
+		this.listeners = [];
+	}
+
+	init() {
+		this.worker.on('masterMessage', (data, respond) => {
+			switch (data.action) {
+				case 'emit':
+					this.emit(data.eventName, data.payload);
+					break;
+				case 'broadcastOnEvent':
+					this.broadcastOnEvent(data.eventName);
+					break;
+				case 'on':
+					this.on(data.eventName);
+					break;
+				case 'off':
+					this.off(data.eventName);
+					break;
+				default:
+					respond(null);
+					break;
+			}
+			respond();
+		});
+
+		this.server.on('connection', (socket) => {
+			this.sockets[socket.id] = socket;
+			this.attachAllListeners(socket);
+
+			socket.on('disconnect', () => {
+				delete this.sockets[socket.id];
+				delete this.socketBroadcasts[socket.id];
+			});
+		});
+	}
+
+	/**
+	 * @param {string} eventName
+	 * @param {*} payload
+	 */
+	emit(eventName, payload) {
+		const sockets = this.sockets;
+		for (let socketId in sockets) {
+			if (sockets.hasOwnProperty(socketId)) {
+				let socket = sockets[socketId];
+				socket.emit(eventName, payload);
+			}
+		}
+	}
+
+	/**
+	 * @param {string} eventName
+	 */
+	broadcastOnEvent(eventName) {
+		this.broadcastedListeners[eventName] = true;
+
+		const sockets = this.sockets;
+		for (let socketId in sockets) {
+			if (sockets.hasOwnProperty(socketId)) {
+				let socket = sockets[socketId];
+				socket.on(eventName, this.broadcastListener(eventName, socket));
+			}
+		}
+	}
+
+	/**
+	 * @param {string} eventName
+	 */
+	on(eventName) {
+		if (this.listeners[eventName] === undefined) {
+			this.listeners[eventName] = (payload) => {
+				this.worker.sendToMaster(
+					{
+						eventName: eventName,
+						payload: payload
+					}
+				);
+			};
+
+			const sockets = this.sockets;
+			for (let socketId in sockets) {
+				if (sockets.hasOwnProperty(socketId)) {
+					sockets[socketId].on(eventName, this.listeners[eventName]);
+				}
+			}
+		}
+	}
+
+	/**
+	 * @param {Socket} socket
+	 */
+	attachAllListeners(socket) {
+		/**
+		 * Attach broadcasts
+		 */
+		for (let eventName in this.broadcastedListeners) {
+			if (this.broadcastedListeners.hasOwnProperty(eventName)) {
+				socket.on(eventName, this.broadcastListener(eventName, socket));
+			}
+		}
+
+		/**
+		 * Attach listeners
+		 */
+		for (let eventName of this.listeners) {
+			socket.on(eventName, this.listeners[eventName]);
+		}
+	}
+
+	/**
+	 * @param {string} eventName
+	 * @param {Socket} socket
+	 * @returns {Function}
+	 */
+	broadcastListener(eventName, socket) {
+		if (this.socketBroadcasts[socket.id] === undefined) {
+			this.socketBroadcasts[socket.id] = {};
+		}
+
+		const worker = this;
+		this.socketBroadcasts[socket.id][eventName] = function(data) {
+			data.broadcast = true;
+			for (let socketId in worker.sockets) {
+				if (worker.sockets.hasOwnProperty(socketId) && socketId !== socket.id) {
+					worker.sockets[socketId].emit(eventName, data);
+				}
+			}
+		};
+
+		return this.socketBroadcasts[socket.id][eventName];
+	}
+
+	/**
+	 * @param {string} eventName Event name to remove listeners on
+	 */
+	off(eventName) {
+		const sockets = this.sockets;
+
+		for (let socketId in sockets) {
+			if (sockets.hasOwnProperty(socketId)) {
+				/**
+				 * Remove broadcasts
+				 */
+				if (this.socketBroadcasts[socketId] && this.socketBroadcasts[socketId][eventName]) {
+					sockets[socketId].removeListener(eventName, this.socketBroadcasts[socketId][eventName]);
+					delete this.socketBroadcasts[socketId][eventName];
+				}
+
+				/**
+				 * Remove listeners
+				 */
+				if (this.listeners[eventName] !== undefined) {
+					sockets[socketId].removeListener(eventName, this.listeners[eventName]);
+				}
+			}
+		}
+
+		delete this.broadcastedListeners[eventName];
+		delete this.listeners[eventName];
+	}
+}

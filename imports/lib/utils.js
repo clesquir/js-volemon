@@ -64,9 +64,9 @@ export const timeElapsedSince = function(time) {
 	return Moment.moment(time).format('YYYY-MM-DD');
 };
 
-export const callMeteorMethodAtFrequence = function(lastCallTime, frequenceTime, methodToCall, argumentsToCallWith) {
+export const callAtFrequence = function(lastCallTime, frequenceTime, callback) {
 	if (getUTCTimeStamp() - lastCallTime >= frequenceTime) {
-		Meteor.apply(methodToCall, argumentsToCallWith);
+		callback();
 
 		lastCallTime = getUTCTimeStamp();
 	}

@@ -1,7 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import {callMeteorMethodAtFrequence} from '/imports/lib/utils.js';
+import {callAtFrequence, getUTCTimeStamp} from '/imports/lib/utils.js';
 
 const lastKeepAliveUpdateByPlayerIds = {};
 const KEEP_ALIVE_INTERVAL = 2500;
@@ -21,10 +21,10 @@ export const startKeepAlive = function(gameId, stream) {
 		}
 	});
 
-	stream.on('sendBundledData-' + gameId, function(bundledData) {
+	stream.on('sendBundledData-' + gameId, Meteor.bindEnvironment((bundledData) => {
 		if (bundledData.moveOppositePlayer) {
 			let movedPlayer = null;
-			if (bundledData.moveOppositePlayer.isUserHost) {
+			if (bundledData.moveOppositePlayer.isHost) {
 				movedPlayer = hostPlayer;
 			} else {
 				movedPlayer = clientPlayer;
@@ -34,17 +34,17 @@ export const startKeepAlive = function(gameId, stream) {
 				if (!lastKeepAliveUpdateByPlayerIds[movedPlayer._id]) {
 					lastKeepAliveUpdateByPlayerIds[movedPlayer._id] = 0;
 				}
-				Meteor.wrapAsync(() => {
-					lastKeepAliveUpdateByPlayerIds[movedPlayer._id] = callMeteorMethodAtFrequence(
-						lastKeepAliveUpdateByPlayerIds[movedPlayer._id],
-						KEEP_ALIVE_INTERVAL,
-						'keepPlayerAlive',
-						[movedPlayer._id]
-					);
-				});
+
+				lastKeepAliveUpdateByPlayerIds[movedPlayer._id] = callAtFrequence(
+					lastKeepAliveUpdateByPlayerIds[movedPlayer._id],
+					KEEP_ALIVE_INTERVAL,
+					() => {
+						Players.update({_id: movedPlayer._id}, {$set: {lastKeepAlive: getUTCTimeStamp()}});
+					}
+				);
 			}
 		}
-	});
+	}));
 };
 
 Meteor.setInterval(function() {

@@ -1,5 +1,4 @@
 export default class Stream {
-
 	init() {
 	}
 
@@ -40,5 +39,4 @@ export default class Stream {
 	 */
 	off(eventName) {
 	}
-
 }

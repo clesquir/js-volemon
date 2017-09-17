@@ -1,6 +1,5 @@
-import ServerSocketIo from '/imports/lib/stream/server/ServerSocketIo.js';
-
-const stream = new ServerSocketIo();
+import ServerStreamFactory from '/imports/lib/stream/server/ServerStreamFactory.js';
+import StreamConfiguration from '/imports/lib/stream/StreamConfiguration.js';
 
 /** @type {Stream} */
-export const ServerStreamInitiator = stream;
+export const ServerStreamInitiator = ServerStreamFactory.fromConfiguration(StreamConfiguration.alias());
