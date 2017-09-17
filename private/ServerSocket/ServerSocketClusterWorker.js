@@ -17,6 +17,7 @@ class ServerSocketClusterWorker {
 		this.worker = worker;
 		this.server = server;
 		this.sockets = {};
+		this.socketsRoom = {};
 		this.broadcastedListeners = {};
 		this.socketBroadcasts = {};
 		this.listeners = [];
@@ -48,8 +49,13 @@ class ServerSocketClusterWorker {
 			this.sockets[socket.id] = socket;
 			this.attachAllListeners(socket);
 
+			socket.on('room', (room) => {
+				this.socketsRoom[socket.id] = room;
+			});
+
 			socket.on('disconnect', () => {
 				delete this.sockets[socket.id];
+				delete this.socketsRoom[socket.id];
 				delete this.socketBroadcasts[socket.id];
 			});
 		});
@@ -141,14 +147,30 @@ class ServerSocketClusterWorker {
 		const worker = this;
 		this.socketBroadcasts[socket.id][eventName] = function(data) {
 			data.broadcast = true;
-			for (let socketId in worker.sockets) {
-				if (worker.sockets.hasOwnProperty(socketId) && socketId !== socket.id) {
-					worker.sockets[socketId].emit(eventName, data);
-				}
-			}
+
+			worker.broadcastToSameRoomSockets(worker, socket, eventName, data);
 		};
 
 		return this.socketBroadcasts[socket.id][eventName];
+	}
+
+	/**
+	 * @private
+	 * @param worker
+	 * @param socket
+	 * @param eventName
+	 * @param data
+	 */
+	broadcastToSameRoomSockets(worker, socket, eventName, data) {
+		for (let socketId in worker.sockets) {
+			if (
+				worker.sockets.hasOwnProperty(socketId) &&
+				socketId !== socket.id &&
+				worker.socketsRoom[socketId] === worker.socketsRoom[socket.id]
+			) {
+				worker.sockets[socketId].emit(eventName, data);
+			}
+		}
 	}
 
 	/**

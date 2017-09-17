@@ -8,6 +8,6 @@ export default class StreamConfiguration {
 		}
 
 		//this is the default
-		return 'socketio';
+		return 'socketcluster';
 	}
 }

@@ -21,7 +21,9 @@ export default class ClientSocketCluster extends Stream {
 			//@todo implement
 		}
 
-		this.socketAdapter.on('connect', function() {});
+		this.socketAdapter.on('connect', () => {
+			this.socketAdapter.emit('room', channel);
+		});
 
 		this.usingSocket = false;
 		this.usingP2P = false;
@@ -32,6 +34,7 @@ export default class ClientSocketCluster extends Stream {
 	 * @param {string} channel
 	 */
 	disconnect(channel) {
+		this.socketAdapter.off('connect');
 		this.socketAdapter.disconnect();
 	}
 

@@ -5,8 +5,8 @@ export default class ServerSocketIo extends Stream {
 	init() {
 		this.sockets = {};
 		this.socketsRoom = {};
-		this.broadcastedListeners = {};
 		this.socketBroadcasts = {};
+		this.broadcastedListeners = {};
 		this.listeners = {};
 
 		const PORT = 8080;
@@ -33,8 +33,8 @@ export default class ServerSocketIo extends Stream {
 
 			socket.on('disconnect', () => {
 				delete this.sockets[socket.id];
-				delete this.socketBroadcasts[socket.id];
 				delete this.socketsRoom[socket.id];
+				delete this.socketBroadcasts[socket.id];
 			});
 		});
 
