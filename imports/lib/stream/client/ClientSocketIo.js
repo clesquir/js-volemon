@@ -18,11 +18,11 @@ export default class ClientSocketIo extends Stream {
 		this.socketAdapter = require('socket.io-client').connect(url);
 		if (browserSupportsWebRTC()) {
 			this.connectP2pAdapter();
-
-			this.socketAdapter.on('connect', () => {
-				this.socketAdapter.emit('room', channel);
-			});
 		}
+
+		this.socketAdapter.on('connect', () => {
+			this.socketAdapter.emit('room', channel);
+		});
 
 		this.usingSocket = false;
 		this.usingP2P = false;

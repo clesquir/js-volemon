@@ -2,9 +2,9 @@ import Stream from '/imports/lib/stream/Stream.js';
 import p2pserver from '/imports/lib/override/socket.io-p2p-server.js';
 
 export default class ServerSocketIo extends Stream {
-
 	init() {
 		this.sockets = {};
+		this.socketsRoom = {};
 		this.broadcastedListeners = {};
 		this.socketBroadcasts = {};
 		this.listeners = {};
@@ -27,11 +27,14 @@ export default class ServerSocketIo extends Stream {
 			socket.on('room', (room) => {
 				socket.join(room);
 				p2p(socket, null, {name: room});
+
+				this.socketsRoom[socket.id] = room;
 			});
 
 			socket.on('disconnect', () => {
 				delete this.sockets[socket.id];
 				delete this.socketBroadcasts[socket.id];
+				delete this.socketsRoom[socket.id];
 			});
 		});
 
@@ -119,9 +122,11 @@ export default class ServerSocketIo extends Stream {
 			this.socketBroadcasts[socket.id] = {};
 		}
 
+		const socketsRoom = this.socketsRoom;
 		this.socketBroadcasts[socket.id][eventName] = function(data) {
 			data.broadcast = true;
-			socket.broadcast.emit(eventName, data);
+
+			socket.broadcast.to(socketsRoom[socket.id]).emit(eventName, data);
 		};
 
 		return this.socketBroadcasts[socket.id][eventName];
@@ -157,5 +162,4 @@ export default class ServerSocketIo extends Stream {
 		delete this.broadcastedListeners[eventName];
 		delete this.listeners[eventName];
 	}
-
 }
