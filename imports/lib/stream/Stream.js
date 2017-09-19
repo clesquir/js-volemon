@@ -15,6 +15,18 @@ export default class Stream {
 	}
 
 	/**
+	 * @return {boolean}
+	 */
+	clientConnectedToP2P() {
+	}
+
+	/**
+	 * @return {boolean}
+	 */
+	clientP2PAllowed() {
+	}
+
+	/**
 	 * @param {string} eventName
 	 * @param {*} payload
 	 */

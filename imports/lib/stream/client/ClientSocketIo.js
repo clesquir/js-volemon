@@ -1,7 +1,6 @@
 import {Meteor} from 'meteor/meteor';
 import Stream from '/imports/lib/stream/Stream.js';
-import socketIOP2P from '/imports/lib/override/socket.io-p2p.js';
-import {browserSupportsWebRTC} from '/imports/lib/utils.js';
+import ClientP2PSocketIo from '/imports/lib/p2p/client/ClientP2PSocketIo.js';
 
 export default class ClientSocketIo extends Stream {
 	/**
@@ -16,48 +15,38 @@ export default class ClientSocketIo extends Stream {
 		}
 
 		this.socketAdapter = require('socket.io-client').connect(url);
-		if (browserSupportsWebRTC()) {
-			this.connectP2pAdapter();
+		this.p2pAdapter = new ClientP2PSocketIo(this.socketAdapter);
+		if (this.clientP2PAllowed()) {
+			this.p2pAdapter.connect(Meteor.settings.public.iceServers);
 		}
 
 		this.socketAdapter.on('connect', () => {
 			this.socketAdapter.emit('room', channel);
 		});
-
-		this.usingSocket = false;
-		this.usingP2P = false;
-		this.usingPeerConnection = false;
-	}
-
-	/**
-	 * @private
-	 */
-	connectP2pAdapter() {
-		this.p2pAdapter = new (socketIOP2P)(
-			this.socketAdapter,
-			{
-				numClients: 10,
-				autoUpgrade: true,
-				peerOpts: {
-					config: {
-						iceServers: Meteor.settings.public.iceServers
-					}
-				}
-			}
-		);
-		this.p2pAdapter.onPeerError = () => {
-			this.connectP2pAdapter();
-		};
 	}
 
 	/**
 	 * @param {string} channel
 	 */
 	disconnect(channel) {
-		if (this.p2pAdapter) {
+		if (this.clientP2PAllowed()) {
 			this.p2pAdapter.disconnect();
 		}
 		this.socketAdapter.disconnect();
+	}
+
+	/**
+	 * @return {boolean}
+	 */
+	clientConnectedToP2P() {
+		return this.p2pAdapter.clientConnectedToP2P();
+	}
+
+	/**
+	 * @return {boolean}
+	 */
+	clientP2PAllowed() {
+		return this.p2pAdapter.clientP2PAllowed();
 	}
 
 	/**
@@ -65,27 +54,11 @@ export default class ClientSocketIo extends Stream {
 	 * @param {*} payload
 	 */
 	emit(eventName, payload) {
-		if (this.p2pAdapter) {
-			if (!this.p2pAdapter.usePeerConnection) {
-				payload.webRTCUnsupportedClient = true;
-				//Fallback already sends to server
-				this.p2pAdapter.emit(eventName, payload);
-			} else {
-				//Emit to server for WebRTC unsupported clients
-				this.socketAdapter.emit(eventName, payload);
-				this.p2pAdapter.emit(eventName, payload);
-			}
-
-			this.usingP2P = true;
-			this.usingPeerConnection = !!this.p2pAdapter.usePeerConnection;
-			this.usingSocket = false;
+		if (this.clientP2PAllowed()) {
+			this.p2pAdapter.emit(eventName, payload);
 		} else {
 			payload.webRTCUnsupportedClient = true;
 			this.socketAdapter.emit(eventName, payload);
-
-			this.usingP2P = false;
-			this.usingPeerConnection = false;
-			this.usingSocket = true;
 		}
 	}
 
@@ -94,14 +67,8 @@ export default class ClientSocketIo extends Stream {
 	 * @param {Function} callback
 	 */
 	on(eventName, callback) {
-		if (this.p2pAdapter) {
-			const adapter = this.p2pAdapter;
-			const me = this;
-			adapter.on(eventName, function(data) {
-				if (me.allowP2PListener(adapter, data)) {
-					callback.apply(this, arguments);
-				}
-			});
+		if (this.clientP2PAllowed()) {
+			this.p2pAdapter.on(eventName, callback);
 		} else {
 			this.socketAdapter.on(eventName, callback);
 		}
@@ -111,17 +78,9 @@ export default class ClientSocketIo extends Stream {
 	 * @param {string} eventName Event name to remove listeners on
 	 */
 	off(eventName) {
-		if (this.p2pAdapter) {
-			this.p2pAdapter.removeListener(eventName);
+		if (this.clientP2PAllowed()) {
+			this.p2pAdapter.off(eventName);
 		}
 		this.socketAdapter.removeListener(eventName);
-	}
-
-	allowP2PListener(adapter, data) {
-		return (
-			!data.broadcast ||
-			(adapter && !adapter.usePeerConnection) ||
-			data.webRTCUnsupportedClient
-		);
 	}
 }

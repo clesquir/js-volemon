@@ -17,17 +17,13 @@ export default class ClientSocketCluster extends Stream {
 			hostname: url,
 			port: port
 		});
-		if (browserSupportsWebRTC()) {
+		if (this.clientP2PAllowed()) {
 			//@todo implement
 		}
 
 		this.socketAdapter.on('connect', () => {
 			this.socketAdapter.emit('room', channel);
 		});
-
-		this.usingSocket = false;
-		this.usingP2P = false;
-		this.usingPeerConnection = false;
 	}
 
 	/**
@@ -39,16 +35,26 @@ export default class ClientSocketCluster extends Stream {
 	}
 
 	/**
+	 * @return {boolean}
+	 */
+	clientConnectedToP2P() {
+		return false;
+	}
+
+	/**
+	 * @return {boolean}
+	 */
+	clientP2PAllowed() {
+		return browserSupportsWebRTC();
+	}
+
+	/**
 	 * @param {string} eventName
 	 * @param {*} payload
 	 */
 	emit(eventName, payload) {
 		payload.webRTCUnsupportedClient = true;
 		this.socketAdapter.emit(eventName, payload);
-
-		this.usingP2P = false;
-		this.usingPeerConnection = false;
-		this.usingSocket = true;
 	}
 
 	/**

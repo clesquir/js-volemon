@@ -5,15 +5,13 @@ import {stream} from '/imports/api/games/client/routeInitiator.js';
 let connectionIndicatorTimer;
 export const updateConnectionIndicator = function() {
 	const setConnectionIndicatorClass = function() {
-		let connectionIndicatorClass = 'connection-indicator-light-gray';
+		let connectionIndicatorClass = 'connection-indicator-light-red';
 
 		if (stream) {
-			if (stream.usingPeerConnection) {
+			if (stream.clientConnectedToP2P()) {
 				connectionIndicatorClass = 'connection-indicator-light-green';
-			} else if (stream.usingP2P) {
+			} else if (stream.clientP2PAllowed()) {
 				connectionIndicatorClass = 'connection-indicator-light-yellow';
-			} else if (stream.usingSocket) {
-				connectionIndicatorClass = 'connection-indicator-light-red';
 			}
 		}
 
