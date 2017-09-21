@@ -24,8 +24,11 @@
     "socketcluster-client": "^7.0.1",
     "utf-8-validate": "^3.0.3"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "bcrypt": "^1.0.3"
+  },
   "scripts": {
+    "meteor-dev": "meteor --settings=settings-dev.json",
     "test": "meteor test --driver-package=practicalmeteor:mocha --port 4000",
     "tests": "meteor test --driver-package=practicalmeteor:mocha --port 4000",
     "sshkey": "eval \"$(ssh-agent -s)\" && ssh-add ~/.ssh/id_rsa",

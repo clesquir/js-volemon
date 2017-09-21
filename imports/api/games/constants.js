@@ -11,8 +11,8 @@ export const GAME_Y_SIZE = 560;
 export const GAME_GROUND_HEIGHT = 70;
 export const GAME_NET_HEIGHT = 70;
 export const GAME_NET_THICKNESS = 8;
-export const TAP_BUTTON_WIDTH = GAME_X_SIZE / 8;
-export const TAP_BUTTON_HEIGHT = GAME_GROUND_HEIGHT;
+export const TAP_BUTTON_WIDTH = 210;
+export const TAP_BUTTON_HEIGHT = 140;
 
 export const PLAYER_WIDTH = 98;
 export const PLAYER_HEIGHT = 49;

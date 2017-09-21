@@ -255,15 +255,6 @@ $small-logo-height: 25px;
 			}
 		}
 
-		&.disabled-menu {
-			color: rgba(lighten($header-text-color, 15%), 0.8);
-			text-shadow: 1px 1px 0 lighten($header-text-color, 30%);
-
-			& > a {
-				cursor: default;
-			}
-		}
-
 		.logged-in-user-menu {
 			display: none;
 
@@ -300,6 +291,28 @@ $small-logo-height: 25px;
 	.log-in-text-menu {
 		@include horizontal-breakpoint(mobileportrait) {
 			display: none;
+		}
+	}
+}
+
+.user-currently-playing {
+	@include horizontal-breakpoint(mobile) {
+		.app-header {
+			max-height: 0;
+		}
+
+		.app-header-section {
+			height: 0;
+			overflow: hidden;
+		}
+	}
+
+	.username-header-menu {
+		color: rgba(lighten($header-text-color, 15%), 0.8);
+		text-shadow: 1px 1px 0 lighten($header-text-color, 30%);
+
+		& > a {
+			cursor: default;
 		}
 	}
 }

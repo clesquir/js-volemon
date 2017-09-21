@@ -7,10 +7,11 @@ import './app.html';
 export const OPEN_SELECT_BOXES = {};
 
 Template.app.helpers({
-	classForProfileMenu: function() {
+	currentlyPlayingClass: function() {
 		if (Session.get('userCurrentlyPlaying')) {
-			return 'disabled-menu';
+			return 'user-currently-playing';
 		}
+
 		return '';
 	}
 });
