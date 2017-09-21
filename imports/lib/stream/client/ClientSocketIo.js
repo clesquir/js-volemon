@@ -1,6 +1,6 @@
 import {Meteor} from 'meteor/meteor';
 import Stream from '/imports/lib/stream/Stream.js';
-import ClientP2PSocketIo from '/imports/lib/p2p/client/ClientP2PSocketIo.js';
+import ClientP2P from '/imports/lib/p2p/client/ClientP2P.js';
 
 export default class ClientSocketIo extends Stream {
 	/**
@@ -15,8 +15,8 @@ export default class ClientSocketIo extends Stream {
 		}
 
 		this.socketAdapter = require('socket.io-client').connect(url);
-		this.p2pAdapter = new ClientP2PSocketIo(this.socketAdapter);
-		if (this.clientP2PAllowed()) {
+		this.p2pAdapter = new ClientP2P(this.socketAdapter);
+		if (this.supportsP2P()) {
 			this.p2pAdapter.connect(Meteor.settings.public.iceServers);
 		}
 
@@ -29,7 +29,7 @@ export default class ClientSocketIo extends Stream {
 	 * @param {string} channel
 	 */
 	disconnect(channel) {
-		if (this.clientP2PAllowed()) {
+		if (this.supportsP2P()) {
 			this.p2pAdapter.disconnect();
 		}
 		this.socketAdapter.disconnect();
@@ -38,15 +38,15 @@ export default class ClientSocketIo extends Stream {
 	/**
 	 * @return {boolean}
 	 */
-	clientConnectedToP2P() {
-		return this.p2pAdapter.clientConnectedToP2P();
+	connectedToP2P() {
+		return this.p2pAdapter.connectedToP2P();
 	}
 
 	/**
 	 * @return {boolean}
 	 */
-	clientP2PAllowed() {
-		return this.p2pAdapter.clientP2PAllowed();
+	supportsP2P() {
+		return this.p2pAdapter.supportsP2P();
 	}
 
 	/**
@@ -54,7 +54,7 @@ export default class ClientSocketIo extends Stream {
 	 * @param {*} payload
 	 */
 	emit(eventName, payload) {
-		if (this.clientP2PAllowed()) {
+		if (this.supportsP2P()) {
 			this.p2pAdapter.emit(eventName, payload);
 		} else {
 			payload.webRTCUnsupportedClient = true;
@@ -67,7 +67,7 @@ export default class ClientSocketIo extends Stream {
 	 * @param {Function} callback
 	 */
 	on(eventName, callback) {
-		if (this.clientP2PAllowed()) {
+		if (this.supportsP2P()) {
 			this.p2pAdapter.on(eventName, callback);
 		} else {
 			this.socketAdapter.on(eventName, callback);
@@ -78,7 +78,7 @@ export default class ClientSocketIo extends Stream {
 	 * @param {string} eventName Event name to remove listeners on
 	 */
 	off(eventName) {
-		if (this.clientP2PAllowed()) {
+		if (this.supportsP2P()) {
 			this.p2pAdapter.off(eventName);
 		}
 		this.socketAdapter.removeListener(eventName);
