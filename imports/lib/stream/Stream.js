@@ -17,13 +17,13 @@ export default class Stream {
 	/**
 	 * @return {boolean}
 	 */
-	clientConnectedToP2P() {
+	connectedToP2P() {
 	}
 
 	/**
 	 * @return {boolean}
 	 */
-	clientP2PAllowed() {
+	supportsP2P() {
 	}
 
 	/**

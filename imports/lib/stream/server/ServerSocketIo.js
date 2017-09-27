@@ -1,5 +1,6 @@
 import Stream from '/imports/lib/stream/Stream.js';
-import ServerP2PSocketIo from '/imports/lib/p2p/server/ServerP2PSocketIo.js';
+import ServerP2P from '/imports/lib/p2p/server/ServerP2P.js';
+import SocketIo from '../../socket/SocketIo';
 
 export default class ServerSocketIo extends Stream {
 	init() {
@@ -18,7 +19,7 @@ export default class ServerSocketIo extends Stream {
 		const app = express();
 		const server = require('http').createServer(app);
 		this.io = require('socket.io')(server);
-		this.p2pAdapter = new ServerP2PSocketIo();
+		this.p2pAdapter = new ServerP2P(this.socketsRoom);
 
 		this.io.on('connection', (socket) => {
 			this.sockets[socket.id] = socket;
@@ -26,9 +27,9 @@ export default class ServerSocketIo extends Stream {
 
 			socket.on('room', (room) => {
 				socket.join(room);
-				this.p2pAdapter.attachHandshake(socket, room);
-
 				this.socketsRoom[socket.id] = room;
+
+				this.p2pAdapter.attachHandshake(new SocketIo(socket), room);
 			});
 
 			socket.on('disconnect', () => {

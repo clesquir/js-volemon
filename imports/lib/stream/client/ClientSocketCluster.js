@@ -17,7 +17,7 @@ export default class ClientSocketCluster extends Stream {
 			hostname: url,
 			port: port
 		});
-		if (this.clientP2PAllowed()) {
+		if (this.supportsP2P()) {
 			//@todo implement
 		}
 
@@ -37,14 +37,14 @@ export default class ClientSocketCluster extends Stream {
 	/**
 	 * @return {boolean}
 	 */
-	clientConnectedToP2P() {
+	connectedToP2P() {
 		return false;
 	}
 
 	/**
 	 * @return {boolean}
 	 */
-	clientP2PAllowed() {
+	supportsP2P() {
 		return browserSupportsWebRTC();
 	}
 

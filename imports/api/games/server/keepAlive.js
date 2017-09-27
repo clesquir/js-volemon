@@ -5,7 +5,7 @@ import {callAtFrequence, getUTCTimeStamp} from '/imports/lib/utils.js';
 
 const lastKeepAliveUpdateByPlayerIds = {};
 const KEEP_ALIVE_INTERVAL = 2500;
-const KEEP_ALIVE_TIMEOUT_INTERVAL = 5000;
+const KEEP_ALIVE_TIMEOUT_INTERVAL = 10000;
 const VACANT_GAME_STREAMS_REMOVAL_INTERVAL = 300000;
 
 export const startKeepAlive = function(gameId, stream) {

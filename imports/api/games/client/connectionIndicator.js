@@ -8,9 +8,9 @@ export const updateConnectionIndicator = function() {
 		let connectionIndicatorClass = 'connection-indicator-light-red';
 
 		if (stream) {
-			if (stream.clientConnectedToP2P()) {
+			if (stream.connectedToP2P()) {
 				connectionIndicatorClass = 'connection-indicator-light-green';
-			} else if (stream.clientP2PAllowed()) {
+			} else if (stream.supportsP2P()) {
 				connectionIndicatorClass = 'connection-indicator-light-yellow';
 			}
 		}
