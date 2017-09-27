@@ -130,10 +130,9 @@ export const elementInRelatedView = function(element, parent) {
 };
 
 export const browserSupportsWebRTC = function() {
-	const isWebRTCSupported = !!require('get-browser-rtc')();
-	const rtcSupport = require('webrtcsupport');
+	const DetectRTC = require('detectrtc');
 
-	return (isWebRTCSupported && rtcSupport.supportDataChannel);
+	return DetectRTC.isWebRTCSupported && DetectRTC.isSctpDataChannelsSupported;
 };
 
 export const onMobileAndTablet = function() {

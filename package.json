@@ -9,6 +9,7 @@
     "bufferutil": "^3.0.2",
     "chai": "^4.1.0",
     "chart.js": "^2.5.0",
+    "detectrtc": "^1.3.5",
     "express": "^4.14.1",
     "lodash.throttle": "^4.1.1",
     "meteor-node-stubs": "^0.2.5",
@@ -28,6 +29,7 @@
   },
   "scripts": {
     "meteor-dev": "meteor --settings=settings-dev.json",
+    "meteor-rollbar": "meteor --settings=settings-rollbar.json",
     "test": "meteor test --driver-package=practicalmeteor:mocha --port 4000",
     "tests": "meteor test --driver-package=practicalmeteor:mocha --port 4000",
     "sshkey": "eval \"$(ssh-agent -s)\" && ssh-add ~/.ssh/id_rsa",

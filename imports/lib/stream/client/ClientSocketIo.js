@@ -1,6 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import Stream from '/imports/lib/stream/Stream.js';
 import ClientP2P from '/imports/lib/p2p/client/ClientP2P.js';
+import SocketIo from '/imports/lib/socket/SocketIo.js';
 
 export default class ClientSocketIo extends Stream {
 	/**
@@ -15,9 +16,9 @@ export default class ClientSocketIo extends Stream {
 		}
 
 		this.socketAdapter = require('socket.io-client').connect(url);
-		this.p2pAdapter = new ClientP2P(this.socketAdapter);
+		this.p2pAdapter = new ClientP2P(new SocketIo(this.socketAdapter), Meteor.settings.public.iceServers);
 		if (this.supportsP2P()) {
-			this.p2pAdapter.connect(Meteor.settings.public.iceServers);
+			this.p2pAdapter.connect();
 		}
 
 		this.socketAdapter.on('connect', () => {
@@ -54,12 +55,13 @@ export default class ClientSocketIo extends Stream {
 	 * @param {*} payload
 	 */
 	emit(eventName, payload) {
-		if (this.supportsP2P()) {
+		if (this.supportsP2P() && this.connectedToP2P()) {
 			this.p2pAdapter.emit(eventName, payload);
 		} else {
 			payload.webRTCUnsupportedClient = true;
-			this.socketAdapter.emit(eventName, payload);
 		}
+
+		this.socketAdapter.emit(eventName, payload);
 	}
 
 	/**
