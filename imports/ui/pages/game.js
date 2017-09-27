@@ -7,7 +7,7 @@ import {
 	isGameStatusStarted,
 	isGameStatusOnGoing
 } from '/imports/api/games/utils.js';
-import {serverNormalizedTime} from '/imports/api/games/client/routeInitiator.js';
+import {gameData, serverNormalizedTime} from '/imports/api/games/client/routeInitiator.js';
 import {padNumber} from '/imports/lib/utils.js';
 
 import './game.html';
@@ -107,6 +107,14 @@ Template.game.helpers({
 		}
 
 		return webRTCUsage + '<br />' + 'Server offset: ' + serverOffset;
+	},
+
+	classForMatchPoint() {
+		if (gameData && gameData.isGameStatusStarted() && gameData.isMatchPoint()) {
+			return 'match-point-frame';
+		}
+
+		return '';
 	}
 });
 

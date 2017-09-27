@@ -11,7 +11,7 @@ import StreamConfiguration from '/imports/lib/stream/StreamConfiguration.js';
 /** @type {Stream} */
 export let stream = null;
 /** @type {GameData} */
-let gameData = null;
+export let gameData = null;
 /** @type {ServerNormalizedTime} */
 export let serverNormalizedTime = null;
 /** @type {GameInitiator}|null */

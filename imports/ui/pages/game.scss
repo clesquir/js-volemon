@@ -79,9 +79,39 @@
 	}
 }
 
-#gameContainer canvas {
-	margin: 10px auto 30px;
-	@include aspect-ratio(45, 30);
+@keyframes loop-opacity {
+	0% {
+		opacity: 0;
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+#gameContainer {
+	&.match-point-frame {
+		&::before {
+			$match-point-color: lighten($negative, 20%);
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			z-index: 1;
+			opacity: 0;
+			width: 100%;
+			height: 100%;
+			box-shadow: inset 0 0 30px 0 $match-point-color, 0 0 20px 0 $match-point-color;
+			animation: loop-opacity 1.5s infinite;
+		}
+	}
+
+	canvas {
+		margin: 10px auto 30px;
+		@include aspect-ratio(45, 30);
+	}
 }
 
 .expand-extra-big-game-size-container {
