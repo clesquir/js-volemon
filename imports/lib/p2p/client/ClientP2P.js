@@ -1,11 +1,10 @@
 const Peer = require('simple-peer');
 const Emitter = require('component-emitter');
-const parser = require('socket.io-p2p-parser');
+const parser = require('socket.io-parser');
 const toArray = require('to-array');
 const hasBin = require('has-binary');
 const bind = require('component-bind');
 const hat = require('hat');
-const extend = require('extend.js');
 import {browserSupportsWebRTC} from '/imports/lib/utils.js';
 
 export default class ClientP2P {
@@ -60,7 +59,7 @@ export default class ClientP2P {
 		});
 
 		this.socket.on('offer', (data) => {
-			const peerOpts = extend(this.peerOpts, {initiator: false});
+			const peerOpts = Object.assign(this.peerOpts, {initiator: false});
 			const peer = this._peers[data.fromPeerId] = new Peer(peerOpts);
 			peer.id = data.fromPeerId;
 			this.numConnectedClients++;
@@ -191,7 +190,7 @@ export default class ClientP2P {
 	 */
 	generateOffer(cb) {
 		const offerId = hat(160);
-		const peerOpts = extend(this.peerOpts, {initiator: true});
+		const peerOpts = Object.assign(this.peerOpts, {initiator: true});
 		const peer = this._peers[offerId] = new Peer(peerOpts);
 		peer.id = offerId;
 		peer.setMaxListeners(50);
