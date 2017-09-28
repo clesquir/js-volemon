@@ -26,13 +26,46 @@ export default class PhaserEngine extends Engine {
 			parent: parent
 		});
 
+		this.game.state.add('boot', {
+			create: () => {
+				this.game.physics.startSystem(Phaser.Physics.P2JS);
+				this.game.physics.p2.setImpactEvents(true);
+				this.game.physics.p2.gravity.y = WORLD_GRAVITY;
+				this.game.physics.p2.world.defaultContactMaterial.friction = 0;
+				this.game.physics.p2.world.setGlobalStiffness(1e10);
+				this.game.physics.p2.restitution = 0;
+				this.game.stage.backgroundColor = '#9ad3de';
+				this.game.stage.disableVisibilityChange = true;
+
+				this.game.state.start('load');
+			}
+		});
+
+		this.game.state.add('load', {
+			create: () => {
+				preloadGame.call(scope);
+
+				this.game.load.onLoadComplete.add(() => {
+					this.game.state.start('play');
+				}, this);
+				this.game.load.start();
+			}
+		});
+
 		this.game.state.add('play', {
-			preload: preloadGame.bind(scope),
+			preload: () => {
+				for (let shape of PLAYER_LIST_OF_SHAPES) {
+					this.loadScaledPhysics(NORMAL_SCALE_PHYSICS_DATA, SMALL_SCALE_PHYSICS_DATA, 'player-' + shape, SMALL_SCALE_PLAYER_BONUS);
+					this.loadScaledPhysics(NORMAL_SCALE_PHYSICS_DATA, BIG_SCALE_PHYSICS_DATA, 'player-' + shape, BIG_SCALE_BONUS);
+				}
+				this.loadScaledPhysics(NORMAL_SCALE_PHYSICS_DATA, SMALL_SCALE_PHYSICS_DATA, 'ball', SMALL_SCALE_BALL_BONUS);
+				this.loadScaledPhysics(NORMAL_SCALE_PHYSICS_DATA, BIG_SCALE_PHYSICS_DATA, 'ball', BIG_SCALE_BONUS);
+			},
 			create: createGame.bind(scope),
 			update: updateGame.bind(scope)
 		});
 
-		this.game.state.start('play');
+		this.game.state.start('boot');
 	}
 
 	stop() {
@@ -46,25 +79,9 @@ export default class PhaserEngine extends Engine {
 	}
 
 	preloadGame() {
-		this.game.stage.backgroundColor = '#9ad3de';
-		this.game.stage.disableVisibilityChange = true;
 	}
 
 	createGame() {
-		for (let shape of PLAYER_LIST_OF_SHAPES) {
-			this.loadScaledPhysics(NORMAL_SCALE_PHYSICS_DATA, SMALL_SCALE_PHYSICS_DATA, 'player-' + shape, SMALL_SCALE_PLAYER_BONUS);
-			this.loadScaledPhysics(NORMAL_SCALE_PHYSICS_DATA, BIG_SCALE_PHYSICS_DATA, 'player-' + shape, BIG_SCALE_BONUS);
-		}
-		this.loadScaledPhysics(NORMAL_SCALE_PHYSICS_DATA, SMALL_SCALE_PHYSICS_DATA, 'ball', SMALL_SCALE_BALL_BONUS);
-		this.loadScaledPhysics(NORMAL_SCALE_PHYSICS_DATA, BIG_SCALE_PHYSICS_DATA, 'ball', BIG_SCALE_BONUS);
-
-		this.game.physics.startSystem(Phaser.Physics.P2JS);
-		this.game.physics.p2.setImpactEvents(true);
-		this.game.physics.p2.gravity.y = WORLD_GRAVITY;
-		this.game.physics.p2.world.defaultContactMaterial.friction = 0;
-		this.game.physics.p2.world.setGlobalStiffness(1e10);
-		this.game.physics.p2.restitution = 0;
-
 		this.setupScaling();
 	}
 
