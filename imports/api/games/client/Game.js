@@ -932,6 +932,10 @@ export default class Game {
 	}
 
 	cheer(forHost) {
+		if (!this.gameInitiated) {
+			return;
+		}
+
 		this.engine.emitParticules(
 			forHost ? 0 : this.xSize,
 			this.ySize * 0.10 + 25,
