@@ -77,7 +77,9 @@ export default class ClientP2P {
 			peer.on('error', (err) => {
 				this.emitfn.call(this, 'peer-error', err);
 			});
-			peer.signal(data.offer);
+			if (!peer.destroyed) {
+				peer.signal(data.offer);
+			}
 		});
 
 		this.socket.on('peer-signal', (data) => {
@@ -93,7 +95,9 @@ export default class ClientP2P {
 				});
 			});
 
-			peer.signal(data.signal);
+			if (!peer.destroyed) {
+				peer.signal(data.signal);
+			}
 		});
 
 		this.socket.on('peer-disconnect', (peer) => {
