@@ -157,7 +157,7 @@ export default class PhaserEngine extends Engine {
 			up: false,
 			down: false
 		};
-		if (!this.game.device.desktop) {
+		if (this.allowMobileControl()) {
 			//Add pointers for allowing 4 fingers
 			this.game.input.addPointer();
 			this.game.input.addPointer();
@@ -171,6 +171,10 @@ export default class PhaserEngine extends Engine {
 			const downButton = this.game.add.button(this.game.width - TAP_BUTTON_WIDTH, y, 'tapButtonDown');
 			this.addDeviceControl(downButton, this.mobileControl, 'down');
 		}
+	}
+
+	allowMobileControl() {
+		return !this.game.device.desktop;
 	}
 
 	addDeviceControl(button, mobileControl, control) {
@@ -192,7 +196,7 @@ export default class PhaserEngine extends Engine {
 		if (Phaser.Keyboard) {
 			this.game.input.keyboard.clearCaptures();
 		}
-		if (!this.game.device.desktop) {
+		if (this.allowMobileControl()) {
 			this.mobileControl = null;
 		}
 	}
