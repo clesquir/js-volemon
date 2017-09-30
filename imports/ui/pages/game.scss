@@ -129,26 +129,13 @@
 	position: absolute;
 	bottom: 10px;
 	left: 10px;
-	width: 40px;
+	color: white;
 	opacity: 0.25;
 	cursor: pointer;
 	overflow: hidden;
 
 	&:hover {
 		opacity: 0.5;
-	}
-
-	svg {
-		font: bold 55px 'Arial';
-		width: 500%;
-		height: 40px;
-	}
-
-	text {
-		fill: none;
-		stroke: white;
-		stroke-width: 4px;
-		stroke-linejoin: round;
 	}
 }
 
@@ -159,10 +146,18 @@
 
 	.expand-extra-big-game-size {
 		z-index: 2;
+
+		& > .fa {
+			font-size: 25px;
+		}
 	}
 
-	.expand-extra-big-game-size-x1 {
-		display: none;
+	.expand-extra-big-game-size-expand {
+		display: block;
+	}
+
+	.expand-extra-big-game-size-compress {
+		display:none;
 	}
 
 	.game-container.extra-big-game-size {
@@ -171,12 +166,16 @@
 			height: 840px !important;
 		}
 
-		.expand-extra-big-game-size-x1 {
-			display: block;
+		.expand-extra-big-game-size > .fa {
+			font-size: 35px;
 		}
 
-		.expand-extra-big-game-size-x2 {
-			display:none;
+		.expand-extra-big-game-size-expand {
+			display: none;
+		}
+
+		.expand-extra-big-game-size-compress {
+			display: block;
 		}
 	}
 }
