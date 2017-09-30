@@ -874,9 +874,7 @@ export default class Game {
 		player.data.doingDropShot = data.doingDropShot;
 
 		let serverNormalizedTimestamp = this.serverNormalizedTime.getServerTimestamp();
-		data = this.engine.interpolateFromTimestamp(serverNormalizedTimestamp, player, data);
-
-		this.engine.move(player, data);
+		this.engine.interpolateMoveTo(player, serverNormalizedTimestamp, data);
 	}
 
 	moveClientBall(data) {
@@ -885,9 +883,7 @@ export default class Game {
 		}
 
 		let serverNormalizedTimestamp = this.serverNormalizedTime.getServerTimestamp();
-		data = this.engine.interpolateFromTimestamp(serverNormalizedTimestamp, this.ball, data);
-
-		this.engine.move(this.ball, data);
+		this.engine.interpolateMoveTo(this.ball, serverNormalizedTimestamp, data);
 	}
 
 	createBonus(data) {

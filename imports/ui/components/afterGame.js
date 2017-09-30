@@ -19,7 +19,7 @@ import {
 	playerLeftGame,
 	currentPlayerHasRepliedRematch,
 	currentPlayerAcceptedRematch
-} from '/imports/lib/client/gameSetup.js';
+} from '/imports/api/games/client/gameSetup.js';
 
 import './afterGame.html';
 

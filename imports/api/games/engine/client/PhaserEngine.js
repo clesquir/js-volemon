@@ -419,6 +419,17 @@ export default class PhaserEngine extends Engine {
 		return data;
 	}
 
+	interpolateMoveTo(sprite, serverNormalizedTimestamp, data) {
+		if (!sprite.body) {
+			return;
+		}
+
+		const interpolatedData = Object.assign({}, data);
+		this.interpolateFromTimestamp(serverNormalizedTimestamp, sprite, interpolatedData);
+
+		this.move(sprite, data);
+	}
+
 	move(sprite, data) {
 		if (!sprite.body) {
 			return;

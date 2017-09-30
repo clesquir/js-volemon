@@ -7,7 +7,7 @@ import {
 	playerLeftGame,
 	currentPlayerHasRepliedRematch,
 	currentPlayerAcceptedRematch
-} from '/imports/lib/client/gameSetup.js';
+} from '/imports/api/games/client/gameSetup.js';
 
 describe('lib/client/gameSetup#playerDeclinedRematch', function() {
 	it('returns false', function() {

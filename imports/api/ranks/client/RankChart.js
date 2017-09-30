@@ -2,7 +2,6 @@ import Chart from "chart.js";
 import {getRainbowColor} from '/imports/lib/utils.js';
 
 export default class RankChart {
-
 	constructor(documentElementId, eloScores, users, profiles, currentUser) {
 		this.documentElementId = documentElementId;
 		this.eloScores = eloScores;
@@ -56,7 +55,7 @@ export default class RankChart {
 
 		//Sort the connected user first
 		users.forEach(function(user) {
-			if (user._id == this.currentUser) {
+			if (user._id === this.currentUser) {
 				usersList.unshift(user);
 			} else {
 				usersList.push(user);
@@ -72,7 +71,7 @@ export default class RankChart {
 			let retiredAt = null;
 
 			profiles.forEach(function(profile) {
-				if (user._id == profile.userId) {
+				if (user._id === profile.userId) {
 					retiredAt = profile.retiredAt;
 				}
 			});
@@ -160,5 +159,4 @@ export default class RankChart {
 			this.chart.update();
 		}
 	}
-
 }

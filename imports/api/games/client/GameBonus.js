@@ -252,9 +252,7 @@ export default class GameBonus {
 		}
 
 		let serverNormalizedTimestamp = this.serverNormalizedTime.getServerTimestamp();
-		data = this.engine.interpolateFromTimestamp(serverNormalizedTimestamp, correspondingBonusSprite, data);
-
-		this.engine.move(correspondingBonusSprite, data);
+		this.engine.interpolateMoveTo(correspondingBonusSprite, serverNormalizedTimestamp, data);
 	}
 
 	onGameStop() {

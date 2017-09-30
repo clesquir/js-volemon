@@ -1,7 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Accounts} from 'meteor/accounts-base';
 import {Random} from 'meteor/random';
-import {createProfile} from '/imports/lib/server/userProfileCreation.js';
+import {createProfile} from '/imports/api/profiles/server/createProfile.js';
 
 Accounts.onCreateUser((options, user) => {
 	user._id = Random.id();
