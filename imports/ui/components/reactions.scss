@@ -141,6 +141,12 @@
 			align-self: center;
 			justify-content: center;
 			flex-direction: column;
+			@include horizontal-breakpoint(mobile) {
+				transform: scale(0.5);
+			}
+			@include horizontal-breakpoint(mobileportrait) {
+				transform: scale(0.4);
+			}
 
 			.reaction-list-items-group {
 				display: flex;

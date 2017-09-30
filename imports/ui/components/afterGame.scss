@@ -72,13 +72,22 @@
 			font-size: 1.25rem;
 		}
 	}
+
+	& .button {
+		@include horizontal-breakpoint(mobile) {
+			font-size: 0.75rem;
+		}
+		@include horizontal-breakpoint(mobileportrait) {
+			font-size: 0.5rem;
+		}
+	}
 }
 
 #game-statistics-contents {
 	width: 350px;
 	margin: 10px auto;
 
-	@include horizontal-breakpoint(mobileportrait) {
+	@include horizontal-breakpoint(mobile) {
 		width: initial;
 	}
 
