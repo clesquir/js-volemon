@@ -8,6 +8,7 @@ import './environment.html';
 let environment = null;
 const groundHitEnabled = new ReactiveVar(true);
 const playerJumpCanOnEnabled = new ReactiveVar(false);
+const opponentMoveEnabled = new ReactiveVar(false);
 
 Template.environment.rendered = function() {
 	environment = new Environment();
@@ -26,6 +27,9 @@ Template.environment.helpers({
 	},
 	playerJumpCanOnEnabled: function() {
 		return playerJumpCanOnEnabled.get();
+	},
+	opponentMoveEnabled: function() {
+		return opponentMoveEnabled.get();
 	}
 });
 
@@ -52,5 +56,15 @@ Template.environment.events({
 		}
 
 		playerJumpCanOnEnabled.set(!playerJumpCanOnEnabled.get());
+	},
+
+	'click [data-action="enable-randomly-opponent-move"]': function() {
+		if (opponentMoveEnabled.get()) {
+			environment.disableOpponentMoveEnabled();
+		} else {
+			environment.enableOpponentMoveEnabled();
+		}
+
+		opponentMoveEnabled.set(!opponentMoveEnabled.get());
 	}
 });
