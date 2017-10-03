@@ -14,6 +14,24 @@ describe('AchievementListener#Rakshasa', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
 	const opponentUserId = Random.id(5);
+	const stubListOfShapes = function(listener, listOfShapes) {
+		sinon.stub(listener, 'listOfShapes').callsFake(function() {
+			return listOfShapes;
+		});
+	};
+	const getBonusCaught = function(gameId, playerKey, playerShape) {
+		return new BonusCaught(
+			gameId,
+			BONUS_SHAPE_SHIFT,
+			{
+				activatedBonusClass: BONUS_SHAPE_SHIFT,
+				targetPlayerKey: playerKey,
+				bonusClass: BONUS_SHAPE_SHIFT,
+				activatorPlayerKey: playerKey,
+				playerShape: playerShape
+			}
+		);
+	};
 	const assertRakshasaUserAchievementNumberEquals = function(number) {
 		const achievement = UserAchievements.findOne();
 		assert.notEqual(undefined, achievement);
@@ -36,42 +54,14 @@ describe('AchievementListener#Rakshasa', function() {
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId, shape: 'a'});
 		Players.insert({gameId: gameId, userId: opponentUserId, shape: 'a'});
-		sinon.stub(listener, 'availableShapes').callsFake(function() {
-			return [
-				'a',
-				'b',
-				'c'
-			];
-		});
+		stubListOfShapes(listener, ['a', 'b', 'c']);
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusCaught(
-			new BonusCaught(
-				gameId,
-				BONUS_SHAPE_SHIFT,
-				{
-					activatedBonusClass: BONUS_SHAPE_SHIFT,
-					targetPlayerKey: 'player1',
-					bonusClass: BONUS_SHAPE_SHIFT,
-					activatorPlayerKey: 'player1',
-					playerShape: 'b'
-				}
-			)
-		);
-		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusCaught(
-			new BonusCaught(
-				gameId,
-				BONUS_SHAPE_SHIFT,
-				{
-					activatedBonusClass: BONUS_SHAPE_SHIFT,
-					targetPlayerKey: 'player1',
-					bonusClass: BONUS_SHAPE_SHIFT,
-					activatorPlayerKey: 'player1',
-					playerShape: 'c'
-				}
-			)
-		);
+		listener.onBonusCaught(getBonusCaught(gameId, 'player1', 'a'));
+		assertRakshasaUserAchievementNumberEquals(0);
+		listener.onBonusCaught(getBonusCaught(gameId, 'player1', 'b'));
+		assertRakshasaUserAchievementNumberEquals(0);
+		listener.onBonusCaught(getBonusCaught(gameId, 'player1', 'c'));
 		assertRakshasaUserAchievementNumberEquals(1);
 	});
 
@@ -80,97 +70,39 @@ describe('AchievementListener#Rakshasa', function() {
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId, shape: 'a'});
 		Players.insert({gameId: gameId, userId: opponentUserId, shape: 'a'});
-		sinon.stub(listener, 'availableShapes').callsFake(function() {
-			return [
-				'a',
-				'b'
-			];
-		});
+		stubListOfShapes(listener, ['a', 'b']);
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusCaught(
-			new BonusCaught(
-				Random.id(5),
-				BONUS_SHAPE_SHIFT,
-				{
-					activatedBonusClass: BONUS_SHAPE_SHIFT,
-					targetPlayerKey: 'player1',
-					bonusClass: BONUS_SHAPE_SHIFT,
-					activatorPlayerKey: 'player1',
-					playerShape: 'b'
-				}
-			)
-		);
+		listener.onBonusCaught(getBonusCaught(Random.id(5), 'player1', 'a'));
+		assert.equal(0, UserAchievements.find().count());
+		listener.onBonusCaught(getBonusCaught(Random.id(5), 'player1', 'b'));
 		assert.equal(0, UserAchievements.find().count());
 	});
 
-	it('do not add achievement if different userId', function() {
+	it('do not add achievement if different player', function() {
 		const listener = new Rakshasa(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId, shape: 'a'});
 		Players.insert({gameId: gameId, userId: opponentUserId, shape: 'a'});
-		sinon.stub(listener, 'availableShapes').callsFake(function() {
-			return [
-				'b'
-			];
-		});
+		stubListOfShapes(listener, ['a', 'b']);
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusCaught(
-			new BonusCaught(
-				gameId,
-				BONUS_SHAPE_SHIFT,
-				{
-					activatedBonusClass: BONUS_SHAPE_SHIFT,
-					targetPlayerKey: 'player2',
-					bonusClass: BONUS_SHAPE_SHIFT,
-					activatorPlayerKey: 'player2',
-					playerShape: 'b'
-				}
-			)
-		);
+		listener.onBonusCaught(getBonusCaught(gameId, 'player2', 'a'));
+		assert.equal(0, UserAchievements.find().count());
+		listener.onBonusCaught(getBonusCaught(gameId, 'player2', 'b'));
 		assert.equal(0, UserAchievements.find().count());
 	});
 
 	it('do not increment achievement if same shape shift twice but not all', function() {
 		const listener = new Rakshasa(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
-		sinon.stub(listener, 'availableShapes').callsFake(function() {
-			return [
-				'a',
-				'b',
-				'c'
-			];
-		});
+		Players.insert({gameId: gameId, userId: userId, shape: 'a'});
+		stubListOfShapes(listener, ['a', 'b']);
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusCaught(
-			new BonusCaught(
-				gameId,
-				BONUS_SHAPE_SHIFT,
-				{
-					activatedBonusClass: BONUS_SHAPE_SHIFT,
-					targetPlayerKey: 'player1',
-					bonusClass: BONUS_SHAPE_SHIFT,
-					activatorPlayerKey: 'player1',
-					playerShape: 'b'
-				}
-			)
-		);
-		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusCaught(
-			new BonusCaught(
-				gameId,
-				BONUS_SHAPE_SHIFT,
-				{
-					activatedBonusClass: BONUS_SHAPE_SHIFT,
-					targetPlayerKey: 'player1',
-					bonusClass: BONUS_SHAPE_SHIFT,
-					activatorPlayerKey: 'player1',
-					playerShape: 'b'
-				}
-			)
-		);
-		assert.equal(0, UserAchievements.find().count());
+		listener.onBonusCaught(getBonusCaught(gameId, 'player1', 'b'));
+		assertRakshasaUserAchievementNumberEquals(0);
+		listener.onBonusCaught(getBonusCaught(gameId, 'player1', 'b'));
+		assertRakshasaUserAchievementNumberEquals(0);
 	});
 });
