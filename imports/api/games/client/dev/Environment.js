@@ -84,6 +84,36 @@ export default class Environment {
 		this.gameBonus.createBonusIfTimeHasElapsed = () => {};
 	}
 
+	randomlyMoveOpponent() {
+		const minX = 300;
+		const maxX = 750;
+		let x = Math.floor(Math.random() * (maxX - minX)) + minX;
+		const minY = 300;
+		const maxY = 465;
+		let y = Math.floor(Math.random() * (maxY - minY)) + minY;
+
+		this.game.moveOppositePlayer({
+			x: x,
+			y: y,
+			velocityX: 0,
+			velocityY: 0,
+			timestamp: require('moment')().utc().valueOf()
+		});
+	}
+
+	enableOpponentMoveEnabled() {
+		const delay = 500;
+
+		Meteor.clearInterval(this.movingInterval);
+		this.movingInterval = Meteor.setInterval(() => {
+			this.randomlyMoveOpponent();
+		}, delay);
+	}
+
+	disableOpponentMoveEnabled() {
+		Meteor.clearInterval(this.movingInterval);
+	}
+
 	loadLevel() {
 		this.game.level = this.gameEngine.addGroup();
 

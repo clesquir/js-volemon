@@ -395,26 +395,27 @@ export default class PhaserEngine extends Engine {
 		this.game.physics.p2.enable(sprite, debug);
 	}
 
+	distanceMultiplier() {
+		return 1.502636245994042;
+	}
+
+	gravityDistanceAtTime(sprite, t) {
+		const gravity = this.game.physics.p2.gravity.y * sprite.body.data.gravityScale;
+
+		return 0.5 * gravity * t * t;
+	}
+
 	interpolateFromTimestamp(currentTimestamp, sprite, data) {
 		const t = (currentTimestamp - data.timestamp) / 1000;
-		const gravity = this.game.physics.p2.gravity.y * sprite.body.data.gravityScale;
-		const x = data.velocityX * t;
-		let y = 0;
+		const distanceX = data.velocityX / this.distanceMultiplier() * t;
+		let distanceY = 0;
 
 		if (data.velocityY != 0) {
-			y = -data.velocityY * t - 0.5 * gravity * t * t;
+			distanceY = data.velocityY / this.distanceMultiplier() * t + this.gravityDistanceAtTime(sprite, t);
 		}
 
-		/**
-		 * From x and y starting point,
-		 * determine what would be the new x and y position
-		 * from the x and y velocity and the elapsedTime
-		 */
-		data.x = x + data.x;
-		data.y = data.y - y;
-
-		//@todo Restrict horizontally
-		//@todo Restrict vertically
+		data.x = data.x + distanceX;
+		data.y = data.y - distanceY;
 
 		return data;
 	}
@@ -424,10 +425,33 @@ export default class PhaserEngine extends Engine {
 			return;
 		}
 
-		const interpolatedData = Object.assign({}, data);
-		this.interpolateFromTimestamp(serverNormalizedTimestamp, sprite, interpolatedData);
+		let maxTime = 10;
+		let t = maxTime / 1000;
 
-		this.move(sprite, data);
+		const interpolatedData = Object.assign({}, data);
+		this.interpolateFromTimestamp(serverNormalizedTimestamp + maxTime, sprite, interpolatedData);
+
+		const distanceX = (interpolatedData.x - sprite.body.x);
+		const velocityX = distanceX / t;
+		sprite.body.velocity.x = velocityX * this.distanceMultiplier();
+
+		const distanceY = (interpolatedData.y - sprite.body.y);
+		const distanceGravityY = this.gravityDistanceAtTime(sprite, t);
+		const velocityY = (distanceY - distanceGravityY) / t;
+		sprite.body.velocity.y = velocityY * this.distanceMultiplier();
+
+		//@todo Restrict horizontally
+		//@todo Restrict vertically
+
+		this.game.time.events.add(
+			maxTime,
+			() => {
+				if (sprite && sprite.body) {
+					this.move(sprite, interpolatedData);
+				}
+			},
+			this
+		);
 	}
 
 	move(sprite, data) {
