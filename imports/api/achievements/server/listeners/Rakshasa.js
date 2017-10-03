@@ -19,51 +19,59 @@ export default class Rakshasa extends Listener {
 	onBonusCaught(event) {
 		if (
 			event.gameId === this.gameId &&
-			this.playerKeyIsUser(event.activatorPlayerKey) &&
-			event.bonusClass === BONUS_SHAPE_SHIFT
+			event.bonusClass === BONUS_SHAPE_SHIFT &&
+			this.playerKeyIsUser(event.activatorPlayerKey)
 		) {
-			this.addShapeCaught(event.activationData.playerShape);
-
-			if (this.hasCaughtAllShapes()) {
-				this.incrementNumber(ACHIEVEMENT_RAKSHASA);
-				this.initShapesCaught();
-			}
+			this.updateShapesCaught(event.activationData.playerShape);
 		}
 	}
 
-	availableShapes() {
+	updateShapesCaught(playerShape) {
+		const userAchievement = this.userAchievement(ACHIEVEMENT_RAKSHASA);
+		let currentNumber = 0;
+		let shapes = {};
+
+		if (!userAchievement) {
+			shapes[playerShape] = 1;
+
+			this.insertAchievement(
+				ACHIEVEMENT_RAKSHASA,
+				{shapes: shapes, number: 0}
+			);
+		} else {
+			currentNumber = userAchievement.number;
+			shapes = userAchievement.shapes;
+			if (shapes[playerShape] === undefined) {
+				shapes[playerShape] = 0;
+			}
+			shapes[playerShape]++;
+
+			this.updateAchievement(
+				ACHIEVEMENT_RAKSHASA,
+				{shapes: shapes}
+			);
+		}
+
+		if (this.allShapesCaughtAreGreaterThan(shapes, currentNumber)) {
+			this.incrementNumber(ACHIEVEMENT_RAKSHASA);
+		}
+	}
+
+	listOfShapes() {
 		return PLAYER_LIST_OF_SHAPES;
 	}
 
-	initShapesCaught() {
-		const shapes = this.availableShapes();
-
-		this.shapesCaught = {};
-		for (let shape of shapes) {
-			this.shapesCaught[shape] = false;
-		}
-
-		//Add initial player shape
-		this.shapesCaught[this.currentPlayerShape()] = true;
-	}
-
 	/**
-	 * @param shape
+	 * @private
+	 * @param shapes
+	 * @param {int} currentNumber
+	 * @returns {boolean} True if all shapes are there with greater number of times
 	 */
-	addShapeCaught(shape) {
-		if (!this.shapesCaught) {
-			this.initShapesCaught();
-		}
-
-		this.shapesCaught[shape] = true;
-	}
-
-	/**
-	 * @returns {boolean}
-	 */
-	hasCaughtAllShapes() {
-		for (let shape in this.shapesCaught) {
-			if (this.shapesCaught.hasOwnProperty(shape) && !this.shapesCaught[shape]) {
+	allShapesCaughtAreGreaterThan(shapes, currentNumber) {
+		for (let shape of this.listOfShapes()) {
+			if (shapes[shape] === undefined) {
+				return false;
+			} else if (shapes[shape] <= currentNumber) {
 				return false;
 			}
 		}

@@ -266,10 +266,10 @@
       "_id": "RAKSHASA",
       "isSecret": true,
       "name": "Rakshasa",
-      "description": "Morph into all shapes in a single game",
+      "description": "Morph into all shapes in a life time",
       "type": "TIMES",
       "displayOrder": 32,
-      "levels": [{"level": 1, "number": 1}, {"level": 2, "number": 2}, {"level": 3, "number": 3}]
+      "levels": [{"level": 1, "number": 1}, {"level": 2, "number": 3}, {"level": 3, "number": 6}]
     },
     {
       "_id": "TRIPLE_COLON",
