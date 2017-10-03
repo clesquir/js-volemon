@@ -411,11 +411,11 @@ export default class PhaserEngine extends Engine {
 		let distanceY = 0;
 
 		if (data.velocityY != 0) {
-			distanceY = data.velocityY / this.distanceMultiplier() * t + this.gravityDistanceAtTime(sprite, t);
+			distanceY = (data.velocityY / this.distanceMultiplier() * t) + this.gravityDistanceAtTime(sprite, t);
 		}
 
 		data.x = data.x + distanceX;
-		data.y = data.y - distanceY;
+		data.y = data.y + distanceY;
 
 		return data;
 	}
@@ -425,17 +425,18 @@ export default class PhaserEngine extends Engine {
 			return;
 		}
 
-		let maxTime = 10;
+		//+10 for fast sliding to interpolated location
+		const maxTime = 10;
 		let t = maxTime / 1000;
 
 		const interpolatedData = Object.assign({}, data);
 		this.interpolateFromTimestamp(serverNormalizedTimestamp + maxTime, sprite, interpolatedData);
 
-		const distanceX = (interpolatedData.x - sprite.body.x);
+		const distanceX = (interpolatedData.x - sprite.x);
 		const velocityX = distanceX / t;
 		sprite.body.velocity.x = velocityX * this.distanceMultiplier();
 
-		const distanceY = (interpolatedData.y - sprite.body.y);
+		const distanceY = (interpolatedData.y - sprite.y);
 		const distanceGravityY = this.gravityDistanceAtTime(sprite, t);
 		const velocityY = (distanceY - distanceGravityY) / t;
 		sprite.body.velocity.y = velocityY * this.distanceMultiplier();

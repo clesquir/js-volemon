@@ -95,9 +95,9 @@ export default class Environment {
 		this.game.moveOppositePlayer({
 			x: x,
 			y: y,
-			velocityX: 0,
-			velocityY: 0,
-			timestamp: require('moment')().utc().valueOf()
+			velocityX: (this.game.player2.x > x ? -100 : 100),
+			velocityY: (this.game.player2.y > y ? -100 : 100),
+			timestamp: require('moment')().utc().valueOf() - 20
 		});
 	}
 
