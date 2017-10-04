@@ -1,6 +1,7 @@
 PIXI = require('phaser/build/custom/pixi');
 p2 = require('phaser/build/custom/p2');
 Phaser = require('phaser/build/custom/phaser-split');
+import {Meteor} from 'meteor/meteor';
 import Engine from '/imports/api/games/engine/Engine.js';
 import {
 	WORLD_GRAVITY,
@@ -60,6 +61,16 @@ export default class PhaserEngine extends Engine {
 				}
 				this.loadScaledPhysics(NORMAL_SCALE_PHYSICS_DATA, SMALL_SCALE_PHYSICS_DATA, 'ball', SMALL_SCALE_BALL_BONUS);
 				this.loadScaledPhysics(NORMAL_SCALE_PHYSICS_DATA, BIG_SCALE_PHYSICS_DATA, 'ball', BIG_SCALE_BONUS);
+
+				let mouseHideTimer;
+				this.game.canvas.style.cursor = 'none';
+				this.game.input.addMoveCallback(() => {
+					Meteor.clearTimeout(mouseHideTimer);
+					this.game.canvas.style.cursor = 'inherit';
+					mouseHideTimer = Meteor.setTimeout(() => {
+						this.game.canvas.style.cursor = 'none';
+					}, 500);
+				});
 			},
 			create: createGame.bind(scope),
 			update: updateGame.bind(scope)
