@@ -1,0 +1,25 @@
+<template name="tournamentGame">
+
+	<div class="app-section app-section-min-width app-section-center">
+
+		<div class="app-section-inner">
+
+			{{#if isGameOnGoing}}
+
+				{{> gameCanvas game=game playersCollection=players profilesCollection=profiles eloScoresCollection=tournamentEloScores}}
+
+			{{else}}
+
+				<h1>{{tournament.mode.name}}</h1>
+
+				<p>{{tournamentDescription}}</p>
+
+				{{> gameSetup}}
+
+			{{/if}}
+
+		</div>
+
+	</div>
+
+</template>

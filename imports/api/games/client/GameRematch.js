@@ -25,7 +25,11 @@ export default class GameRematch {
 					}
 
 					Meteor.setTimeout(() => {
-						Router.go(Router.routes['game'].url({_id: fields.rematchGameId}));
+						if (this.gameData.tournamentId) {
+							Router.go('tournamentGame', {tournamentId: this.gameData.tournamentId, gameId: fields.rematchGameId});
+						} else {
+							Router.go('game', {_id: fields.rematchGameId});
+						}
 					}, timeout);
 				}
 			}

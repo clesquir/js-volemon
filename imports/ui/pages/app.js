@@ -1,6 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
 import {Session} from 'meteor/session';
+import {Tooltips} from 'meteor/lookback:tooltips';
 
 import './app.html';
 
@@ -103,6 +104,7 @@ Template.app.events({
 	},
 
 	'click [data-action=create-game]': function(e) {
+		Tooltips.hide();
 		Session.set('apploadingmask', true);
 		actionAfterLoginCreateUser = function() {
 			Meteor.call('createGame', function(error, id) {

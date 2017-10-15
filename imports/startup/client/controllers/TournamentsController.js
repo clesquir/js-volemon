@@ -1,0 +1,11 @@
+import {Meteor} from 'meteor/meteor';
+
+export const TournamentsController = RouteController.extend({
+	waitOn: function() {
+		return [
+			Meteor.subscribe('activeTournaments'),
+			Meteor.subscribe('futureTournaments'),
+			Meteor.subscribe('pastTournaments')
+		];
+	}
+});

@@ -2,62 +2,62 @@
 	<h1>Statistics</h1>
 
 	<div class="profile-information-container">
-		<div class="profile-information-statistic">
+		<div class="statistics-item">
 			<div>
-				<div class="profile-information-statistic-data">{{numberOfGamesPlayed}}</div>
-				<div class="profile-information-statistic-title">games played</div>
+				<div class="statistics-item-data">{{numberOfGamesPlayed}}</div>
+				<div class="statistics-item-title">games played</div>
 			</div>
 		</div>
-		<div class="profile-information-statistic">
+		<div class="statistics-item">
 			<div>
-				<div class="profile-information-statistic-data">{{winRate}}</div>
-				<div class="profile-information-statistic-title">win rate</div>
+				<div class="statistics-item-data">{{winRate}}</div>
+				<div class="statistics-item-title">win rate</div>
 			</div>
 		</div>
-		<div class="profile-information-statistic">
+		<div class="statistics-item">
 			<div>
-				<div class="profile-information-statistic-data">
+				<div class="statistics-item-data">
 					<span class="shutouts-positive">{{numberOfShutouts}}</span>
 					|
 					<span class="shutouts-negative">{{numberOfShutoutLosses}}</span>
 				</div>
-				<div class="profile-information-statistic-title">shutouts</div>
+				<div class="statistics-item-title">shutouts</div>
 			</div>
 		</div>
-		<div class="profile-information-statistic">
+		<div class="statistics-item">
 			<div data-tooltip="{{longestGameInformation 'longestGame'}}">
-				<div class="profile-information-statistic-data">{{{longestGameDuration 'longestGame'}}}</div>
-				<div class="profile-information-statistic-title">longest game</div>
+				<div class="statistics-item-data">{{{longestGameDuration 'longestGame'}}}</div>
+				<div class="statistics-item-title">longest game</div>
 			</div>
 		</div>
-		<div class="profile-information-statistic">
+		<div class="statistics-item">
 			<div data-tooltip="{{longestGameInformation 'longestPoint'}}">
-				<div class="profile-information-statistic-data">{{{longestGameDuration 'longestPoint'}}}</div>
-				<div class="profile-information-statistic-title">longest point</div>
+				<div class="statistics-item-data">{{{longestGameDuration 'longestPoint'}}}</div>
+				<div class="statistics-item-title">longest point</div>
 			</div>
 		</div>
-		<div class="profile-information-statistic">
+		<div class="statistics-item">
 			<div data-tooltip="{{eloStatInformation 'lowestElo'}}">
-				<div class="profile-information-statistic-data">{{{eloStat 'lowestElo'}}}</div>
-				<div class="profile-information-statistic-title">lowest ELO</div>
+				<div class="statistics-item-data">{{{eloStat 'lowestElo'}}}</div>
+				<div class="statistics-item-title">lowest ELO</div>
 			</div>
 		</div>
-		<div class="profile-information-statistic">
+		<div class="statistics-item">
 			<div data-tooltip="{{eloStatInformation 'highestElo'}}">
-				<div class="profile-information-statistic-data">{{{eloStat 'highestElo'}}}</div>
-				<div class="profile-information-statistic-title">highest ELO</div>
+				<div class="statistics-item-data">{{{eloStat 'highestElo'}}}</div>
+				<div class="statistics-item-title">highest ELO</div>
 			</div>
 		</div>
-		<div class="profile-information-statistic elo-rating-statistic">
+		<div class="statistics-item elo-rating-statistic">
 			<div>
-				<div class="profile-information-statistic-data">
+				<div class="statistics-item-data">
 					<div>{{profile.eloRating}}</div>
 					{{> eloRatingChange eloRatingChange=this.profile.eloRatingLastChange}}
 				</div>
-				<div class="profile-information-statistic-title">ELO</div>
+				<div class="statistics-item-title">ELO</div>
 			</div>
 		</div>
-		<div class="profile-information-statistic favourite-shape-statistic">
+		<div class="statistics-item favourite-shape-statistic">
 			<div data-tooltip="
 				{{#if hasFavouriteShapesLoaded}}
 					{{#each favouriteShapes}}
@@ -74,14 +74,14 @@
 					<div class='loading-icon fa fa-spinner fa-pulse' />
 				{{/if}}
 			">
-				<div class="profile-information-statistic-data">
+				<div class="statistics-item-data">
 					{{#if hasFavouriteShapesLoaded}}
 						{{{favouriteShape}}}
 					{{else}}
 						<div class="loading-icon fa fa-spinner fa-pulse"></div>
 					{{/if}}
 				</div>
-				<div class="profile-information-statistic-title">Favourite shape</div>
+				<div class="statistics-item-title">Favourite shape</div>
 			</div>
 		</div>
 	</div>

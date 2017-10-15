@@ -17,3 +17,5 @@ export const BONUS_BOUNCE_MONSTER = 'BounceMonsterBonus';
 export const BONUS_CLOAKED_MONSTER = 'CloakedMonsterBonus';
 export const BONUS_RANDOM = 'RandomBonus';
 export const BONUS_SHAPE_SHIFT = 'ShapeShiftBonus';
+export const BONUS_DEATH = 'Death';
+export const BONUS_SMOKE_BOMB = 'SmokeBomb';

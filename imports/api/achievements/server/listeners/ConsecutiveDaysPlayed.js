@@ -5,6 +5,14 @@ import GameFinished from '/imports/api/games/events/PlayerWon.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 
 export default class ConsecutiveDaysPlayed extends Listener {
+	allowedForTournamentGame() {
+		return true;
+	}
+
+	allowedForPracticeGame() {
+		return true;
+	}
+
 	addListeners() {
 		this.addListener(GameFinished.prototype.constructor.name, this.onGameFinished);
 	}

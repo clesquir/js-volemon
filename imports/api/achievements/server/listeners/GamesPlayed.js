@@ -3,6 +3,14 @@ import {ACHIEVEMENT_GAMES_PLAYED} from '/imports/api/achievements/constants.js';
 import GameFinished from '/imports/api/games/events/GameFinished.js';
 
 export default class GamesPlayed extends Listener {
+	allowedForTournamentGame() {
+		return true;
+	}
+
+	allowedForPracticeGame() {
+		return true;
+	}
+
 	addListeners() {
 		this.addListener(GameFinished.prototype.constructor.name, this.onGameFinished);
 	}

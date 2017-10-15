@@ -427,40 +427,6 @@ describe('GameMethods#quitGame', function() {
 		});
 	});
 
-	it('do not increase numberOfShutouts, numberOfShutoutLosses if forfeit', function(done) {
-		Games.insert({
-			_id: gameId,
-			createdBy: userId1,
-			hostId: userId1,
-			clientId: userId2,
-			status: GAME_STATUS_STARTED,
-			hostPoints: GAME_MAXIMUM_POINTS,
-			clientPoints: 0
-		});
-		Players.insert({_id: playerId1, userId: userId1, gameId: gameId});
-		Players.insert({_id: playerId2, userId: userId2, gameId: gameId});
-		Profiles.insert({userId: userId1, numberOfShutouts: 0, numberOfShutoutLosses: 0});
-		Profiles.insert({userId: userId2, numberOfShutouts: 0, numberOfShutoutLosses: 0});
-
-		stubUser(userId1);
-		Meteor.call('quitGame', gameId, function(error) {
-			try {
-				assert.isUndefined(error, error ? error.reason : null);
-
-				const hostProfile = Profiles.findOne({userId: userId1});
-
-				assert.equal(0, hostProfile.numberOfShutoutLosses);
-
-				const clientProfile = Profiles.findOne({userId: userId2});
-
-				assert.equal(0, clientProfile.numberOfShutouts);
-			} catch(exception) {
-				done(exception);
-			}
-			done();
-		});
-	});
-
 	it('updates eloRating, eloRatingLastChange and inserts EloScores on host forfeit', function(done) {
 		Games.insert({
 			_id: gameId,

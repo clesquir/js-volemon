@@ -1,0 +1,50 @@
+<template name="gameCanvas">
+
+	<div class="game-container {{gameZoomedInClass profilesCollection}} {{getFinishedStatusClass}}">
+
+		{{! Names and Points }}
+
+		<div class="players-names-container">
+			<div class="players-names">
+				<div class="host-player">{{hostName}}</div>
+				<div class="client-player">{{clientName}}</div>
+			</div>
+		</div>
+
+		<div class="players-points-container">
+			<div class="players-points">{{hostPoints}} | {{clientPoints}}</div>
+		</div>
+
+		<div class="timers-container">
+			<div class="match-timer">{{matchTimer}}</div>
+			<div class="point-timer">{{pointTimer}}</div>
+		</div>
+
+		<div class="viewers-container">
+			<span>
+				{{#if hasViewer}}
+					{{viewers}}<i class="fa fa-eye"></i>
+				{{/if}}
+			</span>
+		</div>
+
+		{{! Game container }}
+
+		<div id="gameContainer" class="page game {{classForMatchPoint}}">
+			<div class="expand-extra-big-game-size" data-action="expand-extra-big-game">
+				<i class="fa fa-expand expand-extra-big-game-size-expand" aria-hidden="true"></i>
+				<i class="fa fa-compress expand-extra-big-game-size-compress" aria-hidden="true"></i>
+			</div>
+		</div>
+
+		{{> afterGame game=game playersCollection=playersCollection eloScoresCollection=eloScoresCollection}}
+
+		{{> reactions isGamePlayer=isGamePlayer hasViewer=hasViewer}}
+
+		<div class="connection-indicator">
+			<div class="connection-indicator-light {{connectionClass}}" data-tooltip="{{connectionInformation}}"></div>
+		</div>
+
+	</div>
+
+</template>

@@ -13,7 +13,7 @@ Accounts.onCreateUser((options, user) => {
 
 	user.profile = options.profile;
 
-	createProfile(user);
+	createProfile(user._id);
 
 	return user;
 });

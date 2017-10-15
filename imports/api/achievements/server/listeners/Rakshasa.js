@@ -5,6 +5,10 @@ import {BONUS_SHAPE_SHIFT} from '/imports/api/games/bonusConstants.js'
 import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js'
 
 export default class Rakshasa extends Listener {
+	allowedForTournamentGame() {
+		return true;
+	}
+
 	addListeners() {
 		this.addListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
 	}

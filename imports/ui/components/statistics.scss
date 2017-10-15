@@ -9,43 +9,6 @@
 		min-width: unset;
 		flex-direction: column;
 	}
-
-	.profile-information-statistic {
-		padding: 10px 15px;
-		margin: 0 20px 30px;
-		min-width: 115px;
-		text-align: center;
-		border-left: 1px solid $border-color;
-		border-bottom: 1px solid $border-color;
-
-		@include horizontal-breakpoint(mobile) {
-			padding: 15px 0;
-			margin-bottom: 0;
-			border-top: 1px solid $border-color;
-			border-left: 0;
-			border-bottom: 0;
-		}
-
-		& .profile-information-statistic-data {
-			font-size: 25px;
-		}
-
-		& .profile-information-statistic-title {
-			font-size: 10px;
-		}
-
-		&.elo-rating-statistic {
-			justify-content: center;
-
-			& .profile-information-statistic-data {
-				display: flex;
-			}
-		}
-
-		&:hover {
-			background: lighten($background-color, 1%);
-		}
-	}
 }
 
 .shutouts-positive {

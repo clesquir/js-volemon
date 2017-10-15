@@ -5,7 +5,8 @@ import {
 	createGame,
 	joinGame,
 	startGame,
-	replyRematch
+	replyRematch,
+	onPlayerQuit
 } from '/imports/api/games/server/gameSetup.js';
 import {finishGame} from '/imports/api/games/server/onGameFinished.js';
 import {Games} from '/imports/api/games/games.js';
@@ -30,7 +31,6 @@ import {
 } from '/imports/api/games/statusConstants.js';
 import {htmlEncode, getUTCTimeStamp} from '/imports/lib/utils.js';
 import {EventPublisher} from '/imports/lib/EventPublisher.js';
-import {onPlayerQuit} from './gameSetup';
 
 /** @type {GameInitiator[]} */
 let gameInitiators = {};
@@ -44,6 +44,20 @@ Meteor.methods({
 		}
 
 		const id = createGame(user, gameInitiators);
+
+		Meteor.call('joinGame', id, true);
+
+		return id;
+	},
+
+	createTournamentGame: function(tournamentId) {
+		const user = Meteor.user();
+
+		if (!user) {
+			throw new Meteor.Error(401, 'You need to login to create a game');
+		}
+
+		const id = createGame(user, gameInitiators, tournamentId);
 
 		Meteor.call('joinGame', id, true);
 

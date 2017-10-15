@@ -53,7 +53,7 @@ export default class Listeners {
 	start() {
 		const game = Games.findOne({_id: this.gameId});
 
-		if (!game || game.isPracticeGame) {
+		if (!game) {
 			return;
 		}
 

@@ -92,6 +92,7 @@ $desktop-max-height: 70em;
 @import "{}/imports/ui/pages/home.scss";
 @import "{}/imports/ui/pages/login.scss";
 @import "{}/imports/ui/pages/rank.scss";
+@import "{}/imports/ui/pages/tournament.scss";
 
 html, body {
 	height: 100%;
@@ -121,6 +122,11 @@ a {
 
 h1 {
 	font-size: 1.5em;
+}
+
+h2 {
+	font-size: 1.2em;
+	color: lighten($text-color, 20%);
 }
 
 .hidden {
@@ -179,5 +185,56 @@ p {
 
 	@include horizontal-breakpoint(mobile) {
 		min-width: 275px;
+	}
+}
+
+.games-list-header {
+	display: flex;
+	justify-content: center;
+
+	div + div {
+		margin-left: 5px;
+	}
+
+	.create-game-button {
+		font-size: 18px;
+		cursor: pointer;
+	}
+}
+
+.statistics-item {
+	padding: 10px 15px;
+	margin: 0 20px 30px;
+	min-width: 115px;
+	text-align: center;
+	border-left: 1px solid $border-color;
+	border-bottom: 1px solid $border-color;
+
+	@include horizontal-breakpoint(mobile) {
+		padding: 15px 0;
+		margin-bottom: 0;
+		border-top: 1px solid $border-color;
+		border-left: 0;
+		border-bottom: 0;
+	}
+
+	& .statistics-item-data {
+		font-size: 25px;
+	}
+
+	& .statistics-item-title {
+		font-size: 10px;
+	}
+
+	&.elo-rating-statistic {
+		justify-content: center;
+
+		& .statistics-item-data {
+			display: flex;
+		}
+	}
+
+	&:hover {
+		background: lighten($background-color, 1%);
 	}
 }

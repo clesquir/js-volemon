@@ -45,7 +45,7 @@ export const loadStatistics = function(userId) {
 Template.statistics.helpers({
 	numberOfGamesPlayed: function() {
 		if (!this.profile) {
-			return '-';
+			return 0;
 		}
 
 		return this.profile.numberOfWin + this.profile.numberOfLost;
