@@ -48,17 +48,40 @@ export const getUTCTimeStamp = function() {
 };
 
 export const timeElapsedSince = function(time) {
-	let minutes = Moment.moment.duration(getUTCTimeStamp() - time).asMinutes();
+	return timeDifference(time, '', ' ago');
+};
+
+export const timeDifference = function(time, prefix = '', suffix = '') {
+	let minutes = Math.floor(Math.abs(Moment.moment.duration(getUTCTimeStamp() - time).asMinutes()));
 	let hours = Math.floor(minutes / 60);
-	minutes = Math.floor(minutes);
+	let days = Math.floor(hours / 24);
+	let weeks = Math.floor(days / 7);
 
 	if (minutes === 0) {
 		return 'just now';
 	} else if (hours === 0) {
-		return minutes + 'min ago';
-	} else if (hours < 12) {
+		return prefix + minutes + 'min' + suffix;
+	} else if (days === 0) {
 		minutes -= Math.floor(hours * 60);
-		return hours + 'h ' + minutes + 'min ago';
+		return prefix + hours + 'h ' + minutes + 'min' + suffix;
+	} else if (weeks === 0) {
+		hours -= Math.floor(days * 24);
+		let difference = days + 'd';
+
+		if (days > 0) {
+			difference = difference + ' ' + hours + 'h';
+		}
+
+		return prefix + difference + suffix;
+	} else if (weeks <= 2) {
+		days -= Math.floor(weeks * 7);
+		let difference = weeks + 'w';
+
+		if (days > 0) {
+			difference = difference + ' ' + days + 'd';
+		}
+
+		return prefix + difference + suffix;
 	}
 
 	return Moment.moment(time).format('YYYY-MM-DD');

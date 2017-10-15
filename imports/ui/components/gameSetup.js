@@ -5,6 +5,7 @@ import {POSSIBLE_NO_PLAYERS} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {isUserHost} from '/imports/api/games/utils.js';
+import {playersCanPlayTournament} from '/imports/api/tournaments/utils.js';
 
 import './gameSetup.html';
 
@@ -41,7 +42,11 @@ Template.gameSetup.helpers({
 		const player = Players.findOne({gameId: Session.get('game'), userId: Meteor.userId()});
 		const players = Players.find({gameId: Session.get('game')});
 
-		return (!player && POSSIBLE_NO_PLAYERS.indexOf(players.count() + 1) !== -1);
+		return (
+			!player &&
+			playersCanPlayTournament(this.game, [{userId: Meteor.userId()}]) &&
+			POSSIBLE_NO_PLAYERS.indexOf(players.count() + 1) !== -1
+		);
 	},
 
 	/**

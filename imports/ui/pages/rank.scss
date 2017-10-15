@@ -1,17 +1,3 @@
-#rank-elo-ranking, #rank-achievements-ranking {
-	min-width: 275px;
-
-	.rank-cell {
-		font-weight: 900;
-		font-size: 20px;
-		line-height: 20px;
-	}
-
-	.elo-rating-cell {
-		display: flex;
-	}
-}
-
 #rank-line-chart-display {
 	.display-chart-period {
 		margin-bottom: 10px;

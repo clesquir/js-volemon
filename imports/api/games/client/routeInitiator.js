@@ -7,6 +7,7 @@ import GameRematch from '/imports/api/games/client/GameRematch.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
 import ClientStreamFactory from '/imports/lib/stream/client/ClientStreamFactory.js';
 import StreamConfiguration from '/imports/lib/stream/StreamConfiguration.js';
+import {updateConnectionIndicator, destroyConnectionIndicator} from '/imports/api/games/client/connectionIndicator.js';
 
 /** @type {Stream} */
 export let stream = null;
@@ -21,7 +22,25 @@ let gameRematch = null;
 /** @type {GameReaction} */
 export let gameReaction = null;
 
-export const initGame = function(gameId) {
+export const onRenderGameController = function() {
+	initGame(Session.get('game'));
+
+	$(window).bind('beforeunload', function() {
+		quitGame(Session.get('game'));
+		destroyGame(Session.get('game'));
+	});
+
+	updateConnectionIndicator();
+};
+
+export const onStopGameController = function() {
+	quitGame(Session.get('game'));
+	destroyGame(Session.get('game'));
+	destroyConnectionIndicator();
+	unsetGameSessions();
+};
+
+const initGame = function(gameId) {
 	//Destroy if existent
 	destroyGame(gameId);
 
@@ -40,13 +59,13 @@ export const initGame = function(gameId) {
 	gameReaction.init();
 };
 
-export const quitGame = function(gameId) {
+const quitGame = function(gameId) {
 	if (gameId) {
 		Meteor.call('quitGame', gameId);
 	}
 };
 
-export const destroyGame = function(gameId) {
+const destroyGame = function(gameId) {
 	if (gameId) {
 		if (serverNormalizedTime) {
 			serverNormalizedTime.stop();
@@ -66,7 +85,7 @@ export const destroyGame = function(gameId) {
 	}
 };
 
-export const unsetGameSessions = function() {
+const unsetGameSessions = function() {
 	Session.set('game', undefined);
 	Session.set('userCurrentlyPlaying', false);
 };

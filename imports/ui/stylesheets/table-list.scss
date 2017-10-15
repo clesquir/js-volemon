@@ -7,6 +7,20 @@ $table-list-radius: 3px;
 	margin: 0 auto;
 }
 
+.ranked-table-list {
+	min-width: 275px;
+
+	.rank-cell {
+		font-weight: 900;
+		font-size: 20px;
+		line-height: 20px;
+	}
+
+	.elo-rating-cell {
+		display: flex;
+	}
+}
+
 .table-list-row {
 	display: flex;
 	align-items: center;

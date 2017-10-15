@@ -106,6 +106,7 @@ export default class GameData {
 		let game = this.fetchGame();
 
 		this.createdBy = game.createdBy;
+		this.tournamentId = game.tournamentId;
 
 		this.updateStartedAt(game.startedAt);
 		this.updateHostPoints(game.hostPoints);

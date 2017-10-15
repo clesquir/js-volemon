@@ -11,23 +11,38 @@
 		<div class="app-header">
 
 			<div class="app-header-section app-header-section-button app-header-section-button-home" title="Home">
-				<a href="{{pathFor 'home'}}"><i class="fa fa-home"></i>
-				<div class="app-header-button-title">Home</div></a>
+				<a href="{{pathFor 'home'}}">
+					<i class="fa fa-home"></i>
+					<div class="app-header-button-title">Home</div>
+				</a>
 			</div>
 
 			<div class="app-header-section app-header-section-button app-header-section-button-create-game" title="Create a game">
-				<a data-action="create-game"><i class="fa fa-plus-circle"></i>
-				<div class="app-header-button-title">Create game</div></a>
+				<a data-action="create-game">
+					<i class="fa fa-plus-circle"></i>
+					<div class="app-header-button-title">Create game</div>
+				</a>
 			</div>
 
 			<div class="app-header-section app-header-section-button app-header-section-button-games-list" title="View the games list">
-				<a href="{{pathFor 'games-list'}}"><i class="fa fa-list"></i>
-				<div class="app-header-button-title">Games list</div></a>
+				<a href="{{pathFor 'games'}}">
+					<i class="fa fa-list"></i>
+					<div class="app-header-button-title">Games list</div>
+				</a>
+			</div>
+
+			<div class="app-header-section app-header-section-button app-header-section-button-games-list" title="Tournaments">
+				<a href="{{pathFor 'tournaments'}}">
+					<img src="/assets/tournament-icon.png" style="height: 22px;" />
+					<div class="app-header-button-title">Tournaments</div>
+				</a>
 			</div>
 
 			<div class="app-header-section app-header-section-button app-header-section-button-view-rank" title="View rank">
-				<a href="{{pathFor 'rank'}}"><i class="fa fa-line-chart"></i>
-				<div class="app-header-button-title">View rank</div></a>
+				<a href="{{pathFor 'rank'}}">
+					<i class="fa fa-line-chart"></i>
+					<div class="app-header-button-title">View rank</div>
+				</a>
 			</div>
 
 			<div class="app-header-section app-header-empty-section"></div>

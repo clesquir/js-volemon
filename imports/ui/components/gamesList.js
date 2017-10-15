@@ -48,12 +48,6 @@ Template.gamesList.helpers({
 	}
 });
 
-Template.gamesList.events({
-	'click [data-action="go-to-game"]': function(e) {
-		Router.go(Router.routes['game'].url({_id: this._id}));
-	}
-});
-
 Template.gamesList.onCreated(function() {
 	this.uptime = new ReactiveVar(0);
 	this.uptimeInterval = Meteor.setInterval(() => {

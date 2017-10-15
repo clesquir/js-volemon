@@ -1,14 +1,12 @@
 import {Meteor} from 'meteor/meteor';
-import PlayerWon from '/imports/api/games/events/PlayerWon.js';
-import PlayerLost from '/imports/api/games/events/PlayerLost.js';
-import {EloScores} from '/imports/api/games/eloscores.js';
+import EloScoreCreator from '/imports/api/games/server/EloScoreCreator.js';
 import {Games} from '/imports/api/games/games.js';
-import {Profiles} from '/imports/api/profiles/profiles.js';
-import GameFinished from '/imports/api/games/events/GameFinished.js';
-import {GAME_MAXIMUM_POINTS} from '/imports/api/games/constants.js';
-import {hasGameStatusEndedWithAWinner, isGameStatusFinished} from '/imports/api/games/utils.js';
+import {hasGameStatusEndedWithAWinner} from '/imports/api/games/utils.js';
+import ProfileUpdater from '/imports/api/profiles/server/ProfileUpdater.js';
+import TournamentEloScoreCreator from '/imports/api/tournaments/server/TournamentEloScoreCreator';
+import TournamentProfileUpdater from '/imports/api/tournaments/server/TournamentProfileUpdater.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
-import {EventPublisher} from '/imports/lib/EventPublisher.js';
+import FinishedGameUpdater from './FinishedGameUpdater.js';
 
 export const finishGame = function(gameId, winnerUserId, loserUserId) {
 	const game = Games.findOne(gameId);
@@ -18,135 +16,27 @@ export const finishGame = function(gameId, winnerUserId, loserUserId) {
 		throw new Meteor.Error(404, 'Game not found');
 	}
 
+	if (!hasGameStatusEndedWithAWinner(game.status)) {
+		throw new Meteor.Error('not-allowed', 'Game has not finished with a winner');
+	}
+
 	data['finishedAt'] = getUTCTimeStamp();
 	data['gameDuration'] = data['finishedAt'] - game.startedAt;
 
 	Games.update({_id: game._id}, {$set: data});
 
+	let profileUpdater = new ProfileUpdater();
+	let eloScoreCreator = new EloScoreCreator();
+	if (game.tournamentId) {
+		profileUpdater = new TournamentProfileUpdater(game.tournamentId);
+		eloScoreCreator = new TournamentEloScoreCreator(game.tournamentId);
+	}
+	const finishedGameUpdater = new FinishedGameUpdater(profileUpdater, eloScoreCreator);
+
 	if (!game.isPracticeGame) {
-		onGameFinished(game._id, winnerUserId, loserUserId);
+		finishedGameUpdater.updateStatistics(gameId, winnerUserId, loserUserId);
+		finishedGameUpdater.updateElo(gameId, winnerUserId, loserUserId);
 	}
 
-	EventPublisher.publish(new GameFinished(game._id, data['gameDuration']));
-};
-
-/**
- * @param gameId
- * @param winnerUserId
- * @param loserUserId
- */
-export const onGameFinished = function(gameId, winnerUserId, loserUserId) {
-	const game = Games.findOne(gameId);
-
-	if (!game) {
-		throw new Meteor.Error(404, 'Game not found');
-	}
-
-	if (!hasGameStatusEndedWithAWinner(game.status)) {
-		throw new Meteor.Error('not-allowed', 'Only finished games can be used for Elo calculations');
-	}
-
-	let winnerProfile = Profiles.findOne({userId: winnerUserId});
-	let loserProfile = Profiles.findOne({userId: loserUserId});
-
-	updateProfilesOnGameFinished(game, winnerProfile, loserProfile);
-	updateEloScoresOnGameFinished(game, winnerProfile, loserProfile);
-};
-
-/**
- * @private
- * @param game
- * @param winnerProfile
- * @param loserProfile
- */
-export const updateProfilesOnGameFinished = function(game, winnerProfile, loserProfile) {
-	const winnerProfileData = {};
-	const loserProfileData = {};
-
-	let winnerPoints = game.hostPoints;
-	let loserPoints = game.clientPoints;
-	if (game.clientPoints > game.hostPoints) {
-		winnerPoints = game.clientPoints;
-		loserPoints = game.hostPoints;
-	}
-
-	winnerProfileData['numberOfWin'] = winnerProfile.numberOfWin + 1;
-	loserProfileData['numberOfLost'] = loserProfile.numberOfLost + 1;
-
-	if (isGameStatusFinished(game.status) && winnerPoints === GAME_MAXIMUM_POINTS && loserPoints === 0) {
-		winnerProfileData['numberOfShutouts'] = winnerProfile.numberOfShutouts + 1;
-		loserProfileData['numberOfShutoutLosses'] = loserProfile.numberOfShutoutLosses + 1;
-	}
-
-	Profiles.update({_id: winnerProfile._id}, {$set: winnerProfileData});
-	Profiles.update({_id: loserProfile._id}, {$set: loserProfileData});
-
-	EventPublisher.publish(new PlayerWon(game._id, winnerProfile.userId, winnerPoints, loserPoints));
-	EventPublisher.publish(new PlayerLost(game._id, loserProfile.userId, winnerPoints, loserPoints));
-};
-
-/**
- * @private
- * @param game
- * @param winnerProfile
- * @param loserProfile
- */
-export const updateEloScoresOnGameFinished = function(game, winnerProfile, loserProfile) {
-	const winnerProfileData = {};
-	const loserProfileData = {};
-	const eloScoreTimestamp = getUTCTimeStamp();
-
-	winnerProfileData['eloRating'] = getEloRating(
-		winnerProfile.eloRating,
-		getEloScore(winnerProfile.eloRating, loserProfile.eloRating),
-		1
-	);
-	winnerProfileData['eloRatingLastChange'] = winnerProfileData['eloRating'] - winnerProfile.eloRating;
-
-	loserProfileData['eloRating'] = getEloRating(
-		loserProfile.eloRating,
-		getEloScore(loserProfile.eloRating, winnerProfile.eloRating),
-		0
-	);
-	loserProfileData['eloRatingLastChange'] = loserProfileData['eloRating'] - loserProfile.eloRating;
-
-	Profiles.update({_id: winnerProfile._id}, {$set: winnerProfileData});
-	Profiles.update({_id: loserProfile._id}, {$set: loserProfileData});
-
-	EloScores.insert({
-		timestamp: eloScoreTimestamp,
-		userId: winnerProfile.userId,
-		gameId: game._id,
-		eloRating: winnerProfileData['eloRating'],
-		eloRatingChange: winnerProfileData['eloRatingLastChange']
-	});
-	EloScores.insert({
-		timestamp: eloScoreTimestamp,
-		userId: loserProfile.userId,
-		gameId: game._id,
-		eloRating: loserProfileData['eloRating'],
-		eloRatingChange: loserProfileData['eloRatingLastChange']
-	});
-};
-
-/**
- * @private
- * @param currentElo
- * @param opponentElo
- * @returns {number}
- */
-export const getEloScore = function(currentElo, opponentElo) {
-	return 1 / (1 + Math.pow(10, (opponentElo - currentElo) / 400));
-};
-
-/**
- * @private
- * @param previousEloRating
- * @param eloScore
- * @param score
- * @param K
- * @returns {number}
- */
-export const getEloRating = function(previousEloRating, eloScore, score, K = 32) {
-	return previousEloRating + Math.round(K * (score - eloScore));
+	finishedGameUpdater.publishEvents(gameId, winnerUserId, loserUserId);
 };

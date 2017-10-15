@@ -13,11 +13,32 @@ export default class Listener {
 		this.gameId = gameId;
 		this.userId = userId;
 
-		this.addListeners();
+		if (this.allowedForGame()) {
+			this.addListeners();
+		}
 	}
 
 	destroy() {
 		this.removeListeners();
+	}
+
+	allowedForGame() {
+		if (this.isTournamentGame() && !this.allowedForTournamentGame()) {
+			return false;
+		}
+		if (this.isPracticeGame() && !this.allowedForPracticeGame()) {
+			return false;
+		}
+
+		return true;
+	}
+
+	allowedForTournamentGame() {
+		return false;
+	}
+
+	allowedForPracticeGame() {
+		return false;
 	}
 
 	addListeners() {
@@ -97,6 +118,18 @@ export default class Listener {
 		}
 
 		return userPlayerKey;
+	}
+
+	isTournamentGame() {
+		const game = Games.findOne({_id: this.gameId});
+
+		return game && !!game.tournamentId;
+	}
+
+	isPracticeGame() {
+		const game = Games.findOne({_id: this.gameId});
+
+		return game && !!game.isPracticeGame;
 	}
 
 	currentPlayerShape() {

@@ -1,0 +1,21 @@
+<template name="games">
+
+	<div class="app-section app-section-top">
+
+		<div class="app-section-inner maximum-responsive-width">
+
+			<h1 class="games-list-header">
+				<div>Games list</div>
+				<div class="create-game-button" data-action="create-game"  data-tooltip="Create a game">
+					<i class="fa fa-plus-circle"></i>
+				</div>
+			</h1>
+			<p>You can create, join or view a game.</p>
+
+			{{> gamesList games=games goToGameDataAction="go-to-game"}}
+
+		</div>
+
+	</div>
+
+</template>

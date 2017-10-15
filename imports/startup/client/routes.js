@@ -1,16 +1,22 @@
 import {Meteor} from 'meteor/meteor';
 import {GameController} from '/imports/startup/client/controllers/GameController.js';
-import {GamesListController} from '/imports/startup/client/controllers/GamesListController.js';
+import {GamesController} from '/imports/startup/client/controllers/GamesController.js';
 import {HomeController} from '/imports/startup/client/controllers/HomeController.js';
 import {RankController} from '/imports/startup/client/controllers/RankController.js';
+import {TournamentsController} from '/imports/startup/client/controllers/TournamentsController.js';
+import {TournamentController} from '/imports/startup/client/controllers/TournamentController.js';
+import {TournamentGameController} from '/imports/startup/client/controllers/TournamentGameController.js';
 
 import '/imports/ui/pages/app.js';
 import '/imports/ui/pages/game.js';
-import '/imports/ui/pages/gamesList.js';
+import '/imports/ui/pages/games.js';
 import '/imports/ui/pages/home.js';
 import '/imports/ui/pages/login.js';
 import '/imports/ui/pages/passwordChange.js';
 import '/imports/ui/pages/rank.js';
+import '/imports/ui/pages/tournaments.js';
+import '/imports/ui/pages/tournament.js';
+import '/imports/ui/pages/tournamentGame.js';
 import '/imports/ui/pages/username.js';
 import '/imports/ui/pages/dev/environment.js';
 import '/imports/ui/pages/dev/shape.js';
@@ -18,10 +24,13 @@ import '/imports/ui/pages/dev/shape.js';
 import '/imports/ui/components/achievementPopup.js';
 import '/imports/ui/components/achievements.js';
 import '/imports/ui/components/afterGame.js';
+import '/imports/ui/components/eloRanking.js';
 import '/imports/ui/components/eloRatingChange.js';
 import '/imports/ui/components/lightbox.js';
 import '/imports/ui/components/loading.js';
+import '/imports/ui/components/gameCanvas.js';
 import '/imports/ui/components/gameSetup.js';
+import '/imports/ui/components/gamesList.js';
 import '/imports/ui/components/reactions.js';
 import '/imports/ui/components/recentGames.js';
 import '/imports/ui/components/shapeSelector.js';
@@ -56,9 +65,9 @@ Router.map(function() {
 		});
 	}
 
-	this.route('games-list', {
-		path: '/games-list',
-		controller: GamesListController
+	this.route('games', {
+		path: '/games',
+		controller: GamesController
 	});
 
 	this.route('rank', {
@@ -66,8 +75,23 @@ Router.map(function() {
 		controller: RankController
 	});
 
+	this.route('tournaments', {
+		path: '/tournaments',
+		controller: TournamentsController
+	});
+
+	this.route('tournament', {
+		path: '/tournament/:tournamentId',
+		controller: TournamentController
+	});
+
+	this.route('tournamentGame', {
+		path: '/tournament/:tournamentId/game/:gameId',
+		controller: TournamentGameController
+	});
+
 	this.route('game', {
-		path: '/:_id',
+		path: '/game/:_id',
 		controller: GameController
 	});
 });

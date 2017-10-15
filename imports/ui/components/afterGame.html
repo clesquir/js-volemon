@@ -16,12 +16,12 @@
 						{{#if isNotAPracticeGame}}
 							<div class="view-selector-content after-game-elo-scores">
 								<div class="after-game-elo">
-									{{#each players}}
-									<div>
-										<div class="player-name">{{name}}</div>
-										<div>{{getPlayerEloRating this ../eloScores}}</div>
-										<div>{{> eloRatingChange eloRatingChange=(getPlayerGameEloRatingChange this ../eloScores)}}</div>
-									</div>
+									{{#each playersCollection}}
+										<div>
+											<div class="player-name">{{name}}</div>
+											<div>{{getPlayerEloRating this ../eloScoresCollection}}</div>
+											<div>{{> eloRatingChange eloRatingChange=(getPlayerGameEloRatingChange this ../eloScoresCollection)}}</div>
+										</div>
 									{{/each}}
 								</div>
 							</div>
@@ -58,7 +58,11 @@
 								<div><a href="#" data-action="game-rematch">Ask for a rematch</a></div>
 							{{/if}}
 							<div><a href="{{pathFor 'home'}}">Go to the homepage</a></div>
-							<div><a href="{{pathFor 'rank'}}">View rank</a></div>
+							{{#if isTournament}}
+								<div><a href="{{pathFor 'tournament' tournamentId=this.game.tournamentId}}">Go to the tournament page</a></div>
+							{{else}}
+								<div><a href="{{pathFor 'rank'}}">View rank</a></div>
+							{{/if}}
 						{{/if}}
 					</div>
 				{{/if}}

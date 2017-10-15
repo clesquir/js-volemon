@@ -10,6 +10,10 @@ import {
 } from '/imports/api/games/bonusConstants.js';
 
 export default class ToTheSky extends Listener {
+	allowedForTournamentGame() {
+		return true;
+	}
+
 	addListeners() {
 		this.addListener(PointTaken.prototype.constructor.name, this.onPointTaken);
 		this.addListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);

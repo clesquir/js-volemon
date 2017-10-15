@@ -1,0 +1,25 @@
+<template name="gamesList">
+	<div class="cards-list constrained-width">
+		{{#each games}}
+			<div class="card clickable-card" data-action="{{../goToGameDataAction}}">
+				<div class="card-row card-row-top">
+					{{#if hasOpponent}}
+						<div class="card-cell card-title card-cell-ellipsis">{{hostName}}</div>
+						<div class="card-cell card-title" style="flex: 0;">vs</div>
+						<div class="card-cell card-title card-cell-ellipsis">{{clientName}}</div>
+					{{else}}
+						<div class="card-cell card-title card-cell-ellipsis">{{hostName}}</div>
+					{{/if}}
+				</div>
+				<div class="card-row card-row-bottom">
+					<div class="card-cell card-left">{{createdAt}}</div>
+					<div class="card-cell card-right">{{gameStatus}}</div>
+				</div>
+			</div>
+		{{else}}
+			<div class="card empty-card">
+				<div class="card-cell">There are no games...</div>
+			</div>
+		{{/each}}
+	</div>
+</template>

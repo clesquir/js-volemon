@@ -1,7 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Games} from '/imports/api/games/games.js';
 
-export const GamesListController = RouteController.extend({
+export const GamesController = RouteController.extend({
 	waitOn: function() {
 		return Meteor.subscribe('games');
 	},

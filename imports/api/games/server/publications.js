@@ -13,6 +13,7 @@ Meteor.publish('games', function() {
 		Games.find(
 			{
 				isPrivate: 0,
+				tournamentId: null,
 				status: {$in: [GAME_STATUS_REGISTRATION, GAME_STATUS_STARTED]}
 			},
 			{

@@ -5,7 +5,6 @@ import {Achievements} from '/imports/api/achievements/achievements.js';
 import {EloScores} from '/imports/api/games/eloscores.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
 import RankChart from '/imports/api/ranks/client/RankChart.js';
-import {getWinRate} from '/imports/lib/utils.js';
 
 import './rank.html';
 
@@ -35,10 +34,6 @@ Template.rank.helpers({
 		});
 
 		return userName;
-	},
-
-	getWinRate: function() {
-		return getWinRate(this);
 	},
 
 	achievementsRanking: function() {

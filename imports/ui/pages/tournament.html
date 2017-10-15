@@ -1,0 +1,92 @@
+<template name="tournament">
+
+	<div class="app-section app-section-top tournament-page">
+
+		<div class="app-section-inner maximum-responsive-width">
+
+			<h1>{{tournament.mode.name}}</h1>
+
+			<p>{{tournamentDescription}}</p>
+
+			<div id="tournament-contents" class="view-selector-contents tournament-statistics-shown">
+				<div class="view-selector">
+					<i class="fa fa-pie-chart view-tournament-statistics" data-action="view-tournament-statistics" data-tooltip="Statistics"></i>
+					{{#if isTournamentActive}}
+						<i class="fa fa-list view-games-tournament" data-action="view-games-tournament" data-tooltip="Games"></i>
+					{{/if}}
+					<i class="fa fa-hashtag view-rank-tournament" data-action="view-rank-tournament" data-tooltip="Rank"></i>
+				</div>
+
+				<div class="view-selector-content tournament-statistics">
+					<h2>Statistics</h2>
+
+					{{#if currentUser}}
+
+						{{#if tournamentIsActiveAndHasRetries}}
+							<div class="tournament-retries-container">
+								<div class="retries-availables">
+									{{#each retriesAvailables}}
+									<div class="retry">
+										<div class="{{#if lost}}retry-lost{{/if}}">x</div>
+									</div>
+									{{/each}}
+								</div>
+							</div>
+						{{/if}}
+
+						<div class="tournament-statistics-information-container">
+							<div class="statistics-item">
+								<div>
+									<div class="statistics-item-data">{{numberOfGamesPlayed}}</div>
+									<div class="statistics-item-title">games played</div>
+								</div>
+							</div>
+							<div class="statistics-item">
+								<div>
+									<div class="statistics-item-data">{{winRate}}</div>
+									<div class="statistics-item-title">win rate</div>
+								</div>
+							</div>
+							<div class="statistics-item elo-rating-statistic">
+								<div>
+									<div class="statistics-item-data">
+										<div>{{eloRating}}</div>
+										{{> eloRatingChange eloRatingChange=eloRatingLastChange}}
+									</div>
+									<div class="statistics-item-title">ELO</div>
+								</div>
+							</div>
+						</div>
+
+					{{else}}
+						<p>Please <a class="clickable-link" data-action="user-log-in">log in</a> to get statistics on your profile for this tournament!</p>
+					{{/if}}
+				</div>
+
+				<div class="view-selector-content games-tournament">
+					<h2 class="games-list-header">
+						<div>Games list</div>
+						{{#if canPlayTournament}}
+							<div class="create-game-button" data-action="create-tournament-game" data-tooltip="Create a game">
+								<i class="fa fa-plus-circle"></i>
+							</div>
+						{{/if}}
+					</h2>
+					<p>You can create, join or view a game.</p>
+
+					{{> gamesList games=tournamentGames goToGameDataAction="go-to-tournament-game"}}
+
+				</div>
+
+				<div class="view-selector-content rank-tournament">
+					<h2>Rank</h2>
+
+					{{> eloRanking profilesCollection=tournamentProfiles usersCollection=users emptyText="Nobody played this tournament yet..."}}
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+</template>

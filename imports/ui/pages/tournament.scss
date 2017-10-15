@@ -1,0 +1,73 @@
+@include view-selector-shown(tournament-statistics-shown, view-tournament-statistics, tournament-statistics);
+@include view-selector-shown(games-tournament-shown, view-games-tournament, games-tournament);
+@include view-selector-shown(rank-tournament-shown, view-rank-tournament, rank-tournament);
+
+.tournament-page h1 {
+	margin-bottom: 5px;
+}
+
+.tournament-page h1 + p {
+	margin-top: 0;
+}
+
+.tournament-retries-container {
+	display: flex;
+	margin: 10px 0 20px;
+	justify-content: center;
+
+	.retries-availables {
+		display: flex;
+		flex-wrap: wrap;
+		max-width: 300px;
+
+		.retry {
+			width: 40px;
+			height: 40px;
+			margin: 5px;
+			border-style: solid;
+			border-width: 3px;
+			border-color: #777 #aaa #aaa #777;
+			border-radius: 5px;
+			background: linear-gradient(155deg, #999, transparent 50%);
+
+			& > div {
+				font-size: 35px;
+				line-height: 35px;
+				opacity: 0.15;
+				color: $negative;
+				font-family: 'Rock Salt', cursive;
+
+				&.retry-lost {
+					opacity: 1;
+				}
+			}
+		}
+
+		@include horizontal-breakpoint(mobile) {
+			max-width: 200px;
+
+			.retry {
+				width: 20px;
+				height: 20px;
+
+				& > div {
+					font-size: 20px;
+					line-height: 20px;
+				}
+			}
+		}
+	}
+}
+
+.tournament-statistics-information-container {
+	padding-bottom: 5px;
+	display: flex;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	min-width: 580px;
+
+	@include horizontal-breakpoint(mobile) {
+		min-width: unset;
+		flex-direction: column;
+	}
+}

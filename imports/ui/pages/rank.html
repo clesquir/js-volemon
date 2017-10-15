@@ -13,30 +13,8 @@
 					<i class="fa fa-trophy view-achievements-ranking" data-action="view-achievements-ranking" data-tooltip="Achievements"></i>
 				</div>
 
-				<div id="rank-elo-ranking" class="view-selector-content rank-elo-ranking table-list">
-					<div class="table-list-row table-list-header">
-						<div class="table-list-cell center-aligned-cell" style="flex: 0 0 50px;">&nbsp;</div>
-						<div class="table-list-cell">Name</div>
-						<div class="table-list-cell right-aligned-cell hideable-cell" style="flex: 0 0 50px;">W</div>
-						<div class="table-list-cell right-aligned-cell hideable-cell" style="flex: 0 0 50px;">L</div>
-						<div class="table-list-cell right-aligned-cell hideable-cell" style="flex: 0 0 55px;">%</div>
-						<div class="table-list-cell" style="flex: 0 0 90px;">Elo</div>
-					</div>
-
-					{{#each profiles}}
-						<div class="table-list-row {{getHighlightedClassIfCurrentUser}}">
-							<div class="table-list-cell center-aligned-cell rank-cell" style="flex: 0 0 50px;">{{getRank @index}}</div>
-							<div class="table-list-cell">{{getUserName ../users}}</div>
-							<div class="table-list-cell right-aligned-cell hideable-cell" style="flex: 0 0 50px;">{{numberOfWin}}</div>
-							<div class="table-list-cell right-aligned-cell hideable-cell" style="flex: 0 0 50px;">{{numberOfLost}}</div>
-							<div class="table-list-cell right-aligned-cell hideable-cell" style="flex: 0 0 55px;">{{getWinRate}}</div>
-							<div class="table-list-cell elo-rating-cell" style="flex: 0 0 90px;"><div>{{eloRating}}</div> {{> eloRatingChange eloRatingChange=eloRatingLastChange}}</div>
-						</div>
-					{{else}}
-						<div class="table-list-row">
-							<div class="table-list-cell">There is no data to show...</div>
-						</div>
-					{{/each}}
+				<div id="rank-elo-ranking" class="view-selector-content rank-elo-ranking">
+					{{> eloRanking profilesCollection=profiles usersCollection=users emptyText="Nobody played yet..."}}
 				</div>
 
 				<div id="rank-line-chart-display" class="view-selector-content rank-line-chart-display">
@@ -52,7 +30,7 @@
 					</div>
 				</div>
 
-				<div id="rank-achievements-ranking" class="view-selector-content rank-achievements-ranking table-list">
+				<div id="rank-achievements-ranking" class="view-selector-content rank-achievements-ranking table-list ranked-table-list">
 					<div class="table-list-row table-list-header">
 						<div class="table-list-cell center-aligned-cell" style="flex: 0 0 50px;">&nbsp;</div>
 						<div class="table-list-cell">Name</div>

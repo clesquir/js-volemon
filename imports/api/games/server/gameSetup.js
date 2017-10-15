@@ -22,15 +22,17 @@ import GameTimedOut from '/imports/api/games/events/GameTimedOut.js';
 /**
  * @param user
  * @param {GameInitiator[]} gameInitiators
+ * @param tournamentId
  * @returns {string}
  */
-export const createGame = function(user, gameInitiators) {
+export const createGame = function(user, gameInitiators, tournamentId = null) {
 	let id = null;
 
 	do {
 		try {
 			id = Games.insert({
 				_id: Random.id(5),
+				tournamentId: tournamentId,
 				status: GAME_STATUS_REGISTRATION,
 				createdAt: getUTCTimeStamp(),
 				createdBy: user._id,
@@ -172,7 +174,7 @@ export const replyRematch = function(userId, gameId, accepted, gameInitiators) {
 		const clientPlayer = Players.findOne({gameId: gameId, userId: {$ne: game.createdBy}});
 		const clientUser = Meteor.users.findOne({_id: clientPlayer.userId});
 
-		const gameRematchId = createGame(clientUser, gameInitiators);
+		const gameRematchId = createGame(clientUser, gameInitiators, game.tournamentId);
 
 		Games.update(
 			{_id: gameRematchId},

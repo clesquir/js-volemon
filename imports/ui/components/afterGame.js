@@ -20,6 +20,7 @@ import {
 	currentPlayerHasRepliedRematch,
 	currentPlayerAcceptedRematch
 } from '/imports/api/games/client/gameSetup.js';
+import {playersCanPlayTournament} from '/imports/api/tournaments/utils.js';
 
 import './afterGame.html';
 
@@ -38,6 +39,10 @@ Template.afterGame.helpers({
 
 	isNotAPracticeGame: function() {
 		return !this.game.isPracticeGame;
+	},
+
+	isTournament: function() {
+		return !!this.game.tournamentId;
 	},
 
 	gameDurations: function() {
@@ -110,6 +115,7 @@ Template.afterGame.helpers({
 		const players = Players.find({gameId: Session.get('game')});
 
 		return (
+			playersCanPlayTournament(this.game, players) &&
 			!playerAcceptedRematch(players) &&
 			!playerDeclinedRematch(players) &&
 			!playerLeftGame(players)
@@ -148,6 +154,7 @@ Template.afterGame.helpers({
 		const players = Players.find({gameId: Session.get('game')});
 
 		return (
+			playersCanPlayTournament(this.game, players) &&
 			playerAcceptedRematch(players) &&
 			!currentPlayerHasRepliedRematch(players, Meteor.userId()) &&
 			!playerDeclinedRematch(players) &&
