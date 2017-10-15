@@ -5,7 +5,7 @@ import {
 	TOURNAMENT_MODE_CLASSIC,
 	TOURNAMENT_MODE_HARDCORE
 } from '/imports/api/tournaments/tournamentModesConstants.js';
-import {TournamentModes} from '/imports/api/tournamentModes.js';
+import {TournamentModes} from '/imports/api/tournaments/tournamentModes.js';
 
 Meteor.startup(function () {
 	const tournaments = [
