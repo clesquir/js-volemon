@@ -1,4 +1,4 @@
-import AchievementsListeners from '/imports/api/achievements/server/Listeners.js';
+import AchievementsListeners from '/imports/api/achievements/server/GameListeners.js';
 import GameStreamInitiator from '/imports/api/games/server/GameStreamInitiator.js';
 import {ServerStreamInitiator} from '/imports/lib/stream/server/ServerStreamInitiator.js';
 

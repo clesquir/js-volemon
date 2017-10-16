@@ -1,10 +1,10 @@
-import Listener from '/imports/api/achievements/server/listeners/Listener.js';
+import GameListener from './GameListener.js';
 import {ACHIEVEMENT_RAKSHASA} from '/imports/api/achievements/constants.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import {BONUS_SHAPE_SHIFT} from '/imports/api/games/bonusConstants.js'
 import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js'
 
-export default class Rakshasa extends Listener {
+export default class Rakshasa extends GameListener {
 	allowedForTournamentGame() {
 		return true;
 	}

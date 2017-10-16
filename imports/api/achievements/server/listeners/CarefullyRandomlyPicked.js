@@ -1,10 +1,10 @@
-import Listener from '/imports/api/achievements/server/listeners/Listener.js';
+import GameListener from './GameListener.js';
 import {ACHIEVEMENT_CAREFULLY_RANDOMLY_PICKED} from '/imports/api/achievements/constants.js';
 import PlayerWon from '/imports/api/games/events/PlayerWon.js';
 import {Players} from '/imports/api/games/players.js';
 import {PLAYER_LIST_OF_SHAPES, PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
 
-export default class CarefullyRandomlyPicked extends Listener {
+export default class CarefullyRandomlyPicked extends GameListener {
 	allowedForTournamentGame() {
 		return true;
 	}

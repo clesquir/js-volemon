@@ -1,10 +1,10 @@
-import Listener from '/imports/api/achievements/server/listeners/Listener.js';
+import GameListener from './GameListener.js';
 import {ACHIEVEMENT_DAVID_VS_GOLIATH} from '/imports/api/achievements/constants.js';
 import PlayerWon from '/imports/api/games/events/PlayerWon.js';
 import {Players} from '/imports/api/games/players.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
 
-export default class DavidVsGoliath extends Listener {
+export default class DavidVsGoliath extends GameListener {
 	addListeners() {
 		this.addListener(PlayerWon.prototype.constructor.name, this.onPlayerWon);
 	}

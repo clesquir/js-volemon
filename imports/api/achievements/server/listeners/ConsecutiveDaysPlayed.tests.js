@@ -12,7 +12,7 @@ import {Players} from '/imports/api/games/players.js';
 describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
-	const listener = new ConsecutiveDaysPlayed(gameId, userId);
+	const listener = (new ConsecutiveDaysPlayed()).forGame(gameId, userId);
 	const assertConsecutiveDaysPlayedUserAchievementValuesEqual = function(number, lastDatePlayed, consecutiveDays) {
 		const achievement = UserAchievements.findOne();
 		assert.notEqual(undefined, achievement);

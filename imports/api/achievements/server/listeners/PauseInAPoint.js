@@ -1,10 +1,10 @@
-import Listener from '/imports/api/achievements/server/listeners/Listener.js';
+import GameListener from './GameListener.js';
 import {ACHIEVEMENT_PAUSE_IN_A_POINT} from '/imports/api/achievements/constants.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {BONUS_FREEZE_MONSTER} from '/imports/api/games/bonusConstants.js';
 
-export default class PauseInAPoint extends Listener {
+export default class PauseInAPoint extends GameListener {
 	addListeners() {
 		this.addListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
 		this.addListener(PointTaken.prototype.constructor.name, this.onPointTaken);

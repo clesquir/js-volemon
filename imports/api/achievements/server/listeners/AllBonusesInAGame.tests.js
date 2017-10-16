@@ -21,7 +21,7 @@ describe('AchievementListener#AllBonusesInAGame', function() {
 	});
 
 	it('add achievement if none is there and all bonuses are caught', function() {
-		const listener = new AllBonusesInAGame(gameId, userId);
+		const listener = (new AllBonusesInAGame()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		sinon.stub(listener, 'availableBonuses').callsFake(function() {
 			return [
@@ -67,7 +67,7 @@ describe('AchievementListener#AllBonusesInAGame', function() {
 	});
 
 	it('do not add achievement if different gameId', function() {
-		const listener = new AllBonusesInAGame(gameId, userId);
+		const listener = (new AllBonusesInAGame()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		sinon.stub(listener, 'availableBonuses').callsFake(function() {
 			return [
@@ -92,7 +92,7 @@ describe('AchievementListener#AllBonusesInAGame', function() {
 	});
 
 	it('do not add achievement if different userId', function() {
-		const listener = new AllBonusesInAGame(gameId, userId);
+		const listener = (new AllBonusesInAGame()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		sinon.stub(listener, 'availableBonuses').callsFake(function() {
 			return [
@@ -117,7 +117,7 @@ describe('AchievementListener#AllBonusesInAGame', function() {
 	});
 
 	it('do not increment achievement if same bonus twice but not all', function() {
-		const listener = new AllBonusesInAGame(gameId, userId);
+		const listener = (new AllBonusesInAGame()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		sinon.stub(listener, 'availableBonuses').callsFake(function() {
 			return [

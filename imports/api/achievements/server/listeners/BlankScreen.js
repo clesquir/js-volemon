@@ -1,4 +1,4 @@
-import Listener from '/imports/api/achievements/server/listeners/Listener.js';
+import GameListener from './GameListener.js';
 import {ACHIEVEMENT_BLANK_SCREEN} from '/imports/api/achievements/constants.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import BonusRemoved from '/imports/api/games/events/BonusRemoved.js';
@@ -9,7 +9,7 @@ import {
 	BONUS_INVISIBLE_MONSTER
 } from '/imports/api/games/bonusConstants.js';
 
-export default class BlankScreen extends Listener {
+export default class BlankScreen extends GameListener {
 	allowedForTournamentGame() {
 		return true;
 	}

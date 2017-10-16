@@ -3,7 +3,7 @@ import {Random} from 'meteor/random';
 import {resetDatabase} from 'meteor/xolvio:cleaner';
 import {Games} from '/imports/api/games/games.js';
 import {EloScores} from '/imports/api/games/eloscores.js';
-import {finishGame} from '/imports/api/games/onGameFinished.js';
+import {finishGame} from '/imports/api/games/server/onGameFinished.js';
 import {GAME_STATUS_STARTED, GAME_STATUS_FINISHED} from '/imports/api/games/statusConstants.js';
 import {Profiles} from '/imports/api/profiles/profiles';
 import {TournamentEloScores} from '/imports/api/tournaments/tournamentEloScores.js';

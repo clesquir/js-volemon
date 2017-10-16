@@ -9,11 +9,12 @@ import {TournamentModes} from '/imports/api/tournaments/tournamentModes.js';
 Meteor.startup(function () {
 	const tournaments = [
 		{
-			"_id": Random.id(5),
-			"identifier": 'tournament_2017-10-23',
-			"mode": TOURNAMENT_MODE_CLASSIC,
-			"startDate": "2017-10-23 +0000",
-			"endDate": "2017-10-28 +0000"
+			_id: Random.id(5),
+			identifier: 'tournament_2017-10-23',
+			mode: TOURNAMENT_MODE_CLASSIC,
+			startDate: "2017-10-23 +0000",
+			endDate: "2017-10-28 +0000",
+			isPublished: false
 		}
 	];
 

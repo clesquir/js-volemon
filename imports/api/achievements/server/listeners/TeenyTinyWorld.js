@@ -1,11 +1,11 @@
-import Listener from '/imports/api/achievements/server/listeners/Listener.js';
+import GameListener from './GameListener.js';
 import {ACHIEVEMENT_TEENY_TINY_WORLD} from '/imports/api/achievements/constants.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import BonusRemoved from '/imports/api/games/events/BonusRemoved.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {BONUS_SMALL_BALL, BONUS_SMALL_MONSTER} from '/imports/api/games/bonusConstants.js';
 
-export default class TeenyTinyWorld extends Listener {
+export default class TeenyTinyWorld extends GameListener {
 	allowedForTournamentGame() {
 		return true;
 	}

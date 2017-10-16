@@ -34,7 +34,7 @@ describe('AchievementListener#ConsecutiveWonGames', function() {
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
-		const listener = new ConsecutiveWonGames(gameId, userId);
+		const listener = (new ConsecutiveWonGames()).forGame(gameId, userId);
 		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
 
 		assert.equal(1, UserAchievements.find().count());
@@ -47,7 +47,7 @@ describe('AchievementListener#ConsecutiveWonGames', function() {
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
-		const listener = new ConsecutiveWonGames(gameId, userId);
+		const listener = (new ConsecutiveWonGames()).forGame(gameId, userId);
 		listener.onPlayerLost(new PlayerLost(gameId, userId, 5, 0));
 
 		assert.equal(1, UserAchievements.find().count());
@@ -60,7 +60,7 @@ describe('AchievementListener#ConsecutiveWonGames', function() {
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
-		const listener = new ConsecutiveWonGames(gameId, userId);
+		const listener = (new ConsecutiveWonGames()).forGame(gameId, userId);
 		listener.onPlayerWon(new PlayerWon(Random.id(5), userId, 5, 0));
 		assert.equal(0, UserAchievements.find().count());
 	});
@@ -70,7 +70,7 @@ describe('AchievementListener#ConsecutiveWonGames', function() {
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
-		const listener = new ConsecutiveWonGames(gameId, userId);
+		const listener = (new ConsecutiveWonGames()).forGame(gameId, userId);
 		listener.onPlayerLost(new PlayerLost(Random.id(5), userId, 5, 0));
 		assert.equal(0, UserAchievements.find().count());
 	});
@@ -80,7 +80,7 @@ describe('AchievementListener#ConsecutiveWonGames', function() {
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
-		const listener = new ConsecutiveWonGames(gameId, userId);
+		const listener = (new ConsecutiveWonGames()).forGame(gameId, userId);
 		listener.onPlayerWon(new PlayerWon(gameId, Random.id(5), 5, 0));
 		assert.equal(0, UserAchievements.find().count());
 	});
@@ -90,7 +90,7 @@ describe('AchievementListener#ConsecutiveWonGames', function() {
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
-		const listener = new ConsecutiveWonGames(gameId, userId);
+		const listener = (new ConsecutiveWonGames()).forGame(gameId, userId);
 		listener.onPlayerLost(new PlayerLost(gameId, Random.id(5), 5, 0));
 		assert.equal(0, UserAchievements.find().count());
 	});
@@ -100,14 +100,14 @@ describe('AchievementListener#ConsecutiveWonGames', function() {
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
-		let listener = new ConsecutiveWonGames(gameId, userId);
+		let listener = (new ConsecutiveWonGames()).forGame(gameId, userId);
 		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
 
 		assert.equal(1, UserAchievements.find().count());
 		assertConsecutiveWonGamesUserAchievementNumberEquals(1);
 		assert.equal(1, listener.numberSinceLastReset);
 
-		listener = new ConsecutiveWonGames(gameId, userId);
+		listener = (new ConsecutiveWonGames()).forGame(gameId, userId);
 		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
 
 		assertConsecutiveWonGamesUserAchievementNumberEquals(2);
@@ -119,38 +119,38 @@ describe('AchievementListener#ConsecutiveWonGames', function() {
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
-		let listener = new ConsecutiveWonGames(gameId, userId);
+		let listener = (new ConsecutiveWonGames()).forGame(gameId, userId);
 		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
 
 		assert.equal(1, UserAchievements.find().count());
 		assertConsecutiveWonGamesUserAchievementNumberEquals(1);
 		assert.equal(1, listener.numberSinceLastReset);
 
-		listener = new ConsecutiveWonGames(gameId, userId);
+		listener = (new ConsecutiveWonGames()).forGame(gameId, userId);
 		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
 
 		assertConsecutiveWonGamesUserAchievementNumberEquals(2);
 		assert.equal(2, listener.numberSinceLastReset);
 
-		listener = new ConsecutiveWonGames(gameId, userId);
+		listener = (new ConsecutiveWonGames()).forGame(gameId, userId);
 		listener.onPlayerLost(new PlayerLost(gameId, userId, 5, 0));
 
 		assertConsecutiveWonGamesUserAchievementNumberEquals(2);
 		assert.equal(0, listener.numberSinceLastReset);
 
-		listener = new ConsecutiveWonGames(gameId, userId);
+		listener = (new ConsecutiveWonGames()).forGame(gameId, userId);
 		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
 
 		assertConsecutiveWonGamesUserAchievementNumberEquals(2);
 		assert.equal(1, listener.numberSinceLastReset);
 
-		listener = new ConsecutiveWonGames(gameId, userId);
+		listener = (new ConsecutiveWonGames()).forGame(gameId, userId);
 		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
 
 		assertConsecutiveWonGamesUserAchievementNumberEquals(2);
 		assert.equal(2, listener.numberSinceLastReset);
 
-		listener = new ConsecutiveWonGames(gameId, userId);
+		listener = (new ConsecutiveWonGames()).forGame(gameId, userId);
 		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
 
 		assertConsecutiveWonGamesUserAchievementNumberEquals(3);

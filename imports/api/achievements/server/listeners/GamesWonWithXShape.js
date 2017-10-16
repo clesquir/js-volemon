@@ -1,9 +1,9 @@
-import Listener from '/imports/api/achievements/server/listeners/Listener.js';
+import GameListener from './GameListener.js';
 import {ACHIEVEMENT_GAMES_WON_WITH_X_SHAPE} from '/imports/api/achievements/constants.js';
 import PlayerWon from '/imports/api/games/events/PlayerWon.js';
 import {PLAYER_SHAPE_X} from '/imports/api/games/shapeConstants.js'
 
-export default class GamesWonWithXShape extends Listener {
+export default class GamesWonWithXShape extends GameListener {
 	addListeners() {
 		this.addListener(PlayerWon.prototype.constructor.name, this.onPlayerWon);
 	}

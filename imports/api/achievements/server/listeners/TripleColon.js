@@ -1,9 +1,9 @@
-import Listener from '/imports/api/achievements/server/listeners/Listener.js';
+import GameListener from './GameListener.js';
 import {ACHIEVEMENT_TRIPLE_COLON} from '/imports/api/achievements/constants.js';
 import PlayerWon from '/imports/api/games/events/PlayerWon.js';
 import {PLAYER_SHAPE_TRIPLE_COLON} from '/imports/api/games/shapeConstants.js'
 
-export default class TripleColon extends Listener {
+export default class TripleColon extends GameListener {
 	addListeners() {
 		this.addListener(PlayerWon.prototype.constructor.name, this.onPlayerWon);
 	}

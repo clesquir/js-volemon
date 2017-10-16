@@ -1,9 +1,9 @@
-import Listener from '/imports/api/achievements/server/listeners/Listener.js';
+import GameListener from './GameListener.js';
 import {ACHIEVEMENT_ALL_BONUSES_IN_A_GAME} from '/imports/api/achievements/constants.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import BonusFactory from '/imports/api/games/BonusFactory.js';
 
-export default class AllBonusesInAGame extends Listener {
+export default class AllBonusesInAGame extends GameListener {
 	addListeners() {
 		this.addListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
 	}

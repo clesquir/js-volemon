@@ -37,7 +37,7 @@ import Undesirable from '/imports/api/achievements/server/listeners/Undesirable.
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 
-export default class Listeners {
+export default class GameListeners {
 	/**
 	 * @param gameId
 	 */
@@ -60,42 +60,42 @@ export default class Listeners {
 		const players = Players.find({gameId: this.gameId});
 
 		players.forEach((player) => {
-			this.listeners.push(new PointTime(this.gameId, player.userId));
-			this.listeners.push(new GameTime(this.gameId, player.userId));
-			this.listeners.push(new GamesPlayed(this.gameId, player.userId));
-			this.listeners.push(new Shutouts(this.gameId, player.userId));
-			this.listeners.push(new ConsecutiveWonGames(this.gameId, player.userId));
-			this.listeners.push(new ConsecutiveDaysPlayed(this.gameId, player.userId));
-			this.listeners.push(new PauseInAPoint(this.gameId, player.userId));
-			this.listeners.push(new PauseInAGame(this.gameId, player.userId));
-			this.listeners.push(new PauseInALifetime(this.gameId, player.userId));
-			this.listeners.push(new InvisibleInAPoint(this.gameId, player.userId));
-			this.listeners.push(new InvisibleInAGame(this.gameId, player.userId));
-			this.listeners.push(new InvisibleInALifetime(this.gameId, player.userId));
-			this.listeners.push(new BonusesInAPoint(this.gameId, player.userId));
-			this.listeners.push(new BonusesInAGame(this.gameId, player.userId));
-			this.listeners.push(new BonusesInALifetime(this.gameId, player.userId));
-			this.listeners.push(new SimultaneousActivatedBonuses(this.gameId, player.userId));
-			this.listeners.push(new AllBonusesInAGame(this.gameId, player.userId));
-			this.listeners.push(new GamesWonWithXShape(this.gameId, player.userId));
-			this.listeners.push(new InvincibleInALifetime(this.gameId, player.userId));
-			this.listeners.push(new ConsecutiveLostGames(this.gameId, player.userId));
-			this.listeners.push(new GamesWonUnderAMinute(this.gameId, player.userId));
-			this.listeners.push(new RandomInAGame(this.gameId, player.userId));
-			this.listeners.push(new HowToTieATie(this.gameId, player.userId));
-			this.listeners.push(new BattleOfTheGiants(this.gameId, player.userId));
-			this.listeners.push(new Ninja(this.gameId, player.userId));
-			this.listeners.push(new IWasThereWaiting(this.gameId, player.userId));
-			this.listeners.push(new ToTheSky(this.gameId, player.userId));
-			this.listeners.push(new BlankScreen(this.gameId, player.userId));
-			this.listeners.push(new DavidVsGoliath(this.gameId, player.userId));
-			this.listeners.push(new Snoozer(this.gameId, player.userId));
-			this.listeners.push(new CarefullyRandomlyPicked(this.gameId, player.userId));
-			this.listeners.push(new Rakshasa(this.gameId, player.userId));
-			this.listeners.push(new TripleColon(this.gameId, player.userId));
-			this.listeners.push(new FullStop(this.gameId, player.userId));
-			this.listeners.push(new Undesirable(this.gameId, player.userId));
-			this.listeners.push(new TeenyTinyWorld(this.gameId, player.userId));
+			this.listeners.push((new PointTime()).forGame(this.gameId, player.userId));
+			this.listeners.push((new GameTime()).forGame(this.gameId, player.userId));
+			this.listeners.push((new GamesPlayed()).forGame(this.gameId, player.userId));
+			this.listeners.push((new Shutouts()).forGame(this.gameId, player.userId));
+			this.listeners.push((new ConsecutiveWonGames()).forGame(this.gameId, player.userId));
+			this.listeners.push((new ConsecutiveDaysPlayed()).forGame(this.gameId, player.userId));
+			this.listeners.push((new PauseInAPoint()).forGame(this.gameId, player.userId));
+			this.listeners.push((new PauseInAGame()).forGame(this.gameId, player.userId));
+			this.listeners.push((new PauseInALifetime()).forGame(this.gameId, player.userId));
+			this.listeners.push((new InvisibleInAPoint()).forGame(this.gameId, player.userId));
+			this.listeners.push((new InvisibleInAGame()).forGame(this.gameId, player.userId));
+			this.listeners.push((new InvisibleInALifetime()).forGame(this.gameId, player.userId));
+			this.listeners.push((new BonusesInAPoint()).forGame(this.gameId, player.userId));
+			this.listeners.push((new BonusesInAGame()).forGame(this.gameId, player.userId));
+			this.listeners.push((new BonusesInALifetime()).forGame(this.gameId, player.userId));
+			this.listeners.push((new SimultaneousActivatedBonuses()).forGame(this.gameId, player.userId));
+			this.listeners.push((new AllBonusesInAGame()).forGame(this.gameId, player.userId));
+			this.listeners.push((new GamesWonWithXShape()).forGame(this.gameId, player.userId));
+			this.listeners.push((new InvincibleInALifetime()).forGame(this.gameId, player.userId));
+			this.listeners.push((new ConsecutiveLostGames()).forGame(this.gameId, player.userId));
+			this.listeners.push((new GamesWonUnderAMinute()).forGame(this.gameId, player.userId));
+			this.listeners.push((new RandomInAGame()).forGame(this.gameId, player.userId));
+			this.listeners.push((new HowToTieATie()).forGame(this.gameId, player.userId));
+			this.listeners.push((new BattleOfTheGiants()).forGame(this.gameId, player.userId));
+			this.listeners.push((new Ninja()).forGame(this.gameId, player.userId));
+			this.listeners.push((new IWasThereWaiting()).forGame(this.gameId, player.userId));
+			this.listeners.push((new ToTheSky()).forGame(this.gameId, player.userId));
+			this.listeners.push((new BlankScreen()).forGame(this.gameId, player.userId));
+			this.listeners.push((new DavidVsGoliath()).forGame(this.gameId, player.userId));
+			this.listeners.push((new Snoozer()).forGame(this.gameId, player.userId));
+			this.listeners.push((new CarefullyRandomlyPicked()).forGame(this.gameId, player.userId));
+			this.listeners.push((new Rakshasa()).forGame(this.gameId, player.userId));
+			this.listeners.push((new TripleColon()).forGame(this.gameId, player.userId));
+			this.listeners.push((new FullStop()).forGame(this.gameId, player.userId));
+			this.listeners.push((new Undesirable()).forGame(this.gameId, player.userId));
+			this.listeners.push((new TeenyTinyWorld()).forGame(this.gameId, player.userId));
 		});
 	}
 

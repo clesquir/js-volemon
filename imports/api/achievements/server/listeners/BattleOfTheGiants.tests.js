@@ -33,7 +33,7 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 	});
 
 	it('increment if both players are big monsters, point is scored by user and user is host', function() {
-		const listener = new BattleOfTheGiants(gameId, userId);
+		const listener = (new BattleOfTheGiants()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -49,7 +49,7 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 	});
 
 	it('increment if both players are big monsters, point is scored by user and user is client', function() {
-		const listener = new BattleOfTheGiants(gameId, userId);
+		const listener = (new BattleOfTheGiants()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: opponentUserId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -65,7 +65,7 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 	});
 
 	it('do not increment if both players are big monsters, point is scored by opponent and user is host', function() {
-		const listener = new BattleOfTheGiants(gameId, userId);
+		const listener = (new BattleOfTheGiants()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -79,7 +79,7 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 	});
 
 	it('do not increment if both players are big monsters, point is scored by opponent and user is client', function() {
-		const listener = new BattleOfTheGiants(gameId, userId);
+		const listener = (new BattleOfTheGiants()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: opponentUserId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -93,7 +93,7 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 	});
 
 	it('do not increment if opponent is not big monster, point is scored by user and user is host', function() {
-		const listener = new BattleOfTheGiants(gameId, userId);
+		const listener = (new BattleOfTheGiants()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -106,7 +106,7 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 	});
 
 	it('do not increment if opponent is not big monster, point is scored by user and user is client', function() {
-		const listener = new BattleOfTheGiants(gameId, userId);
+		const listener = (new BattleOfTheGiants()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: opponentUserId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -119,7 +119,7 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 	});
 
 	it('do not increment if user is not big monster, point is scored by user and user is host', function() {
-		const listener = new BattleOfTheGiants(gameId, userId);
+		const listener = (new BattleOfTheGiants()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -132,7 +132,7 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 	});
 
 	it('do not increment if user is not big monster, point is scored by user and user is client', function() {
-		const listener = new BattleOfTheGiants(gameId, userId);
+		const listener = (new BattleOfTheGiants()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: opponentUserId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -145,7 +145,7 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 	});
 
 	it('do not increment if opponent has caught big monster in the point but is not anymore, point is scored by user and user is host', function() {
-		const listener = new BattleOfTheGiants(gameId, userId);
+		const listener = (new BattleOfTheGiants()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -160,7 +160,7 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 	});
 
 	it('do not increment if opponent has caught big monster in the point but is not anymore, point is scored by user and user is client', function() {
-		const listener = new BattleOfTheGiants(gameId, userId);
+		const listener = (new BattleOfTheGiants()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: opponentUserId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -175,7 +175,7 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 	});
 
 	it('do not increment if user has caught big monster in the point but is not anymore, point is scored by user and user is host', function() {
-		const listener = new BattleOfTheGiants(gameId, userId);
+		const listener = (new BattleOfTheGiants()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -190,7 +190,7 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 	});
 
 	it('do not increment if user has caught big monster in the point but is not anymore, point is scored by user and user is client', function() {
-		const listener = new BattleOfTheGiants(gameId, userId);
+		const listener = (new BattleOfTheGiants()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: opponentUserId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -205,7 +205,7 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 	});
 
 	it('do not increment if opponent has caught big monster but a point was taken since, point is scored by user and user is host', function() {
-		const listener = new BattleOfTheGiants(gameId, userId);
+		const listener = (new BattleOfTheGiants()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -224,7 +224,7 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 	});
 
 	it('do not increment if opponent has caught big monster but a point was taken since, point is scored by user and user is client', function() {
-		const listener = new BattleOfTheGiants(gameId, userId);
+		const listener = (new BattleOfTheGiants()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: opponentUserId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -243,7 +243,7 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 	});
 
 	it('do not increment if user has caught big monster but a point was taken since, point is scored by user and user is host', function() {
-		const listener = new BattleOfTheGiants(gameId, userId);
+		const listener = (new BattleOfTheGiants()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -262,7 +262,7 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 	});
 
 	it('do not increment if user has caught big monster but a point was taken since, point is scored by user and user is client', function() {
-		const listener = new BattleOfTheGiants(gameId, userId);
+		const listener = (new BattleOfTheGiants()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: opponentUserId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});

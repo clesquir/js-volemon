@@ -31,7 +31,7 @@ describe('AchievementListener#Ninja', function() {
 	});
 
 	it('increment achievement if no activated bonus in the game', function() {
-		const listener = new Ninja(gameId, userId);
+		const listener = (new Ninja()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -44,7 +44,7 @@ describe('AchievementListener#Ninja', function() {
 	});
 
 	it('increment achievement if activated bonus in the game was from opposite player and user is host', function() {
-		const listener = new Ninja(gameId, userId);
+		const listener = (new Ninja()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -59,7 +59,7 @@ describe('AchievementListener#Ninja', function() {
 	});
 
 	it('increment achievement if activated bonus in the game was from opposite player and user is client', function() {
-		const listener = new Ninja(gameId, userId);
+		const listener = (new Ninja()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: opponentUserId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -74,7 +74,7 @@ describe('AchievementListener#Ninja', function() {
 	});
 
 	it('do not increment achievement if no activated bonus in the game but game is under 2:00', function() {
-		const listener = new Ninja(gameId, userId);
+		const listener = (new Ninja()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -85,7 +85,7 @@ describe('AchievementListener#Ninja', function() {
 	});
 
 	it('do not increment achievement if there was an activated bonus in the game and user is host', function() {
-		const listener = new Ninja(gameId, userId);
+		const listener = (new Ninja()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -98,7 +98,7 @@ describe('AchievementListener#Ninja', function() {
 	});
 
 	it('do not increment achievement if there was an activated bonus in the game and user is client', function() {
-		const listener = new Ninja(gameId, userId);
+		const listener = (new Ninja()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: opponentUserId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -111,7 +111,7 @@ describe('AchievementListener#Ninja', function() {
 	});
 
 	it('do not increment achievement if no game', function() {
-		const listener = new Ninja(gameId, userId);
+		const listener = (new Ninja()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -122,7 +122,7 @@ describe('AchievementListener#Ninja', function() {
 	});
 
 	it('do not increment achievement if no player', function() {
-		const listener = new Ninja(gameId, userId);
+		const listener = (new Ninja()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 
 		assert.equal(0, UserAchievements.find().count());

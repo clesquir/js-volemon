@@ -32,7 +32,7 @@ describe('AchievementListener#Undesirable', function() {
 	});
 
 	it('increment achievement when bonus is caught', function() {
-		const listener = new Undesirable(gameId, userId);
+		const listener = (new Undesirable()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -47,7 +47,7 @@ describe('AchievementListener#Undesirable', function() {
 	});
 
 	it('increment achievement when point is taken', function() {
-		const listener = new Undesirable(gameId, userId);
+		const listener = (new Undesirable()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -62,7 +62,7 @@ describe('AchievementListener#Undesirable', function() {
 	});
 
 	it('increment achievement when point is taken with multiple bonuses', function() {
-		const listener = new Undesirable(gameId, userId);
+		const listener = (new Undesirable()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -80,7 +80,7 @@ describe('AchievementListener#Undesirable', function() {
 	});
 
 	it('do not increment achievement if not game on caught', function() {
-		const listener = new Undesirable(gameId, userId);
+		const listener = (new Undesirable()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -95,7 +95,7 @@ describe('AchievementListener#Undesirable', function() {
 	});
 
 	it('do not increment achievement if not game on point taken', function() {
-		const listener = new Undesirable(gameId, userId);
+		const listener = (new Undesirable()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -110,7 +110,7 @@ describe('AchievementListener#Undesirable', function() {
 	});
 
 	it('do not increment achievement if no bonuses on point taken', function() {
-		const listener = new Undesirable(gameId, userId);
+		const listener = (new Undesirable()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});

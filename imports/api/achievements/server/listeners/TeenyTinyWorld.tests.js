@@ -33,7 +33,7 @@ describe('AchievementListener#TeenyTinyWorld', function() {
 	});
 
 	it('increment if both players are small monsters, ball is small in all orders', function() {
-		const listener = new TeenyTinyWorld(gameId, userId);
+		const listener = (new TeenyTinyWorld()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -73,7 +73,7 @@ describe('AchievementListener#TeenyTinyWorld', function() {
 	});
 
 	it('do not increment if all small monsters and small ball have been caught in the point but are not anymore simultaneously', function() {
-		const listener = new TeenyTinyWorld(gameId, userId);
+		const listener = (new TeenyTinyWorld()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -102,7 +102,7 @@ describe('AchievementListener#TeenyTinyWorld', function() {
 	});
 
 	it('do not increment if all small monsters and small ball have been caught in the point but points have been scored in between', function() {
-		const listener = new TeenyTinyWorld(gameId, userId);
+		const listener = (new TeenyTinyWorld()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});

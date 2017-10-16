@@ -32,7 +32,7 @@ describe('AchievementListener#Snoozer', function() {
 	});
 
 	it('creates achievement if not created on player won if has been match point zero if user is host', function() {
-		const listener = new Snoozer(gameId, userId);
+		const listener = (new Snoozer()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -47,7 +47,7 @@ describe('AchievementListener#Snoozer', function() {
 	});
 
 	it('do not create achievement if not created if has not been match point zero on player won if user is host', function() {
-		const listener = new Snoozer(gameId, userId);
+		const listener = (new Snoozer()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -60,7 +60,7 @@ describe('AchievementListener#Snoozer', function() {
 	});
 
 	it('creates achievement if not created on player won if has been match point zero if user is client', function() {
-		const listener = new Snoozer(gameId, userId);
+		const listener = (new Snoozer()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: GAME_MAXIMUM_POINTS - 1});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -75,7 +75,7 @@ describe('AchievementListener#Snoozer', function() {
 	});
 
 	it('do not create achievement if not created if has not been match point zero on player won if user is client', function() {
-		const listener = new Snoozer(gameId, userId);
+		const listener = (new Snoozer()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: GAME_MAXIMUM_POINTS - 1});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -88,7 +88,7 @@ describe('AchievementListener#Snoozer', function() {
 	});
 
 	it('do not create achievement if not created if not gameId on player won', function() {
-		const listener = new Snoozer(gameId, userId);
+		const listener = (new Snoozer()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -101,7 +101,7 @@ describe('AchievementListener#Snoozer', function() {
 	});
 
 	it('do not create achievement if not created if not userId on player won', function() {
-		const listener = new Snoozer(gameId, userId);
+		const listener = (new Snoozer()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -112,7 +112,7 @@ describe('AchievementListener#Snoozer', function() {
 	});
 
 	it('update achievement on player won if has been match point zero if user is host', function() {
-		const listener = new Snoozer(gameId, userId);
+		const listener = (new Snoozer()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -125,7 +125,7 @@ describe('AchievementListener#Snoozer', function() {
 	});
 
 	it('do not update achievement if has not been match point zero on player won if user is host', function() {
-		const listener = new Snoozer(gameId, userId);
+		const listener = (new Snoozer()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -138,7 +138,7 @@ describe('AchievementListener#Snoozer', function() {
 	});
 
 	it('update achievement on player won if has been match point zero if user is client', function() {
-		const listener = new Snoozer(gameId, userId);
+		const listener = (new Snoozer()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: Random.id(5)});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -151,7 +151,7 @@ describe('AchievementListener#Snoozer', function() {
 	});
 
 	it('do not update achievement if has not been match point zero on player won if user is client', function() {
-		const listener = new Snoozer(gameId, userId);
+		const listener = (new Snoozer()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: Random.id(5)});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -164,7 +164,7 @@ describe('AchievementListener#Snoozer', function() {
 	});
 
 	it('do not update achievement if not gameId on player won', function() {
-		const listener = new Snoozer(gameId, userId);
+		const listener = (new Snoozer()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -177,7 +177,7 @@ describe('AchievementListener#Snoozer', function() {
 	});
 
 	it('do not update achievement if not userId on player won', function() {
-		const listener = new Snoozer(gameId, userId);
+		const listener = (new Snoozer()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});

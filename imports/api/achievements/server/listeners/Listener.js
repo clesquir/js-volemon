@@ -1,44 +1,14 @@
 import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
-import {Games} from '/imports/api/games/games.js';
-import {Players} from '/imports/api/games/players.js';
 import {EventPublisher} from '/imports/lib/EventPublisher.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 
 export default class Listener {
-	/**
-	 * @param {string} gameId
-	 * @param {string} userId
-	 */
-	constructor(gameId, userId) {
-		this.gameId = gameId;
-		this.userId = userId;
-
-		if (this.allowedForGame()) {
-			this.addListeners();
-		}
+	constructor() {
+		this.userId = null;
 	}
 
 	destroy() {
 		this.removeListeners();
-	}
-
-	allowedForGame() {
-		if (this.isTournamentGame() && !this.allowedForTournamentGame()) {
-			return false;
-		}
-		if (this.isPracticeGame() && !this.allowedForPracticeGame()) {
-			return false;
-		}
-
-		return true;
-	}
-
-	allowedForTournamentGame() {
-		return false;
-	}
-
-	allowedForPracticeGame() {
-		return false;
 	}
 
 	addListeners() {
@@ -79,7 +49,7 @@ export default class Listener {
 
 	/**
 	 * @param {string} achievementId
-	 * @param {integer} number
+	 * @param {int} number
 	 */
 	updateNumberIfHigher(achievementId, number) {
 		const userAchievement = this.userAchievement(achievementId);
@@ -89,99 +59,6 @@ export default class Listener {
 		} else if (number > userAchievement.number) {
 			this.insertOrUpdateAchievement(userAchievement, achievementId, number);
 		}
-	}
-
-	userPlayer() {
-		return Players.findOne({gameId: this.gameId, userId: this.userId});
-	}
-
-	/**
-	 * @returns {boolean}
-	 */
-	userIsGamePlayer() {
-		return !!this.userPlayer();
-	}
-
-	/**
-	 * @returns {string|null}
-	 */
-	userPlayerKey() {
-		const game = Games.findOne({_id: this.gameId});
-
-		let userPlayerKey = null;
-		if (game) {
-			if (game.createdBy === this.userId) {
-				userPlayerKey = 'player1';
-			} else if (this.userIsGamePlayer()) {
-				userPlayerKey = 'player2';
-			}
-		}
-
-		return userPlayerKey;
-	}
-
-	isTournamentGame() {
-		const game = Games.findOne({_id: this.gameId});
-
-		return game && !!game.tournamentId;
-	}
-
-	isPracticeGame() {
-		const game = Games.findOne({_id: this.gameId});
-
-		return game && !!game.isPracticeGame;
-	}
-
-	currentPlayerShape() {
-		const player = this.userPlayer();
-
-		if (player) {
-			return player.shape;
-		}
-
-		return null;
-	}
-
-	oppositePlayerShape() {
-		const player = Players.findOne({gameId: this.gameId, userId: {$ne: this.userId}});
-
-		if (player) {
-			return player.shape;
-		}
-
-		return null;
-	}
-
-	/**
-	 * @param {string} playerKey
-	 * @returns {boolean}
-	 */
-	playerKeyIsUser(playerKey) {
-		return playerKey === this.userPlayerKey();
-	}
-
-	/**
-	 * @param {string} playerKey
-	 * @returns {boolean}
-	 */
-	playerKeyIsOpponent(playerKey) {
-		const userPlayerKey = this.userPlayerKey();
-
-		return userPlayerKey !== null && playerKey !== userPlayerKey;
-	}
-
-	/**
-	 * @returns {boolean}
-	 */
-	playerIsHost() {
-		return 'player1' === this.userPlayerKey();
-	}
-
-	/**
-	 * @returns {boolean}
-	 */
-	playerIsClient() {
-		return 'player2' === this.userPlayerKey();
 	}
 
 	/**

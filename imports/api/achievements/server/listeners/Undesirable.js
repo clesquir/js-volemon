@@ -1,11 +1,11 @@
-import Listener from '/imports/api/achievements/server/listeners/Listener.js';
+import GameListener from './GameListener.js';
 import {ACHIEVEMENT_UNDESIRABLE} from '/imports/api/achievements/constants.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import BonusCreated from '/imports/api/games/events/BonusCreated.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {getUTCTimeStamp, getArrayMax} from '/imports/lib/utils.js';
 
-export default class Undesirable extends Listener {
+export default class Undesirable extends GameListener {
 	addListeners() {
 		this.addListener(BonusCreated.prototype.constructor.name, this.onBonusCreated);
 		this.addListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
