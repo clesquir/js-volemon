@@ -44,7 +44,7 @@ export default class Rakshasa extends GameListener {
 			);
 		} else {
 			currentNumber = userAchievement.number;
-			shapes = userAchievement.shapes;
+			shapes = userAchievement.shapes || {};
 			if (shapes[playerShape] === undefined) {
 				shapes[playerShape] = 0;
 			}
