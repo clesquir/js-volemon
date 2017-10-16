@@ -16,7 +16,7 @@ import {
 	ACHIEVEMENT_SHUTOUTS, ACHIEVEMENT_SIMULTANEOUS_ACTIVATED_BONUSES, ACHIEVEMENT_SNOOZER, ACHIEVEMENT_TEENY_TINY_WORLD,
 	ACHIEVEMENT_TO_THE_SKY,
 	ACHIEVEMENT_TRIPLE_COLON, ACHIEVEMENT_UNDESIRABLE, ACHIEVEMENT_ONE_OF_THE_THREE, ACHIEVEMENT_SERIAL_WINNER,
-	TYPE_MS, TYPE_QUANTITY, TYPE_TIMES
+	ACHIEVEMENT_LUDOMANIA, TYPE_MS, TYPE_QUANTITY, TYPE_TIMES
 } from '/imports/api/achievements/constants.js';
 
 export const INITIAL_ACHIVEMENTS = [
@@ -344,5 +344,14 @@ export const INITIAL_ACHIVEMENTS = [
 		"type": TYPE_TIMES,
 		"displayOrder": 38,
 		"levels": [{"level": 1, "number": 3}, {"level": 2, "number": 6}, {"level": 3, "number": 12}]
+	},
+	{
+		"_id": ACHIEVEMENT_LUDOMANIA,
+		"isSecret": true,
+		"name": "Ludomania",
+		"description": "# of tournaments participated",
+		"type": TYPE_TIMES,
+		"displayOrder": 39,
+		"levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 20}]
 	}
 ];
