@@ -1,6 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Accounts} from 'meteor/accounts-base';
 import {Random} from 'meteor/random';
+import TournamentListeners from '/imports/api/achievements/server/TournamentListeners.js';
 import {createProfile} from '/imports/api/profiles/server/createProfile.js';
 
 Accounts.onCreateUser((options, user) => {
@@ -14,6 +15,8 @@ Accounts.onCreateUser((options, user) => {
 	user.profile = options.profile;
 
 	createProfile(user._id);
+	const tournamentListeners = new TournamentListeners();
+	tournamentListeners.init(user._id);
 
 	return user;
 });

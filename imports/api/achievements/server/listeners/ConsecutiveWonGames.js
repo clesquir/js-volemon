@@ -1,9 +1,9 @@
-import Listener from '/imports/api/achievements/server/listeners/Listener.js';
+import GameListener from './GameListener.js';
 import {ACHIEVEMENT_CONSECUTIVE_WON_GAMES} from '/imports/api/achievements/constants.js';
 import PlayerLost from '/imports/api/games/events/PlayerLost.js';
 import PlayerWon from '/imports/api/games/events/PlayerWon.js';
 
-export default class ConsecutiveWonGames extends Listener {
+export default class ConsecutiveWonGames extends GameListener {
 	allowedForTournamentGame() {
 		return true;
 	}

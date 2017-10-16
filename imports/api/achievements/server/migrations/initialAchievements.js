@@ -1,14 +1,14 @@
 import {Meteor} from 'meteor/meteor';
 import {Achievements} from '/imports/api/achievements/achievements.js';
-import initialAchievements from '/imports/api/achievements/server/migrations/data/initialAchievements.json';
+import {INITIAL_ACHIVEMENTS} from '/imports/api/achievements/server/migrations/data/initialAchievements.js';
 
 Meteor.startup(function () {
 	/**
 	 * Migration for initial achievements insertion
 	 */
-	if (Achievements.find().count() === 0) {
-		initialAchievements.achievements.forEach(function(achievement) {
+	INITIAL_ACHIVEMENTS.forEach(function(achievement) {
+		if (!Achievements.findOne({_id: achievement._id})) {
 			Achievements.insert(achievement);
-		});
-	}
+		}
+	});
 });

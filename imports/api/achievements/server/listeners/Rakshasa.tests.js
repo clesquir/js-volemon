@@ -50,7 +50,7 @@ describe('AchievementListener#Rakshasa', function() {
 	});
 
 	it('add achievement if none on caught all shapes', function() {
-		const listener = new Rakshasa(gameId, userId);
+		const listener = (new Rakshasa()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId, shape: 'a'});
 		Players.insert({gameId: gameId, userId: opponentUserId, shape: 'a'});
@@ -66,7 +66,7 @@ describe('AchievementListener#Rakshasa', function() {
 	});
 
 	it('do not add achievement if different gameId', function() {
-		const listener = new Rakshasa(gameId, userId);
+		const listener = (new Rakshasa()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId, shape: 'a'});
 		Players.insert({gameId: gameId, userId: opponentUserId, shape: 'a'});
@@ -80,7 +80,7 @@ describe('AchievementListener#Rakshasa', function() {
 	});
 
 	it('do not add achievement if different player', function() {
-		const listener = new Rakshasa(gameId, userId);
+		const listener = (new Rakshasa()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId, shape: 'a'});
 		Players.insert({gameId: gameId, userId: opponentUserId, shape: 'a'});
@@ -94,7 +94,7 @@ describe('AchievementListener#Rakshasa', function() {
 	});
 
 	it('do not increment achievement if same shape shift twice but not all', function() {
-		const listener = new Rakshasa(gameId, userId);
+		const listener = (new Rakshasa()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId, shape: 'a'});
 		stubListOfShapes(listener, ['a', 'b']);

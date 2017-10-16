@@ -1,9 +1,9 @@
-import Listener from '/imports/api/achievements/server/listeners/Listener.js';
+import GameListener from './GameListener.js';
 import {ACHIEVEMENT_INVISIBLE_IN_A_LIFETIME} from '/imports/api/achievements/constants.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import {BONUS_INVISIBLE_MONSTER} from '/imports/api/games/bonusConstants.js';
 
-export default class InvisibleInALifetime extends Listener {
+export default class InvisibleInALifetime extends GameListener {
 	addListeners() {
 		this.addListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
 	}

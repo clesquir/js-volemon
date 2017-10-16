@@ -1,9 +1,9 @@
-import Listener from '/imports/api/achievements/server/listeners/Listener.js';
+import GameListener from './GameListener.js';
 import {ACHIEVEMENT_NINJA} from '/imports/api/achievements/constants.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import GameFinished from '/imports/api/games/events/GameFinished.js';
 
-export default class Ninja extends Listener {
+export default class Ninja extends GameListener {
 	addListeners() {
 		this.addListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
 		this.addListener(GameFinished.prototype.constructor.name, this.onGameFinished);

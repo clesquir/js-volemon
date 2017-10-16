@@ -1,8 +1,8 @@
-import Listener from '/imports/api/achievements/server/listeners/Listener.js';
+import GameListener from './GameListener.js';
 import {ACHIEVEMENT_GAMES_PLAYED} from '/imports/api/achievements/constants.js';
 import GameFinished from '/imports/api/games/events/GameFinished.js';
 
-export default class GamesPlayed extends Listener {
+export default class GamesPlayed extends GameListener {
 	allowedForTournamentGame() {
 		return true;
 	}

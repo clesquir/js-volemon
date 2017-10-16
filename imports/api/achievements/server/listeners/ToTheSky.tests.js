@@ -37,7 +37,7 @@ describe('AchievementListener#ToTheSky', function() {
 	});
 
 	it('increment if current player is small then big jump then bouncy and user is host', function() {
-		const listener = new ToTheSky(gameId, userId);
+		const listener = (new ToTheSky()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -56,7 +56,7 @@ describe('AchievementListener#ToTheSky', function() {
 	});
 
 	it('increment if current player is small then bouncy then big jump and user is host', function() {
-		const listener = new ToTheSky(gameId, userId);
+		const listener = (new ToTheSky()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -75,7 +75,7 @@ describe('AchievementListener#ToTheSky', function() {
 	});
 
 	it('increment if current player is big jump then small then bouncy and user is host', function() {
-		const listener = new ToTheSky(gameId, userId);
+		const listener = (new ToTheSky()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -94,7 +94,7 @@ describe('AchievementListener#ToTheSky', function() {
 	});
 
 	it('increment if current player is big jump then bouncy then small and user is host', function() {
-		const listener = new ToTheSky(gameId, userId);
+		const listener = (new ToTheSky()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -113,7 +113,7 @@ describe('AchievementListener#ToTheSky', function() {
 	});
 
 	it('increment if current player is bouncy then small then big jump and user is host', function() {
-		const listener = new ToTheSky(gameId, userId);
+		const listener = (new ToTheSky()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -132,7 +132,7 @@ describe('AchievementListener#ToTheSky', function() {
 	});
 
 	it('increment if current player is bouncy then big jump then small and user is host', function() {
-		const listener = new ToTheSky(gameId, userId);
+		const listener = (new ToTheSky()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -151,7 +151,7 @@ describe('AchievementListener#ToTheSky', function() {
 	});
 
 	it('increment if current player is small then big jump then bouncy and user is client', function() {
-		const listener = new ToTheSky(gameId, userId);
+		const listener = (new ToTheSky()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: opponentUserId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -170,7 +170,7 @@ describe('AchievementListener#ToTheSky', function() {
 	});
 
 	it('increment if current player is small then bouncy then big jump and user is client', function() {
-		const listener = new ToTheSky(gameId, userId);
+		const listener = (new ToTheSky()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: opponentUserId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -189,7 +189,7 @@ describe('AchievementListener#ToTheSky', function() {
 	});
 
 	it('increment if current player is big jump then small then bouncy and user is client', function() {
-		const listener = new ToTheSky(gameId, userId);
+		const listener = (new ToTheSky()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: opponentUserId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -208,7 +208,7 @@ describe('AchievementListener#ToTheSky', function() {
 	});
 
 	it('increment if current player is big jump then bouncy then small and user is client', function() {
-		const listener = new ToTheSky(gameId, userId);
+		const listener = (new ToTheSky()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: opponentUserId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -227,7 +227,7 @@ describe('AchievementListener#ToTheSky', function() {
 	});
 
 	it('increment if current player is bouncy then small then big jump and user is client', function() {
-		const listener = new ToTheSky(gameId, userId);
+		const listener = (new ToTheSky()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: opponentUserId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -246,7 +246,7 @@ describe('AchievementListener#ToTheSky', function() {
 	});
 
 	it('increment if current player is bouncy then big jump then small and user is client', function() {
-		const listener = new ToTheSky(gameId, userId);
+		const listener = (new ToTheSky()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: opponentUserId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -265,7 +265,7 @@ describe('AchievementListener#ToTheSky', function() {
 	});
 
 	it('do not increment if current player has caught needed bonus in the point but is not active anymore and user is host', function() {
-		const listener = new ToTheSky(gameId, userId);
+		const listener = (new ToTheSky()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -299,7 +299,7 @@ describe('AchievementListener#ToTheSky', function() {
 	});
 
 	it('do not increment if current player has caught needed bonus in the point but is not active anymore, point is scored by user and user is client', function() {
-		const listener = new ToTheSky(gameId, userId);
+		const listener = (new ToTheSky()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: opponentUserId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -333,7 +333,7 @@ describe('AchievementListener#ToTheSky', function() {
 	});
 
 	it('do not increment if current player has caught needed bonus but a point was taken since and user is host', function() {
-		const listener = new ToTheSky(gameId, userId);
+		const listener = (new ToTheSky()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
@@ -366,7 +366,7 @@ describe('AchievementListener#ToTheSky', function() {
 	});
 
 	it('do not increment if current player has caught needed bonus but a point was taken since user and user is client', function() {
-		const listener = new ToTheSky(gameId, userId);
+		const listener = (new ToTheSky()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: opponentUserId});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});

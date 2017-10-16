@@ -11,7 +11,7 @@ import {Players} from '/imports/api/games/players.js';
 describe('AchievementListener#BonusesInALifetime', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
-	const listener = new BonusesInALifetime(gameId, userId);
+	const listener = (new BonusesInALifetime()).forGame(gameId, userId);
 	const assertBonusesInALifetimeUserAchievementNumberEquals = function(number) {
 		const achievement = UserAchievements.findOne();
 		assert.notEqual(undefined, achievement);

@@ -11,7 +11,7 @@ import {Players} from '/imports/api/games/players.js';
 describe('AchievementListener#GamesWonUnderAMinute', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
-	const listener = new GamesWonUnderAMinute(gameId, userId);
+	const listener = (new GamesWonUnderAMinute()).forGame(gameId, userId);
 	const assertGamesWonUnderAMinuteUserAchievementNumberEquals = function(number) {
 		const achievement = UserAchievements.findOne();
 		assert.notEqual(undefined, achievement);

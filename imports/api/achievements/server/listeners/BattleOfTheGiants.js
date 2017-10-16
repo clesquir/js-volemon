@@ -1,11 +1,11 @@
-import Listener from '/imports/api/achievements/server/listeners/Listener.js';
+import GameListener from './GameListener.js';
 import {ACHIEVEMENT_BATTLE_OF_THE_GIANTS} from '/imports/api/achievements/constants.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import BonusRemoved from '/imports/api/games/events/BonusRemoved.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {BONUS_BIG_MONSTER} from '/imports/api/games/bonusConstants.js';
 
-export default class BattleOfTheGiants extends Listener {
+export default class BattleOfTheGiants extends GameListener {
 	allowedForTournamentGame() {
 		return true;
 	}
