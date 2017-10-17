@@ -1,5 +1,6 @@
 import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
+import {POSSIBLE_NO_PLAYERS} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
@@ -68,7 +69,7 @@ export const createGame = function(user, gameInitiators, tournamentId = null) {
  * @param {boolean} isReady
  * @returns {*}
  */
-export const joinGame = function(user, gameId, isReady) {
+export const joinGame = function(user, gameId, isReady = false) {
 	const game = Games.findOne(gameId);
 
 	if (!game) {
@@ -80,14 +81,15 @@ export const joinGame = function(user, gameId, isReady) {
 		throw new Meteor.Error('not-allowed', 'Already joined');
 	}
 
+	const players = Players.find({gameId: gameId});
+	if (players.count() >= POSSIBLE_NO_PLAYERS) {
+		throw new Meteor.Error('not-allowed', 'Maximum players reached');
+	}
+
 	const profile = Profiles.findOne({userId: user._id});
 	let selectedShape = PLAYER_DEFAULT_SHAPE;
 	if (profile && profile.lastShapeUsed) {
 		selectedShape = profile.lastShapeUsed;
-	}
-
-	if (isReady === undefined) {
-		isReady = false;
 	}
 
 	if (user._id !== game.hostId) {
