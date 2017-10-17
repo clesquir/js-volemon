@@ -44,6 +44,7 @@ Template.gameSetup.helpers({
 
 		return (
 			!player &&
+			this.game &&
 			playersCanPlayTournament(this.game, [{userId: Meteor.userId()}]) &&
 			POSSIBLE_NO_PLAYERS.indexOf(players.count() + 1) !== -1
 		);

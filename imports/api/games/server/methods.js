@@ -246,26 +246,21 @@ Meteor.methods({
 	quitGame: function(gameId) {
 		const user = Meteor.user();
 		const game = Games.findOne(gameId);
-		let player;
 
-		if (!user) {
-			throw new Meteor.Error(401, 'You need to login to quit a game');
+		if (!user || !game) {
+			return;
 		}
 
-		if (!game) {
-			throw new Meteor.Error(404, 'Game not found');
+		const player = Players.findOne({userId: user._id, gameId: gameId});
+
+		if (!player) {
+			return;
 		}
 
 		//If game has not started, leaveGame instead
 		if (game.status === GAME_STATUS_REGISTRATION) {
 			Meteor.call('leaveGame', gameId);
 		} else {
-			player = Players.findOne({userId: user._id, gameId: gameId});
-
-			if (!player) {
-				throw new Meteor.Error(404, 'Player not found');
-			}
-
 			Players.update({_id: player._id}, {$set: {hasQuit: getUTCTimeStamp()}});
 
 			onPlayerQuit(player);
