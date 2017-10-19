@@ -22,9 +22,9 @@ export default class ServerP2P {
 
 		socket.emit('numClients', Object.keys(connectedClients).length - 1);
 
-		socket.on('disconnect', function () {
+		socket.on('disconnect', function() {
 			delete clients[socket.id()];
-			Object.keys(connectedClients).forEach(function (clientId) {
+			Object.keys(connectedClients).forEach(function(clientId) {
 				const client = clients[clientId];
 				if (client) {
 					client.emit('peer-disconnect', {peerId: socket.id()});
@@ -32,9 +32,9 @@ export default class ServerP2P {
 			});
 		});
 
-		socket.on('offers', function (data) {
+		socket.on('offers', function(data) {
 			// send offers to everyone in a given room
-			Object.keys(connectedClients).forEach(function (clientId, i) {
+			Object.keys(connectedClients).forEach(function(clientId, i) {
 				const client = clients[clientId];
 				if (client !== socket) {
 					const offerObj = data.offers[i];
@@ -42,6 +42,7 @@ export default class ServerP2P {
 						client.emit(
 							'offer',
 							{
+								fromSocketId: socket.id(),
 								fromPeerId: socket.id(),
 								offerId: offerObj.offerId,
 								offer: offerObj.offer
@@ -52,11 +53,15 @@ export default class ServerP2P {
 			});
 		});
 
-		socket.on('peer-signal', function (data) {
+		socket.on('peer-signal', function(data) {
 			const toPeerId = data.toPeerId;
 			const client = clients[toPeerId];
 			if (client) {
-				client.emit('peer-signal', data);
+				data.fromSocketId = socket.id();
+				client.emit(
+					'peer-signal',
+					data
+				);
 			}
 		});
 	}

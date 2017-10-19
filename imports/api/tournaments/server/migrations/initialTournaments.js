@@ -6,7 +6,7 @@ import {
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 import {TournamentModes} from '/imports/api/tournaments/tournamentModes.js';
 
-Meteor.startup(function () {
+Meteor.startup(function() {
 	const tournaments = [
 		{
 			_id: Random.id(5),

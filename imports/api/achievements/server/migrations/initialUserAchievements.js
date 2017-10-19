@@ -11,7 +11,7 @@ import {longestGame, longestPoint} from '/imports/api/home/utils.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 
-Meteor.startup(function () {
+Meteor.startup(function() {
 	/**
 	 * Migration for initial user achievements insertion
 	 */

@@ -2,7 +2,7 @@ import {Meteor} from 'meteor/meteor';
 import {Achievements} from '/imports/api/achievements/achievements.js';
 import {INITIAL_ACHIVEMENTS} from '/imports/api/achievements/server/migrations/data/initialAchievements.js';
 
-Meteor.startup(function () {
+Meteor.startup(function() {
 	/**
 	 * Migration for initial achievements insertion
 	 */

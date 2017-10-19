@@ -55,13 +55,14 @@ export default class ClientP2P {
 					offers: offers,
 					fromPeerId: this.peerId
 				});
-			})
+			});
 		});
 
 		this.socket.on('offer', (data) => {
 			const peerOpts = Object.assign(this.peerOpts, {initiator: false});
 			const peer = this._peers[data.fromPeerId] = new Peer(peerOpts);
 			peer.id = data.fromPeerId;
+			peer.fromSocketId = data.fromSocketId;
 			this.numConnectedClients++;
 			peer.setMaxListeners(50);
 			this.setupPeerEvents(peer);
@@ -85,6 +86,7 @@ export default class ClientP2P {
 		this.socket.on('peer-signal', (data) => {
 			// Select peer from offerId if exists
 			const peer = this._peers[data.offerId] || this._peers[data.fromPeerId];
+			peer.fromSocketId = data.fromSocketId;
 
 			peer.on('signal', (signalData) => {
 				this.socket.emit('peer-signal', {
@@ -101,8 +103,8 @@ export default class ClientP2P {
 		});
 
 		this.socket.on('peer-disconnect', (peer) => {
-			if (this.readyPeers[peer.peerId]) {
-				delete this.readyPeers[peer.peerId];
+			if (this.readyPeers[peer.fromSocketId]) {
+				delete this.readyPeers[peer.fromSocketId];
 				this.numConnectedClients--;
 			}
 
@@ -114,7 +116,7 @@ export default class ClientP2P {
 		});
 
 		this.onP2P('peer_ready', (peer) => {
-			this.readyPeers[peer.peerId] = true;
+			this.readyPeers[peer.fromSocketId] = true;
 
 			if (Object.keys(this.readyPeers).length > 0 && !this.ready) {
 				this.ready = true;
@@ -172,8 +174,9 @@ export default class ClientP2P {
 	allowP2PListener(data) {
 		return (
 			!data.broadcast ||
-			!this.usePeerConnection ||
-			data.webRTCUnsupportedClient
+			data.webRTCUnsupportedClient ||
+			(this.readyPeers[data.fromSocketId] && !data.broadcast) ||
+			!this.readyPeers[data.fromSocketId]
 		);
 	}
 
@@ -230,7 +233,13 @@ export default class ClientP2P {
 		const self = this;
 
 		peer.on('connect', function() {
-			self.emitP2P('peer_ready', {peerId: peer.id});
+			self.emitP2P(
+				'peer_ready',
+				{
+					peerId: peer.id,
+					fromSocketId: peer.fromSocketId
+				}
+			);
 		});
 
 		peer.on('data', function(data) {

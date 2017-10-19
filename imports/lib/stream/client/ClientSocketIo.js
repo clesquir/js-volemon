@@ -55,7 +55,9 @@ export default class ClientSocketIo extends Stream {
 	 * @param {*} payload
 	 */
 	emit(eventName, payload) {
-		if (this.supportsP2P() && this.connectedToP2P()) {
+		payload.fromSocketId = this.socketAdapter.id;
+
+		if (this.supportsP2P()) {
 			this.p2pAdapter.emit(eventName, payload);
 		} else {
 			payload.webRTCUnsupportedClient = true;

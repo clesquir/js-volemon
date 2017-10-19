@@ -11,7 +11,7 @@ import {
 	TOURNAMENT_MODE_SUPER_BOUNCE_WALLS
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 
-Meteor.startup(function () {
+Meteor.startup(function() {
 	if (TournamentModes.find().count() === 0) {
 		const modes = [
 			{

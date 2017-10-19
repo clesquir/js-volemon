@@ -2,7 +2,7 @@ import {Meteor} from 'meteor/meteor';
 import {Achievements} from '/imports/api/achievements/achievements.js';
 import {ACHIEVEMENT_RAKSHASA} from '/imports/api/achievements/constants.js'
 
-Meteor.startup(function () {
+Meteor.startup(function() {
 	/**
 	 * Migration for updating achievements
 	 */
