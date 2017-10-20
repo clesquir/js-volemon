@@ -4,13 +4,10 @@ import {getUTCTimeStamp} from '/imports/lib/utils.js';
 
 export default class ServerNormalizedTime {
 	init() {
-		this.serverOffsets = [];
 		this.serverOffset = TimeSync.serverOffset();
-		this.serverOffsets.push(this.serverOffset);
 		this.timeSyncTimeout = Meteor.setInterval(() => {
 			TimeSync.resync();
 			this.serverOffset = TimeSync.serverOffset();
-			this.serverOffsets.push(this.serverOffset);
 		}, 2500);
 	}
 
@@ -22,9 +19,8 @@ export default class ServerNormalizedTime {
 	getServerTimestamp() {
 		let serverOffset = 0;
 
-		if (this.serverOffsets.length) {
-			const sum = this.serverOffsets.reduce((previous, current) => current += previous);
-			serverOffset = sum / this.serverOffsets.length;
+		if (this.serverOffset !== undefined) {
+			serverOffset = this.serverOffset;
 		}
 
 		return getUTCTimeStamp() + serverOffset;
