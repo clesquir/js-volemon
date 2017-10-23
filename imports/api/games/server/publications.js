@@ -7,20 +7,21 @@ import {
 	GAME_STATUS_REGISTRATION,
 	GAME_STATUS_STARTED
 } from '/imports/api/games/statusConstants.js';
+import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 
 Meteor.publish('games', function() {
 	return [
 		Games.find(
 			{
 				isPrivate: 0,
-				tournamentId: null,
 				status: {$in: [GAME_STATUS_REGISTRATION, GAME_STATUS_STARTED]}
 			},
 			{
 				sort: [['createdAt', 'asc']],
-				fields: {hostName: 1, clientName: 1, createdAt: 1, status: 1}
+				fields: {tournamentId: 1, hostName: 1, clientName: 1, createdAt: 1, status: 1}
 			}
-		)
+		),
+		Tournaments.find()
 	];
 });
 

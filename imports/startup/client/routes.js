@@ -1,4 +1,5 @@
 import {Meteor} from 'meteor/meteor';
+import {Router} from 'meteor/iron:router';
 import {GameController} from '/imports/startup/client/controllers/GameController.js';
 import {GamesController} from '/imports/startup/client/controllers/GamesController.js';
 import {HomeController} from '/imports/startup/client/controllers/HomeController.js';

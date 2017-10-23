@@ -1,12 +1,20 @@
 import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
 import {ReactiveVar} from 'meteor/reactive-var';
+import {Router} from 'meteor/iron:router';
 import {GAME_STATUS_REGISTRATION, GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
+import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {getUTCTimeStamp, timeElapsedSince} from '/imports/lib/utils.js';
 
 import './gamesList.html';
 
 Template.gamesList.helpers({
+	tournamentName: function() {
+		const tournament = Tournaments.findOne({_id: this.tournamentId});
+
+		return tournament && tournament.mode.name;
+	},
+
 	hasOpponent: function() {
 		return (this.clientName !== null);
 	},
@@ -45,6 +53,16 @@ Template.gamesList.helpers({
 		}
 
 		return '-';
+	}
+});
+
+Template.gamesList.events({
+	'click [data-action="go-to-game"]': function() {
+		if (this.tournamentId) {
+			Router.go('tournamentGame', {gameId: this._id, tournamentId: this.tournamentId});
+		} else {
+			Router.go('game', {_id: this._id});
+		}
 	}
 });
 

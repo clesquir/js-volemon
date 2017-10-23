@@ -8,12 +8,12 @@
 
 			<p>{{tournamentDescription}}</p>
 
-			<div id="tournament-contents" class="view-selector-contents tournament-statistics-shown">
+			<div id="tournament-contents" class="view-selector-contents {{#if isTournamentActive}}games-tournament-shown{{else}}tournament-statistics-shown{{/if}}">
 				<div class="view-selector">
-					<i class="fa fa-pie-chart view-tournament-statistics" data-action="view-tournament-statistics" data-tooltip="Statistics"></i>
 					{{#if isTournamentActive}}
 						<i class="fa fa-list view-games-tournament" data-action="view-games-tournament" data-tooltip="Games"></i>
 					{{/if}}
+					<i class="fa fa-pie-chart view-tournament-statistics" data-action="view-tournament-statistics" data-tooltip="Statistics"></i>
 					<i class="fa fa-hashtag view-rank-tournament" data-action="view-rank-tournament" data-tooltip="Rank"></i>
 				</div>
 
@@ -74,7 +74,7 @@
 					</h2>
 					<p>You can create, join or view a game.</p>
 
-					{{> gamesList games=tournamentGames goToGameDataAction="go-to-tournament-game"}}
+					{{> gamesList games=tournamentGames showTournamentName=false}}
 
 				</div>
 

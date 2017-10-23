@@ -1,3 +1,4 @@
+import {Router} from 'meteor/iron:router';
 import {Games} from '/imports/api/games/games.js';
 
 export default class GameRematch {

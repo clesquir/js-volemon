@@ -1,7 +1,14 @@
 <template name="gamesList">
 	<div class="cards-list constrained-width">
 		{{#each games}}
-			<div class="card clickable-card" data-action="{{../goToGameDataAction}}">
+			<div class="card clickable-card" data-action="go-to-game">
+				{{#if ../showTournamentName}}
+					{{#if tournamentId}}
+						<div class="card-row card-row-header">
+							<div class="card-cell card-title">{{{tournamentName}}}</div>
+						</div>
+					{{/if}}
+				{{/if}}
 				<div class="card-row card-row-top">
 					{{#if hasOpponent}}
 						<div class="card-cell card-title card-cell-ellipsis">{{hostName}}</div>

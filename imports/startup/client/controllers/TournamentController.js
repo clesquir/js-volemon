@@ -1,6 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Session} from 'meteor/session';
 import {Template} from 'meteor/templating';
+import {Router} from 'meteor/iron:router';
 import {Games} from '/imports/api/games/games.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {TournamentProfiles} from '/imports/api/tournaments/tournamentProfiles.js';

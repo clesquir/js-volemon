@@ -2,6 +2,7 @@ import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
 import * as Moment from 'meteor/momentjs:moment';
 import {ReactiveVar} from 'meteor/reactive-var';
+import {Router} from 'meteor/iron:router';
 import {getUTCTimeStamp, timeElapsedSince, timeDifference} from '/imports/lib/utils.js';
 
 import './tournaments.html';

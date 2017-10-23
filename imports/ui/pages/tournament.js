@@ -1,6 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
 import {Session} from 'meteor/session';
+import {Router} from 'meteor/iron:router';
 import {INITIAL_ELO_RATING} from '/imports/api/profiles/constants.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {canPlayTournament, isTournamentActive} from '/imports/api/tournaments/utils.js';
@@ -126,10 +127,6 @@ Template.tournament.events({
 
 			Router.go('tournamentGame', {tournamentId: Session.get('tournament'), gameId: id});
 		});
-	},
-
-	'click [data-action="go-to-tournament-game"]': function() {
-		Router.go('tournamentGame', {tournamentId: Session.get('tournament'), gameId: this._id});
 	}
 });
 

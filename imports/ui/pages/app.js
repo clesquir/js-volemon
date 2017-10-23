@@ -2,6 +2,7 @@ import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
 import {Session} from 'meteor/session';
 import {Tooltips} from 'meteor/lookback:tooltips';
+import {Router} from 'meteor/iron:router';
 
 import './app.html';
 

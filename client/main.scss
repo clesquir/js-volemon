@@ -126,7 +126,7 @@ h1 {
 
 h2 {
 	font-size: 1.2em;
-	color: lighten($text-color, 20%);
+	color: lighten($text-color, 15%);
 }
 
 .hidden {
@@ -199,6 +199,10 @@ p {
 	.create-game-button {
 		font-size: 18px;
 		cursor: pointer;
+
+		&:hover {
+			color: $text-color;
+		}
 	}
 }
 
