@@ -3,6 +3,10 @@ import {BONUS_DURATION} from '/imports/api/games/emissionConstants.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 
 export default class BaseBonus {
+	/**
+	 * @param {GameBonus} game
+	 * @param {string} className
+	 */
 	constructor(game, className) {
 		this.game = game;
 		this.className = className;

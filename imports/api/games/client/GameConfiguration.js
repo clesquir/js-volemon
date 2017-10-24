@@ -27,7 +27,7 @@ export default class GameConfiguration {
 	}
 
 	bonusSpawnInitialMinimumFrequence() {
-		if (this.hasTournament()) {
+		if (this.hasTournament() && this.tournamentMode.overridesBonusSpawnInitialMinimumFrequence()) {
 			return this.tournamentMode.bonusSpawnInitialMinimumFrequence();
 		}
 
@@ -35,10 +35,22 @@ export default class GameConfiguration {
 	}
 
 	bonusSpawnInitialMaximumFrequence() {
-		if (this.hasTournament()) {
+		if (this.hasTournament() && this.tournamentMode.overridesBonusSpawnInitialMaximumFrequence()) {
 			return this.tournamentMode.bonusSpawnInitialMaximumFrequence();
 		}
 
 		return BONUS_SPAWN_INITIAL_MAXIMUM_FREQUENCE;
+	}
+
+	overridesRandomBonusKeyList() {
+		return (this.hasTournament() && this.tournamentMode.overridesRandomBonusKeyList());
+	}
+
+	randomBonusKeyList() {
+		if (!this.overridesRandomBonusKeyList()) {
+			throw 'The random bonus key list is not overriden';
+		}
+
+		return this.tournamentMode.randomBonusKeyList();
 	}
 }

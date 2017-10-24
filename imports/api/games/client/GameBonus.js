@@ -576,7 +576,7 @@ export default class GameBonus {
 	}
 
 	createRandomBonus() {
-		let bonus = BonusFactory.randomBonus(this);
+		let bonus = BonusFactory.randomBonus(this, this.gameConfiguration);
 		let data = bonus.dataToStream();
 		data.initialX = this.xSize / 2 + Random.choice([-6, +6]);
 

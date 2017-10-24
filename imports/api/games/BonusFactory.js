@@ -43,11 +43,12 @@ import {
 export default class BonusFactory {
 
 	/**
-	 * @param {Game} game
+	 * @param {GameBonus} game
+	 * @param {GameConfiguration} gameConfiguration
 	 * @returns {BaseBonus}
 	 */
-	static randomBonus(game) {
-		const bonus = this.fromClassName(this.randomBonusKey(), game);
+	static randomBonus(game, gameConfiguration) {
+		const bonus = this.fromClassName(this.randomBonusKey(gameConfiguration), game);
 
 		if (bonus instanceof RandomBonus) {
 			bonus.setRandomBonus(
@@ -62,16 +63,21 @@ export default class BonusFactory {
 	}
 
 	/**
+	 * @param {GameConfiguration} gameConfiguration
 	 * @returns {string}
 	 */
-	static randomBonusKey() {
-		const availableBonuses = this.availableBonuses().concat(
+	static randomBonusKey(gameConfiguration) {
+		let randomBonusKeyList = this.availableBonuses().concat(
 			[
 				BONUS_RANDOM
 			]
 		);
 
-		return Random.choice(availableBonuses);
+		if (gameConfiguration.overridesRandomBonusKeyList()) {
+			randomBonusKeyList = gameConfiguration.randomBonusKeyList();
+		}
+
+		return Random.choice(randomBonusKeyList);
 	}
 
 	/**
@@ -109,7 +115,7 @@ export default class BonusFactory {
 
 	/**
 	 * @param {string} bonusClass
-	 * @param {Game} game
+	 * @param {GameBonus} game
 	 * @returns {BaseBonus}
 	 */
 	static fromClassName(bonusClass, game) {
