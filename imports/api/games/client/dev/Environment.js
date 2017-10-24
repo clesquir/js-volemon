@@ -4,6 +4,7 @@ import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
 import GameData from '/imports/api/games/client/GameData.js';
 import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
+import StaticGameConfiguration from '/imports/api/games/client/StaticGameConfiguration.js';
 import {PLAYER_HEIGHT, PLAYER_INITIAL_LOCATION} from '/imports/api/games/constants.js';
 
 export default class Environment {
@@ -15,10 +16,18 @@ export default class Environment {
 	start() {
 		const gameId = Random.id(5);
 		this.gameData = new GameData(gameId);
+		this.gameConfiguration = new StaticGameConfiguration(gameId);
 		this.gameStreamBundler = new GameStreamBundler(null);
 		this.gameEngine = new PhaserEngine();
 		this.serverNormalizedTime = new ServerNormalizedTime();
-		this.game = new Game(gameId, this.gameEngine, this.gameData, this.gameStreamBundler, this.serverNormalizedTime);
+		this.game = new Game(
+			gameId,
+			this.gameEngine,
+			this.gameData,
+			this.gameConfiguration,
+			this.gameStreamBundler,
+			this.serverNormalizedTime
+		);
 		this.gameBonus = this.game.gameBonus;
 		this.game.engine.start(
 			this.game.xSize, this.game.ySize, 'environmentGameContainer',

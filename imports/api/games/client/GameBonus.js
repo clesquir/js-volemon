@@ -16,10 +16,7 @@ import {
 	PLAYER_FROZEN_MASS
 } from '/imports/api/games/constants.js';
 import {
-	BONUS_INTERVAL,
-	BONUS_MINIMUM_FREQUENCE,
-	BONUS_MINIMUM_INTERVAL,
-	BONUS_MAXIMUM_INTERVAL
+	BONUS_INTERVAL
 } from '/imports/api/games/emissionConstants.js';
 import BonusFactory from '/imports/api/games/BonusFactory.js';
 import {getRandomInt, getRandomFloat, getUTCTimeStamp} from '/imports/lib/utils.js';
@@ -29,13 +26,15 @@ export default class GameBonus {
 	 * @param {Game} game
 	 * @param {PhaserEngine} engine
 	 * @param {GameData} gameData
+	 * @param {GameConfiguration} gameConfiguration
 	 * @param {GameStreamBundler} gameStreamBundler
 	 * @param {ServerNormalizedTime} serverNormalizedTime
 	 */
-	constructor(game, engine, gameData, gameStreamBundler, serverNormalizedTime) {
+	constructor(game, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime) {
 		this.game = game;
 		this.engine = engine;
 		this.gameData = gameData;
+		this.gameConfiguration = gameConfiguration;
 		this.gameStreamBundler = gameStreamBundler;
 		this.serverNormalizedTime = serverNormalizedTime;
 		this.lastBonusUpdate = 0;
@@ -558,14 +557,17 @@ export default class GameBonus {
 
 	regenerateLastBonusCreatedAndFrequenceTime() {
 		this.lastBonusCreated = getUTCTimeStamp();
-		this.bonusFrequenceTime = getRandomInt(BONUS_MINIMUM_INTERVAL, BONUS_MAXIMUM_INTERVAL);
+		this.bonusFrequenceTime = getRandomInt(
+			this.gameConfiguration.bonusSpawnInitialMinimumFrequence(),
+			this.gameConfiguration.bonusSpawnInitialMaximumFrequence()
+		);
 	}
 
 	createBonusIfTimeHasElapsed() {
 		let frequenceTime = this.bonusFrequenceTime - Math.round((getUTCTimeStamp() - this.lastGameRespawn) / 10);
 
-		if (frequenceTime < BONUS_MINIMUM_FREQUENCE) {
-			frequenceTime = BONUS_MINIMUM_FREQUENCE;
+		if (frequenceTime < this.gameConfiguration.bonusSpawnMinimumFrequence()) {
+			frequenceTime = this.gameConfiguration.bonusSpawnMinimumFrequence();
 		}
 
 		if (getUTCTimeStamp() - this.lastBonusCreated >= frequenceTime) {

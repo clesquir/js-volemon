@@ -1,13 +1,20 @@
 import Classic from './Classic';
-
-const BONUS_INTERVAL = 2000;
+import {BONUS_SPAWN_MINIMUM_FREQUENCE} from '/imports/api/games/emissionConstants.js';
 
 export default class Hardcore extends Classic {
-	overrideBonusMinimumInterval() {
-		return BONUS_INTERVAL;
+	overridesBonusSpawnInitialMinimumFrequence() {
+		return true;
 	}
 
-	overrideBonusMaximumInterval() {
-		return BONUS_INTERVAL;
+	bonusSpawnInitialMinimumFrequence() {
+		return BONUS_SPAWN_MINIMUM_FREQUENCE;
+	}
+
+	overridesBonusSpawnInitialMaximumFrequence() {
+		return true;
+	}
+
+	bonusSpawnInitialMaximumFrequence() {
+		return BONUS_SPAWN_MINIMUM_FREQUENCE;
 	}
 }

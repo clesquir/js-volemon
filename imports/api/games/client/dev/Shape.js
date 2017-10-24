@@ -4,6 +4,7 @@ import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
 import GameData from '/imports/api/games/client/GameData.js';
 import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
+import StaticGameConfiguration from '/imports/api/games/client/StaticGameConfiguration.js';
 import {
 	NORMAL_SCALE_PHYSICS_DATA,
 	PLAYER_HEIGHT,
@@ -19,7 +20,14 @@ export default class Shape {
 
 	start() {
 		const gameId = Random.id(5);
-		this.game = new Game(gameId, new PhaserEngine(), new GameData(gameId), new GameStreamBundler(null), new ServerNormalizedTime());
+		this.game = new Game(
+			gameId,
+			new PhaserEngine(),
+			new GameData(gameId),
+			new StaticGameConfiguration(gameId),
+			new GameStreamBundler(null),
+			new ServerNormalizedTime()
+		);
 		this.game.xSize = 1450;
 		this.game.engine.start(
 			this.game.xSize, this.game.ySize, 'shapeGameContainer',

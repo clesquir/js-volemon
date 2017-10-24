@@ -16,12 +16,14 @@ export default class GameInitiator {
 	 * @param {string} gameId
 	 * @param {Stream} stream
 	 * @param {GameData} gameData
+	 * @param {GameConfiguration} gameConfiguration
 	 * @param {ServerNormalizedTime} serverNormalizedTime
 	 */
-	constructor(gameId, stream, gameData, serverNormalizedTime) {
+	constructor(gameId, stream, gameData, gameConfiguration, serverNormalizedTime) {
 		this.gameId = gameId;
 		this.stream = stream;
 		this.gameData = gameData;
+		this.gameConfiguration = gameConfiguration;
 		this.serverNormalizedTime = serverNormalizedTime;
 
 		this.currentGame = null;
@@ -125,6 +127,7 @@ export default class GameInitiator {
 			this.gameId,
 			this.engine,
 			this.gameData,
+			this.gameConfiguration,
 			this.gameStreamBundler,
 			this.serverNormalizedTime
 		);

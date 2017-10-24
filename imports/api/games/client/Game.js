@@ -33,13 +33,15 @@ export default class Game {
 	 * @param {string} gameId
 	 * @param {PhaserEngine} engine
 	 * @param {GameData} gameData
+	 * @param {GameConfiguration} gameConfiguration
 	 * @param {GameStreamBundler} gameStreamBundler
 	 * @param {ServerNormalizedTime} serverNormalizedTime
 	 */
-	constructor(gameId, engine, gameData, gameStreamBundler, serverNormalizedTime) {
+	constructor(gameId, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime) {
 		this.gameId = gameId;
 		this.engine = engine;
 		this.gameData = gameData;
+		this.gameConfiguration = gameConfiguration;
 		this.gameStreamBundler = gameStreamBundler;
 		this.serverNormalizedTime = serverNormalizedTime;
 		this.xSize = GAME_X_SIZE;
@@ -53,7 +55,14 @@ export default class Game {
 		this.gameInitiated = false;
 		this.gameStreamBundler.resetBundledStreams();
 
-		this.gameBonus = new GameBonus(this, this.engine, this.gameData, this.gameStreamBundler, this.serverNormalizedTime);
+		this.gameBonus = new GameBonus(
+			this,
+			this.engine,
+			this.gameData,
+			this.gameConfiguration,
+			this.gameStreamBundler,
+			this.serverNormalizedTime
+		);
 	}
 
 	getCurrentPlayer() {
