@@ -143,6 +143,10 @@ export default class GameData {
 		return Games.findOne({_id: this.gameId});
 	}
 
+	hasTournament() {
+		return !!this.tournamentId;
+	}
+
 	updateStartedAt(startedAt) {
 		this.startedAt = startedAt;
 	}

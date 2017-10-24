@@ -5,21 +5,45 @@ export default class Classic {
 	onGameUpdate() {
 	}
 
-	overrideBonusMinimumInterval() {
+	overridesBonusSpawnInitialMinimumFrequence() {
+		return false;
 	}
 
-	overrideBonusMaximumInterval() {
+	bonusSpawnInitialMinimumFrequence() {
 	}
 
-	overrideRandomBonusKey() {
+	overridesBonusSpawnInitialMaximumFrequence() {
+		return false;
 	}
 
-	overrideAvailableBonuses() {
+	bonusSpawnInitialMaximumFrequence() {
 	}
 
-	overrideForfeitMinimumPoints() {
+	overridesRandomBonusKeyList() {
+		return false;
 	}
 
-	overrideMaximumPoints() {
+	randomBonusKeyList() {
+	}
+
+	overridesAvailableBonuses() {
+		return false;
+	}
+
+	availableBonuses() {
+	}
+
+	overridesForfeitMinimumPoints() {
+		return false;
+	}
+
+	forfeitMinimumPoints() {
+	}
+
+	overridesMaximumPoints() {
+		return false;
+	}
+
+	maximumPoints() {
 	}
 }

@@ -8,11 +8,14 @@ import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime
 import ClientStreamFactory from '/imports/lib/stream/client/ClientStreamFactory.js';
 import StreamConfiguration from '/imports/lib/stream/StreamConfiguration.js';
 import {updateConnectionIndicator, destroyConnectionIndicator} from '/imports/api/games/client/connectionIndicator.js';
+import DefaultGameConfiguration from './DefaultGameConfiguration';
 
 /** @type {Stream} */
 export let stream = null;
 /** @type {GameData} */
 export let gameData = null;
+/** @type {GameConfiguration} */
+export let gameConfiguration = null;
 /** @type {ServerNormalizedTime} */
 export let serverNormalizedTime = null;
 /** @type {GameInitiator}|null */
@@ -49,9 +52,11 @@ const initGame = function(gameId) {
 	stream.connect(gameId);
 	gameData = new GameData(gameId);
 	gameData.init();
+	gameConfiguration = new DefaultGameConfiguration(gameId);
+	gameConfiguration.init();
 	serverNormalizedTime = new ServerNormalizedTime();
 	serverNormalizedTime.init();
-	gameInitiator = new GameInitiator(gameId, stream, gameData, serverNormalizedTime);
+	gameInitiator = new GameInitiator(gameId, stream, gameData, gameConfiguration, serverNormalizedTime);
 	gameInitiator.init();
 	gameRematch = new GameRematch(gameId, gameData);
 	gameRematch.init();

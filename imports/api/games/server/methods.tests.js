@@ -169,13 +169,11 @@ describe('GameMethods#quitGame', function() {
 		sandbox.restore();
 	});
 
-	it('throws 404 if game does not exist', function(done) {
+	it('does not throw exception if game does not exist', function(done) {
 		stubUser(userId1);
 		Meteor.call('quitGame', Random.id(5), function(error) {
 			try {
-				assert.isObject(error);
-				assert.propertyVal(error, 'error', 404);
-				assert.propertyVal(error, 'reason', 'Game not found');
+				assert.isUndefined(error, error ? error.reason : null);
 			} catch(exception) {
 				done(exception);
 			}
@@ -183,15 +181,13 @@ describe('GameMethods#quitGame', function() {
 		});
 	});
 
-	it('throws 404 if player does not exist', function(done) {
+	it('does not throw exception if player does not exist', function(done) {
 		Games.insert({_id: gameId, status: GAME_STATUS_TIMEOUT});
 
 		stubUser(userId1);
 		Meteor.call('quitGame', gameId, function(error) {
 			try {
-				assert.isObject(error);
-				assert.propertyVal(error, 'error', 404);
-				assert.propertyVal(error, 'reason', 'Player not found');
+				assert.isUndefined(error, error ? error.reason : null);
 			} catch(exception) {
 				done(exception);
 			}

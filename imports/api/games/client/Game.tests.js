@@ -7,15 +7,17 @@ import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
 import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
 import {BALL_VERTICAL_SPEED_ON_PLAYER_HIT} from '/imports/api/games/constants.js';
+import StaticGameConfiguration from './StaticGameConfiguration';
 
 describe('Game#isPlayerJumpingForward', function() {
 	const gameData = new GameData();
+	const gameConfiguration = new StaticGameConfiguration();
 	const streamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 
 	it('returns false if vertical speed is 0', function() {
 		const engine = new PhaserEngine();
-		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
 
@@ -36,7 +38,7 @@ describe('Game#isPlayerJumpingForward', function() {
 
 	it('returns false if vertical speed is positive', function() {
 		const engine = new PhaserEngine();
-		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
 
@@ -57,7 +59,7 @@ describe('Game#isPlayerJumpingForward', function() {
 
 	it('returns false if vertical speed is negative but player is at ground level', function() {
 		const engine = new PhaserEngine();
-		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return true;});
 
@@ -78,7 +80,7 @@ describe('Game#isPlayerJumpingForward', function() {
 
 	it('returns false if player1 vertical speed is negative but horizontal speed is 0', function() {
 		const engine = new PhaserEngine();
-		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
 
@@ -99,7 +101,7 @@ describe('Game#isPlayerJumpingForward', function() {
 
 	it('returns false if player1 vertical speed is negative but horizontal speed is negative', function() {
 		const engine = new PhaserEngine();
-		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
 
@@ -120,7 +122,7 @@ describe('Game#isPlayerJumpingForward', function() {
 
 	it('returns true if player1 vertical speed is negative but horizontal speed is positive', function() {
 		const engine = new PhaserEngine();
-		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
 
@@ -141,7 +143,7 @@ describe('Game#isPlayerJumpingForward', function() {
 
 	it('returns false if player2 vertical speed is negative but horizontal speed is 0', function() {
 		const engine = new PhaserEngine();
-		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
 
@@ -162,7 +164,7 @@ describe('Game#isPlayerJumpingForward', function() {
 
 	it('returns false if player2 vertical speed is negative but horizontal speed is positive', function() {
 		const engine = new PhaserEngine();
-		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
 
@@ -183,7 +185,7 @@ describe('Game#isPlayerJumpingForward', function() {
 
 	it('returns true if player2 vertical speed is negative and horizontal speed is negative', function() {
 		const engine = new PhaserEngine();
-		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
 
@@ -206,11 +208,12 @@ describe('Game#isPlayerJumpingForward', function() {
 describe('Game#isBallInFrontOfPlayer', function() {
 	const engine = new PhaserEngine();
 	const gameData = new GameData();
+	const gameConfiguration = new StaticGameConfiguration();
 	const streamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 
 	it('returns false if player1 x position is equal to ball x position', function() {
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		let game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		assert.isFalse(game.isBallInFrontOfPlayer(
 			{
@@ -230,7 +233,7 @@ describe('Game#isBallInFrontOfPlayer', function() {
 	});
 
 	it('returns false if player1 x position is greater than to ball x position', function() {
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		let game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		assert.isFalse(game.isBallInFrontOfPlayer(
 			{
@@ -250,7 +253,7 @@ describe('Game#isBallInFrontOfPlayer', function() {
 	});
 
 	it('returns true if player1 x position is lower than to ball x position', function() {
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		let game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		assert.isTrue(game.isBallInFrontOfPlayer(
 			{
@@ -270,7 +273,7 @@ describe('Game#isBallInFrontOfPlayer', function() {
 	});
 
 	it('returns false if player2 x position is equal to ball x position', function() {
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		let game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		assert.isFalse(game.isBallInFrontOfPlayer(
 			{
@@ -290,7 +293,7 @@ describe('Game#isBallInFrontOfPlayer', function() {
 	});
 
 	it('returns false if player2 x position is lower than to ball x position', function() {
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		let game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		assert.isFalse(game.isBallInFrontOfPlayer(
 			{
@@ -310,7 +313,7 @@ describe('Game#isBallInFrontOfPlayer', function() {
 	});
 
 	it('returns true if player2 x position is greater than to ball x position', function() {
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		let game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		assert.isTrue(game.isBallInFrontOfPlayer(
 			{
@@ -333,11 +336,12 @@ describe('Game#isBallInFrontOfPlayer', function() {
 describe('Game#isBallBelowPlayer', function() {
 	const engine = new PhaserEngine();
 	const gameData = new GameData();
+	const gameConfiguration = new StaticGameConfiguration();
 	const streamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 
 	it('returns false if ball y position is lower than player y position + half its height', function() {
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		let game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		assert.isFalse(game.isBallBelowPlayer(
 			{
@@ -356,7 +360,7 @@ describe('Game#isBallBelowPlayer', function() {
 	});
 
 	it('returns false if ball y position is equal than player y position + half its height', function() {
-		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 		const playerHeight = 20;
 
 		assert.isFalse(game.isBallBelowPlayer(
@@ -377,7 +381,7 @@ describe('Game#isBallBelowPlayer', function() {
 	});
 
 	it('returns true if ball y position is greater than player y position + half its height', function() {
-		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 		const playerHeight = 20;
 
 		assert.isTrue(game.isBallBelowPlayer(
@@ -400,12 +404,13 @@ describe('Game#isBallBelowPlayer', function() {
 
 describe('Game#isPlayerDoingDropShot', function() {
 	const gameData = new GameData();
+	const gameConfiguration = new StaticGameConfiguration();
 	const streamBundler = new GameStreamBundler();
-	const serverNormalizedTime = new ServerNormalizedTime();
 
+	const serverNormalizedTime = new ServerNormalizedTime();
 	it('returns true', function() {
 		const engine = new PhaserEngine();
-		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		sinon.stub(game, 'isBallInFrontOfPlayer').callsFake(function() {return true;});
 		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
@@ -423,7 +428,7 @@ describe('Game#isPlayerDoingDropShot', function() {
 
 	it('returns false if player is not doing a drop shot', function() {
 		const engine = new PhaserEngine();
-		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		sinon.stub(game, 'isBallInFrontOfPlayer').callsFake(function() {return true;});
 		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
@@ -441,7 +446,7 @@ describe('Game#isPlayerDoingDropShot', function() {
 
 	it('returns true even if ball is not in front of player', function() {
 		const engine = new PhaserEngine();
-		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		sinon.stub(game, 'isBallInFrontOfPlayer').callsFake(function() {return false;});
 		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
@@ -459,7 +464,7 @@ describe('Game#isPlayerDoingDropShot', function() {
 
 	it('returns false if player is at ground level', function() {
 		const engine = new PhaserEngine();
-		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		sinon.stub(game, 'isBallInFrontOfPlayer').callsFake(function() {return true;});
 		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return true;});
@@ -479,11 +484,12 @@ describe('Game#isPlayerDoingDropShot', function() {
 describe('Game#dropShotBallOnPlayerHit', function() {
 	const engine = new PhaserEngine();
 	const gameData = new GameData();
+	const gameConfiguration = new StaticGameConfiguration();
 	const streamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 
 	it('removes all speed velocity from ball object', function() {
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		let game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		let ball = {
 			body: {
@@ -506,11 +512,12 @@ describe('Game#dropShotBallOnPlayerHit', function() {
 describe('Game#reboundBallOnPlayerHit', function() {
 	const engine = new PhaserEngine();
 	const gameData = new GameData();
+	const gameConfiguration = new StaticGameConfiguration();
 	const streamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 
 	it('adds the constant vertical speed velocity to ball object', function() {
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		let game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		let horizontalVelocity = 300;
 		let ball = {
@@ -533,12 +540,13 @@ describe('Game#reboundBallOnPlayerHit', function() {
 
 describe('Game#onBallHitPlayer', function() {
 	const gameData = new GameData();
+	const gameConfiguration = new StaticGameConfiguration();
 	const streamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 
 	it('reboundBallOnPlayerHit is called', function() {
 		const engine = new PhaserEngine();
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		let game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		sinon.stub(game, 'isPlayerJumpingForward').callsFake(function() {return false;});
 		sinon.stub(game, 'isBallBelowPlayer').callsFake(function() {return false;});
@@ -554,7 +562,7 @@ describe('Game#onBallHitPlayer', function() {
 
 	it('reboundBallOnPlayerHit is not called if player is doing drop shot and ball is in front of the player', function() {
 		const engine = new PhaserEngine();
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		let game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		sinon.stub(game, 'isPlayerJumpingForward').callsFake(function() {return false;});
 		sinon.stub(game, 'isBallBelowPlayer').callsFake(function() {return false;});
@@ -573,7 +581,7 @@ describe('Game#onBallHitPlayer', function() {
 
 	it('reboundBallOnPlayerHit is not called if the player is not jumping forward and the ball is below the player', function() {
 		const engine = new PhaserEngine();
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		let game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		sinon.stub(game, 'isPlayerJumpingForward').callsFake(function() {return false;});
 		sinon.stub(game, 'isBallBelowPlayer').callsFake(function() {return true;});
@@ -589,7 +597,7 @@ describe('Game#onBallHitPlayer', function() {
 
 	it('reboundBallOnPlayerHit is called if the ball is not in front of the player', function() {
 		const engine = new PhaserEngine();
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		let game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		sinon.stub(game, 'isPlayerJumpingForward').callsFake(function() {return true;});
 		sinon.stub(game, 'isBallInFrontOfPlayer').callsFake(function() {return false;});
@@ -606,7 +614,7 @@ describe('Game#onBallHitPlayer', function() {
 
 	it('smashBallOnPlayerHit is called', function() {
 		const engine = new PhaserEngine();
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		let game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		sinon.stub(game, 'isPlayerJumpingForward').callsFake(function() {return true;});
 		sinon.stub(game, 'isBallInFrontOfPlayer').callsFake(function() {return true;});
@@ -622,7 +630,7 @@ describe('Game#onBallHitPlayer', function() {
 
 	it('smashBallOnPlayerHit is not called if player is doing a drop shot', function() {
 		const engine = new PhaserEngine();
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		let game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		sinon.stub(game, 'isPlayerJumpingForward').callsFake(function() {return true;});
 		sinon.stub(game, 'isBallInFrontOfPlayer').callsFake(function() {return true;});
@@ -642,11 +650,12 @@ describe('Game#onBallHitPlayer', function() {
 describe('Game#smashBallOnPlayerHit', function() {
 	const engine = new PhaserEngine();
 	const gameData = new GameData();
+	const gameConfiguration = new StaticGameConfiguration();
 	const streamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 
 	it('normal smash calculations', function() {
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		let game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		let horizontalSpeed = 300;
 		let verticalSpeed = 200;
@@ -669,7 +678,7 @@ describe('Game#smashBallOnPlayerHit', function() {
 	});
 
 	it('ball is smashed towards ground if its vertical speed was negative', function() {
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		let game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		let horizontalSpeed = 300;
 		let verticalSpeed = -200;
@@ -692,7 +701,7 @@ describe('Game#smashBallOnPlayerHit', function() {
 	});
 
 	it('for player1, ball direction is reversed if it is smashed', function() {
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		let game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		let horizontalSpeed = -300;
 		let verticalSpeed = -200;
@@ -715,7 +724,7 @@ describe('Game#smashBallOnPlayerHit', function() {
 	});
 
 	it('for player2, ball direction is reversed if it is smashed', function() {
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		let game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		let horizontalSpeed = 300;
 		let verticalSpeed = -200;
@@ -740,12 +749,13 @@ describe('Game#smashBallOnPlayerHit', function() {
 
 describe('Game#inputs', function() {
 	const gameData = new GameData();
+	const gameConfiguration = new StaticGameConfiguration();
 	const streamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 
 	it('returns false if there is no currentPlayer', function() {
 		const engine = new PhaserEngine();
-		let game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		let game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 
 		sinon.stub(game, 'getCurrentPlayer').callsFake(function() {
 			return null;
@@ -758,7 +768,7 @@ describe('Game#inputs', function() {
 
 	it('sets engine Horizontal and Vertical speed to 0 if player is frozen and sends player position', function() {
 		const engine = new PhaserEngine();
-		var game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime),
+		var game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime),
 			horizontalSpeedValue = null,
 			verticalSpeedValue = null;
 
@@ -786,7 +796,7 @@ describe('Game#inputs', function() {
 
 	it('sets engine Horizontal speed if left is pressed and sends player position', function() {
 		const engine = new PhaserEngine();
-		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 		const moveModifier = 1;
 		const velocity = 100;
 		let horizontalSpeedValue = null;
@@ -824,7 +834,7 @@ describe('Game#inputs', function() {
 
 	it('sets engine Horizontal speed if right is pressed and sends player position', function() {
 		const engine = new PhaserEngine();
-		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 		const moveModifier = 1;
 		const velocity = 100;
 		let horizontalSpeedValue = null;
@@ -862,7 +872,7 @@ describe('Game#inputs', function() {
 
 	it('sets engine Horizontal speed to 0 if neither left or right is pressed and sends player position', function() {
 		const engine = new PhaserEngine();
-		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 		const moveModifier = 1;
 		const velocity = 100;
 		let horizontalSpeedValue = null;
@@ -900,7 +910,7 @@ describe('Game#inputs', function() {
 
 	it('sets engine Vertical speed if up is pressed and sends player position', function() {
 		const engine = new PhaserEngine();
-		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 		const moveModifier = 1;
 		const velocity = 100;
 		let horizontalSpeedValue = null;
@@ -939,7 +949,7 @@ describe('Game#inputs', function() {
 
 	it('sets engine Vertical speed to 0 if up is not pressed and sends player position', function() {
 		const engine = new PhaserEngine();
-		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 		const moveModifier = 1;
 		const velocity = 100;
 		let horizontalSpeedValue = null;
@@ -977,7 +987,7 @@ describe('Game#inputs', function() {
 
 	it('does not increase engine Vertical speed if player is not at ground level and sends player position', function() {
 		const engine = new PhaserEngine();
-		const game = new Game(Random.id(5), engine, gameData, streamBundler, serverNormalizedTime);
+		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 		const moveModifier = 1;
 		const velocity = 100;
 		let horizontalSpeedValue = null;

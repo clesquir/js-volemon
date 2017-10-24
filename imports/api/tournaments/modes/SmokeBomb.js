@@ -2,13 +2,21 @@ import Classic from './Classic';
 import {BONUS_SMOKE_BOMB} from '/imports/api/games/bonusConstants.js';
 
 export default class SmokeBomb extends Classic {
-	overrideRandomBonusKey() {
+	overridesRandomBonusKeyList() {
+		return true;
+	}
+
+	randomBonusKeyList() {
 		return [
 			BONUS_SMOKE_BOMB
 		];
 	}
 
-	overrideAvailableBonuses() {
+	overridesAvailableBonuses() {
+		return true;
+	}
+
+	availableBonuses() {
 		return [
 			BONUS_SMOKE_BOMB
 		];
