@@ -17,6 +17,7 @@ import NoJumpMonsterBonus from '/imports/api/games/bonus/NoJumpMonsterBonus.js';
 import BounceMonsterBonus from '/imports/api/games/bonus/BounceMonsterBonus.js';
 import CloakedMonsterBonus from '/imports/api/games/bonus/CloakedMonsterBonus.js';
 import ShapeShiftBonus from '/imports/api/games/bonus/ShapeShiftBonus.js';
+import SmokeBomb from '/imports/api/games/bonus/SmokeBomb.js';
 import RandomBonus from '/imports/api/games/bonus/RandomBonus.js';
 import {
 	BONUS_SMALL_BALL,
@@ -37,6 +38,7 @@ import {
 	BONUS_BOUNCE_MONSTER,
 	BONUS_CLOAKED_MONSTER,
 	BONUS_SHAPE_SHIFT,
+	BONUS_SMOKE_BOMB,
 	BONUS_RANDOM
 } from '/imports/api/games/bonusConstants.js';
 
@@ -53,7 +55,7 @@ export default class BonusFactory {
 		if (bonus instanceof RandomBonus) {
 			bonus.setRandomBonus(
 				this.fromClassName(
-					Random.choice(this.availableBonusesForRandom()),
+					Random.choice(this.availableBonusesForRandom(gameConfiguration)),
 					game
 				)
 			);
@@ -67,7 +69,13 @@ export default class BonusFactory {
 	 * @returns {string}
 	 */
 	static randomBonusKey(gameConfiguration) {
-		let randomBonusKeyList = this.availableBonuses().concat(
+		let availableBonuses = this.availableBonuses();
+
+		if (gameConfiguration.overridesAvailableBonuses()) {
+			availableBonuses = gameConfiguration.availableBonuses();
+		}
+
+		let randomBonusKeyList = availableBonuses.concat(
 			[
 				BONUS_RANDOM
 			]
@@ -105,8 +113,18 @@ export default class BonusFactory {
 		];
 	}
 
-	static availableBonusesForRandom() {
-		return this.availableBonuses().concat(
+	/**
+	 * @param {GameConfiguration} gameConfiguration
+	 * @returns {Array.<string>}
+	 */
+	static availableBonusesForRandom(gameConfiguration) {
+		let availableBonuses = this.availableBonuses();
+
+		if (gameConfiguration.overridesAvailableBonuses()) {
+			availableBonuses = gameConfiguration.availableBonuses();
+		}
+
+		return availableBonuses.concat(
 			[
 				BONUS_INVINCIBLE_MONSTER
 			]
@@ -156,6 +174,8 @@ export default class BonusFactory {
 				return new CloakedMonsterBonus(game, bonusClass);
 			case BONUS_SHAPE_SHIFT:
 				return new ShapeShiftBonus(game, bonusClass);
+			case BONUS_SMOKE_BOMB:
+				return new SmokeBomb(game, bonusClass);
 			case BONUS_RANDOM:
 				return new RandomBonus(game, bonusClass);
 		}

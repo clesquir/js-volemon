@@ -112,9 +112,9 @@ export default class BaseBonus {
 		return [bonusBorder];
 	}
 
-	beforeActivation(playerKey, activatedAt) {
+	beforeActivation(payload) {
 		if (this.bonusToActivate() !== this) {
-			this.bonusToActivate().beforeActivation(playerKey, activatedAt);
+			this.bonusToActivate().beforeActivation(payload);
 		}
 	}
 

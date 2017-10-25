@@ -533,16 +533,7 @@ export default class GameBonus {
 			let x = GAME_X_SIZE / 6 * i;
 
 			for (let layer of layers) {
-				let scale = getRandomFloat(1, 2);
-				let cloud = this.engine.addSprite(x, 200, layer);
-				cloud.opacity = getRandomFloat(0.25, 0.30);
-				cloud.rotateSpeed = getRandomFloat(-6, 6);
-				this.engine.setStatic(cloud, true);
-				this.engine.setOpacity(cloud, 0);
-				this.engine.setAnchor(cloud, 0.5);
-				this.engine.setFixedRotation(cloud, false);
-				this.engine.scale(cloud, scale, scale);
-				this.clouds.push(cloud);
+				this.clouds.push(this.createCloud(x, 200, layer, getRandomFloat(0.25, 0.30)));
 			}
 		}
 	}
@@ -553,6 +544,50 @@ export default class GameBonus {
 			this.engine.rotateLeft(cloud, 0);
 		}
 		this.engine.animateSetOpacity(this.cloudBonus, 0, this.engine.getOpacity(this.cloudBonus), 250);
+	}
+
+	createCloud(xPosition, yPosition, layer, opacity) {
+		const scale = getRandomFloat(1, 2);
+		const cloud = this.engine.addSprite(xPosition, yPosition, layer);
+
+		cloud.opacity = opacity;
+		cloud.rotateSpeed = getRandomFloat(-6, 6);
+		this.engine.setStatic(cloud, true);
+		this.engine.setOpacity(cloud, 0);
+		this.engine.setAnchor(cloud, 0.5);
+		this.engine.setFixedRotation(cloud, false);
+		this.engine.scale(cloud, scale, scale);
+
+		return cloud;
+	}
+
+	drawSmokeBomb(smokeBombIdentifier, xPosition, yPosition) {
+		if (this.smokeBomb === undefined) {
+			this.smokeBomb = {};
+		}
+		this.smokeBomb[smokeBombIdentifier] = [];
+
+		const layers = ['white-cloud', 'white-cloud', 'dark-cloud', 'dark-cloud'];
+		for (let layer of layers) {
+			const cloud = this.createCloud(xPosition, yPosition, layer, getRandomFloat(0.5, 0.75));
+
+			this.engine.rotateLeft(cloud, cloud.rotateSpeed);
+			this.engine.animateSetOpacity(cloud, cloud.opacity, this.engine.getOpacity(cloud), 250);
+			this.smokeBomb[smokeBombIdentifier].push(cloud);
+		}
+	}
+
+	hideSmokeBomb(smokeBombIdentifier) {
+		if (this.smokeBomb[smokeBombIdentifier]) {
+			for (let smokeBomb of this.smokeBomb[smokeBombIdentifier]) {
+				this.engine.animateSetOpacity(smokeBomb, 0, this.engine.getOpacity(smokeBomb), 250);
+				this.engine.rotateLeft(smokeBomb, 0);
+
+				this.engine.createTimer(250, () => {
+					smokeBomb.destroy();
+				}, this).start();
+			}
+		}
 	}
 
 	regenerateLastBonusCreatedAndFrequenceTime() {
@@ -608,21 +643,21 @@ export default class GameBonus {
 			if (this.gameData.isUserHost()) {
 				const playerKey = this.engine.getKey(player);
 				const activatedAt = this.serverNormalizedTime.getServerTimestamp();
+				const payload = {
+					identifier: bonusSprite.identifier,
+					player: playerKey,
+					activatedAt: activatedAt,
+					x: this.engine.getXPosition(bonusSprite),
+					y: this.engine.getYPosition(bonusSprite)
+				};
 
-				bonusSprite.data.bonus.beforeActivation(playerKey, activatedAt);
-				const beforeActivationData = bonusSprite.data.bonus.beforeActivationData();
+				bonusSprite.data.bonus.beforeActivation(payload);
+				payload.beforeActivationData = bonusSprite.data.bonus.beforeActivationData();
 
 				//Send to client
 				this.gameStreamBundler.emitStream(
 					'activateBonus-' + this.game.gameId,
-					{
-						identifier: bonusSprite.identifier,
-						player: playerKey,
-						activatedAt: activatedAt,
-						x: this.engine.getXPosition(bonusSprite),
-						y: this.engine.getYPosition(bonusSprite),
-						beforeActivationData: beforeActivationData
-					}
+					payload
 				);
 				//Activate bonus
 				this.activateBonus(
@@ -631,7 +666,7 @@ export default class GameBonus {
 					activatedAt,
 					this.engine.getXPosition(bonusSprite),
 					this.engine.getYPosition(bonusSprite),
-					beforeActivationData
+					payload.beforeActivationData
 				);
 			}
 		}, this);
