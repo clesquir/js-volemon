@@ -436,8 +436,8 @@ export default class PhaserEngine extends Engine {
 			return;
 		}
 
-		//+10 for fast sliding to interpolated location
-		const maxTime = 10;
+		//+25 for fast sliding to interpolated location
+		const maxTime = 25;
 		let t = maxTime / 1000;
 
 		const interpolatedData = Object.assign({}, data);

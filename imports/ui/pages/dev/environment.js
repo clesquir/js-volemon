@@ -6,13 +6,17 @@ import './environment.html';
 
 /** @type {Environment}|null */
 let environment = null;
-const groundHitEnabled = new ReactiveVar(true);
+const groundHitEnabled = new ReactiveVar(false);
 const playerJumpCanOnEnabled = new ReactiveVar(false);
 const opponentMoveEnabled = new ReactiveVar(false);
 
 Template.environment.rendered = function() {
 	environment = new Environment();
 	environment.start();
+
+	environment.onGameCreated = () => {
+		environment.disableGroundHit();
+	};
 };
 
 Template.environment.destroyed = function() {

@@ -8,7 +8,6 @@ import StaticGameConfiguration from '/imports/api/games/client/StaticGameConfigu
 import {PLAYER_HEIGHT, PLAYER_INITIAL_LOCATION} from '/imports/api/games/constants.js';
 
 export default class Environment {
-
 	constructor() {
 		this.game = null;
 	}
@@ -57,6 +56,11 @@ export default class Environment {
 		this.game.gameInitiated = true;
 
 		this.game.resumeOnTimerEnd();
+
+		this.onGameCreated();
+	}
+
+	onGameCreated() {
 	}
 
 	createComponents() {
@@ -106,12 +110,12 @@ export default class Environment {
 			y: y,
 			velocityX: (this.game.player2.x > x ? -100 : 100),
 			velocityY: (this.game.player2.y > y ? -100 : 100),
-			timestamp: require('moment')().utc().valueOf() - 20
+			timestamp: this.serverNormalizedTime.getServerTimestamp()
 		});
 	}
 
 	enableOpponentMoveEnabled() {
-		const delay = 500;
+		const delay = 2500;
 
 		Meteor.clearInterval(this.movingInterval);
 		this.movingInterval = Meteor.setInterval(() => {
