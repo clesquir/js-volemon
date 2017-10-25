@@ -48,9 +48,21 @@ export default class GameConfiguration {
 
 	randomBonusKeyList() {
 		if (!this.overridesRandomBonusKeyList()) {
-			throw 'The random bonus key list is not overriden';
+			throw 'The random bonus key list is not overridden';
 		}
 
 		return this.tournamentMode.randomBonusKeyList();
+	}
+
+	overridesAvailableBonuses() {
+		return (this.hasTournament() && this.tournamentMode.overridesAvailableBonuses());
+	}
+
+	availableBonuses() {
+		if (!this.overridesAvailableBonuses()) {
+			throw 'The available bonuses are not overridden';
+		}
+
+		return this.tournamentMode.availableBonuses();
 	}
 }
