@@ -431,7 +431,7 @@ export default class PhaserEngine extends Engine {
 		return data;
 	}
 
-	interpolateMoveTo(sprite, serverNormalizedTimestamp, data) {
+	interpolateMoveTo(sprite, serverNormalizedTimestamp, data, canMoveCallback) {
 		if (!sprite.body) {
 			return;
 		}
@@ -458,7 +458,7 @@ export default class PhaserEngine extends Engine {
 		this.game.time.events.add(
 			maxTime,
 			() => {
-				if (sprite && sprite.body) {
+				if (sprite && sprite.body && canMoveCallback.call()) {
 					this.move(sprite, interpolatedData);
 				}
 			},

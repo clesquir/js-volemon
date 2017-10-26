@@ -242,8 +242,16 @@ export default class GameBonus {
 		}
 	}
 
+	gameIsOnGoing() {
+		return this.gameData.isGameStatusStarted();
+	}
+
 	moveClientBonus(bonusIdentifier, data) {
 		let correspondingBonusSprite = this.getBonusSpriteFromIdentifier(bonusIdentifier);
+
+		if (!this.gameIsOnGoing()) {
+			return;
+		}
 
 		if (!correspondingBonusSprite) {
 			data.bonusIdentifier = bonusIdentifier;
@@ -251,7 +259,7 @@ export default class GameBonus {
 		}
 
 		let serverNormalizedTimestamp = this.serverNormalizedTime.getServerTimestamp();
-		this.engine.interpolateMoveTo(correspondingBonusSprite, serverNormalizedTimestamp, data);
+		this.engine.interpolateMoveTo(correspondingBonusSprite, serverNormalizedTimestamp, data, () => {return this.gameIsOnGoing()});
 	}
 
 	onGameStop() {

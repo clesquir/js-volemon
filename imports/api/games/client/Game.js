@@ -519,7 +519,7 @@ export default class Game {
 
 		if (this.gameData.hasGameStatusEndedWithAWinner()) {
 			this.onGameEnd();
-		} else if (this.gameData.isGameStatusStarted()) {
+		} else if (this.gameIsOnGoing()) {
 			this.gameBonus.resumeGame();
 			this.startCountdownTimer();
 		}
@@ -597,7 +597,7 @@ export default class Game {
 			this.engine.setVerticalSpeed(this.ball, 0);
 		}
 
-		if (this.gameData.isGameStatusStarted()) {
+		if (this.gameIsOnGoing()) {
 			this.inputs();
 			this.gameBonus.onUpdateGameOnGoing();
 
@@ -867,6 +867,10 @@ export default class Game {
 		);
 	}
 
+	gameIsOnGoing() {
+		return this.gameData.isGameStatusStarted();
+	}
+
 	moveOppositePlayer(data) {
 		let player;
 
@@ -876,27 +880,27 @@ export default class Game {
 			player = this.player2;
 		}
 
-		if (!this.gameInitiated || !player || !this.gameData.isGameStatusStarted()) {
+		if (!this.gameInitiated || !player || !this.gameIsOnGoing()) {
 			return;
 		}
 
 		player.data.doingDropShot = data.doingDropShot;
 
 		let serverNormalizedTimestamp = this.serverNormalizedTime.getServerTimestamp();
-		this.engine.interpolateMoveTo(player, serverNormalizedTimestamp, data);
+		this.engine.interpolateMoveTo(player, serverNormalizedTimestamp, data, () => {return this.gameIsOnGoing()});
 	}
 
 	moveClientBall(data) {
-		if (!this.gameInitiated || !this.ball || !this.gameData.isGameStatusStarted()) {
+		if (!this.gameInitiated || !this.ball || !this.gameIsOnGoing()) {
 			return;
 		}
 
 		let serverNormalizedTimestamp = this.serverNormalizedTime.getServerTimestamp();
-		this.engine.interpolateMoveTo(this.ball, serverNormalizedTimestamp, data);
+		this.engine.interpolateMoveTo(this.ball, serverNormalizedTimestamp, data, () => {return this.gameIsOnGoing()});
 	}
 
 	createBonus(data) {
-		if (!this.gameInitiated || !this.gameData.isGameStatusStarted()) {
+		if (!this.gameInitiated || !this.gameIsOnGoing()) {
 			return;
 		}
 
@@ -904,7 +908,7 @@ export default class Game {
 	}
 
 	activateBonus(bonusIdentifier, playerKey, activatedAt, x, y, beforeActivationData) {
-		if (!this.gameInitiated || !this.gameData.isGameStatusStarted()) {
+		if (!this.gameInitiated || !this.gameIsOnGoing()) {
 			return;
 		}
 
@@ -912,7 +916,7 @@ export default class Game {
 	}
 
 	moveClientBonus(bonusIdentifier, data) {
-		if (!this.gameInitiated || !this.gameData.isGameStatusStarted()) {
+		if (!this.gameInitiated || !this.gameIsOnGoing()) {
 			return;
 		}
 
