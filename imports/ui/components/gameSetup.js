@@ -94,23 +94,6 @@ Template.gameSetup.helpers({
 });
 
 Template.gameSetup.events({
-	'click [data-action="copy-url"]': function(e) {
-		const url = Router.routes['game'].url({_id: Session.get('game')});
-		const temporaryInput = $('<input>');
-
-		$('body').append(temporaryInput);
-		temporaryInput.val(url).select();
-		document.execCommand('copy');
-		temporaryInput.remove();
-
-		$(e.target).attr('data-tooltip', 'Copied!');
-		$(e.target).trigger('mouseover');
-
-		$(e.target).mouseout(function() {
-			$(e.target).attr('data-tooltip', 'Copy to clipboard');
-		});
-	},
-
 	'click [data-action="update-practice-game"]': function(e) {
 		const game = Games.findOne(Session.get('game'));
 		const isPracticeGame = !game.isPracticeGame;

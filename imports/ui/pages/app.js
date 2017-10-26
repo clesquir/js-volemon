@@ -129,5 +129,22 @@ Template.app.events({
 
 		actionAfterLoginCreateUser();
 		actionAfterLoginCreateUser = null;
-	}
+	},
+
+	'click [data-action="copy-url"]': function(e) {
+		const url = $(e.target).parent('.copyable-url-input').find('input[name=url]')[0].value;
+		const temporaryInput = $('<input>');
+
+		$('body').append(temporaryInput);
+		temporaryInput.val(url).select();
+		document.execCommand('copy');
+		temporaryInput.remove();
+
+		$(e.target).attr('data-tooltip', 'Copied!');
+		$(e.target).trigger('mouseover');
+
+		$(e.target).mouseout(function() {
+			$(e.target).attr('data-tooltip', 'Copy to clipboard');
+		});
+	},
 });

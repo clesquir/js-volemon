@@ -1,6 +1,6 @@
 <template name="tournamentGame">
 
-	<div class="app-section app-section-min-width app-section-center">
+	<div class="app-section app-section-min-width app-section-center tournament-page">
 
 		<div class="app-section-inner">
 
@@ -11,8 +11,17 @@
 			{{else}}
 
 				<h1>{{tournament.mode.name}}</h1>
+				<p class="tournament-description">{{tournamentDescription}}</p>
 
-				<p>{{tournamentDescription}}</p>
+				{{#if isHost}}
+					<p>Share this link with someone</p>
+					<p>
+						<div class="copyable-url-input">
+							<input type="text" value="{{urlFor 'tournamentGame' tournamentId=game.tournamentId gameId=game._id}}" readonly="readonly" name="url" />
+							<i class="fa fa-clipboard" data-action="copy-url" data-tooltip="Copy to clipboard" data-tooltip-direction="s"></i>
+						</div>
+					</p>
+				{{/if}}
 
 				{{> gameSetup}}
 
