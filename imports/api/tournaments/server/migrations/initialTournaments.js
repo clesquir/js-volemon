@@ -13,25 +13,43 @@ Meteor.startup(function() {
 			_id: Random.id(5),
 			identifier: 'tournament_2017-10-23',
 			mode: TOURNAMENT_MODE_CLASSIC,
-			startDate: "2017-10-23 +0000",
-			endDate: "2017-10-28 +0000",
+			startDate: "2017-10-23 -4",
+			endDate: "2017-10-28 -4",
 			isPublished: false
 		},
 		{
 			_id: Random.id(5),
 			identifier: 'tournament_2017-10-30',
 			mode: TOURNAMENT_MODE_HARDCORE,
-			startDate: "2017-10-30 +0000",
-			endDate: "2017-11-04 +0000",
+			startDate: "2017-10-30 -4",
+			endDate: "2017-11-04 -4",
 			isPublished: false
 		}
 	];
 
-	for (let tournament of tournaments) {
-		if (!Tournaments.findOne({identifier: tournament.identifier})) {
-			tournament.mode = TournamentModes.findOne({_id: tournament.mode});
+	for (let expectedTournament of tournaments) {
+		let actualTournament = Tournaments.findOne({identifier: expectedTournament.identifier});
+		let tournamentMode = TournamentModes.findOne({_id: expectedTournament.mode});
 
-			Tournaments.insert(tournament);
+		if (!actualTournament) {
+			expectedTournament.mode = tournamentMode;
+
+			Tournaments.insert(expectedTournament);
+		} else {
+			const updates = {};
+			if (!_.isEqual(actualTournament.mode, tournamentMode)) {
+				updates.mode = tournamentMode;
+			}
+			if (actualTournament.startDate !== expectedTournament.startDate) {
+				updates.startDate = expectedTournament.startDate;
+			}
+			if (actualTournament.endDate !== expectedTournament.endDate) {
+				updates.endDate = expectedTournament.endDate;
+			}
+
+			if (Object.keys(updates).length) {
+				Tournaments.update({_id: actualTournament._id}, {$set: updates});
+			}
 		}
 	}
 });
