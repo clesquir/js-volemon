@@ -1,5 +1,11 @@
 import {Meteor} from 'meteor/meteor';
 import * as Moment from 'meteor/momentjs:moment';
+import {Games} from '/imports/api/games/games.js';
+import {
+	GAME_STATUS_REGISTRATION,
+	GAME_STATUS_STARTED,
+	GAME_STATUS_TIMEOUT
+} from '/imports/api/games/statusConstants.js';
 import TournamentFinished from '/imports/api/tournaments/events/TournamentFinished.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {EventPublisher} from '/imports/lib/EventPublisher.js';
@@ -31,5 +37,9 @@ export default class TournamentFinish {
 	onFinish(tournamentId) {
 		EventPublisher.publish(new TournamentFinished(tournamentId));
 		Tournaments.update({_id: tournamentId}, {$set: {isPublished: true}});
+		Games.update(
+			{tournamentId: tournamentId, status: {$in: [GAME_STATUS_REGISTRATION, GAME_STATUS_STARTED]}},
+			{$set: {status: GAME_STATUS_TIMEOUT}}
+		);
 	}
 }
