@@ -13,11 +13,11 @@ import StaticGameConfiguration from './StaticGameConfiguration';
 
 describe('GameBonus#getBonusSpriteFromIdentifier', function() {
 	const gameId = Random.id(5);
-	const engine = new PhaserEngine();
 	const gameData = new GameData(gameId);
 	const gameConfiguration = new StaticGameConfiguration(gameId);
 	const gameStreamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
+	const engine = new PhaserEngine(gameConfiguration);
 	const game = new Game(gameId, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
 
 	it('returns null if the bonusIdentifier matches nothing', function() {
@@ -52,11 +52,11 @@ describe('GameBonus#getBonusSpriteFromIdentifier', function() {
 
 describe('GameBonus#createBonusIfTimeHasElapsed', function() {
 	const gameId = Random.id(5);
-	const engine = new PhaserEngine();
 	const gameData = new GameData(gameId);
 	const gameConfiguration = new StaticGameConfiguration(gameId);
 	const gameStreamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
+	const engine = new PhaserEngine(gameConfiguration);
 	const game = new Game(gameId, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
 
 	sinon.stub(game, 'collidesWithNetHitDelimiter').callsFake(function() {});
@@ -131,11 +131,11 @@ describe('GameBonus#createBonusIfTimeHasElapsed', function() {
 
 describe('GameBonus#removeBonusSprite', function() {
 	const gameId = Random.id(5);
-	const engine = new PhaserEngine();
 	const gameData = new GameData(gameId);
 	const gameConfiguration = new StaticGameConfiguration(gameId);
 	const gameStreamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
+	const engine = new PhaserEngine(gameConfiguration);
 	const game = new Game(gameId, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
 
 	it ('removes and destroys the matching bonusIdentifier bonus from bonuses', function() {
@@ -196,11 +196,11 @@ describe('GameBonus#removeBonusSprite', function() {
 
 describe('GameBonus#setPlayerGravity', function() {
 	const gameId = Random.id(5);
-	const engine = new PhaserEngine();
 	const gameData = new GameData(gameId);
 	const gameConfiguration = new StaticGameConfiguration(gameId);
 	const gameStreamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
+	const engine = new PhaserEngine(gameConfiguration);
 	const game = new Game(gameId, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
 
 	it('sets gravity if player is not frozen', function() {
@@ -266,11 +266,11 @@ describe('GameBonus#setPlayerGravity', function() {
 
 describe('GameBonus#resetPlayerGravity', function() {
 	const gameId = Random.id(5);
-	const engine = new PhaserEngine();
 	const gameData = new GameData(gameId);
 	const gameConfiguration = new StaticGameConfiguration(gameId);
 	const gameStreamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
+	const engine = new PhaserEngine(gameConfiguration);
 	const game = new Game(gameId, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
 
 	it('resets gravity if player is not frozen', function() {
@@ -334,11 +334,11 @@ describe('GameBonus#resetPlayerGravity', function() {
 
 describe('GameBonus#freezePlayer', function() {
 	const gameId = Random.id(5);
-	const engine = new PhaserEngine();
 	const gameData = new GameData(gameId);
 	const gameConfiguration = new StaticGameConfiguration(gameId);
 	const gameStreamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
+	const engine = new PhaserEngine(gameConfiguration);
 	const game = new Game(gameId, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
 
 	it('sets player mass and zeroize gravity on freeze', function() {
@@ -380,11 +380,11 @@ describe('GameBonus#freezePlayer', function() {
 
 describe('GameBonus#unFreezePlayer', function() {
 	const gameId = Random.id(5);
-	const engine = new PhaserEngine();
 	const gameData = new GameData(gameId);
 	const gameConfiguration = new StaticGameConfiguration(gameId);
 	const gameStreamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
+	const engine = new PhaserEngine(gameConfiguration);
 	const game = new Game(gameId, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
 
 	it('restores initial player mass and current gravity on unfreeze', function() {

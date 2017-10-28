@@ -104,7 +104,7 @@ export default class GameBonus {
 		this.bonusCollisionGroup = this.engine.createCollisionGroup();
 		this.bonusMaterial = this.engine.createMaterial('bonus');
 
-		this.engine.createWorldContactMaterial(this.bonusMaterial, {restitution: 1});
+		this.game.createContactMaterialWithWorld(this.bonusMaterial, {restitution: 1});
 		this.game.createContactMaterialWithNetDelimiter(this.bonusMaterial, {restitution: 0.7});
 		this.game.createContactMaterialWithGroundDelimiter(this.bonusMaterial, {restitution: 1});
 	}

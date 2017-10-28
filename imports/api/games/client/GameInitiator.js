@@ -28,7 +28,7 @@ export default class GameInitiator {
 
 		this.currentGame = null;
 		this.timerUpdater = null;
-		this.engine = new PhaserEngine();
+		this.engine = new PhaserEngine(this.gameConfiguration);
 		this.gameStreamBundler = new GameStreamBundler(this.stream);
 		this.gameStreamInitiator = new GameStreamInitiator(this, this.stream);
 	}

@@ -20,11 +20,12 @@ export default class Shape {
 
 	start() {
 		const gameId = Random.id(5);
+		const gameConfiguration = new StaticGameConfiguration(gameId);
 		this.game = new Game(
 			gameId,
-			new PhaserEngine(),
+			new PhaserEngine(gameConfiguration),
 			new GameData(gameId),
-			new StaticGameConfiguration(gameId),
+			gameConfiguration,
 			new GameStreamBundler(null),
 			new ServerNormalizedTime()
 		);

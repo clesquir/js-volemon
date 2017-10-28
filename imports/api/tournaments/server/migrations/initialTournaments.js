@@ -3,7 +3,9 @@ import {Random} from 'meteor/random';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {
 	TOURNAMENT_MODE_CLASSIC,
-	TOURNAMENT_MODE_HARDCORE
+	TOURNAMENT_MODE_HARDCORE,
+	TOURNAMENT_MODE_MOON_GRAVITY,
+	TOURNAMENT_MODE_JUPITER_GRAVITY
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 import {TournamentModes} from '/imports/api/tournaments/tournamentModes.js';
 
@@ -23,6 +25,22 @@ Meteor.startup(function() {
 			mode: TOURNAMENT_MODE_HARDCORE,
 			startDate: "2017-10-30 -4",
 			endDate: "2017-11-04 -4",
+			isPublished: false
+		},
+		{
+			_id: Random.id(5),
+			identifier: 'tournament_2017-11-06_moon',
+			mode: TOURNAMENT_MODE_MOON_GRAVITY,
+			startDate: "2017-11-06 -4",
+			endDate: "2017-11-11 -4",
+			isPublished: false
+		},
+		{
+			_id: Random.id(5),
+			identifier: 'tournament_2017-11-06_jupiter',
+			mode: TOURNAMENT_MODE_JUPITER_GRAVITY,
+			startDate: "2017-11-06 -4",
+			endDate: "2017-11-11 -4",
 			isPublished: false
 		}
 	];

@@ -4,7 +4,6 @@ Phaser = require('phaser/build/custom/phaser-split');
 import {Meteor} from 'meteor/meteor';
 import Engine from '/imports/api/games/engine/Engine.js';
 import {
-	WORLD_GRAVITY,
 	TAP_BUTTON_WIDTH,
 	TAP_BUTTON_HEIGHT,
 	BONUS_RADIUS,
@@ -31,7 +30,7 @@ export default class PhaserEngine extends Engine {
 			create: () => {
 				this.game.physics.startSystem(Phaser.Physics.P2JS);
 				this.game.physics.p2.setImpactEvents(true);
-				this.game.physics.p2.gravity.y = WORLD_GRAVITY;
+				this.game.physics.p2.gravity.y = this.gameConfiguration.worldGravity();
 				this.game.physics.p2.world.defaultContactMaterial.friction = 0;
 				this.game.physics.p2.world.setGlobalStiffness(1e10);
 				this.game.physics.p2.restitution = 0;

@@ -17,7 +17,7 @@ export default class Environment {
 		this.gameData = new GameData(gameId);
 		this.gameConfiguration = new StaticGameConfiguration(gameId);
 		this.gameStreamBundler = new GameStreamBundler(null);
-		this.gameEngine = new PhaserEngine();
+		this.gameEngine = new PhaserEngine(this.gameConfiguration);
 		this.serverNormalizedTime = new ServerNormalizedTime();
 		this.game = new Game(
 			gameId,

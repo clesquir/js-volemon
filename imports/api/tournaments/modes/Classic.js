@@ -5,6 +5,13 @@ export default class Classic {
 	onGameUpdate() {
 	}
 
+	overridesWorldGravity() {
+		return false;
+	}
+
+	worldGravity() {
+	}
+
 	overridesBonusSpawnInitialMinimumFrequence() {
 		return false;
 	}

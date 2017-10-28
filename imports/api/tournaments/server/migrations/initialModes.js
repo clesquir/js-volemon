@@ -9,7 +9,8 @@ import {
 	TOURNAMENT_MODE_SMOKE_BOMB,
 	TOURNAMENT_MODE_SUDDEN_DEATH,
 	TOURNAMENT_MODE_SUPER_BOUNCE_WALLS,
-	TOURNAMENT_MODE_MOON_GRAVITY
+	TOURNAMENT_MODE_MOON_GRAVITY,
+	TOURNAMENT_MODE_JUPITER_GRAVITY
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 
 Meteor.startup(function() {
@@ -56,13 +57,31 @@ Meteor.startup(function() {
 		{
 			"_id": TOURNAMENT_MODE_MOON_GRAVITY,
 			"name": "Moon gravity",
-			"description": "As if you were on the moon"
+			"description": "The gravity force is weak with this one"
+		},
+		{
+			"_id": TOURNAMENT_MODE_JUPITER_GRAVITY,
+			"name": "Jupiter gravity",
+			"description": "The gravity force is strong with this one"
 		}
 	];
 
-	for (let mode of modes) {
-		if (!TournamentModes.findOne({_id: mode._id})) {
-			TournamentModes.insert(mode);
+	for (let expectedMode of modes) {
+		let actualMode = TournamentModes.findOne({_id: expectedMode._id});
+		if (!actualMode) {
+			TournamentModes.insert(expectedMode);
+		} else {
+			const updates = {};
+			if (actualMode.name !== expectedMode.name) {
+				updates.name = expectedMode.name;
+			}
+			if (actualMode.description !== expectedMode.description) {
+				updates.description = expectedMode.description;
+			}
+
+			if (Object.keys(updates).length) {
+				TournamentModes.update({_id: actualMode._id}, {$set: updates});
+			}
 		}
 	}
 });

@@ -231,14 +231,18 @@ export default class Game {
 
 		this.engine.initWorldContactMaterial();
 
-		this.engine.createWorldContactMaterial(this.ballMaterial, {restitution: 1});
-		this.engine.createContactMaterial(this.ballMaterial, this.groundDelimiterMaterial, {restitution: 1});
+		this.createContactMaterialWithWorld(this.ballMaterial, {restitution: 1});
+		this.createContactMaterialWithGroundDelimiter(this.ballMaterial, {restitution: 1});
 
-		this.engine.createWorldContactMaterial(this.playerMaterial, {stiffness: 1e20, relaxation: 3, friction: 0});
+		this.createContactMaterialWithWorld(this.playerMaterial, {stiffness: 1e20, relaxation: 3, friction: 0});
 		this.engine.createContactMaterial(this.playerMaterial, this.playerDelimiterMaterial, {stiffness: 1e20, relaxation: 3, friction: 0});
 		this.engine.createContactMaterial(this.playerMaterial, this.playerMaterial, {stiffness: 1e20, relaxation: 3, friction: 0});
 
 		this.gameBonus.createCollisionGroupsAndMaterials();
+	}
+
+	createContactMaterialWithWorld(material, config) {
+		this.engine.createWorldContactMaterial(material, config);
 	}
 
 	createContactMaterialWithNetDelimiter(material, config) {
