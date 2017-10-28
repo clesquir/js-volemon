@@ -7,7 +7,11 @@
 				<div class="card-row card-row-header">
 					<div class="card-cell card-title card-left">{{{wonOrLoss}}}</div>
 					<div class="card-cell card-title">{{{getScore}}}</div>
-					<div class="card-cell card-title"></div>
+					<div class="card-cell card-title tournament-game-cell">
+						{{#if tournamentId}}
+							<div><div class="tournament-game-icon"></div></div>
+						{{/if}}
+					</div>
 				</div>
 				<div class="card-row card-row-top">
 					<div class="card-cell card-title card-cell-ellipsis">{{hostName}}</div>

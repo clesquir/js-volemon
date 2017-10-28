@@ -26,6 +26,7 @@ Meteor.methods({
 					'clientPoints': 1,
 					'createdBy': 1,
 					'startedAt': 1,
+					'tournamentId': 1,
 				},
 				skip: skip,
 				limit: limit
