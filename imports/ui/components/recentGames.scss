@@ -6,31 +6,6 @@
 	color: $negative;
 }
 
-.recent-game-item {
-	overflow: hidden;
-
-	.tournament-game-cell {
-		position: relative;
-
-		& > div {
-			transform: scale(0.75);
-			position: absolute;
-			right: -5px;
-			top: -5px;
-			opacity: 0.15;
-
-			.tournament-game-icon {
-				background-image: url("assets/tournament-icon.png");
-				width: 100px;
-				height: 100px;
-				right: 0;
-				top: 0;
-				position: absolute;
-			}
-		}
-	}
-}
-
 .recent-game-shape-cell {
 	display: flex;
 	flex-direction: column;

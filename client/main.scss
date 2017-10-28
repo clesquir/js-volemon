@@ -206,6 +206,27 @@ p {
 	}
 }
 
+.tournament-game-cell {
+	position: relative;
+
+	& > div {
+		transform: scale(0.63);
+		position: absolute;
+		right: -7px;
+		top: -3px;
+		opacity: 0.15;
+
+		.tournament-game-icon {
+			background-image: url("assets/tournament-icon.png");
+			width: 100px;
+			height: 100px;
+			right: 0;
+			top: 0;
+			position: absolute;
+		}
+	}
+}
+
 .statistics-item {
 	padding: 10px 15px;
 	margin: 0 20px 30px;
