@@ -9,32 +9,40 @@
 	margin: 10px 0 0;
 	z-index: 1;
 
-	.players-names {
-		display: flex;
-		flex-direction: row;
-		margin: 0 0 -20px 0;
-
-		.host-player {
-			color: $host-color;
-		}
-
-		.client-player {
-			color: $client-color;
-		}
+	.host-player {
+		color: $host-color;
 	}
 
-	.players-names > div {
-		flex: 1 1 auto;
-		flex-basis: 0;
-		text-align: center;
-		padding: 0 45px;
-		overflow-x: hidden;
-		text-overflow: ellipsis;
+	.client-player {
+		color: $client-color;
+	}
+
+	& > div {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.players-names {
+		margin: 0 0 -20px 0;
+
+		& > div {
+			flex: 1 1 auto;
+			flex-basis: 0;
+			text-align: center;
+			padding: 0 45px;
+			overflow-x: hidden;
+			text-overflow: ellipsis;
+		}
 	}
 
 	.players-points {
 		margin: 0;
 		font-family: 'Oxygen Mono', sans-serif;
+		justify-content: center;
+
+		& > div {
+			margin: 0 5px;
+		}
 	}
 }
 
@@ -92,23 +100,30 @@
 }
 
 #gameContainer {
-	&.match-point-frame {
-		&::before {
-			$match-point-color: lighten($negative, 20%);
-			content: '';
-			position: absolute;
-			top: 0;
-			left: 0;
-			z-index: 1;
-			@include horizontal-breakpoint(tablet) {
-				z-index: auto;
-			}
-			opacity: 0;
-			width: 100%;
-			height: 100%;
-			box-shadow: inset 0 0 30px 0 $match-point-color, 0 0 20px 0 $match-point-color;
-			animation: loop-opacity 1.5s infinite;
+	$match-point-color: lighten($negative, 20%);
+	$deuce-point-color: lighten($negative, 15%);
+
+	&.match-point-frame::before, &.deuce-point-frame::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 1;
+		@include horizontal-breakpoint(tablet) {
+			//z-index: auto;
 		}
+		opacity: 0;
+		width: 100%;
+		height: 100%;
+		animation: loop-opacity 1.5s infinite;
+	}
+
+	&.match-point-frame::before {
+		box-shadow: inset 0 0 30px 0 $match-point-color, 0 0 20px 0 $match-point-color;
+	}
+
+	&.deuce-point-frame::before {
+		box-shadow: inset 0 0 60px 0 $deuce-point-color, 0 0 40px 0 $deuce-point-color;
 	}
 
 	canvas {

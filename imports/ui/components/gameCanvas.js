@@ -105,8 +105,12 @@ Template.gameCanvas.helpers({
 	},
 
 	classForMatchPoint() {
-		if (gameData && gameData.isGameStatusStarted() && gameData.isMatchPoint()) {
-			return 'match-point-frame';
+		if (gameData && gameData.isGameStatusStarted()) {
+			if (gameData.isDeucePoint()) {
+				return 'deuce-point-frame';
+			} else if (gameData.isMatchPoint()) {
+				return 'match-point-frame';
+			}
 		}
 
 		return '';
