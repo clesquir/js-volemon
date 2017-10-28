@@ -61,16 +61,6 @@ export default class PhaserEngine extends Engine {
 				}
 				this.loadScaledPhysics(NORMAL_SCALE_PHYSICS_DATA, SMALL_SCALE_PHYSICS_DATA, 'ball', SMALL_SCALE_BALL_BONUS);
 				this.loadScaledPhysics(NORMAL_SCALE_PHYSICS_DATA, BIG_SCALE_PHYSICS_DATA, 'ball', BIG_SCALE_BONUS);
-
-				let mouseHideTimer;
-				this.game.canvas.style.cursor = 'none';
-				this.game.input.addMoveCallback(() => {
-					Meteor.clearTimeout(mouseHideTimer);
-					this.game.canvas.style.cursor = 'inherit';
-					mouseHideTimer = Meteor.setTimeout(() => {
-						this.game.canvas.style.cursor = 'none';
-					}, 500);
-				});
 			},
 			create: createGame.bind(scope),
 			update: updateGame.bind(scope)
