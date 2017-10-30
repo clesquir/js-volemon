@@ -56,6 +56,15 @@
 							<span class="logged-in-user-name-menu">{{currentUser.profile.name}} <i class="fa fa-caret-down small-icon"></i></span>
 						</a>
 						<div id="username-dialog-dropdown-list" class="username-dialog">
+							<div class="username-dialog-user-sounds">
+								<div data-action="mute-user-notifications">
+									{{#if userMutedNotifications}}
+										<i class="fa fa-bell-slash"></i>
+									{{else}}
+										<i class="fa fa-bell"></i>
+									{{/if}}
+								</div>
+							</div>
 							<div data-action="user-edit-name" class="username-dialog-button">Edit name</div>
 							<div data-action="user-password-change" class="username-dialog-button">Change password</div>
 							<div data-action="user-logout" class="username-dialog-button">Log out</div>

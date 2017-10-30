@@ -22,6 +22,16 @@ Meteor.methods({
 		Profiles.update({userId: this.userId}, {$set: {gameZoomedIn: zoomedIn}});
 	},
 
+	saveMuteNotifications: function() {
+		check(this.userId, String);
+
+		const profile = Profiles.findOne({userId: this.userId});
+
+		if (profile) {
+			Profiles.update({userId: this.userId}, {$set: {muteNotifications: !profile.muteNotifications}});
+		}
+	},
+
 	sendUserPasswordToken: function(email) {
 		const user = Accounts.findUserByEmail(email);
 

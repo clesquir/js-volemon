@@ -11,19 +11,20 @@ import {HOST_POINTS_COLUMN, CLIENT_POINTS_COLUMN} from '/imports/api/games/const
 import {GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
 
 export default class GameInitiator {
-
 	/**
 	 * @param {string} gameId
 	 * @param {Stream} stream
 	 * @param {GameData} gameData
 	 * @param {GameConfiguration} gameConfiguration
+	 * @param {GameNotifier} gameNotifier
 	 * @param {ServerNormalizedTime} serverNormalizedTime
 	 */
-	constructor(gameId, stream, gameData, gameConfiguration, serverNormalizedTime) {
+	constructor(gameId, stream, gameData, gameConfiguration, gameNotifier, serverNormalizedTime) {
 		this.gameId = gameId;
 		this.stream = stream;
 		this.gameData = gameData;
 		this.gameConfiguration = gameConfiguration;
+		this.gameNotifier = gameNotifier;
 		this.serverNormalizedTime = serverNormalizedTime;
 
 		this.currentGame = null;
@@ -42,8 +43,16 @@ export default class GameInitiator {
 
 		this.initTimer();
 
-		this.gamePointsTracker = Games.find({_id: this.gameId}).observeChanges({
+		this.gameChangesTracker = Games.find({_id: this.gameId}).observeChanges({
 			changed: (id, fields) => {
+				if (fields.hasOwnProperty('clientId')) {
+					if (fields.clientId !== null) {
+						this.gameNotifier.onClientJoined();
+					} else {
+						this.gameNotifier.onClientLeft();
+					}
+				}
+
 				if (fields.hasOwnProperty('status')) {
 					this.gameData.updateStatus(fields.status);
 
@@ -101,8 +110,8 @@ export default class GameInitiator {
 
 		this.clearTimer();
 
-		if (this.gamePointsTracker) {
-			this.gamePointsTracker.stop();
+		if (this.gameChangesTracker) {
+			this.gameChangesTracker.stop();
 		}
 	}
 
@@ -171,5 +180,4 @@ export default class GameInitiator {
 	hasActiveGame() {
 		return this.currentGame !== null;
 	}
-
 }

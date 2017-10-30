@@ -3,7 +3,10 @@ import '/imports/lib/override/socket.io-client.js';
 import './routes.js';
 import './connectionMonitor.js';
 import './register-api.js';
+import WindowFocus from '/imports/lib/WindowFocus.js';
 import {onMobileAndTablet} from '/imports/lib/utils.js';
+
+WindowFocus.init();
 
 if (onMobileAndTablet()) {
 	const hideMobileAddressBar = function() {

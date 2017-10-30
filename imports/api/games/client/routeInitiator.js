@@ -9,6 +9,7 @@ import ClientStreamFactory from '/imports/lib/stream/client/ClientStreamFactory.
 import StreamConfiguration from '/imports/lib/stream/StreamConfiguration.js';
 import {updateConnectionIndicator, destroyConnectionIndicator} from '/imports/api/games/client/connectionIndicator.js';
 import DefaultGameConfiguration from './DefaultGameConfiguration';
+import GameNotifier from './GameNotifier';
 
 /** @type {Stream} */
 export let stream = null;
@@ -56,7 +57,7 @@ const initGame = function(gameId) {
 	gameConfiguration.init();
 	serverNormalizedTime = new ServerNormalizedTime();
 	serverNormalizedTime.init();
-	gameInitiator = new GameInitiator(gameId, stream, gameData, gameConfiguration, serverNormalizedTime);
+	gameInitiator = new GameInitiator(gameId, stream, gameData, gameConfiguration, new GameNotifier(), serverNormalizedTime);
 	gameInitiator.init();
 	gameRematch = new GameRematch(gameId, gameData);
 	gameRematch.init();

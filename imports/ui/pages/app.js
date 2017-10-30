@@ -3,6 +3,7 @@ import {Template} from 'meteor/templating';
 import {Session} from 'meteor/session';
 import {Tooltips} from 'meteor/lookback:tooltips';
 import {Router} from 'meteor/iron:router';
+import {Profiles} from '/imports/api/profiles/profiles.js';
 
 import './app.html';
 
@@ -15,6 +16,12 @@ Template.app.helpers({
 		}
 
 		return '';
+	},
+
+	userMutedNotifications: function() {
+		const profile = Profiles.findOne({userId: Meteor.userId()});
+
+		return profile && profile.muteNotifications;
 	}
 });
 
@@ -129,6 +136,10 @@ Template.app.events({
 
 		actionAfterLoginCreateUser();
 		actionAfterLoginCreateUser = null;
+	},
+
+	'click [data-action=mute-user-notifications]': function(e) {
+		Meteor.call('saveMuteNotifications');
 	},
 
 	'click [data-action="copy-url"]': function(e) {

@@ -331,14 +331,31 @@ $small-logo-height: 25px;
 	}
 }
 
-.username-dialog .username-dialog-button {
-	cursor: pointer;
-	text-align: right;
-	padding: 5px 15px;
-	white-space: nowrap;
+.username-dialog {
+	.username-dialog-button {
+		cursor: pointer;
+		text-align: right;
+		padding: 5px 15px;
+		white-space: nowrap;
 
-	&:hover {
-		background: $selectbox-background-color-hover;
+		&:hover {
+			background: $selectbox-background-color-hover;
+		}
+	}
+
+	.username-dialog-user-sounds {
+		display: flex;
+		justify-content: flex-end;
+		padding: 0 15px;
+
+		& > div {
+			cursor: pointer;
+			padding: 5px;
+
+			&:hover {
+				background: $selectbox-background-color-hover;
+			}
+		}
 	}
 }
 
