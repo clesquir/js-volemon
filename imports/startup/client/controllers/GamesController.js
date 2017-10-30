@@ -4,7 +4,9 @@ import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 
 export const GamesController = RouteController.extend({
 	waitOn: function() {
-		return Meteor.subscribe('games');
+		return [
+			Meteor.subscribe('games')
+		];
 	},
 	data: function() {
 		return {

@@ -21,6 +21,7 @@ Meteor.publish('games', function() {
 				fields: {tournamentId: 1, hostName: 1, clientName: 1, createdAt: 1, status: 1}
 			}
 		),
+		Profiles.find(),
 		Tournaments.find()
 	];
 });

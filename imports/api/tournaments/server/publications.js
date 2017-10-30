@@ -43,7 +43,8 @@ Meteor.publish('pastTournaments', function() {
 
 Meteor.publish('tournament', function(tournamentId) {
 	return [
-		Tournaments.find({_id: tournamentId})
+		Tournaments.find({_id: tournamentId}),
+		Profiles.find()
 	];
 });
 
@@ -65,7 +66,8 @@ Meteor.publish('tournamentGames', function(tournamentId) {
 				sort: [['createdAt', 'asc']],
 				fields: {tournamentId: 1, hostName: 1, clientName: 1, createdAt: 1, status: 1}
 			}
-		)
+		),
+		Profiles.find()
 	];
 });
 
