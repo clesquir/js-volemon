@@ -5,6 +5,13 @@ export default class Classic {
 	onGameUpdate() {
 	}
 
+	overridesBonusRadius() {
+		return false;
+	}
+
+	bonusRadius() {
+	}
+
 	overridesWorldGravity() {
 		return false;
 	}

@@ -173,7 +173,7 @@ export default class GameBonus {
 						sideCount = player2Count;
 						break;
 				}
-				const x = xModifier + padding + (sideCount * ((BONUS_RADIUS * 2) + padding));
+				const x = xModifier + padding + (sideCount * ((this.gameConfiguration.bonusRadius() * 2) + padding));
 
 				if (bonusSprite === null) {
 					const bonusSprite = this.engine.drawBonus(

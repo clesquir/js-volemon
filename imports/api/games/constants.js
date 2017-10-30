@@ -32,7 +32,7 @@ export const BALL_GRAVITY_SCALE = 0.3636363636;
 export const BALL_BIG_GRAVITY_SCALE = 0.6;
 export const BALL_SMALL_GRAVITY_SCALE = 0.2;
 
-export const BONUS_RADIUS = 16;
+export const BONUS_RADIUS = 15;
 export const BONUS_GRAVITY_SCALE = 0.3636363636;
 
 export const WORLD_GRAVITY = 770;

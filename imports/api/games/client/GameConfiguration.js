@@ -1,4 +1,7 @@
-import {WORLD_GRAVITY} from '/imports/api/games/constants.js';
+import {
+	BONUS_RADIUS,
+	WORLD_GRAVITY
+} from '/imports/api/games/constants.js';
 import {
 	BONUS_SPAWN_MINIMUM_FREQUENCE,
 	BONUS_SPAWN_INITIAL_MINIMUM_FREQUENCE,
@@ -21,6 +24,14 @@ export default class GameConfiguration {
 
 	hasTournament() {
 		return !!this.tournamentId;
+	}
+
+	bonusRadius() {
+		if (this.hasTournament() && this.tournamentMode.overridesBonusRadius()) {
+			return this.tournamentMode.bonusRadius();
+		}
+
+		return BONUS_RADIUS;
 	}
 
 	worldGravity() {
