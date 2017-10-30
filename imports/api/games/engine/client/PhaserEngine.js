@@ -6,7 +6,6 @@ import Engine from '/imports/api/games/engine/Engine.js';
 import {
 	TAP_BUTTON_WIDTH,
 	TAP_BUTTON_HEIGHT,
-	BONUS_RADIUS,
 	NORMAL_SCALE_PHYSICS_DATA,
 	SMALL_SCALE_PHYSICS_DATA,
 	BIG_SCALE_PHYSICS_DATA,
@@ -712,7 +711,7 @@ export default class PhaserEngine extends Engine {
 	}
 
 	createBonusProgressComponent(bonusProgress) {
-		const radius = BONUS_RADIUS - 1;
+		const radius = this.gameConfiguration.bonusRadius() - 1;
 		const pieProgress = this.game.add.bitmapData(radius * 2, radius * 2);
 		const progress = Phaser.Math.clamp(bonusProgress, 0.00001, 0.99999);
 
@@ -767,7 +766,7 @@ export default class PhaserEngine extends Engine {
 		const bonusSprite = this.addSprite(x, y, 'delimiter');
 
 		bonusSprite.body.clearShapes();
-		bonusSprite.body.addCircle(BONUS_RADIUS);
+		bonusSprite.body.addCircle(this.gameConfiguration.bonusRadius());
 
 		const sprites = bonus.itemsToDraw(this);
 		for (let sprite of sprites) {
