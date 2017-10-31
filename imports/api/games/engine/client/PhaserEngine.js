@@ -688,10 +688,10 @@ export default class PhaserEngine extends Engine {
 		}, duration);
 	}
 
-	drawBonus(x, y, bonus, bonusProgress) {
+	drawBonus(x, y, bonus, progress) {
 		const bonusSprite = this.getBonusSprite(x, y, bonus);
 
-		bonusSprite.addChild(this.createBonusProgressComponent(bonusProgress));
+		this.updateBonusProgressComponent(bonusSprite, progress);
 
 		bonusSprite.bringToTop();
 		this.setStatic(bonusSprite, true);
@@ -699,21 +699,17 @@ export default class PhaserEngine extends Engine {
 		return bonusSprite;
 	}
 
-	updateBonusProgress(x, bonusSprite, bonusProgress) {
+	updateBonusProgress(x, bonusSprite, progress) {
 		bonusSprite.body.x = x;
 
-		for (let i = 0; i < bonusSprite.children.length; i++) {
-			if (bonusSprite.children[i].isProgress) {
-				bonusSprite.removeChild(bonusSprite.children[i]);
-				bonusSprite.addChild(this.createBonusProgressComponent(bonusProgress));
-			}
-		}
+		this.updateBonusProgressComponent(bonusSprite, progress);
 	}
 
-	createBonusProgressComponent(bonusProgress) {
+	updateBonusProgressComponent(bonusSprite, progress) {
+		const minProgress = 0.00001;
+		const maxProgress = 0.99999;
 		const radius = this.gameConfiguration.bonusRadius() - 1;
-		const pieProgress = this.game.add.bitmapData(radius * 2, radius * 2);
-		const progress = Phaser.Math.clamp(bonusProgress, 0.00001, 0.99999);
+		progress = Phaser.Math.clamp(progress, minProgress, maxProgress);
 
 		let color = '#000000';
 		let opacity = 0.25;
@@ -721,20 +717,47 @@ export default class PhaserEngine extends Engine {
 			color = '#c94141';
 			opacity = 0.5;
 		}
-		pieProgress.ctx.fillStyle = color;
-		pieProgress.ctx.beginPath();
-		pieProgress.ctx.arc(radius, radius, radius, 0, (Math.PI * 2) * progress, true);
-		pieProgress.ctx.lineTo(radius, radius);
-		pieProgress.ctx.closePath();
-		pieProgress.ctx.fill();
 
-		const pieProgressSprite = this.game.add.sprite(0, 0, pieProgress);
-		this.setAnchor(pieProgressSprite, 0.5);
-		this.setOpacity(pieProgressSprite, opacity);
-		pieProgressSprite.angle = -90;
-		pieProgressSprite.isProgress = true;
+		let canvasContainer = bonusSprite.data.canvasContainer;
+		let canvas;
 
-		return pieProgressSprite;
+		if (!canvasContainer) {
+			canvas = this.game.add.bitmapData(radius * 2, radius * 2);
+			canvasContainer = this.game.add.sprite(0, 0, canvas);
+
+			this.setAnchor(canvasContainer, 0.5);
+			canvasContainer.angle = -90;
+
+			bonusSprite.addChild(canvasContainer);
+			bonusSprite.data.canvasContainer = canvasContainer;
+
+			canvasContainer.data.canvas = canvas;
+			canvasContainer.data.progress = maxProgress;
+			canvasContainer.data.color = color;
+		} else {
+			canvas = canvasContainer.data.canvas;
+		}
+
+		const progressThreshold = 0.008;
+		if (
+			canvasContainer.data.progress - progress > progressThreshold ||
+			canvasContainer.data.color !== color
+		) {
+			canvas.clear();
+			canvas.context.fillStyle = color;
+			canvas.context.beginPath();
+			canvas.context.arc(radius, radius, radius, 0, (Math.PI * 2) * progress, true);
+			canvas.context.lineTo(radius, radius);
+			canvas.context.closePath();
+			canvas.context.fill();
+
+			canvasContainer.data.progress = progress;
+			canvasContainer.data.color = color;
+		}
+
+		this.setOpacity(canvasContainer, opacity);
+
+		return canvasContainer;
 	}
 
 	addBonus(x, bonusGravityScale, bonusMaterial, bonusCollisionGroup, bonus) {
