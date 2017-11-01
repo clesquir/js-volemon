@@ -3,7 +3,7 @@ import {assert} from 'chai';
 import {Random} from 'meteor/random';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import GameData from '/imports/api/games/client/GameData.js';
+import GameData from './GameData.js';
 import {PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_RECTANGLE} from '/imports/api/games/shapeConstants.js';
 
 describe('GameData#getPlayerShapeFromKey', function() {

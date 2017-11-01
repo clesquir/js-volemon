@@ -1,15 +1,15 @@
 import {assert} from 'chai';
 import sinon from 'sinon';
 import {Random} from 'meteor/random';
-import GameData from '/imports/api/games/client/GameData.js';
+import GameData from '/imports/api/games/client/data/GameData.js';
 import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
 import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
 import Game from '/imports/api/games/client/Game.js';
-import GameBonus from '/imports/api/games/client/GameBonus.js';
+import GameBonus from './GameBonus.js';
 import {PLAYER_FROZEN_MASS} from '/imports/api/games/constants.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
-import StaticGameConfiguration from './StaticGameConfiguration';
+import StaticGameConfiguration from '/imports/api/games/client/configuration/StaticGameConfiguration.js';
 
 describe('GameBonus#getBonusSpriteFromIdentifier', function() {
 	const gameId = Random.id(5);

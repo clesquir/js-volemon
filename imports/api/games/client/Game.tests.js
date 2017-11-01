@@ -1,13 +1,13 @@
 import {assert} from 'chai';
 import sinon from 'sinon';
 import {Random} from 'meteor/random';
-import Game from '/imports/api/games/client/Game.js';
-import GameData from '/imports/api/games/client/GameData.js';
+import Game from './Game.js';
+import GameData from '/imports/api/games/client/data/GameData.js';
 import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
 import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
 import {BALL_VERTICAL_SPEED_ON_PLAYER_HIT} from '/imports/api/games/constants.js';
-import StaticGameConfiguration from './StaticGameConfiguration';
+import StaticGameConfiguration from '/imports/api/games/client/configuration/StaticGameConfiguration.js';
 
 describe('Game#isPlayerJumpingForward', function() {
 	const gameData = new GameData();

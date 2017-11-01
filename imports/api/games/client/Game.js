@@ -26,7 +26,7 @@ import {
 } from '/imports/api/games/constants.js';
 import {PLAYER_INTERVAL, BALL_INTERVAL} from '/imports/api/games/emissionConstants.js';
 import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
-import GameBonus from '/imports/api/games/client/GameBonus.js';
+import GameBonus from '/imports/api/games/client/bonus/GameBonus.js';
 
 export default class Game {
 	/**

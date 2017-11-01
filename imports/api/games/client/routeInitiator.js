@@ -1,6 +1,6 @@
 import {Meteor} from 'meteor/meteor';
 import {Session} from 'meteor/session';
-import GameData from '/imports/api/games/client/GameData.js';
+import GameData from '/imports/api/games/client/data/GameData.js';
 import GameInitiator from '/imports/api/games/client/GameInitiator.js';
 import GameReaction from '/imports/api/games/client/GameReaction.js';
 import GameRematch from '/imports/api/games/client/GameRematch.js';
@@ -8,8 +8,8 @@ import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime
 import ClientStreamFactory from '/imports/lib/stream/client/ClientStreamFactory.js';
 import StreamConfiguration from '/imports/lib/stream/StreamConfiguration.js';
 import {updateConnectionIndicator, destroyConnectionIndicator} from '/imports/api/games/client/connectionIndicator.js';
-import DefaultGameConfiguration from './DefaultGameConfiguration';
-import GameNotifier from './GameNotifier';
+import DefaultGameConfiguration from '/imports/api/games/client/configuration/DefaultGameConfiguration.js';
+import GameNotifier from '/imports/api/games/client/GameNotifier.js';
 
 /** @type {Stream} */
 export let stream = null;

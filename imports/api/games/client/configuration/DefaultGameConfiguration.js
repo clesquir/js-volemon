@@ -1,4 +1,4 @@
-import GameConfiguration from './GameConfiguration';
+import GameConfiguration from './GameConfiguration.js';
 import {Games} from '/imports/api/games/games.js';
 import TournamentModeFactory from '/imports/api/tournaments/modes/TournamentModeFactory.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
