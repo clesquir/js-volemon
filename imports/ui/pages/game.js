@@ -22,7 +22,7 @@ Template.game.helpers({
 	}
 });
 
-Template.gameSetup.events({
+Template.game.events({
 	'click [data-action="update-practice-game"]': function(e) {
 		const game = Games.findOne(Session.get('game'));
 		const isPracticeGame = !game.isPracticeGame;
