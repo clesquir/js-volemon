@@ -1,13 +1,13 @@
-process.env.ROLLBAR_CLIENT_ACCESS_TOKEN = Meteor.settings.public.ROLLBAR_CLIENT_ACCESS_TOKEN;
-process.env.ROLLBAR_ENVIRONMENT = Meteor.settings.public.ROLLBAR_ENVIRONMENT;
+const ROLLBAR_CLIENT_ACCESS_TOKEN = Meteor.settings.public.ROLLBAR_CLIENT_ACCESS_TOKEN;
+const ROLLBAR_ENVIRONMENT = Meteor.settings.public.ROLLBAR_ENVIRONMENT;
 
-if (process.env.ROLLBAR_CLIENT_ACCESS_TOKEN) {
+if (ROLLBAR_CLIENT_ACCESS_TOKEN) {
 	const _rollbarConfig = {
-		accessToken: process.env.ROLLBAR_CLIENT_ACCESS_TOKEN,
+		accessToken: ROLLBAR_CLIENT_ACCESS_TOKEN,
 		captureUncaught: true,
 		captureUnhandledRejections: false,
 		payload: {
-			environment: process.env.ROLLBAR_ENVIRONMENT || 'production'
+			environment: ROLLBAR_ENVIRONMENT || 'production'
 		}
 	};
 	// Rollbar Snippet
