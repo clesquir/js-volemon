@@ -1,3 +1,4 @@
+global.Buffer = global.Buffer || require("buffer").Buffer; // eslint-disable-line
 const Peer = require('simple-peer');
 const Emitter = require('component-emitter');
 const parser = require('socket.io-parser');
@@ -244,6 +245,9 @@ export default class ClientP2P {
 
 		peer.on('data', function(data) {
 			if (this.destroyed) return;
+			if (hasBin(data)) {
+				data = data.toString();
+			}
 			self.decoder.add(data);
 		});
 
