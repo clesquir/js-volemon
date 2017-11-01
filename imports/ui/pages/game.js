@@ -1,6 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
-import {isGameStatusOnGoing} from '/imports/api/games/utils.js';
+import {Games} from '/imports/api/games/games.js';
+import {isGameStatusOnGoing, isUserHost} from '/imports/api/games/utils.js';
 
 import './game.html';
 

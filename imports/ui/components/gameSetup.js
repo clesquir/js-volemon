@@ -3,9 +3,7 @@ import {Template} from 'meteor/templating';
 import {Session} from 'meteor/session';
 import {Router} from 'meteor/iron:router';
 import {POSSIBLE_NO_PLAYERS} from '/imports/api/games/constants.js';
-import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import {isUserHost} from '/imports/api/games/utils.js';
 import {playersCanPlayTournament} from '/imports/api/tournaments/utils.js';
 
 import './gameSetup.html';
