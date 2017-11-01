@@ -1,6 +1,6 @@
-PIXI = require('phaser/build/custom/pixi');
-p2 = require('phaser/build/custom/p2');
-Phaser = require('phaser/build/custom/phaser-split');
+PIXI = require('phaser-ce/build/custom/pixi');
+p2 = require('phaser-ce/build/custom/p2');
+Phaser = require('phaser-ce/build/custom/phaser-split');
 import {Meteor} from 'meteor/meteor';
 import Engine from '/imports/api/games/engine/Engine.js';
 import {
