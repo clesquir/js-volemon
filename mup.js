@@ -16,7 +16,7 @@ module.exports = {
 			serverOnly: true,
 		},
 		docker: {
-			image: 'abernix/meteord:base',
+			image: 'abernix/meteord:node-8.4.0-base',
 			args: [
 				"-p 8080:8080"
 			]
