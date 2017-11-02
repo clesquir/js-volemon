@@ -4,7 +4,8 @@ let listeners = [];
 export default class WindowFocus {
 	static init() {
 		isFocused = true;
-		window.onfocus = () => {
+
+		window.addEventListener('focus', function() {
 			isFocused = true;
 
 			const remainingListeners = [];
@@ -16,10 +17,10 @@ export default class WindowFocus {
 			}
 
 			listeners = remainingListeners;
-		};
-		window.onblur = () => {
+		});
+		window.addEventListener('blur', function() {
 			isFocused = false;
-		};
+		});
 	}
 
 	static isFocused() {
