@@ -1,70 +1,26 @@
 import {Meteor} from 'meteor/meteor';
 import {Mongo} from 'meteor/mongo';
 import {Template} from 'meteor/templating';
-import {Achievements} from '/imports/api/achievements/achievements.js';
-import {EloScores} from '/imports/api/games/eloscores.js';
-import {Profiles} from '/imports/api/profiles/profiles.js';
 import RankChart from '/imports/api/ranks/client/RankChart.js';
 
 import './rank.html';
 
+class RankingsCollection extends Mongo.Collection {}
+const Rankings = new RankingsCollection('rankings');
+class RankChartCollection extends Mongo.Collection {}
+const RankChartData = new RankChartCollection('rankchartdata');
 class AchievementsRankingCollection extends Mongo.Collection {}
 const AchievementsRanking = new AchievementsRankingCollection('achievementsranking');
 
 Template.rank.helpers({
-	getHighlightedClassIfCurrentUser: function() {
-		if (this.userId === Meteor.userId()) {
-			return 'highlighted-row';
-		}
-
-		return '';
+	getRankings: function() {
+		return Rankings.find({}, {sort: [['eloRating', 'desc']]});
 	},
 
-	getRank: function(index) {
-		return index + 1;
-	},
-
-	getUserName: function(users) {
-		let userName = '-';
-
-		users.forEach((user) => {
-			if (this.userId === user._id) {
-				userName = user.profile.name;
-			}
-		});
-
-		return userName;
-	},
-
-	achievementsRanking: function() {
+	getAchievementRankings: function() {
 		return AchievementsRanking.find({}, {sort: [['rank', 'desc']]});
-	},
-
-	achievementsLevel1: function() {
-		return orderedAchievementsLevels(this.achievementsLevel1);
-	},
-
-	achievementsLevel2: function() {
-		return orderedAchievementsLevels(this.achievementsLevel2);
-	},
-
-	achievementsLevel3: function() {
-		return orderedAchievementsLevels(this.achievementsLevel3);
 	}
 });
-
-const orderedAchievementsLevels = function(userAchievements) {
-	const achievements = Achievements.find({}, {sort: ['displayOrder']});
-	const userAchievementsList = [];
-
-	achievements.forEach((achievement) => {
-		if (userAchievements.indexOf(achievement._id) !== -1) {
-			userAchievementsList.push(achievement.name);
-		}
-	});
-
-	return userAchievementsList.join('<br />');
-};
 
 /** @type {RankChart}|null */
 let rankChart = null;
@@ -154,6 +110,13 @@ const updateRankChart = function(e, minDateLabel, minDate) {
 
 	Session.set('loadingmask', true);
 
+	if (!rankChart) {
+		rankChart = new RankChart(
+			'rank-line-chart-canvas',
+			RankChartData.find({}, {sort: ['timestamp']})
+		);
+	}
+
 	Meteor.subscribe('ranks-chart', minDateTime, () => {
 		rankChart.update(minDateLabel, minDate);
 		Session.set('loadingmask', false);
@@ -169,16 +132,6 @@ const highlightSelectedChartPeriodItem = function(e) {
 	});
 
 	$(e.target).addClass('active');
-};
-
-Template.rank.rendered = function() {
-	rankChart = new RankChart(
-		'rank-line-chart-canvas',
-		EloScores.find({}, {sort: ['timestamp']}),
-		Meteor.users.find({}, {sort: ['profile.name']}),
-		Profiles.find(),
-		Meteor.userId()
-	);
 };
 
 Template.rank.destroyed = function() {

@@ -11,7 +11,6 @@ import {
 import {finishGame} from '/imports/api/games/server/onGameFinished.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import {Profiles} from '/imports/api/profiles/profiles.js';
 import {
 	HOST_POINTS_COLUMN,
 	CLIENT_POINTS_COLUMN,
@@ -29,6 +28,7 @@ import {
 	GAME_STATUS_STARTED,
 	GAME_STATUS_FINISHED
 } from '/imports/api/games/statusConstants.js';
+import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 import {htmlEncode, getUTCTimeStamp} from '/imports/lib/utils.js';
 import {EventPublisher} from '/imports/lib/EventPublisher.js';
 
@@ -43,7 +43,7 @@ Meteor.methods({
 			throw new Meteor.Error(401, 'You need to login to create a game');
 		}
 
-		const id = createGame(user, gameInitiators);
+		const id = createGame(user._id, gameInitiators);
 
 		Meteor.call('joinGame', id, true);
 
@@ -57,7 +57,7 @@ Meteor.methods({
 			throw new Meteor.Error(401, 'You need to login to create a game');
 		}
 
-		const id = createGame(user, gameInitiators, tournamentId);
+		const id = createGame(user._id, gameInitiators, tournamentId);
 
 		Meteor.call('joinGame', id, true);
 
@@ -109,7 +109,7 @@ Meteor.methods({
 			throw new Meteor.Error(401, 'You need to login to join a game');
 		}
 
-		return joinGame(user, gameId, isReady);
+		return joinGame(user._id, gameId, isReady);
 	},
 
 	updatePlayerShape: function(gameId, selectedShape) {
@@ -147,7 +147,7 @@ Meteor.methods({
 		}
 
 		Players.update({_id: player._id}, {$set: {selectedShape: selectedShape, shape: shape}});
-		Profiles.update({userId: this.userId}, {$set: {'lastShapeUsed': selectedShape}});
+		UserConfigurations.update({userId: this.userId}, {$set: {'lastShapeUsed': selectedShape}});
 	},
 
 	setPlayerIsReady: function(gameId) {

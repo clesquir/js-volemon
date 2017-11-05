@@ -3,7 +3,6 @@ import {Random} from 'meteor/random';
 import {POSSIBLE_NO_PLAYERS} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import {Profiles} from '/imports/api/profiles/profiles.js';
 import {PLAYER_LIST_OF_SHAPES, PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
 import {
 	GAME_STATUS_FORFEITED,
@@ -19,15 +18,22 @@ import {finishGame} from '/imports/api/games/server/onGameFinished.js';
 import {EventPublisher} from '/imports/lib/EventPublisher.js';
 import GameForfeited from '/imports/api/games/events/GameForfeited.js';
 import GameTimedOut from '/imports/api/games/events/GameTimedOut.js';
+import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 
 /**
- * @param user
+ * @param {string} userId
  * @param {GameInitiator[]} gameInitiators
  * @param tournamentId
  * @returns {string}
  */
-export const createGame = function(user, gameInitiators, tournamentId = null) {
+export const createGame = function(userId, gameInitiators, tournamentId = null) {
 	let id = null;
+
+	const userConfiguration = UserConfigurations.findOne({userId: userId});
+	let username = '';
+	if (userConfiguration) {
+		username = userConfiguration.name;
+	}
 
 	do {
 		try {
@@ -36,9 +42,9 @@ export const createGame = function(user, gameInitiators, tournamentId = null) {
 				tournamentId: tournamentId,
 				status: GAME_STATUS_REGISTRATION,
 				createdAt: getUTCTimeStamp(),
-				createdBy: user._id,
-				hostId: user._id,
-				hostName: user.profile.name,
+				createdBy: userId,
+				hostId: userId,
+				hostName: username,
 				clientId: null,
 				clientName: null,
 				isPracticeGame: 0,
@@ -64,19 +70,19 @@ export const createGame = function(user, gameInitiators, tournamentId = null) {
 };
 
 /**
- * @param user
+ * @param {string} userId
  * @param {string} gameId
  * @param {boolean} isReady
  * @returns {*}
  */
-export const joinGame = function(user, gameId, isReady = false) {
+export const joinGame = function(userId, gameId, isReady = false) {
 	const game = Games.findOne(gameId);
 
 	if (!game) {
 		throw new Meteor.Error(404, 'Game not found');
 	}
 
-	const player = Players.findOne({gameId: gameId, userId: user._id});
+	const player = Players.findOne({gameId: gameId, userId: userId});
 	if (player) {
 		throw new Meteor.Error('not-allowed', 'Already joined');
 	}
@@ -86,18 +92,22 @@ export const joinGame = function(user, gameId, isReady = false) {
 		throw new Meteor.Error('not-allowed', 'Maximum players reached');
 	}
 
-	const profile = Profiles.findOne({userId: user._id});
+	const userConfiguration = UserConfigurations.findOne({userId: userId});
+	let username = '';
 	let selectedShape = PLAYER_DEFAULT_SHAPE;
-	if (profile && profile.lastShapeUsed) {
-		selectedShape = profile.lastShapeUsed;
+	if (userConfiguration) {
+		username = userConfiguration.name;
+		if (userConfiguration.lastShapeUsed) {
+			selectedShape = userConfiguration.lastShapeUsed;
+		}
 	}
 
-	if (user._id !== game.hostId) {
+	if (userId !== game.hostId) {
 		Games.update(
 			{_id: gameId},
 			{$set: {
-				clientId: user._id,
-				clientName: user.profile.name
+				clientId: userId,
+				clientName: username
 			}}
 		);
 	}
@@ -108,8 +118,8 @@ export const joinGame = function(user, gameId, isReady = false) {
 	}
 
 	return Players.insert({
-		userId: user._id,
-		name: user.profile.name,
+		userId: userId,
+		name: username,
 		gameId: gameId,
 		joinedAt: getUTCTimeStamp(),
 		isReady: isReady,
@@ -172,19 +182,17 @@ export const replyRematch = function(userId, gameId, accepted, gameInitiators) {
 
 	const notAskingForRematch = Players.find({gameId: gameId, askedForRematch: {$ne: true}});
 	if (notAskingForRematch.count() === 0) {
-		const hostUser = Meteor.users.findOne({_id: game.createdBy});
 		const clientPlayer = Players.findOne({gameId: gameId, userId: {$ne: game.createdBy}});
-		const clientUser = Meteor.users.findOne({_id: clientPlayer.userId});
 
-		const gameRematchId = createGame(clientUser, gameInitiators, game.tournamentId);
+		const gameRematchId = createGame(clientPlayer.userId, gameInitiators, game.tournamentId);
 
 		Games.update(
 			{_id: gameRematchId},
 			{$set: {isPracticeGame: game.isPracticeGame, isPrivate: game.isPrivate}}
 		);
 
-		joinGame(clientUser, gameRematchId, true);
-		joinGame(hostUser, gameRematchId, true);
+		joinGame(clientPlayer.userId, gameRematchId, true);
+		joinGame(game.createdBy, gameRematchId, true);
 
 		Games.update({_id: game._id}, {$set: {rematchGameId: gameRematchId}});
 

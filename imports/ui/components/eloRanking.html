@@ -9,10 +9,10 @@
 			<div class="table-list-cell" style="flex: 0 0 90px;">Elo</div>
 		</div>
 
-		{{#each profilesCollection}}
+		{{#each rankings}}
 			<div class="table-list-row {{getHighlightedClassIfCurrentUser}}">
 				<div class="table-list-cell center-aligned-cell rank-cell" style="flex: 0 0 50px;">{{getRank @index}}</div>
-				<div class="table-list-cell">{{getUserName ../usersCollection}}</div>
+				<div class="table-list-cell">{{username}}</div>
 				<div class="table-list-cell right-aligned-cell hideable-cell" style="flex: 0 0 50px;">{{numberOfWin}}</div>
 				<div class="table-list-cell right-aligned-cell hideable-cell" style="flex: 0 0 50px;">{{numberOfLost}}</div>
 				<div class="table-list-cell right-aligned-cell hideable-cell" style="flex: 0 0 55px;">{{getWinRate}}</div>

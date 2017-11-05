@@ -6,7 +6,6 @@ import {onRenderGameController, onStopGameController} from '/imports/api/games/c
 import {EloScores} from '/imports/api/games/eloscores.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import {Profiles} from '/imports/api/profiles/profiles.js';
 
 export const GameController = RouteController.extend({
 	waitOn: function() {
@@ -16,7 +15,6 @@ export const GameController = RouteController.extend({
 		return {
 			game: Games.findOne(this.params._id),
 			players: Players.find({gameId: this.params._id}, {sort: ['joinedAt']}),
-			profiles: Profiles.find(),
 			eloScores: EloScores.find({gameId: this.params._id})
 		};
 	},

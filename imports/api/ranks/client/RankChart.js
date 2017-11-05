@@ -2,39 +2,39 @@ import Chart from "chart.js";
 import {getRainbowColor} from '/imports/lib/utils.js';
 
 export default class RankChart {
-	constructor(documentElementId, eloScores, users, profiles, currentUser) {
+	constructor(documentElementId, rankChartData) {
 		this.documentElementId = documentElementId;
-		this.eloScores = eloScores;
-		this.users = users;
-		this.profiles = profiles;
-		this.currentUser = currentUser;
-
+		this.rankChartData = rankChartData;
 		this.chart = null;
 	}
 
 	update(minDateLabel, minDate) {
-		const eloScores = this.eloScores;
+		const rankChartData = this.rankChartData;
+		const usernamesByUserId = {};
 		const eloScoresByUsersByTimestamps = {};
-		const users = this.users;
-		const profiles = this.profiles;
-		const usersList = [];
 		let labels = [];
 		let timestamps = [];
 		const datasets = [];
 
-		//Gather eloScores by users and timestamps for faster references
-		eloScores.forEach(function(eloScore) {
-			if (!minDate || eloScore.timestamp >= minDate.getTime()) {
-				if (eloScoresByUsersByTimestamps[eloScore.userId] === undefined) {
-					eloScoresByUsersByTimestamps[eloScore.userId] = {};
+		//Gather rankChartData by userId and timestamps for faster references
+		rankChartData.forEach(function(rankChartData) {
+			if (!minDate || rankChartData.timestamp >= minDate.getTime()) {
+				const userId = rankChartData.userId;
+
+				if (usernamesByUserId[userId] === undefined) {
+					usernamesByUserId[userId] = rankChartData.username;
 				}
 
-				if (eloScoresByUsersByTimestamps[eloScore.userId][eloScore.timestamp] === undefined) {
-					eloScoresByUsersByTimestamps[eloScore.userId][eloScore.timestamp] = eloScore.eloRating;
+				if (eloScoresByUsersByTimestamps[userId] === undefined) {
+					eloScoresByUsersByTimestamps[userId] = {};
 				}
 
-				labels.push(new Date(eloScore.timestamp).toISOString());
-				timestamps.push(eloScore.timestamp);
+				if (eloScoresByUsersByTimestamps[userId][rankChartData.timestamp] === undefined) {
+					eloScoresByUsersByTimestamps[userId][rankChartData.timestamp] = rankChartData.eloRating;
+				}
+
+				labels.push(new Date(rankChartData.timestamp).toISOString());
+				timestamps.push(rankChartData.timestamp);
 			}
 		});
 
@@ -53,40 +53,24 @@ export default class RankChart {
 		timestamps = Array.from(new Set(timestamps));
 		timestamps.sort();
 
-		//Sort the connected user first
-		users.forEach(function(user) {
-			if (user._id === this.currentUser) {
-				usersList.unshift(user);
-			} else {
-				usersList.push(user);
-			}
-		});
-
-		for (let i = 0; i < usersList.length; i++) {
-			let user = usersList[i];
+		let userCounter = 0;
+		for (let userId in usernamesByUserId) {
 			let lastTimestampDataNotInPeriod = null;
 			let data = [];
 			let timestampData = null;
 			let hasPeriodData = false;
-			let retiredAt = null;
-
-			profiles.forEach(function(profile) {
-				if (user._id === profile.userId) {
-					retiredAt = profile.retiredAt;
-				}
-			});
 
 			/**
 			 * Gather data for player
 			 */
-			if (eloScoresByUsersByTimestamps[user._id]) {
+			if (eloScoresByUsersByTimestamps[userId]) {
 				//Get last eloScore before first timestamp of this period
 				if (timestamps.length) {
 					let firstTimestamp = timestamps[0];
 
-					for (let userTimestamp in eloScoresByUsersByTimestamps[user._id]) {
-						if (eloScoresByUsersByTimestamps[user._id].hasOwnProperty(userTimestamp)) {
-							let eloRating = eloScoresByUsersByTimestamps[user._id][userTimestamp];
+					for (let userTimestamp in eloScoresByUsersByTimestamps[userId]) {
+						if (eloScoresByUsersByTimestamps[userId].hasOwnProperty(userTimestamp)) {
+							let eloRating = eloScoresByUsersByTimestamps[userId][userTimestamp];
 
 							if (userTimestamp <= firstTimestamp) {
 								lastTimestampDataNotInPeriod = eloRating;
@@ -99,14 +83,12 @@ export default class RankChart {
 
 				//Get the eloScore for each timestamp in continuum and starting with the lastTimestampDataNotInPeriod
 				for (let timestamp of timestamps) {
-					if (eloScoresByUsersByTimestamps[user._id][timestamp] !== undefined) {
-						timestampData = eloScoresByUsersByTimestamps[user._id][timestamp];
+					if (eloScoresByUsersByTimestamps[userId][timestamp] !== undefined) {
+						timestampData = eloScoresByUsersByTimestamps[userId][timestamp];
 						hasPeriodData = true;
 					} else if (timestampData === null) {
 						timestampData = lastTimestampDataNotInPeriod;
 						hasPeriodData = true;
-					} else if (retiredAt && timestamp > retiredAt) {
-						timestampData = null;
 					}
 
 					data.push(timestampData);
@@ -114,10 +96,10 @@ export default class RankChart {
 			}
 
 			if (hasPeriodData) {
-				let color = getRainbowColor(users.count(), i + 1);
+				let color = getRainbowColor(Object.keys(usernamesByUserId).length, userCounter++);
 
 				datasets.push({
-					label: user.profile.name,
+					label: usernamesByUserId[userId],
 					borderColor: color,
 					fill: false,
 					backgroundColor: color,

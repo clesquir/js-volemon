@@ -1,6 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
 import {Session} from 'meteor/session';
+import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 import '/imports/ui/util/form.js';
 import '/imports/ui/util/error-messages.js';
 
@@ -8,9 +9,9 @@ import './username.html';
 
 Template.username.helpers({
 	value: function() {
-		const user = Meteor.user();
+		const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
 
-		return user ? user.profile.name : null;
+		return userConfiguration ? userConfiguration.name : null;
 	}
 });
 

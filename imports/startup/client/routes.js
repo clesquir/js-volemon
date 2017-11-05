@@ -23,6 +23,7 @@ import '/imports/ui/pages/dev/environment.js';
 import '/imports/ui/pages/dev/shape.js';
 
 import '/imports/ui/components/achievementPopup.js';
+import '/imports/ui/components/achievementRanking.js';
 import '/imports/ui/components/achievements.js';
 import '/imports/ui/components/afterGame.js';
 import '/imports/ui/components/eloRanking.js';
@@ -43,7 +44,7 @@ Router.configure({
 	loadingTemplate: 'loading',
 	waitOn: function() {
 		return [
-			Meteor.subscribe('userData'),
+			Meteor.subscribe('userConfiguration', Meteor.userId()),
 			Meteor.subscribe('achievements'),
 			Meteor.subscribe('userAchievements', Meteor.userId())
 		];

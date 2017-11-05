@@ -2,7 +2,7 @@ import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
 import {Achievements} from '/imports/api/achievements/achievements.js';
 import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
-import {Profiles} from '/imports/api/profiles/profiles.js';
+import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 
 Meteor.publish('achievements', function() {
 	return Achievements.find();
@@ -14,10 +14,11 @@ Meteor.publish('userAchievements', function(userId) {
 
 Meteor.publish('achievementsRanking', function() {
 	let achievementsByUserId = {};
+	let usernameByUserId = {};
 
-	//Gather profiles
-	Profiles.find().forEach((profile) => {
-		achievementsByUserId = initializeAchievementsByUserId(achievementsByUserId, profile.userId);
+	UserConfigurations.find().forEach((userConfiguration) => {
+		usernameByUserId[userConfiguration.userId] = userConfiguration.name;
+		achievementsByUserId = initializeAchievementsByUserId(achievementsByUserId, usernameByUserId, userConfiguration.userId);
 	});
 
 	//Prefetch achievements
@@ -45,6 +46,7 @@ Meteor.publish('achievementsRanking', function() {
 			achievementsByUserId = updateAchievementsByUserId(
 				achievementsByUserId,
 				achievementsById,
+				usernameByUserId,
 				userId,
 				userAchievement.achievementId,
 				userAchievement.number,
@@ -63,6 +65,7 @@ Meteor.publish('achievementsRanking', function() {
 				achievementsByUserId = updateAchievementsByUserId(
 					achievementsByUserId,
 					achievementsById,
+					usernameByUserId,
 					userId,
 					userAchievement.achievementId,
 					userAchievement.number,
@@ -73,17 +76,38 @@ Meteor.publish('achievementsRanking', function() {
 		}
 	});
 
+	this.userConfigurationsTracker = UserConfigurations.find().observe({
+		added: (userConfiguration) => {
+			const userId = userConfiguration.userId;
+			usernameByUserId[userId] = userConfiguration.name;
+			achievementsByUserId = initializeAchievementsByUserId(achievementsByUserId, usernameByUserId, userId);
+			this.added('achievementsranking', userId, achievementsByUserId[userId]);
+		},
+		changed: (userConfiguration, oldUserConfiguration) => {
+			if (userConfiguration.name !== oldUserConfiguration.name) {
+				const userId = userConfiguration.userId;
+
+				if (achievementsByUserId[userId]) {
+					achievementsByUserId[userId].username = userConfiguration.name;
+					this.changed('achievementsranking', userId, achievementsByUserId[userId]);
+				}
+			}
+		}
+	});
+
 	this.ready();
 
 	this.onStop(() => {
+		this.userConfigurationsTracker.stop();
 		this.userAchievementsTracker.stop();
 	});
 });
 
-const initializeAchievementsByUserId = function(achievementsByUserId, userId) {
+const initializeAchievementsByUserId = function(achievementsByUserId, usernameByUserId, userId) {
 	if (!achievementsByUserId[userId]) {
 		achievementsByUserId[userId] = {
 			userId: userId,
+			username: usernameByUserId[userId],
 			level1: 0,
 			achievementsLevel1: [],
 			level2: 0,
@@ -100,12 +124,13 @@ const initializeAchievementsByUserId = function(achievementsByUserId, userId) {
 const updateAchievementsByUserId = function(
 	achievementsByUserId,
 	achievementsById,
+	usernameByUserId,
 	userId,
 	achievementId,
 	afterNumber,
 	beforeNumber
 ) {
-	achievementsByUserId = initializeAchievementsByUserId(achievementsByUserId, userId);
+	achievementsByUserId = initializeAchievementsByUserId(achievementsByUserId, usernameByUserId, userId);
 
 	const achievement = achievementsById[achievementId];
 	if (achievement) {

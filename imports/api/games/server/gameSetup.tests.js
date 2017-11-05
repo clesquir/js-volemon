@@ -5,7 +5,7 @@ import {joinGame} from '/imports/api/games/server/gameSetup.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {PLAYER_DEFAULT_SHAPE} from '/imports/api/games/shapeConstants.js';
-import {Profiles} from '/imports/api/profiles/profiles';
+import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 
 describe('lib/client/gameSetup#joinGame', function() {
 	beforeEach(function() {
@@ -13,15 +13,14 @@ describe('lib/client/gameSetup#joinGame', function() {
 	});
 
 	const userId = Random.id(5);
-	const userName = Random.id(5);
-	const user = {_id: userId, profile: {name: userName}};
+	const username = Random.id(5);
 	const gameId = Random.id(5);
 
 	it('does not allow to join if game does not exist', function() {
 		let exception;
 
 		try {
-			joinGame(user, Random.id(5));
+			joinGame(userId, Random.id(5));
 		} catch(e) {
 			exception = e;
 		}
@@ -36,7 +35,7 @@ describe('lib/client/gameSetup#joinGame', function() {
 		try {
 			Games.insert({_id: gameId});
 			Players.insert({userId: userId, gameId: gameId});
-			joinGame(user, gameId);
+			joinGame(userId, gameId);
 		} catch(e) {
 			exception = e;
 		}
@@ -52,7 +51,7 @@ describe('lib/client/gameSetup#joinGame', function() {
 			Games.insert({_id: gameId});
 			Players.insert({userId: Random.id(5), gameId: gameId});
 			Players.insert({userId: Random.id(5), gameId: gameId});
-			joinGame(user, gameId);
+			joinGame(userId, gameId);
 		} catch(e) {
 			exception = e;
 		}
@@ -63,15 +62,16 @@ describe('lib/client/gameSetup#joinGame', function() {
 	});
 	it('updates game clientId and clientName', function() {
 		Games.insert({_id: gameId});
-		joinGame(user, gameId);
+		UserConfigurations.insert({userId: userId, name: username});
+		joinGame(userId, gameId);
 
 		const game = Games.findOne({_id: gameId});
 		assert.equal(userId, game.clientId);
-		assert.equal(userName, game.clientName);
+		assert.equal(username, game.clientName);
 	});
 	it('insert player', function() {
 		Games.insert({_id: gameId});
-		joinGame(user, gameId);
+		joinGame(userId, gameId);
 
 		const player = Players.findOne({userId: userId});
 		assert.isNotNull(player);
@@ -79,8 +79,8 @@ describe('lib/client/gameSetup#joinGame', function() {
 	it('insert player with last used shape', function() {
 		Games.insert({_id: gameId});
 		const lastShapeUsed = Random.id(5);
-		Profiles.insert({userId: userId, lastShapeUsed: lastShapeUsed});
-		joinGame(user, gameId);
+		UserConfigurations.insert({userId: userId, name: username, lastShapeUsed: lastShapeUsed});
+		joinGame(userId, gameId);
 
 		const player = Players.findOne({userId: userId});
 		assert.isNotNull(player);
@@ -89,7 +89,7 @@ describe('lib/client/gameSetup#joinGame', function() {
 	});
 	it('insert player with default shape if no profile', function() {
 		Games.insert({_id: gameId});
-		joinGame(user, gameId);
+		joinGame(userId, gameId);
 
 		const player = Players.findOne({userId: userId});
 		assert.isNotNull(player);
@@ -98,8 +98,8 @@ describe('lib/client/gameSetup#joinGame', function() {
 	});
 	it('insert player with default shape if last used is not defined', function() {
 		Games.insert({_id: gameId});
-		Profiles.insert({userId: userId});
-		joinGame(user, gameId);
+		UserConfigurations.insert({userId: userId, name: username});
+		joinGame(userId, gameId);
 
 		const player = Players.findOne({userId: userId});
 		assert.isNotNull(player);

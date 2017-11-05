@@ -9,6 +9,9 @@ import {getWinRate} from '/imports/lib/utils.js';
 
 import './tournament.html';
 
+class TournamentRankingsCollection extends Mongo.Collection {}
+const TournamentRankings = new TournamentRankingsCollection('tournamentrankings');
+
 Template.tournament.helpers({
 	tournamentDescription: function() {
 		if (this.tournament.description) {
@@ -84,6 +87,10 @@ Template.tournament.helpers({
 
 	canPlayTournament: function() {
 		return canPlayTournament(Session.get('tournament'), Meteor.userId());
+	},
+
+	getRankings: function() {
+		return TournamentRankings.find({}, {sort: [['eloRating', 'desc']]});
 	}
 });
 
