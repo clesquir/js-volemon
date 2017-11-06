@@ -53,10 +53,15 @@ export default class GameInitiator {
 					}
 				}
 
+				if (fields.hasOwnProperty('isReady') && fields.isReady) {
+					this.gameNotifier.onClientReady();
+				}
+
 				if (fields.hasOwnProperty('status')) {
 					this.gameData.updateStatus(fields.status);
 
 					if (fields.status === GAME_STATUS_STARTED) {
+						this.gameNotifier.onGameStart();
 						Session.set('apploadingmask', false);
 					}
 				}

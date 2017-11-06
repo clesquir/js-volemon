@@ -16,6 +16,22 @@ export default class NotificationSound {
 		this.playNote(audioContext, 350, volume, 0.2, 0.2);
 	}
 
+	static playPlayerReadySound() {
+		const audioContext = this.createAudioContext();
+		this.playNote(audioContext, 350, volume, 0.0, 0.1);
+		this.playNote(audioContext, 520, volume, 0.1, 0.1);
+		this.playNote(audioContext, 350, volume, 0.2, 0.2);
+	}
+
+	static playGameStartedSound() {
+		const audioContext = this.createAudioContext();
+		this.playNote(audioContext, 350, volume, 0.0, 0.1);
+		this.playNote(audioContext, 520, volume, 0.1, 0.1);
+		this.playNote(audioContext, 700, volume, 0.2, 0.1);
+		this.playNote(audioContext, 520, volume, 0.3, 0.1);
+		this.playNote(audioContext, 880, volume, 0.4, 0.2);
+	}
+
 	static createAudioContext() {
 		if (!audioContext) {
 			audioContext = new (window.AudioContext || window.webkitAudioContext)();

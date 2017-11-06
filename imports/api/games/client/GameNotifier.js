@@ -24,6 +24,26 @@ export default class GameNotifier {
 		}
 	}
 
+	onClientReady() {
+		if (!WindowFocus.isFocused()) {
+			if (!this.userMutedNotifications()) {
+				NotificationSound.playPlayerReadySound();
+			}
+
+			this.showTitleNotification();
+		}
+	}
+
+	onGameStart() {
+		if (!WindowFocus.isFocused()) {
+			if (!this.userMutedNotifications()) {
+				NotificationSound.playGameStartedSound();
+			}
+
+			this.showTitleNotification();
+		}
+	}
+
 	/**
 	 * @private
 	 * @returns {boolean}

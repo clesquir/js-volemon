@@ -168,6 +168,7 @@ Meteor.methods({
 			throw new Meteor.Error(404, 'Player not found');
 		}
 
+		Games.update({_id: game._id}, {$set: {isReady: true}});
 		Players.update({_id: player._id}, {$set: {isReady: true}});
 	},
 
@@ -213,7 +214,8 @@ Meteor.methods({
 				{_id: gameId},
 				{$set: {
 					clientId: null,
-					clientName: null
+					clientName: null,
+					isReady: false
 				}}
 			);
 		}
