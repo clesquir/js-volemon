@@ -3,7 +3,7 @@ import {Template} from 'meteor/templating';
 import {Session} from 'meteor/session';
 import {Tooltips} from 'meteor/lookback:tooltips';
 import {Router} from 'meteor/iron:router';
-import {Profiles} from '/imports/api/profiles/profiles.js';
+import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 
 import './app.html';
 
@@ -18,10 +18,16 @@ Template.app.helpers({
 		return '';
 	},
 
-	userMutedNotifications: function() {
-		const profile = Profiles.findOne({userId: Meteor.userId()});
+	username: function() {
+		const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
 
-		return profile && profile.muteNotifications;
+		return userConfiguration && userConfiguration.name;
+	},
+
+	userMutedNotifications: function() {
+		const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
+
+		return userConfiguration && userConfiguration.muteNotifications;
 	}
 });
 

@@ -2,7 +2,6 @@ import {Meteor} from 'meteor/meteor';
 import {EloScores} from '/imports/api/games/eloscores.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import {Profiles} from '/imports/api/profiles/profiles.js';
 import {
 	GAME_STATUS_REGISTRATION,
 	GAME_STATUS_STARTED
@@ -21,7 +20,6 @@ Meteor.publish('games', function() {
 				fields: {tournamentId: 1, hostName: 1, clientName: 1, createdAt: 1, status: 1}
 			}
 		),
-		Profiles.find(),
 		Tournaments.find()
 	];
 });
@@ -30,7 +28,6 @@ Meteor.publish('game', function(id) {
 	return [
 		Games.find({_id: id}),
 		Players.find({gameId: id}),
-		Profiles.find(),
 		EloScores.find({gameId: id})
 	];
 });

@@ -10,17 +10,15 @@ export const TournamentController = RouteController.extend({
 	waitOn: function() {
 		return [
 			Meteor.subscribe('tournament', this.params.tournamentId),
-			Meteor.subscribe('tournamentProfiles', this.params.tournamentId),
+			Meteor.subscribe('tournamentProfile', this.params.tournamentId, Meteor.userId()),
 			Meteor.subscribe('tournamentGames', this.params.tournamentId),
 			Meteor.subscribe('tournamentRanks', this.params.tournamentId)
 		];
 	},
 	data: function() {
 		return {
-			users: Meteor.users.find(),
 			tournament: Tournaments.findOne(this.params.tournamentId),
 			tournamentProfile: TournamentProfiles.findOne({tournamentId: this.params.tournamentId, userId: Meteor.userId()}),
-			tournamentProfiles: TournamentProfiles.find({tournamentId: this.params.tournamentId}, {sort: [['eloRating', 'desc']]}),
 			tournamentGames: Games.find({tournamentId: this.params.tournamentId}, {sort: [['createdAt', 'desc']]})
 		};
 	},

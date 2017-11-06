@@ -5,10 +5,8 @@ import {Router} from 'meteor/iron:router';
 import {onRenderGameController, onStopGameController} from '/imports/api/games/client/routeInitiator.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import {Profiles} from '/imports/api/profiles/profiles.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {TournamentEloScores} from '/imports/api/tournaments/tournamentEloScores.js';
-import {TournamentProfiles} from '/imports/api/tournaments/tournamentProfiles.js';
 
 export const TournamentGameController = RouteController.extend({
 	waitOn: function() {
@@ -21,8 +19,6 @@ export const TournamentGameController = RouteController.extend({
 			tournament: Tournaments.findOne(this.params.tournamentId),
 			game: Games.findOne(this.params.gameId),
 			players: Players.find({gameId: this.params.gameId}, {sort: ['joinedAt']}),
-			profiles: Profiles.find(),
-			tournamentProfiles: TournamentProfiles.find(),
 			tournamentEloScores: TournamentEloScores.find({gameId: this.params.gameId})
 		};
 	},

@@ -43,14 +43,13 @@ Meteor.publish('pastTournaments', function() {
 
 Meteor.publish('tournament', function(tournamentId) {
 	return [
-		Tournaments.find({_id: tournamentId}),
-		Profiles.find()
+		Tournaments.find({_id: tournamentId})
 	];
 });
 
-Meteor.publish('tournamentProfiles', function(tournamentId) {
+Meteor.publish('tournamentProfile', function(tournamentId, userId) {
 	return [
-		TournamentProfiles.find({tournamentId: tournamentId})
+		TournamentProfiles.find({tournamentId: tournamentId, userId: userId})
 	];
 });
 
@@ -66,8 +65,7 @@ Meteor.publish('tournamentGames', function(tournamentId) {
 				sort: [['createdAt', 'asc']],
 				fields: {tournamentId: 1, hostName: 1, clientName: 1, createdAt: 1, status: 1}
 			}
-		),
-		Profiles.find()
+		)
 	];
 });
 
@@ -76,15 +74,6 @@ Meteor.publish('tournamentGame', function(tournamentId, gameId) {
 		Tournaments.find({_id: tournamentId}),
 		Games.find({_id: gameId}),
 		Players.find({gameId: gameId}),
-		Profiles.find(),
-		TournamentProfiles.find({tournamentId: tournamentId}),
 		TournamentEloScores.find({gameId: gameId})
-	];
-});
-
-Meteor.publish('tournamentRanks', function(tournamentId) {
-	return [
-		Meteor.users.find({}, {fields: {'profile.name': 1}}),
-		TournamentProfiles.find({tournamentId: tournamentId})
 	];
 });

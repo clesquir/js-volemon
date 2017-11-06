@@ -1,7 +1,7 @@
 import {Meteor} from 'meteor/meteor';
-import {Profiles} from '/imports/api/profiles/profiles.js';
 import NotificationSound from '/imports/lib/NotificationSound.js';
 import WindowFocus from '/imports/lib/WindowFocus.js';
+import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 
 export default class GameNotifier {
 	onClientJoined() {
@@ -29,9 +29,9 @@ export default class GameNotifier {
 	 * @returns {boolean}
 	 */
 	userMutedNotifications() {
-		const profile = Profiles.findOne({userId: Meteor.userId()});
+		const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
 
-		return profile && profile.muteNotifications;
+		return userConfiguration && userConfiguration.muteNotifications;
 	}
 
 	/**

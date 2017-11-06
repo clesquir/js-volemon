@@ -1,0 +1,38 @@
+<template name="achievementRanking">
+	<div class="table-list-row table-list-header">
+		<div class="table-list-cell center-aligned-cell" style="flex: 0 0 50px;">&nbsp;</div>
+		<div class="table-list-cell">Name</div>
+		<div class="table-list-cell" style="flex: 0 0 150px;">Achievements</div>
+	</div>
+
+	{{#each achievementsRanking}}
+		<div class="table-list-row {{getHighlightedClassIfCurrentUser}}">
+			<div class="table-list-cell center-aligned-cell rank-cell" style="flex: 0 0 50px;">{{getRank @index}}</div>
+			<div class="table-list-cell">{{username}}</div>
+			<div class="table-list-cell user-achievements small-star" style="flex: 0 0 150px;">
+				<div class="achievement-item">
+					<div class="achievement-star achievement-star-level-1 level-completed">
+						<i class="fa fa-star-o" aria-hidden="true"></i>
+					</div>
+					<div class="achievement-level-info" data-tooltip="{{achievementsLevel1}}" data-tooltip-direction="s">{{level1}}</div>
+				</div>
+				<div class="achievement-item">
+					<div class="achievement-star achievement-star-level-2 level-completed">
+						<i class="fa fa-star-o" aria-hidden="true"></i>
+					</div>
+					<div class="achievement-level-info" data-tooltip="{{achievementsLevel2}}" data-tooltip-direction="s">{{level2}}</div>
+				</div>
+				<div class="achievement-item">
+					<div class="achievement-star achievement-star-level-3 level-completed">
+						<i class="fa fa-star-o" aria-hidden="true"></i>
+					</div>
+					<div class="achievement-level-info" data-tooltip="{{achievementsLevel3}}" data-tooltip-direction="s">{{level3}}</div>
+				</div>
+			</div>
+		</div>
+	{{else}}
+		<div class="table-list-row">
+			<div class="table-list-cell">There is no data to show...</div>
+		</div>
+	{{/each}}
+</template>

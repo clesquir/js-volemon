@@ -144,7 +144,7 @@ Template.login.events({
 			if (!hasErrors) {
 				disableButton(e, true);
 				Accounts.createUser(
-					{email: emailField.val(), password: passwordField.val(), profile: {name: nameField.val()}},
+					{email: emailField.val(), password: passwordField.val(), configuration: {name: nameField.val()}},
 					function(error) {
 						disableButton(e, false);
 						if (error === undefined) {
