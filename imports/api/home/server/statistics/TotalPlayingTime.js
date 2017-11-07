@@ -46,13 +46,17 @@ export default class TotalPlayingTime {
 	 * @returns {String}
 	 */
 	static totalPlayingTime(totalPlayingTime) {
-		let minutes = Math.floor(totalPlayingTime / 3600);
+		console.log(totalPlayingTime);
+		let seconds = Math.floor(totalPlayingTime / 1000);
+		let minutes = Math.floor(seconds / 60);
 		let hours = Math.floor(minutes / 60);
 		let days = Math.floor(hours / 24);
 		let weeks = Math.floor(days / 7);
 
-		if (minutes === 0) {
+		if (seconds === 0) {
 			return '-';
+		} else if (minutes === 0) {
+			return seconds + 's';
 		} else if (hours === 0) {
 			return minutes + 'm';
 		} else if (days === 0) {
