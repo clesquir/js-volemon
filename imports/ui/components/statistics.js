@@ -13,6 +13,7 @@ export const loadStatistics = function(userId) {
 	Session.set('longestPoint', undefined);
 	Session.set('lowestElo', undefined);
 	Session.set('highestElo', undefined);
+	Session.set('totalPlayingTime', undefined);
 	Session.set('statisticFavouriteShapes', undefined);
 
 	Meteor.call('longestGame', userId, function(error, data) {
@@ -33,6 +34,11 @@ export const loadStatistics = function(userId) {
 	Meteor.call('highestElo', userId, function(error, data) {
 		if (!error && data) {
 			Session.set('highestElo', data);
+		}
+	});
+	Meteor.call('totalPlayingTime', userId, function(error, data) {
+		if (!error && data) {
+			Session.set('totalPlayingTime', data);
 		}
 	});
 	Meteor.call('favouriteShapes', userId, function(error, data) {
@@ -108,6 +114,29 @@ Template.statistics.helpers({
 	eloStat: function(statisticName) {
 		if (Session.get(statisticName) !== undefined) {
 			return Session.get(statisticName).eloRating;
+		}
+		return '<div class="loading-icon fa fa-spinner fa-pulse" />';
+	},
+
+	totalPlayingTime: function() {
+		if (Session.get('totalPlayingTime')) {
+			if (Object.keys(Session.get('totalPlayingTime')).length > 0) {
+				return Session.get('totalPlayingTime').totalPlayingTime;
+			} else {
+				return '-';
+			}
+		}
+		return '<div class="loading-icon fa fa-spinner fa-pulse" />';
+	},
+
+	totalPlayingTimeTooltip: function() {
+		if (Session.get('totalPlayingTime')) {
+			if (Object.keys(Session.get('totalPlayingTime')).length > 0 && Session.get('totalPlayingTime').firstGame) {
+				return 'First game: ' + Moment.moment(Session.get('totalPlayingTime').firstGame).format('YYYY-MM-DD HH:mm') + '<br />' +
+					'Last game: ' + Moment.moment(Session.get('totalPlayingTime').lastGame).format('YYYY-MM-DD HH:mm');
+			} else {
+				return '-';
+			}
 		}
 		return '<div class="loading-icon fa fa-spinner fa-pulse" />';
 	},

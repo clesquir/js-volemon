@@ -7,7 +7,8 @@ import {
 	ACHIEVEMENT_SHUTOUTS
 } from '/imports/api/achievements/constants.js';
 import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
-import {longestGame, longestPoint} from '/imports/api/home/utils.js';
+import LongestGame from '/imports/api/home/server/statistics/LongestGame.js';
+import LongestPoint from '/imports/api/home/server/statistics/LongestPoint.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 
@@ -25,7 +26,7 @@ Meteor.startup(function() {
 			UserAchievements.insert({
 				achievementId: achievement._id,
 				userId: userId,
-				number: longestPoint(userId).duration,
+				number: LongestPoint.get(userId).duration,
 				modifiedAt: getUTCTimeStamp()
 			});
 
@@ -33,7 +34,7 @@ Meteor.startup(function() {
 			UserAchievements.insert({
 				achievementId: achievement._id,
 				userId: userId,
-				number: longestGame(userId).duration,
+				number: LongestGame.get(userId).duration,
 				modifiedAt: getUTCTimeStamp()
 			});
 
