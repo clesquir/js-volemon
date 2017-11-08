@@ -1,0 +1,17 @@
+<template name="tournamentUserProfile">
+
+	<div class="app-section app-section-top">
+
+		<div class="app-section-inner maximum-responsive-width">
+
+			<h1>Player profile</h1>
+			<h2 class="tournament-name">{{tournament.mode.name}}</h2>
+			<p class="tournament-description">{{tournamentDescription}}</p>
+
+			{{> userProfileComponent profile=profile tournamentId=tournament._id}}
+
+		</div>
+
+	</div>
+
+</template>

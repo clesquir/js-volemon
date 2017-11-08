@@ -1,0 +1,11 @@
+.user-profile-information {
+	text-align: left;
+
+	.user-profile-name {
+		font-size: 1.5em;
+	}
+
+	.user-profile-id {
+		color: lighten($text-color, 30%);
+	}
+}

@@ -80,7 +80,7 @@ Template.recentGames.events({
 		e.preventDefault();
 
 		RecentGamesState.set('currentSkip', RecentGamesState.get('currentSkip') + RECENT_GAMES_INCREMENT);
-		updateRecentGames();
+		updateRecentGames(this.userId);
 	}
 });
 
@@ -95,19 +95,19 @@ Template.recentGames.destroyed = function() {
 	Meteor.clearInterval(this.uptimeInterval);
 };
 
-export const initRecentGames = function() {
+export const initRecentGames = function(userId) {
 	RecentGames.remove({});
 	RecentGamesState.set('currentSkip', 0);
 	RecentGamesState.set('hasMoreGames', true);
 
-	updateRecentGames();
+	updateRecentGames(userId);
 };
 
-export const updateRecentGames = function() {
+export const updateRecentGames = function(userId) {
 	Session.set('loadingmask', true);
 	Meteor.call(
 		'recentGames',
-		Meteor.userId(),
+		userId,
 		RecentGamesState.get('currentSkip'),
 		RECENT_GAMES_LIMIT,
 		function(error, games) {

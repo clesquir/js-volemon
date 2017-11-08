@@ -2,6 +2,7 @@ import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
 import * as Moment from 'meteor/momentjs:moment';
 import {Session} from 'meteor/session';
+import {INITIAL_ELO_RATING} from '/imports/api/profiles/constants.js';
 import {getWinRate} from '/imports/lib/utils.js';
 
 import './statistics.html';
@@ -116,6 +117,22 @@ Template.statistics.helpers({
 			return Session.get(statisticName).eloRating;
 		}
 		return '<div class="loading-icon fa fa-spinner fa-pulse" />';
+	},
+
+	eloRating: function() {
+		if (!this.profile) {
+			return INITIAL_ELO_RATING;
+		}
+
+		return this.profile.eloRating;
+	},
+
+	eloRatingLastChange: function() {
+		if (!this.profile) {
+			return null;
+		}
+
+		return this.profile.eloRatingLastChange;
 	},
 
 	totalPlayingTime: function() {

@@ -2,11 +2,11 @@
 @include view-selector-shown(games-tournament-shown, view-games-tournament, games-tournament);
 @include view-selector-shown(rank-tournament-shown, view-rank-tournament, rank-tournament);
 
-.tournament-page h1 {
+.tournament-name {
 	margin-bottom: 5px;
 }
 
-.tournament-page .tournament-description {
+.tournament-description {
 	margin-top: 0;
 	font-size: 0.85em;
 }
@@ -57,18 +57,5 @@
 				}
 			}
 		}
-	}
-}
-
-.tournament-statistics-information-container {
-	padding-bottom: 5px;
-	display: flex;
-	justify-content: space-around;
-	flex-wrap: wrap;
-	min-width: 580px;
-
-	@include horizontal-breakpoint(mobile) {
-		min-width: unset;
-		flex-direction: column;
 	}
 }

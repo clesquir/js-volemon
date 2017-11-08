@@ -4,7 +4,7 @@
 
 		<div class="app-section-inner maximum-responsive-width">
 
-			<h1>{{tournament.mode.name}}</h1>
+			<h1 class="tournament-name">{{tournament.mode.name}}</h1>
 			<p class="tournament-description">{{tournamentDescription}}</p>
 
 			<div id="tournament-contents" class="view-selector-contents {{#if isTournamentActive}}games-tournament-shown{{else}}tournament-statistics-shown{{/if}}">
@@ -33,29 +33,7 @@
 							</div>
 						{{/if}}
 
-						<div class="tournament-statistics-information-container">
-							<div class="statistics-item">
-								<div>
-									<div class="statistics-item-data">{{numberOfGamesPlayed}}</div>
-									<div class="statistics-item-title">games played</div>
-								</div>
-							</div>
-							<div class="statistics-item">
-								<div>
-									<div class="statistics-item-data">{{winRate}}</div>
-									<div class="statistics-item-title">win rate</div>
-								</div>
-							</div>
-							<div class="statistics-item elo-rating-statistic">
-								<div>
-									<div class="statistics-item-data">
-										<div>{{eloRating}}</div>
-										{{> eloRatingChange eloRatingChange=eloRatingLastChange}}
-									</div>
-									<div class="statistics-item-title">ELO</div>
-								</div>
-							</div>
-						</div>
+						{{> statistics profile=tournamentProfile tournamentId=tournament._id}}
 
 					{{else}}
 						<p>Please <a class="clickable-link" data-action="user-log-in">log in</a> to get statistics on your profile for this tournament!</p>
@@ -80,7 +58,7 @@
 				<div class="view-selector-content rank-tournament">
 					<h2>Rank</h2>
 
-					{{> eloRanking rankings=getRankings emptyText="Nobody played this tournament yet..."}}
+					{{> eloRanking rankings=getRankings emptyText="Nobody played this tournament yet..." tournamentId=tournament._id}}
 				</div>
 			</div>
 
