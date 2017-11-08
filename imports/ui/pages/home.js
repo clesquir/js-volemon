@@ -19,6 +19,10 @@ Template.home.helpers({
 
 	onMobile: function() {
 		return onMobileAndTablet();
+	},
+
+	getUserId: function() {
+		return Meteor.userId();
 	}
 });
 
@@ -50,7 +54,7 @@ Template.home.events({
 			removeShownClasses(homeContents);
 			$(homeContents).addClass('user-recent-games-shown');
 
-			initRecentGames();
+			initRecentGames(Meteor.userId());
 		}
 	}
 });

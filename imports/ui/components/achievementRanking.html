@@ -8,7 +8,9 @@
 	{{#each achievementsRanking}}
 		<div class="table-list-row {{getHighlightedClassIfCurrentUser}}">
 			<div class="table-list-cell center-aligned-cell rank-cell" style="flex: 0 0 50px;">{{getRank @index}}</div>
-			<div class="table-list-cell">{{username}}</div>
+			<div class="table-list-cell">
+				<a class="user-profile-link" href="{{pathFor 'userProfile' userId=this.userId}}">{{username}}</a>
+			</div>
 			<div class="table-list-cell user-achievements small-star" style="flex: 0 0 150px;">
 				<div class="achievement-item">
 					<div class="achievement-star achievement-star-level-1 level-completed">

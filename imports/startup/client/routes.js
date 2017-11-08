@@ -7,6 +7,8 @@ import {RankController} from '/imports/startup/client/controllers/RankController
 import {TournamentsController} from '/imports/startup/client/controllers/TournamentsController.js';
 import {TournamentController} from '/imports/startup/client/controllers/TournamentController.js';
 import {TournamentGameController} from '/imports/startup/client/controllers/TournamentGameController.js';
+import {TournamentUserProfileController} from '/imports/startup/client/controllers/TournamentUserProfileController.js';
+import {UserProfileController} from '/imports/startup/client/controllers/UserProfileController.js';
 
 import '/imports/ui/pages/app.js';
 import '/imports/ui/pages/game.js';
@@ -18,7 +20,9 @@ import '/imports/ui/pages/rank.js';
 import '/imports/ui/pages/tournaments.js';
 import '/imports/ui/pages/tournament.js';
 import '/imports/ui/pages/tournamentGame.js';
+import '/imports/ui/pages/tournamentUserProfile.js';
 import '/imports/ui/pages/username.js';
+import '/imports/ui/pages/userProfile.js';
 import '/imports/ui/pages/dev/environment.js';
 import '/imports/ui/pages/dev/shape.js';
 
@@ -38,6 +42,7 @@ import '/imports/ui/components/recentGames.js';
 import '/imports/ui/components/shapeSelector.js';
 import '/imports/ui/components/statistics.js';
 import '/imports/ui/components/switchButton.js';
+import '/imports/ui/components/userProfileComponent.js';
 
 Router.configure({
 	layoutTemplate: 'app',
@@ -67,6 +72,11 @@ Router.map(function() {
 		});
 	}
 
+	this.route('userProfile', {
+		path: '/profile/:userId',
+		controller: UserProfileController
+	});
+
 	this.route('games', {
 		path: '/games',
 		controller: GamesController
@@ -90,6 +100,11 @@ Router.map(function() {
 	this.route('tournamentGame', {
 		path: '/tournament/:tournamentId/game/:gameId',
 		controller: TournamentGameController
+	});
+
+	this.route('tournamentUserProfile', {
+		path: '/tournament/:tournamentId/profile/:userId',
+		controller: TournamentUserProfileController
 	});
 
 	this.route('game', {

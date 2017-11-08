@@ -46,7 +46,6 @@ export default class TotalPlayingTime {
 	 * @returns {String}
 	 */
 	static totalPlayingTime(totalPlayingTime) {
-		console.log(totalPlayingTime);
 		let seconds = Math.floor(totalPlayingTime / 1000);
 		let minutes = Math.floor(seconds / 60);
 		let hours = Math.floor(minutes / 60);

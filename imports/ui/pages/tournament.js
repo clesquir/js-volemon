@@ -2,10 +2,8 @@ import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
 import {Session} from 'meteor/session';
 import {Router} from 'meteor/iron:router';
-import {INITIAL_ELO_RATING} from '/imports/api/profiles/constants.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {canPlayTournament, isTournamentActive} from '/imports/api/tournaments/utils.js';
-import {getWinRate} from '/imports/lib/utils.js';
 
 import './tournament.html';
 
@@ -51,38 +49,6 @@ Template.tournament.helpers({
 		}
 
 		return retries;
-	},
-
-	numberOfGamesPlayed: function() {
-		if (!this.tournamentProfile) {
-			return 0;
-		}
-
-		return this.tournamentProfile.numberOfWin + this.tournamentProfile.numberOfLost;
-	},
-
-	winRate: function() {
-		if (!this.tournamentProfile) {
-			return '-';
-		}
-
-		return getWinRate(this.tournamentProfile);
-	},
-
-	eloRating: function() {
-		if (!this.tournamentProfile) {
-			return INITIAL_ELO_RATING;
-		}
-
-		return this.tournamentProfile.eloRating;
-	},
-
-	eloRatingLastChange: function() {
-		if (!this.tournamentProfile) {
-			return null;
-		}
-
-		return this.tournamentProfile.eloRatingLastChange;
 	},
 
 	canPlayTournament: function() {
