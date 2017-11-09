@@ -133,3 +133,17 @@ Template.gameCanvas.events({
 		}
 	}
 });
+
+Template.gameCanvas.rendered = function() {
+	$(this.find('.game-container')).on('mousemove', '#gameContainer', mouseMoveShowsCursor);
+};
+
+let mouseHideTimer;
+const mouseMoveShowsCursor = function(e) {
+	Meteor.clearTimeout(mouseHideTimer);
+	$(e.target).css('cursor', 'inherit');
+
+	mouseHideTimer = Meteor.setTimeout(() => {
+		$(e.target).css('cursor', 'none');
+	}, 500);
+};

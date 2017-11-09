@@ -116,7 +116,6 @@
 		width: 100%;
 		height: 100%;
 		animation: loop-opacity 1.5s infinite;
-		cursor: none;
 	}
 
 	&.match-point-frame::before {
@@ -130,7 +129,6 @@
 	canvas {
 		margin: 10px auto 30px;
 		@include aspect-ratio(45, 30);
-		cursor: none !important;
 	}
 }
 
