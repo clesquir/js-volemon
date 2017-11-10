@@ -80,6 +80,7 @@ $desktop-max-height: 70em;
 @import "{}/imports/ui/components/achievementPopup.scss";
 @import "{}/imports/ui/components/achievements.scss";
 @import "{}/imports/ui/components/afterGame.scss";
+@import "{}/imports/ui/components/gameCanvas.scss";
 @import "{}/imports/ui/components/gameSetup.scss";
 @import "{}/imports/ui/components/lightbox.scss";
 @import "{}/imports/ui/components/loading.scss";
@@ -89,7 +90,6 @@ $desktop-max-height: 70em;
 @import "{}/imports/ui/components/statistics.scss";
 @import "{}/imports/ui/components/userProfileComponent.scss";
 @import "{}/imports/ui/pages/app.scss";
-@import "{}/imports/ui/pages/game.scss";
 @import "{}/imports/ui/pages/home.scss";
 @import "{}/imports/ui/pages/login.scss";
 @import "{}/imports/ui/pages/rank.scss";
@@ -218,7 +218,7 @@ p {
 		opacity: 0.15;
 
 		.tournament-game-icon {
-			background-image: url("assets/tournament-icon.png");
+			background-image: url("/assets/tournament-icon.png");
 			width: 100px;
 			height: 100px;
 			right: 0;

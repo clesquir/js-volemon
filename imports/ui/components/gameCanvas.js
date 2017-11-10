@@ -8,7 +8,7 @@ import {
 	isGameStatusStarted
 } from '/imports/api/games/utils.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
-import {padNumber} from '/imports/lib/utils.js';
+import {onMobileAndTablet, padNumber} from '/imports/lib/utils.js';
 
 import './gameCanvas.html';
 
@@ -113,6 +113,10 @@ Template.gameCanvas.helpers({
 		}
 
 		return '';
+	},
+
+	onMobileAndTablet() {
+		return onMobileAndTablet();
 	}
 });
 

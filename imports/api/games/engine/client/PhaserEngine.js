@@ -1,11 +1,8 @@
 PIXI = require('phaser-ce/build/custom/pixi');
 p2 = require('phaser-ce/build/custom/p2');
 Phaser = require('phaser-ce/build/custom/phaser-split');
-import {Meteor} from 'meteor/meteor';
 import Engine from '/imports/api/games/engine/Engine.js';
 import {
-	TAP_BUTTON_WIDTH,
-	TAP_BUTTON_HEIGHT,
 	NORMAL_SCALE_PHYSICS_DATA,
 	SMALL_SCALE_PHYSICS_DATA,
 	BIG_SCALE_PHYSICS_DATA,
@@ -149,54 +146,11 @@ export default class PhaserEngine extends Engine {
 			this.cursor['s'] = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
 			this.cursor['spacebar'] = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 		}
-
-		this.mobileControl = {
-			left: false,
-			right: false,
-			up: false,
-			down: false
-		};
-		if (this.allowMobileControl()) {
-			//Add pointers for allowing 4 fingers
-			this.game.input.addPointer();
-			this.game.input.addPointer();
-			const y = this.game.height - TAP_BUTTON_HEIGHT;
-			const leftButton = this.game.add.button(0, y, 'tapButtonLeft');
-			this.addDeviceControl(leftButton, this.mobileControl, 'left');
-			const rightButton = this.game.add.button(TAP_BUTTON_WIDTH, y, 'tapButtonRight');
-			this.addDeviceControl(rightButton, this.mobileControl, 'right');
-			const upButton = this.game.add.button(this.game.width - TAP_BUTTON_WIDTH * 2, y, 'tapButtonUp');
-			this.addDeviceControl(upButton, this.mobileControl, 'up');
-			const downButton = this.game.add.button(this.game.width - TAP_BUTTON_WIDTH, y, 'tapButtonDown');
-			this.addDeviceControl(downButton, this.mobileControl, 'down');
-		}
-	}
-
-	allowMobileControl() {
-		return !this.game.device.desktop;
-	}
-
-	addDeviceControl(button, mobileControl, control) {
-		button.events.onInputOver.add(function() {
-			mobileControl[control] = true;
-		});
-		button.events.onInputOut.add(function() {
-			mobileControl[control] = false;
-		});
-		button.events.onInputDown.add(function() {
-			mobileControl[control] = true;
-		});
-		button.events.onInputUp.add(function() {
-			mobileControl[control] = false;
-		});
 	}
 
 	removeKeyControllers() {
 		if (Phaser.Keyboard) {
 			this.game.input.keyboard.clearCaptures();
-		}
-		if (this.allowMobileControl()) {
-			this.mobileControl = null;
 		}
 	}
 
@@ -296,23 +250,23 @@ export default class PhaserEngine extends Engine {
 	}
 
 	isInputSetup() {
-		return !!Phaser.Keyboard || this.mobileControl;
+		return !!Phaser.Keyboard || this.deviceController;
 	}
 
 	isLeftKeyDown() {
-		return this.cursor.left.isDown || this.mobileControl.left;
+		return this.cursor.left.isDown || this.deviceController.leftPressed();
 	}
 
 	isRightKeyDown() {
-		return this.cursor.right.isDown || this.mobileControl.right;
+		return this.cursor.right.isDown || this.deviceController.rightPressed();
 	}
 
 	isUpKeyDown() {
-		return this.cursor.up.isDown || this.mobileControl.up;
+		return this.cursor.up.isDown || this.deviceController.upPressed();
 	}
 
 	isDownKeyDown() {
-		return this.cursor.down.isDown || this.mobileControl.down;
+		return this.cursor.down.isDown || this.deviceController.downPressed();
 	}
 
 	isAKeyDown() {

@@ -9,6 +9,7 @@ import ClientStreamFactory from '/imports/lib/stream/client/ClientStreamFactory.
 import StreamConfiguration from '/imports/lib/stream/StreamConfiguration.js';
 import {updateConnectionIndicator, destroyConnectionIndicator} from '/imports/api/games/client/connectionIndicator.js';
 import DefaultGameConfiguration from '/imports/api/games/client/configuration/DefaultGameConfiguration.js';
+import MobileController from '/imports/api/games/client/deviceController/MobileController.js';
 import GameNotifier from '/imports/api/games/client/GameNotifier.js';
 
 /** @type {Stream} */
@@ -17,6 +18,8 @@ export let stream = null;
 export let gameData = null;
 /** @type {GameConfiguration} */
 export let gameConfiguration = null;
+/** @type {DeviceController} */
+let deviceController = null;
 /** @type {ServerNormalizedTime} */
 export let serverNormalizedTime = null;
 /** @type {GameInitiator}|null */
@@ -55,9 +58,19 @@ const initGame = function(gameId) {
 	gameData.init();
 	gameConfiguration = new DefaultGameConfiguration(gameId);
 	gameConfiguration.init();
+	deviceController = new MobileController('.game-canvas-container', 'mobile-controller');
+	deviceController.init();
 	serverNormalizedTime = new ServerNormalizedTime();
 	serverNormalizedTime.init();
-	gameInitiator = new GameInitiator(gameId, stream, gameData, gameConfiguration, new GameNotifier(), serverNormalizedTime);
+	gameInitiator = new GameInitiator(
+		gameId,
+		stream,
+		gameData,
+		gameConfiguration,
+		deviceController,
+		new GameNotifier(),
+		serverNormalizedTime
+	);
 	gameInitiator.init();
 	gameRematch = new GameRematch(gameId, gameData);
 	gameRematch.init();
