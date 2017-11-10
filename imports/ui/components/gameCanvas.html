@@ -41,6 +41,19 @@
 			</div>
 		</div>
 
+		{{#if onMobileAndTablet}}
+			<div id="mobileController" class="mobile-controller">
+				<div class="mobile-controller-horizontal-directions">
+					<div class="mobile-controller-left"></div>
+					<div class="mobile-controller-right"></div>
+				</div>
+				<div class="mobile-controller-vertical-directions">
+					<div class="mobile-controller-up"></div>
+					<div class="mobile-controller-down"></div>
+				</div>
+			</div>
+		{{/if}}
+
 		{{> afterGame game=game playersCollection=playersCollection eloScoresCollection=eloScoresCollection}}
 
 		{{> reactions isGamePlayer=isGamePlayer hasViewer=hasViewer}}
