@@ -536,12 +536,13 @@ export default class GameBonus {
 	generateClouds() {
 		this.clouds = [];
 
-		const layers = ['white-cloud', 'white-cloud', 'dark-cloud', 'dark-cloud'];
-		for (let i = 1; i < 6; i++) {
-			let x = GAME_X_SIZE / 6 * i;
+		const cloudSpreads = 3;
+		const layers = ['dark-cloud', 'white-cloud'];
+		for (let i = 1; i < (cloudSpreads + 1); i++) {
+			let x = GAME_X_SIZE / (cloudSpreads + 1) * i;
 
 			for (let layer of layers) {
-				this.clouds.push(this.createCloud(x, 200, layer, getRandomFloat(0.25, 0.30)));
+				this.clouds.push(this.createCloud(x, 200, layer, getRandomFloat(0.5, 0.6)));
 			}
 		}
 	}
@@ -555,11 +556,11 @@ export default class GameBonus {
 	}
 
 	createCloud(xPosition, yPosition, layer, opacity) {
-		const scale = getRandomFloat(1, 2);
+		const scale = getRandomFloat(1.5, 2);
 		const cloud = this.engine.addSprite(xPosition, yPosition, layer);
 
 		cloud.opacity = opacity;
-		cloud.rotateSpeed = getRandomFloat(-6, 6);
+		cloud.rotateSpeed = getRandomFloat(-3, 3);
 		this.engine.setStatic(cloud, true);
 		this.engine.setOpacity(cloud, 0);
 		this.engine.setAnchor(cloud, 0.5);
@@ -575,9 +576,9 @@ export default class GameBonus {
 		}
 		this.smokeBomb[smokeBombIdentifier] = [];
 
-		const layers = ['white-cloud', 'white-cloud', 'dark-cloud', 'dark-cloud'];
+		const layers = ['dark-cloud', 'white-cloud'];
 		for (let layer of layers) {
-			const cloud = this.createCloud(xPosition, yPosition, layer, getRandomFloat(0.5, 0.75));
+			const cloud = this.createCloud(xPosition, yPosition, layer, getRandomFloat(0.75, 0.85));
 
 			this.engine.rotateLeft(cloud, cloud.rotateSpeed);
 			this.engine.animateSetOpacity(cloud, cloud.opacity, this.engine.getOpacity(cloud), 250);
