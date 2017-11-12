@@ -115,8 +115,10 @@ Template.gameCanvas.helpers({
 		return '';
 	},
 
-	onMobileAndTablet() {
-		return onMobileAndTablet();
+	showMobileController() {
+		const player = Players.findOne({gameId: Session.get('game'), userId: Meteor.userId()});
+
+		return player && onMobileAndTablet();
 	}
 });
 
