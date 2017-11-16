@@ -88,16 +88,16 @@ export default class GameBonus {
 	}
 
 	preload() {
-		this.engine.loadImage('cloud', '/assets/cloud.png');
-		this.engine.loadImage('dark-cloud', '/assets/dark-cloud.png');
-		this.engine.loadImage('white-cloud', '/assets/white-cloud.png');
-		this.engine.loadImage('bonus-environment', '/assets/bonus-environment.png');
-		this.engine.loadImage('bonus-environment-positive', '/assets/bonus-environment-positive.png');
-		this.engine.loadImage('bonus-environment-negative', '/assets/bonus-environment-negative.png');
-		this.engine.loadImage('bonus-target', '/assets/bonus-target.png');
-		this.engine.loadImage('bonus-target-positive', '/assets/bonus-target-positive.png');
-		this.engine.loadImage('bonus-target-negative', '/assets/bonus-target-negative.png');
-		this.engine.loadSpriteSheet('bonus-icons', '/assets/bonus-icons.png', 20, 20);
+		this.engine.loadImage('cloud', '/assets/bonus/component/cloud.png');
+		this.engine.loadImage('dark-cloud', '/assets/bonus/component/dark-cloud.png');
+		this.engine.loadImage('white-cloud', '/assets/bonus/component/white-cloud.png');
+		this.engine.loadImage('bonus-environment', '/assets/bonus/bonus-environment.png');
+		this.engine.loadImage('bonus-environment-positive', '/assets/bonus/bonus-environment-positive.png');
+		this.engine.loadImage('bonus-environment-negative', '/assets/bonus/bonus-environment-negative.png');
+		this.engine.loadImage('bonus-target', '/assets/bonus/bonus-target.png');
+		this.engine.loadImage('bonus-target-positive', '/assets/bonus/bonus-target-positive.png');
+		this.engine.loadImage('bonus-target-negative', '/assets/bonus/bonus-target-negative.png');
+		this.engine.loadSpriteSheet('bonus-icons', '/assets/bonus/bonus-icons.png', 20, 20);
 	}
 
 	createCollisionGroupsAndMaterials() {

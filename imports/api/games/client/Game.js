@@ -143,16 +143,16 @@ export default class Game {
 		this.engine.preloadGame();
 
 		for (let shape of PLAYER_LIST_OF_SHAPES) {
-			this.engine.loadImage('shape-' + shape, '/assets/player-' + shape + '.png');
+			this.engine.loadImage('shape-' + shape, '/assets/shape/player-' + shape + '.png');
 		}
 
-		this.engine.loadImage('ball', '/assets/ball.png');
-		this.engine.loadImage('net', '/assets/net.png');
-		this.engine.loadImage('ground', '/assets/ground.png');
-		this.engine.loadSpriteSheet('confettis', '/assets/confettis.png', 10, 10);
+		this.engine.loadImage('ball', '/assets/component/ball.png');
+		this.engine.loadImage('net', '/assets/component/net.png');
+		this.engine.loadImage('ground', '/assets/component/ground.png');
+		this.engine.loadSpriteSheet('confettis', '/assets/reaction/confettis.png', 10, 10);
 
-		this.engine.loadImage('delimiter', '/assets/clear.png');
-		this.engine.loadData(NORMAL_SCALE_PHYSICS_DATA, '/assets/physicsData.json');
+		this.engine.loadImage('delimiter', '/assets/component/clear.png');
+		this.engine.loadData(NORMAL_SCALE_PHYSICS_DATA, '/assets/shape/physicsData.json');
 
 		this.gameBonus.preload();
 		this.gameSkin.preload(this.engine);

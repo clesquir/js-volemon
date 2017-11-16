@@ -240,12 +240,12 @@
 
 		.mobile-controller-left {
 			@include mobile-controller-button;
-			background-image: url("/assets/tap-button-left.png");
+			background-image: url("/assets/mobile-controller/tap-button-left.png");
 		}
 
 		.mobile-controller-right {
 			@include mobile-controller-button;
-			background-image: url("/assets/tap-button-right.png");
+			background-image: url("/assets/mobile-controller/tap-button-right.png");
 		}
 	}
 
@@ -256,12 +256,12 @@
 
 		.mobile-controller-up {
 			@include mobile-controller-button;
-			background-image: url("/assets/tap-button-up.png");
+			background-image: url("/assets/mobile-controller/tap-button-up.png");
 		}
 
 		.mobile-controller-down {
 			@include mobile-controller-button;
-			background-image: url("/assets/tap-button-down.png");
+			background-image: url("/assets/mobile-controller/tap-button-down.png");
 		}
 	}
 }

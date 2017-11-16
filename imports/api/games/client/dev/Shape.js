@@ -47,13 +47,13 @@ export default class Shape {
 		this.game.engine.preloadGame();
 
 		for (let shape of PLAYER_LIST_OF_SHAPES) {
-			this.game.engine.loadImage('shape-' + shape, '/assets/player-' + shape + '.png');
+			this.game.engine.loadImage('shape-' + shape, '/assets/shape/player-' + shape + '.png');
 		}
 
-		this.game.engine.loadImage('ball', '/assets/ball.png');
-		this.game.engine.loadImage('ground', '/assets/ground.png');
-		this.game.engine.loadImage('delimiter', '/assets/clear.png');
-		this.game.engine.loadData(NORMAL_SCALE_PHYSICS_DATA, '/assets/physicsData.json');
+		this.game.engine.loadImage('ball', '/assets/component/ball.png');
+		this.game.engine.loadImage('ground', '/assets/component/ground.png');
+		this.game.engine.loadImage('delimiter', '/assets/component/clear.png');
+		this.game.engine.loadData(NORMAL_SCALE_PHYSICS_DATA, '/assets/shape/physicsData.json');
 	}
 
 	createGame() {
