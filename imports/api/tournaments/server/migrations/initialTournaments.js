@@ -6,7 +6,8 @@ import {
 	TOURNAMENT_MODE_HARDCORE,
 	TOURNAMENT_MODE_MOON_GRAVITY,
 	TOURNAMENT_MODE_JUPITER_GRAVITY,
-	TOURNAMENT_MODE_SMOKE_BOMB
+	TOURNAMENT_MODE_SMOKE_BOMB,
+	TOURNAMENT_MODE_RANDOM_BONUSES
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 import {TournamentModes} from '/imports/api/tournaments/tournamentModes.js';
 
@@ -50,6 +51,14 @@ Meteor.startup(function() {
 			mode: TOURNAMENT_MODE_SMOKE_BOMB,
 			startDate: "2017-11-13 -4",
 			endDate: "2017-11-18 -4",
+			isPublished: false
+		},
+		{
+			_id: Random.id(5),
+			identifier: 'tournament_2017-11-20',
+			mode: TOURNAMENT_MODE_RANDOM_BONUSES,
+			startDate: "2017-11-20 -4",
+			endDate: "2017-11-25 -4",
 			isPublished: false
 		}
 	];
