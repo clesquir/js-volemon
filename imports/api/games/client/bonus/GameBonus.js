@@ -88,7 +88,6 @@ export default class GameBonus {
 	}
 
 	preload() {
-		this.engine.loadImage('cloud', '/assets/bonus/component/cloud.png');
 		this.engine.loadImage('dark-cloud', '/assets/bonus/component/dark-cloud.png');
 		this.engine.loadImage('white-cloud', '/assets/bonus/component/white-cloud.png');
 		this.engine.loadImage('bonus-environment', '/assets/bonus/bonus-environment.png');
@@ -518,15 +517,10 @@ export default class GameBonus {
 	}
 
 	drawCloud() {
-		if (!this.cloudBonus) {
-			this.cloudBonus = this.engine.addTileSprite(this.xSize / 2, this.ySize / 2, this.xSize, this.ySize, 'cloud');
-			this.engine.setStatic(this.cloudBonus, true);
-			this.engine.setOpacity(this.cloudBonus, 0);
-
+		if (this.clouds.length === 0) {
 			this.generateClouds();
 		}
 
-		this.engine.animateSetOpacity(this.cloudBonus, 0.7, this.engine.getOpacity(this.cloudBonus), 250);
 		for (let cloud of this.clouds) {
 			this.engine.rotateLeft(cloud, cloud.rotateSpeed);
 			this.engine.animateSetOpacity(cloud, cloud.opacity, this.engine.getOpacity(cloud), 250);
@@ -542,7 +536,7 @@ export default class GameBonus {
 			let x = GAME_X_SIZE / (cloudSpreads + 1) * i;
 
 			for (let layer of layers) {
-				this.clouds.push(this.createCloud(x, 200, layer, getRandomFloat(0.5, 0.6)));
+				this.clouds.push(this.createCloud(x, 200, layer, getRandomFloat(0.7, 0.8)));
 			}
 		}
 	}
@@ -552,7 +546,6 @@ export default class GameBonus {
 			this.engine.animateSetOpacity(cloud, 0, this.engine.getOpacity(cloud), 250);
 			this.engine.rotateLeft(cloud, 0);
 		}
-		this.engine.animateSetOpacity(this.cloudBonus, 0, this.engine.getOpacity(this.cloudBonus), 250);
 	}
 
 	createCloud(xPosition, yPosition, layer, opacity) {
