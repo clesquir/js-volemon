@@ -22,8 +22,13 @@ Meteor.startup(function() {
 			Skins.insert(expectedSkin);
 		} else {
 			const updates = {};
+
 			if (actualSkin.name !== expectedSkin.name) {
 				updates.name = expectedSkin.name;
+			}
+
+			if (actualSkin.displayOrder !== expectedSkin.displayOrder) {
+				updates.displayOrder = expectedSkin.displayOrder;
 			}
 
 			if (Object.keys(updates).length) {
