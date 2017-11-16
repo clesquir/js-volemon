@@ -35,6 +35,10 @@ Meteor.methods({
 		}
 	},
 
+	updateSkin: function(skinId) {
+		UserConfigurations.update({userId: this.userId}, {$set: {skinId: skinId}});
+	},
+
 	sendUserPasswordToken: function(email) {
 		const user = Accounts.findUserByEmail(email);
 

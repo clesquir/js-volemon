@@ -1,3 +1,4 @@
 @include view-selector-shown(user-statistics-shown, view-user-statistics, user-statistics);
+@include view-selector-shown(user-skin-shown, view-user-skin, user-skin);
 @include view-selector-shown(user-achievements-shown, view-user-achievements, user-achievements);
 @include view-selector-shown(user-recent-games-shown, view-user-recent-games, user-recent-games);

@@ -10,16 +10,16 @@ import StreamConfiguration from '/imports/lib/stream/StreamConfiguration.js';
 import {updateConnectionIndicator, destroyConnectionIndicator} from '/imports/api/games/client/connectionIndicator.js';
 import DefaultGameConfiguration from '/imports/api/games/client/configuration/DefaultGameConfiguration.js';
 import MobileController from '/imports/api/games/client/deviceController/MobileController.js';
+import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
 import GameNotifier from '/imports/api/games/client/GameNotifier.js';
+import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
+import SkinFactory from '/imports/api/skins/skins/SkinFactory.js';
+import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 
 /** @type {Stream} */
 export let stream = null;
 /** @type {GameData} */
 export let gameData = null;
-/** @type {GameConfiguration} */
-export let gameConfiguration = null;
-/** @type {DeviceController} */
-let deviceController = null;
 /** @type {ServerNormalizedTime} */
 export let serverNormalizedTime = null;
 /** @type {GameInitiator}|null */
@@ -56,10 +56,15 @@ const initGame = function(gameId) {
 	stream.connect(gameId);
 	gameData = new GameData(gameId);
 	gameData.init();
-	gameConfiguration = new DefaultGameConfiguration(gameId);
+	const gameConfiguration = new DefaultGameConfiguration(gameId);
 	gameConfiguration.init();
-	deviceController = new MobileController('.game-canvas-container', 'mobile-controller');
+	const deviceController = new MobileController('.game-canvas-container', 'mobile-controller');
 	deviceController.init();
+	const engine = new PhaserEngine(gameConfiguration, deviceController);
+	const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
+	const skin = SkinFactory.fromId(userConfiguration ? userConfiguration.skinId : null);
+	const gameSkin = new GameSkin(skin);
+	gameSkin.init();
 	serverNormalizedTime = new ServerNormalizedTime();
 	serverNormalizedTime.init();
 	gameInitiator = new GameInitiator(
@@ -67,7 +72,8 @@ const initGame = function(gameId) {
 		stream,
 		gameData,
 		gameConfiguration,
-		deviceController,
+		gameSkin,
+		engine,
 		new GameNotifier(),
 		serverNormalizedTime
 	);

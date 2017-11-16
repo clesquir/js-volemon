@@ -6,6 +6,10 @@
     "ROLLBAR_SERVER_ACCESS_TOKEN": "",
     "ROLLBAR_CLIENT_ACCESS_TOKEN": "",
     "ROLLBAR_ENVIRONMENT": "production",
+    "DEFAULT_COORDINATES": {
+      "latitude": 46.8139,
+      "longitude": -71.2080
+    },
     "iceServers": [
       {
         "urls": "stun:stun.l.google.com:19302"

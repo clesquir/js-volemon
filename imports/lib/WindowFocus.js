@@ -2,7 +2,7 @@ let isFocused = true;
 let listeners = [];
 
 export default class WindowFocus {
-	static init() {
+	static start() {
 		isFocused = true;
 
 		window.addEventListener('focus', function() {

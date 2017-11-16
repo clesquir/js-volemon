@@ -30,7 +30,6 @@ export default class PhaserEngine extends Engine {
 				this.game.physics.p2.world.defaultContactMaterial.friction = 0;
 				this.game.physics.p2.world.setGlobalStiffness(1e10);
 				this.game.physics.p2.restitution = 0;
-				this.game.stage.backgroundColor = '#9ad3de';
 				this.game.stage.disableVisibilityChange = true;
 
 				this.game.state.start('load');
@@ -79,6 +78,10 @@ export default class PhaserEngine extends Engine {
 
 	createGame() {
 		this.setupScaling();
+	}
+
+	changeBackgroundColor(hex) {
+		this.game.stage.backgroundColor = hex;
 	}
 
 	setupScaling() {

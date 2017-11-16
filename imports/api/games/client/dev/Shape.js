@@ -5,12 +5,11 @@ import GameData from '/imports/api/games/client/data/GameData.js';
 import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
 import StaticGameConfiguration from '/imports/api/games/client/configuration/StaticGameConfiguration.js';
-import {
-	NORMAL_SCALE_PHYSICS_DATA,
-	PLAYER_HEIGHT,
-	PLAYER_WIDTH
-} from '/imports/api/games/constants.js';
+import NullDeviceController from '/imports/api/games/client/deviceController/NullDeviceController.js';
+import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
+import {NORMAL_SCALE_PHYSICS_DATA, PLAYER_HEIGHT, PLAYER_WIDTH} from '/imports/api/games/constants.js';
 import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants';
+import DefaultSkin from '/imports/api/skins/skins/DefaultSkin.js';
 
 export default class Shape {
 
@@ -23,9 +22,10 @@ export default class Shape {
 		const gameConfiguration = new StaticGameConfiguration(gameId);
 		this.game = new Game(
 			gameId,
-			new PhaserEngine(gameConfiguration),
+			new PhaserEngine(gameConfiguration, new NullDeviceController()),
 			new GameData(gameId),
 			gameConfiguration,
+			new GameSkin(new DefaultSkin()),
 			new GameStreamBundler(null),
 			new ServerNormalizedTime()
 		);

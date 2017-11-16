@@ -1,0 +1,53 @@
+$skin-selection-color: darken($table-header-color, 15%);
+
+.skin-lists {
+	display: flex;
+	flex-wrap: wrap;
+
+	.skin-item {
+		width: 150px;
+		height: 100px;
+		background-color: lighten($background-color, 2%);
+		background-repeat: no-repeat;
+		cursor: pointer;
+		margin: 10px;
+		position: relative;
+
+		.skin-item-name {
+			font-size: 0.8em;
+			opacity: 0.75;
+			font-weight: bold;
+			white-space: nowrap;
+			transition: all .2s ease-in-out;
+			text-shadow: 0 0 2px #ffffff, 0 0 5px #ffffff, 0 0 10px #ffffff;
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			display: flex;
+			top: 0;
+			align-items: center;
+			justify-content: center;
+		}
+
+		&:hover {
+			box-shadow: 0 0 15px 2px rgba($skin-selection-color, .5);
+
+			.skin-item-name {
+				font-size: 1.2em;
+				opacity: 1;
+			}
+		}
+	}
+
+	.skin-item-default {
+		background-image: url("/assets/skin/default.png");
+	}
+
+	.skin-item-weather {
+		background-image: url("/assets/skin/weather.png");
+	}
+
+	.skin-item-selected {
+		box-shadow: 0 0 20px 2px $skin-selection-color, 0 0 2px 0 #333333 !important;
+	}
+}

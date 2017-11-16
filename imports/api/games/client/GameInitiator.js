@@ -3,7 +3,6 @@ import {Session} from 'meteor/session';
 import {moment} from 'meteor/momentjs:moment';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
 import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
 import GameStreamInitiator from '/imports/api/games/client/GameStreamInitiator.js';
 import Game from '/imports/api/games/client/Game.js';
@@ -16,22 +15,33 @@ export default class GameInitiator {
 	 * @param {Stream} stream
 	 * @param {GameData} gameData
 	 * @param {GameConfiguration} gameConfiguration
-	 * @param {DeviceController} deviceController
+	 * @param {GameSkin} gameSkin
+	 * @param {Engine} engine
 	 * @param {GameNotifier} gameNotifier
 	 * @param {ServerNormalizedTime} serverNormalizedTime
 	 */
-	constructor(gameId, stream, gameData, gameConfiguration, deviceController, gameNotifier, serverNormalizedTime) {
+	constructor(
+		gameId,
+		stream,
+		gameData,
+		gameConfiguration,
+		gameSkin,
+		engine,
+		gameNotifier,
+		serverNormalizedTime
+	) {
 		this.gameId = gameId;
 		this.stream = stream;
 		this.gameData = gameData;
 		this.gameConfiguration = gameConfiguration;
-		this.deviceController = deviceController;
+		this.gameSkin = gameSkin;
+		this.engine = engine;
 		this.gameNotifier = gameNotifier;
 		this.serverNormalizedTime = serverNormalizedTime;
 
 		this.currentGame = null;
 		this.timerUpdater = null;
-		this.engine = new PhaserEngine(this.gameConfiguration, this.deviceController);
+
 		this.gameStreamBundler = new GameStreamBundler(this.stream);
 		this.gameStreamInitiator = new GameStreamInitiator(this, this.stream);
 	}
@@ -144,6 +154,7 @@ export default class GameInitiator {
 			this.engine,
 			this.gameData,
 			this.gameConfiguration,
+			this.gameSkin,
 			this.gameStreamBundler,
 			this.serverNormalizedTime
 		);

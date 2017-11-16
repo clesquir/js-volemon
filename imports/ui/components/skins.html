@@ -1,0 +1,9 @@
+<template name="skins">
+	<div class="skin-lists">
+		{{#each skins}}
+			<div class="skin-item skin-item-{{_id}} {{#if skinIsSelected}}skin-item-selected{{/if}}" data-action="update-skin" data-skin="{{_id}}">
+				<div class="skin-item-name">{{name}}</div>
+			</div>
+		{{/each}}
+	</div>
+</template>
