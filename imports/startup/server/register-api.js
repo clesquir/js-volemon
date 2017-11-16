@@ -6,6 +6,7 @@ import '/imports/api/games/server/recentGamesMethods.js';
 import '/imports/api/profiles/server/methods.js';
 import '/imports/api/profiles/server/publications.js';
 import '/imports/api/ranks/server/publications.js';
+import '/imports/api/skins/server/publications.js';
 import '/imports/api/tournaments/server/publications.js';
 import '/imports/api/users/server/onCreateUserOverride.js';
 import '/imports/api/users/server/methods.js';

@@ -38,6 +38,15 @@ Template.home.events({
 		}
 	},
 
+	'click [data-action=view-user-skin]': function(e) {
+		const homeContents = document.getElementById('home-contents');
+
+		if (!$(homeContents).is('.user-skin-shown')) {
+			removeShownClasses(homeContents);
+			$(homeContents).addClass('user-skin-shown');
+		}
+	},
+
 	'click [data-action=view-user-achievements]': function(e) {
 		const homeContents = document.getElementById('home-contents');
 
@@ -61,6 +70,7 @@ Template.home.events({
 
 const removeShownClasses = function(homeContents) {
 	$(homeContents).removeClass('user-statistics-shown');
+	$(homeContents).removeClass('user-skin-shown');
 	$(homeContents).removeClass('user-achievements-shown');
 	$(homeContents).removeClass('user-recent-games-shown');
 };

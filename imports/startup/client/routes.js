@@ -40,6 +40,7 @@ import '/imports/ui/components/gamesList.js';
 import '/imports/ui/components/reactions.js';
 import '/imports/ui/components/recentGames.js';
 import '/imports/ui/components/shapeSelector.js';
+import '/imports/ui/components/skins.js';
 import '/imports/ui/components/statistics.js';
 import '/imports/ui/components/switchButton.js';
 import '/imports/ui/components/userProfileComponent.js';

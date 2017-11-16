@@ -5,7 +5,10 @@ import GameData from '/imports/api/games/client/data/GameData.js';
 import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
 import StaticGameConfiguration from '/imports/api/games/client/configuration/StaticGameConfiguration.js';
+import NullDeviceController from '/imports/api/games/client/deviceController/NullDeviceController.js';
+import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
 import {PLAYER_HEIGHT, PLAYER_INITIAL_LOCATION} from '/imports/api/games/constants.js';
+import DefaultSkin from '/imports/api/skins/skins/DefaultSkin.js';
 
 export default class Environment {
 	constructor() {
@@ -17,13 +20,14 @@ export default class Environment {
 		this.gameData = new GameData(gameId);
 		this.gameConfiguration = new StaticGameConfiguration(gameId);
 		this.gameStreamBundler = new GameStreamBundler(null);
-		this.gameEngine = new PhaserEngine(this.gameConfiguration);
+		this.gameEngine = new PhaserEngine(this.gameConfiguration, new NullDeviceController());
 		this.serverNormalizedTime = new ServerNormalizedTime();
 		this.game = new Game(
 			gameId,
 			this.gameEngine,
 			this.gameData,
 			this.gameConfiguration,
+			new GameSkin(new DefaultSkin()),
 			this.gameStreamBundler,
 			this.serverNormalizedTime
 		);

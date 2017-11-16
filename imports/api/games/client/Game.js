@@ -34,14 +34,24 @@ export default class Game {
 	 * @param {PhaserEngine} engine
 	 * @param {GameData} gameData
 	 * @param {GameConfiguration} gameConfiguration
+	 * @param {GameSkin} gameSkin
 	 * @param {GameStreamBundler} gameStreamBundler
 	 * @param {ServerNormalizedTime} serverNormalizedTime
 	 */
-	constructor(gameId, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime) {
+	constructor(
+		gameId,
+		engine,
+		gameData,
+		gameConfiguration,
+		gameSkin,
+		gameStreamBundler,
+		serverNormalizedTime
+	) {
 		this.gameId = gameId;
 		this.engine = engine;
 		this.gameData = gameData;
 		this.gameConfiguration = gameConfiguration;
+		this.gameSkin = gameSkin;
 		this.gameStreamBundler = gameStreamBundler;
 		this.serverNormalizedTime = serverNormalizedTime;
 		this.xSize = GAME_X_SIZE;
@@ -145,11 +155,13 @@ export default class Game {
 		this.engine.loadData(NORMAL_SCALE_PHYSICS_DATA, '/assets/physicsData.json');
 
 		this.gameBonus.preload();
+		this.gameSkin.preload(this.engine);
 	}
 
 	createGame() {
 		this.createComponents();
 		this.gameBonus.createComponents();
+		this.gameSkin.createBackgroundComponent(this.engine, this.xSize, this.ySize);
 
 		if (this.getCurrentPlayer()) {
 			this.engine.addKeyControllers();

@@ -2,19 +2,14 @@ import '/imports/lib/rollbar/client/Init.js';
 import './routes.js';
 import './connectionMonitor.js';
 import './register-api.js';
+import SkinStartup from '/imports/api/skins/client/Startup.js';
+import UserStartup from '/imports/api/users/client/Startup.js';
+import MobileAddressBarHider from '/imports/lib/MobileAddressBarHider.js';
 import WindowFocus from '/imports/lib/WindowFocus.js';
-import {onMobileAndTablet} from '/imports/lib/utils.js';
 
-WindowFocus.init();
-
-if (onMobileAndTablet()) {
-	const hideMobileAddressBar = function() {
-		setTimeout(function(){
-			//Hides the address bar!
-			window.scrollTo(0, 1);
-		}, 0);
-	};
-
-	window.addEventListener('load', hideMobileAddressBar);
-	window.addEventListener('orientationchange', hideMobileAddressBar);
-}
+Meteor.startup(() => {
+	SkinStartup.start();
+	UserStartup.start();
+	MobileAddressBarHider.start();
+	WindowFocus.start();
+});
