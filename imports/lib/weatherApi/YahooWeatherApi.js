@@ -29,10 +29,9 @@ export class YahooWeatherApi extends WeatherApi {
 	}
 
 	init() {
-		if (getUTCTimeStamp() - Session.get('lastWeatherRequest') < maximumAge) {
+		if (this.delayRequest()) {
 			return;
 		}
-		Session.set('lastWeatherRequest', getUTCTimeStamp());
 
 		const url = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22({latitude}%2C%20{longitude})%22)&format=json";
 		const coordinates = locationDetector.currentCoordinates();
@@ -83,15 +82,32 @@ export class YahooWeatherApi extends WeatherApi {
 
 	/**
 	 * @private
+	 * @returns {boolean}
+	 */
+	delayRequest() {
+		const lastWeatherRequest = Session.get('lastWeatherRequest') || 0;
+		if (getUTCTimeStamp() - lastWeatherRequest < maximumAge) {
+			return true;
+		}
+		//Delay next call if the locationDetector was not able to get current coordinates yet
+		Session.set('lastWeatherRequest', getUTCTimeStamp());
+
+		return false;
+	}
+
+	/**
+	 * @private
 	 * @param data
 	 */
 	onApiResponse(data) {
-		this.conditionCode = parseInt(data.query.results.channel.item.condition.code);
-		this.timeOfSunrise = data.query.results.channel.astronomy.sunrise;
-		this.timeOfSunset = data.query.results.channel.astronomy.sunset;
+		if (data.query.results) {
+			this.conditionCode = parseInt(data.query.results.channel.item.condition.code);
+			this.timeOfSunrise = data.query.results.channel.astronomy.sunrise;
+			this.timeOfSunset = data.query.results.channel.astronomy.sunset;
 
-		Session.set('lastWeatherResult.conditionCode', this.conditionCode);
-		Session.set('lastWeatherResult.timeOfSunrise', this.timeOfSunrise);
-		Session.set('lastWeatherResult.timeOfSunset', this.timeOfSunset);
+			Session.set('lastWeatherResult.conditionCode', this.conditionCode);
+			Session.set('lastWeatherResult.timeOfSunrise', this.timeOfSunrise);
+			Session.set('lastWeatherResult.timeOfSunset', this.timeOfSunset);
+		}
 	}
 }

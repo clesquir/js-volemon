@@ -2,18 +2,27 @@ import {Meteor} from 'meteor/meteor';
 
 class LocationDetector {
 	constructor() {
-		this.coordinates = Meteor.settings.public.DEFAULT_COORDINATES || {latitude: null, longitude: null};
+		this.coordinates = null;
 	}
 
 	init() {
 		this.requestLocation();
 	}
 
+	hasCurrentCoordinates() {
+		return this.coordinates !== null;
+	}
+
 	/**
 	 * @returns {{latitude: {string}, longitude: {string}}}
 	 */
 	currentCoordinates() {
-		return this.coordinates;
+		if (this.hasCurrentCoordinates()) {
+			return this.coordinates;
+		} else {
+			//Fallback
+			return Meteor.settings.public.DEFAULT_COORDINATES || {latitude: 0, longitude: 0};
+		}
 	}
 
 	/**
@@ -23,10 +32,10 @@ class LocationDetector {
 		navigator.geolocation.getCurrentPosition(
 			(position) => {
 				this.onRequestSuccess(position);
-				},
+			},
 			() => {
 				this.onRequestError();
-				},
+			},
 			{
 				maximumAge: 5 * 60 * 1000
 			}
@@ -38,8 +47,10 @@ class LocationDetector {
 	 * @param position
 	 */
 	onRequestSuccess(position) {
-		this.coordinates.latitude  = position.coords.latitude;
-		this.coordinates.longitude = position.coords.longitude;
+		this.coordinates = {
+			latitude: position.coords.latitude,
+			longitude: position.coords.longitude
+		};
 	}
 
 	/**
