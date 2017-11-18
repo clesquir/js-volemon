@@ -2,7 +2,7 @@ import {Session} from 'meteor/session';
 import {moment} from 'meteor/momentjs:moment';
 import {locationDetector} from '/imports/lib/geoLocation/LocationDetector.js';
 import {
-	CONDITION_CLEAR, CONDITION_CLOUD, CONDITION_FOG, CONDITION_RAIN, CONDITION_SNOW, CONDITION_WIND,
+	CONDITION_CLEAR, CONDITION_CLOUD, CONDITION_FOG, CONDITION_RAIN, CONDITION_THUNDER, CONDITION_SNOW, CONDITION_WIND,
 	TIME_OF_DAY_DAYLIGHT, TIME_OF_DAY_NIGHT, TIME_OF_DAY_TWILIGHT,
 	WeatherApi
 } from '/imports/lib/weatherApi/WeatherApi.js';
@@ -43,7 +43,8 @@ export class YahooWeatherApi extends WeatherApi {
 	}
 
 	condition() {
-		const rainRange = [0, 1, 2, 3, 4, 5, 10, 11, 12, 37, 38, 39, 40, 45, 46, 47];
+		const rainRange = [0, 1, 2, 5, 10, 11, 12, 40, 46];
+		const thunder = [3, 4, 37, 38, 39, 45, 47];
 		const snowRange = [6, 7, 8, 9, 13, 14, 15, 16, 17, 18, 35, 41, 42, 43];
 		const fogRange = [19, 20, 21, 22, 44];
 		const windRange = [23, 24];
@@ -51,6 +52,8 @@ export class YahooWeatherApi extends WeatherApi {
 
 		if (rainRange.indexOf(this.conditionCode) !== -1) {
 			return CONDITION_RAIN;
+		} else if (thunder.indexOf(this.conditionCode) !== -1) {
+			return CONDITION_THUNDER;
 		} else if (snowRange.indexOf(this.conditionCode) !== -1) {
 			return CONDITION_SNOW;
 		} else if (fogRange.indexOf(this.conditionCode) !== -1) {

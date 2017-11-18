@@ -2,7 +2,7 @@ import Skin from '/imports/api/skins/skins/Skin.js';
 import {locationDetector} from '/imports/lib/geoLocation/LocationDetector.js';
 import {YahooWeatherApi} from '/imports/lib/weatherApi/YahooWeatherApi.js';
 import {
-	CONDITION_CLOUD, CONDITION_FOG, CONDITION_RAIN, CONDITION_SNOW,
+	CONDITION_CLOUD, CONDITION_FOG, CONDITION_RAIN, CONDITION_THUNDER, CONDITION_SNOW,
 	TIME_OF_DAY_NIGHT, TIME_OF_DAY_TWILIGHT
 } from '/imports/lib/weatherApi/WeatherApi.js';
 
@@ -44,6 +44,12 @@ export default class WeatherSkin extends Skin {
 				path: `/assets/skin/weather-condition/${CONDITION_SNOW}.png`,
 				width: 180,
 				height: 560
+			},
+			{
+				key: keyPrefix + CONDITION_THUNDER,
+				path: `/assets/skin/weather-condition/${CONDITION_THUNDER}.png`,
+				width: 840,
+				height: 560
 			}
 		];
 	}
@@ -83,6 +89,11 @@ export default class WeatherSkin extends Skin {
 			case CONDITION_RAIN:
 				keys.push({key: keyPrefix + CONDITION_CLOUD});
 				keys.push({key: keyPrefix + CONDITION_RAIN, animate: true});
+				break;
+			case CONDITION_THUNDER:
+				keys.push({key: keyPrefix + CONDITION_CLOUD});
+				keys.push({key: keyPrefix + CONDITION_RAIN, animate: true});
+				keys.push({key: keyPrefix + CONDITION_THUNDER, animate: true});
 				break;
 		}
 

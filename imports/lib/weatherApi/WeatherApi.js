@@ -1,4 +1,5 @@
 export const CONDITION_RAIN = 'rain';
+export const CONDITION_THUNDER = 'thunder';
 export const CONDITION_SNOW = 'snow';
 export const CONDITION_FOG = 'fog';
 export const CONDITION_WIND = 'wind';
