@@ -13,6 +13,12 @@ $skin-selection-color: darken($table-header-color, 15%);
 		margin: 10px;
 		position: relative;
 
+		@include horizontal-breakpoint(mobileportrait) {
+			width: 115px;
+			height: 76px;
+			background-size: 115px 76px;
+		}
+
 		.skin-item-name {
 			font-size: 0.8em;
 			opacity: 0.75;

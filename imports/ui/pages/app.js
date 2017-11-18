@@ -113,6 +113,10 @@ Template.app.events({
 		Session.set('lightbox', 'passwordChange');
 	},
 
+	'click [data-action=user-skin-change]': function(e) {
+		Session.set('lightbox', 'skins');
+	},
+
 	'click [data-action=user-logout]': function() {
 		Meteor.logout(function() {});
 	},

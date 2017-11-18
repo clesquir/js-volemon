@@ -35,5 +35,11 @@ Template.skins.events({
 				skin.start();
 			}
 		});
+	},
+
+	'click [data-action="close-skin"]': function(e) {
+		e.preventDefault();
+
+		Session.set('lightbox', null);
 	}
 });

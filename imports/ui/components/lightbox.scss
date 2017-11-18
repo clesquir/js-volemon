@@ -24,7 +24,7 @@
 	min-width: 275px;
 	max-width: 350px;
 
-	@include horizontal-breakpoint(mobile) {
+	@include horizontal-breakpoint(mobileportrait) {
 		max-width: 275px;
 	}
 }

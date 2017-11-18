@@ -17,6 +17,7 @@ import '/imports/ui/pages/home.js';
 import '/imports/ui/pages/login.js';
 import '/imports/ui/pages/passwordChange.js';
 import '/imports/ui/pages/rank.js';
+import '/imports/ui/pages/skins.js';
 import '/imports/ui/pages/tournaments.js';
 import '/imports/ui/pages/tournament.js';
 import '/imports/ui/pages/tournamentGame.js';
@@ -40,7 +41,6 @@ import '/imports/ui/components/gamesList.js';
 import '/imports/ui/components/reactions.js';
 import '/imports/ui/components/recentGames.js';
 import '/imports/ui/components/shapeSelector.js';
-import '/imports/ui/components/skins.js';
 import '/imports/ui/components/statistics.js';
 import '/imports/ui/components/switchButton.js';
 import '/imports/ui/components/userProfileComponent.js';
@@ -52,7 +52,8 @@ Router.configure({
 		return [
 			Meteor.subscribe('userConfiguration', Meteor.userId()),
 			Meteor.subscribe('achievements'),
-			Meteor.subscribe('userAchievements', Meteor.userId())
+			Meteor.subscribe('userAchievements', Meteor.userId()),
+			Meteor.subscribe('skins')
 		];
 	}
 });

@@ -1,5 +1,5 @@
-import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
+import {Achievements} from '/imports/api/achievements/achievements.js';
 import {formatAchievementNumber} from '/imports/api/achievements/utils.js';
 
 import './achievements.html';
@@ -34,6 +34,10 @@ const achievementLevelReached = function(achievement, userAchievements, level) {
 };
 
 Template.achievements.helpers({
+	achievements: function() {
+		return Achievements.find({}, {sort: [['displayOrder', 'asc']]});
+	},
+
 	achievementLevel: function(userAchievements, level) {
 		if (this.isSecret && !achievementLevelReached(this, userAchievements, level)) {
 			return '?';
