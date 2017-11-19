@@ -22,12 +22,20 @@ module.exports = {
 			]
 		},
 		env: {
-			PORT: 80,
 			ROOT_URL: "http://volemon.cloudalto.net",
 			MONGO_URL: 'mongodb://localhost/meteor'
 		},
-		deployCheckWaitTime: 120
+		deployCheckWaitTime: 240,
+		enableUploadProgressBar: true
 	},
+
+	// proxy: {
+	// 	domains: 'volemon.cloudalto.net',
+		// ssl: {
+		// 	forceSSL: true,
+		// 	letsEncryptEmail: 'clesquir@gmail.com'
+		// }
+	// },
 
 	mongo: {
 		oplog: true,

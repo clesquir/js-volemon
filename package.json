@@ -37,7 +37,9 @@
     "test": "meteor test --driver-package=practicalmeteor:mocha --port 4000",
     "tests": "meteor test --driver-package=practicalmeteor:mocha --port 4000",
     "sshkey": "eval \"$(ssh-agent -s)\" && ssh-add ~/.ssh/id_rsa",
-    "setup": "mup setup",
+    "reconfig": "mup reconfig --settings=settings-prod.json",
+    "setup": "mup setup --settings=settings-prod.json",
+    "proxy-reconfig": "mup proxy reconfig-shared --settings=settings-prod.json",
     "deploy": "mup deploy --settings=settings-prod.json"
   },
   "repository": {
