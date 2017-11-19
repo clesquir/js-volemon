@@ -140,6 +140,8 @@ export default class Game {
 	}
 
 	preloadGame() {
+		this.gameSkin.preload(this.engine);
+
 		this.engine.preloadGame();
 
 		for (let shape of PLAYER_LIST_OF_SHAPES) {
@@ -155,7 +157,6 @@ export default class Game {
 		this.engine.loadData(NORMAL_SCALE_PHYSICS_DATA, '/assets/shape/physicsData.json');
 
 		this.gameBonus.preload();
-		this.gameSkin.preload(this.engine);
 	}
 
 	createGame() {

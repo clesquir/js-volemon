@@ -22,36 +22,76 @@ export default class WeatherSkin extends Skin {
 	 * @returns {{key: {string}, path: {string}}[]}
 	 */
 	imagesToLoad() {
-		return [
-			{key: keyPrefix + CONDITION_CLOUD, path: `/assets/skin/weather-condition/${CONDITION_CLOUD}.png`},
-			{key: keyPrefix + CONDITION_FOG, path: `/assets/skin/weather-condition/${CONDITION_FOG}.png`}
-		];
+		const condition = this.weatherApi.condition();
+		const images = [];
+		const cloudImage = {key: keyPrefix + CONDITION_CLOUD, path: `/assets/skin/weather-condition/cloud.png`};
+		const rainGroundImage = {key: 'ground', path: `/assets/skin/weather-condition/rain-ground.png`};
+
+		switch (condition) {
+			case CONDITION_FOG:
+				images.push({key: keyPrefix + CONDITION_FOG, path: `/assets/skin/weather-condition/fog.png`});
+				break;
+			case CONDITION_CLOUD:
+				images.push(cloudImage);
+				break;
+			case CONDITION_SNOW:
+				images.push(cloudImage);
+				images.push({key: 'ground', path: `/assets/skin/weather-condition/snow-ground.png`});
+				break;
+			case CONDITION_RAIN:
+				images.push(cloudImage);
+				images.push(rainGroundImage);
+				break;
+			case CONDITION_THUNDER:
+				images.push(cloudImage);
+				images.push(rainGroundImage);
+				break;
+		}
+
+		return images;
 	}
 
 	/**
 	 * @returns {{key: {string}, path: {string}, width: {integer}, height: {integer}}[]}
 	 */
 	spriteSheetsToLoad() {
-		return [
-			{
-				key: keyPrefix + CONDITION_RAIN,
-				path: `/assets/skin/weather-condition/${CONDITION_RAIN}.png`,
-				width: 180,
-				height: 560
-			},
-			{
-				key: keyPrefix + CONDITION_SNOW,
-				path: `/assets/skin/weather-condition/${CONDITION_SNOW}.png`,
-				width: 180,
-				height: 560
-			},
-			{
-				key: keyPrefix + CONDITION_THUNDER,
-				path: `/assets/skin/weather-condition/${CONDITION_THUNDER}.png`,
-				width: 840,
-				height: 560
-			}
-		];
+		const condition = this.weatherApi.condition();
+		const spriteSheets = [];
+		const rainSpriteSheet = {
+			key: keyPrefix + CONDITION_RAIN,
+			path: `/assets/skin/weather-condition/rain.png`,
+			width: 180,
+			height: 560
+		};
+
+		switch (condition) {
+			case CONDITION_SNOW:
+				spriteSheets.push(
+					{
+						key: keyPrefix + CONDITION_SNOW,
+						path: `/assets/skin/weather-condition/snow.png`,
+						width: 180,
+						height: 560
+					}
+				);
+				break;
+			case CONDITION_RAIN:
+				spriteSheets.push(rainSpriteSheet);
+				break;
+			case CONDITION_THUNDER:
+				spriteSheets.push(rainSpriteSheet);
+				spriteSheets.push(
+					{
+						key: keyPrefix + CONDITION_THUNDER,
+						path: `/assets/skin/weather-condition/thunder.png`,
+						width: 840,
+						height: 560
+					}
+				);
+				break;
+		}
+
+		return spriteSheets;
 	}
 
 	/**
