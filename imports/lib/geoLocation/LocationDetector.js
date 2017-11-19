@@ -20,7 +20,18 @@ class LocationDetector {
 		if (this.hasCurrentCoordinates()) {
 			return this.coordinates;
 		} else {
-			//Fallback
+			//Fallback with previous request before reload
+			if (
+				localStorage.getItem('locationDetector.latitude') !== null &&
+				localStorage.getItem('locationDetector.longitude') !== null
+			) {
+				return {
+					latitude: localStorage.getItem('locationDetector.latitude'),
+					longitude: localStorage.getItem('locationDetector.longitude')
+				};
+			}
+
+			//Fallback with server settings
 			return Meteor.settings.public.DEFAULT_COORDINATES || {latitude: 0, longitude: 0};
 		}
 	}
@@ -51,6 +62,10 @@ class LocationDetector {
 			latitude: position.coords.latitude,
 			longitude: position.coords.longitude
 		};
+
+		//Save last response for early usage on next reload
+		localStorage.setItem('locationDetector.latitude', this.coordinates.latitude);
+		localStorage.setItem('locationDetector.longitude', this.coordinates.longitude);
 	}
 
 	/**
