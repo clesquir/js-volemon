@@ -17,48 +17,48 @@ Meteor.startup(function() {
 			_id: Random.id(5),
 			identifier: 'tournament_2017-10-23',
 			mode: TOURNAMENT_MODE_CLASSIC,
-			startDate: "2017-10-23 -4",
-			endDate: "2017-10-28 -4",
+			startDate: "2017-10-23 -04:00",
+			endDate: "2017-10-28 -04:00",
 			isPublished: false
 		},
 		{
 			_id: Random.id(5),
 			identifier: 'tournament_2017-10-30',
 			mode: TOURNAMENT_MODE_HARDCORE,
-			startDate: "2017-10-30 -4",
-			endDate: "2017-11-04 -4",
+			startDate: "2017-10-30 -04:00",
+			endDate: "2017-11-04 -04:00",
 			isPublished: false
 		},
 		{
 			_id: Random.id(5),
 			identifier: 'tournament_2017-11-06_moon',
 			mode: TOURNAMENT_MODE_MOON_GRAVITY,
-			startDate: "2017-11-06 -4",
-			endDate: "2017-11-11 -4",
+			startDate: "2017-11-06 -04:00",
+			endDate: "2017-11-11 -04:00",
 			isPublished: false
 		},
 		{
 			_id: Random.id(5),
 			identifier: 'tournament_2017-11-06_jupiter',
 			mode: TOURNAMENT_MODE_JUPITER_GRAVITY,
-			startDate: "2017-11-06 -4",
-			endDate: "2017-11-11 -4",
+			startDate: "2017-11-06 -04:00",
+			endDate: "2017-11-11 -04:00",
 			isPublished: false
 		},
 		{
 			_id: Random.id(5),
 			identifier: 'tournament_2017-11-13',
 			mode: TOURNAMENT_MODE_SMOKE_BOMB,
-			startDate: "2017-11-13 -4",
-			endDate: "2017-11-18 -4",
+			startDate: "2017-11-13 -04:00",
+			endDate: "2017-11-18 -04:00",
 			isPublished: false
 		},
 		{
 			_id: Random.id(5),
 			identifier: 'tournament_2017-11-20',
 			mode: TOURNAMENT_MODE_RANDOM_BONUSES,
-			startDate: "2017-11-20 -4",
-			endDate: "2017-11-25 -4",
+			startDate: "2017-11-20 -04:00",
+			endDate: "2017-11-25 -04:00",
 			isPublished: false
 		}
 	];

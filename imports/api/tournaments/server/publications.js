@@ -11,8 +11,8 @@ import {TournamentEloScores} from '/imports/api/tournaments/tournamentEloScores.
 Meteor.publish('activeTournaments', function() {
 	Tournaments.find().forEach((tournament) => {
 		if (
-			Moment.moment(tournament.startDate, "YYYY-MM-DD Z").diff(new Date()) <= 0 &&
-			Moment.moment(tournament.endDate, "YYYY-MM-DD Z").diff(new Date()) >= 0
+			Moment.moment(tournament.startDate, "YYYY-MM-DD ZZ").diff(new Date()) <= 0 &&
+			Moment.moment(tournament.endDate, "YYYY-MM-DD ZZ").diff(new Date()) >= 0
 		) {
 			this.added('activeTournaments', tournament._id, tournament);
 		}
@@ -23,7 +23,7 @@ Meteor.publish('activeTournaments', function() {
 
 Meteor.publish('futureTournaments', function() {
 	Tournaments.find().forEach((tournament) => {
-		if (Moment.moment(tournament.startDate, "YYYY-MM-DD Z").diff(new Date()) > 0) {
+		if (Moment.moment(tournament.startDate, "YYYY-MM-DD ZZ").diff(new Date()) > 0) {
 			this.added('futureTournaments', tournament._id, tournament);
 		}
 	});
@@ -33,7 +33,7 @@ Meteor.publish('futureTournaments', function() {
 
 Meteor.publish('pastTournaments', function() {
 	Tournaments.find().forEach((tournament) => {
-		if (Moment.moment(tournament.endDate, "YYYY-MM-DD Z").diff(new Date()) < 0) {
+		if (Moment.moment(tournament.endDate, "YYYY-MM-DD ZZ").diff(new Date()) < 0) {
 			this.added('pastTournaments', tournament._id, tournament);
 		}
 	});

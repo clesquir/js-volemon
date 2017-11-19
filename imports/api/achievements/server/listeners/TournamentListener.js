@@ -20,6 +20,6 @@ export default class TournamentListener extends Listener {
 	tournamentFinished() {
 		const tournament = Tournaments.findOne({_id: this.tournamentId});
 
-		return (tournament && Moment.moment(tournament.endDate, "YYYY-MM-DD Z").diff(new Date()) < 0);
+		return (tournament && Moment.moment(tournament.endDate, "YYYY-MM-DD ZZ").diff(new Date()) < 0);
 	}
 }

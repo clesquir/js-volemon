@@ -51,19 +51,19 @@ Template.tournaments.helpers({
 
 	timeLeft: function() {
 		Template.instance().uptime.get();
-		const date = Moment.moment(this.endDate, "YYYY-MM-DD Z");
+		const date = Moment.moment(this.endDate, "YYYY-MM-DD ZZ");
 		return timeDifference(date.valueOf(), 'Ends in ');
 	},
 
 	timeBefore: function() {
 		Template.instance().uptime.get();
-		const date = Moment.moment(this.startDate, "YYYY-MM-DD Z");
+		const date = Moment.moment(this.startDate, "YYYY-MM-DD ZZ");
 		return timeDifference(date.valueOf(), 'Starts in ');
 	},
 
 	timeFinished: function() {
 		Template.instance().uptime.get();
-		const date = Moment.moment(this.endDate, "YYYY-MM-DD Z");
+		const date = Moment.moment(this.endDate, "YYYY-MM-DD ZZ");
 		return 'Ended: ' + timeElapsedSince(date.valueOf());
 	}
 });

@@ -24,7 +24,7 @@ export default class TournamentFinish {
 		const tournaments = Tournaments.find({isPublished: false});
 
 		tournaments.forEach((tournament) => {
-			if (Moment.moment(tournament.endDate, "YYYY-MM-DD Z").diff(new Date()) < 0) {
+			if (Moment.moment(tournament.endDate, "YYYY-MM-DD ZZ").diff(new Date()) < 0) {
 				this.onFinish(tournament._id);
 			}
 		});

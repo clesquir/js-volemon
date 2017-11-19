@@ -41,7 +41,7 @@ export const isTournamentActive = function(tournament) {
 	const now = Moment.moment.duration(getUTCTimeStamp()).valueOf();
 
 	return (
-		now >= Moment.moment(tournament.startDate, "YYYY-MM-DD Z").valueOf() &&
-		now <= Moment.moment(tournament.endDate, "YYYY-MM-DD Z").valueOf()
+		now >= Moment.moment(tournament.startDate, "YYYY-MM-DD ZZ").valueOf() &&
+		now <= Moment.moment(tournament.endDate, "YYYY-MM-DD ZZ").valueOf()
 	);
 };
