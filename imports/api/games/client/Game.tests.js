@@ -7,7 +7,7 @@ import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
 import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
 import {BALL_VERTICAL_SPEED_ON_PLAYER_HIT} from '/imports/api/games/constants.js';
-import StaticGameConfiguration from '/imports/api/games/client/configuration/StaticGameConfiguration.js';
+import StaticGameConfiguration from '/imports/api/games/configuration/StaticGameConfiguration.js';
 import NullDeviceController from '/imports/api/games/client/deviceController/NullDeviceController.js';
 import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
 import DefaultSkin from '/imports/api/skins/skins/DefaultSkin.js';

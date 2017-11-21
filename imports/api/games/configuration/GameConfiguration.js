@@ -1,4 +1,6 @@
 import {
+	GAME_FORFEIT_MINIMUM_POINTS,
+	GAME_MAXIMUM_POINTS,
 	BONUS_RADIUS,
 	WORLD_GRAVITY
 } from '/imports/api/games/constants.js';
@@ -24,6 +26,22 @@ export default class GameConfiguration {
 
 	hasTournament() {
 		return !!this.tournamentId;
+	}
+
+	forfeitMinimumPoints() {
+		if (this.hasTournament() && this.tournamentMode.overridesForfeitMinimumPoints()) {
+			return this.tournamentMode.forfeitMinimumPoints();
+		}
+
+		return GAME_FORFEIT_MINIMUM_POINTS;
+	}
+
+	maximumPoints() {
+		if (this.hasTournament() && this.tournamentMode.overridesMaximumPoints()) {
+			return this.tournamentMode.maximumPoints();
+		}
+
+		return GAME_MAXIMUM_POINTS;
 	}
 
 	bonusRadius() {

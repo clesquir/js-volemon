@@ -15,8 +15,7 @@ import {
 	HOST_POINTS_COLUMN,
 	CLIENT_POINTS_COLUMN,
 	HOST_SIDE,
-	CLIENT_SIDE,
-	GAME_MAXIMUM_POINTS
+	CLIENT_SIDE
 } from '/imports/api/games/constants.js';
 import {
 	PLAYER_LIST_OF_SHAPES,
@@ -373,7 +372,7 @@ Meteor.methods({
 		data['pointsDuration'] = [].concat(game.pointsDuration).concat([pointDuration]);
 
 		let isGameFinished = false;
-		if (data[columnName] >= GAME_MAXIMUM_POINTS) {
+		if (data[columnName] >= game.maximumPoints) {
 			data['status'] = GAME_STATUS_FINISHED;
 			isGameFinished = true;
 		}

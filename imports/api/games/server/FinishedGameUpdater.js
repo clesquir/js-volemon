@@ -1,7 +1,6 @@
 import GameFinished from '/imports/api/games/events/GameFinished.js';
 import PlayerLost from '/imports/api/games/events/PlayerLost.js';
 import PlayerWon from '/imports/api/games/events/PlayerWon.js';
-import {GAME_MAXIMUM_POINTS} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
 import EloRatingCalculator from '/imports/lib/EloRatingCalculator.js';
 import {EventPublisher} from '/imports/lib/EventPublisher.js';
@@ -28,7 +27,7 @@ export default class FinishedGameUpdater {
 		winnerProfileData['numberOfWin'] = winnerProfile.numberOfWin + 1;
 		loserProfileData['numberOfLost'] = loserProfile.numberOfLost + 1;
 
-		if (points.winnerPoints === GAME_MAXIMUM_POINTS && points.loserPoints === 0) {
+		if (points.winnerPoints === game.maximumPoints && points.loserPoints === 0) {
 			winnerProfileData['numberOfShutouts'] = winnerProfile.numberOfShutouts + 1;
 			loserProfileData['numberOfShutoutLosses'] = loserProfile.numberOfShutoutLosses + 1;
 		}

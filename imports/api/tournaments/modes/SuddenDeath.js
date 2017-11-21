@@ -1,6 +1,6 @@
 import Classic from './Classic';
 
-const POINTS_TO_WIN = 1;
+const MAXIMUM_POINTS = 1;
 
 export default class SuddenDeath extends Classic {
 	overridesForfeitMinimumPoints() {
@@ -8,7 +8,7 @@ export default class SuddenDeath extends Classic {
 	}
 
 	forfeitMinimumPoints() {
-		return POINTS_TO_WIN;
+		return 0;
 	}
 
 	overridesMaximumPoints() {
@@ -16,6 +16,6 @@ export default class SuddenDeath extends Classic {
 	}
 
 	maximumPoints() {
-		return POINTS_TO_WIN;
+		return MAXIMUM_POINTS;
 	}
 }

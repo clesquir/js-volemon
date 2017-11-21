@@ -11,7 +11,7 @@ import GameFinished from '/imports/api/games/events/GameFinished.js';
 import {EloScores} from '/imports/api/games/eloscores.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import {GAME_MAXIMUM_POINTS, HOST_POINTS_COLUMN} from '/imports/api/games/constants.js';
+import {HOST_POINTS_COLUMN} from '/imports/api/games/constants.js';
 import {
 	GAME_STATUS_REGISTRATION,
 	GAME_STATUS_STARTED,
@@ -295,7 +295,9 @@ describe('GameMethods#quitGame', function() {
 			clientId: userId2,
 			status: GAME_STATUS_STARTED,
 			hostPoints: 3,
-			clientPoints: 0
+			clientPoints: 0,
+			forfeitMinimumPoints: 3,
+			maximumPoints: 5
 		});
 		Players.insert({_id: playerId1, userId: userId1, gameId: gameId});
 		Players.insert({_id: playerId2, userId: userId2, gameId: gameId});
@@ -329,7 +331,9 @@ describe('GameMethods#quitGame', function() {
 			clientId: userId2,
 			status: GAME_STATUS_STARTED,
 			hostPoints: 0,
-			clientPoints: 3
+			clientPoints: 3,
+			forfeitMinimumPoints: 3,
+			maximumPoints: 5
 		});
 		Players.insert({_id: playerId1, userId: userId1, gameId: gameId});
 		Players.insert({_id: playerId2, userId: userId2, gameId: gameId});
@@ -363,7 +367,9 @@ describe('GameMethods#quitGame', function() {
 			clientId: userId2,
 			status: GAME_STATUS_STARTED,
 			hostPoints: 3,
-			clientPoints: 0
+			clientPoints: 0,
+			forfeitMinimumPoints: 3,
+			maximumPoints: 5
 		});
 		Players.insert({_id: playerId1, userId: userId1, gameId: gameId});
 		Players.insert({_id: playerId2, userId: userId2, gameId: gameId});
@@ -397,7 +403,9 @@ describe('GameMethods#quitGame', function() {
 			clientId: userId2,
 			status: GAME_STATUS_STARTED,
 			hostPoints: 0,
-			clientPoints: 3
+			clientPoints: 3,
+			forfeitMinimumPoints: 3,
+			maximumPoints: 5
 		});
 		Players.insert({_id: playerId1, userId: userId1, gameId: gameId});
 		Players.insert({_id: playerId2, userId: userId2, gameId: gameId});
@@ -430,8 +438,10 @@ describe('GameMethods#quitGame', function() {
 			hostId: userId1,
 			clientId: userId2,
 			status: GAME_STATUS_STARTED,
-			hostPoints: GAME_MAXIMUM_POINTS - 1,
-			clientPoints: 0
+			hostPoints: 4,
+			clientPoints: 0,
+			forfeitMinimumPoints: 3,
+			maximumPoints: 5
 		});
 		Players.insert({_id: playerId1, userId: userId1, gameId: gameId});
 		Players.insert({_id: playerId2, userId: userId2, gameId: gameId});
@@ -472,8 +482,10 @@ describe('GameMethods#quitGame', function() {
 			hostId: userId1,
 			clientId: userId2,
 			status: GAME_STATUS_STARTED,
-			hostPoints: GAME_MAXIMUM_POINTS - 1,
-			clientPoints: 0
+			hostPoints: 4,
+			clientPoints: 0,
+			forfeitMinimumPoints: 3,
+			maximumPoints: 5
 		});
 		Players.insert({_id: playerId1, userId: userId1, gameId: gameId});
 		Players.insert({_id: playerId2, userId: userId2, gameId: gameId});
@@ -514,8 +526,10 @@ describe('GameMethods#quitGame', function() {
 			hostId: userId1,
 			clientId: userId2,
 			status: GAME_STATUS_STARTED,
-			hostPoints: GAME_MAXIMUM_POINTS - 1,
-			clientPoints: 0
+			hostPoints: 4,
+			clientPoints: 0,
+			forfeitMinimumPoints: 3,
+			maximumPoints: 5
 		});
 		Players.insert({_id: playerId1, userId: userId1, gameId: gameId});
 		Players.insert({_id: playerId2, userId: userId2, gameId: gameId});
@@ -655,8 +669,10 @@ describe('GameMethods#addGamePoints', function() {
 			hostId: userId1,
 			clientId: userId2,
 			status: GAME_STATUS_STARTED,
-			hostPoints: GAME_MAXIMUM_POINTS - 1,
-			clientPoints: 0
+			hostPoints: 4,
+			clientPoints: 0,
+			forfeitMinimumPoints: 3,
+			maximumPoints: 5
 		});
 		Players.insert({_id: playerId1, userId: userId1, gameId: gameId});
 		Players.insert({_id: playerId2, userId: userId2, gameId: gameId});
@@ -690,8 +706,10 @@ describe('GameMethods#addGamePoints', function() {
 			hostId: userId1,
 			clientId: userId2,
 			status: GAME_STATUS_STARTED,
-			hostPoints: GAME_MAXIMUM_POINTS - 1,
-			clientPoints: 0
+			hostPoints: 4,
+			clientPoints: 0,
+			forfeitMinimumPoints: 3,
+			maximumPoints: 5
 		});
 		Players.insert({_id: playerId1, userId: userId1, gameId: gameId});
 		Players.insert({_id: playerId2, userId: userId2, gameId: gameId});
@@ -731,8 +749,10 @@ describe('GameMethods#addGamePoints', function() {
 			hostId: userId1,
 			clientId: userId2,
 			status: GAME_STATUS_STARTED,
-			hostPoints: GAME_MAXIMUM_POINTS - 1,
-			clientPoints: 0
+			hostPoints: 4,
+			clientPoints: 0,
+			forfeitMinimumPoints: 3,
+			maximumPoints: 5
 		});
 		Players.insert({_id: playerId1, userId: userId1, gameId: gameId});
 		Players.insert({_id: playerId2, userId: userId2, gameId: gameId});

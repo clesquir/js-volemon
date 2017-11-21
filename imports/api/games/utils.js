@@ -1,7 +1,6 @@
 import {Meteor} from 'meteor/meteor';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import {GAME_FORFEIT_MINIMUM_POINTS, GAME_MAXIMUM_POINTS} from '/imports/api/games/constants.js';
 import {
 	GAME_STATUS_STARTED,
 	GAME_STATUS_FORFEITED,
@@ -56,20 +55,20 @@ export const hasGameAborted = function(gameStatus) {
 export const isForfeiting = function(game) {
 	return (
 		game.status === GAME_STATUS_STARTED &&
-		game.hostPoints + game.clientPoints >= GAME_FORFEIT_MINIMUM_POINTS
+		game.hostPoints + game.clientPoints >= game.forfeitMinimumPoints
 	);
 };
 
-export const isMatchPoint = function(hostPoints, clientPoints) {
-	let matchPoint = GAME_MAXIMUM_POINTS - 1;
+export const isMatchPoint = function(hostPoints, clientPoints, maximumPoints) {
+	let matchPoint = maximumPoints - 1;
 
-	return (hostPoints === matchPoint || clientPoints === matchPoint);
+	return maximumPoints > 1 && (hostPoints === matchPoint || clientPoints === matchPoint);
 };
 
-export const isDeucePoint = function(hostPoints, clientPoints) {
-	let matchPoint = GAME_MAXIMUM_POINTS - 1;
+export const isDeucePoint = function(hostPoints, clientPoints, maximumPoints) {
+	let matchPoint = maximumPoints - 1;
 
-	return (hostPoints === matchPoint && clientPoints === matchPoint);
+	return maximumPoints > 1 && (hostPoints === matchPoint && clientPoints === matchPoint);
 };
 
 export const forfeitPlayerName = function(game) {
