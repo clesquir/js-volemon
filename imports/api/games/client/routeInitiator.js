@@ -8,7 +8,7 @@ import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime
 import ClientStreamFactory from '/imports/lib/stream/client/ClientStreamFactory.js';
 import StreamConfiguration from '/imports/lib/stream/StreamConfiguration.js';
 import {updateConnectionIndicator, destroyConnectionIndicator} from '/imports/api/games/client/connectionIndicator.js';
-import DefaultGameConfiguration from '/imports/api/games/client/configuration/DefaultGameConfiguration.js';
+import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGameConfiguration.js';
 import MobileController from '/imports/api/games/client/deviceController/MobileController.js';
 import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
 import GameNotifier from '/imports/api/games/client/GameNotifier.js';

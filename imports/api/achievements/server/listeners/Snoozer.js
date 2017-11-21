@@ -2,7 +2,6 @@ import GameListener from './GameListener.js';
 import {ACHIEVEMENT_SNOOZER} from '/imports/api/achievements/constants.js';
 import PlayerWon from '/imports/api/games/events/PlayerWon.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
-import {GAME_MAXIMUM_POINTS} from '/imports/api/games/constants.js';
 
 export default class Snoozer extends GameListener {
 	addListeners() {
@@ -22,8 +21,8 @@ export default class Snoozer extends GameListener {
 		if (
 			event.gameId === this.gameId &&
 			(
-				(this.playerIsHost() && event.clientPoints === GAME_MAXIMUM_POINTS - 1 && event.hostPoints === 0) ||
-				(this.playerIsClient() && event.hostPoints === GAME_MAXIMUM_POINTS - 1 && event.clientPoints === 0)
+				(this.playerIsHost() && event.clientPoints === this.gameMaximumPoints() - 1 && event.hostPoints === 0) ||
+				(this.playerIsClient() && event.hostPoints === this.gameMaximumPoints() - 1 && event.clientPoints === 0)
 			)
 		) {
 			this.hasBeenMatchPointZero = true;

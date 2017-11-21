@@ -95,16 +95,17 @@ export default class GameData {
 	}
 
 	isMatchPoint() {
-		return isMatchPoint(this.hostPoints, this.clientPoints);
+		return isMatchPoint(this.hostPoints, this.clientPoints, this.maximumPoints);
 	}
 
 	isDeucePoint() {
-		return isDeucePoint(this.hostPoints, this.clientPoints);
+		return isDeucePoint(this.hostPoints, this.clientPoints, this.maximumPoints);
 	}
 
 	init() {
 		let game = this.fetchGame();
 
+		this.maximumPoints = game.maximumPoints;
 		this.createdBy = game.createdBy;
 		this.tournamentId = game.tournamentId;
 

@@ -5,8 +5,7 @@ import {
 	HOST_POINTS_COLUMN,
 	CLIENT_POINTS_COLUMN,
 	HOST_SIDE,
-	CLIENT_SIDE,
-	GAME_MAXIMUM_POINTS
+	CLIENT_SIDE
 } from '/imports/api/games/constants.js';
 import {GAME_STATUS_STARTED, GAME_STATUS_FINISHED} from '/imports/api/games/statusConstants.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
@@ -34,7 +33,7 @@ Meteor.methods({
 			data['activeBonuses'] = [];
 			data['lastPointAt'] = getUTCTimeStamp() + TimeSync.serverOffset();
 
-			if (data[columnName] >= GAME_MAXIMUM_POINTS) {
+			if (data[columnName] >= game.maximumPoints) {
 				data['status'] = GAME_STATUS_FINISHED;
 			}
 

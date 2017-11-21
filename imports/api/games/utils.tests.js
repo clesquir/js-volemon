@@ -1,7 +1,6 @@
 import {assert} from 'chai';
 import {Random} from 'meteor/random';
 import StubCollections from 'meteor/hwillson:stub-collections';
-import {GAME_MAXIMUM_POINTS} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {GAME_STATUS_STARTED, GAME_STATUS_FORFEITED, GAME_STATUS_FINISHED} from '/imports/api/games/statusConstants.js';
@@ -201,36 +200,44 @@ describe('game/utils#getWinnerName', function() {
 
 describe('game/utils#isMatchPoint', function() {
 	it('returns false if no players are at one point from maximum', function() {
-		assert.isFalse(isMatchPoint(0, 0));
+		assert.isFalse(isMatchPoint(0, 0, 5));
 	});
 
 	it('returns true if hostPoints is at one point from maximum', function() {
-		assert.isTrue(isMatchPoint(GAME_MAXIMUM_POINTS - 1, 0));
+		assert.isTrue(isMatchPoint(4, 0, 5));
 	});
 
 	it('returns true if clientPoints is at one point from maximum', function() {
-		assert.isTrue(isMatchPoint(0, GAME_MAXIMUM_POINTS - 1));
+		assert.isTrue(isMatchPoint(0, 4, 5));
 	});
 
 	it('returns true if both players are at one point from maximum', function() {
-		assert.isTrue(isMatchPoint(GAME_MAXIMUM_POINTS - 1, GAME_MAXIMUM_POINTS - 1));
+		assert.isTrue(isMatchPoint(4, 4, 5));
+	});
+
+	it('returns false if maximum is 1', function() {
+		assert.isFalse(isMatchPoint(0, 0, 1));
 	});
 });
 
 describe('game/utils#isDeuce', function() {
 	it('returns false if both players are not at one point from maximum', function() {
-		assert.isFalse(isDeucePoint(0, 0));
+		assert.isFalse(isDeucePoint(0, 0, 5));
 	});
 
 	it('returns false if hostPoints is at one point from maximum', function() {
-		assert.isFalse(isDeucePoint(GAME_MAXIMUM_POINTS - 1, 0));
+		assert.isFalse(isDeucePoint(4, 0, 5));
 	});
 
 	it('returns false if clientPoints is at one point from maximum', function() {
-		assert.isFalse(isDeucePoint(0, GAME_MAXIMUM_POINTS - 1));
+		assert.isFalse(isDeucePoint(0, 4, 5));
 	});
 
 	it('returns true if both players are at one point from maximum', function() {
-		assert.isTrue(isDeucePoint(GAME_MAXIMUM_POINTS - 1, GAME_MAXIMUM_POINTS - 1));
+		assert.isTrue(isDeucePoint(4, 4, 5));
+	});
+
+	it('returns false if maximum is 1', function() {
+		assert.isFalse(isDeucePoint(0, 0, 1));
 	});
 });

@@ -2,7 +2,6 @@ import {assert} from 'chai'
 import {Random} from 'meteor/random';
 import {resetDatabase} from 'meteor/xolvio:cleaner';
 import EloScoreCreator from '/imports/api/games/server/EloScoreCreator.js';
-import {GAME_MAXIMUM_POINTS} from '/imports/api/games/constants.js';
 import {EloScores} from '/imports/api/games/eloscores.js';
 import {Games} from '/imports/api/games/games.js';
 import {GAME_STATUS_FINISHED} from '/imports/api/games/statusConstants.js';
@@ -184,7 +183,14 @@ describe('FinishedGameUpdater', function() {
 		 * 5-1
 		 */
 		let gameId = Random.id(5);
-		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED, hostPoints: GAME_MAXIMUM_POINTS, clientPoints: 1});
+		Games.insert({
+			_id: gameId,
+			status: GAME_STATUS_FINISHED,
+			hostPoints: 5,
+			clientPoints: 1,
+			forfeitMinimumPoints: 3,
+			maximumPoints: 5
+		});
 
 		finishedGameUpdater.updateStatistics(gameId, hostUserId, clientUserId);
 
@@ -202,7 +208,14 @@ describe('FinishedGameUpdater', function() {
 		 * 1-5
 		 */
 		gameId = Random.id(5);
-		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED, hostPoints: 1, clientPoints: GAME_MAXIMUM_POINTS});
+		Games.insert({
+			_id: gameId,
+			status: GAME_STATUS_FINISHED,
+			hostPoints: 1,
+			clientPoints: 5,
+			forfeitMinimumPoints: 3,
+			maximumPoints: 5
+		});
 
 		finishedGameUpdater.updateStatistics(gameId, clientUserId, hostUserId);
 
@@ -220,7 +233,14 @@ describe('FinishedGameUpdater', function() {
 		 * 5-0
 		 */
 		gameId = Random.id(5);
-		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED, hostPoints: GAME_MAXIMUM_POINTS, clientPoints: 0});
+		Games.insert({
+			_id: gameId,
+			status: GAME_STATUS_FINISHED,
+			hostPoints: 5,
+			clientPoints: 0,
+			forfeitMinimumPoints: 3,
+			maximumPoints: 5
+		});
 
 		finishedGameUpdater.updateStatistics(gameId, hostUserId, clientUserId);
 
@@ -238,7 +258,14 @@ describe('FinishedGameUpdater', function() {
 		 * 0-5
 		 */
 		gameId = Random.id(5);
-		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED, hostPoints: 0, clientPoints: GAME_MAXIMUM_POINTS});
+		Games.insert({
+			_id: gameId,
+			status: GAME_STATUS_FINISHED,
+			hostPoints: 0,
+			clientPoints: 5,
+			forfeitMinimumPoints: 3,
+			maximumPoints: 5
+		});
 
 		finishedGameUpdater.updateStatistics(gameId, clientUserId, hostUserId);
 

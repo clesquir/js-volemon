@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
-import StaticGameConfiguration from '/imports/api/games/client/configuration/StaticGameConfiguration.js';
+import StaticGameConfiguration from '/imports/api/games/configuration/StaticGameConfiguration.js';
 
 describe('PhaserEngine#constrainVelocity', function() {
 	it('restricts velocity without changing the angle if 0 degrees', function() {

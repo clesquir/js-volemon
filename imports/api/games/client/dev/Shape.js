@@ -4,7 +4,7 @@ import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
 import GameData from '/imports/api/games/client/data/GameData.js';
 import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
-import StaticGameConfiguration from '/imports/api/games/client/configuration/StaticGameConfiguration.js';
+import StaticGameConfiguration from '/imports/api/games/configuration/StaticGameConfiguration.js';
 import NullDeviceController from '/imports/api/games/client/deviceController/NullDeviceController.js';
 import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
 import {NORMAL_SCALE_PHYSICS_DATA, PLAYER_HEIGHT, PLAYER_WIDTH} from '/imports/api/games/constants.js';

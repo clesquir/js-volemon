@@ -1,3 +1,4 @@
+import {GAME_MAXIMUM_POINTS} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import Listener from './Listener';
@@ -77,6 +78,16 @@ export default class GameListener extends Listener {
 		const game = Games.findOne({_id: this.gameId});
 
 		return game && !!game.isPracticeGame;
+	}
+
+	gameMaximumPoints() {
+		const game = Games.findOne({_id: this.gameId});
+
+		if (game) {
+			return game.maximumPoints;
+		}
+
+		return GAME_MAXIMUM_POINTS;
 	}
 
 	currentPlayerShape() {

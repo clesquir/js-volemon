@@ -12,6 +12,7 @@ import {
 } from '/imports/api/games/statusConstants.js';
 import {isGameStatusFinished} from '/imports/api/games/utils.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
+import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGameConfiguration.js';
 import GameInitiator from '/imports/api/games/server/GameInitiator.js';
 import {isForfeiting} from '/imports/api/games/utils.js';
 import {finishGame} from '/imports/api/games/server/onGameFinished.js';
@@ -62,6 +63,11 @@ export const createGame = function(userId, gameInitiators, tournamentId = null) 
 			}
 		}
 	} while (id === null);
+
+	const configuration = new DefaultGameConfiguration(id);
+	configuration.init();
+	Games.update({_id: id}, {$set: {forfeitMinimumPoints: configuration.forfeitMinimumPoints()}});
+	Games.update({_id: id}, {$set: {maximumPoints: configuration.maximumPoints()}});
 
 	gameInitiators[id] = new GameInitiator(id);
 	gameInitiators[id].init();
