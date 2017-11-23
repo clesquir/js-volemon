@@ -36,7 +36,7 @@ export default class ServerP2P {
 			// send offers to everyone in a given room
 			Object.keys(connectedClients).forEach(function(clientId, i) {
 				const client = clients[clientId];
-				if (client !== socket) {
+				if (client && client !== socket) {
 					const offerObj = data.offers[i];
 					if (offerObj) {
 						client.emit(
