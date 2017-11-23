@@ -1,4 +1,3 @@
-import {Session} from 'meteor/session';
 import {moment} from 'meteor/momentjs:moment';
 import {locationDetector} from '/imports/lib/geoLocation/LocationDetector.js';
 import {
@@ -14,18 +13,18 @@ export class YahooWeatherApi extends WeatherApi {
 	constructor() {
 		super();
 
-		if (!Session.get('lastWeatherResult.conditionCode')) {
-			Session.set('lastWeatherResult.conditionCode', 3200);
+		if (localStorage.getItem('lastWeatherResult.conditionCode') === null) {
+			localStorage.setItem('lastWeatherResult.conditionCode', 3200);
 		}
-		if (!Session.get('lastWeatherResult.timeOfSunrise')) {
-			Session.set('lastWeatherResult.timeOfSunrise', '7:00 am');
+		if (localStorage.getItem('lastWeatherResult.timeOfSunrise') === null) {
+			localStorage.setItem('lastWeatherResult.timeOfSunrise', '7:00 am');
 		}
-		if (!Session.get('lastWeatherResult.timeOfSunset')) {
-			Session.set('lastWeatherResult.timeOfSunset', '7:00 pm');
+		if (localStorage.getItem('lastWeatherResult.timeOfSunset') === null) {
+			localStorage.setItem('lastWeatherResult.timeOfSunset', '7:00 pm');
 		}
-		this.conditionCode = Session.get('lastWeatherResult.conditionCode');
-		this.timeOfSunrise = Session.get('lastWeatherResult.timeOfSunrise');
-		this.timeOfSunset = Session.get('lastWeatherResult.timeOfSunset');
+		this.conditionCode = localStorage.getItem('lastWeatherResult.conditionCode');
+		this.timeOfSunrise = localStorage.getItem('lastWeatherResult.timeOfSunrise');
+		this.timeOfSunset = localStorage.getItem('lastWeatherResult.timeOfSunset');
 	}
 
 	init() {
@@ -37,9 +36,13 @@ export class YahooWeatherApi extends WeatherApi {
 		const coordinates = locationDetector.currentCoordinates();
 		const urlWithCoordinates = url.replace(/\{latitude\}/g, coordinates.latitude).replace(/\{longitude\}/g, coordinates.longitude);
 
-		$.getJSON(urlWithCoordinates).success((data) => {
-			this.onApiResponse(data);
-		});
+		$.getJSON(
+			urlWithCoordinates,
+			{},
+			(data) => {
+				this.onApiResponse(data);
+			}
+		);
 	}
 
 	condition() {
@@ -88,12 +91,12 @@ export class YahooWeatherApi extends WeatherApi {
 	 * @returns {boolean}
 	 */
 	delayRequest() {
-		const lastWeatherRequest = Session.get('lastWeatherRequest') || 0;
+		const lastWeatherRequest = localStorage.getItem('lastWeatherRequest') || 0;
 		if (getUTCTimeStamp() - lastWeatherRequest < maximumAge) {
 			return true;
 		}
 		//Delay next call if the locationDetector was not able to get current coordinates yet
-		Session.set('lastWeatherRequest', getUTCTimeStamp());
+		localStorage.setItem('lastWeatherRequest', getUTCTimeStamp());
 
 		return false;
 	}
@@ -108,9 +111,9 @@ export class YahooWeatherApi extends WeatherApi {
 			this.timeOfSunrise = data.query.results.channel.astronomy.sunrise;
 			this.timeOfSunset = data.query.results.channel.astronomy.sunset;
 
-			Session.set('lastWeatherResult.conditionCode', this.conditionCode);
-			Session.set('lastWeatherResult.timeOfSunrise', this.timeOfSunrise);
-			Session.set('lastWeatherResult.timeOfSunset', this.timeOfSunset);
+			localStorage.setItem('lastWeatherResult.conditionCode', this.conditionCode);
+			localStorage.setItem('lastWeatherResult.timeOfSunrise', this.timeOfSunrise);
+			localStorage.setItem('lastWeatherResult.timeOfSunset', this.timeOfSunset);
 		}
 	}
 }
