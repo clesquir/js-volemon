@@ -1,0 +1,59 @@
+<template name="help">
+	<div class="help-section">
+		<h1>Help</h1>
+
+		<div id="help-contents" class="view-selector-contents help-controls-shown">
+			<div class="view-selector">
+				<i class="fa fa-arrows view-help-controls" data-action="view-help-controls" data-tooltip="Controls"></i>
+				<i class="fa fa-star view-help-bonuses" data-action="view-help-bonuses" data-tooltip="Bonuses"></i>
+			</div>
+
+			<div class="view-selector-content help-controls">
+				<h2>Controls</h2>
+
+				{{#if onMobile}}
+					<p>Press the left/right arrows to move left/right.</p>
+				{{else}}
+					<p>Use the left/right arrows or A/D keys to move left/right.</p>
+				{{/if}}
+				<img class="lazy" src="/assets/help/placeholder.png" data-src="/assets/help/left-right.gif" width="285" height="200" />
+
+				{{#if onMobile}}
+					<p>Press the up arrow to jump. Jump towards the net while hitting the ball to smash it!</p>
+				{{else}}
+					<p>Use the up arrow or W key to jump. Jump towards the net while hitting the ball to smash it!</p>
+				{{/if}}
+				<img class="lazy" src="/assets/help/placeholder.png" data-src="/assets/help/smash.gif" width="285" height="200" />
+
+				{{#if onMobile}}
+					<p>Press the down arrow when jumping to dropshot the ball.</p>
+				{{else}}
+					<p>Use the down arrow or S key or space key when jumping to dropshot the ball.</p>
+				{{/if}}
+				<img class="lazy" src="/assets/help/placeholder.png" data-src="/assets/help/dropshot.gif" width="285" height="200" />
+			</div>
+
+			<div class="view-selector-content help-bonuses">
+				<h2>Bonuses</h2>
+
+				{{#each bonusesHelpList}}
+					<div class="help-bonus">
+						<div class="help-bonus-icon-container">
+							<div class="help-bonus-icon bonus-background"></div>
+							<div class="help-bonus-icon bonus-border {{borderClass}}"></div>
+							{{#if isLetter}}
+								<div class="help-bonus-icon fa" style="font-size: {{letterSize}}">
+									{{letter}}
+								</div>
+							{{else}}
+								<div class="help-bonus-icon help-bonus-sprite help-bonus-sprite-{{bonusIconsIndex}}"></div>
+							{{/if}}
+						</div>
+						<div class="help-bonus-description">{{description}}</div>
+					</div>
+				{{/each}}
+			</div>
+		</div>
+
+	</div>
+</template>

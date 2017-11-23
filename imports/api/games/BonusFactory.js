@@ -17,7 +17,7 @@ import NoJumpMonsterBonus from '/imports/api/games/bonus/NoJumpMonsterBonus.js';
 import BounceMonsterBonus from '/imports/api/games/bonus/BounceMonsterBonus.js';
 import CloakedMonsterBonus from '/imports/api/games/bonus/CloakedMonsterBonus.js';
 import ShapeShiftBonus from '/imports/api/games/bonus/ShapeShiftBonus.js';
-import SmokeBomb from '/imports/api/games/bonus/SmokeBomb.js';
+import SmokeBombBonus from '/imports/api/games/bonus/SmokeBombBonus.js';
 import RandomBonus from '/imports/api/games/bonus/RandomBonus.js';
 import {
 	BONUS_SMALL_BALL,
@@ -43,7 +43,6 @@ import {
 } from '/imports/api/games/bonusConstants.js';
 
 export default class BonusFactory {
-
 	/**
 	 * @param {GameBonus} game
 	 * @param {GameConfiguration} gameConfiguration
@@ -175,7 +174,7 @@ export default class BonusFactory {
 			case BONUS_SHAPE_SHIFT:
 				return new ShapeShiftBonus(game, bonusClass);
 			case BONUS_SMOKE_BOMB:
-				return new SmokeBomb(game, bonusClass);
+				return new SmokeBombBonus(game, bonusClass);
 			case BONUS_RANDOM:
 				return new RandomBonus(game, bonusClass);
 		}
@@ -192,5 +191,4 @@ export default class BonusFactory {
 
 		return bonus;
 	}
-
 }

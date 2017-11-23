@@ -13,6 +13,7 @@ import {UserProfileController} from '/imports/startup/client/controllers/UserPro
 import '/imports/ui/pages/app.js';
 import '/imports/ui/pages/game.js';
 import '/imports/ui/pages/games.js';
+import '/imports/ui/pages/help.js';
 import '/imports/ui/pages/home.js';
 import '/imports/ui/pages/login.js';
 import '/imports/ui/pages/passwordChange.js';

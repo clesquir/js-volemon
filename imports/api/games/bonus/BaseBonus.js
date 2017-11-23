@@ -19,6 +19,7 @@ export default class BaseBonus {
 		this.fontSize = '16px';
 		this.letter = undefined;
 		this.bonusIconsIndex = undefined;
+		this.description = '';
 	}
 
 	dataToStream() {

@@ -1,12 +1,12 @@
 import BallBonus from '/imports/api/games/bonus/BallBonus.js';
 
 export default class InvisibleBallBonus extends BallBonus {
-
 	constructor(...args) {
 		super(...args);
 		this.durationMilliseconds = 2000;
 		this.spriteBorderKey = 'bonus-environment-negative';
 		this.bonusIconsIndex = 0;
+		this.description = 'Invisible ball';
 	}
 
 	isSimilarBonusForPlayerKey(bonus, playerKey) {
@@ -22,5 +22,4 @@ export default class InvisibleBallBonus extends BallBonus {
 
 		this.deactivate();
 	}
-
 };

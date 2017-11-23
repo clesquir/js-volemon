@@ -1,12 +1,12 @@
 import BaseBonus from '/imports/api/games/bonus/BaseBonus.js';
 
 export default class CloudBonus extends BaseBonus {
-
 	constructor(...args) {
 		super(...args);
 		this.durationMilliseconds = 30000;
 		this.spriteBorderKey = 'bonus-environment-negative';
 		this.letter = '\uf0c2';
+		this.description = 'Cloud';
 	}
 
 	getTargetPlayerKey() {
@@ -26,5 +26,4 @@ export default class CloudBonus extends BaseBonus {
 
 		this.deactivate();
 	}
-
 };

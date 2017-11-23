@@ -18,6 +18,12 @@ Template.lightbox.rendered = function() {
 
 Template.lightbox.helpers({
 	visible: function() {
+		if (Session.get('lightbox')) {
+			$('body').addClass('active-lightbox');
+		} else {
+			$('body').removeClass('active-lightbox');
+		}
+
 		return Session.get('lightbox');
 	},
 	template: function() {

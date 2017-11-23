@@ -1,11 +1,11 @@
 import BaseBonus from '/imports/api/games/bonus/BaseBonus.js';
 
 export default class RandomBonus extends BaseBonus {
-
 	constructor(...args) {
 		super(...args);
 		this.spriteBorderKey = 'bonus-environment';
 		this.letter = '\uf128';
+		this.description = 'Random bonus';
 	}
 
 	dataToStream() {
@@ -25,5 +25,4 @@ export default class RandomBonus extends BaseBonus {
 	bonusToActivate() {
 		return this.randomBonus;
 	}
-
 };

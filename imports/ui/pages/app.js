@@ -10,6 +10,10 @@ import './app.html';
 export const OPEN_SELECT_BOXES = {};
 
 Template.app.helpers({
+	hasLightbox: function() {
+		return Session.get('lightbox');
+	},
+
 	currentlyPlayingClass: function() {
 		if (Session.get('userCurrentlyPlaying')) {
 			return 'user-currently-playing';
@@ -56,6 +60,10 @@ Template.app.events({
 				}
 			}
 		}
+	},
+
+	'click [data-action=open-help]': function(e) {
+		Session.set('lightbox', 'help');
 	},
 
 	'click [data-action=user-log-in]': function() {
