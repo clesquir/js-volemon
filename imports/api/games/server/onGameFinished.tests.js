@@ -17,12 +17,46 @@ describe('finishGame', function() {
 	});
 
 	it('throws not-allowed if game has not finished with a winner', function() {
+		resetDatabase();
+
+		const winnerUserId = Random.id(5);
+		Meteor.users.insert({_id: winnerUserId});
+		const loserUserId = Random.id(5);
+		Meteor.users.insert({_id: loserUserId});
 		const gameId = Random.id(5);
 		Games.insert({_id: gameId, status: GAME_STATUS_STARTED});
 
 		expect(() => {
-			finishGame(gameId);
+			finishGame(gameId, winnerUserId, loserUserId);
 		}).to.throw('Game has not finished with a winner');
+	});
+
+	it('throws not-allowed if game has no winner user', function() {
+		resetDatabase();
+
+		const winnerUserId = Random.id(5);
+		const loserUserId = Random.id(5);
+		Meteor.users.insert({_id: loserUserId});
+		const gameId = Random.id(5);
+		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED});
+
+		expect(() => {
+			finishGame(gameId, winnerUserId, loserUserId);
+		}).to.throw('Winner does not exist');
+	});
+
+	it('throws not-allowed if game has no loser user', function() {
+		resetDatabase();
+
+		const winnerUserId = Random.id(5);
+		Meteor.users.insert({_id: winnerUserId});
+		const loserUserId = Random.id(5);
+		const gameId = Random.id(5);
+		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED});
+
+		expect(() => {
+			finishGame(gameId, winnerUserId, loserUserId);
+		}).to.throw('Loser does not exist');
 	});
 
 	it('updates profiles and eloscores on regular game', function() {
@@ -30,7 +64,9 @@ describe('finishGame', function() {
 
 		const gameId = Random.id(5);
 		const winnerUserId = Random.id(5);
+		Meteor.users.insert({_id: winnerUserId});
 		const loserUserId = Random.id(5);
+		Meteor.users.insert({_id: loserUserId});
 		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED});
 		Profiles.insert({
 			_id: Random.id(5),
@@ -65,7 +101,9 @@ describe('finishGame', function() {
 		const gameId = Random.id(5);
 		const tournamentId = Random.id(5);
 		const winnerUserId = Random.id(5);
+		Meteor.users.insert({_id: winnerUserId});
 		const loserUserId = Random.id(5);
+		Meteor.users.insert({_id: loserUserId});
 		Games.insert({
 			_id: gameId,
 			tournamentId: tournamentId,

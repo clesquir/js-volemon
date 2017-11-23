@@ -20,6 +20,14 @@ export const finishGame = function(gameId, winnerUserId, loserUserId) {
 		throw new Meteor.Error('not-allowed', 'Game has not finished with a winner');
 	}
 
+	if (!Meteor.users.findOne({_id: winnerUserId})) {
+		throw new Meteor.Error('not-allowed', 'Winner does not exist');
+	}
+
+	if (!Meteor.users.findOne({_id: loserUserId})) {
+		throw new Meteor.Error('not-allowed', 'Loser does not exist');
+	}
+
 	data['finishedAt'] = getUTCTimeStamp();
 	data['gameDuration'] = data['finishedAt'] - game.startedAt;
 

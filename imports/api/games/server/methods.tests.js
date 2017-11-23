@@ -299,6 +299,8 @@ describe('GameMethods#quitGame', function() {
 			forfeitMinimumPoints: 3,
 			maximumPoints: 5
 		});
+		Meteor.users.insert({_id: userId1});
+		Meteor.users.insert({_id: userId2});
 		Players.insert({_id: playerId1, userId: userId1, gameId: gameId});
 		Players.insert({_id: playerId2, userId: userId2, gameId: gameId});
 		Profiles.insert({userId: userId1, numberOfWin: 0, numberOfLost: 0});
@@ -335,6 +337,8 @@ describe('GameMethods#quitGame', function() {
 			forfeitMinimumPoints: 3,
 			maximumPoints: 5
 		});
+		Meteor.users.insert({_id: userId1});
+		Meteor.users.insert({_id: userId2});
 		Players.insert({_id: playerId1, userId: userId1, gameId: gameId});
 		Players.insert({_id: playerId2, userId: userId2, gameId: gameId});
 		Profiles.insert({userId: userId1, numberOfWin: 0, numberOfLost: 0});
@@ -371,6 +375,8 @@ describe('GameMethods#quitGame', function() {
 			forfeitMinimumPoints: 3,
 			maximumPoints: 5
 		});
+		Meteor.users.insert({_id: userId1});
+		Meteor.users.insert({_id: userId2});
 		Players.insert({_id: playerId1, userId: userId1, gameId: gameId});
 		Players.insert({_id: playerId2, userId: userId2, gameId: gameId});
 		Profiles.insert({userId: userId1, numberOfWin: 0, numberOfLost: 0});
@@ -407,6 +413,8 @@ describe('GameMethods#quitGame', function() {
 			forfeitMinimumPoints: 3,
 			maximumPoints: 5
 		});
+		Meteor.users.insert({_id: userId1});
+		Meteor.users.insert({_id: userId2});
 		Players.insert({_id: playerId1, userId: userId1, gameId: gameId});
 		Players.insert({_id: playerId2, userId: userId2, gameId: gameId});
 		Profiles.insert({userId: userId1, numberOfWin: 0, numberOfLost: 0});
@@ -443,6 +451,8 @@ describe('GameMethods#quitGame', function() {
 			forfeitMinimumPoints: 3,
 			maximumPoints: 5
 		});
+		Meteor.users.insert({_id: userId1});
+		Meteor.users.insert({_id: userId2});
 		Players.insert({_id: playerId1, userId: userId1, gameId: gameId});
 		Players.insert({_id: playerId2, userId: userId2, gameId: gameId});
 		Profiles.insert({userId: userId1, eloRating: 1000});
@@ -487,6 +497,8 @@ describe('GameMethods#quitGame', function() {
 			forfeitMinimumPoints: 3,
 			maximumPoints: 5
 		});
+		Meteor.users.insert({_id: userId1});
+		Meteor.users.insert({_id: userId2});
 		Players.insert({_id: playerId1, userId: userId1, gameId: gameId});
 		Players.insert({_id: playerId2, userId: userId2, gameId: gameId});
 		Profiles.insert({userId: userId1, eloRating: 1000});
@@ -531,6 +543,8 @@ describe('GameMethods#quitGame', function() {
 			forfeitMinimumPoints: 3,
 			maximumPoints: 5
 		});
+		Meteor.users.insert({_id: userId1});
+		Meteor.users.insert({_id: userId2});
 		Players.insert({_id: playerId1, userId: userId1, gameId: gameId});
 		Players.insert({_id: playerId2, userId: userId2, gameId: gameId});
 		Profiles.insert({userId: userId1});
@@ -674,6 +688,8 @@ describe('GameMethods#addGamePoints', function() {
 			forfeitMinimumPoints: 3,
 			maximumPoints: 5
 		});
+		Meteor.users.insert({_id: userId1});
+		Meteor.users.insert({_id: userId2});
 		Players.insert({_id: playerId1, userId: userId1, gameId: gameId});
 		Players.insert({_id: playerId2, userId: userId2, gameId: gameId});
 		Profiles.insert({userId: userId1, numberOfWin: 0, numberOfShutouts: 0, numberOfLost: 0, numberOfShutoutLosses: 0});
@@ -711,6 +727,8 @@ describe('GameMethods#addGamePoints', function() {
 			forfeitMinimumPoints: 3,
 			maximumPoints: 5
 		});
+		Meteor.users.insert({_id: userId1});
+		Meteor.users.insert({_id: userId2});
 		Players.insert({_id: playerId1, userId: userId1, gameId: gameId});
 		Players.insert({_id: playerId2, userId: userId2, gameId: gameId});
 		Profiles.insert({userId: userId1, eloRating: 1000});
@@ -754,6 +772,8 @@ describe('GameMethods#addGamePoints', function() {
 			forfeitMinimumPoints: 3,
 			maximumPoints: 5
 		});
+		Meteor.users.insert({_id: userId1});
+		Meteor.users.insert({_id: userId2});
 		Players.insert({_id: playerId1, userId: userId1, gameId: gameId});
 		Players.insert({_id: playerId2, userId: userId2, gameId: gameId});
 		Profiles.insert({userId: userId1});
