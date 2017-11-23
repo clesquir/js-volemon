@@ -18,6 +18,7 @@ Meteor.publish('userProfile', function(userId) {
 		const userId = userConfiguration.userId;
 
 		userProfile.userId = userId;
+		userProfile.email = Meteor.users.findOne(userId).emails[0].address;
 		userProfile.username = userConfiguration.name;
 
 		this.added('userprofiles', userId, userProfile);

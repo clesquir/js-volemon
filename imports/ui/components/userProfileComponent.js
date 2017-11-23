@@ -24,6 +24,12 @@ Template.userProfileComponent.helpers({
 		const userProfile = UserProfiles.findOne({userId: Session.get('userProfile')});
 
 		return userProfile ? '#' + userProfile.userId : '-';
+	},
+
+	userProfileEmail: function() {
+		const userProfile = UserProfiles.findOne({userId: Session.get('userProfile')});
+
+		return userProfile ? userProfile.email.split('').reverse().join('') : '-';
 	}
 });
 
