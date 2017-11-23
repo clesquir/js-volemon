@@ -6,7 +6,7 @@ export default class SmallMonsterBonus extends MonsterScaleBonus {
 		super(...args);
 		this.spriteBorderKey = 'bonus-target-negative';
 		this.letter = '\uf066';
-		this.description = 'Small player and low gravity';
+		this.description = 'Small player with low gravity';
 	}
 
 	start() {

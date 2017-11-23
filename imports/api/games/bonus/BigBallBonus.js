@@ -6,7 +6,7 @@ export default class BigBallBonus extends BallScaleBonus {
 		super(...args);
 		this.spriteBorderKey = 'bonus-environment-positive';
 		this.letter = '\uf111';
-		this.description = 'Big ball and high gravity';
+		this.description = 'Big ball with high gravity';
 	}
 
 	start() {

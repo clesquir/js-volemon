@@ -4,7 +4,7 @@ export default class BounceMonsterBonus extends JumpMonsterBonus {
 	constructor(...args) {
 		super(...args);
 		this.letter = '\uf0dc';
-		this.description = 'Super high player jumps';
+		this.description = 'Player jumps constantly';
 	}
 
 	start() {

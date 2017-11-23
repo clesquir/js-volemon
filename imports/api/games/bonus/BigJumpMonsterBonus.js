@@ -7,6 +7,7 @@ export default class BigJumpMonsterBonus extends MonsterBonus {
 		super(...args);
 		this.spriteBorderKey = 'bonus-target-positive';
 		this.letter = '\uf093';
+		this.description = 'Super high player jumps';
 	}
 
 	isSimilarBonusForPlayerKey(bonus, playerKey) {

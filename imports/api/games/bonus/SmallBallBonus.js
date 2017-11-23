@@ -7,7 +7,7 @@ export default class SmallBallBonus extends BallScaleBonus {
 		this.spriteBorderKey = 'bonus-environment-negative';
 		this.letter = '\uf111';
 		this.fontSize = '8px';
-		this.description = 'Small ball and low gravity';
+		this.description = 'Small ball with low gravity';
 	}
 
 	start() {
