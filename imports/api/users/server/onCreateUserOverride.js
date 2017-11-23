@@ -1,4 +1,3 @@
-import {Meteor} from 'meteor/meteor';
 import {Accounts} from 'meteor/accounts-base';
 import {Random} from 'meteor/random';
 import TournamentListeners from '/imports/api/achievements/server/TournamentListeners.js';

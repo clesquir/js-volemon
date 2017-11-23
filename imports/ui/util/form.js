@@ -39,7 +39,7 @@ validateFieldsPresenceAndMarkInvalid = function(form, fields) {
 
 		removeFieldInvalidMark(field);
 
-		if (value === '') {
+		if (value.trim() === '') {
 			addErrorToField(field, "Can't be empty.");
 			hasRequiredErrors = true;
 		}

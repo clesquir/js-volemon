@@ -10,6 +10,10 @@ Meteor.methods({
 	updateUserName: function(name) {
 		check(this.userId, String);
 
+		if (name.trim() === '') {
+			throw new Error('Name must be filled.');
+		}
+
 		UserConfigurations.update({userId: this.userId}, {$set: {name: name}});
 		Players.update({userId: this.userId}, {$set: {name: name}}, {multi: true});
 		Games.update({hostId: this.userId}, {$set: {hostName: name}}, {multi: true});
