@@ -1,13 +1,15 @@
 <template name="skins">
-	<h1>Change skin</h1>
+	<div class="skins-template">
+		<h1>Change skin</h1>
 
-	<div class="skin-lists">
-		{{#each skins}}
-			<div class="skin-item skin-item-{{_id}} {{#if skinIsSelected}}skin-item-selected{{/if}}" data-action="update-skin" data-skin="{{_id}}">
-				<div class="skin-item-name">{{name}}</div>
-			</div>
-		{{/each}}
+		<div class="skin-lists">
+			{{#each skins}}
+				<div class="skin-item skin-item-{{_id}} {{#if skinIsSelected}}skin-item-selected{{/if}}" data-action="update-skin" data-skin="{{_id}}">
+					<div class="skin-item-name">{{name}}</div>
+				</div>
+			{{/each}}
+		</div>
+
+		<input type="submit" class="button" data-action="close-skin" value="OK" />
 	</div>
-
-	<input type="submit" class="button" data-action="close-skin" value="OK" />
 </template>

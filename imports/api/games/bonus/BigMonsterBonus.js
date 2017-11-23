@@ -6,6 +6,7 @@ export default class BigMonsterBonus extends MonsterScaleBonus {
 		super(...args);
 		this.spriteBorderKey = 'bonus-target-positive';
 		this.letter = '\uf065';
+		this.description = 'Big player and high gravity';
 	}
 
 	start() {

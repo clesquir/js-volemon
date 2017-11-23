@@ -1,11 +1,12 @@
 import BaseBonus from '/imports/api/games/bonus/BaseBonus.js';
 
-export default class SmokeBomb extends BaseBonus {
+export default class SmokeBombBonus extends BaseBonus {
 	constructor(...args) {
 		super(...args);
 		this.durationMilliseconds = 60000;
 		this.spriteBorderKey = 'bonus-environment-negative';
 		this.bonusIconsIndex = 4;
+		this.description = 'Smoke bomb (only available in tournament)';
 	}
 
 	getTargetPlayerKey() {

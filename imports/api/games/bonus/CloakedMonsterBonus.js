@@ -1,11 +1,11 @@
 import MonsterBonus from '/imports/api/games/bonus/MonsterBonus.js';
 
 export default class CloakedMonsterBonus extends MonsterBonus {
-
 	constructor(...args) {
 		super(...args);
 		this.spriteBorderKey = 'bonus-target-positive';
 		this.bonusIconsIndex = 1;
+		this.description = 'Hides from opposite player';
 	}
 
 	isSimilarBonusForPlayerKey(bonus, playerKey) {
@@ -21,5 +21,4 @@ export default class CloakedMonsterBonus extends MonsterBonus {
 
 		this.deactivate();
 	}
-
 };

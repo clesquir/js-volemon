@@ -1,10 +1,10 @@
 import JumpMonsterBonus from '/imports/api/games/bonus/JumpMonsterBonus.js';
 
 export default class NoJumpMonsterBonus extends JumpMonsterBonus {
-
 	constructor(...args) {
 		super(...args);
 		this.letter = '\uf13d';
+		this.description = 'Restricts player to jump';
 	}
 
 	start() {
@@ -18,5 +18,4 @@ export default class NoJumpMonsterBonus extends JumpMonsterBonus {
 
 		this.deactivate();
 	}
-
 };

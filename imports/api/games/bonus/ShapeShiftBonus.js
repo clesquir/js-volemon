@@ -8,6 +8,7 @@ export default class ShapeShiftBonus extends MonsterBonus {
 		this.spriteBorderKey = 'bonus-target-negative';
 		this.bonusIconsIndex = 3;
 		this.playerShape = null;
+		this.description = 'Shape shifts player';
 	}
 
 	isSimilarBonusForPlayerKey(bonus, playerKey) {

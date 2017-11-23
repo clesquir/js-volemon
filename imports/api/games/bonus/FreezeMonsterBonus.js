@@ -1,12 +1,12 @@
 import MonsterBonus from '/imports/api/games/bonus/MonsterBonus.js';
 
 export default class FreezeMonsterBonus extends MonsterBonus {
-
 	constructor(...args) {
 		super(...args);
 		this.durationMilliseconds = 5000;
 		this.spriteBorderKey = 'bonus-target-negative';
 		this.letter = '\uf04c';
+		this.description = 'Freezes the player';
 	}
 
 	isSimilarBonusForPlayerKey(bonus, playerKey) {
@@ -22,5 +22,4 @@ export default class FreezeMonsterBonus extends MonsterBonus {
 
 		this.deactivate();
 	}
-
 };

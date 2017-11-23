@@ -1,11 +1,11 @@
 import MonsterBonus from '/imports/api/games/bonus/MonsterBonus.js';
 
 export default class ReverseMoveMonsterBonus extends MonsterBonus {
-
 	constructor(...args) {
 		super(...args);
 		this.spriteBorderKey = 'bonus-target-negative';
 		this.letter = '\uf0ec';
+		this.description = 'Reverses player movements';
 	}
 
 	isSimilarBonusForPlayerKey(bonus, playerKey) {
@@ -21,5 +21,4 @@ export default class ReverseMoveMonsterBonus extends MonsterBonus {
 
 		this.deactivate();
 	}
-
 };

@@ -3,11 +3,11 @@ import MonsterBonus from '/imports/api/games/bonus/MonsterBonus.js';
 import {BONUS_INVISIBLE_MONSTER} from '/imports/api/games/bonusConstants.js';
 
 export default class InvisibleOpponentMonsterBonus extends MonsterBonus {
-
 	constructor(...args) {
 		super(...args);
 		this.spriteBorderKey = 'bonus-target-positive';
 		this.letter = '\uf070';
+		this.description = 'Invincible opponent player';
 	}
 
 	classNameToActivate() {
@@ -32,5 +32,4 @@ export default class InvisibleOpponentMonsterBonus extends MonsterBonus {
 
 		this.deactivate();
 	}
-
 };
