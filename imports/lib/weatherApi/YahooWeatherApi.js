@@ -22,7 +22,7 @@ export class YahooWeatherApi extends WeatherApi {
 		if (localStorage.getItem('lastWeatherResult.timeOfSunset') === null) {
 			localStorage.setItem('lastWeatherResult.timeOfSunset', '7:00 pm');
 		}
-		this.conditionCode = localStorage.getItem('lastWeatherResult.conditionCode');
+		this.conditionCode = parseInt(localStorage.getItem('lastWeatherResult.conditionCode'));
 		this.timeOfSunrise = localStorage.getItem('lastWeatherResult.timeOfSunrise');
 		this.timeOfSunset = localStorage.getItem('lastWeatherResult.timeOfSunset');
 	}
