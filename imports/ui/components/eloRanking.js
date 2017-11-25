@@ -1,6 +1,6 @@
 import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
-import {getWinRate} from '/imports/lib/utils.js';
+import {getWinRateFromNumbers} from '/imports/lib/utils.js';
 
 import './eloRanking.html';
 
@@ -18,6 +18,6 @@ Template.eloRanking.helpers({
 	},
 
 	getWinRate: function() {
-		return getWinRate(this);
+		return getWinRateFromNumbers(this.numberOfWin, this.numberOfLost);
 	}
 });

@@ -205,6 +205,56 @@ describe('FinishedGameUpdater', function() {
 		assert.propertyVal(clientProfile, 'numberOfShutoutLosses', 0);
 
 		/**
+		 * 1-0
+		 */
+		gameId = Random.id(5);
+		Games.insert({
+			_id: gameId,
+			status: GAME_STATUS_FINISHED,
+			hostPoints: 1,
+			clientPoints: 0,
+			forfeitMinimumPoints: 0,
+			maximumPoints: 1
+		});
+
+		finishedGameUpdater.updateStatistics(gameId, hostUserId, clientUserId);
+
+		hostProfile = Profiles.findOne({_id: hostProfileId});
+		assert.isObject(hostProfile);
+		assert.propertyVal(hostProfile, 'numberOfShutouts', 0);
+		assert.propertyVal(hostProfile, 'numberOfShutoutLosses', 0);
+
+		clientProfile = Profiles.findOne({_id: clientProfileId});
+		assert.isObject(clientProfile);
+		assert.propertyVal(clientProfile, 'numberOfShutouts', 0);
+		assert.propertyVal(clientProfile, 'numberOfShutoutLosses', 0);
+
+		/**
+		 * 0-1
+		 */
+		gameId = Random.id(5);
+		Games.insert({
+			_id: gameId,
+			status: GAME_STATUS_FINISHED,
+			hostPoints: 0,
+			clientPoints: 1,
+			forfeitMinimumPoints: 0,
+			maximumPoints: 1
+		});
+
+		finishedGameUpdater.updateStatistics(gameId, hostUserId, clientUserId);
+
+		hostProfile = Profiles.findOne({_id: hostProfileId});
+		assert.isObject(hostProfile);
+		assert.propertyVal(hostProfile, 'numberOfShutouts', 0);
+		assert.propertyVal(hostProfile, 'numberOfShutoutLosses', 0);
+
+		clientProfile = Profiles.findOne({_id: clientProfileId});
+		assert.isObject(clientProfile);
+		assert.propertyVal(clientProfile, 'numberOfShutouts', 0);
+		assert.propertyVal(clientProfile, 'numberOfShutoutLosses', 0);
+
+		/**
 		 * 1-5
 		 */
 		gameId = Random.id(5);

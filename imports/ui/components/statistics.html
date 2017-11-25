@@ -2,95 +2,93 @@
 	<div class="profile-information-container">
 		<div class="statistics-item">
 			<div>
-				<div class="statistics-item-data">{{numberOfGamesPlayed}}</div>
+				<div class="statistics-item-data">{{{numberOfGamesPlayed}}}</div>
 				<div class="statistics-item-title">games played</div>
 			</div>
 		</div>
 		<div class="statistics-item">
 			<div>
-				<div class="statistics-item-data">{{winRate}}</div>
+				<div class="statistics-item-data">{{{winRate}}}</div>
 				<div class="statistics-item-title">win rate</div>
 			</div>
 		</div>
-		{{#unless this.tournamentId}}
+		{{#if showShutoutsStatistics this.tournamentId}}
 			<div class="statistics-item">
 				<div>
 					<div class="statistics-item-data">
-						<span class="shutouts-positive">{{numberOfShutouts}}</span>
+						<span class="shutouts-positive">{{{numberOfShutouts}}}</span>
 						|
-						<span class="shutouts-negative">{{numberOfShutoutLosses}}</span>
+						<span class="shutouts-negative">{{{numberOfShutoutLosses}}}</span>
 					</div>
 					<div class="statistics-item-title">shutouts</div>
 				</div>
 			</div>
-			<div class="statistics-item">
-				<div data-tooltip="{{longestGameInformation 'longestGame'}}">
-					<div class="statistics-item-data">{{{longestGameDuration 'longestGame'}}}</div>
-					<div class="statistics-item-title">longest game</div>
-				</div>
+		{{/if}}
+		<div class="statistics-item">
+			<div data-tooltip="{{longestGameInformation 'longestGame'}}">
+				<div class="statistics-item-data">{{{longestGameDuration 'longestGame'}}}</div>
+				<div class="statistics-item-title">longest game</div>
 			</div>
-			<div class="statistics-item">
-				<div data-tooltip="{{longestGameInformation 'longestPoint'}}">
-					<div class="statistics-item-data">{{{longestGameDuration 'longestPoint'}}}</div>
-					<div class="statistics-item-title">longest point</div>
-				</div>
+		</div>
+		<div class="statistics-item">
+			<div data-tooltip="{{longestGameInformation 'longestPoint'}}">
+				<div class="statistics-item-data">{{{longestGameDuration 'longestPoint'}}}</div>
+				<div class="statistics-item-title">longest point</div>
 			</div>
-			<div class="statistics-item">
-				<div data-tooltip="{{eloStatInformation 'lowestElo'}}">
-					<div class="statistics-item-data">{{{eloStat 'lowestElo'}}}</div>
-					<div class="statistics-item-title">lowest ELO</div>
-				</div>
+		</div>
+		<div class="statistics-item">
+			<div data-tooltip="{{eloStatInformation 'lowestElo'}}">
+				<div class="statistics-item-data">{{{eloStat 'lowestElo'}}}</div>
+				<div class="statistics-item-title">lowest ELO</div>
 			</div>
-			<div class="statistics-item">
-				<div data-tooltip="{{eloStatInformation 'highestElo'}}">
-					<div class="statistics-item-data">{{{eloStat 'highestElo'}}}</div>
-					<div class="statistics-item-title">highest ELO</div>
-				</div>
+		</div>
+		<div class="statistics-item">
+			<div data-tooltip="{{eloStatInformation 'highestElo'}}">
+				<div class="statistics-item-data">{{{eloStat 'highestElo'}}}</div>
+				<div class="statistics-item-title">highest ELO</div>
 			</div>
-		{{/unless}}
+		</div>
 		<div class="statistics-item elo-rating-statistic">
 			<div>
 				<div class="statistics-item-data">
-					<div>{{eloRating}}</div>
+					<div>{{{eloRating}}}</div>
 					{{> eloRatingChange eloRatingChange=eloRatingLastChange}}
 				</div>
 				<div class="statistics-item-title">ELO</div>
 			</div>
 		</div>
-		{{#unless this.tournamentId}}
-			<div class="statistics-item">
-				<div data-tooltip="{{totalPlayingTimeTooltip}}">
-					<div class="statistics-item-data">{{{totalPlayingTime}}}</div>
-					<div class="statistics-item-title">total playing time</div>
-				</div>
+		<div class="statistics-item">
+			<div data-tooltip="{{totalPlayingTimeTooltip}}">
+				<div class="statistics-item-data">{{{totalPlayingTime}}}</div>
+				<div class="statistics-item-title">total playing time</div>
 			</div>
-			<div class="statistics-item favourite-shape-statistic">
-				<div data-tooltip="
-					{{#if hasFavouriteShapesLoaded}}
-						{{#each favouriteShapes}}
-							<div class='favourite-shapes-list-item'>
-								<div class='shape-selector-container shape-{{shape}}'>
-									<div class='shape-content-scroller'></div>
-								</div>
-								<div class='favourite-shape-number'>{{number}}</div>
+		</div>
+		<div class="statistics-item favourite-shape-statistic">
+			<div data-tooltip="
+				{{#if hasFavouriteShapesLoaded}}
+					{{#each favouriteShapes}}
+						<div class='favourite-shapes-list-item'>
+							<div class='shape-selector-container shape-{{shape}}'>
+								<div class='shape-content-scroller'></div>
 							</div>
-						{{else}}
-							N/A
-						{{/each}}
+							<div class='favourite-shape-number'>{{number}}</div>
+						</div>
 					{{else}}
-						<div class='loading-icon fa fa-spinner fa-pulse' />
+						N/A
+					{{/each}}
+				{{else}}
+					<div class='loading-icon fa fa-spinner fa-pulse' />
+				{{/if}}
+			">
+				<div class="statistics-item-data">
+					{{#if hasFavouriteShapesLoaded}}
+						{{{favouriteShape}}}
+					{{else}}
+						<div class="loading-icon fa fa-spinner fa-pulse"></div>
 					{{/if}}
-				">
-					<div class="statistics-item-data">
-						{{#if hasFavouriteShapesLoaded}}
-							{{{favouriteShape}}}
-						{{else}}
-							<div class="loading-icon fa fa-spinner fa-pulse"></div>
-						{{/if}}
-					</div>
-					<div class="statistics-item-title">Favourite shape</div>
 				</div>
+				<div class="statistics-item-title">Favourite shape</div>
 			</div>
-		{{/unless}}
+		</div>
 	</div>
 </template>

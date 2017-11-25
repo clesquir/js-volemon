@@ -33,13 +33,13 @@ export const getRainbowColor = function(numOfSteps, step) {
 	return (c);
 };
 
-export const getWinRate = function(profile) {
-	if (profile.numberOfWin + profile.numberOfLost === 0) {
+export const getWinRateFromNumbers = function(numberOfWin, numberOfLost) {
+	if (numberOfWin + numberOfLost === 0) {
 		return 'N/A';
-	} else if (profile.numberOfLost === 0) {
+	} else if (numberOfLost === 0) {
 		return '100%';
 	} else {
-		return Math.round(profile.numberOfWin / (profile.numberOfWin + profile.numberOfLost) * 100) + '%';
+		return Math.round(numberOfWin / (numberOfWin + numberOfLost) * 100) + '%';
 	}
 };
 

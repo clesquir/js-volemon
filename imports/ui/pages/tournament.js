@@ -4,11 +4,18 @@ import {Session} from 'meteor/session';
 import {Router} from 'meteor/iron:router';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {canPlayTournament, isTournamentActive} from '/imports/api/tournaments/utils.js';
+import {loadStatistics} from '/imports/ui/components/statistics.js';
 
 import './tournament.html';
 
 class TournamentRankingsCollection extends Mongo.Collection {}
 const TournamentRankings = new TournamentRankingsCollection('tournamentrankings');
+
+Template.tournament.onCreated(function() {
+	this.autorun(() => {
+		loadStatistics(Meteor.userId(), Session.get('tournament'));
+	});
+});
 
 Template.tournament.helpers({
 	tournamentDescription: function() {
@@ -67,6 +74,8 @@ Template.tournament.events({
 		if (!$(tournamentContents).is('.tournament-statistics-shown')) {
 			removeShownClasses(tournamentContents);
 			$(tournamentContents).addClass('tournament-statistics-shown');
+
+			loadStatistics(Meteor.userId(), Session.get('tournament'));
 		}
 	},
 

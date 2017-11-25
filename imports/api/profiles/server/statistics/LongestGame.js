@@ -3,7 +3,7 @@ import {Players} from '/imports/api/games/players.js';
 import {GAME_STATUS_FINISHED} from '/imports/api/games/statusConstants.js';
 
 export default class LongestGame {
-	static get(userId) {
+	static get(userId, tournamentId) {
 		const players = Players.find({userId: userId});
 		const gamesIds = [];
 
@@ -11,10 +11,13 @@ export default class LongestGame {
 			gamesIds.push(player.gameId);
 		});
 
-		const games = Games.find(
-			{_id: {$in: gamesIds}, status: GAME_STATUS_FINISHED, gameDuration: {$exists: true}},
-			{sort: [['gameDuration', 'desc']], limit: 1}
-		);
+		const query = {_id: {$in: gamesIds}, status: GAME_STATUS_FINISHED, gameDuration: {$exists: true}};
+
+		if (tournamentId) {
+			query.tournamentId = tournamentId;
+		}
+
+		const games = Games.find(query, {sort: [['gameDuration', 'desc']], limit: 1});
 
 		let data = {};
 		games.forEach((game) => {

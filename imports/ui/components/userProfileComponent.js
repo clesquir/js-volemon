@@ -1,4 +1,3 @@
-import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
 import {loadStatistics} from '/imports/ui/components/statistics.js';
 
@@ -9,7 +8,7 @@ const UserProfiles = new UserProfilesCollection('userprofiles');
 
 Template.userProfileComponent.onCreated(function() {
 	this.autorun(() => {
-		loadStatistics(Session.get('userProfile'));
+		loadStatistics(Session.get('userProfile'), this.data.tournamentId);
 	});
 });
 
@@ -41,7 +40,7 @@ Template.userProfileComponent.events({
 			removeShownClasses(userProfileContents);
 			$(userProfileContents).addClass('user-statistics-shown');
 
-			loadStatistics(Session.get('userProfile'));
+			loadStatistics(Session.get('userProfile'), Session.get('tournament'));
 		}
 	}
 });

@@ -3,46 +3,66 @@ import {Template} from 'meteor/templating';
 import * as Moment from 'meteor/momentjs:moment';
 import {Session} from 'meteor/session';
 import {INITIAL_ELO_RATING} from '/imports/api/profiles/constants.js';
-import {getWinRate} from '/imports/lib/utils.js';
+import TournamentModeFactory from '/imports/api/tournaments/modes/TournamentModeFactory.js';
+import {Tournaments} from '/imports/api/tournaments/tournaments.js';
+import {getWinRateFromNumbers} from '/imports/lib/utils.js';
 
 import './statistics.html';
 
-export const loadStatistics = function(userId) {
+export const loadStatistics = function(userId, tournamentId) {
 	Meteor.subscribe('profileData', userId);
 
-	Session.set('longestGame', undefined);
-	Session.set('longestPoint', undefined);
-	Session.set('lowestElo', undefined);
-	Session.set('highestElo', undefined);
-	Session.set('totalPlayingTime', undefined);
-	Session.set('statisticFavouriteShapes', undefined);
+	Session.set('numberOfGamesPlayed', null);
+	Session.set('numberOfShutouts', null);
+	Session.set('longestGame', null);
+	Session.set('longestPoint', null);
+	Session.set('lowestElo', null);
+	Session.set('highestElo', null);
+	Session.set('currentElo', null);
+	Session.set('totalPlayingTime', null);
+	Session.set('statisticFavouriteShapes', null);
 
-	Meteor.call('longestGame', userId, function(error, data) {
+	Meteor.call('numberOfGamesPlayed', userId, tournamentId, function(error, data) {
+		if (!error && data) {
+			Session.set('numberOfGamesPlayed', data);
+		}
+	});
+	Meteor.call('numberOfShutouts', userId, tournamentId, function(error, data) {
+		if (!error && data) {
+			Session.set('numberOfShutouts', data);
+		}
+	});
+	Meteor.call('longestGame', userId, tournamentId, function(error, data) {
 		if (!error && data) {
 			Session.set('longestGame', data);
 		}
 	});
-	Meteor.call('longestPoint', userId, function(error, data) {
+	Meteor.call('longestPoint', userId, tournamentId, function(error, data) {
 		if (!error && data) {
 			Session.set('longestPoint', data);
 		}
 	});
-	Meteor.call('lowestElo', userId, function(error, data) {
-		if (!error && data) {
+	Meteor.call('lowestElo', userId, tournamentId, function(error, data) {
+		if (!error) {
 			Session.set('lowestElo', data);
 		}
 	});
-	Meteor.call('highestElo', userId, function(error, data) {
-		if (!error && data) {
+	Meteor.call('highestElo', userId, tournamentId, function(error, data) {
+		if (!error) {
 			Session.set('highestElo', data);
 		}
 	});
-	Meteor.call('totalPlayingTime', userId, function(error, data) {
+	Meteor.call('currentElo', userId, tournamentId, function(error, data) {
+		if (!error) {
+			Session.set('currentElo', data);
+		}
+	});
+	Meteor.call('totalPlayingTime', userId, tournamentId, function(error, data) {
 		if (!error && data) {
 			Session.set('totalPlayingTime', data);
 		}
 	});
-	Meteor.call('favouriteShapes', userId, function(error, data) {
+	Meteor.call('favouriteShapes', userId, tournamentId, function(error, data) {
 		if (!error && data) {
 			Session.set('statisticFavouriteShapes', data);
 		}
@@ -51,35 +71,64 @@ export const loadStatistics = function(userId) {
 
 Template.statistics.helpers({
 	numberOfGamesPlayed: function() {
-		if (!this.profile) {
-			return 0;
+		if (Session.get('numberOfGamesPlayed')) {
+			if (Object.keys(Session.get('numberOfGamesPlayed')).length > 0) {
+				return Session.get('numberOfGamesPlayed').numberOfGame;
+			} else {
+				return '-';
+			}
 		}
-
-		return this.profile.numberOfWin + this.profile.numberOfLost;
+		return '<div class="loading-icon fa fa-spinner fa-pulse" />';
 	},
 
 	winRate: function() {
-		if (!this.profile) {
-			return '-';
+		if (Session.get('numberOfGamesPlayed')) {
+			if (Object.keys(Session.get('numberOfGamesPlayed')).length > 0) {
+				return getWinRateFromNumbers(
+					Session.get('numberOfGamesPlayed').numberOfWin,
+					Session.get('numberOfGamesPlayed').numberOfLost
+				);
+			} else {
+				return '-';
+			}
+		}
+		return '<div class="loading-icon fa fa-spinner fa-pulse" />';
+	},
+
+	showShutoutsStatistics: function(tournamentId) {
+		if (tournamentId) {
+			const tournament = Tournaments.findOne({_id: tournamentId});
+
+			if (tournament) {
+				const mode = TournamentModeFactory.fromId(tournament.mode._id);
+
+				return !mode.overridesMaximumPoints() || mode.maximumPoints() > 1;
+			}
 		}
 
-		return getWinRate(this.profile);
+		return true;
 	},
 
 	numberOfShutouts: function() {
-		if (!this.profile) {
-			return '-';
+		if (Session.get('numberOfShutouts')) {
+			if (Object.keys(Session.get('numberOfShutouts')).length > 0) {
+				return Session.get('numberOfShutouts').numberOfShutouts;
+			} else {
+				return '-';
+			}
 		}
-
-		return this.profile.numberOfShutouts;
+		return '<div class="loading-icon fa fa-spinner fa-pulse" />';
 	},
 
 	numberOfShutoutLosses: function() {
-		if (!this.profile) {
-			return '-';
+		if (Session.get('numberOfShutouts')) {
+			if (Object.keys(Session.get('numberOfShutouts')).length > 0) {
+				return Session.get('numberOfShutouts').numberOfShutoutLosses;
+			} else {
+				return '-';
+			}
 		}
-
-		return this.profile.numberOfShutoutLosses;
+		return '<div class="loading-icon fa fa-spinner fa-pulse" />';
 	},
 
 	longestGameInformation: function(statisticName) {
@@ -88,7 +137,7 @@ Template.statistics.helpers({
 				return 'Game date: ' + Moment.moment(Session.get(statisticName).startedAt).format('YYYY-MM-DD HH:mm') + '<br />' +
 					'Opponent: ' + Session.get(statisticName).playerName;
 			} else {
-				return '-';
+				return '';
 			}
 		}
 		return '<div class="loading-icon fa fa-spinner fa-pulse" />';
@@ -106,33 +155,43 @@ Template.statistics.helpers({
 	},
 
 	eloStatInformation: function(statisticName) {
-		if (Session.get(statisticName)) {
+		if (Session.get(statisticName) !== null) {
+			if (!Session.get(statisticName)) {
+				return '';
+			}
 			return 'Game date: ' + Moment.moment(Session.get(statisticName).timestamp).format('YYYY-MM-DD HH:mm');
 		}
 		return '<div class="loading-icon fa fa-spinner fa-pulse" />';
 	},
 
 	eloStat: function(statisticName) {
-		if (Session.get(statisticName) !== undefined) {
+		if (Session.get(statisticName) !== null) {
+			if (!Session.get(statisticName)) {
+				return INITIAL_ELO_RATING;
+			}
 			return Session.get(statisticName).eloRating;
 		}
 		return '<div class="loading-icon fa fa-spinner fa-pulse" />';
 	},
 
 	eloRating: function() {
-		if (!this.profile) {
-			return INITIAL_ELO_RATING;
+		if (Session.get('currentElo') !== null) {
+			if (!Session.get('currentElo')) {
+				return INITIAL_ELO_RATING;
+			}
+			return Session.get('currentElo').eloRating;
 		}
-
-		return this.profile.eloRating;
+		return '<div class="loading-icon fa fa-spinner fa-pulse" />';
 	},
 
 	eloRatingLastChange: function() {
-		if (!this.profile) {
-			return null;
+		if (Session.get('currentElo') !== null) {
+			if (!Session.get('currentElo')) {
+				return null;
+			}
+			return Session.get('currentElo').eloRatingLastChange;
 		}
-
-		return this.profile.eloRatingLastChange;
+		return '<div class="loading-icon fa fa-spinner fa-pulse" />';
 	},
 
 	totalPlayingTime: function() {
@@ -152,7 +211,7 @@ Template.statistics.helpers({
 				return 'First game: ' + Moment.moment(Session.get('totalPlayingTime').firstGame).format('YYYY-MM-DD HH:mm') + '<br />' +
 					'Last game: ' + Moment.moment(Session.get('totalPlayingTime').lastGame).format('YYYY-MM-DD HH:mm');
 			} else {
-				return '-';
+				return '';
 			}
 		}
 		return '<div class="loading-icon fa fa-spinner fa-pulse" />';

@@ -27,7 +27,7 @@ export default class FinishedGameUpdater {
 		winnerProfileData['numberOfWin'] = winnerProfile.numberOfWin + 1;
 		loserProfileData['numberOfLost'] = loserProfile.numberOfLost + 1;
 
-		if (points.winnerPoints === game.maximumPoints && points.loserPoints === 0) {
+		if (game.maximumPoints > 1 && points.winnerPoints === game.maximumPoints && points.loserPoints === 0) {
 			winnerProfileData['numberOfShutouts'] = winnerProfile.numberOfShutouts + 1;
 			loserProfileData['numberOfShutoutLosses'] = loserProfile.numberOfShutoutLosses + 1;
 		}

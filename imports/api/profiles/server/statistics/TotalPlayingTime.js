@@ -3,7 +3,7 @@ import {Games} from '/imports/api/games/games.js';
 import {GAME_STATUS_FINISHED} from '/imports/api/games/statusConstants.js';
 
 export default class TotalPlayingTime {
-	static get(userId) {
+	static get(userId, tournamentId) {
 		const players = Players.find({userId: userId});
 		const gamesIds = [];
 
@@ -11,12 +11,18 @@ export default class TotalPlayingTime {
 			gamesIds.push(player.gameId);
 		});
 
+		const query = {
+			_id: {$in: gamesIds},
+			status: GAME_STATUS_FINISHED,
+			gameDuration: {$exists: true}
+		};
+
+		if (tournamentId) {
+			query.tournamentId = tournamentId;
+		}
+
 		const games = Games.find(
-			{
-				_id: {$in: gamesIds},
-				status: GAME_STATUS_FINISHED,
-				gameDuration: {$exists: true}
-			},
+			query,
 			{
 				sort: [['createdAt', 'asc']]
 			}
