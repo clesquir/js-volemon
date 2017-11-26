@@ -1,14 +1,12 @@
 import {Template} from 'meteor/templating';
+import {UserProfiles} from '/imports/api/profiles/userprofiles.js';
 import {loadStatistics} from '/imports/ui/components/statistics.js';
 
 import './userProfileComponent.html';
 
-class UserProfilesCollection extends Mongo.Collection {}
-const UserProfiles = new UserProfilesCollection('userprofiles');
-
 Template.userProfileComponent.onCreated(function() {
 	this.autorun(() => {
-		loadStatistics(Session.get('userProfile'), this.data.tournamentId);
+		loadStatistics(Session.get('userProfile'), this.data && this.data.tournamentId);
 	});
 });
 

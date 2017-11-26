@@ -1,21 +1,15 @@
 import {Meteor} from 'meteor/meteor';
 import {Session} from 'meteor/session';
-import {Profiles} from '/imports/api/profiles/profiles.js';
+import {UserProfiles} from '/imports/api/profiles/userprofiles.js';
 
 export const UserProfileController = RouteController.extend({
 	waitOn: function() {
 		return [
-			Meteor.subscribe('profileData', this.params.userId),
 			Meteor.subscribe('userProfile', this.params.userId)
 		];
 	},
-	data: function() {
-		return {
-			profile: Profiles.findOne({userId: this.params.userId})
-		};
-	},
 	onBeforeAction: function() {
-		const profile = Profiles.findOne({userId: this.params.userId});
+		const profile = UserProfiles.findOne({userId: this.params.userId});
 
 		if (!profile) {
 			Router.go('home');
