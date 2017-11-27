@@ -541,7 +541,7 @@ export default class Game {
 	startCountdownTimer() {
 		let timerDuration = 3;
 
-		if (this.gameData.isMatchPoint()) {
+		if (this.gameData.numberMaximumPoints() > 1 && this.gameData.isMatchPoint()) {
 			//Add one second to show text
 			timerDuration = 4;
 		}
@@ -632,7 +632,7 @@ export default class Game {
 			let countdownText = Math.ceil(this.engine.getTimerRemainingDuration(this.countdownTimer) / 1000),
 				scaleTo = 7;
 
-			if (countdownText === 4 && this.gameData.isMatchPoint()) {
+			if (countdownText === 4 && this.gameData.numberMaximumPoints() > 1 && this.gameData.isMatchPoint()) {
 				countdownText = 'MATCH POINT';
 				scaleTo = 3;
 

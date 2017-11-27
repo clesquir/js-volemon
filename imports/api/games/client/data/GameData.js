@@ -94,6 +94,10 @@ export default class GameData {
 		return hasGameAborted(this.status);
 	}
 
+	numberMaximumPoints() {
+		return this.maximumPoints;
+	}
+
 	isMatchPoint() {
 		return isMatchPoint(this.hostPoints, this.clientPoints, this.maximumPoints);
 	}

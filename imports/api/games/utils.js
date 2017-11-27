@@ -62,13 +62,13 @@ export const isForfeiting = function(game) {
 export const isMatchPoint = function(hostPoints, clientPoints, maximumPoints) {
 	let matchPoint = maximumPoints - 1;
 
-	return maximumPoints > 1 && (hostPoints === matchPoint || clientPoints === matchPoint);
+	return hostPoints === matchPoint || clientPoints === matchPoint;
 };
 
 export const isDeucePoint = function(hostPoints, clientPoints, maximumPoints) {
 	let matchPoint = maximumPoints - 1;
 
-	return maximumPoints > 1 && (hostPoints === matchPoint && clientPoints === matchPoint);
+	return hostPoints === matchPoint && clientPoints === matchPoint;
 };
 
 export const forfeitPlayerName = function(game) {

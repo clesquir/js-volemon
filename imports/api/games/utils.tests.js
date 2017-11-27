@@ -215,8 +215,8 @@ describe('game/utils#isMatchPoint', function() {
 		assert.isTrue(isMatchPoint(4, 4, 5));
 	});
 
-	it('returns false if maximum is 1', function() {
-		assert.isFalse(isMatchPoint(0, 0, 1));
+	it('returns true if maximum is 1', function() {
+		assert.isTrue(isMatchPoint(0, 0, 1));
 	});
 });
 
@@ -237,7 +237,7 @@ describe('game/utils#isDeuce', function() {
 		assert.isTrue(isDeucePoint(4, 4, 5));
 	});
 
-	it('returns false if maximum is 1', function() {
-		assert.isFalse(isDeucePoint(0, 0, 1));
+	it('returns true if maximum is 1', function() {
+		assert.isTrue(isDeucePoint(0, 0, 1));
 	});
 });
