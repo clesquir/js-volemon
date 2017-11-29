@@ -16,18 +16,13 @@ export default class ClientP2P {
 	constructor(socket, iceServers) {
 		this.socket = socket;
 		this.iceServers = iceServers;
-	}
+		this.onP2PListeners = {};
 
-	connect() {
 		this.emitfn = Emitter.prototype.emit;
 		this.addEventListener = Emitter.prototype.addEventListener;
 		this.removeEventListener = Emitter.prototype.removeEventListener;
-		this.usePeerConnection = false;
 		this.decoder = new parser.Decoder(this);
 		this.decoder.on('decoded', bind(this, this.ondecoded));
-		this._peers = {};
-		this.readyPeers = {};
-		this.ready = false;
 		this._peerEvents = {
 			upgrade: 1,
 			downgrade: 1,
@@ -45,6 +40,13 @@ export default class ClientP2P {
 				iceServers: this.iceServers
 			}
 		};
+	}
+
+	connect() {
+		this.usePeerConnection = false;
+		this._peers = {};
+		this.readyPeers = {};
+		this.ready = false;
 		this.numConnectedClients = 0;
 
 		this.socket.on('numClients', (numClients) => {
@@ -104,16 +106,7 @@ export default class ClientP2P {
 		});
 
 		this.socket.on('peer-disconnect', (peer) => {
-			if (this.readyPeers[peer.fromSocketId]) {
-				delete this.readyPeers[peer.fromSocketId];
-				this.numConnectedClients--;
-			}
-
-			if (Object.keys(this.readyPeers).length === 0 && this.ready) {
-				this.ready = false;
-				this.usePeerConnection = false;
-				this.emitP2P('downgrade');
-			}
+			this.disconnectPeer(peer);
 		});
 
 		this.onP2P('peer_ready', (peer) => {
@@ -125,6 +118,23 @@ export default class ClientP2P {
 				this.emitP2P('upgrade');
 			}
 		});
+	}
+
+	disconnectPeer(peer) {
+		if (this.readyPeers[peer.fromSocketId]) {
+			delete this.readyPeers[peer.fromSocketId];
+			this.numConnectedClients--;
+		}
+
+		if (this._peers[peer.id]) {
+			delete this._peers[peer.id];
+		}
+
+		if (Object.keys(this.readyPeers).length === 0 && this.ready) {
+			this.ready = false;
+			this.usePeerConnection = false;
+			this.emitP2P('downgrade');
+		}
 	}
 
 	disconnect() {
@@ -155,7 +165,17 @@ export default class ClientP2P {
 	}
 
 	on(eventName, callback) {
+		if (this.onP2PListeners[eventName] === undefined) {
+			this.onP2PListeners[eventName] = [];
+		}
+		this.onP2PListeners[eventName].push(callback);
+
+		this.addP2PListener(eventName, callback);
+	}
+
+	addP2PListener(eventName, callback) {
 		const me = this;
+
 		me.onP2P(eventName, function(data) {
 			if (me.allowP2PListener(data)) {
 				callback.apply(this, arguments);
@@ -310,16 +330,25 @@ export default class ClientP2P {
 					try {
 						peer.send(data);
 					} catch (e) {
-						self.onPeerError(e);
+						//peer will be disconnected on next call
+						self.onPeerError(e, peer, data);
 					}
+				} else if (peer.fromSocketId) {
+					self.onReadyPeerNotReady(peer);
 				}
 			}
 		}
 	}
 
-	onPeerError(e) {
-		Rollbar.error("Peer error", e);
-		this.connect();
+	onPeerError(e, peer, data) {
+		console.log('Peer error');
+		Rollbar.log('Peer error', {e: e, peer: peer, data: data});
+	}
+
+	onReadyPeerNotReady(peer) {
+		console.log('Peer fromSocketId disconnecting');
+		Rollbar.log('Peer fromSocketId disconnecting', {peer: peer});
+		this.disconnectPeer(peer);
 	}
 
 	binarySlice(arr, interval, callback) {
