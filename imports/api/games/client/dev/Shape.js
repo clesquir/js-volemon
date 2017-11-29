@@ -76,7 +76,7 @@ export default class Shape {
 
 			this.game['player' + playerIndex] = this.game.engine.addSprite(xPosition, yPosition, 'shape-' + PLAYER_LIST_OF_SHAPES[i]);
 			this.game['player' + playerIndex].data.key = 'player' + playerIndex;
-			this.game.createPlayer(this.game['player' + playerIndex], xPosition, yPosition, 'player' + playerIndex);
+			this.game.createPlayer(this.game['player' + playerIndex], xPosition, yPosition, 'player' + playerIndex, this.game.hostPlayerCollisionGroup);
 
 			xPosition += PLAYER_WIDTH + 5;
 		}

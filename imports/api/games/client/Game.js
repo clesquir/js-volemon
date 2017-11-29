@@ -187,7 +187,7 @@ export default class Game {
 		 */
 		this.player1 = this.engine.addSprite(initialXLocation, initialYLocation, 'shape-' + this.gameData.getPlayerShapeFromKey('player1'));
 		this.player1.data.key = 'player1';
-		this.createPlayer(this.player1, initialXLocation, initialYLocation, 'player1');
+		this.createPlayer(this.player1, initialXLocation, initialYLocation, 'player1', this.hostPlayerCollisionGroup);
 
 		/**
 		 * Player 2
@@ -195,7 +195,7 @@ export default class Game {
 		initialXLocation = this.xSize - PLAYER_INITIAL_LOCATION;
 		this.player2 = this.engine.addSprite(initialXLocation, initialYLocation, 'shape-' + this.gameData.getPlayerShapeFromKey('player2'));
 		this.player2.data.key = 'player2';
-		this.createPlayer(this.player2, initialXLocation, initialYLocation, 'player2');
+		this.createPlayer(this.player2, initialXLocation, initialYLocation, 'player2', this.clientPlayerCollisionGroup);
 
 		this.createBall(PLAYER_INITIAL_LOCATION, this.ySize - this.groundHeight - BALL_DISTANCE_FROM_GROUND);
 
@@ -225,7 +225,8 @@ export default class Game {
 	}
 
 	createCollisionGroupsAndMaterials() {
-		this.playerCollisionGroup = this.engine.createCollisionGroup();
+		this.hostPlayerCollisionGroup = this.engine.createCollisionGroup();
+		this.clientPlayerCollisionGroup = this.engine.createCollisionGroup();
 		this.ballCollisionGroup = this.engine.createCollisionGroup();
 		this.hostPlayerDelimiterCollisionGroup = this.engine.createCollisionGroup();
 		this.clientPlayerDelimiterCollisionGroup = this.engine.createCollisionGroup();
@@ -262,14 +263,6 @@ export default class Game {
 		this.engine.createContactMaterial(material, this.groundDelimiterMaterial, config);
 	}
 
-	collidesWithPlayerDelimiter(sprite, callback, scope) {
-		if (sprite === this.player1) {
-			this.engine.collidesWith(sprite, this.hostPlayerDelimiterCollisionGroup, callback, scope);
-		} else {
-			this.engine.collidesWith(sprite, this.clientPlayerDelimiterCollisionGroup, callback, scope);
-		}
-	}
-
 	collidesWithNetHitDelimiter(sprite, callback, scope) {
 		this.engine.collidesWith(sprite, this.netHitDelimiterCollisionGroup, callback, scope);
 	}
@@ -278,15 +271,19 @@ export default class Game {
 		this.engine.collidesWith(sprite, this.groundHitDelimiterCollisionGroup, callback, scope);
 	}
 
-	collidesWithPlayer(sprite, callback, scope) {
-		this.engine.collidesWith(sprite, this.playerCollisionGroup, callback, scope);
+	collidesWithHostPlayer(sprite, callback, scope) {
+		this.engine.collidesWith(sprite, this.hostPlayerCollisionGroup, callback, scope);
+	}
+
+	collidesWithClientPlayer(sprite, callback, scope) {
+		this.engine.collidesWith(sprite, this.clientPlayerCollisionGroup, callback, scope);
 	}
 
 	collidesWithBall(sprite, callback, scope) {
 		this.engine.collidesWith(sprite, this.ballCollisionGroup, callback, scope);
 	}
 
-	createPlayer(player, initialXLocation, initialYLocation, playerKey) {
+	createPlayer(player, initialXLocation, initialYLocation, playerKey, playerCollisionGroup) {
 		player.data.initialXLocation = initialXLocation;
 		player.data.initialYLocation = initialYLocation;
 		player.data.initialMass = PLAYER_MASS;
@@ -296,6 +293,7 @@ export default class Game {
 		player.data.velocityXOnMove = PLAYER_VELOCITY_X_ON_MOVE;
 		player.data.velocityYOnJump = PLAYER_VELOCITY_Y_ON_JUMP;
 		player.data.doingDropShot = false;
+		player.data.playerCollisionGroup = playerCollisionGroup;
 		//These are related to bonus but managed in this class
 		player.data.moveModifier = 1;
 		player.data.isFrozen = false;
@@ -342,10 +340,15 @@ export default class Game {
 		}
 
 		this.engine.setMaterial(player, this.playerMaterial);
-		this.engine.setCollisionGroup(player, this.playerCollisionGroup);
+		this.engine.setCollisionGroup(player, player.data.playerCollisionGroup);
 
-		this.collidesWithPlayer(player);
-		this.collidesWithPlayerDelimiter(player);
+		if (player.data.playerCollisionGroup === this.hostPlayerCollisionGroup) {
+			this.collidesWithHostPlayer(player);
+			this.engine.collidesWith(player, this.hostPlayerDelimiterCollisionGroup);
+		} else if (player.data.playerCollisionGroup === this.clientPlayerCollisionGroup) {
+			this.collidesWithClientPlayer(player);
+			this.engine.collidesWith(player, this.clientPlayerDelimiterCollisionGroup);
+		}
 		this.collidesWithBall(player);
 		this.gameBonus.collidesWithBonus(player);
 	}
@@ -379,7 +382,8 @@ export default class Game {
 		this.engine.setMaterial(this.ball, this.ballMaterial);
 		this.engine.setCollisionGroup(this.ball, this.ballCollisionGroup);
 
-		this.collidesWithPlayer(this.ball, this.hitBall, this);
+		this.collidesWithHostPlayer(this.ball, this.hitBall, this);
+		this.collidesWithClientPlayer(this.ball, this.hitBall, this);
 		this.collidesWithNetHitDelimiter(this.ball);
 		this.collidesWithGroundHitDelimiter(this.ball, this.hitGround, this);
 		this.gameBonus.collidesWithBonus(this.ball);
@@ -423,7 +427,7 @@ export default class Game {
 		this.engine.setStatic(groupItem, true);
 		this.engine.setMaterial(groupItem, this.playerDelimiterMaterial);
 		this.engine.setCollisionGroup(groupItem, this.hostPlayerDelimiterCollisionGroup);
-		this.collidesWithPlayer(groupItem);
+		this.collidesWithHostPlayer(groupItem);
 
 		/**
 		 * Client player delimiter
@@ -440,7 +444,7 @@ export default class Game {
 		this.engine.setStatic(groupItem, true);
 		this.engine.setMaterial(groupItem, this.playerDelimiterMaterial);
 		this.engine.setCollisionGroup(groupItem, this.clientPlayerDelimiterCollisionGroup);
-		this.collidesWithPlayer(groupItem);
+		this.collidesWithClientPlayer(groupItem);
 
 		/**
 		 * Ball hit delimiter
@@ -489,7 +493,7 @@ export default class Game {
 		this.engine.setStatic(groupItem, true);
 		this.engine.setMaterial(groupItem, this.playerDelimiterMaterial);
 		this.engine.setCollisionGroup(groupItem, this.hostPlayerDelimiterCollisionGroup);
-		this.collidesWithPlayer(groupItem);
+		this.collidesWithHostPlayer(groupItem);
 
 		/**
 		 * Client player delimiter
@@ -505,7 +509,7 @@ export default class Game {
 		this.engine.setStatic(groupItem, true);
 		this.engine.setMaterial(groupItem, this.playerDelimiterMaterial);
 		this.engine.setCollisionGroup(groupItem, this.clientPlayerDelimiterCollisionGroup);
-		this.collidesWithPlayer(groupItem);
+		this.collidesWithClientPlayer(groupItem);
 
 		/**
 		 * Ball hit delimiter

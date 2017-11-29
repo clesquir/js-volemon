@@ -77,12 +77,12 @@ export default class Environment {
 
 		this.game.player1 = this.gameEngine.addSprite(xPosition, yPosition, 'shape-' + playerShape);
 		this.game.player1.data.key = 'player1';
-		this.game.createPlayer(this.game.player1, xPosition, yPosition, 'shape-' + playerShape);
+		this.game.createPlayer(this.game.player1, xPosition, yPosition, 'shape-' + playerShape, this.game.hostPlayerCollisionGroup);
 
 		xPosition = this.game.xSize - PLAYER_INITIAL_LOCATION;
 		this.game.player2 = this.gameEngine.addSprite(xPosition, yPosition, 'shape-' + playerShape);
 		this.game.player2.data.key = 'player2';
-		this.game.createPlayer(this.game.player2, xPosition, yPosition, 'shape-' + playerShape);
+		this.game.createPlayer(this.game.player2, xPosition, yPosition, 'shape-' + playerShape, this.game.hostPlayerCollisionGroup);
 
 		this.game.createBall(100, 100);
 

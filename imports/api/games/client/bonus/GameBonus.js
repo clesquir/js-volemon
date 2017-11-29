@@ -641,36 +641,11 @@ export default class GameBonus {
 
 		this.bonuses.push(bonusSprite);
 
-		this.game.collidesWithPlayer(bonusSprite, (bonusItem, player) => {
-			if (this.gameData.isUserHost()) {
-				const playerKey = this.engine.getKey(player);
-				const activatedAt = this.serverNormalizedTime.getServerTimestamp();
-				const payload = {
-					identifier: bonusSprite.identifier,
-					player: playerKey,
-					activatedAt: activatedAt,
-					x: this.engine.getXPosition(bonusSprite),
-					y: this.engine.getYPosition(bonusSprite)
-				};
-
-				bonusSprite.data.bonus.beforeActivation(payload);
-				payload.beforeActivationData = bonusSprite.data.bonus.beforeActivationData();
-
-				//Send to client
-				this.gameStreamBundler.emitStream(
-					'activateBonus-' + this.game.gameId,
-					payload
-				);
-				//Activate bonus
-				this.activateBonus(
-					bonusSprite.identifier,
-					playerKey,
-					activatedAt,
-					this.engine.getXPosition(bonusSprite),
-					this.engine.getYPosition(bonusSprite),
-					payload.beforeActivationData
-				);
-			}
+		this.game.collidesWithHostPlayer(bonusSprite, (bonusItem, player) => {
+			this.onBonusCollidesPlayer(bonusSprite, player);
+		}, this);
+		this.game.collidesWithClientPlayer(bonusSprite, (bonusItem, player) => {
+			this.onBonusCollidesPlayer(bonusSprite, player);
 		}, this);
 		this.game.collidesWithNetHitDelimiter(bonusSprite);
 		this.game.collidesWithGroundHitDelimiter(bonusSprite);
@@ -678,6 +653,38 @@ export default class GameBonus {
 		this.engine.collidesWith(bonusSprite, this.bonusCollisionGroup);
 
 		return bonusSprite;
+	}
+
+	onBonusCollidesPlayer(bonusSprite, player) {
+		if (this.gameData.isUserHost()) {
+			const playerKey = this.engine.getKey(player);
+			const activatedAt = this.serverNormalizedTime.getServerTimestamp();
+			const payload = {
+				identifier: bonusSprite.identifier,
+				player: playerKey,
+				activatedAt: activatedAt,
+				x: this.engine.getXPosition(bonusSprite),
+				y: this.engine.getYPosition(bonusSprite)
+			};
+
+			bonusSprite.data.bonus.beforeActivation(payload);
+			payload.beforeActivationData = bonusSprite.data.bonus.beforeActivationData();
+
+			//Send to client
+			this.gameStreamBundler.emitStream(
+				'activateBonus-' + this.game.gameId,
+				payload
+			);
+			//Activate bonus
+			this.activateBonus(
+				bonusSprite.identifier,
+				playerKey,
+				activatedAt,
+				this.engine.getXPosition(bonusSprite),
+				this.engine.getYPosition(bonusSprite),
+				payload.beforeActivationData
+			);
+		}
 	}
 
 	activateBonus(bonusIdentifier, playerKey, activatedAt, x, y, beforeActivationData) {
