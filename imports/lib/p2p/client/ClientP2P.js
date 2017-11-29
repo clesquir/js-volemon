@@ -89,6 +89,11 @@ export default class ClientP2P {
 		this.socket.on('peer-signal', (data) => {
 			// Select peer from offerId if exists
 			const peer = this._peers[data.offerId] || this._peers[data.fromPeerId];
+
+			if (!peer) {
+				return;
+			}
+
 			peer.fromSocketId = data.fromSocketId;
 
 			peer.on('signal', (signalData) => {
