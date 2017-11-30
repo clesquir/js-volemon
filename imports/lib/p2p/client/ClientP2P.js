@@ -117,6 +117,11 @@ export default class ClientP2P {
 		this.onP2P('peer_ready', (peer) => {
 			this.readyPeers[peer.fromSocketId] = true;
 
+			const localPeer = this._peers[peer.id];
+			if (localPeer) {
+				localPeer.hasInitiated = true;
+			}
+
 			if (Object.keys(this.readyPeers).length > 0 && !this.ready) {
 				this.ready = true;
 				if (this.opts.autoUpgrade) this.usePeerConnection = true;
@@ -338,7 +343,7 @@ export default class ClientP2P {
 						//peer will be disconnected on next call
 						self.onPeerError(e, peer, data);
 					}
-				} else if (peer.fromSocketId) {
+				} else if (peer.fromSocketId && peer.hasInitiated) {
 					self.onReadyPeerNotReady(peer);
 				}
 			}
