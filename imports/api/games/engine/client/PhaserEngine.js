@@ -41,7 +41,9 @@ export default class PhaserEngine extends Engine {
 				preloadGame.call(scope);
 
 				this.game.load.onLoadComplete.add(() => {
-					this.game.state.start('play');
+					if (this.game.state) {
+						this.game.state.start('play');
+					}
 				}, this);
 				this.game.load.start();
 			}
