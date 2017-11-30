@@ -340,25 +340,27 @@ export default class ClientP2P {
 					try {
 						peer.send(data);
 					} catch (e) {
-						//peer will be disconnected on next call
-						self.onPeerError(e, peer, data);
+						self.onPeerError(peer);
 					}
-				} else if (peer.fromSocketId && peer.hasInitiated) {
+				} else {
 					self.onReadyPeerNotReady(peer);
 				}
 			}
 		}
 	}
 
-	onPeerError(e, peer, data) {
-		console.log('Peer error');
-		Rollbar.log('Peer error', {e: e, peer: peer, data: data});
+	onPeerError(peer) {
+		if (peer.fromSocketId && peer.hasInitiated) {
+			Rollbar.log('Peer error', {peer: peer});
+			this.disconnectPeer(peer);
+		}
 	}
 
 	onReadyPeerNotReady(peer) {
-		console.log('Peer fromSocketId disconnecting');
-		Rollbar.log('Peer fromSocketId disconnecting', {peer: peer});
-		this.disconnectPeer(peer);
+		if (peer.fromSocketId && peer.hasInitiated) {
+			Rollbar.log('Peer fromSocketId disconnecting', {peer: peer});
+			this.disconnectPeer(peer);
+		}
 	}
 
 	binarySlice(arr, interval, callback) {
