@@ -7,7 +7,7 @@ export default class InvisibleOpponentMonsterBonus extends MonsterBonus {
 		super(...args);
 		this.spriteBorderKey = 'bonus-target-positive';
 		this.letter = '\uf070';
-		this.description = 'Invincible opponent player';
+		this.description = 'Invisible opponent player';
 	}
 
 	classNameToActivate() {
