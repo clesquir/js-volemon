@@ -314,7 +314,7 @@ export default class Game {
 		this.setupPlayerBody(player);
 	}
 
-	updatePlayerPolygon(player, ) {
+	updatePlayerPolygon(player) {
 		this.applyPlayerPolygon(player);
 		this.applyPlayerPolygon(player); //Calling this twice fix a bug where sprite and body are not in sync
 	}
@@ -409,7 +409,8 @@ export default class Game {
 			this.xSize,
 			this.groundHeight,
 			'ground',
-			this.level
+			this.level,
+			true
 		);
 
 		/**
@@ -476,7 +477,8 @@ export default class Game {
 			GAME_NET_THICKNESS,
 			GAME_NET_HEIGHT,
 			'net',
-			this.level
+			this.level,
+			true
 		);
 
 		/**
@@ -605,7 +607,6 @@ export default class Game {
 	}
 
 	updateGame() {
-		this.engine.updateGame();
 		this.gameStreamBundler.resetBundledStreams();
 
 		//Do not allow ball movement if it is frozen
