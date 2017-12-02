@@ -34,12 +34,19 @@ export default class GameSkin {
 	 */
 	createBackgroundComponent(engine, xSize, ySize) {
 		for (let backgroundComponent of this.skin.backgroundComponents()) {
-			const background = engine.addTileSprite(xSize / 2, ySize / 2, xSize, ySize, backgroundComponent.key);
+			const background = engine.addTileSprite(
+				0,
+				0,
+				xSize, 
+				ySize,
+				backgroundComponent.key,
+				undefined,
+				true
+			);
 			if (backgroundComponent.animate) {
 				background.animations.add('animation');
 				background.animations.play('animation', 5, true);
 			}
-			engine.setStatic(background, true);
 			background.sendToBack();
 		}
 	}

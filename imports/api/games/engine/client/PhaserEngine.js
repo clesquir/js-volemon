@@ -105,9 +105,6 @@ export default class PhaserEngine extends Engine {
 		});
 	}
 
-	updateGame() {
-	}
-
 	loadScaledPhysics(originalPhysicsKey, newPhysicsKey, shapeKey, scale) {
 		const newData = [];
 		const data = this.game.cache.getPhysicsData(originalPhysicsKey, shapeKey);
@@ -506,6 +503,25 @@ export default class PhaserEngine extends Engine {
 
 	setAnchor(sprite, anchor) {
 		sprite.anchor.set(anchor);
+	}
+
+	tweenRotate(sprite, rotateSpeed) {
+		const engine = this;
+		const time = 1;
+		const tween = this.game.add.tween(sprite);
+
+		sprite.data.tweenRotate = tween;
+
+		tween.onComplete.add(() => {
+			engine.tweenRotate(sprite, rotateSpeed);
+		});
+		tween.to({angle: sprite.angle + rotateSpeed * time}, time, Phaser.Easing.Linear.None, true);
+	}
+
+	stopTweenRotation(sprite) {
+		if (sprite.data.tweenRotate) {
+			sprite.data.tweenRotate.stop();
+		}
 	}
 
 	rotateLeft(sprite, velocity) {
