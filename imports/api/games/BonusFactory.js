@@ -18,6 +18,7 @@ import BounceMonsterBonus from '/imports/api/games/bonus/BounceMonsterBonus.js';
 import CloakedMonsterBonus from '/imports/api/games/bonus/CloakedMonsterBonus.js';
 import ShapeShiftBonus from '/imports/api/games/bonus/ShapeShiftBonus.js';
 import SmokeBombBonus from '/imports/api/games/bonus/SmokeBombBonus.js';
+import InstantDeathBonus from '/imports/api/games/bonus/InstantDeathBonus.js';
 import RandomBonus from '/imports/api/games/bonus/RandomBonus.js';
 import {
 	BONUS_SMALL_BALL,
@@ -39,6 +40,7 @@ import {
 	BONUS_CLOAKED_MONSTER,
 	BONUS_SHAPE_SHIFT,
 	BONUS_SMOKE_BOMB,
+	BONUS_INSTANT_DEATH,
 	BONUS_RANDOM
 } from '/imports/api/games/bonusConstants.js';
 
@@ -175,6 +177,8 @@ export default class BonusFactory {
 				return new ShapeShiftBonus(game, bonusClass);
 			case BONUS_SMOKE_BOMB:
 				return new SmokeBombBonus(game, bonusClass);
+			case BONUS_INSTANT_DEATH:
+				return new InstantDeathBonus(game, bonusClass);
 			case BONUS_RANDOM:
 				return new RandomBonus(game, bonusClass);
 		}

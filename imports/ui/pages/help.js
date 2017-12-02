@@ -8,6 +8,7 @@ import CloakedMonsterBonus from '/imports/api/games/bonus/CloakedMonsterBonus.js
 import CloudBonus from '/imports/api/games/bonus/CloudBonus.js';
 import FastMonsterBonus from '/imports/api/games/bonus/FastMonsterBonus.js';
 import FreezeMonsterBonus from '/imports/api/games/bonus/FreezeMonsterBonus.js';
+import InstantDeathBonus from '/imports/api/games/bonus/InstantDeathBonus.js';
 import InvincibleMonsterBonus from '/imports/api/games/bonus/InvincibleMonsterBonus.js';
 import InvisibleBallBonus from '/imports/api/games/bonus/InvisibleBallBonus.js';
 import InvisibleMonsterBonus from '/imports/api/games/bonus/InvisibleMonsterBonus.js';
@@ -58,6 +59,7 @@ Template.help.helpers({
 			new CloakedMonsterBonus(),
 			new ShapeShiftBonus(),
 			new InvincibleMonsterBonus(),
+			new InstantDeathBonus(),
 		];
 		const helpList = [];
 

@@ -1,11 +1,11 @@
 import {
-	TOURNAMENT_MODE_CLASSIC, TOURNAMENT_MODE_DEATH_BONUS,
+	TOURNAMENT_MODE_CLASSIC, TOURNAMENT_MODE_INSTANT_DEATH_BONUS,
 	TOURNAMENT_MODE_HARDCORE, TOURNAMENT_MODE_RANDOM_BONUSES, TOURNAMENT_MODE_SHAPE_SHIFT, TOURNAMENT_MODE_SMOKE_BOMB,
 	TOURNAMENT_MODE_SUDDEN_DEATH, TOURNAMENT_MODE_SUPER_BOUNCE_WALLS, TOURNAMENT_MODE_JUPITER_GRAVITY,
 	TOURNAMENT_MODE_MOON_GRAVITY
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 import Classic from './Classic';
-import DeathBonus from './DeathBonus';
+import InstantDeathBonus from './InstantDeathBonus';
 import Hardcore from './Hardcore';
 import RandomBonuses from './RandomBonuses';
 import ShapeShift from './ShapeShift';
@@ -20,8 +20,8 @@ export default class TournamentModeFactory {
 		switch(id) {
 			case TOURNAMENT_MODE_CLASSIC:
 				return new Classic();
-			case TOURNAMENT_MODE_DEATH_BONUS:
-				return new DeathBonus();
+			case TOURNAMENT_MODE_INSTANT_DEATH_BONUS:
+				return new InstantDeathBonus();
 			case TOURNAMENT_MODE_HARDCORE:
 				return new Hardcore();
 			case TOURNAMENT_MODE_RANDOM_BONUSES:

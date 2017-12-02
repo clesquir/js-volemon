@@ -4,7 +4,6 @@ import {
 	GAME_X_SIZE,
 	GAME_Y_SIZE,
 	GAME_GROUND_HEIGHT,
-	BONUS_RADIUS,
 	BONUS_GRAVITY_SCALE,
 	NORMAL_SCALE_BONUS,
 	SMALL_SCALE_PLAYER_BONUS,
@@ -13,7 +12,9 @@ import {
 	NORMAL_SCALE_PHYSICS_DATA,
 	SMALL_SCALE_PHYSICS_DATA,
 	BIG_SCALE_PHYSICS_DATA,
-	PLAYER_FROZEN_MASS
+	PLAYER_FROZEN_MASS,
+	CLIENT_POINTS_COLUMN,
+	HOST_POINTS_COLUMN
 } from '/imports/api/games/constants.js';
 import {
 	BONUS_INTERVAL
@@ -650,6 +651,32 @@ export default class GameBonus {
 					smokeBomb.destroy();
 				}, this).start();
 			}
+		}
+	}
+
+	killPlayer(playerKey) {
+		const player = this.game.getPlayerFromKey(playerKey);
+
+		if (!player) {
+			return;
+		}
+
+		if (this.gameData.isUserHost() && this.game.gameResumed === true) {
+			let pointSide;
+
+			if (playerKey === 'player1') {
+				pointSide = CLIENT_POINTS_COLUMN;
+			} else {
+				pointSide = HOST_POINTS_COLUMN;
+			}
+
+			if (this.isPlayerInvincible(this.game.getPlayerFromKey(playerKey))) {
+				return;
+			}
+
+			this.game.gameResumed = false;
+
+			Meteor.apply('addGamePoints', [this.game.gameId, pointSide], {noRetry: true}, () => {});
 		}
 	}
 

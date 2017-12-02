@@ -5,7 +5,7 @@ import {
 	TOURNAMENT_MODE_HARDCORE,
 	TOURNAMENT_MODE_RANDOM_BONUSES,
 	TOURNAMENT_MODE_SHAPE_SHIFT,
-	TOURNAMENT_MODE_DEATH_BONUS,
+	TOURNAMENT_MODE_INSTANT_DEATH_BONUS,
 	TOURNAMENT_MODE_SMOKE_BOMB,
 	TOURNAMENT_MODE_SUDDEN_DEATH,
 	TOURNAMENT_MODE_SUPER_BOUNCE_WALLS,
@@ -35,8 +35,8 @@ Meteor.startup(function() {
 			"description": "Player shapes are shifting continuously"
 		},
 		{
-			"_id": TOURNAMENT_MODE_DEATH_BONUS,
-			"name": "Death bonus tournament",
+			"_id": TOURNAMENT_MODE_INSTANT_DEATH_BONUS,
+			"name": "Instant death bonus tournament",
 			"description": "Bonuses spawning are only instant death"
 		},
 		{
