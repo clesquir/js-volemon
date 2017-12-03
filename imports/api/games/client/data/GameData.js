@@ -110,6 +110,7 @@ export default class GameData {
 		let game = this.fetchGame();
 
 		this.maximumPoints = game.maximumPoints;
+		this.hasBonuses = game.hasBonuses;
 		this.createdBy = game.createdBy;
 		this.tournamentId = game.tournamentId;
 

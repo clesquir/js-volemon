@@ -10,7 +10,8 @@ import {
 	TOURNAMENT_MODE_SUDDEN_DEATH,
 	TOURNAMENT_MODE_SUPER_BOUNCE_WALLS,
 	TOURNAMENT_MODE_MOON_GRAVITY,
-	TOURNAMENT_MODE_JUPITER_GRAVITY
+	TOURNAMENT_MODE_JUPITER_GRAVITY,
+	TOURNAMENT_MODE_NO_BONUSES
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 
 Meteor.startup(function() {
@@ -63,6 +64,10 @@ Meteor.startup(function() {
 			"_id": TOURNAMENT_MODE_JUPITER_GRAVITY,
 			"name": "Jupiter gravity",
 			"description": "The gravity force is strong with this one"
+		},
+		{
+			"_id": TOURNAMENT_MODE_NO_BONUSES,
+			"name": "No bonuses"
 		}
 	];
 

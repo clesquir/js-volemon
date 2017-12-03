@@ -44,6 +44,14 @@ export default class GameConfiguration {
 		return GAME_MAXIMUM_POINTS;
 	}
 
+	hasBonuses() {
+		if (this.hasTournament() && this.tournamentMode.overridesHasBonuses()) {
+			return this.tournamentMode.hasBonuses();
+		}
+
+		return true;
+	}
+
 	bonusRadius() {
 		if (this.hasTournament() && this.tournamentMode.overridesBonusRadius()) {
 			return this.tournamentMode.bonusRadius();

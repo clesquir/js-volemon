@@ -60,4 +60,11 @@ export default class Classic {
 
 	maximumPoints() {
 	}
+
+	overridesHasBonuses() {
+		return false;
+	}
+
+	hasBonuses() {
+	}
 }

@@ -617,7 +617,10 @@ export default class Game {
 
 		if (this.gameIsOnGoing()) {
 			this.inputs();
-			this.gameBonus.onUpdateGameOnGoing();
+
+			if (this.gameData.hasBonuses) {
+				this.gameBonus.onUpdateGameOnGoing();
+			}
 
 			this.updateCountdown();
 

@@ -68,6 +68,7 @@ export const createGame = function(userId, gameInitiators, tournamentId = null) 
 	configuration.init();
 	Games.update({_id: id}, {$set: {forfeitMinimumPoints: configuration.forfeitMinimumPoints()}});
 	Games.update({_id: id}, {$set: {maximumPoints: configuration.maximumPoints()}});
+	Games.update({_id: id}, {$set: {hasBonuses: configuration.hasBonuses()}});
 
 	gameInitiators[id] = new GameInitiator(id);
 	gameInitiators[id].init();
