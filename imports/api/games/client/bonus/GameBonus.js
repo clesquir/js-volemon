@@ -661,22 +661,8 @@ export default class GameBonus {
 			return;
 		}
 
-		if (this.gameData.isUserHost() && this.game.gameResumed === true) {
-			let pointSide;
-
-			if (playerKey === 'player1') {
-				pointSide = CLIENT_POINTS_COLUMN;
-			} else {
-				pointSide = HOST_POINTS_COLUMN;
-			}
-
-			if (this.isPlayerInvincible(this.game.getPlayerFromKey(playerKey))) {
-				return;
-			}
-
-			this.game.gameResumed = false;
-
-			Meteor.apply('addGamePoints', [this.game.gameId, pointSide], {noRetry: true}, () => {});
+		if (this.game.canAddGamePoint(playerKey)) {
+			this.game.addGamePoint(playerKey);
 		}
 	}
 

@@ -774,25 +774,24 @@ export default class Game {
 		this.engine.setVerticalSpeed(ball, BALL_VERTICAL_SPEED_ON_PLAYER_HIT);
 	}
 
+	canAddGamePoint(playerKey) {
+		return (
+			this.gameResumed === true &&
+			this.gameData.isUserHost() &&
+			!this.gameBonus.isPlayerInvincible(this.getPlayerFromKey(playerKey))
+		);
+	}
+
 	hitGround(ball) {
-		if (this.gameData.isUserHost() && this.gameResumed === true) {
-			let playerKey;
-			let pointSide;
+		let playerKey;
 
-			if (ball.x < this.xSize / 2) {
-				playerKey = 'player1';
-				pointSide = CLIENT_POINTS_COLUMN;
-			} else {
-				playerKey = 'player2';
-				pointSide = HOST_POINTS_COLUMN;
-			}
+		if (ball.x < this.xSize / 2) {
+			playerKey = 'player1';
+		} else {
+			playerKey = 'player2';
+		}
 
-			if (this.gameBonus.isPlayerInvincible(this.getPlayerFromKey(playerKey))) {
-				return;
-			}
-
-			this.gameResumed = false;
-
+		if (this.canAddGamePoint(playerKey)) {
 			//Send to client
 			this.gameStreamBundler.emitStream(
 				'showBallHitPoint-' + this.gameId,
@@ -808,8 +807,22 @@ export default class Game {
 				this.engine.getHeight(this.ball)
 			);
 
-			Meteor.apply('addGamePoints', [this.gameId, pointSide], {noRetry: true}, () => {});
+			this.addGamePoint(playerKey);
 		}
+	}
+
+	addGamePoint(playerKey) {
+		let pointSide;
+
+		if (playerKey === 'player1') {
+			pointSide = CLIENT_POINTS_COLUMN;
+		} else {
+			pointSide = HOST_POINTS_COLUMN;
+		}
+
+		this.gameResumed = false;
+
+		Meteor.apply('addGamePoints', [this.gameId, pointSide], {noRetry: true}, () => {});
 	}
 
 	inputs() {
