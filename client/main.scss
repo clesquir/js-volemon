@@ -77,18 +77,18 @@ $desktop-max-height: 70em;
 }
 
 //Pages
-@import "{}/imports/ui/components/achievementPopup.scss";
-@import "{}/imports/ui/components/achievements.scss";
-@import "{}/imports/ui/components/afterGame.scss";
-@import "{}/imports/ui/components/gameCanvas.scss";
-@import "{}/imports/ui/components/gameSetup.scss";
 @import "{}/imports/ui/components/lightbox.scss";
 @import "{}/imports/ui/components/loading.scss";
-@import "{}/imports/ui/components/reactions.scss";
-@import "{}/imports/ui/components/recentGames.scss";
 @import "{}/imports/ui/components/shapeSelector.scss";
-@import "{}/imports/ui/components/statistics.scss";
-@import "{}/imports/ui/components/userProfileComponent.scss";
+@import "{}/imports/ui/views/achievementPopup.scss";
+@import "{}/imports/ui/views/achievements.scss";
+@import "{}/imports/ui/views/afterGame.scss";
+@import "{}/imports/ui/views/gameCanvas.scss";
+@import "{}/imports/ui/views/gameSetup.scss";
+@import "{}/imports/ui/views/reactions.scss";
+@import "{}/imports/ui/views/recentGames.scss";
+@import "{}/imports/ui/views/statistics.scss";
+@import "{}/imports/ui/views/userProfileComponent.scss";
 @import "{}/imports/ui/pages/app.scss";
 @import "{}/imports/ui/pages/help.scss";
 @import "{}/imports/ui/pages/home.scss";

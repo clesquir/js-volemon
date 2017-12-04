@@ -4,7 +4,7 @@ import {Session} from 'meteor/session';
 import {Router} from 'meteor/iron:router';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {canPlayTournament, isTournamentActive} from '/imports/api/tournaments/utils.js';
-import {loadStatistics} from '/imports/ui/components/statistics.js';
+import {loadStatistics} from '/imports/ui/views/statistics.js';
 
 import './tournament.html';
 

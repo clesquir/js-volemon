@@ -28,23 +28,23 @@ import '/imports/ui/pages/userProfile.js';
 import '/imports/ui/pages/dev/environment.js';
 import '/imports/ui/pages/dev/shape.js';
 
-import '/imports/ui/components/achievementPopup.js';
-import '/imports/ui/components/achievementRanking.js';
-import '/imports/ui/components/achievements.js';
-import '/imports/ui/components/afterGame.js';
-import '/imports/ui/components/eloRanking.js';
-import '/imports/ui/components/eloRatingChange.js';
 import '/imports/ui/components/lightbox.js';
 import '/imports/ui/components/loading.js';
-import '/imports/ui/components/gameCanvas.js';
-import '/imports/ui/components/gameSetup.js';
-import '/imports/ui/components/gamesList.js';
-import '/imports/ui/components/reactions.js';
-import '/imports/ui/components/recentGames.js';
 import '/imports/ui/components/shapeSelector.js';
-import '/imports/ui/components/statistics.js';
 import '/imports/ui/components/switchButton.js';
-import '/imports/ui/components/userProfileComponent.js';
+import '/imports/ui/views/eloRanking.js';
+import '/imports/ui/views/eloRatingChange.js';
+import '/imports/ui/views/achievementPopup.js';
+import '/imports/ui/views/achievementRanking.js';
+import '/imports/ui/views/achievements.js';
+import '/imports/ui/views/afterGame.js';
+import '/imports/ui/views/gameCanvas.js';
+import '/imports/ui/views/gameSetup.js';
+import '/imports/ui/views/gamesList.js';
+import '/imports/ui/views/reactions.js';
+import '/imports/ui/views/recentGames.js';
+import '/imports/ui/views/statistics.js';
+import '/imports/ui/views/userProfileComponent.js';
 
 Router.configure({
 	layoutTemplate: 'app',

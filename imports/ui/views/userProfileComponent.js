@@ -1,6 +1,6 @@
 import {Template} from 'meteor/templating';
 import {UserProfiles} from '/imports/api/profiles/userprofiles.js';
-import {loadStatistics} from '/imports/ui/components/statistics.js';
+import {loadStatistics} from '/imports/ui/views/statistics.js';
 
 import './userProfileComponent.html';
 

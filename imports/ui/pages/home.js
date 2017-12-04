@@ -1,7 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
-import {initRecentGames} from '/imports/ui/components/recentGames.js';
-import {loadStatistics} from '/imports/ui/components/statistics.js';
+import {initRecentGames} from '/imports/ui/views/recentGames.js';
+import {loadStatistics} from '/imports/ui/views/statistics.js';
 import {browserSupportsWebRTC, onMobileAndTablet} from '/imports/lib/utils.js';
 
 import './home.html';
