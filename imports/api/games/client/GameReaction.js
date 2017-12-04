@@ -154,6 +154,10 @@ export default class GameReaction {
 		if (!this.cheerFn[forHost]) {
 			this.cheerFn[forHost] = require('lodash.throttle')(
 				() => {
+					if (!this.gameInitiator) {
+						return;
+					}
+
 					this.gameInitiator.currentGame.cheer(forHost);
 
 					let cheerElement;
