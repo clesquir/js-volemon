@@ -6,7 +6,7 @@ export default class SmokeBombBonus extends BaseBonus {
 		this.durationMilliseconds = 60000;
 		this.spriteBorderKey = 'bonus-environment-negative';
 		this.bonusIconsIndex = 4;
-		this.description = 'Smoke bomb (only available in tournament)';
+		this.description = 'Smoke bomb';
 	}
 
 	getTargetPlayerKey() {
