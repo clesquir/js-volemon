@@ -147,9 +147,19 @@ Template.gameCanvas.rendered = function() {
 let mouseHideTimer;
 const mouseMoveShowsCursor = function(e) {
 	Meteor.clearTimeout(mouseHideTimer);
-	$(e.target).css('cursor', 'inherit');
+	gameContainer(e).css('cursor', 'inherit');
 
 	mouseHideTimer = Meteor.setTimeout(() => {
-		$(e.target).css('cursor', 'none');
+		gameContainer(e).css('cursor', 'none');
 	}, 500);
+};
+
+const gameContainer = function(e) {
+	let gameContainer = $(e.target);
+
+	if (!gameContainer.is('#gameContainer')) {
+		gameContainer = gameContainer.parent('#gameContainer');
+	}
+
+	return gameContainer;
 };
