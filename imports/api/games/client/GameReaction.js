@@ -1,30 +1,20 @@
 import {Meteor} from 'meteor/meteor';
-import {isGamePlayer} from '/imports/api/games/utils.js';
 
 export default class GameReaction {
-
 	/**
 	 * @param {string} gameId
 	 * @param {Stream} stream
 	 * @param {GameData} gameData
-	 * @param {GameInitiator} gameInitiator
 	 */
-	constructor(gameId, stream, gameData, gameInitiator) {
+	constructor(gameId, stream, gameData) {
 		this.gameId = gameId;
 		this.stream = stream;
 		this.gameData = gameData;
-		this.gameInitiator = gameInitiator;
-
-		this.cheerFn = {};
 	}
 
 	init() {
 		this.stream.on('reaction-' + this.gameId, (data) => {
 			this.triggerReaction(data.isHost, data.reactionIcon, data.reactionText);
-		});
-
-		this.stream.on('cheer-' + this.gameId, (data) => {
-			this.showCheer(data.forHost);
 		});
 
 		$(document).on(
@@ -85,23 +75,6 @@ export default class GameReaction {
 		this.triggerReaction(isHost, reactionIcon, reactionText);
 	}
 
-	cheerPlayer(forHost) {
-		if (!isGamePlayer(this.gameId)) {
-			//Delay emittion, both sides use same timer
-			if (!this.emitCheerFn) {
-				this.emitCheerFn = require('lodash.throttle')(
-					(forHost) => {
-						this.stream.emit('cheer-' + this.gameId, {forHost: forHost});
-						this.showCheer(forHost);
-					},
-					5000,
-					{trailing: false}
-				);
-			}
-			this.emitCheerFn(forHost);
-		}
-	}
-
 	/**
 	 * @param {boolean} isHost
 	 * @param {string} reactionIcon
@@ -149,50 +122,8 @@ export default class GameReaction {
 		}
 	}
 
-	showCheer(forHost) {
-		//Delay reception, each side uses different timers
-		if (!this.cheerFn[forHost]) {
-			this.cheerFn[forHost] = require('lodash.throttle')(
-				() => {
-					if (!this.gameInitiator) {
-						return;
-					}
-
-					this.gameInitiator.currentGame.cheer(forHost);
-
-					let cheerElement;
-					if (forHost) {
-						cheerElement = document.getElementById('cheer-host');
-						Meteor.clearTimeout(this.cheerHostTimeout);
-					} else {
-						cheerElement = document.getElementById('cheer-client');
-						Meteor.clearTimeout(this.cheerClientTimeout);
-					}
-
-					$(cheerElement).removeClass('cheer-activated');
-					$(cheerElement).addClass('cheer-activated');
-
-					const timeout = Meteor.setTimeout(() => {
-						$(cheerElement).removeClass('cheer-activated');
-					}, 1000);
-
-					if (forHost) {
-						this.cheerHostTimeout = timeout;
-					} else {
-						this.cheerClientTimeout = timeout;
-					}
-				},
-				5000,
-				{trailing: false}
-			);
-		}
-		this.cheerFn[forHost]();
-	}
-
 	stop() {
 		$(document).off('keypress');
-		this.stream.off('cheer-' + this.gameId);
 		this.stream.off('reaction-' + this.gameId);
 	}
-
 }

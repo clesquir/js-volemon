@@ -243,6 +243,10 @@
 		transform: scale(0);
 	}
 
+	&.cheer-disabled {
+		transform: scale(0);
+	}
+
 	&.cheer-enabled {
 		cursor: pointer;
 	}

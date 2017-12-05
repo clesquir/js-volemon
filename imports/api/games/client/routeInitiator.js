@@ -3,6 +3,7 @@ import {Session} from 'meteor/session';
 import GameData from '/imports/api/games/client/data/GameData.js';
 import GameInitiator from '/imports/api/games/client/GameInitiator.js';
 import GameReaction from '/imports/api/games/client/GameReaction.js';
+import GameCheer from '/imports/api/games/client/GameCheer.js';
 import GameRematch from '/imports/api/games/client/GameRematch.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
 import ClientStreamFactory from '/imports/lib/stream/client/ClientStreamFactory.js';
@@ -28,6 +29,8 @@ let gameInitiator = null;
 let gameRematch = null;
 /** @type {GameReaction} */
 export let gameReaction = null;
+/** @type {GameCheer} */
+export let gameCheer = null;
 
 export const onRenderGameController = function() {
 	initGame(Session.get('game'));
@@ -80,8 +83,10 @@ const initGame = function(gameId) {
 	gameInitiator.init();
 	gameRematch = new GameRematch(gameId, gameData);
 	gameRematch.init();
-	gameReaction = new GameReaction(gameId, stream, gameData, gameInitiator);
+	gameReaction = new GameReaction(gameId, stream, gameData);
 	gameReaction.init();
+	gameCheer = new GameCheer(gameId, stream, gameInitiator);
+	gameCheer.init();
 };
 
 const quitGame = function(gameId) {
@@ -103,6 +108,9 @@ const destroyGame = function(gameId) {
 		}
 		if (gameReaction) {
 			gameReaction.stop();
+		}
+		if (gameCheer) {
+			gameCheer.stop();
 		}
 		if (stream) {
 			stream.disconnect(gameId);
