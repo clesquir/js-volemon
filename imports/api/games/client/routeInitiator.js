@@ -99,21 +99,27 @@ const destroyGame = function(gameId) {
 	if (gameId) {
 		if (serverNormalizedTime) {
 			serverNormalizedTime.stop();
+			serverNormalizedTime = null;
 		}
 		if (gameInitiator) {
 			gameInitiator.stop();
+			gameInitiator = null;
 		}
 		if (gameRematch) {
 			gameRematch.stop();
+			gameRematch = null;
 		}
 		if (gameReaction) {
 			gameReaction.stop();
+			gameReaction = null;
 		}
 		if (gameCheer) {
 			gameCheer.stop();
+			gameCheer = null;
 		}
 		if (stream) {
 			stream.disconnect(gameId);
+			stream = null;
 		}
 	}
 };

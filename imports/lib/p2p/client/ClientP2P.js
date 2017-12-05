@@ -137,6 +137,7 @@ export default class ClientP2P {
 		}
 
 		if (this._peers[peer.id]) {
+			this._peers[peer.id].destroy();
 			delete this._peers[peer.id];
 		}
 
@@ -154,6 +155,8 @@ export default class ClientP2P {
 				peer.destroy();
 			}
 		}
+
+		this._peers = {};
 	}
 
 	/**
