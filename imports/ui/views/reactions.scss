@@ -243,12 +243,12 @@
 		transform: scale(0);
 	}
 
-	&.cheer-disabled {
-		transform: scale(0);
-	}
-
-	&.cheer-enabled {
+	&.cheer-for-viewer {
 		cursor: pointer;
+
+		&.cheer-disabled {
+			transform: scale(0);
+		}
 	}
 }
 
