@@ -6,6 +6,7 @@
 			<div class="view-selector">
 				<i class="fa fa-arrows view-help-controls" data-action="view-help-controls" data-tooltip="Controls"></i>
 				<i class="fa fa-star view-help-bonuses" data-action="view-help-bonuses" data-tooltip="Bonuses"></i>
+				<i class="fa fa-comment view-help-reactions" data-action="view-help-reactions" data-tooltip="Reactions"></i>
 			</div>
 
 			<div class="view-selector-content help-controls">
@@ -52,6 +53,22 @@
 						<div class="help-bonus-description">{{description}}</div>
 					</div>
 				{{/each}}
+			</div>
+
+			<div class="view-selector-content help-reactions">
+				<h2>Reactions</h2>
+
+				{{#if onMobile}}
+					<p>Tap on <i class="fa fa-commenting-o"></i> to bring the list of reactions, then tap on the desired reaction.</p>
+				{{else}}
+					<p>Click on <i class="fa fa-commenting-o"></i> to bring the list of reactions, then click on the desired reaction.</p>
+					<p>Alternatively, you can press the number on the top left side on your keyboard to emit the reaction.</p>
+				{{/if}}
+
+				{{> reactionsList}}
+
+				<p>Viewers can cheer a player by clicking the megaphone.</p>
+				<img class="lazy" src="/assets/help/placeholder.png" data-src="/assets/help/cheer.gif" width="285" height="200" />
 			</div>
 		</div>
 

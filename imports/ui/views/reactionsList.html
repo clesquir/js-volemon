@@ -1,0 +1,21 @@
+<template name="reactionsList">
+	<div class="reaction-list">
+		<div class="reaction-list-items">
+			<div class="reaction-list-items-group">
+				{{#each reactions}}
+					{{#if icon}}
+						<div class="reaction-list-item" data-action="send-reaction" data-reaction-icon="{{icon}}" data-reaction-key-map="{{index}}">
+							<div class="reaction-key-map">{{index}}</div>
+							<div class="reaction-icon reaction-icon-{{icon}}"></div>
+						</div>
+					{{else}}
+						<div class="reaction-list-item reaction-list-item-text" data-action="send-reaction" data-reaction-text="{{text}}" data-reaction-key-map="{{index}}">
+							<div class="reaction-key-map">{{index}}</div>
+							<div class="reaction-text">{{text}}</div>
+						</div>
+					{{/if}}
+				{{/each}}
+			</div>
+		</div>
+	</div>
+</template>

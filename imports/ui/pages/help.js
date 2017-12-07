@@ -97,10 +97,20 @@ Template.help.events({
 			removeShownClasses(helpContents);
 			$(helpContents).addClass('help-bonuses-shown');
 		}
+	},
+
+	'click [data-action=view-help-reactions]': function(e) {
+		const helpContents = document.getElementById('help-contents');
+
+		if (!$(helpContents).is('.help-reactions-shown')) {
+			removeShownClasses(helpContents);
+			$(helpContents).addClass('help-reactions-shown');
+		}
 	}
 });
 
 const removeShownClasses = function(homeContents) {
 	$(homeContents).removeClass('help-controls-shown');
 	$(homeContents).removeClass('help-bonuses-shown');
+	$(homeContents).removeClass('help-reactions-shown');
 };

@@ -42,6 +42,7 @@ import '/imports/ui/views/gameCanvas.js';
 import '/imports/ui/views/gameSetup.js';
 import '/imports/ui/views/gamesList.js';
 import '/imports/ui/views/reactions.js';
+import '/imports/ui/views/reactionsList.js';
 import '/imports/ui/views/recentGames.js';
 import '/imports/ui/views/statistics.js';
 import '/imports/ui/views/userProfileComponent.js';

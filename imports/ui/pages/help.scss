@@ -1,5 +1,6 @@
 @include view-selector-shown(help-controls-shown, view-help-controls, help-controls);
 @include view-selector-shown(help-bonuses-shown, view-help-bonuses, help-bonuses);
+@include view-selector-shown(help-reactions-shown, view-help-reactions, help-reactions);
 
 $bonus-size: 34px;
 $bonus-background-size: $bonus-size - 3;
@@ -83,5 +84,11 @@ $bonus-background-size: $bonus-size - 3;
 		flex: 1;
 		margin-left: 10px;
 		text-align: left;
+	}
+}
+
+.help-reactions {
+	.reaction-list {
+		margin: 36px 0 16px;
 	}
 }
