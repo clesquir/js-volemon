@@ -241,7 +241,7 @@ export default class Game {
 
 		this.engine.initWorldContactMaterial();
 
-		this.createContactMaterialWithWorld(this.ballMaterial, {restitution: 1});
+		this.createContactMaterialWithWorld(this.ballMaterial, {restitution: this.gameConfiguration.worldRestitution()});
 		this.createContactMaterialWithGroundDelimiter(this.ballMaterial, {restitution: 1});
 
 		this.createContactMaterialWithWorld(this.playerMaterial, {stiffness: 1e20, relaxation: 3, friction: 0});
@@ -617,6 +617,8 @@ export default class Game {
 
 		if (this.gameIsOnGoing()) {
 			this.inputs();
+
+			this.engine.constrainVelocity(this.ball, 1000);
 
 			if (this.gameData.hasBonuses) {
 				this.gameBonus.onUpdateGameOnGoing();

@@ -10,7 +10,8 @@ import {
 	TOURNAMENT_MODE_RANDOM_BONUSES,
 	TOURNAMENT_MODE_SUDDEN_DEATH,
 	TOURNAMENT_MODE_INSTANT_DEATH_BONUS,
-	TOURNAMENT_MODE_NO_BONUSES
+	TOURNAMENT_MODE_NO_BONUSES,
+	TOURNAMENT_MODE_SUPER_BOUNCE_WALLS
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 import {TournamentModes} from '/imports/api/tournaments/tournamentModes.js';
 
@@ -85,7 +86,15 @@ Meteor.startup(function() {
 			identifier: 'tournament_2017-12-04_no-bonuses',
 			mode: TOURNAMENT_MODE_NO_BONUSES,
 			startDate: "2017-12-04 -04:00",
-			endDate: "2017-12-30 -04:00",
+			endDate: "2018-01-06 -04:00",
+			isPublished: false
+		},
+		{
+			_id: Random.id(5),
+			identifier: 'tournament_2017-12-11',
+			mode: TOURNAMENT_MODE_SUPER_BOUNCE_WALLS,
+			startDate: "2017-12-11 -04:00",
+			endDate: "2017-12-16 -04:00",
 			isPublished: false
 		}
 	];

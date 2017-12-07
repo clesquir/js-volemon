@@ -104,7 +104,7 @@ export default class GameBonus {
 		this.bonusCollisionGroup = this.engine.createCollisionGroup();
 		this.bonusMaterial = this.engine.createMaterial('bonus');
 
-		this.game.createContactMaterialWithWorld(this.bonusMaterial, {restitution: 1});
+		this.game.createContactMaterialWithWorld(this.bonusMaterial, {restitution: this.gameConfiguration.worldRestitution()});
 		this.game.createContactMaterialWithNetDelimiter(this.bonusMaterial, {restitution: 0.7});
 		this.game.createContactMaterialWithGroundDelimiter(this.bonusMaterial, {restitution: 1});
 	}
@@ -134,6 +134,10 @@ export default class GameBonus {
 	onUpdateGameOnGoing() {
 		this.checkBonuses();
 		this.updatePlayerBonuses();
+
+		for (let bonus of this.bonuses) {
+			this.engine.constrainVelocity(bonus, 1000);
+		}
 
 		if (this.gameData.isUserHost()) {
 			this.createBonusIfTimeHasElapsed();

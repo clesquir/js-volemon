@@ -34,6 +34,7 @@ export const BONUS_RADIUS = 15;
 export const BONUS_GRAVITY_SCALE = 0.3636363636;
 
 export const WORLD_GRAVITY = 770;
+export const WORLD_RESTITUTION = 1;
 
 export const NORMAL_SCALE_PHYSICS_DATA = 'physicsData';
 export const SMALL_SCALE_PHYSICS_DATA = 'physicsDataSmall';

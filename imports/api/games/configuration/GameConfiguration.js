@@ -2,7 +2,8 @@ import {
 	GAME_FORFEIT_MINIMUM_POINTS,
 	GAME_MAXIMUM_POINTS,
 	BONUS_RADIUS,
-	WORLD_GRAVITY
+	WORLD_GRAVITY,
+	WORLD_RESTITUTION
 } from '/imports/api/games/constants.js';
 import {
 	BONUS_SPAWN_MINIMUM_FREQUENCE,
@@ -66,6 +67,14 @@ export default class GameConfiguration {
 		}
 
 		return WORLD_GRAVITY;
+	}
+
+	worldRestitution() {
+		if (this.hasTournament() && this.tournamentMode.overridesWorldRestitution()) {
+			return this.tournamentMode.worldRestitution();
+		}
+
+		return WORLD_RESTITUTION;
 	}
 
 	bonusSpawnMinimumFrequence() {

@@ -2,9 +2,6 @@ export default class Classic {
 	constructor() {
 	}
 
-	onGameUpdate() {
-	}
-
 	overridesBonusRadius() {
 		return false;
 	}
@@ -17,6 +14,13 @@ export default class Classic {
 	}
 
 	worldGravity() {
+	}
+
+	overridesWorldRestitution() {
+		return false;
+	}
+
+	worldRestitution() {
 	}
 
 	overridesBonusSpawnInitialMinimumFrequence() {
