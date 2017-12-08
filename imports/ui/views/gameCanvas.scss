@@ -220,10 +220,10 @@
 @mixin mobile-controller-button() {
 	flex: 1;
 	background-size: 100% 100%;
-	opacity: 0.025;
+	opacity: 0.05;
 
 	&.mobile-controller-pressed {
-		opacity: 0.05;
+		opacity: 0.1;
 	}
 }
 
