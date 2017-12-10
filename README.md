@@ -21,9 +21,13 @@ cd js-volemon
 meteor npm install
 ```
 
-Edit the package.json to modify the ip address in scripts.meteor-dev. Then: 
+Copy settings.json to settings-dev.json and modify the following values:
+ * smtpUrl
+ * SOCKET_URL
+
+Edit package.json to enter your ip address in scripts.meteor-dev. Then: 
 ```
-npm run meteor-dev
+meteor npm run meteor-dev
 ```
 
 ## To play
