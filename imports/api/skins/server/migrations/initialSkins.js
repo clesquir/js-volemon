@@ -9,6 +9,11 @@ Meteor.startup(function() {
 			_id: SKIN_DEFAULT,
 			name: "Default",
 			displayOrder: 1
+		},
+		{
+			_id: SKIN_DEVALTO,
+			name: "Devalto",
+			displayOrder: 2
 		}
 	];
 
