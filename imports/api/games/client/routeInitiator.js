@@ -14,6 +14,7 @@ import MobileController from '/imports/api/games/client/deviceController/MobileC
 import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
 import GameNotifier from '/imports/api/games/client/GameNotifier.js';
 import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
+import PluginFactory from '/imports/api/skins/plugins/PluginFactory.js';
 import SkinFactory from '/imports/api/skins/skins/SkinFactory.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 
@@ -65,8 +66,10 @@ const initGame = function(gameId) {
 	deviceController.init();
 	const engine = new PhaserEngine(gameConfiguration, deviceController);
 	const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
-	const skin = SkinFactory.fromId(userConfiguration ? userConfiguration.skinId : null);
-	const gameSkin = new GameSkin(skin);
+	const gameSkin = new GameSkin(
+		SkinFactory.fromId(userConfiguration ? userConfiguration.skinId : null),
+		PluginFactory.fromConfiguration(userConfiguration)
+	);
 	gameSkin.init();
 	serverNormalizedTime = new ServerNormalizedTime();
 	serverNormalizedTime.init();

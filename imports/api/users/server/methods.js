@@ -43,6 +43,16 @@ Meteor.methods({
 		UserConfigurations.update({userId: this.userId}, {$set: {skinId: skinId}});
 	},
 
+	updatePluginWeatherAdaptiveEnabled: function(isEnabled) {
+		const user = Meteor.user();
+
+		if (!user) {
+			throw new Meteor.Error(401, 'You need to login to enable/disable the plugin');
+		}
+
+		UserConfigurations.update({userId: this.userId}, {$set: {pluginWeatherAdaptiveEnabled: isEnabled ? 1 : 0}});
+	},
+
 	sendUserPasswordToken: function(email) {
 		const user = Accounts.findUserByEmail(email);
 

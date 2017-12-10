@@ -1,6 +1,6 @@
 import DefaultSkin from '/imports/api/skins/skins/DefaultSkin.js';
-import WeatherSkin from '/imports/api/skins/skins/WeatherSkin.js';
-import {SKIN_WEATHER} from '/imports/api/skins/skinConstants.js';
+import DevaltoSkin from '/imports/api/skins/skins/DevaltoSkin.js';
+import {SKIN_DEVALTO} from '/imports/api/skins/skinConstants.js';
 
 export default class SkinFactory {
 	/**
@@ -9,8 +9,8 @@ export default class SkinFactory {
 	 */
 	static fromId(id) {
 		switch (id) {
-			case SKIN_WEATHER:
-				return new WeatherSkin();
+			case SKIN_DEVALTO:
+				return new DevaltoSkin();
 		}
 
 		return new DefaultSkin();

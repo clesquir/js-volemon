@@ -2,17 +2,9 @@
 	font-size: 18px;
 }
 
-.switch-containers {
-	display: flex;
-
-	& > div {
-		flex: 1 0 0;
-		text-align: left;
-	}
-
+.game-canvas-container {
 	.switch-label {
 		width: 115px;
-		display: inline-block;
 	}
 }
 

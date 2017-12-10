@@ -44,16 +44,7 @@ export default class Shape {
 	}
 
 	preloadGame() {
-		this.game.engine.preloadGame();
-
-		for (let shape of PLAYER_LIST_OF_SHAPES) {
-			this.game.engine.loadImage('shape-' + shape, '/assets/shape/player-' + shape + '.png');
-		}
-
-		this.game.engine.loadImage('ball', '/assets/component/ball.png');
-		this.game.engine.loadImage('ground', '/assets/component/ground.png');
-		this.game.engine.loadImage('delimiter', '/assets/component/clear.png');
-		this.game.engine.loadData(NORMAL_SCALE_PHYSICS_DATA, '/assets/shape/physicsData.json');
+		this.game.loadLevelComponents();
 	}
 
 	createGame() {
@@ -83,7 +74,7 @@ export default class Shape {
 
 		this.game.createBall(100, 100);
 
-		this.loadLevel();
+		this.createLevelComponents();
 
 		this.game.engine.addKeyControllers();
 
@@ -106,10 +97,10 @@ export default class Shape {
 		};
 	}
 
-	loadLevel() {
+	createLevelComponents() {
 		this.game.level = this.game.engine.addGroup();
 
-		this.game.loadGroundLevel();
+		this.game.createGroundLevelComponents();
 	}
 
 	updateGame() {

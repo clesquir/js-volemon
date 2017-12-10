@@ -2,6 +2,14 @@
 	<div class="skins-template">
 		<h1>Change skin</h1>
 
+		<div class="switch-containers">
+			<div>
+				<p>
+					{{> switchButton label="Weather-adaptive" dataAction="update-weather-adaptive-plugin" onOffMethod=weatherAdaptivePluginEnabled}}
+				</p>
+			</div>
+		</div>
+
 		<div class="skin-lists">
 			{{#each skins}}
 				<div class="skin-item skin-item-{{_id}} {{#if skinIsSelected}}skin-item-selected{{/if}}" data-action="update-skin" data-skin="{{_id}}">

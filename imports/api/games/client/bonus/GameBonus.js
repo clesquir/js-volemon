@@ -110,6 +110,7 @@ export default class GameBonus {
 	}
 
 	createComponents() {
+		this.bonusZIndexGroup = this.engine.addGroup();
 		this.bonusesGroup = this.engine.addGroup();
 	}
 
@@ -602,7 +603,10 @@ export default class GameBonus {
 	}
 
 	createCloud(xPosition, yPosition, layer) {
-		const cloud = this.engine.addSprite(xPosition, yPosition, layer.key, undefined, undefined, true);
+		const cloud = this.engine.addSprite(xPosition, yPosition, layer.key, undefined, this.bonusZIndexGroup, true);
+
+		cloud.createdAt = (new Date()).getTime();
+		this.engine.sortBonusGroup(this.bonusZIndexGroup);
 
 		cloud.opacity = layer.opacity;
 		cloud.angle = layer.angle;
@@ -711,7 +715,12 @@ export default class GameBonus {
 	createBonus(data) {
 		const bonus = BonusFactory.fromData(data, this);
 		const bonusSprite = this.engine.addBonus(
-			data.initialX, BONUS_GRAVITY_SCALE, this.bonusMaterial, this.bonusCollisionGroup, bonus
+			data.initialX,
+			BONUS_GRAVITY_SCALE,
+			this.bonusMaterial,
+			this.bonusCollisionGroup,
+			bonus,
+			this.bonusZIndexGroup
 		);
 
 		bonusSprite.identifier = data.bonusIdentifier;

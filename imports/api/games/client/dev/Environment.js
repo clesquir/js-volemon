@@ -86,7 +86,7 @@ export default class Environment {
 
 		this.game.createBall(100, 100);
 
-		this.loadLevel();
+		this.createLevelComponents();
 
 		this.game.createCountdownText();
 	}
@@ -131,10 +131,10 @@ export default class Environment {
 		Meteor.clearInterval(this.movingInterval);
 	}
 
-	loadLevel() {
+	createLevelComponents() {
 		this.game.level = this.gameEngine.addGroup();
 
-		this.game.loadGroundLevel();
+		this.game.createGroundLevelComponents();
 	}
 
 	updateGame() {

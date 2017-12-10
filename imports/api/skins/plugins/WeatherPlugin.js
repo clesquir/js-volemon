@@ -1,14 +1,14 @@
-import Skin from '/imports/api/skins/skins/Skin.js';
 import {locationDetector} from '/imports/lib/geoLocation/LocationDetector.js';
 import {YahooWeatherApi} from '/imports/lib/weatherApi/YahooWeatherApi.js';
 import {
 	CONDITION_CLOUD, CONDITION_FOG, CONDITION_RAIN, CONDITION_THUNDER, CONDITION_SNOW,
-	TIME_OF_DAY_NIGHT, TIME_OF_DAY_TWILIGHT
+	TIME_OF_DAY_NIGHT, TIME_OF_DAY_DAYLIGHT
 } from '/imports/lib/weatherApi/WeatherApi.js';
+import Plugin from '/imports/api/skins/plugins/Plugin.js';
 
 const keyPrefix = 'weather-condition-';
 
-export default class WeatherSkin extends Skin {
+export default class WeatherPlugin extends Plugin {
 	start() {
 		locationDetector.init();
 	}
@@ -25,7 +25,6 @@ export default class WeatherSkin extends Skin {
 		const condition = this.weatherApi.condition();
 		const images = [];
 		const cloudImage = {key: keyPrefix + CONDITION_CLOUD, path: `/assets/skin/weather-condition/cloud.png`};
-		const rainGroundImage = {key: 'ground', path: `/assets/skin/weather-condition/rain-ground.png`};
 
 		switch (condition) {
 			case CONDITION_FOG:
@@ -36,15 +35,12 @@ export default class WeatherSkin extends Skin {
 				break;
 			case CONDITION_SNOW:
 				images.push(cloudImage);
-				images.push({key: 'ground', path: `/assets/skin/weather-condition/snow-ground.png`});
+				images.push({key: keyPrefix + 'snow-ground', path: `/assets/skin/weather-condition/snow-ground.png`});
 				break;
 			case CONDITION_RAIN:
-				images.push(cloudImage);
-				images.push(rainGroundImage);
-				break;
 			case CONDITION_THUNDER:
 				images.push(cloudImage);
-				images.push(rainGroundImage);
+				images.push({key: keyPrefix + 'rain-ground', path: `/assets/skin/weather-condition/rain-ground.png`});
 				break;
 		}
 
@@ -56,7 +52,20 @@ export default class WeatherSkin extends Skin {
 	 */
 	spriteSheetsToLoad() {
 		const condition = this.weatherApi.condition();
-		const spriteSheets = [];
+		const spriteSheets = [
+			{
+				key: keyPrefix + 'daylight',
+				path: `/assets/skin/weather-condition/daylight.png`,
+				width: 10,
+				height: 10
+			},
+			{
+				key: keyPrefix + 'night',
+				path: `/assets/skin/weather-condition/night.png`,
+				width: 10,
+				height: 10
+			}
+		];
 		const rainSpriteSheet = {
 			key: keyPrefix + CONDITION_RAIN,
 			path: `/assets/skin/weather-condition/rain.png`,
@@ -95,25 +104,20 @@ export default class WeatherSkin extends Skin {
 	}
 
 	/**
-	 * @returns {string}
-	 */
-	backgroundColor() {
-		switch (this.weatherApi.timeOfDay()) {
-			case TIME_OF_DAY_TWILIGHT:
-				return '#9ad3de';
-			case TIME_OF_DAY_NIGHT:
-				return '#70b1bd';
-		}
-
-		return '#bde0e6';
-	}
-
-	/**
 	 * @returns {{key: {string}, animate: {boolean}}[]}
 	 */
 	backgroundComponents() {
 		const condition = this.weatherApi.condition();
 		const keys = [];
+
+		switch (this.weatherApi.timeOfDay()) {
+			case TIME_OF_DAY_DAYLIGHT:
+				keys.push({key: keyPrefix + 'daylight'});
+				break;
+			case TIME_OF_DAY_NIGHT:
+				keys.push({key: keyPrefix + 'night'});
+				break;
+		}
 
 		switch (condition) {
 			case CONDITION_FOG:
@@ -123,20 +127,40 @@ export default class WeatherSkin extends Skin {
 				keys.push({key: keyPrefix + CONDITION_CLOUD});
 				break;
 			case CONDITION_SNOW:
-				keys.push({key: keyPrefix + CONDITION_CLOUD});
 				keys.push({key: keyPrefix + CONDITION_SNOW, animate: true});
+				keys.push({key: keyPrefix + CONDITION_CLOUD});
 				break;
 			case CONDITION_RAIN:
-				keys.push({key: keyPrefix + CONDITION_CLOUD});
 				keys.push({key: keyPrefix + CONDITION_RAIN, animate: true});
+				keys.push({key: keyPrefix + CONDITION_CLOUD});
 				break;
 			case CONDITION_THUNDER:
-				keys.push({key: keyPrefix + CONDITION_CLOUD});
-				keys.push({key: keyPrefix + CONDITION_RAIN, animate: true});
 				keys.push({key: keyPrefix + CONDITION_THUNDER, animate: true});
+				keys.push({key: keyPrefix + CONDITION_RAIN, animate: true});
+				keys.push({key: keyPrefix + CONDITION_CLOUD});
 				break;
 		}
 
 		return keys;
+	}
+
+	/**
+	 * @returns {string[]}
+	 */
+	groundComponents() {
+		const condition = this.weatherApi.condition();
+		const groundComponents = [];
+
+		switch (condition) {
+			case CONDITION_SNOW:
+				groundComponents.push(keyPrefix + 'snow-ground');
+				break;
+			case CONDITION_RAIN:
+			case CONDITION_THUNDER:
+				groundComponents.push(keyPrefix + 'rain-ground');
+				break;
+		}
+
+		return groundComponents;
 	}
 }

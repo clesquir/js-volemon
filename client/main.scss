@@ -283,3 +283,16 @@ p {
 		border-color: rgba(lighten($text-color, 25%), 1);
 	}
 }
+
+.switch-containers {
+	display: flex;
+
+	& > div {
+		flex: 1 0 0;
+		text-align: left;
+	}
+
+	.switch-label {
+		display: inline-block;
+	}
+}
