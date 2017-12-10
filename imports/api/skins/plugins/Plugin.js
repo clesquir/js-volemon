@@ -1,4 +1,7 @@
-export default class Skin {
+export default class Plugin {
+	start() {
+	}
+
 	init() {
 	}
 
@@ -24,16 +27,16 @@ export default class Skin {
 	}
 
 	/**
-	 * @returns {string}
-	 */
-	backgroundColor() {
-		return '#000000';
-	}
-
-	/**
 	 * @returns {{key: {string}, animate: {boolean}}[]}
 	 */
 	backgroundComponents() {
+		return [];
+	}
+
+	/**
+	 * @returns {string[]}
+	 */
+	groundComponents() {
 		return [];
 	}
 }

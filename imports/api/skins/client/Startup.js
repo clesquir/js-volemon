@@ -1,5 +1,5 @@
 import {Meteor} from 'meteor/meteor';
-import SkinFactory from '/imports/api/skins/skins/SkinFactory.js';
+import PluginFactory from '/imports/api/skins/plugins/PluginFactory.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 
 export default class Startup {
@@ -11,8 +11,10 @@ export default class Startup {
 
 	static initSkin() {
 		const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
+		const plugins = PluginFactory.fromConfiguration(userConfiguration);
 
-		const skin = SkinFactory.fromId(userConfiguration ? userConfiguration.skinId : null);
-		skin.start();
+		for (let plugin of plugins) {
+			plugin.start();
+		}
 	}
 }

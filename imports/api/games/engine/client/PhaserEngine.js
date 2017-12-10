@@ -75,9 +75,6 @@ export default class PhaserEngine extends Engine {
 		this.removeKeyControllers();
 	}
 
-	preloadGame() {
-	}
-
 	createGame() {
 		this.setupScaling();
 	}
@@ -156,10 +153,10 @@ export default class PhaserEngine extends Engine {
 		}
 	}
 
-	addGroup() {
+	addGroup(enableBody = false) {
 		const group = this.game.add.group();
 
-		group.enableBody = true;
+		group.enableBody = enableBody;
 
 		return group;
 	}
@@ -735,12 +732,18 @@ export default class PhaserEngine extends Engine {
 		return canvasContainer;
 	}
 
-	addBonus(x, bonusGravityScale, bonusMaterial, bonusCollisionGroup, bonus) {
-		const bonusSprite = this.getBonusSprite(x, 0, bonus);
+	sortBonusGroup(bonusZIndexGroup) {
+		bonusZIndexGroup.sort('createdAt', Phaser.Group.SORT_ASCENDING);
+	}
+
+	addBonus(x, bonusGravityScale, bonusMaterial, bonusCollisionGroup, bonus, bonusZIndexGroup) {
+		const bonusSprite = this.getBonusSprite(x, 0, bonus, bonusZIndexGroup);
+
+		bonusSprite.createdAt = 0;
+		this.sortBonusGroup(bonusZIndexGroup);
 
 		bonusSprite.data.initialGravity = bonusGravityScale;
 		bonusSprite.data.currentGravity = bonusSprite.data.initialGravity;
-		bonusSprite.sendToBack();
 
 		this.setFixedRotation(bonusSprite, false);
 		this.setGravity(bonusSprite, bonusSprite.data.currentGravity);
@@ -760,8 +763,8 @@ export default class PhaserEngine extends Engine {
 		this.activateAnimation(bonusSprite);
 	}
 
-	getBonusSprite(x, y, bonus) {
-		const bonusSprite = this.addSprite(x, y, 'delimiter');
+	getBonusSprite(x, y, bonus, bonusGroup) {
+		const bonusSprite = this.addSprite(x, y, 'delimiter', undefined, bonusGroup);
 
 		bonusSprite.body.clearShapes();
 		bonusSprite.body.addCircle(this.gameConfiguration.bonusRadius());

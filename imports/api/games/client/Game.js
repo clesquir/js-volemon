@@ -141,9 +141,11 @@ export default class Game {
 
 	preloadGame() {
 		this.gameSkin.preload(this.engine);
+		this.gameBonus.preload();
+		this.loadLevelComponents();
+	}
 
-		this.engine.preloadGame();
-
+	loadLevelComponents() {
 		for (let shape of PLAYER_LIST_OF_SHAPES) {
 			this.engine.loadImage('shape-' + shape, '/assets/shape/player-' + shape + '.png');
 		}
@@ -155,14 +157,12 @@ export default class Game {
 
 		this.engine.loadImage('delimiter', '/assets/component/clear.png');
 		this.engine.loadData(NORMAL_SCALE_PHYSICS_DATA, '/assets/shape/physicsData.json');
-
-		this.gameBonus.preload();
 	}
 
 	createGame() {
+		this.gameSkin.createBackgroundComponents(this.engine, this.xSize, this.ySize);
 		this.createComponents();
 		this.gameBonus.createComponents();
-		this.gameSkin.createBackgroundComponent(this.engine, this.xSize, this.ySize);
 
 		if (this.getCurrentPlayer()) {
 			this.engine.addKeyControllers();
@@ -199,7 +199,7 @@ export default class Game {
 
 		this.createBall(PLAYER_INITIAL_LOCATION, this.ySize - this.groundHeight - BALL_DISTANCE_FROM_GROUND);
 
-		this.loadLevel();
+		this.createLevelComponents();
 
 		this.createCountdownText();
 	}
@@ -389,15 +389,15 @@ export default class Game {
 		this.gameBonus.collidesWithBonus(this.ball);
 	}
 
-	loadLevel() {
+	createLevelComponents() {
 		this.level = this.engine.addGroup();
 
-		this.loadGroundLevel();
+		this.createGroundLevelComponents();
 
-		this.loadNetLevel();
+		this.createNetLevelComponents();
 	}
 
-	loadGroundLevel() {
+	createGroundLevelComponents() {
 		let groupItem;
 
 		/**
@@ -412,6 +412,8 @@ export default class Game {
 			this.level,
 			true
 		);
+
+		this.gameSkin.createGroundComponents(this.engine, this.xSize, this.ySize, this.groundHeight, this.level);
 
 		/**
 		 * Host player delimiter
@@ -465,7 +467,7 @@ export default class Game {
 		this.gameBonus.collidesWithBonus(groupItem);
 	}
 
-	loadNetLevel() {
+	createNetLevelComponents() {
 		let groupItem;
 
 		/**

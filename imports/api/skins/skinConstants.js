@@ -1,2 +1,2 @@
 export const SKIN_DEFAULT = 'default';
-export const SKIN_WEATHER = 'weather';
+export const SKIN_DEVALTO = 'devalto';
