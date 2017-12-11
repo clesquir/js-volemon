@@ -11,7 +11,6 @@ import {
 	BIG_SCALE_BONUS
 } from '/imports/api/games/constants.js';
 import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
-import {roundTo} from '/imports/lib/utils.js';
 
 export default class PhaserEngine extends Engine {
 	start(width, height, parent, preloadGame, createGame, updateGame, scope) {
@@ -161,7 +160,11 @@ export default class PhaserEngine extends Engine {
 		return group;
 	}
 
-	addSprite(x, y, key, frame, group, disableBody, debugBody) {
+	addSprite(x, y, key, disableBody = false, frame, debugBody = false) {
+		return this.addGroupedSprite(x, y, key, undefined, disableBody, frame, debugBody);
+	}
+
+	addGroupedSprite(x, y, key, group, disableBody = false, frame, debugBody = false) {
 		const sprite = this.game.add.sprite(x, y, key, frame, group);
 
 		if (!disableBody) {
@@ -175,7 +178,7 @@ export default class PhaserEngine extends Engine {
 		sprite.loadTexture(key);
 	}
 
-	addTileSprite(x, y, width, height, key, group, disableBody, debugBody) {
+	addTileSprite(x, y, width, height, key, disableBody = true, group, debugBody = false) {
 		const tileSprite = this.game.add.tileSprite(
 			x,
 			y,
@@ -316,10 +319,10 @@ export default class PhaserEngine extends Engine {
 		const body = sprite.body;
 
 		return {
-			x: roundTo(body.x, 4),
-			y: roundTo(body.y, 4),
-			velocityX: roundTo(body.velocity.x, 4),
-			velocityY: roundTo(body.velocity.y, 4)
+			x: body.x,
+			y: body.y,
+			velocityX: body.velocity.x,
+			velocityY: body.velocity.y
 		};
 	}
 
@@ -560,7 +563,10 @@ export default class PhaserEngine extends Engine {
 	hasSurfaceTouchingPlayerBottom(player) {
 		for (let i = 0; i < this.game.physics.p2.world.narrowphase.contactEquations.length; i++) {
 			const contact = this.game.physics.p2.world.narrowphase.contactEquations[i];
-			if (contact.bodyA === player.body.data || contact.bodyB === player.body.data) {
+			if (
+				(contact.bodyA === player.body.data && this.canPlayerJumpOnBody(player, contact.bodyB)) ||
+				(contact.bodyB === player.body.data && this.canPlayerJumpOnBody(player, contact.bodyA))
+			) {
 				let dot = p2.vec2.dot(contact.normalA, p2.vec2.fromValues(0, 1));
 
 				if (contact.bodyA === player.body.data) {
@@ -568,12 +574,7 @@ export default class PhaserEngine extends Engine {
 				}
 
 				if (dot > 0.5) {
-					if (
-						(contact.bodyA === player.body.data && this.canPlayerJumpOnBody(player, contact.bodyB)) ||
-						(contact.bodyB === player.body.data && this.canPlayerJumpOnBody(player, contact.bodyA))
-					) {
-						return true;
-					}
+					return true;
 				}
 			}
 		}
@@ -764,7 +765,7 @@ export default class PhaserEngine extends Engine {
 	}
 
 	getBonusSprite(x, y, bonus, bonusGroup) {
-		const bonusSprite = this.addSprite(x, y, 'delimiter', undefined, bonusGroup);
+		const bonusSprite = this.addGroupedSprite(x, y, 'delimiter', bonusGroup);
 
 		bonusSprite.body.clearShapes();
 		bonusSprite.body.addCircle(this.gameConfiguration.bonusRadius());

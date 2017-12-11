@@ -1,6 +1,5 @@
 import {Meteor} from 'meteor/meteor';
 import {TimeSync} from 'meteor/mizzao:timesync';
-import {getUTCTimeStamp} from '/imports/lib/utils.js';
 
 export default class ServerNormalizedTime {
 	init() {
@@ -23,6 +22,6 @@ export default class ServerNormalizedTime {
 			serverOffset = this.serverOffset;
 		}
 
-		return getUTCTimeStamp() + serverOffset;
+		return Date.now() + serverOffset;
 	}
 }

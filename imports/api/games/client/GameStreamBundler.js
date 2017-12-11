@@ -1,5 +1,3 @@
-import { getUTCTimeStamp } from '/imports/lib/utils.js';
-
 export default class GameStreamBundler {
 
 	/**
@@ -15,10 +13,10 @@ export default class GameStreamBundler {
 	}
 
 	addToBundledStreamsAtFrequence(lastCallTime, frequenceTime, streamName, data) {
-		if (getUTCTimeStamp() - lastCallTime >= frequenceTime) {
+		if (Date.now() - lastCallTime >= frequenceTime) {
 			this.addStreamToBundle(streamName, data);
 
-			lastCallTime = getUTCTimeStamp();
+			lastCallTime = Date.now();
 		}
 
 		return lastCallTime;
