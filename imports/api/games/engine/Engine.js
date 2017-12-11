@@ -20,6 +20,12 @@ export default class Engine {
 	changeBackgroundColor(hex) {
 	}
 
-	addTileSprite(x, y, width, height, key, group, disableBody, debugBody) {
+	addSprite(x, y, key, disableBody = false, frame, debugBody = false) {
+	}
+
+	addGroupedSprite(x, y, key, group, disableBody = false, frame, debugBody = false) {
+	}
+
+	addTileSprite(x, y, width, height, key, disableBody = true, group, debugBody = false) {
 	}
 }

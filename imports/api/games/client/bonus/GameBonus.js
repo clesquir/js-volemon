@@ -12,15 +12,13 @@ import {
 	NORMAL_SCALE_PHYSICS_DATA,
 	SMALL_SCALE_PHYSICS_DATA,
 	BIG_SCALE_PHYSICS_DATA,
-	PLAYER_FROZEN_MASS,
-	CLIENT_POINTS_COLUMN,
-	HOST_POINTS_COLUMN
+	PLAYER_FROZEN_MASS
 } from '/imports/api/games/constants.js';
 import {
 	BONUS_INTERVAL
 } from '/imports/api/games/emissionConstants.js';
 import BonusFactory from '/imports/api/games/BonusFactory.js';
-import {getRandomInt, getRandomFloat, getUTCTimeStamp} from '/imports/lib/utils.js';
+import {getRandomInt} from '/imports/lib/utils.js';
 
 export default class GameBonus {
 	/**
@@ -129,7 +127,7 @@ export default class GameBonus {
 	resumeGame() {
 		this.regenerateLastBonusCreatedAndFrequenceTime();
 		this.applyActiveBonuses();
-		this.lastGameRespawn = getUTCTimeStamp();
+		this.lastGameRespawn = Date.now();
 	}
 
 	onUpdateGameOnGoing() {
@@ -603,7 +601,7 @@ export default class GameBonus {
 	}
 
 	createCloud(xPosition, yPosition, layer) {
-		const cloud = this.engine.addSprite(xPosition, yPosition, layer.key, undefined, this.bonusZIndexGroup, true);
+		const cloud = this.engine.addGroupedSprite(xPosition, yPosition, layer.key, this.bonusZIndexGroup, true);
 
 		cloud.createdAt = (new Date()).getTime();
 		this.engine.sortBonusGroup(this.bonusZIndexGroup);
@@ -675,7 +673,7 @@ export default class GameBonus {
 	}
 
 	regenerateLastBonusCreatedAndFrequenceTime() {
-		this.lastBonusCreated = getUTCTimeStamp();
+		this.lastBonusCreated = Date.now();
 		this.bonusFrequenceTime = getRandomInt(
 			this.gameConfiguration.bonusSpawnInitialMinimumFrequence(),
 			this.gameConfiguration.bonusSpawnInitialMaximumFrequence()
@@ -683,13 +681,13 @@ export default class GameBonus {
 	}
 
 	createBonusIfTimeHasElapsed() {
-		let frequenceTime = this.bonusFrequenceTime - Math.round((getUTCTimeStamp() - this.lastGameRespawn) / 10);
+		let frequenceTime = this.bonusFrequenceTime - Math.round((Date.now() - this.lastGameRespawn) / 10);
 
 		if (frequenceTime < this.gameConfiguration.bonusSpawnMinimumFrequence()) {
 			frequenceTime = this.gameConfiguration.bonusSpawnMinimumFrequence();
 		}
 
-		if (getUTCTimeStamp() - this.lastBonusCreated >= frequenceTime) {
+		if (Date.now() - this.lastBonusCreated >= frequenceTime) {
 			this.createRandomBonus();
 		}
 	}

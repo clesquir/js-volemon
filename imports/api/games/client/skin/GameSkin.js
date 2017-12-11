@@ -62,9 +62,7 @@ export default class GameSkin {
 				0,
 				xSize,
 				ySize,
-				backgroundComponent.key,
-				undefined,
-				true
+				backgroundComponent.key
 			);
 			if (backgroundComponent.animate) {
 				background.animations.add('animation');
@@ -94,8 +92,8 @@ export default class GameSkin {
 				xSize,
 				groundHeight,
 				groundComponent,
-				levelGroup,
-				true
+				true,
+				levelGroup
 			);
 		}
 	}

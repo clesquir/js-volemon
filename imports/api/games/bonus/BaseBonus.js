@@ -95,9 +95,8 @@ export default class BaseBonus {
 				0,
 				0,
 				'bonus-icons',
-				this.bonusIconsIndex,
-				undefined,
-				true
+				true,
+				this.bonusIconsIndex
 			);
 			engine.setAnchor(bonus, 0.5);
 			items.push(bonus);
@@ -107,7 +106,7 @@ export default class BaseBonus {
 	}
 
 	borderToDraw(engine) {
-		const bonusBorder = engine.addSprite(0, 0, this.spriteBorderKey, undefined, undefined, true);
+		const bonusBorder = engine.addSprite(0, 0, this.spriteBorderKey, true);
 		engine.setAnchor(bonusBorder, 0.5);
 
 		return [bonusBorder];

@@ -245,6 +245,7 @@ export default class Game {
 		this.createContactMaterialWithGroundDelimiter(this.ballMaterial, {restitution: 1});
 
 		this.createContactMaterialWithWorld(this.playerMaterial, {stiffness: 1e20, relaxation: 3, friction: 0});
+		this.createContactMaterialWithGroundDelimiter(this.playerMaterial, {stiffness: 1e20, relaxation: 3, friction: 0});
 		this.engine.createContactMaterial(this.playerMaterial, this.playerDelimiterMaterial, {stiffness: 1e20, relaxation: 3, friction: 0});
 		this.engine.createContactMaterial(this.playerMaterial, this.playerMaterial, {stiffness: 1e20, relaxation: 3, friction: 0});
 
@@ -341,6 +342,7 @@ export default class Game {
 
 		this.engine.setMaterial(player, this.playerMaterial);
 		this.engine.setCollisionGroup(player, player.data.playerCollisionGroup);
+		this.collidesWithGroundHitDelimiter(player);
 
 		if (player.data.playerCollisionGroup === this.hostPlayerCollisionGroup) {
 			this.collidesWithHostPlayer(player);
@@ -409,60 +411,31 @@ export default class Game {
 			this.xSize,
 			this.groundHeight,
 			'ground',
-			this.level,
-			true
+			true,
+			this.level
 		);
 
 		this.gameSkin.createGroundComponents(this.engine, this.xSize, this.ySize, this.groundHeight, this.level);
 
 		/**
-		 * Host player delimiter
+		 * Ground delimiter
 		 */
 		groupItem = this.engine.addTileSprite(
 			this.xSize / 2,
 			this.ySize - (this.groundHeight / 2),
 			this.xSize,
 			this.groundHeight,
-			'delimiter'
+			'delimiter',
+			false
 		);
 		this.addPlayerCanJumpOnBody(this.player1, groupItem.body);
-
-		this.engine.setStatic(groupItem, true);
-		this.engine.setMaterial(groupItem, this.playerDelimiterMaterial);
-		this.engine.setCollisionGroup(groupItem, this.hostPlayerDelimiterCollisionGroup);
-		this.collidesWithHostPlayer(groupItem);
-
-		/**
-		 * Client player delimiter
-		 */
-		groupItem = this.engine.addTileSprite(
-			this.xSize / 2,
-			this.ySize - (this.groundHeight / 2),
-			this.xSize,
-			this.groundHeight,
-			'delimiter'
-		);
 		this.addPlayerCanJumpOnBody(this.player2, groupItem.body);
-
-		this.engine.setStatic(groupItem, true);
-		this.engine.setMaterial(groupItem, this.playerDelimiterMaterial);
-		this.engine.setCollisionGroup(groupItem, this.clientPlayerDelimiterCollisionGroup);
-		this.collidesWithClientPlayer(groupItem);
-
-		/**
-		 * Ball hit delimiter
-		 */
-		groupItem = this.engine.addTileSprite(
-			this.xSize / 2,
-			this.ySize - (this.groundHeight / 2),
-			this.xSize,
-			this.groundHeight,
-			'delimiter'
-		);
 
 		this.engine.setStatic(groupItem, true);
 		this.engine.setMaterial(groupItem, this.groundDelimiterMaterial);
 		this.engine.setCollisionGroup(groupItem, this.groundHitDelimiterCollisionGroup);
+		this.collidesWithHostPlayer(groupItem);
+		this.collidesWithClientPlayer(groupItem);
 		this.collidesWithBall(groupItem);
 		this.gameBonus.collidesWithBonus(groupItem);
 	}
@@ -479,8 +452,8 @@ export default class Game {
 			GAME_NET_THICKNESS,
 			GAME_NET_HEIGHT,
 			'net',
-			this.level,
-			true
+			true,
+			this.level
 		);
 
 		/**
@@ -491,7 +464,8 @@ export default class Game {
 			(this.ySize / 2),
 			(this.xSize + GAME_NET_THICKNESS) / 2,
 			this.ySize,
-			'delimiter'
+			'delimiter',
+			false
 		);
 
 		this.engine.setStatic(groupItem, true);
@@ -507,7 +481,8 @@ export default class Game {
 			(this.ySize / 2),
 			(this.xSize + GAME_NET_THICKNESS) / 2,
 			this.ySize,
-			'delimiter'
+			'delimiter',
+			false
 		);
 
 		this.engine.setStatic(groupItem, true);
@@ -523,7 +498,8 @@ export default class Game {
 			this.ySize - (this.groundHeight + GAME_NET_HEIGHT) / 2,
 			GAME_NET_THICKNESS,
 			(this.groundHeight + GAME_NET_HEIGHT),
-			'delimiter'
+			'delimiter',
+			false
 		);
 
 		this.engine.setStatic(groupItem, true);
