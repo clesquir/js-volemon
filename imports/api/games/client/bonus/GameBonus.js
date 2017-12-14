@@ -100,10 +100,6 @@ export default class GameBonus {
 		this.game.createContactMaterialWithGroundDelimiter(this.bonusMaterial, {restitution: 1});
 	}
 
-	getTexturePriorityItems() {
-		return [];
-	}
-
 	createComponents() {
 		this.bonusZIndexGroup = this.engine.addGroup();
 		this.bonusesGroup = this.engine.addGroup();

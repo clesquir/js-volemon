@@ -18,7 +18,6 @@ export default class PhaserEngine extends Engine {
 			width: width,
 			height: height,
 			renderer: Phaser.AUTO,
-			multiTexture: true,
 			enableDebug: false,
 			parent: parent
 		});

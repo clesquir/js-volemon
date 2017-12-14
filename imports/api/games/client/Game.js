@@ -157,25 +157,7 @@ export default class Game {
 		this.engine.loadData(NORMAL_SCALE_PHYSICS_DATA, '/assets/component/shape/physicsData.json');
 	}
 
-	getTexturePriorityItems() {
-		let items = [
-			'ball',
-			'net',
-			'ground'
-		];
-
-		for (let shape of PLAYER_LIST_OF_SHAPES) {
-			items.push('shape-' + shape);
-		}
-
-		items = items.concat(this.gameBonus.getTexturePriorityItems());
-
-		return items;
-	}
-
 	createGame() {
-		this.engine.game.renderer.setTexturePriority(this.getTexturePriorityItems());
-
 		this.gameSkin.createBackgroundComponents(this.engine, this.xSize, this.ySize);
 		this.createComponents();
 		this.gameBonus.createComponents();
