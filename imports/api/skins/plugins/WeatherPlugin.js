@@ -52,20 +52,7 @@ export default class WeatherPlugin extends Plugin {
 	 */
 	spriteSheetsToLoad() {
 		const condition = this.weatherApi.condition();
-		const spriteSheets = [
-			{
-				key: keyPrefix + 'daylight',
-				path: `/assets/skin/weather-condition/daylight.png`,
-				width: 10,
-				height: 10
-			},
-			{
-				key: keyPrefix + 'night',
-				path: `/assets/skin/weather-condition/night.png`,
-				width: 10,
-				height: 10
-			}
-		];
+		const spriteSheets = [];
 		const rainSpriteSheet = {
 			key: keyPrefix + CONDITION_RAIN,
 			path: `/assets/skin/weather-condition/rain.png`,
@@ -104,20 +91,29 @@ export default class WeatherPlugin extends Plugin {
 	}
 
 	/**
+	 * @returns {{color: {string}, opacity: {float}}[]}
+	 */
+	backgroundColorModifier() {
+		const modifiers = [];
+
+		switch (this.weatherApi.timeOfDay()) {
+			case TIME_OF_DAY_DAYLIGHT:
+				modifiers.push({color: 0xFFFFFF, opacity: 0.30});
+				break;
+			case TIME_OF_DAY_NIGHT:
+				modifiers.push({color: 0x000000, opacity: 0.15});
+				break;
+		}
+
+		return modifiers;
+	}
+
+	/**
 	 * @returns {{key: {string}, animate: {boolean}}[]}
 	 */
 	backgroundComponents() {
 		const condition = this.weatherApi.condition();
 		const keys = [];
-
-		switch (this.weatherApi.timeOfDay()) {
-			case TIME_OF_DAY_DAYLIGHT:
-				keys.push({key: keyPrefix + 'daylight'});
-				break;
-			case TIME_OF_DAY_NIGHT:
-				keys.push({key: keyPrefix + 'night'});
-				break;
-		}
 
 		switch (condition) {
 			case CONDITION_FOG:

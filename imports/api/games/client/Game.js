@@ -155,7 +155,6 @@ export default class Game {
 		this.engine.loadImage('ground', '/assets/component/ground.png');
 		this.engine.loadSpriteSheet('confettis', '/assets/reaction/confettis.png', 10, 10);
 
-		this.engine.loadImage('delimiter', '/assets/component/clear.png');
 		this.engine.loadData(NORMAL_SCALE_PHYSICS_DATA, '/assets/shape/physicsData.json');
 	}
 
@@ -392,121 +391,32 @@ export default class Game {
 	}
 
 	createLevelComponents() {
-		this.level = this.engine.addGroup();
-
 		this.createGroundLevelComponents();
-
 		this.createNetLevelComponents();
+		this.createBounds();
 	}
 
 	createGroundLevelComponents() {
-		let groupItem;
+		this.groundGroup = this.engine.addGroup(false);
 
-		/**
-		 * Look
-		 */
-		this.engine.addTileSprite(
+		const ground = this.engine.addImage(
 			0,
 			this.ySize - this.groundHeight,
-			this.xSize,
-			this.groundHeight,
-			'ground',
-			true,
-			this.level
+			'ground'
 		);
+		ground.width = this.xSize;
+		ground.height = this.groundHeight;
+		this.groundGroup.add(ground);
 
-		this.gameSkin.createGroundComponents(this.engine, this.xSize, this.ySize, this.groundHeight, this.level);
-
-		/**
-		 * Ground delimiter
-		 */
-		groupItem = this.engine.addTileSprite(
-			this.xSize / 2,
-			this.ySize - (this.groundHeight / 2),
-			this.xSize,
-			this.groundHeight,
-			'delimiter',
-			false
-		);
-		this.addPlayerCanJumpOnBody(this.player1, groupItem.body);
-		this.addPlayerCanJumpOnBody(this.player2, groupItem.body);
-
-		this.engine.setStatic(groupItem, true);
-		this.engine.setMaterial(groupItem, this.groundDelimiterMaterial);
-		this.engine.setCollisionGroup(groupItem, this.groundHitDelimiterCollisionGroup);
-		this.collidesWithHostPlayer(groupItem);
-		this.collidesWithClientPlayer(groupItem);
-		this.collidesWithBall(groupItem);
-		this.gameBonus.collidesWithBonus(groupItem);
+		this.gameSkin.createGroundComponents(this.engine, this.xSize, this.ySize, this.groundHeight, this.groundGroup);
 	}
 
 	createNetLevelComponents() {
-		let groupItem;
-
-		/**
-		 * Look
-		 */
-		this.engine.addTileSprite(
+		this.engine.addImage(
 			(this.xSize / 2) - (GAME_NET_THICKNESS / 2),
 			this.ySize - this.groundHeight - GAME_NET_HEIGHT,
-			GAME_NET_THICKNESS,
-			GAME_NET_HEIGHT,
-			'net',
-			true,
-			this.level
+			'net'
 		);
-
-		/**
-		 * Host player delimiter
-		 */
-		groupItem = this.engine.addTileSprite(
-			(this.xSize / 4) * 3 - (GAME_NET_THICKNESS / 4),
-			(this.ySize / 2),
-			(this.xSize + GAME_NET_THICKNESS) / 2,
-			this.ySize,
-			'delimiter',
-			false
-		);
-
-		this.engine.setStatic(groupItem, true);
-		this.engine.setMaterial(groupItem, this.playerDelimiterMaterial);
-		this.engine.setCollisionGroup(groupItem, this.hostPlayerDelimiterCollisionGroup);
-		this.collidesWithHostPlayer(groupItem);
-
-		/**
-		 * Client player delimiter
-		 */
-		groupItem = this.engine.addTileSprite(
-			(this.xSize / 4) + (GAME_NET_THICKNESS / 4),
-			(this.ySize / 2),
-			(this.xSize + GAME_NET_THICKNESS) / 2,
-			this.ySize,
-			'delimiter',
-			false
-		);
-
-		this.engine.setStatic(groupItem, true);
-		this.engine.setMaterial(groupItem, this.playerDelimiterMaterial);
-		this.engine.setCollisionGroup(groupItem, this.clientPlayerDelimiterCollisionGroup);
-		this.collidesWithClientPlayer(groupItem);
-
-		/**
-		 * Ball hit delimiter
-		 */
-		groupItem = this.engine.addTileSprite(
-			(this.xSize / 2),
-			this.ySize - (this.groundHeight + GAME_NET_HEIGHT) / 2,
-			GAME_NET_THICKNESS,
-			(this.groundHeight + GAME_NET_HEIGHT),
-			'delimiter',
-			false
-		);
-
-		this.engine.setStatic(groupItem, true);
-		this.engine.setMaterial(groupItem, this.netDelimiterMaterial);
-		this.engine.setCollisionGroup(groupItem, this.netHitDelimiterCollisionGroup);
-		this.collidesWithBall(groupItem);
-		this.gameBonus.collidesWithBonus(groupItem);
 	}
 
 	resumeOnTimerEnd() {
@@ -520,6 +430,63 @@ export default class Game {
 			this.gameBonus.resumeGame();
 			this.startCountdownTimer();
 		}
+	}
+
+	createBounds() {
+		//Host limits
+		this.engine.addBound(
+			(this.xSize / 4) * 3 - (GAME_NET_THICKNESS / 4),
+			(this.ySize / 2),
+			(this.xSize / 2) + (GAME_NET_THICKNESS / 2),
+			this.ySize,
+			this.playerDelimiterMaterial,
+			this.hostPlayerDelimiterCollisionGroup,
+			[this.hostPlayerCollisionGroup]
+		);
+
+		//Client limits
+		this.engine.addBound(
+			(this.xSize / 4) + (GAME_NET_THICKNESS / 4),
+			(this.ySize / 2),
+			(this.xSize / 2) + (GAME_NET_THICKNESS / 2),
+			this.ySize,
+			this.playerDelimiterMaterial,
+			this.clientPlayerDelimiterCollisionGroup,
+			[this.clientPlayerCollisionGroup]
+		);
+
+		//Ground limits
+		const bound = this.engine.addBound(
+			this.xSize / 2,
+			this.ySize - (this.groundHeight / 2),
+			this.xSize,
+			this.groundHeight,
+			this.groundDelimiterMaterial,
+			this.groundHitDelimiterCollisionGroup,
+			[
+				this.hostPlayerCollisionGroup,
+				this.clientPlayerCollisionGroup,
+				this.ballCollisionGroup,
+				this.gameBonus.bonusCollisionGroup
+			]
+		);
+
+		this.addPlayerCanJumpOnBody(this.player1, bound);
+		this.addPlayerCanJumpOnBody(this.player2, bound);
+
+		//Net limit
+		this.engine.addBound(
+			this.xSize / 2,
+			this.ySize - (this.groundHeight + GAME_NET_HEIGHT) / 2,
+			GAME_NET_THICKNESS,
+			this.groundHeight + GAME_NET_HEIGHT,
+			this.netDelimiterMaterial,
+			this.netHitDelimiterCollisionGroup,
+			[
+				this.ballCollisionGroup,
+				this.gameBonus.bonusCollisionGroup
+			]
+		);
 	}
 
 	startCountdownTimer() {
@@ -989,6 +956,6 @@ export default class Game {
 	}
 
 	shakeLevel() {
-		this.engine.shake(this.level, 5, 20, 0, 0);
+		this.engine.shake(this.groundGroup, 5, 20);
 	}
 };

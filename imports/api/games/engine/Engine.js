@@ -20,6 +20,9 @@ export default class Engine {
 	changeBackgroundColor(hex) {
 	}
 
+	drawRectangle(x, y, w, h, config) {
+	}
+
 	addSprite(x, y, key, disableBody = false, frame, debugBody = false) {
 	}
 

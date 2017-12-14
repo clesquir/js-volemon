@@ -52,10 +52,24 @@ export default class GameSkin {
 	createBackgroundComponents(engine, xSize, ySize) {
 		let backgroundComponents = this.skin.backgroundComponents();
 
-		for (let plugin of this.plugins) {
-			backgroundComponents = backgroundComponents.concat(plugin.backgroundComponents());
-		}
+		this.renderBackgroundComponents(backgroundComponents, engine, xSize, ySize);
 
+		for (let plugin of this.plugins) {
+			for (let modifier of plugin.backgroundColorModifier()) {
+				engine.drawRectangle(0, 0, xSize, ySize, modifier);
+			}
+			this.renderBackgroundComponents(plugin.backgroundComponents(), engine, xSize, ySize);
+		}
+	}
+
+	/**
+	 * @private
+	 * @param {{key: {string}, animate: {boolean}}[]} backgroundComponents
+	 * @param {Engine} engine
+	 * @param xSize
+	 * @param ySize
+	 */
+	renderBackgroundComponents(backgroundComponents, engine, xSize, ySize) {
 		for (let backgroundComponent of backgroundComponents) {
 			const background = engine.addTileSprite(
 				0,
@@ -76,9 +90,9 @@ export default class GameSkin {
 	 * @param xSize
 	 * @param ySize
 	 * @param groundHeight
-	 * @param levelGroup
+	 * @param groundGroup
 	 */
-	createGroundComponents(engine, xSize, ySize, groundHeight, levelGroup) {
+	createGroundComponents(engine, xSize, ySize, groundHeight, groundGroup) {
 		let groundComponents = [];
 
 		for (let plugin of this.plugins) {
@@ -93,7 +107,7 @@ export default class GameSkin {
 				groundHeight,
 				groundComponent,
 				true,
-				levelGroup
+				groundGroup
 			);
 		}
 	}

@@ -27,6 +27,13 @@ export default class Plugin {
 	}
 
 	/**
+	 * @returns {{color: {string}, opacity: {float}}[]}
+	 */
+	backgroundColorModifier() {
+		return [];
+	}
+
+	/**
 	 * @returns {{key: {string}, animate: {boolean}}[]}
 	 */
 	backgroundComponents() {

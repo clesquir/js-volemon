@@ -160,6 +160,27 @@ export default class PhaserEngine extends Engine {
 		return group;
 	}
 
+	addBound(x, y, w, h, material, collisionGroup, colliders, debug) {
+		const bound = new Phaser.Physics.P2.Body(this.game, {}, x, y, 0);
+		bound.setRectangleFromSprite({width: w, height: h, rotation: 0});
+		this.game.physics.p2.addBody(bound);
+		bound.debug = !!debug;
+
+		bound.static = true;
+		bound.setCollisionGroup(collisionGroup);
+		bound.setMaterial(material);
+
+		for (let collider of colliders) {
+			bound.collides(collider);
+		}
+
+		return bound;
+	}
+
+	addImage(x, y, key, frame) {
+		return this.game.add.image(x, y, key, frame);
+	}
+
 	addSprite(x, y, key, disableBody = false, frame, debugBody = false) {
 		return this.addGroupedSprite(x, y, key, undefined, disableBody, frame, debugBody);
 	}
@@ -233,6 +254,14 @@ export default class PhaserEngine extends Engine {
 		circle.endFill();
 
 		return circle;
+	}
+
+	drawRectangle(x, y, w, h, config) {
+		const graphics = this.addGraphics(x, y);
+
+		graphics.beginFill(config.color, config.opacity);
+		graphics.drawRect(0, 0, w, h);
+		graphics.endFill();
 	}
 
 	createTimer(seconds, fn, scope) {
@@ -632,19 +661,22 @@ export default class PhaserEngine extends Engine {
 		emitter.start(explode, lifespan, frequency, quantity);
 	}
 
-	shake(sprite, move, time, x, y) {
+	shake(sprite, move, time) {
+		const initialX = sprite.x;
+		const initialY = sprite.y;
+
 		this.game.add.tween(sprite)
 			.to({y: "-" + move}, time).to({y: "+" + move * 2}, time * 2).to({y: "-" + move}, time)
 			.to({y: "-" + move}, time).to({y: "+" + move * 2}, time * 2).to({y: "-" + move}, time)
 			.to({y: "-" + move / 2}, time).to({y: "+" + move}, time * 2).to({y: "-" + move / 2}, time)
-			.to({y: y}, time)
+			.to({y: initialY}, time)
 			.start();
 
 		this.game.add.tween(sprite)
 			.to({x: "-" + move}, time).to({x: "+" + move * 2}, time * 2).to({x: "-" + move}, time)
 			.to({x: "-" + move}, time).to({x: "+" + move * 2}, time * 2).to({x: "-" + move}, time)
 			.to({x: "-" + move / 2}, time).to({x: "+" + move}, time * 2).to({x: "-" + move / 2}, time)
-			.to({x: x}, time)
+			.to({x: initialX}, time)
 			.start();
 	}
 
@@ -765,7 +797,7 @@ export default class PhaserEngine extends Engine {
 	}
 
 	getBonusSprite(x, y, bonus, bonusGroup) {
-		const bonusSprite = this.addGroupedSprite(x, y, 'delimiter', bonusGroup);
+		const bonusSprite = this.addGroupedSprite(x, y, null, bonusGroup);
 
 		bonusSprite.body.clearShapes();
 		bonusSprite.body.addCircle(this.gameConfiguration.bonusRadius());
