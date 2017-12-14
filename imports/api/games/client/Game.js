@@ -147,18 +147,35 @@ export default class Game {
 
 	loadLevelComponents() {
 		for (let shape of PLAYER_LIST_OF_SHAPES) {
-			this.engine.loadImage('shape-' + shape, '/assets/shape/player-' + shape + '.png');
+			this.engine.loadImage('shape-' + shape, '/assets/component/shape/player-' + shape + '.png');
 		}
 
 		this.engine.loadImage('ball', '/assets/component/ball.png');
 		this.engine.loadImage('net', '/assets/component/net.png');
 		this.engine.loadImage('ground', '/assets/component/ground.png');
 		this.engine.loadSpriteSheet('confettis', '/assets/reaction/confettis.png', 10, 10);
+		this.engine.loadData(NORMAL_SCALE_PHYSICS_DATA, '/assets/component/shape/physicsData.json');
+	}
 
-		this.engine.loadData(NORMAL_SCALE_PHYSICS_DATA, '/assets/shape/physicsData.json');
+	getTexturePriorityItems() {
+		let items = [
+			'ball',
+			'net',
+			'ground'
+		];
+
+		for (let shape of PLAYER_LIST_OF_SHAPES) {
+			items.push('shape-' + shape);
+		}
+
+		items = items.concat(this.gameBonus.getTexturePriorityItems());
+
+		return items;
 	}
 
 	createGame() {
+		this.engine.game.renderer.setTexturePriority(this.getTexturePriorityItems());
+
 		this.gameSkin.createBackgroundComponents(this.engine, this.xSize, this.ySize);
 		this.createComponents();
 		this.gameBonus.createComponents();
@@ -184,7 +201,11 @@ export default class Game {
 		/**
 		 * Player 1
 		 */
-		this.player1 = this.engine.addSprite(initialXLocation, initialYLocation, 'shape-' + this.gameData.getPlayerShapeFromKey('player1'));
+		this.player1 = this.engine.addSprite(
+			initialXLocation,
+			initialYLocation,
+			'shape-' + this.gameData.getPlayerShapeFromKey('player1')
+		);
 		this.player1.data.key = 'player1';
 		this.createPlayer(this.player1, initialXLocation, initialYLocation, 'player1', this.hostPlayerCollisionGroup);
 
@@ -192,7 +213,11 @@ export default class Game {
 		 * Player 2
 		 */
 		initialXLocation = this.xSize - PLAYER_INITIAL_LOCATION;
-		this.player2 = this.engine.addSprite(initialXLocation, initialYLocation, 'shape-' + this.gameData.getPlayerShapeFromKey('player2'));
+		this.player2 = this.engine.addSprite(
+			initialXLocation,
+			initialYLocation,
+			'shape-' + this.gameData.getPlayerShapeFromKey('player2')
+		);
 		this.player2.data.key = 'player2';
 		this.createPlayer(this.player2, initialXLocation, initialYLocation, 'player2', this.clientPlayerCollisionGroup);
 

@@ -29,7 +29,7 @@ $number-of-shapes: length($shape-list);
 	height: 16px;
 
 	.shape-content-scroller {
-		background-image: url("/assets/shape/player-shapes-small.png");
+		background-image: url("/assets/component/shape/player-shapes-small.png");
 		height: $number-of-shapes * 21px;
 		width: 32px;
 	}

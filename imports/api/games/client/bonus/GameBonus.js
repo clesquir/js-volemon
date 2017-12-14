@@ -87,14 +87,7 @@ export default class GameBonus {
 	}
 
 	preload() {
-		this.engine.loadImage('dark-cloud', '/assets/bonus/component/dark-cloud.png');
-		this.engine.loadImage('white-cloud', '/assets/bonus/component/white-cloud.png');
-		this.engine.loadImage('bonus-environment', '/assets/bonus/bonus-environment.png');
-		this.engine.loadImage('bonus-environment-positive', '/assets/bonus/bonus-environment-positive.png');
-		this.engine.loadImage('bonus-environment-negative', '/assets/bonus/bonus-environment-negative.png');
-		this.engine.loadImage('bonus-target', '/assets/bonus/bonus-target.png');
-		this.engine.loadImage('bonus-target-positive', '/assets/bonus/bonus-target-positive.png');
-		this.engine.loadImage('bonus-target-negative', '/assets/bonus/bonus-target-negative.png');
+		this.engine.loadAtlasJSONHash('bonus', '/assets/bonus/texture-atlas.png', '/assets/bonus/texture-atlas.json');
 		this.engine.loadSpriteSheet('bonus-icons', '/assets/bonus/bonus-icons.png', 20, 20);
 	}
 
@@ -105,6 +98,10 @@ export default class GameBonus {
 		this.game.createContactMaterialWithWorld(this.bonusMaterial, {restitution: this.gameConfiguration.worldRestitution()});
 		this.game.createContactMaterialWithNetDelimiter(this.bonusMaterial, {restitution: 0.7});
 		this.game.createContactMaterialWithGroundDelimiter(this.bonusMaterial, {restitution: 1});
+	}
+
+	getTexturePriorityItems() {
+		return [];
 	}
 
 	createComponents() {
@@ -601,7 +598,7 @@ export default class GameBonus {
 	}
 
 	createCloud(xPosition, yPosition, layer) {
-		const cloud = this.engine.addGroupedSprite(xPosition, yPosition, layer.key, this.bonusZIndexGroup, true);
+		const cloud = this.engine.addGroupedSprite(xPosition, yPosition, 'bonus', this.bonusZIndexGroup, true, layer.key + '.png');
 
 		cloud.createdAt = (new Date()).getTime();
 		this.engine.sortBonusGroup(this.bonusZIndexGroup);

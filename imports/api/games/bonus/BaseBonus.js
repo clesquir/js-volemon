@@ -106,7 +106,7 @@ export default class BaseBonus {
 	}
 
 	borderToDraw(engine) {
-		const bonusBorder = engine.addSprite(0, 0, this.spriteBorderKey, true);
+		const bonusBorder = engine.addSprite(0, 0, 'bonus', true, this.spriteBorderKey + '.png');
 		engine.setAnchor(bonusBorder, 0.5);
 
 		return [bonusBorder];

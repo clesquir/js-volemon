@@ -18,6 +18,8 @@ export default class PhaserEngine extends Engine {
 			width: width,
 			height: height,
 			renderer: Phaser.AUTO,
+			multiTexture: true,
+			enableDebug: false,
 			parent: parent
 		});
 
@@ -125,6 +127,10 @@ export default class PhaserEngine extends Engine {
 
 	loadImage(key, path) {
 		this.game.load.image(key, path);
+	}
+
+	loadAtlasJSONHash(key, imagePath, jsonPath) {
+		this.game.load.atlasJSONHash(key, imagePath, jsonPath);
 	}
 
 	loadSpriteSheet(key, path, width, height) {
