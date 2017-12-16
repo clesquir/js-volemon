@@ -1,4 +1,3 @@
-import {BONUS_RADIUS} from '/imports/api/games/constants.js';
 import {BONUS_DURATION} from '/imports/api/games/emissionConstants.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 
@@ -15,10 +14,7 @@ export default class BaseBonus {
 		this.isActive = false;
 		this.activatorPlayerKey = null;
 		this.activatedAt = null;
-		this.spriteBorderKey = 'bonus-environment';
-		this.fontSize = '16px';
-		this.letter = undefined;
-		this.bonusIconsIndex = undefined;
+		this.atlasFrame = '';
 		this.description = '';
 	}
 
@@ -64,52 +60,6 @@ export default class BaseBonus {
 
 	getTargetPlayerKey() {
 		return this.activatorPlayerKey;
-	}
-
-	itemsToDraw(engine) {
-		return []
-			.concat(this.backgroundToDraw(engine))
-			.concat(this.contentToDraw(engine))
-			.concat(this.borderToDraw(engine));
-	}
-
-	backgroundToDraw(engine) {
-		return [engine.drawCircle(0, 0, null, {color: 0xFFFFFF}, BONUS_RADIUS * 2 - 2)];
-	}
-
-	contentToDraw(engine) {
-		let items = [];
-
-		if (this.letter !== undefined) {
-			items.push(
-				engine.addText(0, 3, this.letter, {
-					font: 'FontAwesome',
-					fontWeight: 'normal',
-					fontSize: this.fontSize,
-					fill: '#363636',
-					align: 'center'
-				})
-			);
-		} else if (this.bonusIconsIndex !== undefined) {
-			const bonus = engine.addSprite(
-				0,
-				0,
-				'bonus-icons',
-				true,
-				this.bonusIconsIndex
-			);
-			engine.setAnchor(bonus, 0.5);
-			items.push(bonus);
-		}
-
-		return items;
-	}
-
-	borderToDraw(engine) {
-		const bonusBorder = engine.addSprite(0, 0, 'bonus', true, this.spriteBorderKey + '.png');
-		engine.setAnchor(bonusBorder, 0.5);
-
-		return [bonusBorder];
 	}
 
 	beforeActivation(payload) {

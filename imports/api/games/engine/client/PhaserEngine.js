@@ -140,6 +140,16 @@ export default class PhaserEngine extends Engine {
 		this.game.load.physics(key, path);
 	}
 
+	addTextureAtlas(atlasKey, imageKey, jsonKey) {
+		this.game.cache.addTextureAtlas(
+			atlasKey,
+			null,
+			this.game.cache.getImage(imageKey),
+			this.game.cache.getJSON(jsonKey),
+			'json'
+		);
+	}
+
 	addKeyControllers() {
 		if (Phaser.Keyboard) {
 			this.cursor = this.game.input.keyboard.createCursorKeys();
@@ -806,11 +816,15 @@ export default class PhaserEngine extends Engine {
 
 		bonusSprite.body.clearShapes();
 		bonusSprite.body.addCircle(this.gameConfiguration.bonusRadius());
-
-		const sprites = bonus.itemsToDraw(this);
-		for (let sprite of sprites) {
-			bonusSprite.addChild(sprite);
-		}
+		const sprite = this.addSprite(
+			0,
+			0,
+			'bonus',
+			true,
+			bonus.atlasFrame
+		);
+		this.setAnchor(sprite, 0.5);
+		bonusSprite.addChild(sprite);
 
 		return bonusSprite;
 	}

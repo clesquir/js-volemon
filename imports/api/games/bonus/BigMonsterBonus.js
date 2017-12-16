@@ -4,8 +4,7 @@ import {BIG_SCALE_BONUS, PLAYER_BIG_GRAVITY_SCALE} from '/imports/api/games/cons
 export default class BigMonsterBonus extends MonsterScaleBonus {
 	constructor(...args) {
 		super(...args);
-		this.spriteBorderKey = 'bonus-target-positive';
-		this.letter = '\uf065';
+		this.atlasFrame = 'big-monster.png';
 		this.description = 'Big player with high gravity';
 	}
 

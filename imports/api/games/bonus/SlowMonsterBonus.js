@@ -4,8 +4,7 @@ import MovementMonsterBonus from '/imports/api/games/bonus/MovementMonsterBonus.
 export default class SlowMonsterBonus extends MovementMonsterBonus {
 	constructor(...args) {
 		super(...args);
-		this.spriteBorderKey = 'bonus-target-negative';
-		this.bonusIconsIndex = 2;
+		this.atlasFrame = 'slow-monster.png';
 		this.description = 'Slows down player';
 	}
 

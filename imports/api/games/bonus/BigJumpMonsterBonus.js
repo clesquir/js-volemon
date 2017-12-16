@@ -2,11 +2,9 @@ import {PLAYER_VELOCITY_Y_ON_JUMP} from '/imports/api/games/constants.js';
 import MonsterBonus from '/imports/api/games/bonus/MonsterBonus.js';
 
 export default class BigJumpMonsterBonus extends MonsterBonus {
-
 	constructor(...args) {
 		super(...args);
-		this.spriteBorderKey = 'bonus-target-positive';
-		this.letter = '\uf093';
+		this.atlasFrame = 'big-jump-monster.png';
 		this.description = 'Super high player jumps';
 	}
 
@@ -23,5 +21,4 @@ export default class BigJumpMonsterBonus extends MonsterBonus {
 
 		this.deactivate();
 	}
-
 };

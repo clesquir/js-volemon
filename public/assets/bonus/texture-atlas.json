@@ -1,48 +1,48 @@
 {"frames": [
 
 {
-	"filename": "bonus-environment-negative.png",
-	"frame": {"x":507,"y":1,"w":34,"h":34},
+	"filename": "big-ball.png",
+	"frame": {"x":254,"y":1,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":34},
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "bonus-environment-positive.png",
-	"frame": {"x":507,"y":37,"w":34,"h":34},
+	"filename": "big-jump-monster.png",
+	"frame": {"x":290,"y":1,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":34},
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "bonus-environment.png",
-	"frame": {"x":507,"y":73,"w":34,"h":34},
+	"filename": "big-monster.png",
+	"frame": {"x":326,"y":1,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":34},
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "bonus-target-negative.png",
-	"frame": {"x":507,"y":109,"w":34,"h":34},
+	"filename": "bounce-monster.png",
+	"frame": {"x":362,"y":1,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":34},
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "bonus-target-positive.png",
-	"frame": {"x":507,"y":145,"w":34,"h":34},
+	"filename": "cloaked-monster.png",
+	"frame": {"x":398,"y":1,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":34},
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "bonus-target.png",
-	"frame": {"x":507,"y":181,"w":34,"h":34},
+	"filename": "cloud.png",
+	"frame": {"x":434,"y":1,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":34},
@@ -57,8 +57,136 @@
 	"sourceSize": {"w":256,"h":256}
 },
 {
+	"filename": "fast-monster.png",
+	"frame": {"x":254,"y":37,"w":34,"h":34},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":34},
+	"sourceSize": {"w":34,"h":34}
+},
+{
+	"filename": "freeze-monster.png",
+	"frame": {"x":290,"y":37,"w":34,"h":34},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":34},
+	"sourceSize": {"w":34,"h":34}
+},
+{
+	"filename": "instant-death.png",
+	"frame": {"x":326,"y":37,"w":34,"h":34},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":34},
+	"sourceSize": {"w":34,"h":34}
+},
+{
+	"filename": "invincible-monster.png",
+	"frame": {"x":362,"y":37,"w":34,"h":34},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":34},
+	"sourceSize": {"w":34,"h":34}
+},
+{
+	"filename": "invisible-ball.png",
+	"frame": {"x":398,"y":37,"w":34,"h":34},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":34},
+	"sourceSize": {"w":34,"h":34}
+},
+{
+	"filename": "invisible-monster.png",
+	"frame": {"x":434,"y":37,"w":34,"h":34},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":34},
+	"sourceSize": {"w":34,"h":34}
+},
+{
+	"filename": "invisible-opponent-monster.png",
+	"frame": {"x":254,"y":73,"w":34,"h":34},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":34},
+	"sourceSize": {"w":34,"h":34}
+},
+{
+	"filename": "no-jump-monster.png",
+	"frame": {"x":290,"y":73,"w":34,"h":34},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":34},
+	"sourceSize": {"w":34,"h":34}
+},
+{
+	"filename": "random.png",
+	"frame": {"x":326,"y":73,"w":34,"h":34},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":34},
+	"sourceSize": {"w":34,"h":34}
+},
+{
+	"filename": "recent-shape.png",
+	"frame": {"x":470,"y":1,"w":18,"h":18},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
+	"sourceSize": {"w":18,"h":18}
+},
+{
+	"filename": "reverse-move-monster.png",
+	"frame": {"x":362,"y":73,"w":34,"h":34},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":34},
+	"sourceSize": {"w":34,"h":34}
+},
+{
+	"filename": "shape-shift-monster.png",
+	"frame": {"x":398,"y":73,"w":34,"h":34},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":34},
+	"sourceSize": {"w":34,"h":34}
+},
+{
+	"filename": "slow-monster.png",
+	"frame": {"x":434,"y":73,"w":34,"h":34},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":34},
+	"sourceSize": {"w":34,"h":34}
+},
+{
+	"filename": "small-ball.png",
+	"frame": {"x":254,"y":109,"w":34,"h":34},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":34},
+	"sourceSize": {"w":34,"h":34}
+},
+{
+	"filename": "small-monster.png",
+	"frame": {"x":290,"y":109,"w":34,"h":34},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":34},
+	"sourceSize": {"w":34,"h":34}
+},
+{
+	"filename": "smoke-bomb.png",
+	"frame": {"x":326,"y":109,"w":34,"h":34},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":34},
+	"sourceSize": {"w":34,"h":34}
+},
+{
 	"filename": "white-cloud.png",
-	"frame": {"x":254,"y":1,"w":251,"h":249},
+	"frame": {"x":1,"y":252,"w":251,"h":249},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":0,"y":7,"w":251,"h":249},
@@ -69,8 +197,8 @@
 	"version": "1.0",
 	"image": "texture-atlas.png",
 	"format": "RGBA8888",
-	"size": {"w":542,"h":251},
+	"size": {"w":502,"h":502},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:175f8715bcd7fd2ebc216a244ccb6da9:be69495c6abef6573d5fb64ab20d1514:a973cd4a72d4c90ced76930eac7fdc63$"
+	"smartupdate": "$TexturePacker:SmartUpdate:d74047794f255cd7e1b2dcff132e4b18:c7c33cac39052570f10f599946ad622c:a973cd4a72d4c90ced76930eac7fdc63$"
 }
 }

@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>4.5.0</string>
         <key>fileName</key>
-        <string>/Users/clesquir/src/js-volemon/public/originals/bonus/bonus-texture.tps</string>
+        <string>/Users/clesquir/src/js-volemon/private-assets/bonus/bonus-texture.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -110,7 +110,7 @@
             <key>sizeConstraints</key>
             <enum type="AlgorithmSettings::SizeConstraints">AnySize</enum>
             <key>forceSquared</key>
-            <false/>
+            <true/>
             <key>maxRects</key>
             <struct type="AlgorithmMaxRectsSettings">
                 <key>heuristic</key>
@@ -150,7 +150,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../../assets/bonus/texture-atlas.json</filename>
+                <filename>../../public/assets/bonus/texture-atlas.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -199,12 +199,27 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">../../assets/bonus/bonus-environment-negative.png</key>
-            <key type="filename">../../assets/bonus/bonus-environment-positive.png</key>
-            <key type="filename">../../assets/bonus/bonus-environment.png</key>
-            <key type="filename">../../assets/bonus/bonus-target-negative.png</key>
-            <key type="filename">../../assets/bonus/bonus-target-positive.png</key>
-            <key type="filename">../../assets/bonus/bonus-target.png</key>
+            <key type="filename">bonus-icons/big-ball.png</key>
+            <key type="filename">bonus-icons/big-jump-monster.png</key>
+            <key type="filename">bonus-icons/big-monster.png</key>
+            <key type="filename">bonus-icons/bounce-monster.png</key>
+            <key type="filename">bonus-icons/cloaked-monster.png</key>
+            <key type="filename">bonus-icons/cloud.png</key>
+            <key type="filename">bonus-icons/fast-monster.png</key>
+            <key type="filename">bonus-icons/freeze-monster.png</key>
+            <key type="filename">bonus-icons/instant-death.png</key>
+            <key type="filename">bonus-icons/invincible-monster.png</key>
+            <key type="filename">bonus-icons/invisible-ball.png</key>
+            <key type="filename">bonus-icons/invisible-monster.png</key>
+            <key type="filename">bonus-icons/invisible-opponent-monster.png</key>
+            <key type="filename">bonus-icons/no-jump-monster.png</key>
+            <key type="filename">bonus-icons/random.png</key>
+            <key type="filename">bonus-icons/reverse-move-monster.png</key>
+            <key type="filename">bonus-icons/shape-shift-monster.png</key>
+            <key type="filename">bonus-icons/slow-monster.png</key>
+            <key type="filename">bonus-icons/small-ball.png</key>
+            <key type="filename">bonus-icons/small-monster.png</key>
+            <key type="filename">bonus-icons/smoke-bomb.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -217,8 +232,8 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">../../assets/bonus/component/dark-cloud.png</key>
-            <key type="filename">../../assets/bonus/component/white-cloud.png</key>
+            <key type="filename">components/dark-cloud.png</key>
+            <key type="filename">components/white-cloud.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -228,20 +243,28 @@
                 <rect>64,64,128,128</rect>
                 <key>scale9Paddings</key>
                 <rect>64,64,128,128</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">recent-shape.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>5,5,9,9</rect>
+                <key>scale9Paddings</key>
+                <rect>5,5,9,9</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
         </map>
         <key>fileList</key>
         <array>
-            <filename>../../assets/bonus/bonus-environment-negative.png</filename>
-            <filename>../../assets/bonus/bonus-environment-positive.png</filename>
-            <filename>../../assets/bonus/bonus-environment.png</filename>
-            <filename>../../assets/bonus/bonus-target-negative.png</filename>
-            <filename>../../assets/bonus/bonus-target-positive.png</filename>
-            <filename>../../assets/bonus/bonus-target.png</filename>
-            <filename>../../assets/bonus/component/dark-cloud.png</filename>
-            <filename>../../assets/bonus/component/white-cloud.png</filename>
+            <filename>bonus-icons</filename>
+            <filename>components</filename>
+            <filename>recent-shape.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

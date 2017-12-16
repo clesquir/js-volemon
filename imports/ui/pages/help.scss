@@ -14,70 +14,7 @@ $bonus-background-size: $bonus-size - 3;
 		position: relative;
 		width: $bonus-size;
 		height: $bonus-size;
-
-		.help-bonus-icon {
-			position: absolute;
-			transform: translate(-50%, -50%);
-			left: 50%;
-			top: 50%;
-		}
-
-		.bonus-background {
-			width: $bonus-background-size;
-			height: $bonus-background-size;
-			border-radius: $bonus-background-size;
-			background-color: white;
-		}
-
-		.bonus-border {
-			width: $bonus-size;
-			height: $bonus-size;
-
-			&.bonus-environment-negative {
-				background-image: url('/assets/bonus/bonus-environment-negative.png');
-			}
-			&.bonus-environment-positive {
-				background-image: url('/assets/bonus/bonus-environment-positive.png');
-			}
-			&.bonus-environment {
-				background-image: url('/assets/bonus/bonus-environment.png');
-			}
-			&.bonus-target-negative {
-				background-image: url('/assets/bonus/bonus-target-negative.png');
-			}
-			&.bonus-target-positive {
-				background-image: url('/assets/bonus/bonus-target-positive.png');
-			}
-		}
-
-		.help-bonus-icon.fa {
-			padding-left: 1px;
-		}
-
-		.help-bonus-sprite {
-			background-image: url('/assets/bonus/bonus-icons.png');
-			width: 20px;
-			height: 20px;
-
-			&.help-bonus-sprite-0 {
-				background-position-x: 0;
-			}
-			&.help-bonus-sprite-1 {
-				background-position-x: -20px;
-			}
-			&.help-bonus-sprite-2 {
-				background-position-x: -40px;
-			}
-			&.help-bonus-sprite-3 {
-				background-position-x: -60px;
-			}
-			&.help-bonus-sprite-4 {
-				background-position-x: -80px;
-			}
-			&.help-bonus-sprite-5 {
-				background-position-x: -100px;
-			}
-		}
+		background-image: url("/assets/bonus/texture-atlas.png");
 	}
 
 	.help-bonus-description {

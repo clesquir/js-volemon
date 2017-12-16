@@ -2,7 +2,6 @@ import {PLAYER_VELOCITY_X_ON_MOVE} from '/imports/api/games/constants.js';
 import MonsterBonus from '/imports/api/games/bonus/MonsterBonus.js';
 
 export default class MovementMonsterBonus extends MonsterBonus {
-
 	isSimilarBonusForPlayerKey(bonus, playerKey) {
 		return bonus instanceof MovementMonsterBonus && playerKey === this.activatorPlayerKey;
 	}
@@ -12,5 +11,4 @@ export default class MovementMonsterBonus extends MonsterBonus {
 
 		this.deactivate();
 	}
-
 };

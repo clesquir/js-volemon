@@ -39,17 +39,7 @@
 
 				{{#each bonusesHelpList}}
 					<div class="help-bonus">
-						<div class="help-bonus-icon-container">
-							<div class="help-bonus-icon bonus-background"></div>
-							<div class="help-bonus-icon bonus-border {{borderClass}}"></div>
-							{{#if isLetter}}
-								<div class="help-bonus-icon fa" style="font-size: {{letterSize}}">
-									{{letter}}
-								</div>
-							{{else}}
-								<div class="help-bonus-icon help-bonus-sprite help-bonus-sprite-{{bonusIconsIndex}}"></div>
-							{{/if}}
-						</div>
+						<div class="help-bonus-icon-container" style="background-position: {{backgroundPosition}}"></div>
 						<div class="help-bonus-description">{{description}}</div>
 					</div>
 				{{/each}}

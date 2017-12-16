@@ -4,8 +4,7 @@ import {BIG_SCALE_BONUS, BALL_BIG_GRAVITY_SCALE} from '/imports/api/games/consta
 export default class BigBallBonus extends BallScaleBonus {
 	constructor(...args) {
 		super(...args);
-		this.spriteBorderKey = 'bonus-environment-positive';
-		this.letter = '\uf111';
+		this.atlasFrame = 'big-ball.png';
 		this.description = 'Big ball with high gravity';
 	}
 

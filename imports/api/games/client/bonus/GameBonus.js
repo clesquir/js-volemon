@@ -88,7 +88,6 @@ export default class GameBonus {
 
 	preload() {
 		this.engine.loadAtlasJSONHash('bonus', '/assets/bonus/texture-atlas.png', '/assets/bonus/texture-atlas.json');
-		this.engine.loadSpriteSheet('bonus-icons', '/assets/bonus/bonus-icons.png', 20, 20);
 	}
 
 	createCollisionGroupsAndMaterials() {

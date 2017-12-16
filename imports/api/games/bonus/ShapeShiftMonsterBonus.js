@@ -2,17 +2,16 @@ import {Random} from 'meteor/random';
 import MonsterBonus from '/imports/api/games/bonus/MonsterBonus.js';
 import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
 
-export default class ShapeShiftBonus extends MonsterBonus {
+export default class ShapeShiftMonsterBonus extends MonsterBonus {
 	constructor(...args) {
 		super(...args);
-		this.spriteBorderKey = 'bonus-target-negative';
-		this.bonusIconsIndex = 3;
 		this.playerShape = null;
+		this.atlasFrame = 'shape-shift-monster.png';
 		this.description = 'Shape shifts player';
 	}
 
 	isSimilarBonusForPlayerKey(bonus, playerKey) {
-		return bonus instanceof ShapeShiftBonus && playerKey === this.activatorPlayerKey;
+		return bonus instanceof ShapeShiftMonsterBonus && playerKey === this.activatorPlayerKey;
 	}
 
 	beforeActivation(payload) {

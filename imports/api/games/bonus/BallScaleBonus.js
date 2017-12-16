@@ -1,7 +1,6 @@
 import BallBonus from '/imports/api/games/bonus/BallBonus.js';
 
 export default class BallScaleBonus extends BallBonus {
-
 	isSimilarBonusForPlayerKey(bonus, playerKey) {
 		return bonus instanceof BallScaleBonus;
 	}
@@ -12,5 +11,4 @@ export default class BallScaleBonus extends BallBonus {
 
 		this.deactivate();
 	}
-
 };

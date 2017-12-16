@@ -16,6 +16,6 @@ export const BONUS_NO_JUMP_MONSTER = 'NoJumpMonsterBonus';
 export const BONUS_BOUNCE_MONSTER = 'BounceMonsterBonus';
 export const BONUS_CLOAKED_MONSTER = 'CloakedMonsterBonus';
 export const BONUS_RANDOM = 'RandomBonus';
-export const BONUS_SHAPE_SHIFT = 'ShapeShiftBonus';
+export const BONUS_SHAPE_SHIFT = 'ShapeShiftMonsterBonus';
 export const BONUS_SMOKE_BOMB = 'SmokeBomb';
 export const BONUS_INSTANT_DEATH = 'InstantDeath';

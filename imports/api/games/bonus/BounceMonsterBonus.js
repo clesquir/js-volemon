@@ -3,7 +3,7 @@ import JumpMonsterBonus from '/imports/api/games/bonus/JumpMonsterBonus.js';
 export default class BounceMonsterBonus extends JumpMonsterBonus {
 	constructor(...args) {
 		super(...args);
-		this.letter = '\uf0dc';
+		this.atlasFrame = 'bounce-monster.png';
 		this.description = 'Player jumps constantly';
 	}
 

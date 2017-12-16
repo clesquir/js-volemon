@@ -16,7 +16,7 @@ import InvisibleOpponentMonsterBonus from '/imports/api/games/bonus/InvisibleOpp
 import NoJumpMonsterBonus from '/imports/api/games/bonus/NoJumpMonsterBonus.js';
 import RandomBonus from '/imports/api/games/bonus/RandomBonus.js';
 import ReverseMoveMonsterBonus from '/imports/api/games/bonus/ReverseMoveMonsterBonus.js';
-import ShapeShiftBonus from '/imports/api/games/bonus/ShapeShiftBonus.js';
+import ShapeShiftMonsterBonus from '/imports/api/games/bonus/ShapeShiftMonsterBonus.js';
 import SlowMonsterBonus from '/imports/api/games/bonus/SlowMonsterBonus.js';
 import SmallBallBonus from '/imports/api/games/bonus/SmallBallBonus.js';
 import SmallMonsterBonus from '/imports/api/games/bonus/SmallMonsterBonus.js';
@@ -57,20 +57,33 @@ Template.help.helpers({
 			new InvisibleMonsterBonus(),
 			new InvisibleOpponentMonsterBonus(),
 			new CloakedMonsterBonus(),
-			new ShapeShiftBonus(),
+			new ShapeShiftMonsterBonus(),
 			new InvincibleMonsterBonus(),
 			new InstantDeathBonus(),
 		];
 		const helpList = [];
+		let textureAtlasFrames = [];
+		$.ajax({
+			url: '/assets/bonus/texture-atlas.json',
+			async: false
+		}).done(function(json) {
+			textureAtlasFrames = json.frames;
+		});
 
 		for (let bonus of bonuses) {
+			let x = 0;
+			let y = 0;
+			for (let frame of textureAtlasFrames) {
+				if (frame.filename === bonus.atlasFrame) {
+					x = frame.frame.x;
+					y = frame.frame.y;
+					break;
+				}
+			}
+
 			helpList.push(
 				{
-					borderClass: bonus.spriteBorderKey,
-					isLetter: (bonus.letter !== undefined),
-					letterSize: bonus.fontSize,
-					letter: bonus.letter,
-					bonusIconsIndex: bonus.bonusIconsIndex,
+					backgroundPosition: -x + 'px ' + -y + 'px',
 					description: bonus.description
 				}
 			);

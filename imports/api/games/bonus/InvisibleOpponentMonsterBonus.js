@@ -5,8 +5,7 @@ import {BONUS_INVISIBLE_MONSTER} from '/imports/api/games/bonusConstants.js';
 export default class InvisibleOpponentMonsterBonus extends MonsterBonus {
 	constructor(...args) {
 		super(...args);
-		this.spriteBorderKey = 'bonus-target-positive';
-		this.letter = '\uf070';
+		this.atlasFrame = 'invisible-opponent-monster.png';
 		this.description = 'Invisible opponent player';
 	}
 
@@ -15,8 +14,10 @@ export default class InvisibleOpponentMonsterBonus extends MonsterBonus {
 	}
 
 	isSimilarBonusForPlayerKey(bonus, playerKey) {
-		return (bonus instanceof InvisibleOpponentMonsterBonus || bonus instanceof InvisibleMonsterBonus) &&
-			bonus.getTargetPlayerKey() === this.getTargetPlayerKey();
+		return (
+			(bonus instanceof InvisibleOpponentMonsterBonus || bonus instanceof InvisibleMonsterBonus) &&
+			bonus.getTargetPlayerKey() === this.getTargetPlayerKey()
+		);
 	}
 
 	getTargetPlayerKey() {
