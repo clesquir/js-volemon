@@ -10,7 +10,8 @@ import {
 	TOURNAMENT_MODE_SUPER_BOUNCE_WALLS,
 	TOURNAMENT_MODE_MOON_GRAVITY,
 	TOURNAMENT_MODE_JUPITER_GRAVITY,
-	TOURNAMENT_MODE_NO_BONUSES
+	TOURNAMENT_MODE_NO_BONUSES,
+	TOURNAMENT_MODE_MASSIVE_HARDCORE_BLIND_BULLETPROOF
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 
 Meteor.startup(function() {
@@ -62,6 +63,11 @@ Meteor.startup(function() {
 		{
 			"_id": TOURNAMENT_MODE_NO_BONUSES,
 			"name": "No bonuses"
+		},
+		{
+			"_id": TOURNAMENT_MODE_MASSIVE_HARDCORE_BLIND_BULLETPROOF,
+			"name": "Massive hardcore blind bulletproof",
+			"description": "Jupiter's gravity and lots of invisible/invincible bonuses"
 		}
 	];
 

@@ -2,7 +2,7 @@ import {
 	TOURNAMENT_MODE_CLASSIC, TOURNAMENT_MODE_INSTANT_DEATH_BONUS,
 	TOURNAMENT_MODE_HARDCORE, TOURNAMENT_MODE_RANDOM_BONUSES, TOURNAMENT_MODE_SMOKE_BOMB,
 	TOURNAMENT_MODE_SUDDEN_DEATH, TOURNAMENT_MODE_SUPER_BOUNCE_WALLS, TOURNAMENT_MODE_JUPITER_GRAVITY,
-	TOURNAMENT_MODE_MOON_GRAVITY, TOURNAMENT_MODE_NO_BONUSES
+	TOURNAMENT_MODE_MOON_GRAVITY, TOURNAMENT_MODE_NO_BONUSES, TOURNAMENT_MODE_MASSIVE_HARDCORE_BLIND_BULLETPROOF
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 import Classic from './Classic';
 import InstantDeathBonus from './InstantDeathBonus';
@@ -14,6 +14,7 @@ import SuperBounceWalls from './SuperBounceWalls';
 import MoonGravity from './MoonGravity';
 import JupiterGravity from './JupiterGravity';
 import NoBonuses from './NoBonuses';
+import MassiveHardcoreBlindBulletproof from '/imports/api/tournaments/modes/MassiveHardcoreBlindBulletproof.js';
 
 export default class TournamentModeFactory {
 	static fromId(id) {
@@ -38,6 +39,8 @@ export default class TournamentModeFactory {
 				return new JupiterGravity();
 			case TOURNAMENT_MODE_NO_BONUSES:
 				return new NoBonuses();
+			case TOURNAMENT_MODE_MASSIVE_HARDCORE_BLIND_BULLETPROOF:
+				return new MassiveHardcoreBlindBulletproof();
 		}
 
 		throw `The tournament mode ${id} doesn't exist.`;
