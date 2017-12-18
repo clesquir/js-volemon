@@ -95,6 +95,8 @@ export default class GameSkin {
 	createGroundComponents(engine, xSize, ySize, groundHeight, groundGroup) {
 		let groundComponents = [];
 
+		groundComponents = groundComponents.concat(this.skin.groundComponents());
+
 		for (let plugin of this.plugins) {
 			groundComponents = groundComponents.concat(plugin.groundComponents());
 		}

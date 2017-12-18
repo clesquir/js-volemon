@@ -1,7 +1,6 @@
 import {Meteor} from 'meteor/meteor';
-import {SKIN_DEFAULT, SKIN_DEVALTO} from '/imports/api/skins/skinConstants.js';
+import {SKIN_DEFAULT, SKIN_DEVALTO, SKIN_MARIO_BROS} from '/imports/api/skins/skinConstants.js';
 import {Skins} from '/imports/api/skins/skins.js';
-import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 
 Meteor.startup(function() {
 	const skins = [
@@ -14,6 +13,11 @@ Meteor.startup(function() {
 			_id: SKIN_DEVALTO,
 			name: "Devalto",
 			displayOrder: 2
+		},
+		{
+			_id: SKIN_MARIO_BROS,
+			name: "Mario bros.",
+			displayOrder: 3
 		}
 	];
 
@@ -37,11 +41,4 @@ Meteor.startup(function() {
 			}
 		}
 	}
-
-	Skins.remove({_id: 'weather'});
-
-	const configurations = UserConfigurations.find({skinId: 'weather'});
-	configurations.forEach(function(configuration) {
-		UserConfigurations.update({_id: configuration._id}, {$set: {skinId: SKIN_DEFAULT, pluginWeatherAdaptiveEnabled: 1}})
-	});
 });

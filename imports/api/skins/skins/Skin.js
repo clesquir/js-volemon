@@ -36,4 +36,11 @@ export default class Skin {
 	backgroundComponents() {
 		return [];
 	}
+
+	/**
+	 * @returns {string[]}
+	 */
+	groundComponents() {
+		return [];
+	}
 }
