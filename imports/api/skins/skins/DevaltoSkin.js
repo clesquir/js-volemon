@@ -37,6 +37,15 @@ export default class DevaltoSkin extends Skin {
 	}
 
 	/**
+	 * @returns {{key: {string}, path: {string}, width: {integer}, height: {integer}}[]}
+	 */
+	spriteSheetsToLoad() {
+		return [
+			{key: 'confettis', path: '/assets/skin/devalto/confettis.png', width: 10, height: 10}
+		];
+	}
+
+	/**
 	 * @returns {string}
 	 */
 	backgroundColor() {
