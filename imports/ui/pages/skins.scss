@@ -45,14 +45,6 @@ $skin-selection-color: darken($table-header-color, 15%);
 		}
 	}
 
-	.skin-item-default {
-		background-image: url("/assets/skin/default.png");
-	}
-
-	.skin-item-devalto {
-		background-image: url("/assets/skin/devalto.png");
-	}
-
 	.skin-item-selected {
 		box-shadow: 0 0 20px 5px $skin-selection-color, 0 0 5px 0 #333333 !important;
 	}
