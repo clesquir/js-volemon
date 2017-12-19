@@ -463,21 +463,7 @@ export default class Game {
 		);
 
 		//Ground limits
-		const bound = this.engine.addBound(
-			this.xSize / 2,
-			this.ySize - (this.groundHeight / 2),
-			this.xSize,
-			this.groundHeight,
-			this.groundDelimiterMaterial,
-			this.groundHitDelimiterCollisionGroup,
-			[
-				this.hostPlayerCollisionGroup,
-				this.clientPlayerCollisionGroup,
-				this.ballCollisionGroup,
-				this.gameBonus.bonusCollisionGroup
-			]
-		);
-
+		const bound = this.createGroundBound();
 		this.addPlayerCanJumpOnBody(this.player1, bound);
 		this.addPlayerCanJumpOnBody(this.player2, bound);
 
@@ -490,6 +476,23 @@ export default class Game {
 			this.netDelimiterMaterial,
 			this.netHitDelimiterCollisionGroup,
 			[
+				this.ballCollisionGroup,
+				this.gameBonus.bonusCollisionGroup
+			]
+		);
+	}
+
+	createGroundBound() {
+		return this.engine.addBound(
+			this.xSize / 2,
+			this.ySize - (this.groundHeight / 2),
+			this.xSize,
+			this.groundHeight,
+			this.groundDelimiterMaterial,
+			this.groundHitDelimiterCollisionGroup,
+			[
+				this.hostPlayerCollisionGroup,
+				this.clientPlayerCollisionGroup,
 				this.ballCollisionGroup,
 				this.gameBonus.bonusCollisionGroup
 			]

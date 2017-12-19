@@ -25,7 +25,7 @@ export default class Shape {
 			new PhaserEngine(gameConfiguration, new NullDeviceController()),
 			new GameData(gameId),
 			gameConfiguration,
-			new GameSkin(new DefaultSkin()),
+			new GameSkin(new DefaultSkin(), []),
 			new GameStreamBundler(null),
 			new ServerNormalizedTime()
 		);
@@ -98,9 +98,9 @@ export default class Shape {
 	}
 
 	createLevelComponents() {
-		this.game.level = this.game.engine.addGroup();
-
 		this.game.createGroundLevelComponents();
+		const ground = this.game.createGroundBound();
+		this.game.addPlayerCanJumpOnBody(this.game.player1, ground);
 	}
 
 	updateGame() {

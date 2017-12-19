@@ -27,7 +27,7 @@ export default class Environment {
 			this.gameEngine,
 			this.gameData,
 			this.gameConfiguration,
-			new GameSkin(new DefaultSkin()),
+			new GameSkin(new DefaultSkin(), []),
 			this.gameStreamBundler,
 			this.serverNormalizedTime
 		);
@@ -132,9 +132,10 @@ export default class Environment {
 	}
 
 	createLevelComponents() {
-		this.game.level = this.gameEngine.addGroup();
-
 		this.game.createGroundLevelComponents();
+		const ground = this.game.createGroundBound();
+		this.game.addPlayerCanJumpOnBody(this.game.player1, ground);
+		this.game.addPlayerCanJumpOnBody(this.game.player2, ground);
 	}
 
 	updateGame() {
