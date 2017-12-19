@@ -1,14 +1,15 @@
 import {Random} from 'meteor/random';
-import Game from '/imports/api/games/client/Game.js';
-import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
 import GameData from '/imports/api/games/client/data/GameData.js';
+import DesktopController from '/imports/api/games/client/deviceController/DesktopController.js';
+import Game from '/imports/api/games/client/Game.js';
 import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
-import StaticGameConfiguration from '/imports/api/games/configuration/StaticGameConfiguration.js';
-import NullDeviceController from '/imports/api/games/client/deviceController/NullDeviceController.js';
 import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
+import StaticGameConfiguration from '/imports/api/games/configuration/StaticGameConfiguration.js';
 import {PLAYER_HEIGHT, PLAYER_INITIAL_LOCATION} from '/imports/api/games/constants.js';
+import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
 import DefaultSkin from '/imports/api/skins/skins/DefaultSkin.js';
+import CustomKeymaps from '/imports/lib/keymaps/CustomKeymaps.js';
 
 export default class Environment {
 	constructor() {
@@ -20,7 +21,9 @@ export default class Environment {
 		this.gameData = new GameData(gameId);
 		this.gameConfiguration = new StaticGameConfiguration(gameId);
 		this.gameStreamBundler = new GameStreamBundler(null);
-		this.gameEngine = new PhaserEngine(this.gameConfiguration, new NullDeviceController());
+		const desktopController = new DesktopController(CustomKeymaps.defaultKeymaps());
+		desktopController.init();
+		this.gameEngine = new PhaserEngine(this.gameConfiguration, desktopController);
 		this.serverNormalizedTime = new ServerNormalizedTime();
 		this.game = new Game(
 			gameId,
@@ -55,7 +58,7 @@ export default class Environment {
 		this.createComponents();
 		this.gameBonus.createComponents();
 
-		this.gameEngine.addKeyControllers();
+		this.gameEngine.createGame();
 
 		this.game.gameInitiated = true;
 
@@ -68,7 +71,6 @@ export default class Environment {
 	}
 
 	createComponents() {
-		this.gameEngine.createGame();
 		this.game.createCollisionGroupsAndMaterials();
 
 		const playerShape = 'half-circle';

@@ -18,7 +18,7 @@ export default class MobileController extends DeviceController {
 		};
 	}
 
-	init() {
+	startMonitoring() {
 		$(document).find(this.parentSelector).on(
 			'touchstart',
 			this.controllerSelector,
@@ -51,6 +51,10 @@ export default class MobileController extends DeviceController {
 				this.onPressUp(e.originalEvent);
 			}
 		);
+	}
+
+	stopMonitoring() {
+		$(document).find(this.parentSelector).off('touchstart touchmove touchend touchcancel');
 	}
 
 	leftPressed() {
