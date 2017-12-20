@@ -6,6 +6,13 @@ export default class Plugin {
 	}
 
 	/**
+	 * @returns {{key: {string}, imagePath: {string}, jsonPath: {string}}[]}
+	 */
+	atlasJSONHash() {
+		return [];
+	}
+
+	/**
 	 * @returns {{key: {string}, path: {string}}[]}
 	 */
 	imagesToLoad() {
@@ -34,14 +41,14 @@ export default class Plugin {
 	}
 
 	/**
-	 * @returns {{key: {string}, animate: {boolean}}[]}
+	 * @returns {{key: {string}, frame: {string}, animation: {frame: {string}, frames: {string}[], speed: {int}}, x: {int}, y: {int}, width: {int}, height: {int}}[]}
 	 */
 	backgroundComponents() {
 		return [];
 	}
 
 	/**
-	 * @returns {string[]}
+	 * @returns {{key: {string}, frame: {string}}[]}
 	 */
 	groundComponents() {
 		return [];

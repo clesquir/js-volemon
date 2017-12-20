@@ -6,7 +6,7 @@ export default class ShapeShiftMonsterBonus extends MonsterBonus {
 	constructor(...args) {
 		super(...args);
 		this.playerShape = null;
-		this.atlasFrame = 'shape-shift-monster.png';
+		this.atlasFrame = 'shape-shift-monster';
 		this.description = 'Shape shifts player';
 	}
 

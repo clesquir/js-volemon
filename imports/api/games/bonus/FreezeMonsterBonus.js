@@ -4,7 +4,7 @@ export default class FreezeMonsterBonus extends MonsterBonus {
 	constructor(...args) {
 		super(...args);
 		this.durationMilliseconds = 5000;
-		this.atlasFrame = 'freeze-monster.png';
+		this.atlasFrame = 'freeze-monster';
 		this.description = 'Freezes the player';
 	}
 

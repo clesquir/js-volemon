@@ -3,6 +3,13 @@ export default class Skin {
 	}
 
 	/**
+	 * @returns {{key: {string}, imagePath: {string}, jsonPath: {string}}[]}
+	 */
+	atlasJSONHash() {
+		return [];
+	}
+
+	/**
 	 * @returns {{key: {string}, path: {string}}[]}
 	 */
 	imagesToLoad() {
@@ -31,16 +38,37 @@ export default class Skin {
 	}
 
 	/**
-	 * @returns {{key: {string}, animate: {boolean}}[]}
+	 * @returns {{key: {string}, frame: {string}, animation: {frame: {string}, frames: {string}[], speed: {int}}, x: {int}, y: {int}, width: {int}, height: {int}}[]}
 	 */
 	backgroundComponents() {
 		return [];
 	}
 
 	/**
-	 * @returns {string[]}
+	 * @returns {{key: {string}, frame: {string}, animation: {frame: {string}, frames: {string}[], speed: {int}}}}
+	 */
+	ballComponent() {
+		return {};
+	}
+
+	/**
+	 * @returns {{key: {string}, frame: {string}}}
+	 */
+	netComponent() {
+		return {};
+	}
+
+	/**
+	 * @returns {{key: {string}, frame: {string}}[]}
 	 */
 	groundComponents() {
 		return [];
+	}
+
+	/**
+	 * @returns {{key: {string}, hostFrames: {string}[], clientFrames: {string}[]}[]}
+	 */
+	confettisComponent() {
+		return {};
 	}
 }

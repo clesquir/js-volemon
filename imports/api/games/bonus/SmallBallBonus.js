@@ -4,7 +4,7 @@ import {SMALL_SCALE_BALL_BONUS, BALL_SMALL_GRAVITY_SCALE} from '/imports/api/gam
 export default class SmallBallBonus extends BallScaleBonus {
 	constructor(...args) {
 		super(...args);
-		this.atlasFrame = 'small-ball.png';
+		this.atlasFrame = 'small-ball';
 		this.description = 'Small ball with low gravity';
 	}
 

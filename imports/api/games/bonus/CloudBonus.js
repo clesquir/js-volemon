@@ -4,7 +4,7 @@ export default class CloudBonus extends BaseBonus {
 	constructor(...args) {
 		super(...args);
 		this.durationMilliseconds = 30000;
-		this.atlasFrame = 'cloud.png';
+		this.atlasFrame = 'cloud';
 		this.description = 'Cloud';
 	}
 

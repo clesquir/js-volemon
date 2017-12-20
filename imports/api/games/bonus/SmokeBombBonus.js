@@ -4,7 +4,7 @@ export default class SmokeBombBonus extends BaseBonus {
 	constructor(...args) {
 		super(...args);
 		this.durationMilliseconds = 60000;
-		this.atlasFrame = 'smoke-bomb.png';
+		this.atlasFrame = 'smoke-bomb';
 		this.description = 'Smoke bomb';
 	}
 

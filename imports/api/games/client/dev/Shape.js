@@ -7,7 +7,7 @@ import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime
 import StaticGameConfiguration from '/imports/api/games/configuration/StaticGameConfiguration.js';
 import NullDeviceController from '/imports/api/games/client/deviceController/NullDeviceController.js';
 import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
-import {NORMAL_SCALE_PHYSICS_DATA, PLAYER_HEIGHT, PLAYER_WIDTH} from '/imports/api/games/constants.js';
+import {PLAYER_HEIGHT, PLAYER_WIDTH} from '/imports/api/games/constants.js';
 import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants';
 import DefaultSkin from '/imports/api/skins/skins/DefaultSkin.js';
 
@@ -44,7 +44,7 @@ export default class Shape {
 	}
 
 	preloadGame() {
-		this.game.loadLevelComponents();
+		this.game.preloadGame();
 	}
 
 	createGame() {
@@ -98,6 +98,7 @@ export default class Shape {
 	}
 
 	createLevelComponents() {
+		this.game.groundGroup = this.game.engine.addGroup(false);
 		this.game.createGroundLevelComponents();
 		const ground = this.game.createGroundBound();
 		this.game.addPlayerCanJumpOnBody(this.game.player1, ground);

@@ -4,7 +4,7 @@ import {SMALL_SCALE_PLAYER_BONUS, PLAYER_SMALL_GRAVITY_SCALE} from '/imports/api
 export default class SmallMonsterBonus extends MonsterScaleBonus {
 	constructor(...args) {
 		super(...args);
-		this.atlasFrame = 'small-monster.png';
+		this.atlasFrame = 'small-monster';
 		this.description = 'Small player with low gravity';
 	}
 

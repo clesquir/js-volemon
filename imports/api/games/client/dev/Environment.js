@@ -132,6 +132,7 @@ export default class Environment {
 	}
 
 	createLevelComponents() {
+		this.game.groundGroup = this.game.engine.addGroup(false);
 		this.game.createGroundLevelComponents();
 		const ground = this.game.createGroundBound();
 		this.game.addPlayerCanJumpOnBody(this.game.player1, ground);

@@ -3,7 +3,7 @@ import BaseBonus from '/imports/api/games/bonus/BaseBonus.js';
 export default class RandomBonus extends BaseBonus {
 	constructor(...args) {
 		super(...args);
-		this.atlasFrame = 'random.png';
+		this.atlasFrame = 'random';
 		this.description = 'Random bonus';
 	}
 

@@ -4,7 +4,7 @@ import MonsterBonus from '/imports/api/games/bonus/MonsterBonus.js';
 export default class BigJumpMonsterBonus extends MonsterBonus {
 	constructor(...args) {
 		super(...args);
-		this.atlasFrame = 'big-jump-monster.png';
+		this.atlasFrame = 'big-jump-monster';
 		this.description = 'Super high player jumps';
 	}
 

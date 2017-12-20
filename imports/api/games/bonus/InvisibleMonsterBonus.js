@@ -4,7 +4,7 @@ import MonsterBonus from '/imports/api/games/bonus/MonsterBonus.js';
 export default class InvisibleMonsterBonus extends MonsterBonus {
 	constructor(...args) {
 		super(...args);
-		this.atlasFrame = 'invisible-monster.png';
+		this.atlasFrame = 'invisible-monster';
 		this.description = 'Invisible player';
 	}
 

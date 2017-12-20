@@ -20,17 +20,22 @@ export default class GameSkin {
 	 * @param {Engine} engine
 	 */
 	preload(engine) {
+		let atlasJSONHash = this.skin.atlasJSONHash();
 		let imagesToLoad = this.skin.imagesToLoad();
 		let spriteSheetToLoad = this.skin.spriteSheetsToLoad();
 		let dataToLoad = this.skin.dataToLoad();
 		let background = this.skin.backgroundColor();
 
 		for (let plugin of this.plugins) {
+			atlasJSONHash = atlasJSONHash.concat(plugin.atlasJSONHash());
 			imagesToLoad = imagesToLoad.concat(plugin.imagesToLoad());
 			spriteSheetToLoad = spriteSheetToLoad.concat(plugin.spriteSheetsToLoad());
 			dataToLoad = dataToLoad.concat(plugin.dataToLoad());
 		}
 
+		for (let atlas of atlasJSONHash) {
+			engine.loadAtlasJSONHash(atlas.key, atlas.imagePath, atlas.jsonPath);
+		}
 		for (let image of imagesToLoad) {
 			engine.loadImage(image.key, image.path);
 		}
@@ -52,37 +57,71 @@ export default class GameSkin {
 	createBackgroundComponents(engine, xSize, ySize) {
 		let backgroundComponents = this.skin.backgroundComponents();
 
-		this.renderBackgroundComponents(backgroundComponents, engine, xSize, ySize);
+		this.renderBackgroundComponents(backgroundComponents, engine);
 
 		for (let plugin of this.plugins) {
 			for (let modifier of plugin.backgroundColorModifier()) {
 				engine.drawRectangle(0, 0, xSize, ySize, modifier);
 			}
-			this.renderBackgroundComponents(plugin.backgroundComponents(), engine, xSize, ySize);
+			this.renderBackgroundComponents(plugin.backgroundComponents(), engine);
 		}
 	}
 
 	/**
 	 * @private
-	 * @param {{key: {string}, animate: {boolean}}[]} backgroundComponents
+	 * @param {{key: {string}, frame: {string}, animation: {frame: {string}, frames: {string}[], speed: {int}}, x: {int}, y: {int}, width: {int}, height: {int}}[]} backgroundComponents
 	 * @param {Engine} engine
-	 * @param xSize
-	 * @param ySize
 	 */
-	renderBackgroundComponents(backgroundComponents, engine, xSize, ySize) {
+	renderBackgroundComponents(backgroundComponents, engine) {
 		for (let backgroundComponent of backgroundComponents) {
 			const background = engine.addTileSprite(
-				0,
-				0,
-				xSize,
-				ySize,
-				backgroundComponent.key
+				backgroundComponent.x,
+				backgroundComponent.y,
+				backgroundComponent.width,
+				backgroundComponent.height,
+				backgroundComponent.key,
+				backgroundComponent.frame,
+				true
 			);
-			if (backgroundComponent.animate) {
-				background.animations.add('animation');
-				background.animations.play('animation', 5, true);
+			if (backgroundComponent.animation) {
+				background.animations.add(
+					backgroundComponent.animation.frame,
+					backgroundComponent.animation.frames,
+					backgroundComponent.animation.speed,
+					true
+				);
+				background.animations.play(backgroundComponent.animation.frame);
 			}
 		}
+	}
+
+	createBallComponent(engine, initialXLocation, initialYLocation) {
+		const ballComponent = this.skin.ballComponent();
+		const sprite = engine.addSprite(initialXLocation, initialYLocation, ballComponent.key, false, ballComponent.frame);
+
+		if (ballComponent.animation) {
+			sprite.animations.add(
+				ballComponent.animation.frame,
+				ballComponent.animation.frames,
+				ballComponent.animation.speed,
+				true
+			);
+			sprite.animations.play(ballComponent.animation.frame);
+		}
+
+		return sprite;
+	}
+
+	createNetComponent(engine, initialXLocation, initialYLocation, groundGroup) {
+		const netComponent = this.skin.netComponent();
+
+		const net = engine.addImage(
+			initialXLocation,
+			initialYLocation,
+			netComponent.key,
+			netComponent.frame
+		);
+		groundGroup.add(net);
 	}
 
 	/**
@@ -106,11 +145,32 @@ export default class GameSkin {
 				0,
 				ySize - groundHeight,
 				xSize,
-				groundHeight,
-				groundComponent,
+				groundComponent.height || groundHeight,
+				groundComponent.key,
+				groundComponent.frame,
 				true,
 				groundGroup
 			);
 		}
+	}
+
+	cheer(engine, forHost, x, y) {
+		const confettis = this.skin.confettisComponent();
+
+		engine.emitParticules(
+			x,
+			y,
+			(forHost ? 1 : -1) * 50,
+			(forHost ? 1 : -1) * 250,
+			25,
+			150,
+			confettis.key,
+			(forHost ? confettis.hostFrames : confettis.clientFrames),
+			50,
+			false,
+			3000,
+			0,
+			500
+		);
 	}
 }
