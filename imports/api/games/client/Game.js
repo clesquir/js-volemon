@@ -872,7 +872,7 @@ export default class Game {
 		player.data.doingDropShot = data.doingDropShot;
 
 		let serverNormalizedTimestamp = this.serverNormalizedTime.getServerTimestamp();
-		this.engine.interpolateMoveTo(player, serverNormalizedTimestamp, data, () => {return this.gameIsOnGoing()});
+		this.engine.interpolateMoveTo(player, serverNormalizedTimestamp, data, () => {return this.gameIsOnGoing()}, true);
 	}
 
 	moveClientBall(data) {

@@ -419,39 +419,48 @@ export default class PhaserEngine extends Engine {
 		return data;
 	}
 
-	interpolateMoveTo(sprite, serverNormalizedTimestamp, data, canMoveCallback) {
+	interpolateMoveTo(sprite, serverNormalizedTimestamp, data, canMoveCallback, slideToLocation = false) {
 		if (!sprite.body) {
 			return;
 		}
 
-		//+25 for fast sliding to interpolated location
-		const maxTime = 25;
-		let t = maxTime / 1000;
+		let maxTime = 0;
+
+		if (slideToLocation) {
+			//+25 for fast sliding to interpolated location
+			maxTime = 25;
+		}
 
 		const interpolatedData = Object.assign({}, data);
 		this.interpolateFromTimestamp(serverNormalizedTimestamp + maxTime, sprite, interpolatedData);
 
-		const distanceX = (interpolatedData.x - sprite.x);
-		const velocityX = distanceX / t;
-		sprite.body.velocity.x = velocityX * this.distanceMultiplier();
+		const moveToInterpolatedPosition = () => {
+			//@todo Restrict horizontally
+			//@todo Restrict vertically
+			if (sprite && sprite.body && canMoveCallback.call()) {
+				this.move(sprite, interpolatedData);
+			}
+		};
 
-		const distanceY = (interpolatedData.y - sprite.y);
-		const distanceGravityY = this.gravityDistanceAtTime(sprite, t);
-		const velocityY = (distanceY - distanceGravityY) / t;
-		sprite.body.velocity.y = velocityY * this.distanceMultiplier();
+		if (slideToLocation) {
+			const t = maxTime / 1000;
+			const distanceX = (interpolatedData.x - sprite.x);
+			const velocityX = distanceX / t;
+			sprite.body.velocity.x = velocityX * this.distanceMultiplier();
 
-		//@todo Restrict horizontally
-		//@todo Restrict vertically
+			const distanceY = (interpolatedData.y - sprite.y);
+			const distanceGravityY = this.gravityDistanceAtTime(sprite, t);
+			const velocityY = (distanceY - distanceGravityY) / t;
+			sprite.body.velocity.y = velocityY * this.distanceMultiplier();
 
-		this.game.time.events.add(
-			maxTime,
-			() => {
-				if (sprite && sprite.body && canMoveCallback.call()) {
-					this.move(sprite, interpolatedData);
-				}
-			},
-			this
-		);
+			this.game.time.events.add(
+				maxTime,
+				moveToInterpolatedPosition,
+				this
+			);
+		} else {
+			moveToInterpolatedPosition();
+		}
 	}
 
 	move(sprite, data) {
