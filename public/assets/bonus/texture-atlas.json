@@ -1,7 +1,7 @@
 {"frames": [
 
 {
-	"filename": "big-ball.png",
+	"filename": "big-ball",
 	"frame": {"x":254,"y":1,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -9,7 +9,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "big-jump-monster.png",
+	"filename": "big-jump-monster",
 	"frame": {"x":290,"y":1,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -17,7 +17,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "big-monster.png",
+	"filename": "big-monster",
 	"frame": {"x":326,"y":1,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -25,7 +25,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "bounce-monster.png",
+	"filename": "bounce-monster",
 	"frame": {"x":362,"y":1,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -33,7 +33,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "cloaked-monster.png",
+	"filename": "cloaked-monster",
 	"frame": {"x":398,"y":1,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -41,7 +41,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "cloud.png",
+	"filename": "cloud",
 	"frame": {"x":434,"y":1,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -49,7 +49,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "dark-cloud.png",
+	"filename": "dark-cloud",
 	"frame": {"x":1,"y":1,"w":251,"h":249},
 	"rotated": false,
 	"trimmed": true,
@@ -57,7 +57,7 @@
 	"sourceSize": {"w":256,"h":256}
 },
 {
-	"filename": "fast-monster.png",
+	"filename": "fast-monster",
 	"frame": {"x":254,"y":37,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -65,7 +65,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "freeze-monster.png",
+	"filename": "freeze-monster",
 	"frame": {"x":290,"y":37,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -73,7 +73,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "instant-death.png",
+	"filename": "instant-death",
 	"frame": {"x":326,"y":37,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -81,7 +81,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "invincible-monster.png",
+	"filename": "invincible-monster",
 	"frame": {"x":362,"y":37,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -89,7 +89,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "invisible-ball.png",
+	"filename": "invisible-ball",
 	"frame": {"x":398,"y":37,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -97,7 +97,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "invisible-monster.png",
+	"filename": "invisible-monster",
 	"frame": {"x":434,"y":37,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -105,7 +105,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "invisible-opponent-monster.png",
+	"filename": "invisible-opponent-monster",
 	"frame": {"x":254,"y":73,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -113,7 +113,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "no-jump-monster.png",
+	"filename": "no-jump-monster",
 	"frame": {"x":290,"y":73,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -121,7 +121,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "random.png",
+	"filename": "random",
 	"frame": {"x":326,"y":73,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -129,7 +129,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "recent-shape.png",
+	"filename": "recent-shape",
 	"frame": {"x":470,"y":1,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
@@ -137,7 +137,7 @@
 	"sourceSize": {"w":18,"h":18}
 },
 {
-	"filename": "reverse-move-monster.png",
+	"filename": "reverse-move-monster",
 	"frame": {"x":362,"y":73,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -145,7 +145,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "shape-shift-monster.png",
+	"filename": "shape-shift-monster",
 	"frame": {"x":398,"y":73,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -153,7 +153,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "slow-monster.png",
+	"filename": "slow-monster",
 	"frame": {"x":434,"y":73,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -161,7 +161,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "small-ball.png",
+	"filename": "small-ball",
 	"frame": {"x":254,"y":109,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -169,7 +169,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "small-monster.png",
+	"filename": "small-monster",
 	"frame": {"x":290,"y":109,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -177,7 +177,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "smoke-bomb.png",
+	"filename": "smoke-bomb",
 	"frame": {"x":326,"y":109,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -185,7 +185,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "white-cloud.png",
+	"filename": "white-cloud",
 	"frame": {"x":1,"y":252,"w":251,"h":249},
 	"rotated": false,
 	"trimmed": true,
@@ -199,6 +199,6 @@
 	"format": "RGBA8888",
 	"size": {"w":502,"h":502},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:d74047794f255cd7e1b2dcff132e4b18:c7c33cac39052570f10f599946ad622c:a973cd4a72d4c90ced76930eac7fdc63$"
+	"smartupdate": "$TexturePacker:SmartUpdate:2776626d3e91f151270318a822887526:c7c33cac39052570f10f599946ad622c:a973cd4a72d4c90ced76930eac7fdc63$"
 }
 }

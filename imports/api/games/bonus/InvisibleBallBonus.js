@@ -4,7 +4,7 @@ export default class InvisibleBallBonus extends BallBonus {
 	constructor(...args) {
 		super(...args);
 		this.durationMilliseconds = 2000;
-		this.atlasFrame = 'invisible-ball.png';
+		this.atlasFrame = 'invisible-ball';
 		this.description = 'Invisible ball';
 	}
 

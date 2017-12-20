@@ -4,7 +4,7 @@ import MovementMonsterBonus from '/imports/api/games/bonus/MovementMonsterBonus.
 export default class FastMonsterBonus extends MovementMonsterBonus {
 	constructor(...args) {
 		super(...args);
-		this.atlasFrame = 'fast-monster.png';
+		this.atlasFrame = 'fast-monster';
 		this.description = 'Speeds up player';
 	}
 

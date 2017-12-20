@@ -4,7 +4,7 @@ import {BIG_SCALE_BONUS, BALL_BIG_GRAVITY_SCALE} from '/imports/api/games/consta
 export default class BigBallBonus extends BallScaleBonus {
 	constructor(...args) {
 		super(...args);
-		this.atlasFrame = 'big-ball.png';
+		this.atlasFrame = 'big-ball';
 		this.description = 'Big ball with high gravity';
 	}
 

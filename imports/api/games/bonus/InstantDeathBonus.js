@@ -4,7 +4,7 @@ export default class InstantDeathBonus extends BaseBonus {
 	constructor(...args) {
 		super(...args);
 		this.durationMilliseconds = 0;
-		this.atlasFrame = 'instant-death.png';
+		this.atlasFrame = 'instant-death';
 		this.description = 'Instant death (only available in tournament)';
 	}
 

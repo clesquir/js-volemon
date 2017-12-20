@@ -593,7 +593,7 @@ export default class GameBonus {
 	}
 
 	createCloud(xPosition, yPosition, layer) {
-		const cloud = this.engine.addGroupedSprite(xPosition, yPosition, 'bonus', this.bonusZIndexGroup, true, layer.key + '.png');
+		const cloud = this.engine.addGroupedSprite(xPosition, yPosition, 'bonus', this.bonusZIndexGroup, true, layer.key);
 
 		cloud.createdAt = (new Date()).getTime();
 		this.engine.sortBonusGroup(this.bonusZIndexGroup);

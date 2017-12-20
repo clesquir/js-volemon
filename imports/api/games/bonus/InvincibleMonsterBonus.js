@@ -3,7 +3,7 @@ import MonsterBonus from '/imports/api/games/bonus/MonsterBonus.js';
 export default class InvincibleMonsterBonus extends MonsterBonus {
 	constructor(...args) {
 		super(...args);
-		this.atlasFrame = 'invincible-monster.png';
+		this.atlasFrame = 'invincible-monster';
 		this.description = 'Invincible player (only available in random)';
 	}
 

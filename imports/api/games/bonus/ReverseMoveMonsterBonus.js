@@ -3,7 +3,7 @@ import MonsterBonus from '/imports/api/games/bonus/MonsterBonus.js';
 export default class ReverseMoveMonsterBonus extends MonsterBonus {
 	constructor(...args) {
 		super(...args);
-		this.atlasFrame = 'reverse-move-monster.png';
+		this.atlasFrame = 'reverse-move-monster';
 		this.description = 'Reverses player movements';
 	}
 

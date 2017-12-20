@@ -3,7 +3,7 @@ import MonsterBonus from '/imports/api/games/bonus/MonsterBonus.js';
 export default class CloakedMonsterBonus extends MonsterBonus {
 	constructor(...args) {
 		super(...args);
-		this.atlasFrame = 'cloaked-monster.png';
+		this.atlasFrame = 'cloaked-monster';
 		this.description = 'Hides from opposite player';
 	}
 
