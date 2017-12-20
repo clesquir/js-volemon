@@ -3,9 +3,38 @@ import Skin from '/imports/api/skins/skins/Skin.js';
 
 export default class DevaltoSkin extends Skin {
 	/**
-	 * @returns {{key: {string}, path: {string}}[]}
+	 * @returns {{key: {string}, imagePath: {string}, jsonPath: {string}}[]}
 	 */
-	imagesToLoad() {
+	atlasJSONHash() {
+		return [
+			{
+				key: 'devalto-skin',
+				imagePath: '/assets/skin/devalto/texture-atlas.png',
+				jsonPath: '/assets/skin/devalto/texture-atlas.json'
+			}
+		];
+	}
+
+	/**
+	 * @returns {string}
+	 */
+	backgroundColor() {
+		return '#83d8e8';
+	}
+
+	/**
+	 * @returns {{key: {string}, frame: {string}, animation: {frame: {string}, frames: {string}[], speed: {int}}, x: {int}, y: {int}, width: {int}, height: {int}}[]}
+	 */
+	backgroundComponents() {
+		return [
+			{key: 'devalto-skin', frame: 'background', x: 0, y: 0, width: 840, height: 560}
+		];
+	}
+
+	/**
+	 * @returns {{key: {string}, frame: {string}, animation: {frame: {string}, frames: {string}[], speed: {int}}}}
+	 */
+	ballComponent() {
 		const ballImage = Random.choice(
 			[
 				'abdellah',
@@ -30,34 +59,42 @@ export default class DevaltoSkin extends Skin {
 			]
 		);
 
+		return {
+			key: 'devalto-skin',
+			frame: 'ball-' + ballImage
+		};
+	}
+
+	/**
+	 * @returns {{key: {string}, frame: {string}}}
+	 */
+	netComponent() {
+		return {
+			key: 'devalto-skin',
+			frame: 'net'
+		};
+	}
+
+	/**
+	 * @returns {{key: {string}, frame: {string}}[]}
+	 */
+	groundComponents() {
 		return [
-			{key: 'devalto-bakground', path: '/assets/skin/devalto/background.png'},
-			{key: 'ball', path: `/assets/skin/devalto/ball-${ballImage}.png`}
+			{
+				key: 'devalto-skin',
+				frame: 'ground'
+			}
 		];
 	}
 
 	/**
-	 * @returns {{key: {string}, path: {string}, width: {integer}, height: {integer}}[]}
+	 * @returns {{key: {string}, hostFrames: {string}[], clientFrames: {string}[]}[]}
 	 */
-	spriteSheetsToLoad() {
-		return [
-			{key: 'confettis', path: '/assets/skin/devalto/confettis.png', width: 10, height: 10}
-		];
-	}
-
-	/**
-	 * @returns {string}
-	 */
-	backgroundColor() {
-		return '#83d8e8';
-	}
-
-	/**
-	 * @returns {{key: {string}, animate: {boolean}}[]}
-	 */
-	backgroundComponents() {
-		return [
-			{key: 'devalto-bakground'}
-		];
+	confettisComponent() {
+		return {
+			key: 'devalto-skin',
+			hostFrames: ['confettis-logalto'],
+			clientFrames: ['confettis-logalto']
+		};
 	}
 }

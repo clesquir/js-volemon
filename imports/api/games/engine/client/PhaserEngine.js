@@ -214,14 +214,14 @@ export default class PhaserEngine extends Engine {
 		sprite.loadTexture(key);
 	}
 
-	addTileSprite(x, y, width, height, key, disableBody = true, group, debugBody = false) {
+	addTileSprite(x, y, width, height, key, frame, disableBody = true, group, debugBody = false) {
 		const tileSprite = this.game.add.tileSprite(
 			x,
 			y,
 			width,
 			height,
 			key,
-			undefined,
+			frame,
 			group
 		);
 

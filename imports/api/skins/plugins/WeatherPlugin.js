@@ -6,8 +6,6 @@ import {
 } from '/imports/lib/weatherApi/WeatherApi.js';
 import Plugin from '/imports/api/skins/plugins/Plugin.js';
 
-const keyPrefix = 'weather-condition-';
-
 export default class WeatherPlugin extends Plugin {
 	start() {
 		locationDetector.init();
@@ -19,75 +17,16 @@ export default class WeatherPlugin extends Plugin {
 	}
 
 	/**
-	 * @returns {{key: {string}, path: {string}}[]}
+	 * @returns {{key: {string}, imagePath: {string}, jsonPath: {string}}[]}
 	 */
-	imagesToLoad() {
-		const condition = this.weatherApi.condition();
-		const images = [];
-		const cloudImage = {key: keyPrefix + CONDITION_CLOUD, path: `/assets/skin/weather-condition/cloud.png`};
-
-		switch (condition) {
-			case CONDITION_FOG:
-				images.push({key: keyPrefix + CONDITION_FOG, path: `/assets/skin/weather-condition/fog.png`});
-				break;
-			case CONDITION_CLOUD:
-				images.push(cloudImage);
-				break;
-			case CONDITION_SNOW:
-				images.push(cloudImage);
-				images.push({key: keyPrefix + 'snow-ground', path: `/assets/skin/weather-condition/snow-ground.png`});
-				break;
-			case CONDITION_RAIN:
-			case CONDITION_THUNDER:
-				images.push(cloudImage);
-				images.push({key: keyPrefix + 'rain-ground', path: `/assets/skin/weather-condition/rain-ground.png`});
-				break;
-		}
-
-		return images;
-	}
-
-	/**
-	 * @returns {{key: {string}, path: {string}, width: {integer}, height: {integer}}[]}
-	 */
-	spriteSheetsToLoad() {
-		const condition = this.weatherApi.condition();
-		const spriteSheets = [];
-		const rainSpriteSheet = {
-			key: keyPrefix + CONDITION_RAIN,
-			path: `/assets/skin/weather-condition/rain.png`,
-			width: 180,
-			height: 560
-		};
-
-		switch (condition) {
-			case CONDITION_SNOW:
-				spriteSheets.push(
-					{
-						key: keyPrefix + CONDITION_SNOW,
-						path: `/assets/skin/weather-condition/snow.png`,
-						width: 180,
-						height: 560
-					}
-				);
-				break;
-			case CONDITION_RAIN:
-				spriteSheets.push(rainSpriteSheet);
-				break;
-			case CONDITION_THUNDER:
-				spriteSheets.push(rainSpriteSheet);
-				spriteSheets.push(
-					{
-						key: keyPrefix + CONDITION_THUNDER,
-						path: `/assets/skin/weather-condition/thunder.png`,
-						width: 840,
-						height: 560
-					}
-				);
-				break;
-		}
-
-		return spriteSheets;
+	atlasJSONHash() {
+		return [
+			{
+				key: 'weather-plugin',
+				imagePath: '/assets/skin/weather-condition/texture-atlas.png',
+				jsonPath: '/assets/skin/weather-condition/texture-atlas.json'
+			}
+		];
 	}
 
 	/**
@@ -109,7 +48,7 @@ export default class WeatherPlugin extends Plugin {
 	}
 
 	/**
-	 * @returns {{key: {string}, animate: {boolean}}[]}
+	 * @returns {{key: {string}, frame: {string}, animation: {frame: {string}, frames: {string}[], speed: {int}}, x: {int}, y: {int}, width: {int}, height: {int}}[]}
 	 */
 	backgroundComponents() {
 		const condition = this.weatherApi.condition();
@@ -117,23 +56,120 @@ export default class WeatherPlugin extends Plugin {
 
 		switch (condition) {
 			case CONDITION_FOG:
-				keys.push({key: keyPrefix + CONDITION_FOG});
+				keys.push(
+					{
+						key: 'weather-plugin',
+						frame: CONDITION_FOG,
+						x: 0,
+						y: 0,
+						width: 840,
+						height: 238
+					}
+				);
 				break;
 			case CONDITION_CLOUD:
-				keys.push({key: keyPrefix + CONDITION_CLOUD});
+				keys.push(
+					{
+						key: 'weather-plugin',
+						frame: CONDITION_CLOUD,
+						x: 0,
+						y: 0,
+						width: 840,
+						height: 177
+					}
+				);
 				break;
 			case CONDITION_SNOW:
-				keys.push({key: keyPrefix + CONDITION_SNOW, animate: true});
-				keys.push({key: keyPrefix + CONDITION_CLOUD});
+				keys.push(
+					{
+						key: 'weather-plugin',
+						animation: {
+							frame: CONDITION_SNOW,
+							frames: ['snow-1', 'snow-2', 'snow-3'],
+							speed: 5
+						},
+						x: 0,
+						y: 0,
+						width: 840,
+						height: 359
+					}
+				);
+				keys.push(
+					{
+						key: 'weather-plugin',
+						frame: CONDITION_CLOUD,
+						x: 0,
+						y: 0,
+						width: 840,
+						height: 177
+					}
+				);
 				break;
 			case CONDITION_RAIN:
-				keys.push({key: keyPrefix + CONDITION_RAIN, animate: true});
-				keys.push({key: keyPrefix + CONDITION_CLOUD});
+				keys.push(
+					{
+						key: 'weather-plugin',
+						animation: {
+							frame: CONDITION_RAIN,
+							frames: ['rain-1', 'rain-2', 'rain-3'],
+							speed: 5
+						},
+						x: 0,
+						y: 0,
+						width: 840,
+						height: 312
+					}
+				);
+				keys.push(
+					{
+						key: 'weather-plugin',
+						frame: CONDITION_CLOUD,
+						x: 0,
+						y: 0,
+						width: 840,
+						height: 177
+					}
+				);
 				break;
 			case CONDITION_THUNDER:
-				keys.push({key: keyPrefix + CONDITION_THUNDER, animate: true});
-				keys.push({key: keyPrefix + CONDITION_RAIN, animate: true});
-				keys.push({key: keyPrefix + CONDITION_CLOUD});
+				keys.push(
+					{
+						key: 'weather-plugin',
+						animation: {
+							frame: CONDITION_THUNDER,
+							frames: ['thunder-1', 'thunder-2', 'thunder-3', 'thunder-4', 'thunder-5', 'thunder-6', 'thunder-7', 'thunder-8', 'thunder-9'],
+							speed: 5
+						},
+						x: 0,
+						y: 0,
+						width: 840,
+						height: 280
+					}
+				);
+				keys.push(
+					{
+						key: 'weather-plugin',
+						animation: {
+							frame: CONDITION_RAIN,
+							frames: ['rain-1', 'rain-2', 'rain-3', 'rain-4'],
+							speed: 5
+						},
+						x: 0,
+						y: 0,
+						width: 840,
+						height: 312
+					}
+				);
+				keys.push(
+					{
+						key: 'weather-plugin',
+						frame: CONDITION_CLOUD,
+						x: 0,
+						y: 0,
+						width: 840,
+						height: 177
+					}
+				);
 				break;
 		}
 
@@ -141,7 +177,7 @@ export default class WeatherPlugin extends Plugin {
 	}
 
 	/**
-	 * @returns {string[]}
+	 * @returns {{key: {string}, frame: {string}}[]}
 	 */
 	groundComponents() {
 		const condition = this.weatherApi.condition();
@@ -149,11 +185,11 @@ export default class WeatherPlugin extends Plugin {
 
 		switch (condition) {
 			case CONDITION_SNOW:
-				groundComponents.push(keyPrefix + 'snow-ground');
+				groundComponents.push({key: 'weather-plugin', frame: 'snow-ground', height: 26});
 				break;
 			case CONDITION_RAIN:
 			case CONDITION_THUNDER:
-				groundComponents.push(keyPrefix + 'rain-ground');
+				groundComponents.push({key: 'weather-plugin', frame: 'rain-ground', height: 25});
 				break;
 		}
 

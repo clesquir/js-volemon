@@ -150,10 +150,6 @@ export default class Game {
 			this.engine.loadImage('shape-' + shape, '/assets/component/shape/player-' + shape + '.png');
 		}
 
-		this.engine.loadImage('ball', '/assets/component/ball.png');
-		this.engine.loadImage('net', '/assets/component/net.png');
-		this.engine.loadImage('ground', '/assets/component/ground.png');
-		this.engine.loadSpriteSheet('confettis', '/assets/reaction/confettis.png', 10, 10);
 		this.engine.loadData(NORMAL_SCALE_PHYSICS_DATA, '/assets/component/shape/physicsData.json');
 	}
 
@@ -362,7 +358,7 @@ export default class Game {
 	}
 
 	createBall(initialXLocation, initialYLocation) {
-		this.ball = this.engine.addSprite(initialXLocation, initialYLocation, 'ball');
+		this.ball = this.gameSkin.createBallComponent(this.engine, initialXLocation, initialYLocation);
 
 		this.ball.data.initialGravity = BALL_GRAVITY_SCALE;
 		this.ball.data.currentGravity = this.ball.data.initialGravity;
@@ -398,31 +394,29 @@ export default class Game {
 	}
 
 	createLevelComponents() {
+		this.groundGroup = this.engine.addGroup(false);
+
 		this.createGroundLevelComponents();
 		this.createNetLevelComponents();
 		this.createBounds();
 	}
 
 	createGroundLevelComponents() {
-		this.groundGroup = this.engine.addGroup(false);
-
-		const ground = this.engine.addImage(
-			0,
-			this.ySize - this.groundHeight,
-			'ground'
+		this.gameSkin.createGroundComponents(
+			this.engine,
+			this.xSize,
+			this.ySize,
+			this.groundHeight,
+			this.groundGroup
 		);
-		ground.width = this.xSize;
-		ground.height = this.groundHeight;
-		this.groundGroup.add(ground);
-
-		this.gameSkin.createGroundComponents(this.engine, this.xSize, this.ySize, this.groundHeight, this.groundGroup);
 	}
 
 	createNetLevelComponents() {
-		this.engine.addImage(
+		this.gameSkin.createNetComponent(
+			this.engine,
 			(this.xSize / 2) - (GAME_NET_THICKNESS / 2),
 			this.ySize - this.groundHeight - GAME_NET_HEIGHT,
-			'net'
+			this.groundGroup
 		);
 	}
 
@@ -936,20 +930,11 @@ export default class Game {
 			return;
 		}
 
-		this.engine.emitParticules(
+		this.gameSkin.cheer(
+			this.engine,
+			forHost,
 			forHost ? 0 : this.xSize,
-			this.ySize * 0.10 + 25,
-			(forHost ? 1 : -1) * 50,
-			(forHost ? 1 : -1) * 250,
-			25,
-			150,
-			'confettis',
-			(forHost ? [0, 1, 2, 3, 4] : [5, 6, 7, 8, 9]),
-			50,
-			false,
-			3000,
-			0,
-			500
+			this.ySize * 0.10 + 25
 		);
 	}
 

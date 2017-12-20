@@ -11,6 +11,9 @@ export default class Engine {
 	loadImage(key, path) {
 	}
 
+	loadAtlasJSONHash(key, imagePath, jsonPath) {
+	}
+
 	loadSpriteSheet(key, path, width, height) {
 	}
 
@@ -29,6 +32,6 @@ export default class Engine {
 	addGroupedSprite(x, y, key, group, disableBody = false, frame, debugBody = false) {
 	}
 
-	addTileSprite(x, y, width, height, key, disableBody = true, group, debugBody = false) {
+	addTileSprite(x, y, width, height, key, frame, disableBody = true, group, debugBody = false) {
 	}
 }
