@@ -5,6 +5,15 @@
 $bonus-size: 34px;
 $bonus-background-size: $bonus-size - 3;
 
+.help-section {
+	@include horizontal-breakpoint(mobile) {
+		max-width: 375px;
+	}
+	@include horizontal-breakpoint(mobileportrait) {
+		max-width: 275px;
+	}
+}
+
 .help-bonus {
 	display: flex;
 	align-items: center;

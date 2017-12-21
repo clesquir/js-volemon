@@ -26,10 +26,10 @@
 		justify-content: center;
 		flex-direction: column;
 		@include horizontal-breakpoint(mobile) {
-			transform: scale(0.5);
+			transform: scale(0.75);
 		}
 		@include horizontal-breakpoint(mobileportrait) {
-			transform: scale(0.4);
+			transform: scale(0.6);
 		}
 
 		.reaction-list-items-group {
