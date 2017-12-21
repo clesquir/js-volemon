@@ -43,6 +43,7 @@ export default class GameBonus {
 		this.bonuses = [];
 		this.clouds = [];
 		this.activeBonuses = [];
+		this.removedBonuses = [];
 
 		this.xSize = GAME_X_SIZE;
 		this.ySize = GAME_Y_SIZE;
@@ -249,6 +250,12 @@ export default class GameBonus {
 		}
 
 		if (!correspondingBonusSprite) {
+			//if bonus has been removed do not recreate
+			if (this.removedBonuses.indexOf(bonusIdentifier) !== -1) {
+				Rollbar.log('Bonus moving after destroy', {gameId: this.game.gameId});
+				return;
+			}
+
 			data.bonusIdentifier = bonusIdentifier;
 			correspondingBonusSprite = this.createBonus(data);
 		}
@@ -802,6 +809,7 @@ export default class GameBonus {
 
 		for (let bonus of this.bonuses) {
 			if (bonus.identifier === bonusIdentifier) {
+				this.removedBonuses.push(bonus.identifier);
 				bonus.destroy();
 			} else {
 				bonuses.push(bonus);
@@ -840,6 +848,7 @@ export default class GameBonus {
 	reset() {
 		//Remove bonus sprites
 		for (let bonus of this.bonuses) {
+			this.removedBonuses.push(bonus.identifier);
 			bonus.destroy();
 		}
 		this.bonuses = [];
