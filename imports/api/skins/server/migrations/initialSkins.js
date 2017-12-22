@@ -21,7 +21,7 @@ Meteor.startup(function() {
 		},
 		{
 			_id: SKIN_JUJU_WORLD,
-			name: "Juju world",
+			name: "Juju's world",
 			displayOrder: 4
 		}
 	];
