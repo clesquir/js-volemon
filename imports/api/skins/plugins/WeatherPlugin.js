@@ -137,7 +137,17 @@ export default class WeatherPlugin extends Plugin {
 						key: 'weather-plugin',
 						animation: {
 							frame: CONDITION_THUNDER,
-							frames: ['thunder-1', 'thunder-2', 'thunder-3', 'thunder-4', 'thunder-5', 'thunder-6', 'thunder-7', 'thunder-8', 'thunder-9'],
+							frames: [
+								'thunder-1',
+								'thunder-2',
+								'thunder-1',
+								'thunder-2',
+								'thunder-2',
+								'thunder-2',
+								'thunder-2',
+								'thunder-2',
+								'thunder-2'
+							],
 							speed: 5
 						},
 						x: 0,

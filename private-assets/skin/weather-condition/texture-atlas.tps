@@ -203,13 +203,6 @@
             <key type="filename">components/fog.png</key>
             <key type="filename">components/thunder-1.png</key>
             <key type="filename">components/thunder-2.png</key>
-            <key type="filename">components/thunder-3.png</key>
-            <key type="filename">components/thunder-4.png</key>
-            <key type="filename">components/thunder-5.png</key>
-            <key type="filename">components/thunder-6.png</key>
-            <key type="filename">components/thunder-7.png</key>
-            <key type="filename">components/thunder-8.png</key>
-            <key type="filename">components/thunder-9.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
