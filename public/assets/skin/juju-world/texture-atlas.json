@@ -10,7 +10,7 @@
 },
 {
 	"filename": "ball-1",
-	"frame": {"x":843,"y":203,"w":24,"h":24},
+	"frame": {"x":843,"y":1,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -18,7 +18,7 @@
 },
 {
 	"filename": "ball-2",
-	"frame": {"x":853,"y":131,"w":24,"h":24},
+	"frame": {"x":843,"y":27,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -26,7 +26,7 @@
 },
 {
 	"filename": "ball-3",
-	"frame": {"x":853,"y":157,"w":24,"h":24},
+	"frame": {"x":843,"y":53,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -34,7 +34,7 @@
 },
 {
 	"filename": "ball-4",
-	"frame": {"x":843,"y":229,"w":24,"h":24},
+	"frame": {"x":843,"y":79,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -42,7 +42,7 @@
 },
 {
 	"filename": "ball-5",
-	"frame": {"x":843,"y":255,"w":24,"h":24},
+	"frame": {"x":843,"y":105,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -50,7 +50,7 @@
 },
 {
 	"filename": "ball-6",
-	"frame": {"x":843,"y":281,"w":24,"h":24},
+	"frame": {"x":843,"y":131,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -58,7 +58,7 @@
 },
 {
 	"filename": "ball-7",
-	"frame": {"x":843,"y":307,"w":24,"h":24},
+	"frame": {"x":843,"y":157,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -66,7 +66,7 @@
 },
 {
 	"filename": "ball-8",
-	"frame": {"x":843,"y":333,"w":24,"h":24},
+	"frame": {"x":843,"y":183,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -74,23 +74,15 @@
 },
 {
 	"filename": "confettis-chateau-beard",
-	"frame": {"x":853,"y":183,"w":10,"h":10},
+	"frame": {"x":843,"y":209,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
 	"sourceSize": {"w":10,"h":10}
 },
 {
-	"filename": "confettis-chateau-bonsoir",
-	"frame": {"x":843,"y":1,"w":128,"h":128},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
-	"sourceSize": {"w":128,"h":128}
-},
-{
 	"filename": "confettis-chateau-nipple",
-	"frame": {"x":865,"y":183,"w":10,"h":10},
+	"frame": {"x":855,"y":209,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -98,7 +90,7 @@
 },
 {
 	"filename": "confettis-juju-nipple",
-	"frame": {"x":843,"y":359,"w":10,"h":10},
+	"frame": {"x":843,"y":221,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -106,7 +98,7 @@
 },
 {
 	"filename": "confettis-kwak",
-	"frame": {"x":843,"y":371,"w":10,"h":10},
+	"frame": {"x":855,"y":221,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -122,7 +114,7 @@
 },
 {
 	"filename": "net",
-	"frame": {"x":843,"y":131,"w":8,"h":70},
+	"frame": {"x":843,"y":233,"w":8,"h":70},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":8,"h":70},
@@ -133,8 +125,8 @@
 	"version": "1.0",
 	"image": "texture-atlas.png",
 	"format": "RGBA8888",
-	"size": {"w":972,"h":634},
+	"size": {"w":868,"h":634},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:5fac6c1676e9535defd632b4a0bbe40a:78dab0755f36c53e313bb3504cdda1dc:a973cd4a72d4c90ced76930eac7fdc63$"
+	"smartupdate": "$TexturePacker:SmartUpdate:6fcb0916936ce97df4bcaeb9b6b35d3d:ba6c5a1e6b8fec1db8b11cf77760248c:a973cd4a72d4c90ced76930eac7fdc63$"
 }
 }

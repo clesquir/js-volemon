@@ -247,19 +247,6 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">components/confettis-chateau-bonsoir.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>32,32,64,64</rect>
-                <key>scale9Paddings</key>
-                <rect>32,32,64,64</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
             <key type="filename">components/confettis-chateau-nipple.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -312,7 +299,6 @@
             <filename>components/ball-7.png</filename>
             <filename>components/ball-8.png</filename>
             <filename>components/confettis-chateau-beard.png</filename>
-            <filename>components/confettis-chateau-bonsoir.png</filename>
             <filename>components/confettis-chateau-nipple.png</filename>
             <filename>components/confettis-juju-nipple.png</filename>
             <filename>components/confettis-kwak.png</filename>
