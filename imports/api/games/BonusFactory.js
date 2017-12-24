@@ -4,6 +4,7 @@ import BigBallBonus from '/imports/api/games/bonus/BigBallBonus.js';
 import InvisibleBallBonus from '/imports/api/games/bonus/InvisibleBallBonus.js';
 import SmallMonsterBonus from '/imports/api/games/bonus/SmallMonsterBonus.js';
 import BigMonsterBonus from '/imports/api/games/bonus/BigMonsterBonus.js';
+import JunkFoodMonster from '/imports/api/games/bonus/JunkFoodMonsterBonus.js';
 import BigJumpMonsterBonus from '/imports/api/games/bonus/BigJumpMonsterBonus.js';
 import SlowMonsterBonus from '/imports/api/games/bonus/SlowMonsterBonus.js';
 import FastMonsterBonus from '/imports/api/games/bonus/FastMonsterBonus.js';
@@ -19,6 +20,7 @@ import CloakedMonsterBonus from '/imports/api/games/bonus/CloakedMonsterBonus.js
 import ShapeShiftMonsterBonus from '/imports/api/games/bonus/ShapeShiftMonsterBonus.js';
 import SmokeBombBonus from '/imports/api/games/bonus/SmokeBombBonus.js';
 import InstantDeathBonus from '/imports/api/games/bonus/InstantDeathBonus.js';
+import DrunkMonsterBonus from '/imports/api/games/bonus/DrunkMonsterBonus.js';
 import RandomBonus from '/imports/api/games/bonus/RandomBonus.js';
 import {
 	BONUS_SMALL_BALL,
@@ -26,6 +28,7 @@ import {
 	BONUS_INVISIBLE_BALL,
 	BONUS_SMALL_MONSTER,
 	BONUS_BIG_MONSTER,
+	BONUS_JUNK_FOOD_MONSTER,
 	BONUS_BIG_JUMP_MONSTER,
 	BONUS_SLOW_MONSTER,
 	BONUS_FAST_MONSTER,
@@ -41,6 +44,7 @@ import {
 	BONUS_SHAPE_SHIFT,
 	BONUS_SMOKE_BOMB,
 	BONUS_INSTANT_DEATH,
+	BONUS_DRUNK_MONSTER,
 	BONUS_RANDOM
 } from '/imports/api/games/bonusConstants.js';
 
@@ -150,6 +154,8 @@ export default class BonusFactory {
 				return new SmallMonsterBonus(game, bonusClass);
 			case BONUS_BIG_MONSTER:
 				return new BigMonsterBonus(game, bonusClass);
+			case BONUS_JUNK_FOOD_MONSTER:
+				return new JunkFoodMonster(game, bonusClass);
 			case BONUS_BIG_JUMP_MONSTER:
 				return new BigJumpMonsterBonus(game, bonusClass);
 			case BONUS_SLOW_MONSTER:
@@ -180,6 +186,8 @@ export default class BonusFactory {
 				return new SmokeBombBonus(game, bonusClass);
 			case BONUS_INSTANT_DEATH:
 				return new InstantDeathBonus(game, bonusClass);
+			case BONUS_DRUNK_MONSTER:
+				return new DrunkMonsterBonus(game, bonusClass);
 			case BONUS_RANDOM:
 				return new RandomBonus(game, bonusClass);
 		}

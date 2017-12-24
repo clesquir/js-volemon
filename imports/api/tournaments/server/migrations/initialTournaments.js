@@ -12,7 +12,8 @@ import {
 	TOURNAMENT_MODE_INSTANT_DEATH_BONUS,
 	TOURNAMENT_MODE_NO_BONUSES,
 	TOURNAMENT_MODE_SUPER_BOUNCE_WALLS,
-	TOURNAMENT_MODE_MASSIVE_HARDCORE_BLIND_BULLETPROOF
+	TOURNAMENT_MODE_MASSIVE_HARDCORE_BLIND_BULLETPROOF,
+	TOURNAMENT_MODE_BIG_DRUNK
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 import {TournamentModes} from '/imports/api/tournaments/tournamentModes.js';
 
@@ -105,6 +106,15 @@ Meteor.startup(function() {
 			startDate: "2017-12-18 -04:00",
 			endDate: "2017-12-25 -04:00",
 			isPublished: false
+		},
+		{
+			_id: Random.id(5),
+			identifier: 'tournament_2017-12-25',
+			mode: TOURNAMENT_MODE_BIG_DRUNK,
+			name: 'Christmas excess',
+			startDate: "2017-12-25 -04:00",
+			endDate: "2018-01-07 -04:00",
+			isPublished: false
 		}
 	];
 
@@ -123,6 +133,12 @@ Meteor.startup(function() {
 			}
 			if (actualTournament.startDate !== expectedTournament.startDate) {
 				updates.startDate = expectedTournament.startDate;
+			}
+			if (actualTournament.name !== expectedTournament.name) {
+				updates.name = expectedTournament.name;
+			}
+			if (actualTournament.description !== expectedTournament.description) {
+				updates.description = expectedTournament.description;
 			}
 			if (actualTournament.endDate !== expectedTournament.endDate) {
 				updates.endDate = expectedTournament.endDate;

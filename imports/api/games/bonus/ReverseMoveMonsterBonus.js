@@ -12,11 +12,11 @@ export default class ReverseMoveMonsterBonus extends MonsterBonus {
 	}
 
 	start() {
-		this.game.changePlayerProperty.call(this.game, this.activatorPlayerKey, 'moveModifier', -1);
+		this.game.changePlayerProperty.call(this.game, this.activatorPlayerKey, 'isMoveReversed', true);
 	}
 
 	stop() {
-		this.game.changePlayerProperty.call(this.game, this.activatorPlayerKey, 'moveModifier', 1);
+		this.game.changePlayerProperty.call(this.game, this.activatorPlayerKey, 'isMoveReversed', false);
 
 		this.deactivate();
 	}

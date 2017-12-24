@@ -298,7 +298,8 @@ export default class Game {
 		player.data.doingDropShot = false;
 		player.data.playerCollisionGroup = playerCollisionGroup;
 		//These are related to bonus but managed in this class
-		player.data.moveModifier = 1;
+		player.data.moveModifier = () => {return 1;};
+		player.data.isMoveReversed = false;
 		player.data.isFrozen = false;
 		player.data.canJump = true;
 		player.data.alwaysJump = false;
@@ -792,10 +793,12 @@ export default class Game {
 			this.engine.setHorizontalSpeed(player, 0);
 			this.engine.setVerticalSpeed(player, 0);
 		} else {
+			const moveModifier = player.data.moveModifier();
+			const moveReversal = (player.data.isMoveReversed ? -1 : 1);
 			if (this.isLeftKeyDown()) {
-				this.engine.setHorizontalSpeed(player, player.data.moveModifier * -player.data.velocityXOnMove);
+				this.engine.setHorizontalSpeed(player, moveModifier * moveReversal * -player.data.velocityXOnMove);
 			} else if (this.isRightKeyDown()) {
-				this.engine.setHorizontalSpeed(player, player.data.moveModifier * player.data.velocityXOnMove);
+				this.engine.setHorizontalSpeed(player, moveModifier * moveReversal * player.data.velocityXOnMove);
 			} else {
 				this.engine.setHorizontalSpeed(player, 0);
 			}

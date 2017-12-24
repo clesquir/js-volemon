@@ -10,6 +10,16 @@ Template.tournamentGame.helpers({
 		return isGameStatusOnGoing(this.game.status);
 	},
 
+	tournamentName: function() {
+		const tournament = Tournaments.findOne({_id: this.game.tournamentId});
+
+		if (tournament.name) {
+			return tournament.name;
+		}
+
+		return tournament.mode.name;
+	},
+
 	tournamentDescription: function() {
 		const tournament = Tournaments.findOne({_id: this.game.tournamentId});
 

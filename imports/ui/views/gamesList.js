@@ -12,7 +12,7 @@ Template.gamesList.helpers({
 	tournamentName: function() {
 		const tournament = Tournaments.findOne({_id: this.tournamentId});
 
-		return tournament && tournament.mode.name;
+		return tournament && (tournament.name || tournament.mode.name);
 	},
 
 	hasOpponent: function() {

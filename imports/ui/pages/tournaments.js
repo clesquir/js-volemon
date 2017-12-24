@@ -41,6 +41,14 @@ Template.tournaments.helpers({
 		return PastTournaments.find({}, {sort: [['endDate', 'desc']]});
 	},
 
+	name: function() {
+		if (this.name) {
+			return this.name;
+		}
+
+		return this.mode.name;
+	},
+
 	description: function() {
 		if (this.description) {
 			return this.description;

@@ -11,7 +11,8 @@ import {
 	TOURNAMENT_MODE_MOON_GRAVITY,
 	TOURNAMENT_MODE_JUPITER_GRAVITY,
 	TOURNAMENT_MODE_NO_BONUSES,
-	TOURNAMENT_MODE_MASSIVE_HARDCORE_BLIND_BULLETPROOF
+	TOURNAMENT_MODE_MASSIVE_HARDCORE_BLIND_BULLETPROOF,
+	TOURNAMENT_MODE_BIG_DRUNK
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 
 Meteor.startup(function() {
@@ -68,6 +69,11 @@ Meteor.startup(function() {
 			"_id": TOURNAMENT_MODE_MASSIVE_HARDCORE_BLIND_BULLETPROOF,
 			"name": "Massive hardcore blind bulletproof",
 			"description": "Jupiter's gravity and lots of invisible/invincible bonuses"
+		},
+		{
+			"_id": TOURNAMENT_MODE_BIG_DRUNK,
+			"name": "Big drunk",
+			"description": "Bonuses spawning are big monster and drunk monster"
 		}
 	];
 

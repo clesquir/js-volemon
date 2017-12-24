@@ -1,11 +1,10 @@
-import {Template} from 'meteor/templating';
-require('jquery-lazy');
 import BigBallBonus from '/imports/api/games/bonus/BigBallBonus.js';
 import BigJumpMonsterBonus from '/imports/api/games/bonus/BigJumpMonsterBonus.js';
 import BigMonsterBonus from '/imports/api/games/bonus/BigMonsterBonus.js';
 import BounceMonsterBonus from '/imports/api/games/bonus/BounceMonsterBonus.js';
 import CloakedMonsterBonus from '/imports/api/games/bonus/CloakedMonsterBonus.js';
 import CloudBonus from '/imports/api/games/bonus/CloudBonus.js';
+import DrunkMonsterBonus from '/imports/api/games/bonus/DrunkMonsterBonus.js';
 import FastMonsterBonus from '/imports/api/games/bonus/FastMonsterBonus.js';
 import FreezeMonsterBonus from '/imports/api/games/bonus/FreezeMonsterBonus.js';
 import InstantDeathBonus from '/imports/api/games/bonus/InstantDeathBonus.js';
@@ -22,8 +21,11 @@ import SmallBallBonus from '/imports/api/games/bonus/SmallBallBonus.js';
 import SmallMonsterBonus from '/imports/api/games/bonus/SmallMonsterBonus.js';
 import SmokeBombBonus from '/imports/api/games/bonus/SmokeBombBonus.js';
 import {onMobileAndTablet} from '/imports/lib/utils.js';
+import {Template} from 'meteor/templating';
 
 import './help.html';
+
+require('jquery-lazy');
 
 Template.help.onRendered(function() {
 	$('.help-section .lazy').lazy({
@@ -58,6 +60,7 @@ Template.help.helpers({
 			new InvisibleOpponentMonsterBonus(),
 			new CloakedMonsterBonus(),
 			new ShapeShiftMonsterBonus(),
+			new DrunkMonsterBonus(),
 			new InvincibleMonsterBonus(),
 			new InstantDeathBonus(),
 		];
@@ -73,10 +76,10 @@ Template.help.helpers({
 		for (let bonus of bonuses) {
 			let x = 0;
 			let y = 0;
-			for (let frame of textureAtlasFrames) {
-				if (frame.filename === bonus.atlasFrame) {
-					x = frame.frame.x;
-					y = frame.frame.y;
+			for (let frame in textureAtlasFrames) {
+				if (frame === bonus.atlasFrame) {
+					x = textureAtlasFrames[frame].frame.x;
+					y = textureAtlasFrames[frame].frame.y;
 					break;
 				}
 			}
