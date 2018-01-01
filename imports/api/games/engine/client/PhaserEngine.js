@@ -14,6 +14,9 @@ import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
 
 export default class PhaserEngine extends Engine {
 	start(width, height, parent, preloadGame, createGame, updateGame, scope) {
+		//Create loading mask
+		Session.set('gameloadingmask', true);
+
 		this.game = new Phaser.Game({
 			width: width,
 			height: height,
@@ -78,6 +81,9 @@ export default class PhaserEngine extends Engine {
 	createGame() {
 		this.setupScaling();
 		this.deviceController.startMonitoring();
+
+		//Hide loading mask
+		Session.set('gameloadingmask');
 	}
 
 	changeBackgroundColor(hex) {
