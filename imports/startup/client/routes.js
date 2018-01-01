@@ -15,6 +15,7 @@ import '/imports/ui/pages/game.js';
 import '/imports/ui/pages/games.js';
 import '/imports/ui/pages/help.js';
 import '/imports/ui/pages/home.js';
+import '/imports/ui/pages/keymaps.js';
 import '/imports/ui/pages/login.js';
 import '/imports/ui/pages/passwordChange.js';
 import '/imports/ui/pages/rank.js';
@@ -53,6 +54,7 @@ Router.configure({
 	waitOn: function() {
 		return [
 			Meteor.subscribe('userConfiguration', Meteor.userId()),
+			Meteor.subscribe('userKeymaps', Meteor.userId()),
 			Meteor.subscribe('achievements'),
 			Meteor.subscribe('userAchievements', Meteor.userId()),
 			Meteor.subscribe('skins')

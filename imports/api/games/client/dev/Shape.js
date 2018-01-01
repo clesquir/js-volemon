@@ -1,18 +1,18 @@
 import {Random} from 'meteor/random';
-import Game from '/imports/api/games/client/Game.js';
-import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
 import GameData from '/imports/api/games/client/data/GameData.js';
+import DesktopController from '/imports/api/games/client/deviceController/DesktopController.js';
+import Game from '/imports/api/games/client/Game.js';
 import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
-import StaticGameConfiguration from '/imports/api/games/configuration/StaticGameConfiguration.js';
-import NullDeviceController from '/imports/api/games/client/deviceController/NullDeviceController.js';
 import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
+import StaticGameConfiguration from '/imports/api/games/configuration/StaticGameConfiguration.js';
 import {PLAYER_HEIGHT, PLAYER_WIDTH} from '/imports/api/games/constants.js';
+import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
 import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants';
 import DefaultSkin from '/imports/api/skins/skins/DefaultSkin.js';
+import CustomKeymaps from '/imports/lib/keymaps/CustomKeymaps.js';
 
 export default class Shape {
-
 	constructor() {
 		this.game = null;
 	}
@@ -20,9 +20,12 @@ export default class Shape {
 	start() {
 		const gameId = Random.id(5);
 		const gameConfiguration = new StaticGameConfiguration(gameId);
+		const desktopController = new DesktopController(CustomKeymaps.defaultKeymaps());
+		desktopController.init();
+		const engine = new PhaserEngine(gameConfiguration, desktopController);
 		this.game = new Game(
 			gameId,
-			new PhaserEngine(gameConfiguration, new NullDeviceController()),
+			engine,
 			new GameData(gameId),
 			gameConfiguration,
 			new GameSkin(new DefaultSkin(), []),
@@ -75,8 +78,6 @@ export default class Shape {
 		this.game.createBall(100, 100);
 
 		this.createLevelComponents();
-
-		this.game.engine.addKeyControllers();
 
 		this.resumeOnTimerEnd();
 	}
@@ -131,5 +132,4 @@ export default class Shape {
 		this.game.engine.unfreeze(this.game.ball);
 		this.game.gameResumed = true;
 	}
-
 }

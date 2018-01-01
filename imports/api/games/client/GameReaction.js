@@ -21,10 +21,10 @@ export default class GameReaction {
 			'keypress',
 			require('lodash.throttle')(
 				(e) => {
-					const keyMap = String.fromCharCode(e.which);
+					const keymap = String.fromCharCode(e.which);
 
-					if (!this.gameData.isUserViewer() && $.isNumeric(keyMap)) {
-						this.onReactionSelection($(`div[data-reaction-key-map="${keyMap}"]:first`), this.gameData.isUserHost());
+					if (!this.gameData.isUserViewer() && $.isNumeric(keymap)) {
+						this.onReactionSelection($(`div[data-reaction-keymap="${keymap}"]:first`), this.gameData.isUserHost());
 					}
 				},
 				700,

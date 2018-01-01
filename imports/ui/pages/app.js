@@ -4,6 +4,7 @@ import {Session} from 'meteor/session';
 import {Tooltips} from 'meteor/lookback:tooltips';
 import {Router} from 'meteor/iron:router';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
+import {onMobileAndTablet} from '/imports/lib/utils.js';
 
 import './app.html';
 
@@ -32,6 +33,10 @@ Template.app.helpers({
 		const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
 
 		return userConfiguration && userConfiguration.muteNotifications;
+	},
+
+	onDesktop: function() {
+		return !onMobileAndTablet();
 	}
 });
 
@@ -123,6 +128,10 @@ Template.app.events({
 
 	'click [data-action=user-skin-change]': function(e) {
 		Session.set('lightbox', 'skins');
+	},
+
+	'click [data-action=user-change-controls]': function(e) {
+		Session.set('lightbox', 'keymaps');
 	},
 
 	'click [data-action=user-logout]': function() {

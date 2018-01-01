@@ -66,17 +66,18 @@ export default class PhaserEngine extends Engine {
 	}
 
 	stop() {
-		this.removeKeyControllers();
+		this.deviceController.stopMonitoring();
 		this.game.state.destroy();
 		this.game.destroy();
 	}
 
 	onGameEnd() {
-		this.removeKeyControllers();
+		this.deviceController.stopMonitoring();
 	}
 
 	createGame() {
 		this.setupScaling();
+		this.deviceController.startMonitoring();
 	}
 
 	changeBackgroundColor(hex) {
@@ -148,23 +149,6 @@ export default class PhaserEngine extends Engine {
 			this.game.cache.getJSON(jsonKey),
 			'json'
 		);
-	}
-
-	addKeyControllers() {
-		if (Phaser.Keyboard) {
-			this.cursor = this.game.input.keyboard.createCursorKeys();
-			this.cursor['a'] = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
-			this.cursor['w'] = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
-			this.cursor['d'] = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
-			this.cursor['s'] = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
-			this.cursor['spacebar'] = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-		}
-	}
-
-	removeKeyControllers() {
-		if (Phaser.Keyboard) {
-			this.game.input.keyboard.clearCaptures();
-		}
 	}
 
 	addGroup(enableBody = false) {
@@ -295,44 +279,20 @@ export default class PhaserEngine extends Engine {
 		return this.game.physics.p2.createMaterial(material);
 	}
 
-	isInputSetup() {
-		return !!Phaser.Keyboard || this.deviceController;
-	}
-
 	isLeftKeyDown() {
-		return this.cursor.left.isDown || this.deviceController.leftPressed();
+		return this.deviceController.leftPressed();
 	}
 
 	isRightKeyDown() {
-		return this.cursor.right.isDown || this.deviceController.rightPressed();
+		return this.deviceController.rightPressed();
 	}
 
 	isUpKeyDown() {
-		return this.cursor.up.isDown || this.deviceController.upPressed();
+		return this.deviceController.upPressed();
 	}
 
 	isDownKeyDown() {
-		return this.cursor.down.isDown || this.deviceController.downPressed();
-	}
-
-	isAKeyDown() {
-		return this.cursor.a.isDown;
-	}
-
-	isWKeyDown() {
-		return this.cursor.w.isDown;
-	}
-
-	isDKeyDown() {
-		return this.cursor.d.isDown;
-	}
-
-	isSKeyDown() {
-		return this.cursor.s.isDown;
-	}
-
-	isSpacebarKeyDown() {
-		return this.cursor.spacebar.isDown;
+		return this.deviceController.downPressed();
 	}
 
 	getCenterX() {

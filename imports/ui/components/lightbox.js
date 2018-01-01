@@ -5,7 +5,7 @@ import './lightbox.html';
 
 Template.lightbox.rendered = function() {
 	$(window).on('keydown', function(e) {
-		if (e.which === 27) {
+		if (e.which === 27 && !Session.get('lightbox.escDisabled')) {
 			Session.set('lightbox', null);
 
 			if (actionOnLighboxClose) {

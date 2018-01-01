@@ -158,8 +158,9 @@ export default class Game {
 		this.createComponents();
 		this.gameBonus.createComponents();
 
+		this.engine.createGame();
+
 		if (this.getCurrentPlayer()) {
-			this.engine.addKeyControllers();
 			Session.set('userCurrentlyPlaying', true);
 		}
 
@@ -171,8 +172,6 @@ export default class Game {
 	createComponents() {
 		let initialXLocation = PLAYER_INITIAL_LOCATION;
 		const initialYLocation = this.ySize - this.groundHeight - (PLAYER_HEIGHT / 2);
-
-		this.engine.createGame();
 
 		this.createCollisionGroupsAndMaterials();
 
@@ -820,39 +819,19 @@ export default class Game {
 	}
 
 	isLeftKeyDown() {
-		return (
-			this.engine.isInputSetup() &&
-			(
-				this.engine.isLeftKeyDown() || this.engine.isAKeyDown()
-			)
-		);
+		return this.engine.isLeftKeyDown();
 	}
 
 	isRightKeyDown() {
-		return (
-			this.engine.isInputSetup() &&
-			(
-				this.engine.isRightKeyDown() || this.engine.isDKeyDown()
-			)
-		);
+		return this.engine.isRightKeyDown();
 	}
 
 	isUpKeyDown() {
-		return (
-			this.engine.isInputSetup() &&
-			(
-				this.engine.isUpKeyDown() || this.engine.isWKeyDown()
-			)
-		);
+		return this.engine.isUpKeyDown();
 	}
 
 	isDropShotKeyDown() {
-		return (
-			this.engine.isInputSetup() &&
-			(
-				this.engine.isDownKeyDown() || this.engine.isSKeyDown() || this.engine.isSpacebarKeyDown()
-			)
-		);
+		return this.engine.isDownKeyDown();
 	}
 
 	gameIsOnGoing() {

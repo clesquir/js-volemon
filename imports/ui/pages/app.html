@@ -74,6 +74,9 @@
 							</div>
 							<div data-action="user-edit-name" class="username-dialog-button">Edit name</div>
 							<div data-action="user-password-change" class="username-dialog-button">Change password</div>
+							{{#if onDesktop}}
+								<div data-action="user-change-controls" class="username-dialog-button">Change controls</div>
+							{{/if}}
 							<div data-action="user-skin-change" class="username-dialog-button">Change skin</div>
 							<div data-action="user-logout" class="username-dialog-button">Log out</div>
 						</div>
