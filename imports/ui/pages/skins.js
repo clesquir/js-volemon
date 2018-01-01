@@ -1,5 +1,6 @@
 import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
+import WeatherPlugin from '/imports/api/skins/plugins/WeatherPlugin.js';
 import {SKIN_DEFAULT} from '/imports/api/skins/skinConstants.js';
 import {Skins} from '/imports/api/skins/skins.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
@@ -33,6 +34,11 @@ Template.skins.events({
 		switchTargetButton(e, isEnabled);
 
 		Meteor.call('updatePluginWeatherAdaptiveEnabled', isEnabled ? 1 : 0);
+
+		if (isEnabled) {
+			const plugin = new WeatherPlugin();
+			plugin.start();
+		}
 	},
 
 	'click [data-action="update-skin"]': function(e) {

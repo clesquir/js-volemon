@@ -5,11 +5,11 @@ import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 export default class Startup {
 	static start() {
 		Meteor.subscribe('userConfiguration', Meteor.userId(), () => {
-			this.initSkin();
+			this.initPlugin();
 		});
 	}
 
-	static initSkin() {
+	static initPlugin() {
 		const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
 		const plugins = PluginFactory.fromConfiguration(userConfiguration);
 

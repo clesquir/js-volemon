@@ -4,6 +4,7 @@ import {Accounts} from 'meteor/accounts-base';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
+import {UserKeymaps} from '/imports/api/users/userKeymaps.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 
 Meteor.methods({
@@ -35,6 +36,30 @@ Meteor.methods({
 			UserConfigurations.update(
 				{userId: this.userId},
 				{$set: {muteNotifications: !userConfiguration.muteNotifications}}
+			);
+		}
+	},
+
+	updateKeymaps: function(keymaps) {
+		const user = Meteor.user();
+
+		if (!user) {
+			throw new Meteor.Error(401, 'You need to login to setup keymaps');
+		}
+
+		const userKeymaps = UserKeymaps.findOne({userId: this.userId});
+
+		if (userKeymaps) {
+			UserKeymaps.update(
+				{userId: this.userId},
+				{$set: keymaps}
+			);
+		} else {
+			UserKeymaps.insert(
+				Object.assign(
+					{userId: this.userId},
+					keymaps
+				)
 			);
 		}
 	},
