@@ -10,11 +10,9 @@ export default class DesktopController extends DeviceController {
 		this.keys = {left: null, right: null, up: null, down: null};
 		this.monitoringStarted = false;
 		this.onKeyDown = (event) => {
-			event.preventDefault();
 			return this.processKeyDown(event);
 		};
 		this.onKeyUp = (event) => {
-			event.preventDefault();
 			return this.processKeyUp(event);
 		};
 	}
@@ -37,6 +35,7 @@ export default class DesktopController extends DeviceController {
 		const keyCode = event.keyCode;
 
 		if (this.keymaps.monitors(keyCode)) {
+			event.preventDefault();
 			const mapping = this.keymaps.mappingForKeyCode(keyCode);
 			this.keys[mapping] = keyCode;
 		}
@@ -46,6 +45,7 @@ export default class DesktopController extends DeviceController {
 		const keyCode = event.keyCode;
 
 		if (this.keymaps.monitors(keyCode)) {
+			event.preventDefault();
 			const mapping = this.keymaps.mappingForKeyCode(keyCode);
 			this.keys[mapping] = null;
 		}
