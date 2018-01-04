@@ -21,8 +21,8 @@ export default class DrunkMonsterBonus extends MonsterBonus {
 			() => {
 				if (Date.now() - (game.lastDrunkMonsterModifier || 0) > 500) {
 					game.lastDrunkMonsterModifier = Date.now();
-					const backward = getRandomFloat(-0.25, 0);
-					const forward = getRandomFloat(0.25, 0.5);
+					const backward = getRandomFloat(-0.2, -0.1);
+					const forward = getRandomFloat(0.4, 0.7);
 					game.drunkMonsterModifier = Random.choice([backward, forward, forward, forward]);
 				}
 				return game.drunkMonsterModifier;
