@@ -107,10 +107,10 @@ Template.tournament.events({
 
 	'click [data-action=create-tournament-game]': function() {
 		Tooltips.hide();
-		Session.set('apploadingmask', true);
+		Session.set('appLoadingMask', true);
 
 		Meteor.call('createTournamentGame', Session.get('tournament'), function(error, id) {
-			Session.set('apploadingmask', false);
+			Session.set('appLoadingMask', false);
 			if (error) {
 				return alert(error);
 			}

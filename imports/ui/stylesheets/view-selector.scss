@@ -2,6 +2,13 @@
 	margin-bottom: 10px;
 	text-align: right;
 
+	&.swiper-selector {
+		@include horizontal-breakpoint(tablet) {
+			text-align: center;
+			font-size: 22px;
+		}
+	}
+
 	i {
 		cursor: pointer;
 		opacity: .25;
@@ -23,7 +30,7 @@
 				opacity: 1;
 			}
 
-			.#{$content-class} {
+			.#{$content-class}:not(.swiper-slide) {
 				display: block;
 			}
 		}
@@ -33,7 +40,15 @@
 .view-selector-contents {
 	margin-bottom: 10px;
 
-	.view-selector-content {
+	.view-selector-content:not(.swiper-slide) {
 		display: none;
+	}
+}
+
+.swiper-slide {
+	min-height: 250px;
+
+	&:not(.swiper-slide-active) {
+		max-height: 250px;
 	}
 }

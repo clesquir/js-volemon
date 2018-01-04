@@ -29,6 +29,7 @@
     "socket.io-parser": "^3.1.2",
     "socketcluster": "^9.2.0",
     "socketcluster-client": "^9.0.2",
+    "swiper": "^4.0.7",
     "utf-8-validate": "^4.0.0"
   },
   "devDependencies": {

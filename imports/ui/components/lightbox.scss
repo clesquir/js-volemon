@@ -21,17 +21,17 @@
 	margin: auto;
 	animation: appear 1s linear both;
 	flex: 1 1 auto;
-	min-width: 275px;
-	max-width: 515px;
 	display: flex;
 	justify-content: center;
 
-	@include horizontal-breakpoint(mobileportrait) {
-		max-width: 275px;
-	}
-
 	& > * {
 		flex: 1 1 auto;
+		min-width: 275px;
+		max-width: 515px;
+
+		@include horizontal-breakpoint(mobileportrait) {
+			max-width: 275px;
+		}
 	}
 
 	.restricted-width-lightbox-content {

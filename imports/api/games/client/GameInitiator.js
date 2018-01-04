@@ -74,7 +74,7 @@ export default class GameInitiator {
 
 					if (fields.status === GAME_STATUS_STARTED) {
 						this.gameNotifier.onGameStart();
-						Session.set('apploadingmask', false);
+						Session.set('appLoadingMask', false);
 					}
 				}
 

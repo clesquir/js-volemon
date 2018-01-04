@@ -55,7 +55,7 @@ export const onStopGameController = function() {
 	destroyGame(Session.get('game'));
 	destroyConnectionIndicator();
 	unsetGameSessions();
-	Session.set('gameloadingmask');
+	Session.set('gameLoadingMask');
 };
 
 const initGame = function(gameId) {

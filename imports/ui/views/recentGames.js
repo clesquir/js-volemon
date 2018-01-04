@@ -104,14 +104,14 @@ export const initRecentGames = function(userId) {
 };
 
 export const updateRecentGames = function(userId) {
-	Session.set('loadingmask', true);
+	Session.set('recentGamesLoadingMask', true);
 	Meteor.call(
 		'recentGames',
 		userId,
 		RecentGamesState.get('currentSkip'),
 		RECENT_GAMES_LIMIT,
 		function(error, games) {
-			Session.set('loadingmask', false);
+			Session.set('recentGamesLoadingMask', false);
 			if (games) {
 				for (let game of games) {
 					RecentGames.insert(game);

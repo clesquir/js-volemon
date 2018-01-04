@@ -140,10 +140,10 @@ Template.app.events({
 
 	'click [data-action=create-game]': function(e) {
 		Tooltips.hide();
-		Session.set('apploadingmask', true);
+		Session.set('appLoadingMask', true);
 		actionAfterLoginCreateUser = function() {
 			Meteor.call('createGame', function(error, id) {
-				Session.set('apploadingmask', false);
+				Session.set('appLoadingMask', false);
 				if (error) {
 					return alert(error);
 				}
@@ -157,7 +157,7 @@ Template.app.events({
 				actionAfterLoginCreateUser = null;
 			};
 
-			Session.set('apploadingmask', false);
+			Session.set('appLoadingMask', false);
 			return Session.set('lightbox', 'login');
 		}
 
