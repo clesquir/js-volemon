@@ -2,6 +2,7 @@ import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
 import {Session} from 'meteor/session';
 import * as Moment from 'meteor/momentjs:moment';
+import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {
 	isGamePlayer,
@@ -21,8 +22,15 @@ import {
 	currentPlayerAcceptedRematch
 } from '/imports/api/games/client/gameSetup.js';
 import {playersCanPlayTournament} from '/imports/api/tournaments/utils.js';
+import CardSwitcher from '/imports/lib/client/CardSwitcher.js';
 
 import './afterGame.html';
+
+let cardSwitcher;
+
+Template.afterGame.onRendered(function() {
+	cardSwitcher = new CardSwitcher('.after-game-swiper-container', highlightSelectorContentMenuOnSwipe);
+});
 
 Template.afterGame.helpers({
 	isGamePlayer: function() {
@@ -181,24 +189,47 @@ Template.afterGame.events({
 		Meteor.call('replyRematch', Session.get('game'), false);
 	},
 
-	'click [data-action=view-elo-scores]': function(e) {
-		const gameStatisticsContents = document.getElementById('game-statistics-contents');
-
-		if (!$(gameStatisticsContents).is('.after-game-elo-scores-shown')) {
-			removeShownClasses(gameStatisticsContents);
-			$(gameStatisticsContents).addClass('after-game-elo-scores-shown');
-		}
+	'click [data-action=view-elo-scores]': function() {
+		cardSwitcher.slideTo(0);
 	},
 
-	'click [data-action=view-game-durations]': function(e) {
-		const gameStatisticsContents = document.getElementById('game-statistics-contents');
+	'click [data-action=view-game-durations]': function() {
+		const game = Games.findOne(Session.get('game'));
 
-		if (!$(gameStatisticsContents).is('.after-game-durations-shown')) {
-			removeShownClasses(gameStatisticsContents);
-			$(gameStatisticsContents).addClass('after-game-durations-shown');
+		if (!game.isPracticeGame) {
+			cardSwitcher.slideTo(1);
 		}
 	}
 });
+
+const highlightSelectorContentMenuOnSwipe = function() {
+	switch ($(this.slides[this.activeIndex]).attr('data-slide')) {
+		case 'after-game-elo-scores':
+			viewEloScores();
+			break;
+		case 'after-game-durations':
+			viewGameDurations();
+			break;
+	}
+};
+
+const viewEloScores = function() {
+	const gameStatisticsContents = document.getElementById('game-statistics-contents');
+
+	if (!$(gameStatisticsContents).is('.after-game-elo-scores-shown')) {
+		removeShownClasses(gameStatisticsContents);
+		$(gameStatisticsContents).addClass('after-game-elo-scores-shown');
+	}
+};
+
+const viewGameDurations = function() {
+	const gameStatisticsContents = document.getElementById('game-statistics-contents');
+
+	if (!$(gameStatisticsContents).is('.after-game-durations-shown')) {
+		removeShownClasses(gameStatisticsContents);
+		$(gameStatisticsContents).addClass('after-game-durations-shown');
+	}
+};
 
 const removeShownClasses = function(gameStatisticsContents) {
 	$(gameStatisticsContents).removeClass('after-game-elo-scores-shown');
