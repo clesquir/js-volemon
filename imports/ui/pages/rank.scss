@@ -17,7 +17,7 @@
 @include view-selector-shown(rank-achievements-ranking-shown, view-achievements-ranking, rank-achievements-ranking);
 @include view-selector-shown(rank-line-chart-display-shown, view-line-chart-display, rank-line-chart-display);
 
-.user-achievements {
+.user-achievement {
 	display: flex;
 	align-items: center;
 	padding: 5px 0;

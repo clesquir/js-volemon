@@ -4,6 +4,7 @@ import {Session} from 'meteor/session';
 import {Router} from 'meteor/iron:router';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {canPlayTournament, isTournamentActive} from '/imports/api/tournaments/utils.js';
+import CardSwitcher from '/imports/lib/client/CardSwitcher.js';
 import {loadStatistics} from '/imports/ui/views/statistics.js';
 
 import './tournament.html';
@@ -15,6 +16,19 @@ Template.tournament.onCreated(function() {
 	this.autorun(() => {
 		loadStatistics(Meteor.userId(), Session.get('tournament'));
 	});
+});
+
+let cardSwitcher;
+
+Template.tournament.onRendered(function() {
+	cardSwitcher = new CardSwitcher(
+		'.tournament-swiper-container',
+		{
+			'tournament-games': TournamentViews.viewTournamentGames,
+			'tournament-statistics': TournamentViews.viewTournamentStatistics,
+			'tournament-rank': TournamentViews.viewTournamentRank,
+		}
+	);
 });
 
 Template.tournament.helpers({
@@ -76,41 +90,36 @@ Template.tournament.helpers({
 });
 
 Template.tournament.events({
+	'click [data-action=view-tournament-games]': function() {
+		cardSwitcher.slideTo(0);
+	},
+
 	'click [data-action=view-tournament-statistics]': function() {
-		const tournamentContents = document.getElementById('tournament-contents');
+		const tournament = Tournaments.findOne({_id: Session.get('tournament')});
 
-		if (!$(tournamentContents).is('.tournament-statistics-shown')) {
-			removeShownClasses(tournamentContents);
-			$(tournamentContents).addClass('tournament-statistics-shown');
-
-			loadStatistics(Meteor.userId(), Session.get('tournament'));
+		if (isTournamentActive(tournament)) {
+			cardSwitcher.slideTo(1);
+		} else {
+			cardSwitcher.slideTo(0);
 		}
 	},
 
-	'click [data-action=view-games-tournament]': function() {
-		const tournamentContents = document.getElementById('tournament-contents');
+	'click [data-action=view-tournament-rank]': function() {
+		const tournament = Tournaments.findOne({_id: Session.get('tournament')});
 
-		if (!$(tournamentContents).is('.games-tournament-shown')) {
-			removeShownClasses(tournamentContents);
-			$(tournamentContents).addClass('games-tournament-shown');
-		}
-	},
-
-	'click [data-action=view-rank-tournament]': function() {
-		const tournamentContents = document.getElementById('tournament-contents');
-
-		if (!$(tournamentContents).is('.rank-tournament-shown')) {
-			removeShownClasses(tournamentContents);
-			$(tournamentContents).addClass('rank-tournament-shown');
+		if (isTournamentActive(tournament)) {
+			cardSwitcher.slideTo(2);
+		} else {
+			cardSwitcher.slideTo(1);
 		}
 	},
 
 	'click [data-action=create-tournament-game]': function() {
 		Tooltips.hide();
-		Session.set('apploadingmask', true);
+		Session.set('appLoadingMask', true);
 
 		Meteor.call('createTournamentGame', Session.get('tournament'), function(error, id) {
-			Session.set('apploadingmask', false);
+			Session.set('appLoadingMask', false);
 			if (error) {
 				return alert(error);
 			}
@@ -120,8 +129,39 @@ Template.tournament.events({
 	}
 });
 
-const removeShownClasses = function(homeContents) {
-	$(homeContents).removeClass('tournament-statistics-shown');
-	$(homeContents).removeClass('games-tournament-shown');
-	$(homeContents).removeClass('rank-tournament-shown');
-};
+class TournamentViews {
+	static viewTournamentGames() {
+		const tournamentContents = document.getElementById('tournament-contents');
+
+		if (!$(tournamentContents).is('.tournament-games-shown')) {
+			TournamentViews.removeShownClasses(tournamentContents);
+			$(tournamentContents).addClass('tournament-games-shown');
+		}
+	}
+
+	static viewTournamentStatistics() {
+		const tournamentContents = document.getElementById('tournament-contents');
+
+		if (!$(tournamentContents).is('.tournament-statistics-shown')) {
+			TournamentViews.removeShownClasses(tournamentContents);
+			$(tournamentContents).addClass('tournament-statistics-shown');
+
+			loadStatistics(Meteor.userId(), Session.get('tournament'));
+		}
+	}
+
+	static viewTournamentRank() {
+		const tournamentContents = document.getElementById('tournament-contents');
+
+		if (!$(tournamentContents).is('.tournament-rank-shown')) {
+			TournamentViews.removeShownClasses(tournamentContents);
+			$(tournamentContents).addClass('tournament-rank-shown');
+		}
+	}
+
+	static removeShownClasses(tournamentContents) {
+		$(tournamentContents).removeClass('tournament-statistics-shown');
+		$(tournamentContents).removeClass('tournament-games-shown');
+		$(tournamentContents).removeClass('tournament-rank-shown');
+	}
+}

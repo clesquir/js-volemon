@@ -89,9 +89,9 @@ Template.gameSetup.events({
 	},
 
 	'click [data-action="start"]': function() {
-		Session.set('loadingmask', true);
+		Session.set('loadingMask', true);
 		Meteor.call('startGame', Session.get('game'), function(error) {
-			Session.set('loadingmask', false);
+			Session.set('loadingMask', false);
 		});
 	},
 

@@ -7,58 +7,63 @@
 			<h1 class="tournament-name">{{tournamentName}}</h1>
 			<p class="tournament-description">{{tournamentDescription}}</p>
 
-			<div id="tournament-contents" class="view-selector-contents {{#if isTournamentActive}}games-tournament-shown{{else}}tournament-statistics-shown{{/if}}">
-				<div class="view-selector">
+			<div id="tournament-contents" class="view-selector-contents {{#if isTournamentActive}}tournament-games-shown{{else}}tournament-statistics-shown{{/if}}">
+				<div class="view-selector swiper-selector">
 					{{#if isTournamentActive}}
-						<i class="fa fa-list view-games-tournament" data-action="view-games-tournament" data-tooltip="Games"></i>
+						<i class="fa fa-list view-tournament-games" data-action="view-tournament-games" data-tooltip="Games"></i>
 					{{/if}}
 					<i class="fa fa-pie-chart view-tournament-statistics" data-action="view-tournament-statistics" data-tooltip="Statistics"></i>
-					<i class="fa fa-hashtag view-rank-tournament" data-action="view-rank-tournament" data-tooltip="Rank"></i>
+					<i class="fa fa-hashtag view-tournament-rank" data-action="view-tournament-rank" data-tooltip="Rank"></i>
 				</div>
 
-				<div class="view-selector-content tournament-statistics">
-					<h2>Statistics</h2>
+				<div class="swiper-container tournament-swiper-container">
+					<div class="swiper-wrapper">
+						{{#if isTournamentActive}}
+							<div class="view-selector-content swiper-slide tournament-games" data-slide="tournament-games">
+								<h2 class="games-list-header">
+									<div>Games list</div>
+									{{#if canPlayTournament}}
+										<div class="create-game-button" data-action="create-tournament-game" data-tooltip="Create a game">
+											<i class="fa fa-plus-circle"></i>
+										</div>
+									{{/if}}
+								</h2>
+								<p>You can create, join or view a game.</p>
 
-					{{#if currentUser}}
+								{{> gamesList games=tournamentGames showTournamentName=false}}
+							</div>
+						{{/if}}
 
-						{{#if tournamentIsActiveAndHasRetries}}
-							<div class="tournament-retries-container">
-								<div class="retries-availables">
-									{{#each retriesAvailables}}
-									<div class="retry">
-										<div class="{{#if lost}}retry-lost{{/if}}">x</div>
+						<div class="view-selector-content swiper-slide tournament-statistics" data-slide="tournament-statistics">
+							<h2>Statistics</h2>
+
+							{{#if currentUser}}
+
+								{{#if tournamentIsActiveAndHasRetries}}
+									<div class="tournament-retries-container">
+										<div class="retries-availables">
+											{{#each retriesAvailables}}
+											<div class="retry">
+												<div class="{{#if lost}}retry-lost{{/if}}">x</div>
+											</div>
+											{{/each}}
+										</div>
 									</div>
-									{{/each}}
-								</div>
-							</div>
-						{{/if}}
+								{{/if}}
 
-						{{> statistics tournamentId=tournament._id}}
+								{{> statistics tournamentId=tournament._id}}
 
-					{{else}}
-						<p>Please <a class="clickable-link" data-action="user-log-in">log in</a> to get statistics on your profile for this tournament!</p>
-					{{/if}}
-				</div>
+							{{else}}
+								<p>Please <a class="clickable-link" data-action="user-log-in">log in</a> to get statistics on your profile for this tournament!</p>
+							{{/if}}
+						</div>
 
-				<div class="view-selector-content games-tournament">
-					<h2 class="games-list-header">
-						<div>Games list</div>
-						{{#if canPlayTournament}}
-							<div class="create-game-button" data-action="create-tournament-game" data-tooltip="Create a game">
-								<i class="fa fa-plus-circle"></i>
-							</div>
-						{{/if}}
-					</h2>
-					<p>You can create, join or view a game.</p>
+						<div class="view-selector-content swiper-slide tournament-rank" data-slide="tournament-rank">
+							<h2>Rank</h2>
 
-					{{> gamesList games=tournamentGames showTournamentName=false}}
-
-				</div>
-
-				<div class="view-selector-content rank-tournament">
-					<h2>Rank</h2>
-
-					{{> eloRanking rankings=getRankings emptyText="Nobody played this tournament yet..." tournamentId=tournament._id}}
+							{{> eloRanking rankings=getRankings emptyText="Nobody played this tournament yet..." tournamentId=tournament._id}}
+						</div>
+					</div>
 				</div>
 			</div>
 

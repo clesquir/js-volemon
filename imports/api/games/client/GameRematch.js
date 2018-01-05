@@ -16,7 +16,7 @@ export default class GameRematch {
 		this.gameRematchTracker = Games.find({_id: this.gameId}).observeChanges({
 			changed: (id, fields) => {
 				if (fields.hasOwnProperty('rematchGameId')) {
-					Session.set('apploadingmask', true);
+					Session.set('appLoadingMask', true);
 
 					let timeout = 1000;
 					if (this.gameData.isUserClient()) {
