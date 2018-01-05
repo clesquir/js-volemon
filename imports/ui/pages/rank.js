@@ -118,9 +118,9 @@ class RankViews {
 			RankViews.removeShownClasses(rankDisplay);
 			$(rankDisplay).addClass('rank-achievements-ranking-shown');
 
-			Session.set('loadingMask', true);
+			Session.set('achievementsRankingLoadingMask', true);
 			Meteor.subscribe('achievementsRanking', () => {
-				Session.set('loadingMask', false);
+				Session.set('achievementsRankingLoadingMask', false);
 			});
 		}
 	}
@@ -140,7 +140,7 @@ const updateRankChart = function(e, minDateLabel, minDate) {
 		minDateTime = minDate.getTime();
 	}
 
-	Session.set('loadingMask', true);
+	Session.set('lineChartDisplayLoadingMask', true);
 
 	if (!rankChart) {
 		rankChart = new RankChart(
@@ -151,7 +151,7 @@ const updateRankChart = function(e, minDateLabel, minDate) {
 
 	Meteor.subscribe('ranks-chart', minDateTime, () => {
 		rankChart.update(minDateLabel, minDate);
-		Session.set('loadingMask', false);
+		Session.set('lineChartDisplayLoadingMask', false);
 	});
 };
 

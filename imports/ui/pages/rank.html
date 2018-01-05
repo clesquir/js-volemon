@@ -20,6 +20,8 @@
 							</div>
 
 							<div id="rank-line-chart-display" class="view-selector-content swiper-slide rank-line-chart-display" data-slide="rank-line-chart-display">
+								{{> loading loadingMask="lineChartDisplayLoadingMask"}}
+
 								<div class="display-chart-period">
 									<span data-action="display-chart-all-time">All time</span> |
 									<span data-action="display-chart-60-days">60 days</span> |
@@ -33,6 +35,8 @@
 							</div>
 
 							<div id="rank-achievements-ranking" class="view-selector-content swiper-slide rank-achievements-ranking" data-slide="rank-achievements-ranking">
+								{{> loading loadingMask="achievementsRankingLoadingMask"}}
+
 								<div class="table-list ranked-table-list">
 									{{> achievementRanking achievementsRanking=getAchievementRankings}}
 								</div>
