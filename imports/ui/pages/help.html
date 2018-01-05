@@ -12,26 +12,33 @@
 			<div class="swiper-container help-swiper-container">
 				<div class="swiper-wrapper">
 					<div class="view-selector-content swiper-slide help-controls" data-slide="help-controls">
+						{{#unless onMobile}}
+							<h2>Change controls</h2>
+
+							<p>You can change the assigned controls in the "Change controls" menu.</p>
+							<img class="lazy" src="/assets/help/placeholder.png" data-src="/assets/help/change-controls.png" width="285" height="200" />
+						{{/unless}}
+
 						<h2>Controls</h2>
 
 						{{#if onMobile}}
 							<p>Press the left/right arrows to move left/right.</p>
 						{{else}}
-							<p>Use the left/right arrows or A/D keys to move left/right.</p>
+							<p>Use left/right controls to move left/right.</p>
 						{{/if}}
 						<img class="lazy" src="/assets/help/placeholder.png" data-src="/assets/help/left-right.gif" width="285" height="200" />
 
 						{{#if onMobile}}
 							<p>Press the up arrow to jump. Jump towards the net while hitting the ball to smash it!</p>
 						{{else}}
-							<p>Use the up arrow or W key to jump. Jump towards the net while hitting the ball to smash it!</p>
+							<p>Use the up control to jump. Jump towards the net while hitting the ball to smash it!</p>
 						{{/if}}
 						<img class="lazy" src="/assets/help/placeholder.png" data-src="/assets/help/smash.gif" width="285" height="200" />
 
 						{{#if onMobile}}
 							<p>Press the down arrow when jumping to dropshot the ball.</p>
 						{{else}}
-							<p>Use the down arrow or S key or space key when jumping to dropshot the ball.</p>
+							<p>Use the down control when jumping to dropshot the ball.</p>
 						{{/if}}
 						<img class="lazy" src="/assets/help/placeholder.png" data-src="/assets/help/dropshot.gif" width="285" height="200" />
 					</div>

@@ -12,6 +12,10 @@ $bonus-background-size: $bonus-size - 3;
 	@include horizontal-breakpoint(mobileportrait) {
 		max-width: 275px;
 	}
+
+	img {
+		box-shadow: 0 0 15px 0 lighten($background-color, 10%);
+	}
 }
 
 .help-bonus {
