@@ -30,7 +30,14 @@ import './help.html';
 let cardSwitcher;
 
 Template.help.onRendered(function() {
-	cardSwitcher = new CardSwitcher('.help-swiper-container', highlightSelectorContentMenuOnSwipe);
+	cardSwitcher = new CardSwitcher(
+		'.help-swiper-container',
+		{
+			'help-controls': HelpViews.viewHelpControls,
+			'help-bonuses': HelpViews.viewHelpBonuses,
+			'help-reactions': HelpViews.viewHelpReactions,
+		}
+	);
 	$('.help-section .lazy').lazy({
 		appendScroll: $('.help-section')
 	});
@@ -113,49 +120,37 @@ Template.help.events({
 	}
 });
 
-const highlightSelectorContentMenuOnSwipe = function() {
-	switch ($(this.slides[this.activeIndex]).attr('data-slide')) {
-		case 'help-controls':
-			viewHelpControls();
-			break;
-		case 'help-bonuses':
-			viewHelpBonuses();
-			break;
-		case 'help-reactions':
-			viewHelpReactions();
-			break;
+class HelpViews {
+	static viewHelpControls() {
+		const helpContents = document.getElementById('help-contents');
+
+		if (!$(helpContents).is('.help-controls-shown')) {
+			HelpViews.removeShownClasses(helpContents);
+			$(helpContents).addClass('help-controls-shown');
+		}
 	}
-};
 
-const viewHelpControls = function() {
-	const helpContents = document.getElementById('help-contents');
+	static viewHelpBonuses() {
+		const helpContents = document.getElementById('help-contents');
 
-	if (!$(helpContents).is('.help-controls-shown')) {
-		removeShownClasses(helpContents);
-		$(helpContents).addClass('help-controls-shown');
+		if (!$(helpContents).is('.help-bonuses-shown')) {
+			HelpViews.removeShownClasses(helpContents);
+			$(helpContents).addClass('help-bonuses-shown');
+		}
 	}
-};
 
-const viewHelpBonuses = function() {
-	const helpContents = document.getElementById('help-contents');
+	static viewHelpReactions() {
+		const helpContents = document.getElementById('help-contents');
 
-	if (!$(helpContents).is('.help-bonuses-shown')) {
-		removeShownClasses(helpContents);
-		$(helpContents).addClass('help-bonuses-shown');
+		if (!$(helpContents).is('.help-reactions-shown')) {
+			HelpViews.removeShownClasses(helpContents);
+			$(helpContents).addClass('help-reactions-shown');
+		}
 	}
-};
 
-const viewHelpReactions = function() {
-	const helpContents = document.getElementById('help-contents');
-
-	if (!$(helpContents).is('.help-reactions-shown')) {
-		removeShownClasses(helpContents);
-		$(helpContents).addClass('help-reactions-shown');
+	static removeShownClasses(helpContents) {
+		$(helpContents).removeClass('help-controls-shown');
+		$(helpContents).removeClass('help-bonuses-shown');
+		$(helpContents).removeClass('help-reactions-shown');
 	}
-};
-
-const removeShownClasses = function(homeContents) {
-	$(homeContents).removeClass('help-controls-shown');
-	$(homeContents).removeClass('help-bonuses-shown');
-	$(homeContents).removeClass('help-reactions-shown');
-};
+}

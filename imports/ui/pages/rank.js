@@ -16,8 +16,22 @@ const AchievementsRanking = new AchievementsRankingCollection('achievementsranki
 let cardSwitcher;
 
 Template.rank.onRendered(function() {
-	cardSwitcher = new CardSwitcher('.rank-swiper-container', highlightSelectorContentMenuOnSwipe);
+	cardSwitcher = new CardSwitcher(
+		'.rank-swiper-container',
+		{
+			'rank-elo-ranking': RankViews.viewEloRanking,
+			'rank-line-chart-display': RankViews.viewLineChartDisplay,
+			'rank-achievements-ranking': RankViews.viewAchievementsRanking,
+		}
+	);
 });
+
+/** @type {RankChart}|null */
+let rankChart = null;
+
+Template.rank.destroyed = function() {
+	rankChart = null;
+};
 
 Template.rank.helpers({
 	getRankings: function() {
@@ -28,9 +42,6 @@ Template.rank.helpers({
 		return AchievementsRanking.find({}, {sort: [['rank', 'desc']]});
 	}
 });
-
-/** @type {RankChart}|null */
-let rankChart = null;
 
 Template.rank.events({
 	'click [data-action=view-elo-ranking]': function() {
@@ -78,60 +89,48 @@ Template.rank.events({
 	}
 });
 
-const highlightSelectorContentMenuOnSwipe = function() {
-	switch ($(this.slides[this.activeIndex]).attr('data-slide')) {
-		case 'rank-elo-ranking':
-			viewEloRanking();
-			break;
-		case 'rank-line-chart-display':
-			viewLineChartDisplay();
-			break;
-		case 'rank-achievements-ranking':
-			viewAchievementsRanking();
-			break;
+class RankViews {
+	static viewEloRanking() {
+		const rankDisplay = document.getElementById('rank-display');
+
+		if (!$(rankDisplay).is('.rank-elo-ranking-shown')) {
+			RankViews.removeShownClasses(rankDisplay);
+			$(rankDisplay).addClass('rank-elo-ranking-shown');
+		}
 	}
-};
 
-const viewEloRanking = function() {
-	const rankDisplay = document.getElementById('rank-display');
+	static viewLineChartDisplay() {
+		const rankDisplay = document.getElementById('rank-display');
 
-	if (!$(rankDisplay).is('.rank-elo-ranking-shown')) {
-		removeShownClasses(rankDisplay);
-		$(rankDisplay).addClass('rank-elo-ranking-shown');
+		if (!$(rankDisplay).is('.rank-line-chart-display-shown')) {
+			RankViews.removeShownClasses(rankDisplay);
+			$(rankDisplay).addClass('rank-line-chart-display-shown');
+
+			//Select the 7 days by default
+			$('span[data-action="display-chart-7-days"]').first().trigger('click');
+		}
 	}
-};
 
-const viewLineChartDisplay = function() {
-	const rankDisplay = document.getElementById('rank-display');
+	static viewAchievementsRanking() {
+		const rankDisplay = document.getElementById('rank-display');
 
-	if (!$(rankDisplay).is('.rank-line-chart-display-shown')) {
-		removeShownClasses(rankDisplay);
-		$(rankDisplay).addClass('rank-line-chart-display-shown');
+		if (!$(rankDisplay).is('.rank-achievements-ranking-shown')) {
+			RankViews.removeShownClasses(rankDisplay);
+			$(rankDisplay).addClass('rank-achievements-ranking-shown');
 
-		//Select the 7 days by default
-		$('span[data-action="display-chart-7-days"]').first().trigger('click');
+			Session.set('loadingMask', true);
+			Meteor.subscribe('achievementsRanking', () => {
+				Session.set('loadingMask', false);
+			});
+		}
 	}
-};
 
-const viewAchievementsRanking = function() {
-	const rankDisplay = document.getElementById('rank-display');
-
-	if (!$(rankDisplay).is('.rank-achievements-ranking-shown')) {
-		removeShownClasses(rankDisplay);
-		$(rankDisplay).addClass('rank-achievements-ranking-shown');
-
-		Session.set('loadingMask', true);
-		Meteor.subscribe('achievementsRanking', () => {
-			Session.set('loadingMask', false);
-		});
+	static removeShownClasses(rankDisplay) {
+		$(rankDisplay).removeClass('rank-elo-ranking-shown');
+		$(rankDisplay).removeClass('rank-achievements-ranking-shown');
+		$(rankDisplay).removeClass('rank-line-chart-display-shown');
 	}
-};
-
-const removeShownClasses = function(rankDisplay) {
-	$(rankDisplay).removeClass('rank-elo-ranking-shown');
-	$(rankDisplay).removeClass('rank-achievements-ranking-shown');
-	$(rankDisplay).removeClass('rank-line-chart-display-shown');
-};
+}
 
 const updateRankChart = function(e, minDateLabel, minDate) {
 	highlightSelectedChartPeriodItem(e);
@@ -165,8 +164,4 @@ const highlightSelectedChartPeriodItem = function(e) {
 	});
 
 	$(e.target).addClass('active');
-};
-
-Template.rank.destroyed = function() {
-	rankChart = null;
 };

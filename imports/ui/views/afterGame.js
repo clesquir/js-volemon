@@ -29,7 +29,13 @@ import './afterGame.html';
 let cardSwitcher;
 
 Template.afterGame.onRendered(function() {
-	cardSwitcher = new CardSwitcher('.after-game-swiper-container', highlightSelectorContentMenuOnSwipe);
+	cardSwitcher = new CardSwitcher(
+		'.after-game-swiper-container',
+		{
+			'after-game-elo-scores': AfterGameViews.viewEloScores,
+			'after-game-durations': AfterGameViews.viewGameDurations,
+		}
+	);
 });
 
 Template.afterGame.helpers({
@@ -202,37 +208,27 @@ Template.afterGame.events({
 	}
 });
 
-const highlightSelectorContentMenuOnSwipe = function() {
-	switch ($(this.slides[this.activeIndex]).attr('data-slide')) {
-		case 'after-game-elo-scores':
-			viewEloScores();
-			break;
-		case 'after-game-durations':
-			viewGameDurations();
-			break;
+class AfterGameViews {
+	static viewEloScores() {
+		const gameStatisticsContents = document.getElementById('game-statistics-contents');
+
+		if (!$(gameStatisticsContents).is('.after-game-elo-scores-shown')) {
+			AfterGameViews.removeShownClasses(gameStatisticsContents);
+			$(gameStatisticsContents).addClass('after-game-elo-scores-shown');
+		}
 	}
-};
 
-const viewEloScores = function() {
-	const gameStatisticsContents = document.getElementById('game-statistics-contents');
+	static viewGameDurations() {
+		const gameStatisticsContents = document.getElementById('game-statistics-contents');
 
-	if (!$(gameStatisticsContents).is('.after-game-elo-scores-shown')) {
-		removeShownClasses(gameStatisticsContents);
-		$(gameStatisticsContents).addClass('after-game-elo-scores-shown');
+		if (!$(gameStatisticsContents).is('.after-game-durations-shown')) {
+			AfterGameViews.removeShownClasses(gameStatisticsContents);
+			$(gameStatisticsContents).addClass('after-game-durations-shown');
+		}
 	}
-};
 
-const viewGameDurations = function() {
-	const gameStatisticsContents = document.getElementById('game-statistics-contents');
-
-	if (!$(gameStatisticsContents).is('.after-game-durations-shown')) {
-		removeShownClasses(gameStatisticsContents);
-		$(gameStatisticsContents).addClass('after-game-durations-shown');
+	static removeShownClasses(gameStatisticsContents) {
+		$(gameStatisticsContents).removeClass('after-game-elo-scores-shown');
+		$(gameStatisticsContents).removeClass('after-game-durations-shown');
 	}
-};
-
-const removeShownClasses = function(gameStatisticsContents) {
-	$(gameStatisticsContents).removeClass('after-game-elo-scores-shown');
-	$(gameStatisticsContents).removeClass('after-game-durations-shown');
-};
-
+}

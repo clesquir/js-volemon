@@ -7,16 +7,23 @@ import {browserSupportsWebRTC, onMobileAndTablet} from '/imports/lib/utils.js';
 
 import './home.html';
 
-let cardSwitcher;
-
 Template.home.onCreated(function() {
 	this.autorun(() => {
 		loadStatistics(Meteor.userId());
 	});
 });
 
+let cardSwitcher;
+
 Template.home.onRendered(function() {
-	cardSwitcher = new CardSwitcher('.home-swiper-container', highlightSelectorContentMenuOnSwipe);
+	cardSwitcher = new CardSwitcher(
+		'.home-swiper-container',
+		{
+			'user-statistics': HomeViews.viewUserStatistics,
+			'user-achievements': HomeViews.viewUserAchievements,
+			'user-recent-games': HomeViews.viewUserRecentGames,
+		}
+	);
 });
 
 Template.home.helpers({
@@ -47,53 +54,41 @@ Template.home.events({
 	}
 });
 
-const highlightSelectorContentMenuOnSwipe = function() {
-	switch ($(this.slides[this.activeIndex]).attr('data-slide')) {
-		case 'user-statistics':
-			viewUserStatistics();
-			break;
-		case 'user-achievements':
-			viewUserAchievements();
-			break;
-		case 'user-recent-games':
-			viewUserRecentGames();
-			break;
+class HomeViews {
+	static viewUserStatistics() {
+		const homeContents = document.getElementById('home-contents');
+
+		if (!$(homeContents).is('.user-statistics-shown')) {
+			HomeViews.removeShownClasses(homeContents);
+			$(homeContents).addClass('user-statistics-shown');
+
+			loadStatistics(Meteor.userId());
+		}
 	}
-};
 
-const viewUserStatistics = function() {
-	const homeContents = document.getElementById('home-contents');
+	static viewUserAchievements() {
+		const homeContents = document.getElementById('home-contents');
 
-	if (!$(homeContents).is('.user-statistics-shown')) {
-		removeShownClasses(homeContents);
-		$(homeContents).addClass('user-statistics-shown');
-
-		loadStatistics(Meteor.userId());
+		if (!$(homeContents).is('.user-achievements-shown')) {
+			HomeViews.removeShownClasses(homeContents);
+			$(homeContents).addClass('user-achievements-shown');
+		}
 	}
-};
 
-const viewUserAchievements = function() {
-	const homeContents = document.getElementById('home-contents');
+	static viewUserRecentGames() {
+		const homeContents = document.getElementById('home-contents');
 
-	if (!$(homeContents).is('.user-achievements-shown')) {
-		removeShownClasses(homeContents);
-		$(homeContents).addClass('user-achievements-shown');
+		if (!$(homeContents).is('.user-recent-games-shown')) {
+			HomeViews.removeShownClasses(homeContents);
+			$(homeContents).addClass('user-recent-games-shown');
+
+			initRecentGames(Meteor.userId());
+		}
 	}
-};
 
-const viewUserRecentGames = function() {
-	const homeContents = document.getElementById('home-contents');
-
-	if (!$(homeContents).is('.user-recent-games-shown')) {
-		removeShownClasses(homeContents);
-		$(homeContents).addClass('user-recent-games-shown');
-
-		initRecentGames(Meteor.userId());
+	static removeShownClasses(homeContents) {
+		$(homeContents).removeClass('user-statistics-shown');
+		$(homeContents).removeClass('user-achievements-shown');
+		$(homeContents).removeClass('user-recent-games-shown');
 	}
-};
-
-const removeShownClasses = function(homeContents) {
-	$(homeContents).removeClass('user-statistics-shown');
-	$(homeContents).removeClass('user-achievements-shown');
-	$(homeContents).removeClass('user-recent-games-shown');
-};
+}
