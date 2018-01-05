@@ -1,3 +1,6 @@
+@include view-selector-shown(user-profile-statistics-shown, view-user-profile-statistics, user-profile-statistics);
+@include view-selector-shown(user-profile-recent-games-shown, view-user-profile-recent-games, user-profile-recent-games);
+
 $user-important-information: lighten($text-color, 30%);
 
 .user-profile-information {

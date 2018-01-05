@@ -29,16 +29,16 @@ Template.recentGames.helpers({
 		return Moment.moment(this.startedAt).format('YYYY-MM-DD HH:mm');
 	},
 
-	wonOrLoss: function() {
+	wonOrLoss: function(userId) {
 		const hostPoints = this.hostPoints;
 		const clientPoints = this.clientPoints;
 
 		if (
 			(
-				Meteor.userId() === this.createdBy &&
+				userId === this.createdBy &&
 				hostPoints > clientPoints
 			) || (
-				Meteor.userId() !== this.createdBy &&
+				userId !== this.createdBy &&
 				clientPoints > hostPoints
 			)
 		) {
@@ -48,13 +48,13 @@ Template.recentGames.helpers({
 		}
 	},
 
-	getScore: function() {
+	getScore: function(userId) {
 		const hostPoints = this.hostPoints;
 		const clientPoints = this.clientPoints;
 		let hostScoreClass = '';
 		let clientScoreClass = '';
 
-		if (Meteor.userId() === this.createdBy) {
+		if (userId === this.createdBy) {
 			hostScoreClass = 'loosing-score';
 			if (hostPoints > clientPoints) {
 				hostScoreClass = 'winning-score';
@@ -80,7 +80,7 @@ Template.recentGames.events({
 		e.preventDefault();
 
 		RecentGamesState.set('currentSkip', RecentGamesState.get('currentSkip') + RECENT_GAMES_INCREMENT);
-		updateRecentGames(this.userId);
+		updateRecentGames(this.userId, this.tournamentId);
 	}
 });
 
@@ -95,19 +95,20 @@ Template.recentGames.destroyed = function() {
 	Meteor.clearInterval(this.uptimeInterval);
 };
 
-export const initRecentGames = function(userId) {
+export const initRecentGames = function(userId, tournamentId) {
 	RecentGames.remove({});
 	RecentGamesState.set('currentSkip', 0);
 	RecentGamesState.set('hasMoreGames', true);
 
-	updateRecentGames(userId);
+	updateRecentGames(userId, tournamentId);
 };
 
-export const updateRecentGames = function(userId) {
+export const updateRecentGames = function(userId, tournamentId) {
 	Session.set('recentGamesLoadingMask', true);
 	Meteor.call(
 		'recentGames',
 		userId,
+		tournamentId,
 		RecentGamesState.get('currentSkip'),
 		RECENT_GAMES_LIMIT,
 		function(error, games) {

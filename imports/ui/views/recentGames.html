@@ -3,8 +3,8 @@
 		{{#each recentGames}}
 			<div class="card recent-game-item">
 				<div class="card-row card-row-header">
-					<div class="card-cell card-title card-left">{{{wonOrLoss}}}</div>
-					<div class="card-cell card-title">{{{getScore}}}</div>
+					<div class="card-cell card-title card-left">{{{wonOrLoss ../userId}}}</div>
+					<div class="card-cell card-title">{{{getScore ../userId}}}</div>
 					<div class="card-cell card-title tournament-game-cell">
 						{{#if tournamentId}}
 							<div><div class="tournament-game-icon"></div></div>

@@ -3,18 +3,25 @@ import {EloScores} from '/imports/api/games/eloscores.js';
 import {Players} from '/imports/api/games/players.js';
 import {Games} from '/imports/api/games/games.js';
 import {GAME_STATUS_FINISHED} from '/imports/api/games/statusConstants.js';
+import {TournamentEloScores} from '/imports/api/tournaments/tournamentEloScores.js';
 
 Meteor.methods({
-	recentGames: function(userId, skip, limit) {
+	recentGames: function(userId, tournamentId, skip, limit) {
 		//Fetch game ids for these limited games
+		const gameQuery = {
+			$or: [
+				{hostId: userId},
+				{clientId: userId}
+			],
+			status: GAME_STATUS_FINISHED
+		};
+
+		if (tournamentId) {
+			gameQuery.tournamentId = tournamentId;
+		}
+
 		const games = Games.find(
-			{
-				$or: [
-					{hostId: userId},
-					{clientId: userId}
-				],
-				status: GAME_STATUS_FINISHED
-			},
+			gameQuery,
 			{
 				sort: [['startedAt', 'desc']],
 				fields: {
@@ -51,7 +58,23 @@ Meteor.methods({
 			});
 		}
 
-		const eloScores = EloScores.find({userId: userId, gameId: {$in: Object.keys(gamesById)}});
+		let eloScores = [];
+		if (tournamentId) {
+			eloScores = TournamentEloScores.find(
+				{
+					userId: userId,
+					tournamentId: tournamentId,
+					gameId: {$in: Object.keys(gamesById)}
+				}
+			);
+		} else {
+			eloScores = EloScores.find(
+				{
+					userId: userId,
+					gameId: {$in: Object.keys(gamesById)}
+				}
+			);
+		}
 		for (let gameId in gamesById) {
 			eloScores.forEach(function(eloScore) {
 				if (gameId === eloScore.gameId) {
