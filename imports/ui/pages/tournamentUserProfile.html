@@ -4,7 +4,12 @@
 
 		<div class="app-section-inner maximum-responsive-width">
 
-			<h1>Player profile</h1>
+			<h1>
+				<a class="back-button" href="{{pathFor 'tournament' tournamentId=tournament._id}}">
+					<i class="fa fa-arrow-circle-left"></i>
+				</a>
+				Player profile
+			</h1>
 			<h2 class="tournament-name">{{tournamentName}}</h2>
 			<p class="tournament-description">{{tournamentDescription}}</p>
 

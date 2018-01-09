@@ -4,7 +4,12 @@
 
 		<div class="app-section-inner maximum-responsive-width">
 
-			<h1 class="tournament-name">{{tournamentName}}</h1>
+			<h1 class="tournament-name">
+				<a class="back-button" href="{{pathFor 'tournaments'}}">
+					<i class="fa fa-arrow-circle-left"></i>
+				</a>
+				{{tournamentName}}
+			</h1>
 			<p class="tournament-description">{{tournamentDescription}}</p>
 
 			<div id="tournament-contents" class="view-selector-contents {{#if isTournamentActive}}tournament-games-shown{{else}}tournament-statistics-shown{{/if}}">

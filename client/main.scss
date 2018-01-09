@@ -130,12 +130,24 @@ a {
 }
 
 h1 {
+	position: relative;
 	font-size: 1.5em;
 }
 
 h2 {
 	font-size: 1.2em;
 	color: lighten($text-color, 15%);
+}
+
+.back-button {
+	position: absolute;
+	left: 0;
+	transition: opacity .2s ease-in-out;
+	opacity: .25;
+
+	&:hover {
+		opacity: 1;
+	}
 }
 
 .hidden {
