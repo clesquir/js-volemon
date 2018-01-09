@@ -4,7 +4,7 @@ import {resetDatabase} from 'meteor/xolvio:cleaner';
 import {joinGame} from '/imports/api/games/server/gameSetup.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import {PLAYER_DEFAULT_SHAPE} from '/imports/api/games/shapeConstants.js';
+import {PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_CROWN} from '/imports/api/games/shapeConstants.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 
 describe('lib/client/gameSetup#joinGame', function() {
@@ -78,7 +78,7 @@ describe('lib/client/gameSetup#joinGame', function() {
 	});
 	it('insert player with last used shape', function() {
 		Games.insert({_id: gameId});
-		const lastShapeUsed = Random.id(5);
+		const lastShapeUsed = PLAYER_SHAPE_CROWN;
 		UserConfigurations.insert({userId: userId, name: username, lastShapeUsed: lastShapeUsed});
 		joinGame(userId, gameId);
 

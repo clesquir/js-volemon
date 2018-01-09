@@ -813,7 +813,7 @@ describe('Game#inputs', function() {
 	it('sets engine Horizontal speed if left is pressed and sends player position', function() {
 		const engine = new PhaserEngine(gameConfiguration, deviceController);
 		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, gameSkin, streamBundler, serverNormalizedTime);
-		const moveModifier = 1;
+		const moveModifier = function() {return 1;};
 		const velocity = 100;
 		let horizontalSpeedValue = null;
 		let verticalSpeedValue = null;
@@ -843,7 +843,7 @@ describe('Game#inputs', function() {
 		};
 
 		assert.isTrue(game.inputs());
-		assert.equal(-moveModifier * velocity, horizontalSpeedValue);
+		assert.equal(-moveModifier() * velocity, horizontalSpeedValue);
 		assert.equal(0, verticalSpeedValue);
 		assert.isTrue(sendPlayerPositionStub.called);
 	});
@@ -851,7 +851,7 @@ describe('Game#inputs', function() {
 	it('sets engine Horizontal speed if right is pressed and sends player position', function() {
 		const engine = new PhaserEngine(gameConfiguration, deviceController);
 		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, gameSkin, streamBundler, serverNormalizedTime);
-		const moveModifier = 1;
+		const moveModifier = function() {return 1;};
 		const velocity = 100;
 		let horizontalSpeedValue = null;
 		let verticalSpeedValue = null;
@@ -881,7 +881,7 @@ describe('Game#inputs', function() {
 		};
 
 		assert.isTrue(game.inputs());
-		assert.equal(moveModifier * velocity, horizontalSpeedValue);
+		assert.equal(moveModifier() * velocity, horizontalSpeedValue);
 		assert.equal(0, verticalSpeedValue);
 		assert.isTrue(sendPlayerPositionStub.called);
 	});
@@ -889,7 +889,7 @@ describe('Game#inputs', function() {
 	it('sets engine Horizontal speed to 0 if neither left or right is pressed and sends player position', function() {
 		const engine = new PhaserEngine(gameConfiguration, deviceController);
 		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, gameSkin, streamBundler, serverNormalizedTime);
-		const moveModifier = 1;
+		const moveModifier = function() {return 1;};
 		const velocity = 100;
 		let horizontalSpeedValue = null;
 		let verticalSpeedValue = null;
@@ -927,7 +927,7 @@ describe('Game#inputs', function() {
 	it('sets engine Vertical speed if up is pressed and sends player position', function() {
 		const engine = new PhaserEngine(gameConfiguration, deviceController);
 		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, gameSkin, streamBundler, serverNormalizedTime);
-		const moveModifier = 1;
+		const moveModifier = function() {return 1;};
 		const velocity = 100;
 		let horizontalSpeedValue = null;
 		let verticalSpeedValue = null;
@@ -966,7 +966,7 @@ describe('Game#inputs', function() {
 	it('sets engine Vertical speed to 0 if up is not pressed and sends player position', function() {
 		const engine = new PhaserEngine(gameConfiguration, deviceController);
 		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, gameSkin, streamBundler, serverNormalizedTime);
-		const moveModifier = 1;
+		const moveModifier = function() {return 1;};
 		const velocity = 100;
 		let horizontalSpeedValue = null;
 		let verticalSpeedValue = null;
@@ -1004,7 +1004,7 @@ describe('Game#inputs', function() {
 	it('does not increase engine Vertical speed if player is not at ground level and sends player position', function() {
 		const engine = new PhaserEngine(gameConfiguration, deviceController);
 		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, gameSkin, streamBundler, serverNormalizedTime);
-		const moveModifier = 1;
+		const moveModifier = function() {return 1;};
 		const velocity = 100;
 		let horizontalSpeedValue = null;
 

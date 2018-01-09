@@ -7,6 +7,7 @@ import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime
 import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
 import StaticGameConfiguration from '/imports/api/games/configuration/StaticGameConfiguration.js';
 import {PLAYER_HEIGHT, PLAYER_INITIAL_LOCATION} from '/imports/api/games/constants.js';
+import {PLAYER_DEFAULT_SHAPE} from '/imports/api/games/shapeConstants.js';
 import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
 import DefaultSkin from '/imports/api/skins/skins/DefaultSkin.js';
 import CustomKeymaps from '/imports/lib/keymaps/CustomKeymaps.js';
@@ -73,18 +74,18 @@ export default class Environment {
 	createComponents() {
 		this.game.createCollisionGroupsAndMaterials();
 
-		const playerShape = 'half-circle';
+		this.playerShape = PLAYER_DEFAULT_SHAPE;
 		let xPosition = PLAYER_INITIAL_LOCATION;
 		const yPosition = this.game.ySize - this.game.groundHeight - (PLAYER_HEIGHT / 2);
 
-		this.game.player1 = this.gameEngine.addSprite(xPosition, yPosition, 'shape-' + playerShape);
+		this.game.player1 = this.gameEngine.addSprite(xPosition, yPosition, 'shape-' + this.playerShape);
 		this.game.player1.data.key = 'player1';
-		this.game.createPlayer(this.game.player1, xPosition, yPosition, 'shape-' + playerShape, this.game.hostPlayerCollisionGroup);
+		this.game.initPlayer(this.game.player1, xPosition, yPosition, this.game.hostPlayerCollisionGroup);
 
 		xPosition = this.game.xSize - PLAYER_INITIAL_LOCATION;
-		this.game.player2 = this.gameEngine.addSprite(xPosition, yPosition, 'shape-' + playerShape);
+		this.game.player2 = this.gameEngine.addSprite(xPosition, yPosition, 'shape-' + this.playerShape);
 		this.game.player2.data.key = 'player2';
-		this.game.createPlayer(this.game.player2, xPosition, yPosition, 'shape-' + playerShape, this.game.hostPlayerCollisionGroup);
+		this.game.initPlayer(this.game.player2, xPosition, yPosition, this.game.hostPlayerCollisionGroup);
 
 		this.game.createBall(100, 100);
 
@@ -96,6 +97,8 @@ export default class Environment {
 	overrideGame() {
 		this.gameData.isUserHost = () => {return true;};
 		this.gameData.isGameStatusStarted = () => {return true;};
+		this.gameData.getPlayerShapeFromKey = () => {return this.playerShape;};
+		this.gameData.getPlayerPolygonFromKey = () => {return this.playerShape;};
 		this.gameData.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
 		this.gameStreamBundler.emitStream = () => {};
 		this.game.hitGround = this.hitGround;

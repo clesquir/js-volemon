@@ -40,7 +40,7 @@ export default class GameData {
 			return PLAYER_DEFAULT_SHAPE;
 		}
 
-		if (this.overriddenCurrentPlayerShape && this.isCurrentPlayerKey(playerKey)) {
+		if (this.overriddenCurrentPlayerShape && this.isGameStatusStarted() && this.isCurrentPlayerKey(playerKey)) {
 			return this.overriddenCurrentPlayerShape;
 		} else {
 			return player.shape;

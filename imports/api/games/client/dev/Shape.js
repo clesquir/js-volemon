@@ -70,7 +70,8 @@ export default class Shape {
 
 			this.game['player' + playerIndex] = this.game.engine.addSprite(xPosition, yPosition, 'shape-' + PLAYER_LIST_OF_SHAPES[i]);
 			this.game['player' + playerIndex].data.key = 'player' + playerIndex;
-			this.game.createPlayer(this.game['player' + playerIndex], xPosition, yPosition, 'player' + playerIndex, this.game.hostPlayerCollisionGroup);
+			this.game['player' + playerIndex].data.shape = PLAYER_LIST_OF_SHAPES[i];
+			this.game.initPlayer(this.game['player' + playerIndex], xPosition, yPosition, this.game.hostPlayerCollisionGroup);
 
 			xPosition += PLAYER_WIDTH + 5;
 		}
@@ -86,6 +87,8 @@ export default class Shape {
 		this.game.getCurrentPlayer = () => {
 			return this.game.player1;
 		};
+		this.game.gameData.getPlayerShapeFromKey = (playerKey) => {return this.game[playerKey].data.shape;};
+		this.game.gameData.getPlayerPolygonFromKey = (playerKey) => {return this.game[playerKey].data.shape;};
 
 		this.game.sendPlayerPosition = () => {};
 

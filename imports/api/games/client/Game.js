@@ -135,8 +135,19 @@ export default class Game {
 	}
 
 	onGameEnd() {
-		this.engine.onGameEnd();
-		Session.set('userCurrentlyPlaying', false);
+		if (!this.gameHasEnded) {
+			this.initPlayerTexture(this.player1);
+			this.initPlayerPolygon(this.player1);
+			this.setupPlayerBody(this.player1);
+
+			this.initPlayerTexture(this.player2);
+			this.initPlayerPolygon(this.player2);
+			this.setupPlayerBody(this.player2);
+
+			this.engine.onGameEnd();
+			Session.set('userCurrentlyPlaying', false);
+			this.gameHasEnded = true;
+		}
 	}
 
 	preloadGame() {
@@ -184,7 +195,7 @@ export default class Game {
 			'shape-' + this.gameData.getPlayerShapeFromKey('player1')
 		);
 		this.player1.data.key = 'player1';
-		this.createPlayer(this.player1, initialXLocation, initialYLocation, 'player1', this.hostPlayerCollisionGroup);
+		this.initPlayer(this.player1, initialXLocation, initialYLocation, this.hostPlayerCollisionGroup);
 
 		/**
 		 * Player 2
@@ -196,7 +207,7 @@ export default class Game {
 			'shape-' + this.gameData.getPlayerShapeFromKey('player2')
 		);
 		this.player2.data.key = 'player2';
-		this.createPlayer(this.player2, initialXLocation, initialYLocation, 'player2', this.clientPlayerCollisionGroup);
+		this.initPlayer(this.player2, initialXLocation, initialYLocation, this.clientPlayerCollisionGroup);
 
 		this.createBall(PLAYER_INITIAL_LOCATION, this.ySize - this.groundHeight - BALL_DISTANCE_FROM_GROUND);
 
@@ -285,7 +296,7 @@ export default class Game {
 		this.engine.collidesWith(sprite, this.ballCollisionGroup, callback, scope);
 	}
 
-	createPlayer(player, initialXLocation, initialYLocation, playerKey, playerCollisionGroup) {
+	initPlayer(player, initialXLocation, initialYLocation, playerCollisionGroup) {
 		player.data.initialXLocation = initialXLocation;
 		player.data.initialYLocation = initialYLocation;
 		player.data.initialMass = PLAYER_MASS;
@@ -306,15 +317,21 @@ export default class Game {
 
 		this.gameBonus.initPlayerProperties(player);
 
-		player.data.initialTextureKey = 'shape-' + this.gameData.getPlayerShapeFromKey(playerKey);
+		this.initPlayerTexture(player);
+		this.initPlayerPolygon(player);
+		this.applyPlayerPolygon(player);
+	}
+
+	initPlayerTexture(player) {
+		player.data.initialTextureKey = 'shape-' + this.gameData.getPlayerShapeFromKey(player.data.key);
 		player.data.currentTextureKey = player.data.initialTextureKey;
-		player.data.initialPolygonObject = 'player-' + this.gameData.getPlayerPolygonFromKey(playerKey);
+	}
+
+	initPlayerPolygon(player) {
+		player.data.initialPolygonObject = 'player-' + this.gameData.getPlayerPolygonFromKey(player.data.key);
 		player.data.currentPolygonObject = player.data.initialPolygonObject;
 		player.data.initialPolygonKey = NORMAL_SCALE_PHYSICS_DATA;
 		player.data.currentPolygonKey = player.data.initialPolygonKey;
-		this.engine.loadPolygon(player, player.data.currentPolygonKey, player.data.currentPolygonObject);
-
-		this.setupPlayerBody(player);
 	}
 
 	updatePlayerPolygon(player) {
