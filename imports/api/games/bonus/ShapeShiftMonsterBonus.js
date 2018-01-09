@@ -1,6 +1,5 @@
 import {Random} from 'meteor/random';
 import MonsterBonus from '/imports/api/games/bonus/MonsterBonus.js';
-import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
 
 export default class ShapeShiftMonsterBonus extends MonsterBonus {
 	constructor(...args) {
@@ -16,7 +15,7 @@ export default class ShapeShiftMonsterBonus extends MonsterBonus {
 
 	beforeActivation(payload) {
 		//Define the player random shape different from the player initial and current one
-		let listOfShapes = Array.from(PLAYER_LIST_OF_SHAPES);
+		let listOfShapes = Array.from(this.game.gameData.listOfShapes);
 
 		const initialPolygonObjectIndex = listOfShapes.indexOf(this.game.playerInitialPolygonFromKey(payload.player));
 		if (initialPolygonObjectIndex !== -1) {

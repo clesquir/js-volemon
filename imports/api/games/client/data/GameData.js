@@ -162,6 +162,7 @@ export default class GameData {
 		if (this.gameConfiguration.overridesCurrentPlayerShape()) {
 			this.overriddenCurrentPlayerShape = this.gameConfiguration.currentPlayerShape();
 		}
+		this.listOfShapes = this.gameConfiguration.listOfShapes();
 	}
 
 	initPlayers() {
