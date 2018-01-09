@@ -119,6 +119,7 @@ Template.afterGame.helpers({
 		const players = Players.find({gameId: Session.get('game')});
 
 		return (
+			!isGamePlayer(Session.get('game')) ||
 			!playerAcceptedRematch(players) ||
 			playerDeclinedRematch(players) ||
 			playerLeftGame(players)
@@ -129,6 +130,7 @@ Template.afterGame.helpers({
 		const players = Players.find({gameId: Session.get('game')});
 
 		return (
+			isGamePlayer(Session.get('game')) &&
 			playersCanPlayTournament(this.game, players) &&
 			!playerAcceptedRematch(players) &&
 			!playerDeclinedRematch(players) &&

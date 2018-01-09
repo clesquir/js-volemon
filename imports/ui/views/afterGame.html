@@ -37,8 +37,9 @@
 					</div>
 				{{/if}}
 
-				{{#if isGamePlayer}}
-					<div class="after-game-item after-game-actions">
+				<div class="after-game-item after-game-actions">
+
+					{{#if isGamePlayer}}
 						{{#if showOpponentDeclinedRematch}}
 							<div class="rematch-declined">Your opponent declined a rematch...</div>
 						{{/if}}
@@ -58,20 +59,22 @@
 								<a href="#" class="button" data-action="declined-game-rematch">No</a>
 							</div>
 						{{/if}}
-						{{#if showActionAfterGame}}
-							<strong>What do you want to do next?</strong>
-							{{#if showAskForRematch}}
-								<div><a href="#" data-action="game-rematch">Ask for a rematch</a></div>
-							{{/if}}
-							<div><a href="{{pathFor 'home'}}">Go to the homepage</a></div>
-							{{#if isTournament}}
-								<div><a href="{{pathFor 'tournament' tournamentId=this.game.tournamentId}}">Go to the tournament page</a></div>
-							{{else}}
-								<div><a href="{{pathFor 'rank'}}">View rank</a></div>
-							{{/if}}
+					{{/if}}
+
+					{{#if showActionAfterGame}}
+						<strong>What do you want to do next?</strong>
+						{{#if showAskForRematch}}
+							<div><a href="#" data-action="game-rematch">Ask for a rematch</a></div>
 						{{/if}}
-					</div>
-				{{/if}}
+						<div><a href="{{pathFor 'home'}}">Go to the homepage</a></div>
+						{{#if isTournament}}
+							<div><a href="{{pathFor 'tournament' tournamentId=this.game.tournamentId}}">Go to the tournament page</a></div>
+						{{else}}
+							<div><a href="{{pathFor 'rank'}}">View rank</a></div>
+						{{/if}}
+					{{/if}}
+
+				</div>
 			</div>
 		</div>
 	</div>
