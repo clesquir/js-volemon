@@ -1,6 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
+import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGameConfiguration.js';
 import {PLAYER_DEFAULT_SHAPE} from '/imports/api/games/shapeConstants.js';
 import {
 	isGameStatusOnGoing,
@@ -39,7 +40,38 @@ export default class GameData {
 			return PLAYER_DEFAULT_SHAPE;
 		}
 
+		if (this.overriddenCurrentPlayerShape && this.isCurrentPlayerKey(playerKey)) {
+			return this.overriddenCurrentPlayerShape;
+		} else {
+			return player.shape;
+		}
+	}
+
+	/**
+	 * @param playerKey
+	 * @returns string Returns the player shape or PLAYER_DEFAULT_SHAPE if no game nor player is found
+	 */
+	getPlayerPolygonFromKey(playerKey) {
+		let player;
+
+		if (playerKey === 'player1') {
+			player = this.hostPlayer;
+		} else {
+			player = this.clientPlayer;
+		}
+
+		if (!player) {
+			return PLAYER_DEFAULT_SHAPE;
+		}
+
 		return player.shape;
+	}
+
+	isCurrentPlayerKey(playerKey) {
+		return (
+			(playerKey === 'player1' && this.isUserHost()) ||
+			(playerKey === 'player2' && this.isUserClient())
+		);
 	}
 
 	isUserCreator() {
@@ -123,6 +155,13 @@ export default class GameData {
 		this.updateActiveBonuses(game.activeBonuses);
 
 		this.initPlayers();
+
+		this.gameConfiguration = new DefaultGameConfiguration(this.gameId);
+		this.gameConfiguration.init();
+
+		if (this.gameConfiguration.overridesCurrentPlayerShape()) {
+			this.overriddenCurrentPlayerShape = this.gameConfiguration.currentPlayerShape();
+		}
 	}
 
 	initPlayers() {

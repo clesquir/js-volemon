@@ -50,12 +50,12 @@ export default class GameBonus {
 		this.groundHeight = GAME_GROUND_HEIGHT;
 	}
 
-	playerInitialShapeFromKey(playerKey) {
-		return this.game.playerInitialShapeFromKey(playerKey);
+	playerInitialPolygonFromKey(playerKey) {
+		return this.game.playerInitialPolygonFromKey(playerKey);
 	}
 
-	playerCurrentShapeFromKey(playerKey) {
-		return this.game.playerCurrentShapeFromKey(playerKey);
+	playerCurrentPolygonFromKey(playerKey) {
+		return this.game.playerCurrentPolygonFromKey(playerKey);
 	}
 
 	getPolygonKeyFromScale(scale) {
@@ -89,6 +89,7 @@ export default class GameBonus {
 
 	preload() {
 		this.engine.loadAtlasJSONHash('bonus', '/assets/bonus/texture-atlas.png', '/assets/bonus/texture-atlas.json');
+		this.engine.loadImage('shape-hidden', '/assets/component/shape/player-hidden.png');
 	}
 
 	createCollisionGroupsAndMaterials() {
@@ -302,7 +303,11 @@ export default class GameBonus {
 			return;
 		}
 
-		player.data.currentTextureKey = 'shape-' + playerShape;
+		let textureShape = playerShape;
+		if (this.gameData.overriddenCurrentPlayerShape && this.gameData.isCurrentPlayerKey(playerKey)) {
+			textureShape = this.gameData.overriddenCurrentPlayerShape;
+		}
+		player.data.currentTextureKey = 'shape-' + textureShape;
 		player.data.currentPolygonObject = 'player-' + playerShape;
 
 		this.game.updatePlayerPolygon(player);

@@ -71,4 +71,25 @@ export default class Classic {
 
 	hasBonuses() {
 	}
+
+	overridesListOfShapes() {
+		return false;
+	}
+
+	listOfShapes() {
+	}
+
+	overridesAllowedListOfShapes() {
+		return false;
+	}
+
+	allowedListOfShapes() {
+	}
+
+	overridesCurrentPlayerShape() {
+		return false;
+	}
+
+	currentPlayerShape() {
+	}
 }

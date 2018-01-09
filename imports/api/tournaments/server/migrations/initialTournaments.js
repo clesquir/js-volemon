@@ -13,7 +13,8 @@ import {
 	TOURNAMENT_MODE_NO_BONUSES,
 	TOURNAMENT_MODE_SUPER_BOUNCE_WALLS,
 	TOURNAMENT_MODE_MASSIVE_HARDCORE_BLIND_BULLETPROOF,
-	TOURNAMENT_MODE_BIG_DRUNK
+	TOURNAMENT_MODE_BIG_DRUNK,
+	TOURNAMENT_MODE_HIDDEN_SHAPE
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 import {TournamentModes} from '/imports/api/tournaments/tournamentModes.js';
 
@@ -114,6 +115,14 @@ Meteor.startup(function() {
 			name: 'Christmas excess',
 			startDate: "2017-12-25 -04:00",
 			endDate: "2018-01-07 -04:00",
+			isPublished: false
+		},
+		{
+			_id: Random.id(5),
+			identifier: 'tournament_2018-01-08',
+			mode: TOURNAMENT_MODE_HIDDEN_SHAPE,
+			startDate: "2018-01-08 -04:00",
+			endDate: "2018-01-15 -04:00",
 			isPublished: false
 		}
 	];

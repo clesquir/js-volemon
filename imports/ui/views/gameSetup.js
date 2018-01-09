@@ -2,6 +2,7 @@ import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
 import {Session} from 'meteor/session';
 import {Router} from 'meteor/iron:router';
+import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGameConfiguration.js';
 import {POSSIBLE_NO_PLAYERS} from '/imports/api/games/constants.js';
 import {Players} from '/imports/api/games/players.js';
 import {playersCanPlayTournament} from '/imports/api/tournaments/utils.js';
@@ -78,8 +79,11 @@ Template.gameSetup.helpers({
 		return !havePlayersNotReady;
 	},
 
-	isCurentPlayer: function() {
-		return this.userId === Meteor.userId();
+	shapeEditionAllowed: function() {
+		const configuration = new DefaultGameConfiguration(Session.get('game'));
+		configuration.init();
+
+		return this.userId === Meteor.userId() && configuration.allowedListOfShapes().length > 1;
 	}
 });
 

@@ -7,6 +7,10 @@ export default class DefaultGameConfiguration extends GameConfiguration {
 	init() {
 		let game = Games.findOne({_id: this.gameId});
 
+		if (!game) {
+			return;
+		}
+
 		this.tournamentId = game.tournamentId;
 
 		if (this.hasTournament()) {

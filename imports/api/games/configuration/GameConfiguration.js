@@ -10,6 +10,7 @@ import {
 	BONUS_SPAWN_INITIAL_MINIMUM_FREQUENCE,
 	BONUS_SPAWN_INITIAL_MAXIMUM_FREQUENCE
 } from '/imports/api/games/emissionConstants.js';
+import {PLAYER_LIST_OF_SHAPES, PLAYER_ALLOWED_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
 
 export default class GameConfiguration {
 	/**
@@ -43,6 +44,34 @@ export default class GameConfiguration {
 		}
 
 		return GAME_MAXIMUM_POINTS;
+	}
+
+	listOfShapes() {
+		if (this.hasTournament() && this.tournamentMode.overridesListOfShapes()) {
+			return this.tournamentMode.listOfShapes();
+		}
+
+		return PLAYER_LIST_OF_SHAPES;
+	}
+
+	allowedListOfShapes() {
+		if (this.hasTournament() && this.tournamentMode.overridesAllowedListOfShapes()) {
+			return this.tournamentMode.allowedListOfShapes();
+		}
+
+		return PLAYER_ALLOWED_LIST_OF_SHAPES;
+	}
+
+	overridesCurrentPlayerShape() {
+		return (this.hasTournament() && this.tournamentMode.overridesCurrentPlayerShape());
+	}
+
+	currentPlayerShape() {
+		if (!this.overridesCurrentPlayerShape()) {
+			throw 'The shape is not overridden';
+		}
+
+		return this.tournamentMode.currentPlayerShape();
 	}
 
 	hasBonuses() {

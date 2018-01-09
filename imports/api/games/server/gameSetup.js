@@ -3,7 +3,7 @@ import {Random} from 'meteor/random';
 import {POSSIBLE_NO_PLAYERS} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import {PLAYER_LIST_OF_SHAPES, PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
+import {PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
 import {
 	GAME_STATUS_FORFEITED,
 	GAME_STATUS_REGISTRATION,
@@ -69,6 +69,8 @@ export const createGame = function(userId, gameInitiators, tournamentId = null) 
 	Games.update({_id: id}, {$set: {forfeitMinimumPoints: configuration.forfeitMinimumPoints()}});
 	Games.update({_id: id}, {$set: {maximumPoints: configuration.maximumPoints()}});
 	Games.update({_id: id}, {$set: {hasBonuses: configuration.hasBonuses()}});
+	Games.update({_id: id}, {$set: {listOfShapes: configuration.listOfShapes()}});
+	Games.update({_id: id}, {$set: {allowedListOfShapes: configuration.allowedListOfShapes()}});
 
 	gameInitiators[id] = new GameInitiator(id);
 	gameInitiators[id].init();
@@ -119,9 +121,16 @@ export const joinGame = function(userId, gameId, isReady = false) {
 		);
 	}
 
+	const configuration = new DefaultGameConfiguration(gameId);
+	configuration.init();
+	const allowedListOfShapes = configuration.allowedListOfShapes();
+	if (allowedListOfShapes.indexOf(selectedShape) === -1) {
+		selectedShape = allowedListOfShapes[0];
+	}
+
 	let shape = selectedShape;
 	if (selectedShape === PLAYER_SHAPE_RANDOM) {
-		shape = Random.choice(PLAYER_LIST_OF_SHAPES);
+		shape = Random.choice(configuration.listOfShapes());
 	}
 
 	return Players.insert({

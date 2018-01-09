@@ -12,7 +12,7 @@
 		<div class="table-list-row">
 			<div class="table-list-cell">{{name}}</div>
 			<div class="table-list-cell" style="flex: 0 0 75px;">
-				{{#if isCurentPlayer}}
+				{{#if shapeEditionAllowed}}
 					{{> shapeSelector player=this selectedShape=selectedShape}}
 				{{else}}
 					<div class="shape-selector-container shape-{{selectedShape}}">

@@ -1,7 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
 import {Session} from 'meteor/session';
-import {PLAYER_ALLOWED_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
+import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGameConfiguration.js';
 import {elementInRelatedView} from '/imports/lib/utils.js';
 import {OPEN_SELECT_BOXES} from '/imports/ui/pages/app.js';
 
@@ -35,7 +35,10 @@ const createShapeDropdownList = function(e) {
 		dropdownList.css('left', shapeSelector.offset().left);
 	});
 
-	for (let shape of PLAYER_ALLOWED_LIST_OF_SHAPES) {
+	const configuration = new DefaultGameConfiguration(Session.get('game'));
+	configuration.init();
+
+	for (let shape of configuration.allowedListOfShapes()) {
 		let isSelectedShape = false;
 		if (shapeSelector.attr('data-selected-shape') === shape) {
 			isSelectedShape = true;

@@ -95,7 +95,7 @@ export default class Game {
 		}
 	}
 
-	playerInitialShapeFromKey(playerKey) {
+	playerInitialPolygonFromKey(playerKey) {
 		const player = this.getPlayerFromKey(playerKey);
 
 		if (player) {
@@ -105,7 +105,7 @@ export default class Game {
 		return null;
 	}
 
-	playerCurrentShapeFromKey(playerKey) {
+	playerCurrentPolygonFromKey(playerKey) {
 		const player = this.getPlayerFromKey(playerKey);
 
 		if (player) {
@@ -308,7 +308,7 @@ export default class Game {
 
 		player.data.initialTextureKey = 'shape-' + this.gameData.getPlayerShapeFromKey(playerKey);
 		player.data.currentTextureKey = player.data.initialTextureKey;
-		player.data.initialPolygonObject = 'player-' + this.gameData.getPlayerShapeFromKey(playerKey);
+		player.data.initialPolygonObject = 'player-' + this.gameData.getPlayerPolygonFromKey(playerKey);
 		player.data.currentPolygonObject = player.data.initialPolygonObject;
 		player.data.initialPolygonKey = NORMAL_SCALE_PHYSICS_DATA;
 		player.data.currentPolygonKey = player.data.initialPolygonKey;

@@ -12,7 +12,8 @@ import {
 	TOURNAMENT_MODE_JUPITER_GRAVITY,
 	TOURNAMENT_MODE_NO_BONUSES,
 	TOURNAMENT_MODE_MASSIVE_HARDCORE_BLIND_BULLETPROOF,
-	TOURNAMENT_MODE_BIG_DRUNK
+	TOURNAMENT_MODE_BIG_DRUNK,
+	TOURNAMENT_MODE_HIDDEN_SHAPE
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 
 Meteor.startup(function() {
@@ -74,6 +75,11 @@ Meteor.startup(function() {
 			"_id": TOURNAMENT_MODE_BIG_DRUNK,
 			"name": "Big drunk",
 			"description": "Bonuses spawning are big monster and drunk monster"
+		},
+		{
+			"_id": TOURNAMENT_MODE_HIDDEN_SHAPE,
+			"name": "Hidden shape",
+			"description": "Monsters shapes are randomly picked and hidden"
 		}
 	];
 

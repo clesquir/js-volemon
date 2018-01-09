@@ -9,6 +9,7 @@ import {
 	onPlayerQuit
 } from '/imports/api/games/server/gameSetup.js';
 import {finishGame} from '/imports/api/games/server/onGameFinished.js';
+import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGameConfiguration.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {
@@ -17,11 +18,7 @@ import {
 	HOST_SIDE,
 	CLIENT_SIDE
 } from '/imports/api/games/constants.js';
-import {
-	PLAYER_LIST_OF_SHAPES,
-	PLAYER_ALLOWED_LIST_OF_SHAPES,
-	PLAYER_SHAPE_RANDOM
-} from '/imports/api/games/shapeConstants.js';
+import {PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
 import {
 	GAME_STATUS_REGISTRATION,
 	GAME_STATUS_STARTED,
@@ -133,7 +130,11 @@ Meteor.methods({
 			throw new Meteor.Error(404, 'Player not found');
 		}
 
-		if (PLAYER_ALLOWED_LIST_OF_SHAPES.indexOf(selectedShape) === -1) {
+		const configuration = new DefaultGameConfiguration(gameId);
+		configuration.init();
+		const allowedListOfShapes = configuration.allowedListOfShapes();
+
+		if (allowedListOfShapes.indexOf(selectedShape) === -1) {
 			throw new Meteor.Error(
 				'not-allowed',
 				'The requested shape is not allowed: ' + htmlEncode(selectedShape)
@@ -142,7 +143,7 @@ Meteor.methods({
 
 		let shape = selectedShape;
 		if (selectedShape === PLAYER_SHAPE_RANDOM) {
-			shape = Random.choice(PLAYER_LIST_OF_SHAPES);
+			shape = Random.choice(configuration.listOfShapes());
 		}
 
 		Players.update({_id: player._id}, {$set: {selectedShape: selectedShape, shape: shape}});
