@@ -6,7 +6,7 @@ const toArray = require('to-array');
 const hasBin = require('has-binary');
 const bind = require('component-bind');
 const hat = require('hat');
-import {browserSupportsWebRTC} from '/imports/lib/utils.js';
+import {browserSupportsWebRTC, isObjectEmpty} from '/imports/lib/utils.js';
 
 export default class ClientP2P {
 	/**
@@ -122,7 +122,7 @@ export default class ClientP2P {
 				localPeer.hasInitiated = true;
 			}
 
-			if (Object.keys(this.readyPeers).length > 0 && !this.ready) {
+			if (!isObjectEmpty(this.readyPeers) && !this.ready) {
 				this.ready = true;
 				if (this.opts.autoUpgrade) this.usePeerConnection = true;
 				this.emitP2P('upgrade');
@@ -141,7 +141,7 @@ export default class ClientP2P {
 			delete this._peers[peer.id];
 		}
 
-		if (Object.keys(this.readyPeers).length === 0 && this.ready) {
+		if (isObjectEmpty(this.readyPeers) && this.ready) {
 			this.ready = false;
 			this.usePeerConnection = false;
 			this.emitP2P('downgrade');
@@ -170,7 +170,11 @@ export default class ClientP2P {
 	 * @return {boolean}
 	 */
 	supportsP2P() {
-		return browserSupportsWebRTC();
+		if (this.hasP2PSupport === undefined) {
+			this.hasP2PSupport = browserSupportsWebRTC();
+		}
+
+		return this.hasP2PSupport;
 	}
 
 	emit(eventName, payload) {

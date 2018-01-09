@@ -75,7 +75,7 @@ export default class GameData {
 	}
 
 	isUserCreator() {
-		return (this.createdBy === Meteor.userId());
+		return (this.createdBy === this.currentUserId);
 	}
 
 	isUserHost() {
@@ -141,6 +141,7 @@ export default class GameData {
 	init() {
 		let game = this.fetchGame();
 
+		this.currentUserId = Meteor.userId();
 		this.maximumPoints = game.maximumPoints;
 		this.hasBonuses = game.hasBonuses;
 		this.createdBy = game.createdBy;
@@ -173,7 +174,7 @@ export default class GameData {
 		this.clientPlayer = null;
 
 		players.forEach((player) => {
-			if (player.userId === Meteor.userId()) {
+			if (player.userId === this.currentUserId) {
 				this.currentPlayer = player;
 			}
 

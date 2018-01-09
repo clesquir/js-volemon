@@ -1,3 +1,5 @@
+import {isObjectEmpty} from '/imports/lib/utils.js';
+
 export default class GameStreamBundler {
 
 	/**
@@ -27,7 +29,7 @@ export default class GameStreamBundler {
 	}
 
 	hasBundledStreamToSend() {
-		return Object.keys(this.bundledStreamsToEmit).length > 0;
+		return !isObjectEmpty(this.bundledStreamsToEmit);
 	}
 
 	emitBundledStream(eventName) {
