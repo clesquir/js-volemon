@@ -33,5 +33,8 @@ export const TournamentController = RouteController.extend({
 		}
 
 		this.next();
+	},
+	onStop: function() {
+		Session.set('tournament', null);
 	}
 });

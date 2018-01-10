@@ -27,13 +27,12 @@ export const TournamentGameController = RouteController.extend({
 		const game = Games.findOne(this.params.gameId);
 
 		Session.set('tournament', null);
+		Session.set('game', null);
 		if (!tournament) {
 			Router.go('tournaments');
 		} else {
 			Session.set('tournament', this.params.tournamentId);
 		}
-
-		Session.set('game', null);
 		if (!game) {
 			Router.go('tournament', {tournamentId: this.params.tournamentId});
 		} else {
@@ -51,5 +50,8 @@ export const TournamentGameController = RouteController.extend({
 			Template.tournamentGame.rendered = null;
 		};
 	},
-	onStop: onStopGameController
+	onStop: function() {
+		Session.set('tournament', null);
+		onStopGameController();
+	}
 });

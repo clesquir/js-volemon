@@ -146,6 +146,6 @@ const destroyGame = function(gameId) {
 };
 
 const unsetGameSessions = function() {
-	Session.set('game', undefined);
+	Session.set('game', null);
 	Session.set('userCurrentlyPlaying', false);
 };

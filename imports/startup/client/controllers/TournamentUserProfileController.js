@@ -33,5 +33,9 @@ export const TournamentUserProfileController = RouteController.extend({
 		}
 
 		this.next();
+	},
+	onStop: function() {
+		Session.set('tournament', null);
+		Session.set('userProfile', null);
 	}
 });

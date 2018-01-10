@@ -11,6 +11,7 @@ export const UserProfileController = RouteController.extend({
 	onBeforeAction: function() {
 		const profile = UserProfiles.findOne({userId: this.params.userId});
 
+		Session.set('userProfile', null);
 		if (!profile) {
 			Router.go('home');
 		} else {
@@ -18,5 +19,8 @@ export const UserProfileController = RouteController.extend({
 		}
 
 		this.next();
+	},
+	onStop: function() {
+		Session.set('userProfile', null);
 	}
 });
