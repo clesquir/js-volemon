@@ -15,6 +15,13 @@ $bonus-background-size: $bonus-size - 3;
 
 	img {
 		box-shadow: 0 0 15px 0 lighten($background-color, 10%);
+		width: 285px;
+		height: 200px;
+
+		@include horizontal-breakpoint(mobileportrait) {
+			width: 250px;
+			height: 175px;
+		}
 	}
 }
 
