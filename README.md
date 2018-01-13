@@ -1,5 +1,7 @@
 # js-volemon
 
+[![Build Status](https://travis-ci.org/clesquir/js-volemon.svg?branch=master)](https://travis-ci.org/clesquir/js-volemon)
+
 HTML5 multiplayer version of the Volemon (or Slime Volley) game implemented with the following technologies:
  * Meteor (www.meteor.com)
  * Phaser (www.phaser.io)
