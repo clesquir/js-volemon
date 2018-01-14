@@ -32,13 +32,14 @@ export default class GameStreamBundler {
 		return !isObjectEmpty(this.bundledStreamsToEmit);
 	}
 
-	emitBundledStream(eventName) {
+	emitBundledStream(eventName, timestamp) {
 		if (this.hasBundledStreamToSend()) {
-			this.emitStream(eventName, this.bundledStreamsToEmit);
+			this.emitStream(eventName, this.bundledStreamsToEmit, timestamp);
 		}
 	}
 
-	emitStream(eventName, payload) {
+	emitStream(eventName, payload, timestamp) {
+		payload.timestamp = timestamp;
 		this.stream.emit(eventName, payload);
 	}
 

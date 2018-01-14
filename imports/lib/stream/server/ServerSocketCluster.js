@@ -12,7 +12,7 @@ export default class ServerSocketCluster extends Stream {
 		// Client-side config
 		WebAppInternals.addStaticJs(`window.socketPort = ${port};`);
 
-		const SocketCluster = require('socketcluster').SocketCluster;
+		const SocketCluster = require('socketcluster');
 		this.socketCluster = new SocketCluster({
 			workers: 1,
 			brokers: 1,

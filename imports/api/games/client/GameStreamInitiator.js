@@ -33,10 +33,14 @@ export default class GameStreamInitiator {
 		});
 
 		this.stream.on('sendBundledData-' + gameId, (bundledData) => {
+			const timestamp = bundledData.timestamp;
+
 			if (bundledData.moveClientBall) {
+				bundledData.moveClientBall.timestamp = timestamp;
 				this.moveClientBall.call(this, bundledData.moveClientBall);
 			}
 			if (bundledData.moveOppositePlayer) {
+				bundledData.moveOppositePlayer.timestamp = timestamp;
 				this.moveOppositePlayer.call(this, bundledData.moveOppositePlayer);
 			}
 			if (bundledData.createBonus) {
@@ -44,7 +48,10 @@ export default class GameStreamInitiator {
 			}
 			if (bundledData.moveClientBonuses) {
 				for (let clientBonus of bundledData.moveClientBonuses) {
-					this.moveClientBonus.apply(this, clientBonus);
+					const bonusIdentifier = clientBonus[0];
+					const bonusData = clientBonus[1];
+					bonusData.timestamp = timestamp;
+					this.moveClientBonus.call(this, bonusIdentifier, bonusData);
 				}
 			}
 		});

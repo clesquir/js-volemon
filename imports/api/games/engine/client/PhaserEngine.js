@@ -392,7 +392,8 @@ export default class PhaserEngine extends Engine {
 
 		let maxTime = 0;
 
-		if (slideToLocation) {
+		const minimumForInterpolation = 25;
+		if (slideToLocation && serverNormalizedTimestamp - data.timestamp > minimumForInterpolation) {
 			//+25 for fast sliding to interpolated location
 			maxTime = 25;
 		}

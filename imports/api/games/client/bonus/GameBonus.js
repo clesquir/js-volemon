@@ -221,7 +221,6 @@ export default class GameBonus {
 			let bonusPositionData = this.engine.getPositionData(bonus);
 
 			bonusPositionData = Object.assign(bonusPositionData, bonus.data.bonus.dataToStream());
-			bonusPositionData['timestamp'] = this.serverNormalizedTime.getServerTimestamp();
 
 			bonusesData.push([
 				bonus.identifier,
@@ -762,7 +761,8 @@ export default class GameBonus {
 			//Send to client
 			this.gameStreamBundler.emitStream(
 				'activateBonus-' + this.game.gameId,
-				payload
+				payload,
+				this.serverNormalizedTime.getServerTimestamp()
 			);
 			//Activate bonus
 			this.activateBonus(

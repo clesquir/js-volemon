@@ -1,16 +1,22 @@
 'use strict';
 
-module.exports.run = function (worker) {
-	const app = require('express')();
+const SCWorker = require('socketcluster/scworker');
 
-	const httpServer = worker.httpServer;
-	const scServer = worker.scServer;
+class Worker extends SCWorker {
+	run() {
+		const app = require('express')();
 
-	httpServer.on('request', app);
+		const httpServer = this.httpServer;
+		const scServer = this.scServer;
 
-	const serverWorker = new ServerSocketClusterWorker(worker, scServer);
-	serverWorker.init();
-};
+		httpServer.on('request', app);
+
+		const serverWorker = new ServerSocketClusterWorker(this, scServer);
+		serverWorker.init();
+	}
+}
+
+new Worker();
 
 class ServerSocketClusterWorker {
 	constructor(worker, server) {

@@ -600,7 +600,10 @@ export default class Game {
 			this.onGameEnd();
 		}
 
-		this.gameStreamBundler.emitBundledStream('sendBundledData-' + this.gameId);
+		this.gameStreamBundler.emitBundledStream(
+			'sendBundledData-' + this.gameId,
+			this.serverNormalizedTime.getServerTimestamp()
+		);
 	}
 
 	updateCountdown() {
@@ -637,7 +640,6 @@ export default class Game {
 			ballInterval *= 2;
 		}
 		this.lastBallPositionData = Object.assign({}, ballPositionData);
-		ballPositionData['timestamp'] = this.serverNormalizedTime.getServerTimestamp();
 
 		this.lastBallUpdate = this.gameStreamBundler.addToBundledStreamsAtFrequence(
 			this.lastBallUpdate,
@@ -658,7 +660,6 @@ export default class Game {
 			playerInterval *= 2;
 		}
 		this.lastPlayerPositionData = Object.assign({}, playerPositionData);
-		playerPositionData['timestamp'] = this.serverNormalizedTime.getServerTimestamp();
 
 		this.lastPlayerUpdate = this.gameStreamBundler.addToBundledStreamsAtFrequence(
 			this.lastPlayerUpdate,
@@ -770,7 +771,8 @@ export default class Game {
 					x: this.engine.getXPosition(this.ball),
 					y: this.engine.getYPosition(this.ball),
 					diameter: this.engine.getHeight(this.ball)
-				}
+				},
+				this.serverNormalizedTime.getServerTimestamp()
 			);
 			this.showBallHitPoint(
 				this.engine.getXPosition(this.ball),
