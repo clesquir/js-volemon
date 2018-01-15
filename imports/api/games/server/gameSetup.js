@@ -1,25 +1,23 @@
 import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
-import {POSSIBLE_NO_PLAYERS} from '/imports/api/games/constants.js';
-import {Games} from '/imports/api/games/games.js';
-import {Players} from '/imports/api/games/players.js';
-import {PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
-import {
-	GAME_STATUS_FORFEITED,
-	GAME_STATUS_REGISTRATION,
-	GAME_STATUS_STARTED,
-	GAME_STATUS_TIMEOUT
-} from '/imports/api/games/statusConstants.js';
-import {isGameStatusFinished} from '/imports/api/games/utils.js';
-import {getUTCTimeStamp} from '/imports/lib/utils.js';
 import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGameConfiguration.js';
-import GameInitiator from '/imports/api/games/server/GameInitiator.js';
-import {isForfeiting} from '/imports/api/games/utils.js';
-import {finishGame} from '/imports/api/games/server/onGameFinished.js';
-import {EventPublisher} from '/imports/lib/EventPublisher.js';
+import {POSSIBLE_NO_PLAYERS} from '/imports/api/games/constants.js';
 import GameForfeited from '/imports/api/games/events/GameForfeited.js';
 import GameTimedOut from '/imports/api/games/events/GameTimedOut.js';
+import {Games} from '/imports/api/games/games.js';
+import {Players} from '/imports/api/games/players.js';
+import GameInitiator from '/imports/api/games/server/GameInitiator.js';
+import {finishGame} from '/imports/api/games/server/onGameFinished.js';
+import {PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
+import {
+	GAME_STATUS_FORFEITED, GAME_STATUS_REGISTRATION, GAME_STATUS_STARTED,
+	GAME_STATUS_TIMEOUT
+} from '/imports/api/games/statusConstants.js';
+import {isForfeiting, isGameStatusFinished} from '/imports/api/games/utils.js';
+import {playersCanPlayTournament} from '/imports/api/tournaments/utils.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
+import {EventPublisher} from '/imports/lib/EventPublisher.js';
+import {getUTCTimeStamp} from '/imports/lib/utils.js';
 
 /**
  * @param {string} userId
@@ -34,6 +32,10 @@ export const createGame = function(userId, gameInitiators, tournamentId = null) 
 	let username = '';
 	if (userConfiguration) {
 		username = userConfiguration.name;
+	}
+
+	if (!playersCanPlayTournament(tournamentId, [{userId: userId}])) {
+		throw new Meteor.Error('not-allowed', 'Cannot join this tournament');
 	}
 
 	do {
@@ -101,6 +103,10 @@ export const joinGame = function(userId, gameId, isReady = false) {
 		throw new Meteor.Error('not-allowed', 'Maximum players reached');
 	}
 
+	if (!playersCanPlayTournament(game.tournamentId, [{userId: userId}])) {
+		throw new Meteor.Error('not-allowed', 'Cannot join this tournament');
+	}
+
 	const userConfiguration = UserConfigurations.findOne({userId: userId});
 	let username = '';
 	let selectedShape = PLAYER_DEFAULT_SHAPE;
@@ -155,6 +161,11 @@ export const startGame = function(gameId, gameInitiators) {
 
 	if (!game) {
 		throw new Meteor.Error(404, 'Game not found');
+	}
+
+	const players = Players.find({gameId: gameId});
+	if (!playersCanPlayTournament(game.tournamentId, players)) {
+		throw new Meteor.Error('not-allowed', 'One of the players cannot join this tournament');
 	}
 
 	let data = {

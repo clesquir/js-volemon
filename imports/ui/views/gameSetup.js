@@ -45,7 +45,7 @@ Template.gameSetup.helpers({
 		return (
 			!player &&
 			this.game &&
-			playersCanPlayTournament(this.game, [{userId: Meteor.userId()}]) &&
+			playersCanPlayTournament(this.game.tournamentId, [{userId: Meteor.userId()}]) &&
 			POSSIBLE_NO_PLAYERS.indexOf(players.count() + 1) !== -1
 		);
 	},
@@ -96,6 +96,9 @@ Template.gameSetup.events({
 		Session.set('loadingMask', true);
 		Meteor.call('startGame', Session.get('game'), function(error) {
 			Session.set('loadingMask', false);
+			if (error) {
+				alert(error);
+			}
 		});
 	},
 
@@ -103,7 +106,7 @@ Template.gameSetup.events({
 		actionAfterLoginCreateUser = function() {
 			Meteor.call('joinGame', Session.get('game'), function(error) {
 				if (error) {
-					alert(error)
+					alert(error);
 				}
 			});
 		};

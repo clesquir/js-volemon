@@ -131,7 +131,7 @@ Template.afterGame.helpers({
 
 		return (
 			isGamePlayer(Session.get('game')) &&
-			playersCanPlayTournament(this.game, players) &&
+			playersCanPlayTournament(this.game.tournamentId, players) &&
 			!playerAcceptedRematch(players) &&
 			!playerDeclinedRematch(players) &&
 			!playerLeftGame(players)
@@ -170,7 +170,7 @@ Template.afterGame.helpers({
 		const players = Players.find({gameId: Session.get('game')});
 
 		return (
-			playersCanPlayTournament(this.game, players) &&
+			playersCanPlayTournament(this.game.tournamentId, players) &&
 			playerAcceptedRematch(players) &&
 			!currentPlayerHasRepliedRematch(players, Meteor.userId()) &&
 			!playerDeclinedRematch(players) &&

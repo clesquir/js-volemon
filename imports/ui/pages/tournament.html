@@ -12,6 +12,20 @@
 			</h1>
 			<p class="tournament-description">{{tournamentDescription}}</p>
 
+			{{#if currentUser}}
+				{{#if tournamentIsActiveAndHasRetries}}
+					<div class="tournament-retries-container">
+						<div class="retries-availables">
+							{{#each retriesAvailables}}
+								<div class="retry">
+									<div class="{{#if lost}}retry-lost{{/if}}">x</div>
+								</div>
+							{{/each}}
+						</div>
+					</div>
+				{{/if}}
+			{{/if}}
+
 			<div id="tournament-contents" class="view-selector-contents {{#if isTournamentActive}}tournament-games-shown{{else}}tournament-statistics-shown{{/if}}">
 				<div class="view-selector swiper-selector">
 					{{#if isTournamentActive}}
@@ -43,21 +57,7 @@
 							<h2>Statistics</h2>
 
 							{{#if currentUser}}
-
-								{{#if tournamentIsActiveAndHasRetries}}
-									<div class="tournament-retries-container">
-										<div class="retries-availables">
-											{{#each retriesAvailables}}
-											<div class="retry">
-												<div class="{{#if lost}}retry-lost{{/if}}">x</div>
-											</div>
-											{{/each}}
-										</div>
-									</div>
-								{{/if}}
-
 								{{> statistics tournamentId=tournament._id}}
-
 							{{else}}
 								<p>Please <a class="clickable-link" data-action="user-log-in">log in</a> to get statistics on your profile for this tournament!</p>
 							{{/if}}

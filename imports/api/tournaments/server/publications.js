@@ -72,6 +72,7 @@ Meteor.publish('tournamentGames', function(tournamentId) {
 Meteor.publish('tournamentGame', function(tournamentId, gameId) {
 	return [
 		Tournaments.find({_id: tournamentId}),
+		TournamentProfiles.find({tournamentId: tournamentId}),
 		Games.find({_id: gameId}),
 		Players.find({gameId: gameId}),
 		TournamentEloScores.find({gameId: gameId})

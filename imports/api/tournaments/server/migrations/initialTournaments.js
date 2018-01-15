@@ -14,7 +14,8 @@ import {
 	TOURNAMENT_MODE_SUPER_BOUNCE_WALLS,
 	TOURNAMENT_MODE_MASSIVE_HARDCORE_BLIND_BULLETPROOF,
 	TOURNAMENT_MODE_BIG_DRUNK,
-	TOURNAMENT_MODE_HIDDEN_SHAPE
+	TOURNAMENT_MODE_HIDDEN_SHAPE,
+	TOURNAMENT_MODE_SPAGHETTI_ON_THE_CARPET
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 import {TournamentModes} from '/imports/api/tournaments/tournamentModes.js';
 
@@ -124,6 +125,16 @@ Meteor.startup(function() {
 			startDate: "2018-01-08 -04:00",
 			endDate: "2018-01-15 -04:00",
 			isPublished: false
+		},
+		{
+			_id: Random.id(5),
+			identifier: 'tournament_2018-01-15',
+			mode: TOURNAMENT_MODE_SPAGHETTI_ON_THE_CARPET,
+			description: 'Only hyphen and obelisk shapes: 5 game losses allowed',
+			startDate: "2018-01-15 -04:00",
+			endDate: "2018-01-22 -04:00",
+			numberOfLostAllowed: 5,
+			isPublished: false
 		}
 	];
 
@@ -140,17 +151,20 @@ Meteor.startup(function() {
 			if (!_.isEqual(actualTournament.mode, tournamentMode)) {
 				updates.mode = tournamentMode;
 			}
-			if (actualTournament.startDate !== expectedTournament.startDate) {
-				updates.startDate = expectedTournament.startDate;
-			}
 			if (actualTournament.name !== expectedTournament.name) {
 				updates.name = expectedTournament.name;
 			}
 			if (actualTournament.description !== expectedTournament.description) {
 				updates.description = expectedTournament.description;
 			}
+			if (actualTournament.startDate !== expectedTournament.startDate) {
+				updates.startDate = expectedTournament.startDate;
+			}
 			if (actualTournament.endDate !== expectedTournament.endDate) {
 				updates.endDate = expectedTournament.endDate;
+			}
+			if (actualTournament.numberOfLostAllowed !== expectedTournament.numberOfLostAllowed) {
+				updates.numberOfLostAllowed = expectedTournament.numberOfLostAllowed;
 			}
 
 			if (Object.keys(updates).length) {

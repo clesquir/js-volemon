@@ -13,7 +13,8 @@ import {
 	TOURNAMENT_MODE_NO_BONUSES,
 	TOURNAMENT_MODE_MASSIVE_HARDCORE_BLIND_BULLETPROOF,
 	TOURNAMENT_MODE_BIG_DRUNK,
-	TOURNAMENT_MODE_HIDDEN_SHAPE
+	TOURNAMENT_MODE_HIDDEN_SHAPE,
+	TOURNAMENT_MODE_SPAGHETTI_ON_THE_CARPET
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 
 Meteor.startup(function() {
@@ -80,6 +81,11 @@ Meteor.startup(function() {
 			"_id": TOURNAMENT_MODE_HIDDEN_SHAPE,
 			"name": "Hidden shape",
 			"description": "Monsters shapes are randomly picked and hidden"
+		},
+		{
+			"_id": TOURNAMENT_MODE_SPAGHETTI_ON_THE_CARPET,
+			"name": "Spaghetti on the carpet",
+			"description": "Only available shapes are hyphen and obelisk"
 		}
 	];
 
