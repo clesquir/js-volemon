@@ -3,7 +3,7 @@ export default class GameSkin {
 	 * @param {Skin} skin
 	 * @param {Plugin[]} plugins
 	 */
-	constructor(skin, plugins) {
+	constructor(skin, plugins = []) {
 		this.skin = skin;
 		this.plugins = plugins;
 	}
