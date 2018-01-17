@@ -529,7 +529,9 @@ export default class GameBonus {
 		}
 
 		for (let cloud of this.clouds) {
-			this.engine.tweenRotate(cloud, cloud.data.rotateSpeed);
+			if (cloud.data.rotateSpeed) {
+				this.engine.tweenRotate(cloud, cloud.data.rotateSpeed);
+			}
 			this.engine.animateSetOpacity(cloud, cloud.opacity, this.engine.getOpacity(cloud), 250);
 		}
 	}
@@ -550,8 +552,7 @@ export default class GameBonus {
 					key: 'white-cloud',
 					opacity: 0.76,
 					scale: 1.6,
-					angle: 56,
-					rotateSpeed: 0.24
+					angle: 56
 				}
 			],
 			[
@@ -566,8 +567,7 @@ export default class GameBonus {
 					key: 'white-cloud',
 					opacity: 0.74,
 					scale: 1.8,
-					angle: 37,
-					rotateSpeed: -0.24
+					angle: 37
 				}
 			],
 			[
@@ -582,8 +582,7 @@ export default class GameBonus {
 					key: 'white-cloud',
 					opacity: 0.76,
 					scale: 1.6,
-					angle: 37,
-					rotateSpeed: 0.20
+					angle: 37
 				}
 			]
 		];
@@ -637,14 +636,15 @@ export default class GameBonus {
 				key: 'white-cloud',
 				opacity: 0.82,
 				scale: 1.79,
-				angle: 23,
-				rotateSpeed: -0.4
+				angle: 23
 			}
 		];
 		for (let layer of layers) {
 			const cloud = this.createCloud(xPosition, yPosition, layer);
 
-			this.engine.tweenRotate(cloud, cloud.data.rotateSpeed);
+			if (cloud.data.rotateSpeed) {
+				this.engine.tweenRotate(cloud, cloud.data.rotateSpeed);
+			}
 			this.engine.animateSetOpacity(cloud, cloud.opacity, this.engine.getOpacity(cloud), 250);
 			this.smokeBomb[smokeBombIdentifier].push(cloud);
 		}
