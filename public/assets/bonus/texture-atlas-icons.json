@@ -551,64 +551,16 @@
         "x": 0.5,
         "y": 0.5
       }
-    },
-    "dark-cloud": {
-      "frame": {
-        "x": 217,
-        "y": 1,
-        "w": 249,
-        "h": 248
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 1,
-        "y": 8,
-        "w": 249,
-        "h": 248
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 256
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "white-cloud": {
-      "frame": {
-        "x": 1,
-        "y": 287,
-        "w": 249,
-        "h": 248
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 1,
-        "y": 8,
-        "w": 249,
-        "h": 248
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 256
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
     }
   },
   "meta": {
     "app": "http://free-tex-packer.com/",
-    "version": "0.2.5",
+    "version": "0.2.6",
     "image": "texture-atlas.png",
     "format": "RGBA8888",
     "size": {
-      "w": 467,
-      "h": 536
+      "w": 216,
+      "h": 286
     },
     "scale": 1
   }

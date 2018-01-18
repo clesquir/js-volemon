@@ -525,29 +525,6 @@ export default class PhaserEngine extends Engine {
 		sprite.anchor.set(anchor);
 	}
 
-	tweenRotate(sprite, rotateSpeed) {
-		const engine = this;
-		const time = 1;
-		const tween = this.game.add.tween(sprite);
-
-		sprite.data.tweenRotate = tween;
-
-		tween.onComplete.add(() => {
-			engine.tweenRotate(sprite, rotateSpeed);
-		});
-		tween.to({angle: sprite.angle + rotateSpeed * time}, time, Phaser.Easing.Linear.None, true);
-	}
-
-	stopTweenRotation(sprite) {
-		if (sprite.data.tweenRotate) {
-			sprite.data.tweenRotate.stop();
-		}
-	}
-
-	rotateLeft(sprite, velocity) {
-		sprite.body.rotateLeft(velocity);
-	}
-
 	setMaterial(sprite, material) {
 		sprite.body.setMaterial(material);
 	}
@@ -795,7 +772,7 @@ export default class PhaserEngine extends Engine {
 		const sprite = this.addSprite(
 			0,
 			0,
-			'bonus',
+			'bonus-icon',
 			true,
 			bonus.atlasFrame
 		);

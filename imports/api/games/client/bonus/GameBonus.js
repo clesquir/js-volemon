@@ -88,7 +88,8 @@ export default class GameBonus {
 	}
 
 	preload() {
-		this.engine.loadAtlasJSONHash('bonus', '/assets/bonus/texture-atlas.png', '/assets/bonus/texture-atlas.json');
+		this.engine.loadAtlasJSONHash('bonus-icon', '/assets/bonus/texture-atlas-icons.png', '/assets/bonus/texture-atlas-icons.json');
+		this.engine.loadAtlasJSONHash('bonus-cloud', '/assets/bonus/texture-atlas-cloud.png', '/assets/bonus/texture-atlas-cloud.json');
 		this.engine.loadImage('shape-hidden', '/assets/component/shape/player-hidden.png');
 	}
 
@@ -529,9 +530,6 @@ export default class GameBonus {
 		}
 
 		for (let cloud of this.clouds) {
-			if (cloud.data.rotateSpeed) {
-				this.engine.tweenRotate(cloud, cloud.data.rotateSpeed);
-			}
 			this.engine.animateSetOpacity(cloud, cloud.opacity, this.engine.getOpacity(cloud), 250);
 		}
 	}
@@ -540,80 +538,62 @@ export default class GameBonus {
 		this.clouds = [];
 
 		const cloudSpreads = [
-			[
-				{
-					key: 'dark-cloud',
-					opacity: 0.73,
-					scale: 1.7,
-					angle: -87,
-					rotateSpeed: -0.21
-				},
-				{
-					key: 'white-cloud',
-					opacity: 0.76,
-					scale: 1.6,
-					angle: 56
-				}
-			],
-			[
-				{
-					key: 'dark-cloud',
-					opacity: 0.73,
-					scale: 1.7,
-					angle: 63,
-					rotateSpeed: 0.23
-				},
-				{
-					key: 'white-cloud',
-					opacity: 0.74,
-					scale: 1.8,
-					angle: 37
-				}
-			],
-			[
-				{
-					key: 'dark-cloud',
-					opacity: 0.73,
-					scale: 1.7,
-					angle: 63,
-					rotateSpeed: -0.24
-				},
-				{
-					key: 'white-cloud',
-					opacity: 0.76,
-					scale: 1.6,
-					angle: 37
-				}
-			]
+			{
+				angle: 56,
+				opacity: 0.8
+			},
+			{
+				scale: 1.1,
+				angle: 37,
+				opacity: 0.8
+			},
+			{
+				angle: 63,
+				opacity: 0.8
+			}
 		];
 		for (let i = 1; i < (cloudSpreads.length + 1); i++) {
 			let x = GAME_X_SIZE / (cloudSpreads.length + 1) * i;
 
-			for (let layer of cloudSpreads[i - 1]) {
-				this.clouds.push(this.createCloud(x, 200, layer));
-			}
+			this.clouds.push(this.createCloud(x, 200, cloudSpreads[i - 1]));
 		}
 	}
 
 	hideCloud() {
 		for (let cloud of this.clouds) {
 			this.engine.animateSetOpacity(cloud, 0, this.engine.getOpacity(cloud), 250);
-			this.engine.stopTweenRotation(cloud);
 		}
 	}
 
 	createCloud(xPosition, yPosition, layer) {
-		const cloud = this.engine.addGroupedSprite(xPosition, yPosition, 'bonus', this.bonusZIndexGroup, true, layer.key);
-
+		const cloud = this.engine.addTileSprite(
+			xPosition,
+			yPosition,
+			400,
+			400,
+			'bonus-cloud',
+			'cloud-01',
+			true,
+			this.bonusZIndexGroup
+		);
+		cloud.animations.add(
+			'cloud-01',
+			['cloud-01', 'cloud-02', 'cloud-03', 'cloud-04', 'cloud-05', 'cloud-04', 'cloud-03', 'cloud-02'],
+			5,
+			true
+		);
+		cloud.animations.play('cloud-01');
 		cloud.createdAt = (new Date()).getTime();
 		this.engine.sortBonusGroup(this.bonusZIndexGroup);
-
 		cloud.opacity = layer.opacity;
-		cloud.angle = layer.angle;
-		cloud.data.rotateSpeed = layer.rotateSpeed;
+		if (layer.angle) {
+			cloud.angle = layer.angle;
+		}
 		this.engine.setOpacity(cloud, 0);
 		this.engine.setAnchor(cloud, 0.5);
-		this.engine.scale(cloud, layer.scale, layer.scale);
+		if (layer.scale) {
+			this.engine.scale(cloud, layer.scale, layer.scale);
+		}
 
 		return cloud;
 	}
@@ -624,37 +604,16 @@ export default class GameBonus {
 		}
 		this.smokeBomb[smokeBombIdentifier] = [];
 
-		const layers = [
-			{
-				key: 'dark-cloud',
-				opacity: 0.77,
-				scale: 1.67,
-				angle: -38,
-				rotateSpeed: 0.3
-			},
-			{
-				key: 'white-cloud',
-				opacity: 0.82,
-				scale: 1.79,
-				angle: 23
-			}
-		];
-		for (let layer of layers) {
-			const cloud = this.createCloud(xPosition, yPosition, layer);
+		const cloud = this.createCloud(xPosition, yPosition, {angle: getRandomInt(-180, 180), opacity: 0.8});
 
-			if (cloud.data.rotateSpeed) {
-				this.engine.tweenRotate(cloud, cloud.data.rotateSpeed);
-			}
-			this.engine.animateSetOpacity(cloud, cloud.opacity, this.engine.getOpacity(cloud), 250);
-			this.smokeBomb[smokeBombIdentifier].push(cloud);
-		}
+		this.engine.animateSetOpacity(cloud, cloud.opacity, this.engine.getOpacity(cloud), 250);
+		this.smokeBomb[smokeBombIdentifier].push(cloud);
 	}
 
 	hideSmokeBomb(smokeBombIdentifier) {
 		if (this.smokeBomb[smokeBombIdentifier]) {
 			for (let smokeBomb of this.smokeBomb[smokeBombIdentifier]) {
 				this.engine.animateSetOpacity(smokeBomb, 0, this.engine.getOpacity(smokeBomb), 250);
-				this.engine.stopTweenRotation(smokeBomb);
 
 				this.engine.createTimer(250, () => {
 					smokeBomb.destroy();
