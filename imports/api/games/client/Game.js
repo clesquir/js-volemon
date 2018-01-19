@@ -1,12 +1,12 @@
 import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
 import {Session} from 'meteor/session';
+import Collisions from '/imports/api/games/client/Collisions.js';
+import LevelComponents from '/imports/api/games/client/LevelComponents.js';
 import {
 	GAME_X_SIZE,
 	GAME_Y_SIZE,
 	GAME_GROUND_HEIGHT,
-	GAME_NET_HEIGHT,
-	GAME_NET_THICKNESS,
 	PLAYER_HEIGHT,
 	PLAYER_WIDTH,
 	PLAYER_INITIAL_LOCATION,
@@ -25,13 +25,13 @@ import {
 	HOST_POINTS_COLUMN
 } from '/imports/api/games/constants.js';
 import {PLAYER_INTERVAL, BALL_INTERVAL} from '/imports/api/games/emissionConstants.js';
-import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
 import GameBonus from '/imports/api/games/client/bonus/GameBonus.js';
 
 export default class Game {
 	/**
 	 * @param {string} gameId
-	 * @param {PhaserEngine} engine
+	 * @param {DeviceController} deviceController
+	 * @param {Engine} engine
 	 * @param {GameData} gameData
 	 * @param {GameConfiguration} gameConfiguration
 	 * @param {GameSkin} gameSkin
@@ -40,6 +40,7 @@ export default class Game {
 	 */
 	constructor(
 		gameId,
+		deviceController,
 		engine,
 		gameData,
 		gameConfiguration,
@@ -48,6 +49,7 @@ export default class Game {
 		serverNormalizedTime
 	) {
 		this.gameId = gameId;
+		this.deviceController = deviceController;
 		this.engine = engine;
 		this.gameData = gameData;
 		this.gameConfiguration = gameConfiguration;
@@ -65,6 +67,13 @@ export default class Game {
 		this.gameInitiated = false;
 		this.gameStreamBundler.resetBundledStreams();
 
+		this.initInternal();
+	}
+
+	/**
+	 * @private
+	 */
+	initInternal() {
 		this.gameBonus = new GameBonus(
 			this,
 			this.engine,
@@ -72,6 +81,20 @@ export default class Game {
 			this.gameConfiguration,
 			this.gameStreamBundler,
 			this.serverNormalizedTime
+		);
+		this.levelComponents = new LevelComponents(
+			this,
+			this.gameBonus,
+			this.gameSkin,
+			this.engine,
+			{width: this.xSize, height: this.ySize, groundHeight: this.groundHeight}
+		);
+		this.collisions = new Collisions(
+			this,
+			this.gameBonus,
+			this.gameSkin,
+			this.gameConfiguration,
+			this.engine
 		);
 	}
 
@@ -117,9 +140,14 @@ export default class Game {
 
 	start() {
 		this.engine.start(
-			this.xSize, this.ySize, 'gameContainer',
-			this.preloadGame, this.createGame, this.updateGame,
-			this
+			{
+				width: this.xSize,
+				height: this.ySize,
+				gravity: this.gameConfiguration.worldGravity(),
+				bonusRadius: this.gameConfiguration.bonusRadius(),
+				renderTo: 'gameContainer'
+			},
+			this.preloadGame, this.createGame, this.updateGame, this
 		);
 	}
 
@@ -131,20 +159,16 @@ export default class Game {
 	}
 
 	stop() {
+		this.deviceController.stopMonitoring();
 		this.engine.stop();
 	}
 
 	onGameEnd() {
 		if (!this.gameHasEnded) {
-			this.initPlayerTexture(this.player1);
-			this.initPlayerPolygon(this.player1);
-			this.setupPlayerBody(this.player1);
+			this.reinitPlayer(this.player1);
+			this.reinitPlayer(this.player2);
 
-			this.initPlayerTexture(this.player2);
-			this.initPlayerPolygon(this.player2);
-			this.setupPlayerBody(this.player2);
-
-			this.engine.onGameEnd();
+			this.deviceController.stopMonitoring();
 			Session.set('userCurrentlyPlaying', false);
 			this.gameHasEnded = true;
 		}
@@ -152,16 +176,7 @@ export default class Game {
 
 	preloadGame() {
 		this.gameSkin.preload(this.engine);
-		this.gameBonus.preload();
-		this.loadLevelComponents();
-	}
-
-	loadLevelComponents() {
-		for (let shape of PLAYER_LIST_OF_SHAPES) {
-			this.engine.loadImage('shape-' + shape, '/assets/component/shape/player-' + shape + '.png');
-		}
-
-		this.engine.loadData(NORMAL_SCALE_PHYSICS_DATA, '/assets/component/shape/physicsData.json');
+		this.levelComponents.preload();
 	}
 
 	createGame() {
@@ -169,6 +184,7 @@ export default class Game {
 		this.createComponents();
 		this.gameBonus.createComponents();
 
+		this.deviceController.startMonitoring();
 		this.engine.createGame();
 
 		if (this.getCurrentPlayer()) {
@@ -184,7 +200,7 @@ export default class Game {
 		let initialXLocation = PLAYER_INITIAL_LOCATION;
 		const initialYLocation = this.ySize - this.groundHeight - (PLAYER_HEIGHT / 2);
 
-		this.createCollisionGroupsAndMaterials();
+		this.collisions.init();
 
 		/**
 		 * Player 1
@@ -195,7 +211,7 @@ export default class Game {
 			'shape-' + this.gameData.getPlayerShapeFromKey('player1')
 		);
 		this.player1.data.key = 'player1';
-		this.initPlayer(this.player1, initialXLocation, initialYLocation, this.hostPlayerCollisionGroup);
+		this.initPlayer(this.player1, initialXLocation, initialYLocation, this.collisions.hostPlayerCollisionGroup);
 
 		/**
 		 * Player 2
@@ -207,11 +223,11 @@ export default class Game {
 			'shape-' + this.gameData.getPlayerShapeFromKey('player2')
 		);
 		this.player2.data.key = 'player2';
-		this.initPlayer(this.player2, initialXLocation, initialYLocation, this.clientPlayerCollisionGroup);
+		this.initPlayer(this.player2, initialXLocation, initialYLocation, this.collisions.clientPlayerCollisionGroup);
 
 		this.createBall(PLAYER_INITIAL_LOCATION, this.ySize - this.groundHeight - BALL_DISTANCE_FROM_GROUND);
 
-		this.createLevelComponents();
+		this.levelComponents.createLevelComponents();
 
 		this.createCountdownText();
 	}
@@ -236,66 +252,6 @@ export default class Game {
 		}
 	}
 
-	createCollisionGroupsAndMaterials() {
-		this.hostPlayerCollisionGroup = this.engine.createCollisionGroup();
-		this.clientPlayerCollisionGroup = this.engine.createCollisionGroup();
-		this.ballCollisionGroup = this.engine.createCollisionGroup();
-		this.hostPlayerDelimiterCollisionGroup = this.engine.createCollisionGroup();
-		this.clientPlayerDelimiterCollisionGroup = this.engine.createCollisionGroup();
-		this.netHitDelimiterCollisionGroup = this.engine.createCollisionGroup();
-		this.groundHitDelimiterCollisionGroup = this.engine.createCollisionGroup();
-
-		this.playerMaterial = this.engine.createMaterial('player');
-		this.ballMaterial = this.engine.createMaterial('ball');
-		this.playerDelimiterMaterial = this.engine.createMaterial('netPlayerDelimiter');
-		this.netDelimiterMaterial = this.engine.createMaterial('netDelimiter');
-		this.groundDelimiterMaterial = this.engine.createMaterial('groundDelimiter');
-
-		this.engine.initWorldContactMaterial();
-
-		this.createContactMaterialWithWorld(this.ballMaterial, {restitution: this.gameConfiguration.worldRestitution()});
-		this.createContactMaterialWithGroundDelimiter(this.ballMaterial, {restitution: 1});
-
-		this.createContactMaterialWithWorld(this.playerMaterial, {stiffness: 1e20, relaxation: 3, friction: 0});
-		this.createContactMaterialWithGroundDelimiter(this.playerMaterial, {stiffness: 1e20, relaxation: 3, friction: 0});
-		this.engine.createContactMaterial(this.playerMaterial, this.playerDelimiterMaterial, {stiffness: 1e20, relaxation: 3, friction: 0});
-		this.engine.createContactMaterial(this.playerMaterial, this.playerMaterial, {stiffness: 1e20, relaxation: 3, friction: 0});
-
-		this.gameBonus.createCollisionGroupsAndMaterials();
-	}
-
-	createContactMaterialWithWorld(material, config) {
-		this.engine.createWorldContactMaterial(material, config);
-	}
-
-	createContactMaterialWithNetDelimiter(material, config) {
-		this.engine.createContactMaterial(material, this.netDelimiterMaterial, config);
-	}
-
-	createContactMaterialWithGroundDelimiter(material, config) {
-		this.engine.createContactMaterial(material, this.groundDelimiterMaterial, config);
-	}
-
-	collidesWithNetHitDelimiter(sprite, callback, scope) {
-		this.engine.collidesWith(sprite, this.netHitDelimiterCollisionGroup, callback, scope);
-	}
-
-	collidesWithGroundHitDelimiter(sprite, callback, scope) {
-		this.engine.collidesWith(sprite, this.groundHitDelimiterCollisionGroup, callback, scope);
-	}
-
-	collidesWithHostPlayer(sprite, callback, scope) {
-		this.engine.collidesWith(sprite, this.hostPlayerCollisionGroup, callback, scope);
-	}
-
-	collidesWithClientPlayer(sprite, callback, scope) {
-		this.engine.collidesWith(sprite, this.clientPlayerCollisionGroup, callback, scope);
-	}
-
-	collidesWithBall(sprite, callback, scope) {
-		this.engine.collidesWith(sprite, this.ballCollisionGroup, callback, scope);
-	}
-
 	initPlayer(player, initialXLocation, initialYLocation, playerCollisionGroup) {
 		player.data.initialXLocation = initialXLocation;
 		player.data.initialYLocation = initialYLocation;
@@ -307,19 +263,24 @@ export default class Game {
 		player.data.velocityYOnJump = PLAYER_VELOCITY_Y_ON_JUMP;
 		player.data.doingDropShot = false;
 		player.data.playerCollisionGroup = playerCollisionGroup;
-		//These are related to bonus but managed in this class
+		//Bonus
 		player.data.moveModifier = () => {return 1;};
 		player.data.isMoveReversed = false;
 		player.data.isFrozen = false;
 		player.data.canJump = true;
 		player.data.alwaysJump = false;
 		player.data.canJumpOnBodies = [];
-
-		this.gameBonus.initPlayerProperties(player);
+		player.data.isInvincible = false;
 
 		this.initPlayerTexture(player);
 		this.initPlayerPolygon(player);
 		this.applyPlayerPolygon(player);
+	}
+
+	reinitPlayer(player) {
+		this.initPlayerTexture(player);
+		this.initPlayerPolygon(player);
+		this.setupPlayerBody(player);
 	}
 
 	initPlayerTexture(player) {
@@ -359,19 +320,7 @@ export default class Game {
 			this.engine.setGravity(player, player.data.currentGravity);
 		}
 
-		this.engine.setMaterial(player, this.playerMaterial);
-		this.engine.setCollisionGroup(player, player.data.playerCollisionGroup);
-		this.collidesWithGroundHitDelimiter(player);
-
-		if (player.data.playerCollisionGroup === this.hostPlayerCollisionGroup) {
-			this.collidesWithHostPlayer(player);
-			this.engine.collidesWith(player, this.hostPlayerDelimiterCollisionGroup);
-		} else if (player.data.playerCollisionGroup === this.clientPlayerCollisionGroup) {
-			this.collidesWithClientPlayer(player);
-			this.engine.collidesWith(player, this.clientPlayerDelimiterCollisionGroup);
-		}
-		this.collidesWithBall(player);
-		this.gameBonus.collidesWithBonus(player);
+		this.collisions.setupPlayerBody(player);
 	}
 
 	createBall(initialXLocation, initialYLocation) {
@@ -400,41 +349,7 @@ export default class Game {
 			this.engine.setGravity(this.ball, this.ball.data.currentGravity);
 		}
 
-		this.engine.setMaterial(this.ball, this.ballMaterial);
-		this.engine.setCollisionGroup(this.ball, this.ballCollisionGroup);
-
-		this.collidesWithHostPlayer(this.ball, this.hitBall, this);
-		this.collidesWithClientPlayer(this.ball, this.hitBall, this);
-		this.collidesWithNetHitDelimiter(this.ball);
-		this.collidesWithGroundHitDelimiter(this.ball, this.hitGround, this);
-		this.gameBonus.collidesWithBonus(this.ball);
-	}
-
-	createLevelComponents() {
-		this.groundGroup = this.engine.addGroup(false);
-
-		this.createGroundLevelComponents();
-		this.createNetLevelComponents();
-		this.createBounds();
-	}
-
-	createGroundLevelComponents() {
-		this.gameSkin.createGroundComponents(
-			this.engine,
-			this.xSize,
-			this.ySize,
-			this.groundHeight,
-			this.groundGroup
-		);
-	}
-
-	createNetLevelComponents() {
-		this.gameSkin.createNetComponent(
-			this.engine,
-			(this.xSize / 2) - (GAME_NET_THICKNESS / 2),
-			this.ySize - this.groundHeight - GAME_NET_HEIGHT,
-			this.groundGroup
-		);
+		this.collisions.setupBallBody(this.ball, this.hitBall, this.hitGround, this);
 	}
 
 	resumeOnTimerEnd() {
@@ -448,66 +363,6 @@ export default class Game {
 			this.gameBonus.resumeGame();
 			this.startCountdownTimer();
 		}
-	}
-
-	createBounds() {
-		//Host limits
-		this.engine.addBound(
-			(this.xSize / 4) * 3 - (GAME_NET_THICKNESS / 4),
-			(this.ySize / 2),
-			(this.xSize / 2) + (GAME_NET_THICKNESS / 2),
-			this.ySize,
-			this.playerDelimiterMaterial,
-			this.hostPlayerDelimiterCollisionGroup,
-			[this.hostPlayerCollisionGroup]
-		);
-
-		//Client limits
-		this.engine.addBound(
-			(this.xSize / 4) + (GAME_NET_THICKNESS / 4),
-			(this.ySize / 2),
-			(this.xSize / 2) + (GAME_NET_THICKNESS / 2),
-			this.ySize,
-			this.playerDelimiterMaterial,
-			this.clientPlayerDelimiterCollisionGroup,
-			[this.clientPlayerCollisionGroup]
-		);
-
-		//Ground limits
-		const bound = this.createGroundBound();
-		this.addPlayerCanJumpOnBody(this.player1, bound);
-		this.addPlayerCanJumpOnBody(this.player2, bound);
-
-		//Net limit
-		this.engine.addBound(
-			this.xSize / 2,
-			this.ySize - (this.groundHeight + GAME_NET_HEIGHT) / 2,
-			GAME_NET_THICKNESS,
-			this.groundHeight + GAME_NET_HEIGHT,
-			this.netDelimiterMaterial,
-			this.netHitDelimiterCollisionGroup,
-			[
-				this.ballCollisionGroup,
-				this.gameBonus.bonusCollisionGroup
-			]
-		);
-	}
-
-	createGroundBound() {
-		return this.engine.addBound(
-			this.xSize / 2,
-			this.ySize - (this.groundHeight / 2),
-			this.xSize,
-			this.groundHeight,
-			this.groundDelimiterMaterial,
-			this.groundHitDelimiterCollisionGroup,
-			[
-				this.hostPlayerCollisionGroup,
-				this.clientPlayerCollisionGroup,
-				this.ballCollisionGroup,
-				this.gameBonus.bonusCollisionGroup
-			]
-		);
 	}
 
 	startCountdownTimer() {
@@ -713,7 +568,7 @@ export default class Game {
 		);
 	}
 
-	isPlayerDoingDropShot(ball, player, playerKey) {
+	isPlayerDoingDropShot(ball, player) {
 		return (
 			player.data.doingDropShot && !this.engine.hasSurfaceTouchingPlayerBottom(player)
 		);
@@ -725,10 +580,7 @@ export default class Game {
 
 	smashBallOnPlayerHit(ball, playerKey) {
 		//Ball direction should change if smashed the opposite way
-		if (
-			(playerKey === 'player1' && this.engine.getHorizontalSpeed(ball) < 0) ||
-			(playerKey === 'player2' && this.engine.getHorizontalSpeed(ball) > 0)
-		) {
+		if (this.ballMovingTowardsPlayer(ball, playerKey)) {
 			this.engine.setHorizontalSpeed(ball, -this.engine.getHorizontalSpeed(ball));
 		}
 
@@ -742,6 +594,13 @@ export default class Game {
 		}
 	}
 
+	ballMovingTowardsPlayer(ball, playerKey) {
+		return (
+			(playerKey === 'player1' && this.engine.getHorizontalSpeed(ball) < 0) ||
+			(playerKey === 'player2' && this.engine.getHorizontalSpeed(ball) > 0)
+		);
+	}
+
 	reboundBallOnPlayerHit(ball) {
 		this.engine.setVerticalSpeed(ball, BALL_VERTICAL_SPEED_ON_PLAYER_HIT);
 	}
@@ -750,7 +609,8 @@ export default class Game {
 		return (
 			this.gameResumed === true &&
 			this.gameData.isUserHost() &&
-			!this.gameBonus.isPlayerInvincible(this.getPlayerFromKey(playerKey))
+			this.getPlayerFromKey(playerKey) &&
+			!this.getPlayerFromKey(playerKey).data.isInvincible
 		);
 	}
 
@@ -838,19 +698,19 @@ export default class Game {
 	}
 
 	isLeftKeyDown() {
-		return this.engine.isLeftKeyDown();
+		return this.deviceController.leftPressed();
 	}
 
 	isRightKeyDown() {
-		return this.engine.isRightKeyDown();
+		return this.deviceController.rightPressed();
 	}
 
 	isUpKeyDown() {
-		return this.engine.isUpKeyDown();
+		return this.deviceController.upPressed();
 	}
 
 	isDropShotKeyDown() {
-		return this.engine.isDownKeyDown();
+		return this.deviceController.downPressed();
 	}
 
 	gameIsOnGoing() {
@@ -940,18 +800,10 @@ export default class Game {
 	}
 
 	showBallHitPoint(x, y, diameter) {
-		this.engine.activateAnimation(
-			this.engine.drawCircle(
-				x,
-				y,
-				{color: 0xffffff, width: 2},
-				null,
-				diameter
-			)
-		);
+		this.engine.showBallHitPoint(x, y, diameter);
 	}
 
 	shakeLevel() {
-		this.engine.shake(this.groundGroup, 5, 20);
+		this.levelComponents.shake();
 	}
 };

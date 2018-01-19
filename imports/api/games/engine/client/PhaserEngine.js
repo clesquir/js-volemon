@@ -13,23 +13,24 @@ import {
 import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
 
 export default class PhaserEngine extends Engine {
-	start(width, height, parent, preloadGame, createGame, updateGame, scope) {
+	start(worldConfiguration, preloadGame, createGame, updateGame, scope) {
 		//Create loading mask
 		Session.set('gameLoadingMask', true);
+		this.bonusRadius = worldConfiguration.bonusRadius;
 
 		this.game = new Phaser.Game({
-			width: width,
-			height: height,
+			width: worldConfiguration.width,
+			height: worldConfiguration.height,
 			renderer: Phaser.AUTO,
 			enableDebug: false,
-			parent: parent
+			parent: worldConfiguration.renderTo
 		});
 
 		this.game.state.add('boot', {
 			create: () => {
 				this.game.physics.startSystem(Phaser.Physics.P2JS);
 				this.game.physics.p2.setImpactEvents(true);
-				this.game.physics.p2.gravity.y = this.gameConfiguration.worldGravity();
+				this.game.physics.p2.gravity.y = worldConfiguration.gravity;
 				this.game.physics.p2.world.defaultContactMaterial.friction = 0;
 				this.game.physics.p2.world.setGlobalStiffness(1e10);
 				this.game.physics.p2.restitution = 0;
@@ -69,18 +70,12 @@ export default class PhaserEngine extends Engine {
 	}
 
 	stop() {
-		this.deviceController.stopMonitoring();
 		this.game.state.destroy();
 		this.game.destroy();
 	}
 
-	onGameEnd() {
-		this.deviceController.stopMonitoring();
-	}
-
 	createGame() {
 		this.setupScaling();
-		this.deviceController.startMonitoring();
 
 		//Hide loading mask
 		Session.set('gameLoadingMask');
@@ -238,15 +233,15 @@ export default class PhaserEngine extends Engine {
 	/**
 	 * @param x
 	 * @param y
-	 * @param lineConfig
+	 * @param {null} lineConfig
 	 * @param lineConfig.width
 	 * @param lineConfig.color
-	 * @param fillConfig
+	 * @param {null} fillConfig
 	 * @param fillConfig.color
 	 * @param diameter
 	 * @returns {*}
 	 */
-	drawCircle(x, y, lineConfig, fillConfig, diameter) {
+	drawCircle(x, y, lineConfig = null, fillConfig = null, diameter) {
 		const circle = this.addGraphics(x, y);
 
 		if (lineConfig !== null) {
@@ -285,22 +280,6 @@ export default class PhaserEngine extends Engine {
 		return this.game.physics.p2.createMaterial(material);
 	}
 
-	isLeftKeyDown() {
-		return this.deviceController.leftPressed();
-	}
-
-	isRightKeyDown() {
-		return this.deviceController.rightPressed();
-	}
-
-	isUpKeyDown() {
-		return this.deviceController.upPressed();
-	}
-
-	isDownKeyDown() {
-		return this.deviceController.downPressed();
-	}
-
 	getCenterX() {
 		return this.game.world.centerX;
 	}
@@ -325,6 +304,10 @@ export default class PhaserEngine extends Engine {
 		return spriteBody.sprite.data.key;
 	}
 
+	/**
+	 * @param sprite
+	 * @returns {{x: number, y: number, velocityX: number, velocityY: number}}
+	 */
 	getPositionData(sprite) {
 		const body = sprite.body;
 
@@ -599,6 +582,20 @@ export default class PhaserEngine extends Engine {
 		this.game.add.tween(sprite).to({alpha: opacityTo}, duration).start();
 	}
 
+	/**
+	 * @param sprite
+	 * @param {{frame: {string}, frames: {string}[], speed: {int}}} animation
+	 */
+	playAnimation(sprite, animation) {
+		sprite.animations.add(
+			animation.frame,
+			animation.frames,
+			animation.speed,
+			true
+		);
+		sprite.animations.play(animation.frame);
+	}
+
 	scale(sprite, x, y) {
 		sprite.scale.setTo(x, y);
 	}
@@ -681,7 +678,7 @@ export default class PhaserEngine extends Engine {
 	updateBonusProgressComponent(bonusSprite, progress) {
 		const minProgress = 0.00001;
 		const maxProgress = 0.99999;
-		const radius = this.gameConfiguration.bonusRadius() - 1;
+		const radius = this.bonusRadius - 1;
 		progress = Phaser.Math.clamp(progress, minProgress, maxProgress);
 
 		let color = '#000000';
@@ -737,7 +734,7 @@ export default class PhaserEngine extends Engine {
 		bonusZIndexGroup.sort('createdAt', Phaser.Group.SORT_ASCENDING);
 	}
 
-	addBonus(x, bonusGravityScale, bonusMaterial, bonusCollisionGroup, bonus, bonusZIndexGroup) {
+	addBonus(x, bonusGravityScale, bonus, bonusZIndexGroup) {
 		const bonusSprite = this.getBonusSprite(x, 0, bonus, bonusZIndexGroup);
 
 		bonusSprite.createdAt = 0;
@@ -749,10 +746,20 @@ export default class PhaserEngine extends Engine {
 		this.setFixedRotation(bonusSprite, false);
 		this.setGravity(bonusSprite, bonusSprite.data.currentGravity);
 		this.setDamping(bonusSprite, 0);
-		this.setMaterial(bonusSprite, bonusMaterial);
-		this.setCollisionGroup(bonusSprite, bonusCollisionGroup);
 
 		return bonusSprite;
+	}
+
+	showBallHitPoint(x, y, diameter) {
+		this.activateAnimation(
+			this.drawCircle(
+				x,
+				y,
+				{color: 0xffffff, width: 2},
+				null,
+				diameter
+			)
+		);
 	}
 
 	activateAnimationBonus(x, y, bonus) {
@@ -768,7 +775,7 @@ export default class PhaserEngine extends Engine {
 		const bonusSprite = this.addGroupedSprite(x, y, null, bonusGroup);
 
 		bonusSprite.body.clearShapes();
-		bonusSprite.body.addCircle(this.gameConfiguration.bonusRadius());
+		bonusSprite.body.addCircle(this.bonusRadius);
 		const sprite = this.addSprite(
 			0,
 			0,

@@ -78,7 +78,7 @@ const initGame = function(gameId) {
 	}
 	deviceController.init();
 
-	const engine = new PhaserEngine(gameConfiguration, deviceController);
+	const engine = new PhaserEngine();
 	const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
 	const gameSkin = new GameSkin(
 		SkinFactory.fromId(userConfiguration ? userConfiguration.skinId : null),
@@ -93,6 +93,7 @@ const initGame = function(gameId) {
 		gameData,
 		gameConfiguration,
 		gameSkin,
+		deviceController,
 		engine,
 		new GameNotifier(),
 		serverNormalizedTime

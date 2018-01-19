@@ -20,11 +20,12 @@ export default class Shape {
 	start() {
 		const gameId = Random.id(5);
 		const gameConfiguration = new StaticGameConfiguration(gameId);
-		const desktopController = new DesktopController(CustomKeymaps.defaultKeymaps());
-		desktopController.init();
-		const engine = new PhaserEngine(gameConfiguration, desktopController);
+		this.deviceController = new DesktopController(CustomKeymaps.defaultKeymaps());
+		this.deviceController.init();
+		const engine = new PhaserEngine();
 		this.game = new Game(
 			gameId,
+			this.deviceController,
 			engine,
 			new GameData(gameId),
 			gameConfiguration,
@@ -33,15 +34,22 @@ export default class Shape {
 			new ServerNormalizedTime()
 		);
 		this.game.xSize = 1450;
+		this.game.initInternal();
 		this.game.engine.start(
-			this.game.xSize, this.game.ySize, 'shapeGameContainer',
-			this.preloadGame, this.createGame, this.updateGame,
-			this
+			{
+				width: this.game.xSize,
+				height: this.game.ySize,
+				gravity: gameConfiguration.worldGravity(),
+				bonusRadius: gameConfiguration.bonusRadius(),
+				renderTo: 'shapeGameContainer'
+			},
+			this.preloadGame, this.createGame, this.updateGame, this
 		);
 	}
 
 	stop() {
 		if (this.game) {
+			this.deviceController.stopMonitoring();
 			this.game.engine.stop();
 		}
 	}
@@ -53,9 +61,10 @@ export default class Shape {
 	createGame() {
 		this.overrideGame();
 
+		this.deviceController.startMonitoring();
 		this.game.engine.createGame();
 
-		this.game.createCollisionGroupsAndMaterials();
+		this.game.collisions.init();
 
 		let xPosition = PLAYER_WIDTH / 2;
 		const yPosition = this.game.ySize - this.game.groundHeight - (PLAYER_HEIGHT / 2);
@@ -71,7 +80,7 @@ export default class Shape {
 			this.game['player' + playerIndex] = this.game.engine.addSprite(xPosition, yPosition, 'shape-' + PLAYER_LIST_OF_SHAPES[i]);
 			this.game['player' + playerIndex].data.key = 'player' + playerIndex;
 			this.game['player' + playerIndex].data.shape = PLAYER_LIST_OF_SHAPES[i];
-			this.game.initPlayer(this.game['player' + playerIndex], xPosition, yPosition, this.game.hostPlayerCollisionGroup);
+			this.game.initPlayer(this.game['player' + playerIndex], xPosition, yPosition, this.game.collisions.hostPlayerCollisionGroup);
 
 			xPosition += PLAYER_WIDTH + 5;
 		}
@@ -103,8 +112,8 @@ export default class Shape {
 
 	createLevelComponents() {
 		this.game.groundGroup = this.game.engine.addGroup(false);
-		this.game.createGroundLevelComponents();
-		const ground = this.game.createGroundBound();
+		this.game.levelComponents.createGround();
+		const ground = this.game.levelComponents.createGroundBound();
 		this.game.addPlayerCanJumpOnBody(this.game.player1, ground);
 	}
 
