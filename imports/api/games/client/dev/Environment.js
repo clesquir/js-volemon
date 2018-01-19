@@ -22,12 +22,13 @@ export default class Environment {
 		this.gameData = new GameData(gameId);
 		this.gameConfiguration = new StaticGameConfiguration(gameId);
 		this.gameStreamBundler = new GameStreamBundler(null);
-		const desktopController = new DesktopController(CustomKeymaps.defaultKeymaps());
-		desktopController.init();
-		this.gameEngine = new PhaserEngine(this.gameConfiguration, desktopController);
+		this.deviceController = new DesktopController(CustomKeymaps.defaultKeymaps());
+		this.deviceController.init();
+		this.gameEngine = new PhaserEngine();
 		this.serverNormalizedTime = new ServerNormalizedTime();
 		this.game = new Game(
 			gameId,
+			this.deviceController,
 			this.gameEngine,
 			this.gameData,
 			this.gameConfiguration,
@@ -37,14 +38,20 @@ export default class Environment {
 		);
 		this.gameBonus = this.game.gameBonus;
 		this.game.engine.start(
-			this.game.xSize, this.game.ySize, 'environmentGameContainer',
-			this.preloadGame, this.createGame, this.updateGame,
-			this
+			{
+				width: this.game.xSize,
+				height: this.game.ySize,
+				gravity: this.gameConfiguration.worldGravity(),
+				bonusRadius: this.gameConfiguration.bonusRadius(),
+				renderTo: 'environmentGameContainer'
+			},
+			this.preloadGame, this.createGame, this.updateGame, this
 		);
 	}
 
 	stop() {
 		if (this.game) {
+			this.deviceController.stopMonitoring();
 			this.gameEngine.stop();
 		}
 	}
@@ -59,6 +66,7 @@ export default class Environment {
 		this.createComponents();
 		this.gameBonus.createComponents();
 
+		this.deviceController.startMonitoring();
 		this.gameEngine.createGame();
 
 		this.game.gameInitiated = true;
@@ -72,7 +80,7 @@ export default class Environment {
 	}
 
 	createComponents() {
-		this.game.createCollisionGroupsAndMaterials();
+		this.game.collisions.init();
 
 		this.playerShape = PLAYER_DEFAULT_SHAPE;
 		let xPosition = PLAYER_INITIAL_LOCATION;
@@ -80,12 +88,12 @@ export default class Environment {
 
 		this.game.player1 = this.gameEngine.addSprite(xPosition, yPosition, 'shape-' + this.playerShape);
 		this.game.player1.data.key = 'player1';
-		this.game.initPlayer(this.game.player1, xPosition, yPosition, this.game.hostPlayerCollisionGroup);
+		this.game.initPlayer(this.game.player1, xPosition, yPosition, this.game.collisions.hostPlayerCollisionGroup);
 
 		xPosition = this.game.xSize - PLAYER_INITIAL_LOCATION;
 		this.game.player2 = this.gameEngine.addSprite(xPosition, yPosition, 'shape-' + this.playerShape);
 		this.game.player2.data.key = 'player2';
-		this.game.initPlayer(this.game.player2, xPosition, yPosition, this.game.hostPlayerCollisionGroup);
+		this.game.initPlayer(this.game.player2, xPosition, yPosition, this.game.collisions.hostPlayerCollisionGroup);
 
 		this.game.createBall(100, 100);
 
@@ -138,8 +146,8 @@ export default class Environment {
 
 	createLevelComponents() {
 		this.game.groundGroup = this.game.engine.addGroup(false);
-		this.game.createGroundLevelComponents();
-		const ground = this.game.createGroundBound();
+		this.game.levelComponents.createGround();
+		const ground = this.game.levelComponents.createGroundBound();
 		this.game.addPlayerCanJumpOnBody(this.game.player1, ground);
 		this.game.addPlayerCanJumpOnBody(this.game.player2, ground);
 	}
@@ -168,7 +176,7 @@ export default class Environment {
 		this.game.removePlayerCanJumpOnBody(this.game.player1, this.game.player2.body);
 	}
 
-	hitGround(ball) {
+	hitGround() {
 		if (this.groundHitEnabled && this.gameResumed === true) {
 			this.gameResumed = false;
 

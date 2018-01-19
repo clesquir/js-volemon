@@ -23,7 +23,7 @@ import {getRandomInt} from '/imports/lib/utils.js';
 export default class GameBonus {
 	/**
 	 * @param {Game} game
-	 * @param {PhaserEngine} engine
+	 * @param {Engine} engine
 	 * @param {GameData} gameData
 	 * @param {GameConfiguration} gameConfiguration
 	 * @param {GameStreamBundler} gameStreamBundler
@@ -87,36 +87,9 @@ export default class GameBonus {
 		return null;
 	}
 
-	preload() {
-		this.engine.loadAtlasJSONHash('bonus-icon', '/assets/bonus/texture-atlas-icons.png', '/assets/bonus/texture-atlas-icons.json');
-		this.engine.loadAtlasJSONHash('bonus-cloud', '/assets/bonus/texture-atlas-cloud.png', '/assets/bonus/texture-atlas-cloud.json');
-		this.engine.loadImage('shape-hidden', '/assets/component/shape/player-hidden.png');
-	}
-
-	createCollisionGroupsAndMaterials() {
-		this.bonusCollisionGroup = this.engine.createCollisionGroup();
-		this.bonusMaterial = this.engine.createMaterial('bonus');
-
-		this.game.createContactMaterialWithWorld(this.bonusMaterial, {restitution: this.gameConfiguration.worldRestitution()});
-		this.game.createContactMaterialWithNetDelimiter(this.bonusMaterial, {restitution: 0.7});
-		this.game.createContactMaterialWithGroundDelimiter(this.bonusMaterial, {restitution: 1});
-	}
-
 	createComponents() {
 		this.bonusZIndexGroup = this.engine.addGroup();
 		this.bonusesGroup = this.engine.addGroup();
-	}
-
-	collidesWithBonus(sprite, callback, scope) {
-		this.engine.collidesWith(sprite, this.bonusCollisionGroup, callback, scope);
-	}
-
-	initPlayerProperties(player) {
-		player.data.isInvincible = false;
-	}
-
-	isPlayerInvincible(player) {
-		return player.data.isInvincible;
 	}
 
 	resumeGame() {
@@ -576,13 +549,14 @@ export default class GameBonus {
 			true,
 			this.bonusZIndexGroup
 		);
-		cloud.animations.add(
-			'cloud-01',
-			['cloud-01', 'cloud-02', 'cloud-03', 'cloud-04', 'cloud-05', 'cloud-04', 'cloud-03', 'cloud-02'],
-			5,
-			true
+		this.engine.playAnimation(
+			cloud,
+			{
+				frame: 'cloud-01',
+				frames: ['cloud-01', 'cloud-02', 'cloud-03', 'cloud-04', 'cloud-05', 'cloud-04', 'cloud-03', 'cloud-02'],
+				speed: 5
+			}
 		);
-		cloud.animations.play('cloud-01');
 		cloud.createdAt = (new Date()).getTime();
 		this.engine.sortBonusGroup(this.bonusZIndexGroup);
 		cloud.opacity = layer.opacity;
@@ -677,8 +651,6 @@ export default class GameBonus {
 		const bonusSprite = this.engine.addBonus(
 			data.initialX,
 			BONUS_GRAVITY_SCALE,
-			this.bonusMaterial,
-			this.bonusCollisionGroup,
 			bonus,
 			this.bonusZIndexGroup
 		);
@@ -688,16 +660,7 @@ export default class GameBonus {
 
 		this.bonuses.push(bonusSprite);
 
-		this.game.collidesWithHostPlayer(bonusSprite, (bonusItem, player) => {
-			this.onBonusCollidesPlayer(bonusSprite, player);
-		}, this);
-		this.game.collidesWithClientPlayer(bonusSprite, (bonusItem, player) => {
-			this.onBonusCollidesPlayer(bonusSprite, player);
-		}, this);
-		this.game.collidesWithNetHitDelimiter(bonusSprite);
-		this.game.collidesWithGroundHitDelimiter(bonusSprite);
-		this.game.collidesWithBall(bonusSprite);
-		this.engine.collidesWith(bonusSprite, this.bonusCollisionGroup);
+		this.game.collisions.setupBonusBody(bonusSprite, this.onBonusCollidesPlayer, this);
 
 		return bonusSprite;
 	}

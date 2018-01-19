@@ -84,29 +84,23 @@ export default class GameSkin {
 				true
 			);
 			if (backgroundComponent.animation) {
-				background.animations.add(
-					backgroundComponent.animation.frame,
-					backgroundComponent.animation.frames,
-					backgroundComponent.animation.speed,
-					true
-				);
-				background.animations.play(backgroundComponent.animation.frame);
+				engine.playAnimation(background, backgroundComponent.animation);
 			}
 		}
 	}
 
+	/**
+	 * @param {Engine} engine
+	 * @param initialXLocation
+	 * @param initialYLocation
+	 * @returns {*}
+	 */
 	createBallComponent(engine, initialXLocation, initialYLocation) {
 		const ballComponent = this.skin.ballComponent();
 		const sprite = engine.addSprite(initialXLocation, initialYLocation, ballComponent.key, false, ballComponent.frame);
 
 		if (ballComponent.animation) {
-			sprite.animations.add(
-				ballComponent.animation.frame,
-				ballComponent.animation.frames,
-				ballComponent.animation.speed,
-				true
-			);
-			sprite.animations.play(ballComponent.animation.frame);
+			engine.playAnimation(sprite, ballComponent.animation);
 		}
 
 		return sprite;

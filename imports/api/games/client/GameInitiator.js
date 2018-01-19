@@ -16,6 +16,7 @@ export default class GameInitiator {
 	 * @param {GameData} gameData
 	 * @param {GameConfiguration} gameConfiguration
 	 * @param {GameSkin} gameSkin
+	 * @param {DeviceController} deviceController
 	 * @param {Engine} engine
 	 * @param {GameNotifier} gameNotifier
 	 * @param {ServerNormalizedTime} serverNormalizedTime
@@ -26,6 +27,7 @@ export default class GameInitiator {
 		gameData,
 		gameConfiguration,
 		gameSkin,
+		deviceController,
 		engine,
 		gameNotifier,
 		serverNormalizedTime
@@ -35,6 +37,7 @@ export default class GameInitiator {
 		this.gameData = gameData;
 		this.gameConfiguration = gameConfiguration;
 		this.gameSkin = gameSkin;
+		this.deviceController = deviceController;
 		this.engine = engine;
 		this.gameNotifier = gameNotifier;
 		this.serverNormalizedTime = serverNormalizedTime;
@@ -151,6 +154,7 @@ export default class GameInitiator {
 		this.gameData.init();
 		this.currentGame = new Game(
 			this.gameId,
+			this.deviceController,
 			this.engine,
 			this.gameData,
 			this.gameConfiguration,

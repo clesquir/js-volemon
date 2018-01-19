@@ -9,20 +9,21 @@ import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
 import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
 import StaticGameConfiguration from '/imports/api/games/configuration/StaticGameConfiguration.js';
-import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
+import NullEngine from '/imports/api/games/engine/client/NullEngine.js';
 import DefaultSkin from '/imports/api/skins/skins/DefaultSkin.js';
 import NullStream from '/imports/lib/stream/NullStream.js';
 
 describe('ShapeShiftMonsterBonus', function() {
 	const gameConfiguration = new StaticGameConfiguration();
-	const engine = new PhaserEngine(gameConfiguration, new NullDeviceController());
+	const deviceController = new NullDeviceController();
+	const engine = new NullEngine();
 	const gameSkin = new GameSkin(new DefaultSkin());
 	const streamBundler = new GameStreamBundler(new NullStream());
 	const serverNormalizedTime = new ServerNormalizedTime();
 
 	it('activates a shape different that the initial one', function() {
 		const gameData = new GameData();
-		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, gameSkin, streamBundler, serverNormalizedTime);
+		const game = new Game(Random.id(5), deviceController, engine, gameData, gameConfiguration, gameSkin, streamBundler, serverNormalizedTime);
 		gameData.listOfShapes = ['a', 'b'];
 		game.player1 = {data: {}};
 		game.player1.data.initialPolygonObject = 'player-a';
@@ -38,7 +39,7 @@ describe('ShapeShiftMonsterBonus', function() {
 
 	it('activates a shape different that the current one and the initial one', function() {
 		const gameData = new GameData();
-		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, gameSkin, streamBundler, serverNormalizedTime);
+		const game = new Game(Random.id(5), deviceController, engine, gameData, gameConfiguration, gameSkin, streamBundler, serverNormalizedTime);
 		gameData.listOfShapes = ['a', 'b', 'c'];
 		game.player1 = {data: {}};
 		game.player1.data.initialPolygonObject = 'player-a';
@@ -54,7 +55,7 @@ describe('ShapeShiftMonsterBonus', function() {
 
 	it('activates the only shape different that the initial one if there is one', function() {
 		const gameData = new GameData();
-		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, gameSkin, streamBundler, serverNormalizedTime);
+		const game = new Game(Random.id(5), deviceController, engine, gameData, gameConfiguration, gameSkin, streamBundler, serverNormalizedTime);
 		gameData.listOfShapes = ['a', 'b'];
 		game.player1 = {data: {}};
 		game.player1.data.initialPolygonObject = 'player-a';
@@ -70,7 +71,7 @@ describe('ShapeShiftMonsterBonus', function() {
 
 	it('activates the only shape available even if it is the initial one', function() {
 		const gameData = new GameData();
-		const game = new Game(Random.id(5), engine, gameData, gameConfiguration, gameSkin, streamBundler, serverNormalizedTime);
+		const game = new Game(Random.id(5), deviceController, engine, gameData, gameConfiguration, gameSkin, streamBundler, serverNormalizedTime);
 		gameData.listOfShapes = ['a'];
 		game.player1 = {data: {}};
 		game.player1.data.initialPolygonObject = 'player-a';
