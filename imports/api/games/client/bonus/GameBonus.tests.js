@@ -1,10 +1,8 @@
-import {assert} from 'chai';
-import {Random} from 'meteor/random';
-import sinon from 'sinon';
 import GameData from '/imports/api/games/client/data/GameData.js';
 import NullDeviceController from '/imports/api/games/client/deviceController/NullDeviceController.js';
 import Game from '/imports/api/games/client/Game.js';
 import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
+import LevelConfiguration from '/imports/api/games/client/LevelConfiguration.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
 import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
 import StaticGameConfiguration from '/imports/api/games/configuration/StaticGameConfiguration.js';
@@ -12,20 +10,24 @@ import {PLAYER_FROZEN_MASS} from '/imports/api/games/constants.js';
 import NullEngine from '/imports/api/games/engine/client/NullEngine.js';
 import DefaultSkin from '/imports/api/skins/skins/DefaultSkin.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
+import {assert} from 'chai';
+import {Random} from 'meteor/random';
+import sinon from 'sinon';
 import GameBonus from './GameBonus.js';
 
 describe('GameBonus#getBonusSpriteFromIdentifier', function() {
 	const gameId = Random.id(5);
+	const levelConfiguration = LevelConfiguration.defaultConfiguration();
 	const gameData = new GameData(gameId);
 	const gameConfiguration = new StaticGameConfiguration(gameId);
 	const gameStreamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 	const deviceController = new NullDeviceController();
 	const engine = new NullEngine();
-	const game = new Game(gameId, deviceController, engine, gameData, gameConfiguration, new GameSkin(new DefaultSkin()), gameStreamBundler, serverNormalizedTime);
+	const game = new Game(gameId, levelConfiguration, deviceController, engine, gameData, gameConfiguration, new GameSkin(new DefaultSkin()), gameStreamBundler, serverNormalizedTime);
 
 	it('returns null if the bonusIdentifier matches nothing', function() {
-		const gameBonus = new GameBonus(game, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
+		const gameBonus = new GameBonus(game, levelConfiguration, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
 
 		gameBonus.bonuses = [
 			{identifier: 'a'},
@@ -39,7 +41,7 @@ describe('GameBonus#getBonusSpriteFromIdentifier', function() {
 	});
 
 	it('returns the matching bonus', function() {
-		const game = new GameBonus(game, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
+		const game = new GameBonus(game, levelConfiguration, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
 		const bBonus = {identifier: 'b'};
 
 		game.bonuses = [
@@ -56,20 +58,21 @@ describe('GameBonus#getBonusSpriteFromIdentifier', function() {
 
 describe('GameBonus#createBonusIfTimeHasElapsed', function() {
 	const gameId = Random.id(5);
+	const levelConfiguration = LevelConfiguration.defaultConfiguration();
 	const gameData = new GameData(gameId);
 	const gameConfiguration = new StaticGameConfiguration(gameId);
 	const gameStreamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 	const deviceController = new NullDeviceController();
 	const engine = new NullEngine();
-	const game = new Game(gameId, deviceController, engine, gameData, gameConfiguration, new GameSkin(new DefaultSkin()), gameStreamBundler, serverNormalizedTime);
+	const game = new Game(gameId, levelConfiguration, deviceController, engine, gameData, gameConfiguration, new GameSkin(new DefaultSkin()), gameStreamBundler, serverNormalizedTime);
 
 	beforeEach(function() {
 		gameStreamBundler.resetBundledStreams();
 	});
 
 	it('creates bonus if time has elapsed', function() {
-		const gameBonus = new GameBonus(game, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
+		const gameBonus = new GameBonus(game, levelConfiguration, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
 		const timestamp = getUTCTimeStamp();
 
 		gameBonus.bonusFrequenceTime = 5000;
@@ -87,7 +90,7 @@ describe('GameBonus#createBonusIfTimeHasElapsed', function() {
 	});
 
 	it('does not create bonus if time has not elapsed', function() {
-		const gameBonus = new GameBonus(game, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
+		const gameBonus = new GameBonus(game, levelConfiguration, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
 		const timestamp = getUTCTimeStamp();
 
 		gameBonus.bonusFrequenceTime = 5000;
@@ -106,7 +109,7 @@ describe('GameBonus#createBonusIfTimeHasElapsed', function() {
 	});
 
 	it('does not create bonus if time is too short since last creation depending on bonusMinimumFrequence', function() {
-		const gameBonus = new GameBonus(game, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
+		const gameBonus = new GameBonus(game, levelConfiguration, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
 		const timestamp = getUTCTimeStamp();
 
 		gameBonus.bonusFrequenceTime = 0;
@@ -127,16 +130,17 @@ describe('GameBonus#createBonusIfTimeHasElapsed', function() {
 
 describe('GameBonus#removeBonusSprite', function() {
 	const gameId = Random.id(5);
+	const levelConfiguration = LevelConfiguration.defaultConfiguration();
 	const gameData = new GameData(gameId);
 	const gameConfiguration = new StaticGameConfiguration(gameId);
 	const gameStreamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 	const deviceController = new NullDeviceController();
 	const engine = new NullEngine();
-	const game = new Game(gameId, deviceController, engine, gameData, gameConfiguration, new GameSkin(new DefaultSkin()), gameStreamBundler, serverNormalizedTime);
+	const game = new Game(gameId, levelConfiguration, deviceController, engine, gameData, gameConfiguration, new GameSkin(new DefaultSkin()), gameStreamBundler, serverNormalizedTime);
 
 	it ('removes and destroys the matching bonusIdentifier bonus from bonuses', function() {
-		const gameBonus = new GameBonus(game, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
+		const gameBonus = new GameBonus(game, levelConfiguration, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
 		const aBonus = {identifier: 'a', destroy: function() {}};
 		const bBonus = {identifier: 'b', destroy: function() {}};
 		const cBonus = {identifier: 'c', destroy: function() {}};
@@ -163,7 +167,7 @@ describe('GameBonus#removeBonusSprite', function() {
 	});
 
 	it ('does not remove anything if nothing matches the bonusIdentifier in bonuses', function() {
-		const gameBonus = new GameBonus(game, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
+		const gameBonus = new GameBonus(game, levelConfiguration, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
 		const aBonus = {identifier: 'a', destroy: function() {}};
 		const bBonus = {identifier: 'b', destroy: function() {}};
 		const cBonus = {identifier: 'c', destroy: function() {}};
@@ -193,16 +197,17 @@ describe('GameBonus#removeBonusSprite', function() {
 
 describe('GameBonus#setPlayerGravity', function() {
 	const gameId = Random.id(5);
+	const levelConfiguration = LevelConfiguration.defaultConfiguration();
 	const gameData = new GameData(gameId);
 	const gameConfiguration = new StaticGameConfiguration(gameId);
 	const gameStreamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 	const deviceController = new NullDeviceController();
 	const engine = new NullEngine();
-	const game = new Game(gameId, deviceController, engine, gameData, gameConfiguration, new GameSkin(new DefaultSkin()), gameStreamBundler, serverNormalizedTime);
+	const game = new Game(gameId, levelConfiguration, deviceController, engine, gameData, gameConfiguration, new GameSkin(new DefaultSkin()), gameStreamBundler, serverNormalizedTime);
 
 	it('sets gravity if player is not frozen', function() {
-		const gameBonus = new GameBonus(game, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
+		const gameBonus = new GameBonus(game, levelConfiguration, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
 		const initialGravity = 1;
 		const currentGravity = 2;
 		const gravity = 3;
@@ -232,7 +237,7 @@ describe('GameBonus#setPlayerGravity', function() {
 	});
 
 	it('does not set gravity if player is frozen', function() {
-		const gameBonus = new GameBonus(game, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
+		const gameBonus = new GameBonus(game, levelConfiguration, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
 		const initialGravity = 1;
 		const currentGravity = 2;
 		const gravity = 3;
@@ -264,16 +269,17 @@ describe('GameBonus#setPlayerGravity', function() {
 
 describe('GameBonus#resetPlayerGravity', function() {
 	const gameId = Random.id(5);
+	const levelConfiguration = LevelConfiguration.defaultConfiguration();
 	const gameData = new GameData(gameId);
 	const gameConfiguration = new StaticGameConfiguration(gameId);
 	const gameStreamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 	const deviceController = new NullDeviceController();
 	const engine = new NullEngine();
-	const game = new Game(gameId, deviceController, engine, gameData, gameConfiguration, new GameSkin(new DefaultSkin()), gameStreamBundler, serverNormalizedTime);
+	const game = new Game(gameId, levelConfiguration, deviceController, engine, gameData, gameConfiguration, new GameSkin(new DefaultSkin()), gameStreamBundler, serverNormalizedTime);
 
 	it('resets gravity if player is not frozen', function() {
-		const gameBonus = new GameBonus(game, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
+		const gameBonus = new GameBonus(game, levelConfiguration, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
 		const initialGravity = 1;
 		const currentGravity = 2;
 
@@ -302,7 +308,7 @@ describe('GameBonus#resetPlayerGravity', function() {
 	});
 
 	it('does not reset gravity if player is frozen', function() {
-		const gameBonus = new GameBonus(game, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
+		const gameBonus = new GameBonus(game, levelConfiguration, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
 		const initialGravity = 1;
 		const currentGravity = 2;
 
@@ -333,16 +339,17 @@ describe('GameBonus#resetPlayerGravity', function() {
 
 describe('GameBonus#freezePlayer', function() {
 	const gameId = Random.id(5);
+	const levelConfiguration = LevelConfiguration.defaultConfiguration();
 	const gameData = new GameData(gameId);
 	const gameConfiguration = new StaticGameConfiguration(gameId);
 	const gameStreamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 	const deviceController = new NullDeviceController();
 	const engine = new NullEngine();
-	const game = new Game(gameId, deviceController, engine, gameData, gameConfiguration, new GameSkin(new DefaultSkin()), gameStreamBundler, serverNormalizedTime);
+	const game = new Game(gameId, levelConfiguration, deviceController, engine, gameData, gameConfiguration, new GameSkin(new DefaultSkin()), gameStreamBundler, serverNormalizedTime);
 
 	it('sets player mass and zeroize gravity on freeze', function() {
-		const gameBonus = new GameBonus(game, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
+		const gameBonus = new GameBonus(game, levelConfiguration, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
 		const initialMass = 200;
 		const currentMass = 500;
 		const initialGravity = 1;
@@ -380,16 +387,17 @@ describe('GameBonus#freezePlayer', function() {
 
 describe('GameBonus#unFreezePlayer', function() {
 	const gameId = Random.id(5);
+	const levelConfiguration = LevelConfiguration.defaultConfiguration();
 	const gameData = new GameData(gameId);
 	const gameConfiguration = new StaticGameConfiguration(gameId);
 	const gameStreamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 	const deviceController = new NullDeviceController();
 	const engine = new NullEngine();
-	const game = new Game(gameId, deviceController, engine, gameData, gameConfiguration, new GameSkin(new DefaultSkin()), gameStreamBundler, serverNormalizedTime);
+	const game = new Game(gameId, levelConfiguration, deviceController, engine, gameData, gameConfiguration, new GameSkin(new DefaultSkin()), gameStreamBundler, serverNormalizedTime);
 
 	it('restores initial player mass and current gravity on unfreeze', function() {
-		const gameBonus = new GameBonus(game, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
+		const gameBonus = new GameBonus(game, levelConfiguration, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime);
 		const initialMass = 200;
 		const currentMass = 500;
 		const initialGravity = 1;

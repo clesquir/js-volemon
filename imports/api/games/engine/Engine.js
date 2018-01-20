@@ -92,7 +92,13 @@ export default class Engine {
 	getVerticalSpeed(sprite) {
 	}
 
+	setVerticalSpeed(sprite, velocityY) {
+	}
+
 	getHorizontalSpeed(sprite) {
+	}
+
+	setHorizontalSpeed(sprite, velocityX) {
 	}
 
 	getCenterX() {

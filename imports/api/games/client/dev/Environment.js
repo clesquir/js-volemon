@@ -1,16 +1,16 @@
-import {Random} from 'meteor/random';
 import GameData from '/imports/api/games/client/data/GameData.js';
 import DesktopController from '/imports/api/games/client/deviceController/DesktopController.js';
 import Game from '/imports/api/games/client/Game.js';
 import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
+import LevelConfiguration from '/imports/api/games/client/LevelConfiguration.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
 import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
 import StaticGameConfiguration from '/imports/api/games/configuration/StaticGameConfiguration.js';
-import {PLAYER_HEIGHT, PLAYER_INITIAL_LOCATION} from '/imports/api/games/constants.js';
-import {PLAYER_DEFAULT_SHAPE} from '/imports/api/games/shapeConstants.js';
 import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
+import {PLAYER_DEFAULT_SHAPE} from '/imports/api/games/shapeConstants.js';
 import DefaultSkin from '/imports/api/skins/skins/DefaultSkin.js';
 import CustomKeymaps from '/imports/lib/keymaps/CustomKeymaps.js';
+import {Random} from 'meteor/random';
 
 export default class Environment {
 	constructor() {
@@ -22,12 +22,14 @@ export default class Environment {
 		this.gameData = new GameData(gameId);
 		this.gameConfiguration = new StaticGameConfiguration(gameId);
 		this.gameStreamBundler = new GameStreamBundler(null);
+		this.levelConfiguration = LevelConfiguration.defaultConfiguration();
 		this.deviceController = new DesktopController(CustomKeymaps.defaultKeymaps());
 		this.deviceController.init();
 		this.gameEngine = new PhaserEngine();
 		this.serverNormalizedTime = new ServerNormalizedTime();
 		this.game = new Game(
 			gameId,
+			this.levelConfiguration,
 			this.deviceController,
 			this.gameEngine,
 			this.gameData,
@@ -39,8 +41,8 @@ export default class Environment {
 		this.gameBonus = this.game.gameBonus;
 		this.game.engine.start(
 			{
-				width: this.game.xSize,
-				height: this.game.ySize,
+				width: this.levelConfiguration.width,
+				height: this.levelConfiguration.height,
 				gravity: this.gameConfiguration.worldGravity(),
 				bonusRadius: this.gameConfiguration.bonusRadius(),
 				renderTo: 'environmentGameContainer'
@@ -83,17 +85,32 @@ export default class Environment {
 		this.game.collisions.init();
 
 		this.playerShape = PLAYER_DEFAULT_SHAPE;
-		let xPosition = PLAYER_INITIAL_LOCATION;
-		const yPosition = this.game.ySize - this.game.groundHeight - (PLAYER_HEIGHT / 2);
 
-		this.game.player1 = this.gameEngine.addSprite(xPosition, yPosition, 'shape-' + this.playerShape);
+		this.game.player1 = this.gameEngine.addSprite(
+			this.levelConfiguration.player1InitialX(),
+			this.levelConfiguration.playerInitialY(),
+			'shape-' + this.playerShape
+		);
 		this.game.player1.data.key = 'player1';
-		this.game.initPlayer(this.game.player1, xPosition, yPosition, this.game.collisions.hostPlayerCollisionGroup);
+		this.game.initPlayer(
+			this.game.player1,
+			this.levelConfiguration.player1InitialX(),
+			this.levelConfiguration.playerInitialY(),
+			this.game.collisions.hostPlayerCollisionGroup
+		);
 
-		xPosition = this.game.xSize - PLAYER_INITIAL_LOCATION;
-		this.game.player2 = this.gameEngine.addSprite(xPosition, yPosition, 'shape-' + this.playerShape);
+		this.game.player2 = this.gameEngine.addSprite(
+			this.levelConfiguration.player2InitialX(),
+			this.levelConfiguration.playerInitialY(),
+			'shape-' + this.playerShape
+		);
 		this.game.player2.data.key = 'player2';
-		this.game.initPlayer(this.game.player2, xPosition, yPosition, this.game.collisions.hostPlayerCollisionGroup);
+		this.game.initPlayer(
+			this.game.player2,
+			this.levelConfiguration.player2InitialX(),
+			this.levelConfiguration.playerInitialY(),
+			this.game.collisions.hostPlayerCollisionGroup
+		);
 
 		this.game.createBall(100, 100);
 

@@ -1,5 +1,3 @@
-import {Meteor} from 'meteor/meteor';
-import {Session} from 'meteor/session';
 import {destroyConnectionIndicator, updateConnectionIndicator} from '/imports/api/games/client/connectionIndicator.js';
 import GameData from '/imports/api/games/client/data/GameData.js';
 import DesktopController from '/imports/api/games/client/deviceController/DesktopController.js';
@@ -9,6 +7,7 @@ import GameInitiator from '/imports/api/games/client/GameInitiator.js';
 import GameNotifier from '/imports/api/games/client/GameNotifier.js';
 import GameReaction from '/imports/api/games/client/GameReaction.js';
 import GameRematch from '/imports/api/games/client/GameRematch.js';
+import LevelConfiguration from '/imports/api/games/client/LevelConfiguration.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
 import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
 import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGameConfiguration.js';
@@ -21,6 +20,8 @@ import CustomKeymaps from '/imports/lib/keymaps/CustomKeymaps.js';
 import ClientStreamFactory from '/imports/lib/stream/client/ClientStreamFactory.js';
 import StreamConfiguration from '/imports/lib/stream/StreamConfiguration.js';
 import {onMobileAndTablet} from '/imports/lib/utils.js';
+import {Meteor} from 'meteor/meteor';
+import {Session} from 'meteor/session';
 
 /** @type {Stream} */
 export let stream = null;
@@ -87,16 +88,18 @@ const initGame = function(gameId) {
 	gameSkin.init();
 	serverNormalizedTime = new ServerNormalizedTime();
 	serverNormalizedTime.init();
+
 	gameInitiator = new GameInitiator(
 		gameId,
-		stream,
+		LevelConfiguration.defaultConfiguration(),
+		deviceController,
+		engine,
 		gameData,
 		gameConfiguration,
 		gameSkin,
-		deviceController,
-		engine,
-		new GameNotifier(),
-		serverNormalizedTime
+		stream,
+		serverNormalizedTime,
+		new GameNotifier()
 	);
 	gameInitiator.init();
 	gameRematch = new GameRematch(gameId, gameData);

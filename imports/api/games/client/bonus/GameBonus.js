@@ -1,36 +1,33 @@
-import {Meteor} from 'meteor/meteor';
-import {Random} from 'meteor/random';
+import BonusFactory from '/imports/api/games/BonusFactory.js';
 import {
-	GAME_X_SIZE,
-	GAME_Y_SIZE,
-	GAME_GROUND_HEIGHT,
+	BIG_SCALE_BONUS,
+	BIG_SCALE_PHYSICS_DATA,
 	BONUS_GRAVITY_SCALE,
 	NORMAL_SCALE_BONUS,
-	SMALL_SCALE_PLAYER_BONUS,
-	SMALL_SCALE_BALL_BONUS,
-	BIG_SCALE_BONUS,
 	NORMAL_SCALE_PHYSICS_DATA,
+	PLAYER_FROZEN_MASS,
+	SMALL_SCALE_BALL_BONUS,
 	SMALL_SCALE_PHYSICS_DATA,
-	BIG_SCALE_PHYSICS_DATA,
-	PLAYER_FROZEN_MASS
+	SMALL_SCALE_PLAYER_BONUS
 } from '/imports/api/games/constants.js';
-import {
-	BONUS_INTERVAL
-} from '/imports/api/games/emissionConstants.js';
-import BonusFactory from '/imports/api/games/BonusFactory.js';
+import {BONUS_INTERVAL} from '/imports/api/games/emissionConstants.js';
 import {getRandomInt} from '/imports/lib/utils.js';
+import {Meteor} from 'meteor/meteor';
+import {Random} from 'meteor/random';
 
 export default class GameBonus {
 	/**
 	 * @param {Game} game
+	 * @param {LevelConfiguration} levelConfiguration
 	 * @param {Engine} engine
 	 * @param {GameData} gameData
 	 * @param {GameConfiguration} gameConfiguration
 	 * @param {GameStreamBundler} gameStreamBundler
 	 * @param {ServerNormalizedTime} serverNormalizedTime
 	 */
-	constructor(game, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime) {
+	constructor(game, levelConfiguration, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime) {
 		this.game = game;
+		this.levelConfiguration = levelConfiguration;
 		this.engine = engine;
 		this.gameData = gameData;
 		this.gameConfiguration = gameConfiguration;
@@ -44,10 +41,6 @@ export default class GameBonus {
 		this.clouds = [];
 		this.activeBonuses = [];
 		this.removedBonuses = [];
-
-		this.xSize = GAME_X_SIZE;
-		this.ySize = GAME_Y_SIZE;
-		this.groundHeight = GAME_GROUND_HEIGHT;
 	}
 
 	playerInitialPolygonFromKey(playerKey) {
@@ -140,7 +133,7 @@ export default class GameBonus {
 						break;
 					case 'player2':
 						player2Count++;
-						xModifier = (this.xSize / 2);
+						xModifier = (this.levelConfiguration.width / 2);
 						sideCount = player2Count;
 						break;
 				}
@@ -149,7 +142,7 @@ export default class GameBonus {
 				if (bonusSprite === null) {
 					const bonusSprite = this.engine.drawBonus(
 						x,
-						this.ySize - (this.groundHeight / 2),
+						this.levelConfiguration.height - (this.levelConfiguration.groundHeight / 2),
 						BonusFactory.fromClassName(bonus.classNameToActivate(), this),
 						this.getBonusProgress(bonus, bonus.getDuration())
 					);
@@ -526,7 +519,7 @@ export default class GameBonus {
 			}
 		];
 		for (let i = 1; i < (cloudSpreads.length + 1); i++) {
-			let x = GAME_X_SIZE / (cloudSpreads.length + 1) * i;
+			let x = this.levelConfiguration.width / (cloudSpreads.length + 1) * i;
 
 			this.clouds.push(this.createCloud(x, 200, cloudSpreads[i - 1]));
 		}
@@ -631,7 +624,7 @@ export default class GameBonus {
 	createRandomBonus() {
 		let bonus = BonusFactory.randomBonus(this, this.gameConfiguration);
 		let data = bonus.dataToStream();
-		data.initialX = this.xSize / 2 + Random.choice([-6, +6]);
+		data.initialX = this.levelConfiguration.width / 2 + Random.choice([-6, +6]);
 
 		//Create the bonus for host
 		this.createBonus(data);

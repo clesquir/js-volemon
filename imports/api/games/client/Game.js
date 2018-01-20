@@ -1,35 +1,28 @@
-import {Meteor} from 'meteor/meteor';
-import {Random} from 'meteor/random';
-import {Session} from 'meteor/session';
+import GameBonus from '/imports/api/games/client/bonus/GameBonus.js';
 import Collisions from '/imports/api/games/client/Collisions.js';
 import LevelComponents from '/imports/api/games/client/LevelComponents.js';
 import {
-	GAME_X_SIZE,
-	GAME_Y_SIZE,
-	GAME_GROUND_HEIGHT,
-	PLAYER_HEIGHT,
-	PLAYER_WIDTH,
-	PLAYER_INITIAL_LOCATION,
-	PLAYER_VELOCITY_X_ON_MOVE,
-	PLAYER_VELOCITY_Y_ON_JUMP,
-	PLAYER_MASS,
-	PLAYER_GRAVITY_SCALE,
-	BALL_RADIUS,
-	BALL_DISTANCE_FROM_GROUND,
-	BALL_VERTICAL_SPEED_ON_PLAYER_HIT,
 	BALL_GRAVITY_SCALE,
-	NORMAL_SCALE_PHYSICS_DATA,
-	CLIENT_SIDE,
-	HOST_SIDE,
+	BALL_VERTICAL_SPEED_ON_PLAYER_HIT,
 	CLIENT_POINTS_COLUMN,
-	HOST_POINTS_COLUMN
+	CLIENT_SIDE,
+	HOST_POINTS_COLUMN,
+	HOST_SIDE,
+	NORMAL_SCALE_PHYSICS_DATA,
+	PLAYER_GRAVITY_SCALE,
+	PLAYER_MASS,
+	PLAYER_VELOCITY_X_ON_MOVE,
+	PLAYER_VELOCITY_Y_ON_JUMP
 } from '/imports/api/games/constants.js';
-import {PLAYER_INTERVAL, BALL_INTERVAL} from '/imports/api/games/emissionConstants.js';
-import GameBonus from '/imports/api/games/client/bonus/GameBonus.js';
+import {BALL_INTERVAL, PLAYER_INTERVAL} from '/imports/api/games/emissionConstants.js';
+import {Meteor} from 'meteor/meteor';
+import {Random} from 'meteor/random';
+import {Session} from 'meteor/session';
 
 export default class Game {
 	/**
 	 * @param {string} gameId
+	 * @param {LevelConfiguration} levelConfiguration
 	 * @param {DeviceController} deviceController
 	 * @param {Engine} engine
 	 * @param {GameData} gameData
@@ -40,6 +33,7 @@ export default class Game {
 	 */
 	constructor(
 		gameId,
+		levelConfiguration,
 		deviceController,
 		engine,
 		gameData,
@@ -49,6 +43,7 @@ export default class Game {
 		serverNormalizedTime
 	) {
 		this.gameId = gameId;
+		this.levelConfiguration = levelConfiguration;
 		this.deviceController = deviceController;
 		this.engine = engine;
 		this.gameData = gameData;
@@ -56,9 +51,6 @@ export default class Game {
 		this.gameSkin = gameSkin;
 		this.gameStreamBundler = gameStreamBundler;
 		this.serverNormalizedTime = serverNormalizedTime;
-		this.xSize = GAME_X_SIZE;
-		this.ySize = GAME_Y_SIZE;
-		this.groundHeight = GAME_GROUND_HEIGHT;
 		this.lastBallPositionData = {};
 		this.lastPlayerPositionData = {};
 		this.lastBallUpdate = 0;
@@ -67,27 +59,14 @@ export default class Game {
 		this.gameInitiated = false;
 		this.gameStreamBundler.resetBundledStreams();
 
-		this.initInternal();
-	}
-
-	/**
-	 * @private
-	 */
-	initInternal() {
 		this.gameBonus = new GameBonus(
 			this,
+			this.levelConfiguration,
 			this.engine,
 			this.gameData,
 			this.gameConfiguration,
 			this.gameStreamBundler,
 			this.serverNormalizedTime
-		);
-		this.levelComponents = new LevelComponents(
-			this,
-			this.gameBonus,
-			this.gameSkin,
-			this.engine,
-			{width: this.xSize, height: this.ySize, groundHeight: this.groundHeight}
 		);
 		this.collisions = new Collisions(
 			this,
@@ -95,6 +74,12 @@ export default class Game {
 			this.gameSkin,
 			this.gameConfiguration,
 			this.engine
+		);
+		this.levelComponents = new LevelComponents(
+			this.collisions,
+			this.gameSkin,
+			this.engine,
+			this.levelConfiguration
 		);
 	}
 
@@ -141,8 +126,8 @@ export default class Game {
 	start() {
 		this.engine.start(
 			{
-				width: this.xSize,
-				height: this.ySize,
+				width: this.levelConfiguration.width,
+				height: this.levelConfiguration.height,
 				gravity: this.gameConfiguration.worldGravity(),
 				bonusRadius: this.gameConfiguration.bonusRadius(),
 				renderTo: 'gameContainer'
@@ -180,7 +165,7 @@ export default class Game {
 	}
 
 	createGame() {
-		this.gameSkin.createBackgroundComponents(this.engine, this.xSize, this.ySize);
+		this.gameSkin.createBackgroundComponents(this.engine, this.levelConfiguration.width, this.levelConfiguration.height);
 		this.createComponents();
 		this.gameBonus.createComponents();
 
@@ -197,37 +182,48 @@ export default class Game {
 	}
 
 	createComponents() {
-		let initialXLocation = PLAYER_INITIAL_LOCATION;
-		const initialYLocation = this.ySize - this.groundHeight - (PLAYER_HEIGHT / 2);
-
 		this.collisions.init();
 
 		/**
 		 * Player 1
 		 */
 		this.player1 = this.engine.addSprite(
-			initialXLocation,
-			initialYLocation,
+			this.levelConfiguration.player1InitialX(),
+			this.levelConfiguration.playerInitialY(),
 			'shape-' + this.gameData.getPlayerShapeFromKey('player1')
 		);
 		this.player1.data.key = 'player1';
-		this.initPlayer(this.player1, initialXLocation, initialYLocation, this.collisions.hostPlayerCollisionGroup);
+		this.initPlayer(
+			this.player1,
+			this.levelConfiguration.player1InitialX(),
+			this.levelConfiguration.playerInitialY(),
+			this.collisions.hostPlayerCollisionGroup
+		);
 
 		/**
 		 * Player 2
 		 */
-		initialXLocation = this.xSize - PLAYER_INITIAL_LOCATION;
 		this.player2 = this.engine.addSprite(
-			initialXLocation,
-			initialYLocation,
+			this.levelConfiguration.player2InitialX(),
+			this.levelConfiguration.playerInitialY(),
 			'shape-' + this.gameData.getPlayerShapeFromKey('player2')
 		);
 		this.player2.data.key = 'player2';
-		this.initPlayer(this.player2, initialXLocation, initialYLocation, this.collisions.clientPlayerCollisionGroup);
+		this.initPlayer(
+			this.player2,
+			this.levelConfiguration.player2InitialX(),
+			this.levelConfiguration.playerInitialY(),
+			this.collisions.clientPlayerCollisionGroup
+		);
 
-		this.createBall(PLAYER_INITIAL_LOCATION, this.ySize - this.groundHeight - BALL_DISTANCE_FROM_GROUND);
+		this.createBall(
+			this.levelConfiguration.ballInitialHostX(),
+			this.levelConfiguration.ballInitialY()
+		);
 
 		this.levelComponents.createLevelComponents();
+		this.addPlayerCanJumpOnBody(this.player1, this.levelComponents.groundBound);
+		this.addPlayerCanJumpOnBody(this.player2, this.levelComponents.groundBound);
 
 		this.createCountdownText();
 	}
@@ -402,8 +398,8 @@ export default class Game {
 	}
 
 	spawnBall() {
-		const xBallPositionHostSide = PLAYER_INITIAL_LOCATION + (PLAYER_WIDTH / 4) + (BALL_RADIUS);
-		const xBallPositionClientSide = this.xSize - PLAYER_INITIAL_LOCATION - (PLAYER_WIDTH / 4) - (BALL_RADIUS);
+		const xBallPositionHostSide = this.levelConfiguration.ballInitialHostX();
+		const xBallPositionClientSide = this.levelConfiguration.ballInitialClientX();
 		let xBallPosition;
 
 		switch (this.gameData.lastPointTaken) {
@@ -424,7 +420,7 @@ export default class Game {
 				break;
 		}
 
-		this.engine.spawn(this.ball, xBallPosition, this.ySize - this.groundHeight - BALL_DISTANCE_FROM_GROUND);
+		this.engine.spawn(this.ball, xBallPosition, this.levelConfiguration.ballInitialY());
 	}
 
 	updateGame() {
@@ -617,7 +613,7 @@ export default class Game {
 	hitGround(ball) {
 		let playerKey;
 
-		if (ball.x < this.xSize / 2) {
+		if (ball.x < this.levelConfiguration.width / 2) {
 			playerKey = 'player1';
 		} else {
 			playerKey = 'player2';
@@ -794,8 +790,8 @@ export default class Game {
 		this.gameSkin.cheer(
 			this.engine,
 			forHost,
-			forHost ? 0 : this.xSize,
-			this.ySize * 0.10 + 25
+			forHost ? 0 : this.levelConfiguration.width,
+			this.levelConfiguration.height * 0.10 + 25
 		);
 	}
 

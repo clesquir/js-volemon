@@ -1,46 +1,51 @@
-import {Meteor} from 'meteor/meteor';
-import {Session} from 'meteor/session';
-import {moment} from 'meteor/momentjs:moment';
-import {Games} from '/imports/api/games/games.js';
-import {Players} from '/imports/api/games/players.js';
+import Game from '/imports/api/games/client/Game.js';
+import GameNotifier from '/imports/api/games/client/GameNotifier.js';
 import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
 import GameStreamInitiator from '/imports/api/games/client/GameStreamInitiator.js';
-import Game from '/imports/api/games/client/Game.js';
-import {HOST_POINTS_COLUMN, CLIENT_POINTS_COLUMN} from '/imports/api/games/constants.js';
+import LevelConfiguration from '/imports/api/games/client/LevelConfiguration.js';
+import {CLIENT_POINTS_COLUMN, HOST_POINTS_COLUMN} from '/imports/api/games/constants.js';
+import {Games} from '/imports/api/games/games.js';
+import {Players} from '/imports/api/games/players.js';
 import {GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
+import {Meteor} from 'meteor/meteor';
+import {moment} from 'meteor/momentjs:moment';
+import {Session} from 'meteor/session';
 
 export default class GameInitiator {
 	/**
 	 * @param {string} gameId
-	 * @param {Stream} stream
+	 * @param {LevelConfiguration} levelConfiguration
+	 * @param {DeviceController} deviceController
+	 * @param {Engine} engine
 	 * @param {GameData} gameData
 	 * @param {GameConfiguration} gameConfiguration
 	 * @param {GameSkin} gameSkin
-	 * @param {DeviceController} deviceController
-	 * @param {Engine} engine
-	 * @param {GameNotifier} gameNotifier
+	 * @param {Stream} stream
 	 * @param {ServerNormalizedTime} serverNormalizedTime
+	 * @param {GameNotifier} gameNotifier
 	 */
 	constructor(
 		gameId,
-		stream,
+		levelConfiguration,
+		deviceController,
+		engine,
 		gameData,
 		gameConfiguration,
 		gameSkin,
-		deviceController,
-		engine,
-		gameNotifier,
-		serverNormalizedTime
+		stream,
+		serverNormalizedTime,
+		gameNotifier
 	) {
 		this.gameId = gameId;
-		this.stream = stream;
+		this.levelConfiguration = levelConfiguration;
+		this.deviceController = deviceController;
+		this.engine = engine;
 		this.gameData = gameData;
 		this.gameConfiguration = gameConfiguration;
 		this.gameSkin = gameSkin;
-		this.deviceController = deviceController;
-		this.engine = engine;
-		this.gameNotifier = gameNotifier;
+		this.stream = stream;
 		this.serverNormalizedTime = serverNormalizedTime;
+		this.gameNotifier = gameNotifier;
 
 		this.currentGame = null;
 		this.timerUpdater = null;
@@ -154,6 +159,7 @@ export default class GameInitiator {
 		this.gameData.init();
 		this.currentGame = new Game(
 			this.gameId,
+			this.levelConfiguration,
 			this.deviceController,
 			this.engine,
 			this.gameData,

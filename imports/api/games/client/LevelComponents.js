@@ -1,21 +1,20 @@
+import Collisions from '/imports/api/games/client/Collisions.js';
+import LevelConfiguration from '/imports/api/games/client/LevelConfiguration.js';
 import {NORMAL_SCALE_PHYSICS_DATA} from '/imports/api/games/constants.js';
 import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
-import {GAME_NET_HEIGHT, GAME_NET_THICKNESS} from '/imports/api/games/constants.js';
 
 export default class LevelComponents {
 	/**
-	 * @param {Game} game
-	 * @param {GameBonus} gameBonus
+	 * @param {Collisions} collisions
 	 * @param {GameSkin} gameSkin
 	 * @param {Engine} engine
-	 * @param {{width: {integer}, height: {integer}, groundHeight: {integer}}} dimensions
+	 * @param {LevelConfiguration} levelConfiguration
 	 */
-	constructor(game, gameBonus, gameSkin, engine, dimensions) {
-		this.game = game;
-		this.gameBonus = gameBonus;
+	constructor(collisions, gameSkin, engine, levelConfiguration) {
+		this.collisions = collisions;
 		this.gameSkin = gameSkin;
 		this.engine = engine;
-		this.dimensions = dimensions;
+		this.levelConfiguration = levelConfiguration;
 	}
 
 	preload() {
@@ -41,9 +40,9 @@ export default class LevelComponents {
 	createGround() {
 		this.gameSkin.createGroundComponents(
 			this.engine,
-			this.dimensions.width,
-			this.dimensions.height,
-			this.dimensions.groundHeight,
+			this.levelConfiguration.width,
+			this.levelConfiguration.height,
+			this.levelConfiguration.groundHeight,
 			this.groundGroup
 		);
 	}
@@ -51,8 +50,8 @@ export default class LevelComponents {
 	createNet() {
 		this.gameSkin.createNetComponent(
 			this.engine,
-			(this.dimensions.width / 2) - (GAME_NET_THICKNESS / 2),
-			this.dimensions.height - this.dimensions.groundHeight - GAME_NET_HEIGHT,
+			(this.levelConfiguration.width / 2) - (this.levelConfiguration.netWidth / 2),
+			this.levelConfiguration.height - this.levelConfiguration.groundHeight - this.levelConfiguration.netHeight,
 			this.groundGroup
 		);
 	}
@@ -60,59 +59,57 @@ export default class LevelComponents {
 	createBounds() {
 		//Host limits
 		this.engine.addBound(
-			(this.dimensions.width / 4) * 3 - (GAME_NET_THICKNESS / 4),
-			(this.dimensions.height / 2),
-			(this.dimensions.width / 2) + (GAME_NET_THICKNESS / 2),
-			this.dimensions.height,
-			this.game.collisions.playerDelimiterMaterial,
-			this.game.collisions.hostPlayerDelimiterCollisionGroup,
-			[this.game.collisions.hostPlayerCollisionGroup]
+			(this.levelConfiguration.width / 4) * 3 - (this.levelConfiguration.netWidth / 4),
+			(this.levelConfiguration.height / 2),
+			(this.levelConfiguration.width / 2) + (this.levelConfiguration.netWidth / 2),
+			this.levelConfiguration.height,
+			this.collisions.playerDelimiterMaterial,
+			this.collisions.hostPlayerDelimiterCollisionGroup,
+			[this.collisions.hostPlayerCollisionGroup]
 		);
 
 		//Client limits
 		this.engine.addBound(
-			(this.dimensions.width / 4) + (GAME_NET_THICKNESS / 4),
-			(this.dimensions.height / 2),
-			(this.dimensions.width / 2) + (GAME_NET_THICKNESS / 2),
-			this.dimensions.height,
-			this.game.collisions.playerDelimiterMaterial,
-			this.game.collisions.clientPlayerDelimiterCollisionGroup,
-			[this.game.collisions.clientPlayerCollisionGroup]
+			(this.levelConfiguration.width / 4) + (this.levelConfiguration.netWidth / 4),
+			(this.levelConfiguration.height / 2),
+			(this.levelConfiguration.width / 2) + (this.levelConfiguration.netWidth / 2),
+			this.levelConfiguration.height,
+			this.collisions.playerDelimiterMaterial,
+			this.collisions.clientPlayerDelimiterCollisionGroup,
+			[this.collisions.clientPlayerCollisionGroup]
 		);
 
 		//Ground limits
-		const bound = this.createGroundBound();
-		this.game.addPlayerCanJumpOnBody(this.game.player1, bound);
-		this.game.addPlayerCanJumpOnBody(this.game.player2, bound);
+		this.groundBound = this.createGroundBound();
 
 		//Net limit
 		this.engine.addBound(
-			this.dimensions.width / 2,
-			this.dimensions.height - (this.dimensions.groundHeight + GAME_NET_HEIGHT) / 2,
-			GAME_NET_THICKNESS,
-			this.dimensions.groundHeight + GAME_NET_HEIGHT,
-			this.game.collisions.netDelimiterMaterial,
-			this.game.collisions.netHitDelimiterCollisionGroup,
+			this.levelConfiguration.width / 2,
+			this.levelConfiguration.height - (this.levelConfiguration.groundHeight + this.levelConfiguration.netHeight) / 2,
+			this.levelConfiguration.netWidth,
+			this.levelConfiguration.groundHeight + this.levelConfiguration.netHeight,
+			this.collisions.netDelimiterMaterial,
+			this.collisions.netHitDelimiterCollisionGroup,
 			[
-				this.game.collisions.ballCollisionGroup,
-				this.game.collisions.bonusCollisionGroup
+				this.collisions.ballCollisionGroup,
+				this.collisions.bonusCollisionGroup
 			]
 		);
 	}
 
 	createGroundBound() {
 		return this.engine.addBound(
-			this.dimensions.width / 2,
-			this.dimensions.height - (this.dimensions.groundHeight / 2),
-			this.dimensions.width,
-			this.dimensions.groundHeight,
-			this.game.collisions.groundDelimiterMaterial,
-			this.game.collisions.groundHitDelimiterCollisionGroup,
+			this.levelConfiguration.width / 2,
+			this.levelConfiguration.height - (this.levelConfiguration.groundHeight / 2),
+			this.levelConfiguration.width,
+			this.levelConfiguration.groundHeight,
+			this.collisions.groundDelimiterMaterial,
+			this.collisions.groundHitDelimiterCollisionGroup,
 			[
-				this.game.collisions.hostPlayerCollisionGroup,
-				this.game.collisions.clientPlayerCollisionGroup,
-				this.game.collisions.ballCollisionGroup,
-				this.game.collisions.bonusCollisionGroup
+				this.collisions.hostPlayerCollisionGroup,
+				this.collisions.clientPlayerCollisionGroup,
+				this.collisions.ballCollisionGroup,
+				this.collisions.bonusCollisionGroup
 			]
 		);
 	}
