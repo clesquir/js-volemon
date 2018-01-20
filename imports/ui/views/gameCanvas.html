@@ -56,7 +56,9 @@
 			</div>
 		{{/if}}
 
-		{{> afterGame game=game playersCollection=playersCollection eloScoresCollection=eloScoresCollection}}
+		{{#if showAfterGame}}
+			{{> afterGame game=game playersCollection=playersCollection eloScoresCollection=eloScoresCollection}}
+		{{/if}}
 
 		{{> reactions isGamePlayer=isGamePlayer hasViewer=hasViewer}}
 

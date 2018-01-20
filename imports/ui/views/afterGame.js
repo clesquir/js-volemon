@@ -29,13 +29,20 @@ import './afterGame.html';
 let cardSwitcher;
 
 Template.afterGame.onRendered(function() {
-	cardSwitcher = new CardSwitcher(
-		'.after-game-swiper-container',
-		{
-			'after-game-elo-scores': AfterGameViews.viewEloScores,
-			'after-game-durations': AfterGameViews.viewGameDurations,
+	Meteor.setTimeout(function() {
+		const afterGameContainer = document.getElementById('afterGameContainer');
+
+		if (afterGameContainer) {
+			$(afterGameContainer).addClass('after-game-shown');
+			cardSwitcher = new CardSwitcher(
+				'.after-game-swiper-container',
+				{
+					'after-game-elo-scores': AfterGameViews.viewEloScores,
+					'after-game-durations': AfterGameViews.viewGameDurations,
+				}
+			);
 		}
-	);
+	}, 0);
 });
 
 Template.afterGame.helpers({
@@ -60,17 +67,20 @@ Template.afterGame.helpers({
 	},
 
 	gameDurations: function() {
-		const durationsSorted = Array.from(this.game.pointsDuration).sort(function(a, b) {
+		const pointsDuration = Array.from(this.game.pointsDuration);
+		const durationsSorted = pointsDuration.sort(function(a, b) {
 			return a - b;
 		});
 
-		return Array.from(this.game.pointsDuration).map((value, index) => {
+		return pointsDuration.map((value, index) => {
 			let durationClass = '';
 
-			if (durationsSorted[0] === value) {
-				durationClass += 'lowest-game-duration ';
-			} else if (durationsSorted[durationsSorted.length - 1] === value) {
-				durationClass += 'highest-game-duration ';
+			if (pointsDuration.length > 1) {
+				if (durationsSorted[0] === value) {
+					durationClass += 'lowest-game-duration ';
+				} else if (durationsSorted[durationsSorted.length - 1] === value) {
+					durationClass += 'highest-game-duration ';
+				}
 			}
 
 			if (this.game.pointsSide[index]) {

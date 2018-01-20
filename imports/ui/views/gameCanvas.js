@@ -77,6 +77,10 @@ Template.gameCanvas.helpers({
 		}
 	},
 
+	showAfterGame() {
+		return !isGameStatusStarted(this.game.status);
+	},
+
 	connectionClass() {
 		return Session.get('connection-indicator-class');
 	},
