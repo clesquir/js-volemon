@@ -384,7 +384,7 @@
         "y": 0.5
       }
     },
-    "random": {
+    "nothing": {
       "frame": {
         "x": 73,
         "y": 73,
@@ -408,20 +408,20 @@
         "y": 0.5
       }
     },
-    "reverse-move-monster": {
+    "random": {
       "frame": {
         "x": 109,
         "y": 37,
-        "w": 34,
-        "h": 34
+        "w": 32,
+        "h": 32
       },
       "rotated": false,
-      "trimmed": false,
+      "trimmed": true,
       "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 34,
-        "h": 34
+        "x": 1,
+        "y": 1,
+        "w": 32,
+        "h": 32
       },
       "sourceSize": {
         "w": 34,
@@ -432,7 +432,7 @@
         "y": 0.5
       }
     },
-    "shape-shift-monster": {
+    "reverse-move-monster": {
       "frame": {
         "x": 181,
         "y": 1,
@@ -456,7 +456,7 @@
         "y": 0.5
       }
     },
-    "slow-monster": {
+    "shape-shift-monster": {
       "frame": {
         "x": 1,
         "y": 251,
@@ -480,10 +480,34 @@
         "y": 0.5
       }
     },
-    "small-ball": {
+    "slow-monster": {
       "frame": {
         "x": 37,
         "y": 177,
+        "w": 34,
+        "h": 34
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 34
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "small-ball": {
+      "frame": {
+        "x": 71,
+        "y": 107,
         "w": 32,
         "h": 32
       },
@@ -506,8 +530,8 @@
     },
     "small-monster": {
       "frame": {
-        "x": 73,
-        "y": 107,
+        "x": 107,
+        "y": 73,
         "w": 34,
         "h": 34
       },
@@ -530,7 +554,7 @@
     },
     "smoke-bomb": {
       "frame": {
-        "x": 145,
+        "x": 143,
         "y": 37,
         "w": 32,
         "h": 32
@@ -556,7 +580,7 @@
   "meta": {
     "app": "http://free-tex-packer.com/",
     "version": "0.2.6",
-    "image": "texture-atlas.png",
+    "image": "texture-atlas-icons.png",
     "format": "RGBA8888",
     "size": {
       "w": 216,

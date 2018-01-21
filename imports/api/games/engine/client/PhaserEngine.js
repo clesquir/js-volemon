@@ -177,8 +177,8 @@ export default class PhaserEngine extends Engine {
 		return bound;
 	}
 
-	addImage(x, y, key, frame) {
-		return this.game.add.image(x, y, key, frame);
+	addImage(x, y, key, frame, group) {
+		return this.game.add.image(x, y, key, frame, group);
 	}
 
 	addSprite(x, y, key, disableBody = false, frame, debugBody = false) {

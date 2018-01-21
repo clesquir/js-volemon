@@ -62,6 +62,14 @@ export default class BaseBonus {
 		return this.activatorPlayerKey;
 	}
 
+	canActivate() {
+		if (this.bonusToActivate() !== this) {
+			return this.bonusToActivate().canActivate();
+		}
+
+		return true;
+	}
+
 	beforeActivation(payload) {
 		if (this.bonusToActivate() !== this) {
 			this.bonusToActivate().beforeActivation(payload);

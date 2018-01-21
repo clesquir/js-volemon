@@ -1,52 +1,54 @@
-import {Random} from 'meteor/random';
-import SmallBallBonus from '/imports/api/games/bonus/SmallBallBonus.js';
 import BigBallBonus from '/imports/api/games/bonus/BigBallBonus.js';
-import InvisibleBallBonus from '/imports/api/games/bonus/InvisibleBallBonus.js';
-import SmallMonsterBonus from '/imports/api/games/bonus/SmallMonsterBonus.js';
-import BigMonsterBonus from '/imports/api/games/bonus/BigMonsterBonus.js';
-import JunkFoodMonster from '/imports/api/games/bonus/JunkFoodMonsterBonus.js';
 import BigJumpMonsterBonus from '/imports/api/games/bonus/BigJumpMonsterBonus.js';
-import SlowMonsterBonus from '/imports/api/games/bonus/SlowMonsterBonus.js';
-import FastMonsterBonus from '/imports/api/games/bonus/FastMonsterBonus.js';
-import FreezeMonsterBonus from '/imports/api/games/bonus/FreezeMonsterBonus.js';
-import ReverseMoveMonsterBonus from '/imports/api/games/bonus/ReverseMoveMonsterBonus.js';
-import InvincibleMonsterBonus from '/imports/api/games/bonus/InvincibleMonsterBonus.js';
-import InvisibleMonsterBonus from '/imports/api/games/bonus/InvisibleMonsterBonus.js';
-import InvisibleOpponentMonsterBonus from '/imports/api/games/bonus/InvisibleOpponentMonsterBonus.js';
-import CloudBonus from '/imports/api/games/bonus/CloudBonus.js';
-import NoJumpMonsterBonus from '/imports/api/games/bonus/NoJumpMonsterBonus.js';
+import BigMonsterBonus from '/imports/api/games/bonus/BigMonsterBonus.js';
 import BounceMonsterBonus from '/imports/api/games/bonus/BounceMonsterBonus.js';
 import CloakedMonsterBonus from '/imports/api/games/bonus/CloakedMonsterBonus.js';
-import ShapeShiftMonsterBonus from '/imports/api/games/bonus/ShapeShiftMonsterBonus.js';
-import SmokeBombBonus from '/imports/api/games/bonus/SmokeBombBonus.js';
-import InstantDeathBonus from '/imports/api/games/bonus/InstantDeathBonus.js';
+import CloudBonus from '/imports/api/games/bonus/CloudBonus.js';
 import DrunkMonsterBonus from '/imports/api/games/bonus/DrunkMonsterBonus.js';
+import FastMonsterBonus from '/imports/api/games/bonus/FastMonsterBonus.js';
+import FreezeMonsterBonus from '/imports/api/games/bonus/FreezeMonsterBonus.js';
+import InstantDeathBonus from '/imports/api/games/bonus/InstantDeathBonus.js';
+import InvincibleMonsterBonus from '/imports/api/games/bonus/InvincibleMonsterBonus.js';
+import InvisibleBallBonus from '/imports/api/games/bonus/InvisibleBallBonus.js';
+import InvisibleMonsterBonus from '/imports/api/games/bonus/InvisibleMonsterBonus.js';
+import InvisibleOpponentMonsterBonus from '/imports/api/games/bonus/InvisibleOpponentMonsterBonus.js';
+import JunkFoodMonster from '/imports/api/games/bonus/JunkFoodMonsterBonus.js';
+import NoJumpMonsterBonus from '/imports/api/games/bonus/NoJumpMonsterBonus.js';
+import NothingBonus from '/imports/api/games/bonus/NothingBonus.js';
 import RandomBonus from '/imports/api/games/bonus/RandomBonus.js';
+import ReverseMoveMonsterBonus from '/imports/api/games/bonus/ReverseMoveMonsterBonus.js';
+import ShapeShiftMonsterBonus from '/imports/api/games/bonus/ShapeShiftMonsterBonus.js';
+import SlowMonsterBonus from '/imports/api/games/bonus/SlowMonsterBonus.js';
+import SmallBallBonus from '/imports/api/games/bonus/SmallBallBonus.js';
+import SmallMonsterBonus from '/imports/api/games/bonus/SmallMonsterBonus.js';
+import SmokeBombBonus from '/imports/api/games/bonus/SmokeBombBonus.js';
 import {
-	BONUS_SMALL_BALL,
 	BONUS_BIG_BALL,
-	BONUS_INVISIBLE_BALL,
-	BONUS_SMALL_MONSTER,
-	BONUS_BIG_MONSTER,
-	BONUS_JUNK_FOOD_MONSTER,
 	BONUS_BIG_JUMP_MONSTER,
-	BONUS_SLOW_MONSTER,
-	BONUS_FAST_MONSTER,
-	BONUS_FREEZE_MONSTER,
-	BONUS_REVERSE_MOVE_MONSTER,
-	BONUS_INVINCIBLE_MONSTER,
-	BONUS_INVISIBLE_MONSTER,
-	BONUS_INVISIBLE_OPPONENT_MONSTER,
-	BONUS_CLOUD,
-	BONUS_NO_JUMP_MONSTER,
+	BONUS_BIG_MONSTER,
 	BONUS_BOUNCE_MONSTER,
 	BONUS_CLOAKED_MONSTER,
-	BONUS_SHAPE_SHIFT,
-	BONUS_SMOKE_BOMB,
-	BONUS_INSTANT_DEATH,
+	BONUS_CLOUD,
 	BONUS_DRUNK_MONSTER,
-	BONUS_RANDOM
+	BONUS_FAST_MONSTER,
+	BONUS_FREEZE_MONSTER,
+	BONUS_INSTANT_DEATH,
+	BONUS_INVINCIBLE_MONSTER,
+	BONUS_INVISIBLE_BALL,
+	BONUS_INVISIBLE_MONSTER,
+	BONUS_INVISIBLE_OPPONENT_MONSTER,
+	BONUS_JUNK_FOOD_MONSTER,
+	BONUS_NO_JUMP_MONSTER,
+	BONUS_NOTHING,
+	BONUS_RANDOM,
+	BONUS_REVERSE_MOVE_MONSTER,
+	BONUS_SHAPE_SHIFT,
+	BONUS_SLOW_MONSTER,
+	BONUS_SMALL_BALL,
+	BONUS_SMALL_MONSTER,
+	BONUS_SMOKE_BOMB
 } from '/imports/api/games/bonusConstants.js';
+import {Random} from 'meteor/random';
 
 export default class BonusFactory {
 	/**
@@ -115,7 +117,8 @@ export default class BonusFactory {
 			BONUS_BOUNCE_MONSTER,
 			BONUS_CLOAKED_MONSTER,
 			BONUS_SHAPE_SHIFT,
-			BONUS_SMOKE_BOMB
+			BONUS_SMOKE_BOMB,
+			BONUS_NOTHING
 		];
 	}
 
@@ -188,6 +191,8 @@ export default class BonusFactory {
 				return new InstantDeathBonus(game, bonusClass);
 			case BONUS_DRUNK_MONSTER:
 				return new DrunkMonsterBonus(game, bonusClass);
+			case BONUS_NOTHING:
+				return new NothingBonus(game, bonusClass);
 			case BONUS_RANDOM:
 				return new RandomBonus(game, bonusClass);
 		}

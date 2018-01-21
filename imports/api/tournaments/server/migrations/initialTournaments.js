@@ -1,23 +1,24 @@
-import {Meteor} from 'meteor/meteor';
-import {Random} from 'meteor/random';
-import {Tournaments} from '/imports/api/tournaments/tournaments.js';
+import {TournamentModes} from '/imports/api/tournaments/tournamentModes.js';
 import {
+	TOURNAMENT_MODE_BIG_DRUNK,
 	TOURNAMENT_MODE_CLASSIC,
 	TOURNAMENT_MODE_HARDCORE,
-	TOURNAMENT_MODE_MOON_GRAVITY,
-	TOURNAMENT_MODE_JUPITER_GRAVITY,
-	TOURNAMENT_MODE_SMOKE_BOMB,
-	TOURNAMENT_MODE_RANDOM_BONUSES,
-	TOURNAMENT_MODE_SUDDEN_DEATH,
-	TOURNAMENT_MODE_INSTANT_DEATH_BONUS,
-	TOURNAMENT_MODE_NO_BONUSES,
-	TOURNAMENT_MODE_SUPER_BOUNCE_WALLS,
-	TOURNAMENT_MODE_MASSIVE_HARDCORE_BLIND_BULLETPROOF,
-	TOURNAMENT_MODE_BIG_DRUNK,
 	TOURNAMENT_MODE_HIDDEN_SHAPE,
-	TOURNAMENT_MODE_SPAGHETTI_ON_THE_CARPET
+	TOURNAMENT_MODE_INSTANT_DEATH_BONUS,
+	TOURNAMENT_MODE_JUPITER_GRAVITY,
+	TOURNAMENT_MODE_MASSIVE_HARDCORE_BLIND_BULLETPROOF,
+	TOURNAMENT_MODE_MOON_GRAVITY,
+	TOURNAMENT_MODE_NO_BONUSES,
+	TOURNAMENT_MODE_NOTHING_BONUS,
+	TOURNAMENT_MODE_RANDOM_BONUSES,
+	TOURNAMENT_MODE_SMOKE_BOMB,
+	TOURNAMENT_MODE_SPAGHETTI_ON_THE_CARPET,
+	TOURNAMENT_MODE_SUDDEN_DEATH,
+	TOURNAMENT_MODE_SUPER_BOUNCE_WALLS
 } from '/imports/api/tournaments/tournamentModesConstants.js';
-import {TournamentModes} from '/imports/api/tournaments/tournamentModes.js';
+import {Tournaments} from '/imports/api/tournaments/tournaments.js';
+import {Meteor} from 'meteor/meteor';
+import {Random} from 'meteor/random';
 
 Meteor.startup(function() {
 	const tournaments = [
@@ -134,6 +135,14 @@ Meteor.startup(function() {
 			startDate: "2018-01-15 -04:00",
 			endDate: "2018-01-22 -04:00",
 			numberOfLostAllowed: 5,
+			isPublished: false
+		},
+		{
+			_id: Random.id(5),
+			identifier: 'tournament_2018-01-22',
+			mode: TOURNAMENT_MODE_NOTHING_BONUS,
+			startDate: "2018-01-22 -04:00",
+			endDate: "2018-01-29 -04:00",
 			isPublished: false
 		}
 	];

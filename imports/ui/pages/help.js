@@ -13,6 +13,7 @@ import InvisibleBallBonus from '/imports/api/games/bonus/InvisibleBallBonus.js';
 import InvisibleMonsterBonus from '/imports/api/games/bonus/InvisibleMonsterBonus.js';
 import InvisibleOpponentMonsterBonus from '/imports/api/games/bonus/InvisibleOpponentMonsterBonus.js';
 import NoJumpMonsterBonus from '/imports/api/games/bonus/NoJumpMonsterBonus.js';
+import NothingBonus from '/imports/api/games/bonus/NothingBonus.js';
 import RandomBonus from '/imports/api/games/bonus/RandomBonus.js';
 import ReverseMoveMonsterBonus from '/imports/api/games/bonus/ReverseMoveMonsterBonus.js';
 import ShapeShiftMonsterBonus from '/imports/api/games/bonus/ShapeShiftMonsterBonus.js';
@@ -23,9 +24,9 @@ import SmokeBombBonus from '/imports/api/games/bonus/SmokeBombBonus.js';
 import CardSwitcher from '/imports/lib/client/CardSwitcher.js';
 import {onMobileAndTablet} from '/imports/lib/utils.js';
 import {Template} from 'meteor/templating';
-require('jquery-lazy');
-
 import './help.html';
+
+require('jquery-lazy');
 
 let cardSwitcher;
 
@@ -57,6 +58,7 @@ Template.help.helpers({
 			new SmallBallBonus(),
 			new BigBallBonus(),
 			new InvisibleBallBonus(),
+			new NothingBonus(),
 			new SmallMonsterBonus(),
 			new BigMonsterBonus(),
 			new ReverseMoveMonsterBonus(),
@@ -70,14 +72,14 @@ Template.help.helpers({
 			new InvisibleOpponentMonsterBonus(),
 			new CloakedMonsterBonus(),
 			new ShapeShiftMonsterBonus(),
-			new DrunkMonsterBonus(),
 			new InvincibleMonsterBonus(),
+			new DrunkMonsterBonus(),
 			new InstantDeathBonus(),
 		];
 		const helpList = [];
 		let textureAtlasFrames = [];
 		$.ajax({
-			url: '/assets/bonus/texture-atlas.json',
+			url: '/assets/bonus/texture-atlas-icons.json',
 			async: false
 		}).done(function(json) {
 			textureAtlasFrames = json.frames;

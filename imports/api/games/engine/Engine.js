@@ -56,6 +56,9 @@ export default class Engine {
 	addBound(x, y, w, h, material, collisionGroup, colliders, debug) {
 	}
 
+	addImage(x, y, key, frame, group) {
+	}
+
 	addSprite(x, y, key, disableBody = false, frame, debugBody = false) {
 	}
 

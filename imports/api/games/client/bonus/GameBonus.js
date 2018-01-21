@@ -501,28 +501,33 @@ export default class GameBonus {
 	}
 
 	generateClouds() {
-		this.clouds = [];
-
-		const cloudSpreads = [
-			{
-				angle: 56,
-				opacity: 0.8
-			},
-			{
-				scale: 1.1,
-				angle: 37,
-				opacity: 0.8
-			},
-			{
-				angle: 63,
-				opacity: 0.8
-			}
+		this.clouds = [
+			this.createCloud(
+				this.levelConfiguration.width / 4,
+				200,
+				{
+					angle: 56,
+					opacity: 0.925
+				}
+			),
+			this.createCloud(
+				this.levelConfiguration.width / 4 * 3,
+				200,
+				{
+					angle: -63,
+					opacity: 0.925
+				}
+			),
+			this.createCloud(
+				this.levelConfiguration.width / 4 * 2,
+				200,
+				{
+					scale: 1.1,
+					angle: 37,
+					opacity: 0.925
+				}
+			)
 		];
-		for (let i = 1; i < (cloudSpreads.length + 1); i++) {
-			let x = this.levelConfiguration.width / (cloudSpreads.length + 1) * i;
-
-			this.clouds.push(this.createCloud(x, 200, cloudSpreads[i - 1]));
-		}
 	}
 
 	hideCloud() {
@@ -532,23 +537,12 @@ export default class GameBonus {
 	}
 
 	createCloud(xPosition, yPosition, layer) {
-		const cloud = this.engine.addTileSprite(
+		const cloud = this.engine.addImage(
 			xPosition,
 			yPosition,
-			400,
-			400,
-			'bonus-cloud',
-			'cloud-01',
-			true,
+			'cloud',
+			undefined,
 			this.bonusZIndexGroup
-		);
-		this.engine.playAnimation(
-			cloud,
-			{
-				frame: 'cloud-01',
-				frames: ['cloud-01', 'cloud-02', 'cloud-03', 'cloud-04', 'cloud-05', 'cloud-04', 'cloud-03', 'cloud-02'],
-				speed: 5
-			}
 		);
 		cloud.createdAt = (new Date()).getTime();
 		this.engine.sortBonusGroup(this.bonusZIndexGroup);
@@ -571,7 +565,7 @@ export default class GameBonus {
 		}
 		this.smokeBomb[smokeBombIdentifier] = [];
 
-		const cloud = this.createCloud(xPosition, yPosition, {angle: getRandomInt(-180, 180), opacity: 0.8});
+		const cloud = this.createCloud(xPosition, yPosition, {angle: getRandomInt(-180, 180), opacity: 0.925});
 
 		this.engine.animateSetOpacity(cloud, cloud.opacity, this.engine.getOpacity(cloud), 250);
 		this.smokeBomb[smokeBombIdentifier].push(cloud);
@@ -659,7 +653,7 @@ export default class GameBonus {
 	}
 
 	onBonusCollidesPlayer(bonusSprite, player) {
-		if (this.gameData.isUserHost()) {
+		if (this.gameData.isUserHost() && bonusSprite.data.bonus.canActivate()) {
 			const playerKey = this.engine.getKey(player);
 			const activatedAt = this.serverNormalizedTime.getServerTimestamp();
 			const payload = {
