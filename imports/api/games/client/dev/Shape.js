@@ -23,19 +23,19 @@ export default class Shape {
 		this.levelConfiguration = LevelConfiguration.definedSize(1450, 560);
 		this.deviceController = new DesktopController(CustomKeymaps.defaultKeymaps());
 		this.deviceController.init();
-		const engine = new PhaserEngine();
+		this.engine = new PhaserEngine();
 		this.game = new Game(
 			gameId,
 			this.levelConfiguration,
 			this.deviceController,
-			engine,
+			this.engine,
 			new GameData(gameId),
 			gameConfiguration,
 			new GameSkin(new DefaultSkin(), []),
 			new GameStreamBundler(null),
 			new ServerNormalizedTime()
 		);
-		this.game.engine.start(
+		this.engine.start(
 			{
 				width: this.levelConfiguration.width,
 				height: this.levelConfiguration.height,
@@ -50,7 +50,7 @@ export default class Shape {
 	stop() {
 		if (this.game) {
 			this.deviceController.stopMonitoring();
-			this.game.engine.stop();
+			this.engine.stop();
 		}
 	}
 
@@ -62,7 +62,7 @@ export default class Shape {
 		this.overrideGame();
 
 		this.deviceController.startMonitoring();
-		this.game.engine.createGame();
+		this.engine.createGame();
 
 		this.game.collisions.init();
 
@@ -76,7 +76,7 @@ export default class Shape {
 		for (let i = 0; i < PLAYER_LIST_OF_SHAPES.length; i++) {
 			let playerIndex = i + 1;
 
-			this.game['player' + playerIndex] = this.game.engine.addSprite(
+			this.game['player' + playerIndex] = this.engine.addSprite(
 				xPosition,
 				this.levelConfiguration.playerInitialY(),
 				'shape-' + PLAYER_LIST_OF_SHAPES[i]
@@ -119,7 +119,7 @@ export default class Shape {
 	}
 
 	createLevelComponents() {
-		this.game.groundGroup = this.game.engine.addGroup(false);
+		this.game.groundGroup = this.engine.addGroup(false);
 		this.game.levelComponents.createGround();
 		const ground = this.game.levelComponents.createGroundBound();
 		this.game.addPlayerCanJumpOnBody(this.game.player1, ground);
@@ -127,6 +127,11 @@ export default class Shape {
 
 	updateGame() {
 		this.game.inputs();
+
+		for (let i = 0; i < PLAYER_LIST_OF_SHAPES.length; i++) {
+			let playerIndex = i + 1;
+			this.engine.updatePlayerEye(this.game['player' + playerIndex], this.game.ball);
+		}
 	}
 
 	resumeOnTimerEnd() {
@@ -144,12 +149,12 @@ export default class Shape {
 	}
 
 	startCountdownTimer() {
-		this.countdownTimer = this.game.engine.createTimer(3, this.resumeGame, this);
+		this.countdownTimer = this.engine.createTimer(3, this.resumeGame, this);
 		this.countdownTimer.start();
 	}
 
 	resumeGame() {
-		this.game.engine.unfreeze(this.game.ball);
+		this.engine.unfreeze(this.game.ball);
 		this.game.gameResumed = true;
 	}
 }

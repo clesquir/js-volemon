@@ -114,7 +114,10 @@ export default class PhaserEngine extends Engine {
 				vertices[j] = data[i].shape[j] * scale;
 				vertices[j + 1] = data[i].shape[j + 1] * scale;
 			}
-			newData.push({shape: vertices});
+			newData.push({
+				shape: vertices,
+				eyeConfiguration: data[i].eyeConfiguration
+			});
 		}
 
 		let item = {};
@@ -446,6 +449,50 @@ export default class PhaserEngine extends Engine {
 		sprite.body.setZeroRotation();
 		sprite.body.setZeroVelocity();
 		sprite.reset(x, y);
+	}
+
+	addPlayerEye(player, isHost, currentPolygonKey, currentPolygonObject) {
+		let eyeConfiguration = this.game.cache.getPhysicsData(currentPolygonKey)[currentPolygonObject][0].eyeConfiguration;
+
+		const eyeX = (isHost ? 1 : -1) * eyeConfiguration.x;
+		const eyeY = eyeConfiguration.y;
+		const eyeRadius = player.data.eyeRadius = eyeConfiguration.eyeRadius;
+		const pupilRadius = player.data.pupilRadius = eyeConfiguration.pupilRadius;
+
+		if (player.data.eye) {
+			player.data.eye.pupil.destroy();
+			player.data.eye.destroy();
+		}
+
+		//eyeball
+		player.data.eye = this.addGraphics(eyeX, eyeY);
+		player.data.eye.beginFill(0xffffff);
+		player.data.eye.lineStyle(1, 0x363636);
+		player.data.eye.drawCircle(0, 0, eyeRadius);
+
+		//pupil
+		player.data.eye.pupil = this.addGraphics();
+		player.data.eye.pupil.beginFill(0x363636);
+		player.data.eye.pupil.drawCircle(0, 0, pupilRadius);
+		player.data.eye.pupil.beginFill(0x363636);
+
+		player.data.eye.addChild(player.data.eye.pupil);
+		player.addChild(player.data.eye);
+	}
+
+	updatePlayerEye(player, ball) {
+		const eye = player.data.eye;
+		const eyeRadius = player.data.eyeRadius;
+		const pupilRadius = player.data.pupilRadius;
+
+		const dx = player.x + eye.x - ball.x;
+		const dy = player.y + eye.y - ball.y;
+		const r = Math.sqrt(dx * dx + dy * dy);
+		const max = (eyeRadius - pupilRadius) / 2;
+		const x = (r < max) ? dx : dx * max / r;
+		const y = (r < max) ? dy : dy * max / r;
+
+		eye.pupil.position.setTo(x * -1, y * -1);
 	}
 
 	getMass(sprite) {
