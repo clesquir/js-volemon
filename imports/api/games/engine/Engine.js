@@ -92,6 +92,12 @@ export default class Engine {
 	spawn(sprite, x, y) {
 	}
 
+	addPlayerEye(player, isHost, currentPolygonKey, currentPolygonObject) {
+	}
+
+	updatePlayerEye(player, ball) {
+	}
+
 	getVerticalSpeed(sprite) {
 	}
 

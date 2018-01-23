@@ -317,6 +317,13 @@ export default class Game {
 		}
 
 		this.collisions.setupPlayerBody(player);
+
+		this.engine.addPlayerEye(
+			player,
+			player.data.playerCollisionGroup === this.collisions.hostPlayerCollisionGroup,
+			player.data.currentPolygonKey,
+			player.data.currentPolygonObject
+		);
 	}
 
 	createBall(initialXLocation, initialYLocation) {
@@ -425,6 +432,9 @@ export default class Game {
 
 	updateGame() {
 		this.gameStreamBundler.resetBundledStreams();
+
+		this.engine.updatePlayerEye(this.player1, this.ball);
+		this.engine.updatePlayerEye(this.player2, this.ball);
 
 		//Do not allow ball movement if it is frozen
 		if (this.gameData.isUserHost() && this.ball.data.isFrozen) {
