@@ -6,6 +6,7 @@ import {Mongo} from 'meteor/mongo';
 import {ReactiveDict} from 'meteor/reactive-dict';
 import {ReactiveVar} from 'meteor/reactive-var';
 import {Template} from 'meteor/templating';
+import {Session} from "meteor/session";
 
 import './tournaments.html';
 
@@ -40,11 +41,7 @@ Template.tournaments.helpers({
 	},
 
 	hasMorePastTournaments: function() {
-		return PastTournamentsState.get('hasMorePastTournaments');
-	},
-
-	hasPastTournaments: function() {
-		return !!PastTournaments.find().count();
+		return !!PastTournaments.find().count() && PastTournamentsState.get('hasMorePastTournaments');
 	},
 
 	pastTournaments: function() {
@@ -121,11 +118,13 @@ export const initPastTournaments = function() {
 };
 
 export const updatePastTournaments = function() {
+	Session.set('pastTournamentsLoadingMask', true);
 	Meteor.call(
 		'pastTournaments',
 		PastTournamentsState.get('currentSkip'),
 		PAST_TOURNAMENTS_LIMIT,
 		function(error, pastTournaments) {
+			Session.set('pastTournamentsLoadingMask', false);
 			if (pastTournaments) {
 				for (let tournament of pastTournaments) {
 					PastTournaments.insert(tournament);

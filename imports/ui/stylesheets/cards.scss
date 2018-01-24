@@ -3,6 +3,7 @@ $card-background-color-hover: #ffffff;
 $card-radius: 3px;
 
 .cards-list {
+	position: relative;
 	margin: 10px auto 0;
 	display: flex;
 	flex-direction: column;
