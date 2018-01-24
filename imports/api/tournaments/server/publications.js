@@ -4,6 +4,7 @@ import {GAME_STATUS_REGISTRATION, GAME_STATUS_STARTED} from '/imports/api/games/
 import {TournamentEloScores} from '/imports/api/tournaments/tournamentEloScores.js';
 import {TournamentProfiles} from '/imports/api/tournaments/tournamentProfiles.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
+import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 import {Meteor} from 'meteor/meteor';
 import * as Moment from 'meteor/momentjs:moment';
 
@@ -66,4 +67,32 @@ Meteor.publish('tournamentGame', function(tournamentId, gameId) {
 		Players.find({gameId: gameId}),
 		TournamentEloScores.find({gameId: gameId})
 	];
+});
+
+Meteor.publish('tournamentRanksChart', function(tournamentId) {
+	const usernameByUserId = {};
+
+	UserConfigurations.find().forEach((userConfiguration) => {
+		usernameByUserId[userConfiguration.userId] = userConfiguration.name;
+	});
+
+	TournamentEloScores.find({tournamentId: tournamentId}).forEach((eloScore) => {
+		const key = eloScore.userId + '_' + eloScore.timestamp;
+		this.added(
+			'tournamentrankchartdata',
+			key,
+			Object.assign(
+				eloScore,
+				{
+					username: usernameByUserId[eloScore.userId]
+				}
+			)
+		);
+	});
+
+	this.ready();
+
+	this.onStop(() => {
+		this.removed('tournamentrankchartdata');
+	});
 });
