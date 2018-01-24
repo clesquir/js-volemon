@@ -5,7 +5,6 @@ import * as Moment from 'meteor/momentjs:moment';
 import {Mongo} from 'meteor/mongo';
 import {ReactiveDict} from 'meteor/reactive-dict';
 import {ReactiveVar} from 'meteor/reactive-var';
-import {Session} from "meteor/session";
 import {Template} from 'meteor/templating';
 
 import './tournaments.html';
@@ -122,13 +121,11 @@ export const initPastTournaments = function() {
 };
 
 export const updatePastTournaments = function() {
-	Session.set('pastTournamentsLoadingMask', true);
 	Meteor.call(
 		'pastTournaments',
 		PastTournamentsState.get('currentSkip'),
 		PAST_TOURNAMENTS_LIMIT,
 		function(error, pastTournaments) {
-			Session.set('pastTournamentsLoadingMask', false);
 			if (pastTournaments) {
 				for (let tournament of pastTournaments) {
 					PastTournaments.insert(tournament);
