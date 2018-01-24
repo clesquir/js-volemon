@@ -1,9 +1,12 @@
-import {Meteor} from 'meteor/meteor';
-import {Template} from 'meteor/templating';
-import * as Moment from 'meteor/momentjs:moment';
-import {ReactiveVar} from 'meteor/reactive-var';
+import {getUTCTimeStamp, timeDifference, timeElapsedSince} from '/imports/lib/utils.js';
 import {Router} from 'meteor/iron:router';
-import {getUTCTimeStamp, timeElapsedSince, timeDifference} from '/imports/lib/utils.js';
+import {Meteor} from 'meteor/meteor';
+import * as Moment from 'meteor/momentjs:moment';
+import {Mongo} from 'meteor/mongo';
+import {ReactiveDict} from 'meteor/reactive-dict';
+import {ReactiveVar} from 'meteor/reactive-var';
+import {Session} from "meteor/session";
+import {Template} from 'meteor/templating';
 
 import './tournaments.html';
 
@@ -13,8 +16,12 @@ const ActiveTournaments = new ActiveTournamentsCollection('activeTournaments');
 class FutureTournamentsCollection extends Mongo.Collection {}
 const FutureTournaments = new FutureTournamentsCollection('futureTournaments');
 
+const PAST_TOURNAMENTS_LIMIT = 5;
+const PAST_TOURNAMENTS_INCREMENT = 5;
+
 class PastTournamentsCollection extends Mongo.Collection {}
-const PastTournaments = new PastTournamentsCollection('pastTournaments');
+const PastTournaments = new PastTournamentsCollection(null);
+const PastTournamentsState = new ReactiveDict();
 
 Template.tournaments.helpers({
 	hasActiveTournaments: function() {
@@ -31,6 +38,10 @@ Template.tournaments.helpers({
 
 	futureTournaments: function() {
 		return FutureTournaments.find({}, {sort: [['startDate', 'asc']]});
+	},
+
+	hasMorePastTournaments: function() {
+		return PastTournamentsState.get('hasMorePastTournaments');
 	},
 
 	hasPastTournaments: function() {
@@ -79,6 +90,13 @@ Template.tournaments.helpers({
 Template.tournaments.events({
 	'click [data-action="go-to-tournament"]': function(e) {
 		Router.go(Router.routes['tournament'].url({tournamentId: this._id}));
+	},
+
+	'click [data-action="show-more-past-tournaments"]': function(e) {
+		e.preventDefault();
+
+		PastTournamentsState.set('currentSkip', PastTournamentsState.get('currentSkip') + PAST_TOURNAMENTS_INCREMENT);
+		updatePastTournaments();
 	}
 });
 
@@ -87,8 +105,39 @@ Template.tournaments.onCreated(function() {
 	this.uptimeInterval = Meteor.setInterval(() => {
 		this.uptime.set(getUTCTimeStamp());
 	}, 10000);
+
+	initPastTournaments();
 });
 
 Template.tournaments.destroyed = function() {
 	Meteor.clearInterval(this.uptimeInterval);
+};
+
+export const initPastTournaments = function() {
+	PastTournaments.remove({});
+	PastTournamentsState.set('currentSkip', 0);
+	PastTournamentsState.set('hasMorePastTournaments', true);
+
+	updatePastTournaments();
+};
+
+export const updatePastTournaments = function() {
+	Session.set('pastTournamentsLoadingMask', true);
+	Meteor.call(
+		'pastTournaments',
+		PastTournamentsState.get('currentSkip'),
+		PAST_TOURNAMENTS_LIMIT,
+		function(error, pastTournaments) {
+			Session.set('pastTournamentsLoadingMask', false);
+			if (pastTournaments) {
+				for (let tournament of pastTournaments) {
+					PastTournaments.insert(tournament);
+				}
+
+				if (pastTournaments.length < PAST_TOURNAMENTS_LIMIT) {
+					PastTournamentsState.set('hasMorePastTournaments', false);
+				}
+			}
+		}
+	);
 };

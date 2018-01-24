@@ -5,8 +5,7 @@ export const TournamentsController = RouteController.extend({
 		return [
 			Meteor.subscribe('profileData', Meteor.userId()),
 			Meteor.subscribe('activeTournaments'),
-			Meteor.subscribe('futureTournaments'),
-			Meteor.subscribe('pastTournaments')
+			Meteor.subscribe('futureTournaments')
 		];
 	}
 });

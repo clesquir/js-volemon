@@ -1,12 +1,11 @@
+import {Games} from '/imports/api/games/games.js';
+import {Players} from '/imports/api/games/players.js';
+import {GAME_STATUS_REGISTRATION, GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
+import {TournamentEloScores} from '/imports/api/tournaments/tournamentEloScores.js';
+import {TournamentProfiles} from '/imports/api/tournaments/tournamentProfiles.js';
+import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {Meteor} from 'meteor/meteor';
 import * as Moment from 'meteor/momentjs:moment';
-import {Players} from '/imports/api/games/players.js';
-import {Games} from '/imports/api/games/games.js';
-import {GAME_STATUS_REGISTRATION, GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
-import {Profiles} from '/imports/api/profiles/profiles.js';
-import {Tournaments} from '/imports/api/tournaments/tournaments.js';
-import {TournamentProfiles} from '/imports/api/tournaments/tournamentProfiles.js';
-import {TournamentEloScores} from '/imports/api/tournaments/tournamentEloScores.js';
 
 Meteor.publish('activeTournaments', function() {
 	Tournaments.find().forEach((tournament) => {
@@ -25,16 +24,6 @@ Meteor.publish('futureTournaments', function() {
 	Tournaments.find().forEach((tournament) => {
 		if (Moment.moment(tournament.startDate, "YYYY-MM-DD ZZ").diff(new Date()) > 0) {
 			this.added('futureTournaments', tournament._id, tournament);
-		}
-	});
-
-	this.ready();
-});
-
-Meteor.publish('pastTournaments', function() {
-	Tournaments.find().forEach((tournament) => {
-		if (Moment.moment(tournament.endDate, "YYYY-MM-DD ZZ").diff(new Date()) < 0) {
-			this.added('pastTournaments', tournament._id, tournament);
 		}
 	});
 
