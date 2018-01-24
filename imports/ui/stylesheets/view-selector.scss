@@ -1,13 +1,6 @@
 .view-selector {
-	margin-bottom: 10px;
-	text-align: right;
-
-	&.swiper-selector {
-		@include horizontal-breakpoint(tablet) {
-			text-align: center;
-			font-size: 22px;
-		}
-	}
+	text-align: center;
+	font-size: 22px;
 
 	i {
 		cursor: pointer;
