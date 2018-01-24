@@ -1,6 +1,7 @@
 @include view-selector-shown(tournament-statistics-shown, view-tournament-statistics, tournament-statistics);
 @include view-selector-shown(tournament-games-shown, view-tournament-games, tournament-games);
 @include view-selector-shown(tournament-rank-shown, view-tournament-rank, tournament-rank);
+@include view-selector-shown(tournament-line-chart-shown, view-tournament-line-chart, tournament-line-chart);
 
 .tournament-name {
 	margin-bottom: 5px;
