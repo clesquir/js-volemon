@@ -68,7 +68,7 @@ Template.afterGame.helpers({
 
 	gameDurations: function() {
 		const pointsDuration = Array.from(this.game.pointsDuration);
-		const durationsSorted = pointsDuration.sort(function(a, b) {
+		const durationsSorted = Array.from(this.game.pointsDuration).sort(function(a, b) {
 			return a - b;
 		});
 
