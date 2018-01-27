@@ -1,4 +1,4 @@
-import DeviceController from '/imports/api/games/client/deviceController/DeviceController.js';
+import DeviceController from '/imports/api/games/deviceController/DeviceController.js';
 
 export default class MobileController extends DeviceController {
 	constructor(parentSelector, controllerClass) {
@@ -51,6 +51,10 @@ export default class MobileController extends DeviceController {
 				this.onPressUp(e.originalEvent);
 			}
 		);
+	}
+
+	stop() {
+		this.stopMonitoring();
 	}
 
 	stopMonitoring() {

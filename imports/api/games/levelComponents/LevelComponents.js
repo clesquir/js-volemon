@@ -1,6 +1,6 @@
-import Collisions from '/imports/api/games/client/Collisions.js';
-import LevelConfiguration from '/imports/api/games/client/LevelConfiguration.js';
+import Collisions from '/imports/api/games/collisions/Collisions.js';
 import {NORMAL_SCALE_PHYSICS_DATA} from '/imports/api/games/constants.js';
+import LevelConfiguration from '/imports/api/games/levelConfiguration/LevelConfiguration.js';
 import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
 
 export default class LevelComponents {

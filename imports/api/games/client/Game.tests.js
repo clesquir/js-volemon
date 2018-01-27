@@ -1,12 +1,12 @@
-import GameData from '/imports/api/games/client/data/GameData.js';
-import NullDeviceController from '/imports/api/games/client/deviceController/NullDeviceController.js';
 import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
-import LevelConfiguration from '/imports/api/games/client/LevelConfiguration.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
 import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
 import StaticGameConfiguration from '/imports/api/games/configuration/StaticGameConfiguration.js';
 import {BALL_VERTICAL_SPEED_ON_PLAYER_HIT} from '/imports/api/games/constants.js';
-import NullEngine from '/imports/api/games/engine/client/NullEngine.js';
+import StaticGameData from '/imports/api/games/data/StaticGameData.js';
+import NullDeviceController from '/imports/api/games/deviceController/NullDeviceController.js';
+import NullEngine from '/imports/api/games/engine/NullEngine.js';
+import LevelConfiguration from '/imports/api/games/levelConfiguration/LevelConfiguration.js';
 import DefaultSkin from '/imports/api/skins/skins/DefaultSkin.js';
 import NullStream from '/imports/lib/stream/NullStream.js';
 import {assert} from 'chai';
@@ -16,7 +16,7 @@ import Game from './Game.js';
 
 describe('Game#isPlayerJumpingForward', function() {
 	const levelConfiguration = LevelConfiguration.defaultConfiguration();
-	const gameData = new GameData();
+	const gameData = new StaticGameData();
 	const gameConfiguration = new StaticGameConfiguration();
 	const deviceController = new NullDeviceController();
 	const gameSkin = new GameSkin(new DefaultSkin());
@@ -125,7 +125,7 @@ describe('Game#isPlayerJumpingForward', function() {
 
 describe('Game#isBallInFrontOfPlayer', function() {
 	const levelConfiguration = LevelConfiguration.defaultConfiguration();
-	const gameData = new GameData();
+	const gameData = new StaticGameData();
 	const gameConfiguration = new StaticGameConfiguration();
 	const gameSkin = new GameSkin(new DefaultSkin());
 	const streamBundler = new GameStreamBundler();
@@ -256,7 +256,7 @@ describe('Game#isBallInFrontOfPlayer', function() {
 
 describe('Game#isBallBelowPlayer', function() {
 	const levelConfiguration = LevelConfiguration.defaultConfiguration();
-	const gameData = new GameData();
+	const gameData = new StaticGameData();
 	const gameConfiguration = new StaticGameConfiguration();
 	const gameSkin = new GameSkin(new DefaultSkin());
 	const streamBundler = new GameStreamBundler();
@@ -328,7 +328,7 @@ describe('Game#isBallBelowPlayer', function() {
 
 describe('Game#isPlayerDoingDropShot', function() {
 	const levelConfiguration = LevelConfiguration.defaultConfiguration();
-	const gameData = new GameData();
+	const gameData = new StaticGameData();
 	const gameConfiguration = new StaticGameConfiguration();
 	const gameSkin = new GameSkin(new DefaultSkin());
 	const deviceController = new NullDeviceController();
@@ -410,7 +410,7 @@ describe('Game#isPlayerDoingDropShot', function() {
 
 describe('Game#dropShotBallOnPlayerHit', function() {
 	const levelConfiguration = LevelConfiguration.defaultConfiguration();
-	const gameData = new GameData();
+	const gameData = new StaticGameData();
 	const gameConfiguration = new StaticGameConfiguration();
 	const gameSkin = new GameSkin(new DefaultSkin());
 	const streamBundler = new GameStreamBundler();
@@ -441,7 +441,7 @@ describe('Game#dropShotBallOnPlayerHit', function() {
 
 describe('Game#reboundBallOnPlayerHit', function() {
 	const levelConfiguration = LevelConfiguration.defaultConfiguration();
-	const gameData = new GameData();
+	const gameData = new StaticGameData();
 	const gameConfiguration = new StaticGameConfiguration();
 	const gameSkin = new GameSkin(new DefaultSkin());
 	const streamBundler = new GameStreamBundler();
@@ -473,7 +473,7 @@ describe('Game#reboundBallOnPlayerHit', function() {
 
 describe('Game#onBallHitPlayer', function() {
 	const levelConfiguration = LevelConfiguration.defaultConfiguration();
-	const gameData = new GameData();
+	const gameData = new StaticGameData();
 	const gameConfiguration = new StaticGameConfiguration();
 	const gameSkin = new GameSkin(new DefaultSkin());
 	const deviceController = new NullDeviceController();
@@ -585,7 +585,7 @@ describe('Game#onBallHitPlayer', function() {
 
 describe('Game#smashBallOnPlayerHit', function() {
 	const levelConfiguration = LevelConfiguration.defaultConfiguration();
-	const gameData = new GameData();
+	const gameData = new StaticGameData();
 	const gameConfiguration = new StaticGameConfiguration();
 	const gameSkin = new GameSkin(new DefaultSkin());
 	const streamBundler = new GameStreamBundler();
@@ -688,7 +688,7 @@ describe('Game#smashBallOnPlayerHit', function() {
 
 describe('Game#inputs', function() {
 	const levelConfiguration = LevelConfiguration.defaultConfiguration();
-	const gameData = new GameData();
+	const gameData = new StaticGameData();
 	const gameConfiguration = new StaticGameConfiguration();
 	const gameSkin = new GameSkin(new DefaultSkin());
 	const deviceController = new NullDeviceController();

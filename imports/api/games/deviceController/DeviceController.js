@@ -6,25 +6,32 @@ export default class DeviceController {
 	}
 
 	stop() {
-		this.stopMonitoring();
 	}
 
 	stopMonitoring() {
 	}
 
+	/**
+	 * @returns {boolean}
+	 */
 	leftPressed() {
-		return false;
 	}
 
+	/**
+	 * @returns {boolean}
+	 */
 	rightPressed() {
-		return false;
 	}
 
+	/**
+	 * @returns {boolean}
+	 */
 	upPressed() {
-		return false;
 	}
 
+	/**
+	 * @returns {boolean}
+	 */
 	downPressed() {
-		return false;
 	}
 }

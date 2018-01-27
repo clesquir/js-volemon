@@ -1,12 +1,12 @@
-import StubCollections from 'meteor/hwillson:stub-collections';
-import {assert} from 'chai';
-import {Random} from 'meteor/random';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import GameData from './GameData.js';
 import {PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_RECTANGLE} from '/imports/api/games/shapeConstants.js';
+import {assert} from 'chai';
+import StubCollections from 'meteor/hwillson:stub-collections';
+import {Random} from 'meteor/random';
+import CollectionGameData from './CollectionGameData.js';
 
-describe('GameData#getPlayerShapeFromKey', function() {
+describe('CollectionGameData#getPlayerShapeFromKey', function() {
 	it('returns default shape when player 1 does not exist', function() {
 		StubCollections.add([Games, Players]);
 		StubCollections.stub();
@@ -14,7 +14,7 @@ describe('GameData#getPlayerShapeFromKey', function() {
 		const gameId = Random.id(5);
 		Games.insert({_id: gameId});
 
-		const gameData = new GameData(gameId);
+		const gameData = new CollectionGameData(gameId, Random.id(5));
 		assert.strictEqual(PLAYER_DEFAULT_SHAPE, gameData.getPlayerShapeFromKey('player1'));
 
 		StubCollections.restore();
@@ -27,7 +27,7 @@ describe('GameData#getPlayerShapeFromKey', function() {
 		const gameId = Random.id(5);
 		Games.insert({_id: gameId});
 
-		const gameData = new GameData(gameId);
+		const gameData = new CollectionGameData(gameId, Random.id(5));
 		assert.strictEqual(PLAYER_DEFAULT_SHAPE, gameData.getPlayerShapeFromKey('player2'));
 
 		StubCollections.restore();
@@ -47,7 +47,7 @@ describe('GameData#getPlayerShapeFromKey', function() {
 			shape: PLAYER_SHAPE_RECTANGLE
 		});
 
-		const gameData = new GameData(gameId);
+		const gameData = new CollectionGameData(gameId, Random.id(5));
 		gameData.init();
 		assert.strictEqual(PLAYER_SHAPE_RECTANGLE, gameData.getPlayerShapeFromKey('player1'));
 
@@ -62,7 +62,7 @@ describe('GameData#getPlayerShapeFromKey', function() {
 		Games.insert({_id: gameId, createdBy: 1});
 		Players.insert({_id: Random.id(5), gameId: gameId, userId: 2, shape: PLAYER_SHAPE_RECTANGLE});
 
-		const gameData = new GameData(gameId);
+		const gameData = new CollectionGameData(gameId, Random.id(5));
 		gameData.init();
 		assert.strictEqual(PLAYER_SHAPE_RECTANGLE, gameData.getPlayerShapeFromKey('player2'));
 

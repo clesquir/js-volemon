@@ -106,7 +106,7 @@ export default class GameBonus {
 	}
 
 	applyActiveBonuses() {
-		for (let activeBonus of this.gameData.activeBonuses) {
+		for (let activeBonus of this.gameData.activeBonuses()) {
 			let bonus = BonusFactory.fromClassName(activeBonus.activatedBonusClass, this);
 			bonus.reassignBeforeActivationData(activeBonus.beforeActivationData);
 			bonus.activate(activeBonus.targetPlayerKey, activeBonus.activatedAt);

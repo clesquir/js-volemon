@@ -1,6 +1,5 @@
 import GameBonus from '/imports/api/games/client/bonus/GameBonus.js';
-import Collisions from '/imports/api/games/client/Collisions.js';
-import LevelComponents from '/imports/api/games/client/LevelComponents.js';
+import Collisions from '/imports/api/games/collisions/Collisions.js';
 import {
 	BALL_GRAVITY_SCALE,
 	BALL_VERTICAL_SPEED_ON_PLAYER_HIT,
@@ -15,6 +14,7 @@ import {
 	PLAYER_VELOCITY_Y_ON_JUMP
 } from '/imports/api/games/constants.js';
 import {BALL_INTERVAL, PLAYER_INTERVAL} from '/imports/api/games/emissionConstants.js';
+import LevelComponents from '/imports/api/games/levelComponents/LevelComponents.js';
 import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
 import {Session} from 'meteor/session';

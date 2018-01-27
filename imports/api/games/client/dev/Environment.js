@@ -1,12 +1,12 @@
-import GameData from '/imports/api/games/client/data/GameData.js';
-import DesktopController from '/imports/api/games/client/deviceController/DesktopController.js';
 import Game from '/imports/api/games/client/Game.js';
 import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
-import LevelConfiguration from '/imports/api/games/client/LevelConfiguration.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
 import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
 import StaticGameConfiguration from '/imports/api/games/configuration/StaticGameConfiguration.js';
+import StaticGameData from '/imports/api/games/data/StaticGameData.js';
+import DesktopController from '/imports/api/games/deviceController/DesktopController.js';
 import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
+import LevelConfiguration from '/imports/api/games/levelConfiguration/LevelConfiguration.js';
 import {PLAYER_DEFAULT_SHAPE} from '/imports/api/games/shapeConstants.js';
 import DefaultSkin from '/imports/api/skins/skins/DefaultSkin.js';
 import CustomKeymaps from '/imports/lib/keymaps/CustomKeymaps.js';
@@ -19,7 +19,8 @@ export default class Environment {
 
 	start() {
 		const gameId = Random.id(5);
-		this.gameData = new GameData(gameId);
+		this.gameData = new StaticGameData(gameId);
+		this.gameData.init();
 		this.gameConfiguration = new StaticGameConfiguration(gameId);
 		this.gameStreamBundler = new GameStreamBundler(null);
 		this.levelConfiguration = LevelConfiguration.defaultConfiguration();
@@ -162,7 +163,7 @@ export default class Environment {
 	}
 
 	createLevelComponents() {
-		this.game.groundGroup = this.game.engine.addGroup(false);
+		this.game.levelComponents.groundGroup = this.game.engine.addGroup(false);
 		this.game.levelComponents.createGround();
 		const ground = this.game.levelComponents.createGroundBound();
 		this.game.addPlayerCanJumpOnBody(this.game.player1, ground);

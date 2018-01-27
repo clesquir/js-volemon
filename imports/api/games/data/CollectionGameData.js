@@ -1,25 +1,55 @@
-import {Meteor} from 'meteor/meteor';
+import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGameConfiguration.js';
+import GameData from '/imports/api/games/data/GameData.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGameConfiguration.js';
 import {PLAYER_DEFAULT_SHAPE} from '/imports/api/games/shapeConstants.js';
 import {
-	isGameStatusOnGoing,
-	isGameStatusStarted,
 	hasGameAborted,
 	hasGameStatusEndedWithAWinner,
-	isMatchPoint,
-	isDeucePoint
+	isDeucePoint,
+	isGameStatusOnGoing,
+	isGameStatusStarted,
+	isMatchPoint
 } from '/imports/api/games/utils.js';
+import {Meteor} from 'meteor/meteor';
 
-export default class GameData {
+export default class CollectionGameData extends GameData {
 	/**
 	 * @param {string} gameId
+	 * @param {string} currentUserId
 	 */
-	constructor(gameId) {
+	constructor(gameId, currentUserId) {
+		super();
 		this.gameId = gameId;
+		this.currentUserId = currentUserId;
+		this._activeBonuses = [];
+	}
 
-		this.activeBonuses = [];
+	init() {
+		let game = this.fetchGame();
+
+		this.maximumPoints = game.maximumPoints;
+		this.hasBonuses = game.hasBonuses;
+		this.createdBy = game.createdBy;
+		this.tournamentId = game.tournamentId;
+
+		this.updateStartedAt(game.startedAt);
+		this.updateHostPoints(game.hostPoints);
+		this.updateClientPoints(game.clientPoints);
+		this.updateLastPointTaken(game.lastPointTaken);
+		this.updateLastPointAt(game.lastPointAt);
+		this.updateStatus(game.status);
+		this.updateActiveBonuses(game.activeBonuses);
+
+		this.initPlayers();
+
+		this.gameConfiguration = new DefaultGameConfiguration(this.gameId);
+		this.gameConfiguration.init();
+
+		if (this.gameConfiguration.overridesCurrentPlayerShape()) {
+			this.overriddenCurrentPlayerShape = this.gameConfiguration.currentPlayerShape();
+		}
+		this.listOfShapes = this.gameConfiguration.listOfShapes();
 	}
 
 	/**
@@ -133,32 +163,11 @@ export default class GameData {
 		return isDeucePoint(this.hostPoints, this.clientPoints, this.maximumPoints);
 	}
 
-	init() {
-		let game = this.fetchGame();
-
-		this.currentUserId = Meteor.userId();
-		this.maximumPoints = game.maximumPoints;
-		this.hasBonuses = game.hasBonuses;
-		this.createdBy = game.createdBy;
-		this.tournamentId = game.tournamentId;
-
-		this.updateStartedAt(game.startedAt);
-		this.updateHostPoints(game.hostPoints);
-		this.updateClientPoints(game.clientPoints);
-		this.updateLastPointTaken(game.lastPointTaken);
-		this.updateLastPointAt(game.lastPointAt);
-		this.updateStatus(game.status);
-		this.updateActiveBonuses(game.activeBonuses);
-
-		this.initPlayers();
-
-		this.gameConfiguration = new DefaultGameConfiguration(this.gameId);
-		this.gameConfiguration.init();
-
-		if (this.gameConfiguration.overridesCurrentPlayerShape()) {
-			this.overriddenCurrentPlayerShape = this.gameConfiguration.currentPlayerShape();
-		}
-		this.listOfShapes = this.gameConfiguration.listOfShapes();
+	/**
+	 * @returns Array
+	 */
+	activeBonuses() {
+		return this._activeBonuses;
 	}
 
 	initPlayers() {
@@ -214,6 +223,6 @@ export default class GameData {
 	}
 
 	updateActiveBonuses(activeBonuses) {
-		this.activeBonuses = activeBonuses;
+		this._activeBonuses = activeBonuses;
 	}
 }

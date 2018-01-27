@@ -1,4 +1,4 @@
-import DeviceController from '/imports/api/games/client/deviceController/DeviceController.js';
+import DeviceController from '/imports/api/games/deviceController/DeviceController.js';
 
 export default class DesktopController extends DeviceController {
 	/**
@@ -21,6 +21,10 @@ export default class DesktopController extends DeviceController {
 		this.monitoringStarted = true;
 		window.addEventListener('keydown', this.onKeyDown, true);
 		window.addEventListener('keyup', this.onKeyUp, true);
+	}
+
+	stop() {
+		this.stopMonitoring();
 	}
 
 	stopMonitoring() {

@@ -1,13 +1,13 @@
-import GameData from '/imports/api/games/client/data/GameData.js';
-import NullDeviceController from '/imports/api/games/client/deviceController/NullDeviceController.js';
 import Game from '/imports/api/games/client/Game.js';
 import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
-import LevelConfiguration from '/imports/api/games/client/LevelConfiguration.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
 import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
 import StaticGameConfiguration from '/imports/api/games/configuration/StaticGameConfiguration.js';
 import {PLAYER_FROZEN_MASS} from '/imports/api/games/constants.js';
-import NullEngine from '/imports/api/games/engine/client/NullEngine.js';
+import StaticGameData from '/imports/api/games/data/StaticGameData.js';
+import NullDeviceController from '/imports/api/games/deviceController/NullDeviceController.js';
+import NullEngine from '/imports/api/games/engine/NullEngine.js';
+import LevelConfiguration from '/imports/api/games/levelConfiguration/LevelConfiguration.js';
 import DefaultSkin from '/imports/api/skins/skins/DefaultSkin.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 import {assert} from 'chai';
@@ -18,7 +18,7 @@ import GameBonus from './GameBonus.js';
 describe('GameBonus#getBonusSpriteFromIdentifier', function() {
 	const gameId = Random.id(5);
 	const levelConfiguration = LevelConfiguration.defaultConfiguration();
-	const gameData = new GameData(gameId);
+	const gameData = new StaticGameData(gameId);
 	const gameConfiguration = new StaticGameConfiguration(gameId);
 	const gameStreamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
@@ -59,7 +59,7 @@ describe('GameBonus#getBonusSpriteFromIdentifier', function() {
 describe('GameBonus#createBonusIfTimeHasElapsed', function() {
 	const gameId = Random.id(5);
 	const levelConfiguration = LevelConfiguration.defaultConfiguration();
-	const gameData = new GameData(gameId);
+	const gameData = new StaticGameData(gameId);
 	const gameConfiguration = new StaticGameConfiguration(gameId);
 	const gameStreamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
@@ -131,7 +131,7 @@ describe('GameBonus#createBonusIfTimeHasElapsed', function() {
 describe('GameBonus#removeBonusSprite', function() {
 	const gameId = Random.id(5);
 	const levelConfiguration = LevelConfiguration.defaultConfiguration();
-	const gameData = new GameData(gameId);
+	const gameData = new StaticGameData(gameId);
 	const gameConfiguration = new StaticGameConfiguration(gameId);
 	const gameStreamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
@@ -198,7 +198,7 @@ describe('GameBonus#removeBonusSprite', function() {
 describe('GameBonus#setPlayerGravity', function() {
 	const gameId = Random.id(5);
 	const levelConfiguration = LevelConfiguration.defaultConfiguration();
-	const gameData = new GameData(gameId);
+	const gameData = new StaticGameData(gameId);
 	const gameConfiguration = new StaticGameConfiguration(gameId);
 	const gameStreamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
@@ -270,7 +270,7 @@ describe('GameBonus#setPlayerGravity', function() {
 describe('GameBonus#resetPlayerGravity', function() {
 	const gameId = Random.id(5);
 	const levelConfiguration = LevelConfiguration.defaultConfiguration();
-	const gameData = new GameData(gameId);
+	const gameData = new StaticGameData(gameId);
 	const gameConfiguration = new StaticGameConfiguration(gameId);
 	const gameStreamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
@@ -340,7 +340,7 @@ describe('GameBonus#resetPlayerGravity', function() {
 describe('GameBonus#freezePlayer', function() {
 	const gameId = Random.id(5);
 	const levelConfiguration = LevelConfiguration.defaultConfiguration();
-	const gameData = new GameData(gameId);
+	const gameData = new StaticGameData(gameId);
 	const gameConfiguration = new StaticGameConfiguration(gameId);
 	const gameStreamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
@@ -388,7 +388,7 @@ describe('GameBonus#freezePlayer', function() {
 describe('GameBonus#unFreezePlayer', function() {
 	const gameId = Random.id(5);
 	const levelConfiguration = LevelConfiguration.defaultConfiguration();
-	const gameData = new GameData(gameId);
+	const gameData = new StaticGameData(gameId);
 	const gameConfiguration = new StaticGameConfiguration(gameId);
 	const gameStreamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();

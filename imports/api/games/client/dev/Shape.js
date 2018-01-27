@@ -1,12 +1,12 @@
-import GameData from '/imports/api/games/client/data/GameData.js';
-import DesktopController from '/imports/api/games/client/deviceController/DesktopController.js';
 import Game from '/imports/api/games/client/Game.js';
 import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
-import LevelConfiguration from '/imports/api/games/client/LevelConfiguration.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
 import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
 import StaticGameConfiguration from '/imports/api/games/configuration/StaticGameConfiguration.js';
+import StaticGameData from '/imports/api/games/data/StaticGameData.js';
+import DesktopController from '/imports/api/games/deviceController/DesktopController.js';
 import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
+import LevelConfiguration from '/imports/api/games/levelConfiguration/LevelConfiguration.js';
 import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants';
 import DefaultSkin from '/imports/api/skins/skins/DefaultSkin.js';
 import CustomKeymaps from '/imports/lib/keymaps/CustomKeymaps.js';
@@ -24,12 +24,14 @@ export default class Shape {
 		this.deviceController = new DesktopController(CustomKeymaps.defaultKeymaps());
 		this.deviceController.init();
 		this.engine = new PhaserEngine();
+		const gameData = new StaticGameData(gameId);
+		gameData.init();
 		this.game = new Game(
 			gameId,
 			this.levelConfiguration,
 			this.deviceController,
 			this.engine,
-			new GameData(gameId),
+			gameData,
 			gameConfiguration,
 			new GameSkin(new DefaultSkin(), []),
 			new GameStreamBundler(null),
