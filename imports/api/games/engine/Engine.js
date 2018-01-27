@@ -23,7 +23,7 @@ export default class Engine {
 	loadImage(key, path) {
 	}
 
-	loadAtlasJSONHash(key, imagePath, jsonPath) {
+	loadAtlas(key, imagePath, jsonPath) {
 	}
 
 	loadSpriteSheet(key, path, width, height) {
@@ -175,12 +175,6 @@ export default class Engine {
 	 * @param {{frame: {string}, frames: {string}[], speed: {int}}} animation
 	 */
 	playAnimation(sprite, animation) {
-	}
-
-	tweenRotate(sprite, rotateSpeed) {
-	}
-
-	stopTweenRotation(sprite) {
 	}
 
 	createTimer(seconds, fn, scope) {

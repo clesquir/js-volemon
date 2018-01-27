@@ -133,7 +133,7 @@ export default class PhaserEngine extends Engine {
 		this.game.load.image(key, path);
 	}
 
-	loadAtlasJSONHash(key, imagePath, jsonPath) {
+	loadAtlas(key, imagePath, jsonPath) {
 		this.game.load.atlasJSONHash(key, imagePath, jsonPath);
 	}
 
@@ -143,16 +143,6 @@ export default class PhaserEngine extends Engine {
 
 	loadData(key, path) {
 		this.game.load.physics(key, path);
-	}
-
-	addTextureAtlas(atlasKey, imageKey, jsonKey) {
-		this.game.cache.addTextureAtlas(
-			atlasKey,
-			null,
-			this.game.cache.getImage(imageKey),
-			this.game.cache.getJSON(jsonKey),
-			'json'
-		);
 	}
 
 	addGroup(enableBody = false) {
@@ -289,10 +279,6 @@ export default class PhaserEngine extends Engine {
 
 	getCenterY() {
 		return this.game.world.centerY;
-	}
-
-	getTime() {
-		return this.game.time.time;
 	}
 
 	isTimerRunning(timer) {
@@ -519,10 +505,6 @@ export default class PhaserEngine extends Engine {
 		sprite.body.damping = damping;
 	}
 
-	setStatic(sprite, isStatic) {
-		sprite.body.static = isStatic;
-	}
-
 	getHorizontalSpeed(sprite) {
 		return sprite.body.velocity.x;
 	}
@@ -711,7 +693,7 @@ export default class PhaserEngine extends Engine {
 		this.updateBonusProgressComponent(bonusSprite, progress);
 
 		bonusSprite.bringToTop();
-		this.setStatic(bonusSprite, true);
+		bonusSprite.body.static = true;
 
 		return bonusSprite;
 	}
@@ -813,7 +795,7 @@ export default class PhaserEngine extends Engine {
 		const bonusSprite = this.getBonusSprite(x, y, bonus);
 
 		bonusSprite.bringToTop();
-		this.setStatic(bonusSprite, true);
+		bonusSprite.body.static = true;
 
 		this.activateAnimation(bonusSprite);
 	}

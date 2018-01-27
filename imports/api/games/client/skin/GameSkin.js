@@ -34,7 +34,7 @@ export default class GameSkin {
 		}
 
 		for (let atlas of atlasJSONHash) {
-			engine.loadAtlasJSONHash(atlas.key, atlas.imagePath, atlas.jsonPath);
+			engine.loadAtlas(atlas.key, atlas.imagePath, atlas.jsonPath);
 		}
 		for (let image of imagesToLoad) {
 			engine.loadImage(image.key, image.path);
