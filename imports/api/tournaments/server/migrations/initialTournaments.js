@@ -11,6 +11,7 @@ import {
 	TOURNAMENT_MODE_NO_BONUSES,
 	TOURNAMENT_MODE_NOTHING_BONUS,
 	TOURNAMENT_MODE_RANDOM_BONUSES,
+	TOURNAMENT_MODE_SHAPE_SHIFTER,
 	TOURNAMENT_MODE_SMOKE_BOMB,
 	TOURNAMENT_MODE_SPAGHETTI_ON_THE_CARPET,
 	TOURNAMENT_MODE_SUDDEN_DEATH,
@@ -143,6 +144,14 @@ Meteor.startup(function() {
 			mode: TOURNAMENT_MODE_NOTHING_BONUS,
 			startDate: "2018-01-22 -04:00",
 			endDate: "2018-01-29 -04:00",
+			isPublished: false
+		},
+		{
+			_id: Random.id(5),
+			identifier: 'tournament_2018-01-29',
+			mode: TOURNAMENT_MODE_SHAPE_SHIFTER,
+			startDate: "2018-01-29 -04:00",
+			endDate: "2018-02-05 -04:00",
 			isPublished: false
 		}
 	];

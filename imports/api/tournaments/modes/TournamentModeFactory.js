@@ -10,6 +10,7 @@ import {
 	TOURNAMENT_MODE_NO_BONUSES,
 	TOURNAMENT_MODE_NOTHING_BONUS,
 	TOURNAMENT_MODE_RANDOM_BONUSES,
+	TOURNAMENT_MODE_SHAPE_SHIFTER,
 	TOURNAMENT_MODE_SMOKE_BOMB,
 	TOURNAMENT_MODE_SPAGHETTI_ON_THE_CARPET,
 	TOURNAMENT_MODE_SUDDEN_DEATH,
@@ -26,6 +27,7 @@ import MoonGravity from './MoonGravity';
 import NoBonuses from './NoBonuses';
 import NothingBonus from './NothingBonus.js';
 import RandomBonuses from './RandomBonuses';
+import ShapeShifter from './ShapeShifter';
 import SmokeBomb from './SmokeBomb';
 import SpaghettiOnTheCarpet from './SpaghettiOnTheCarpet.js';
 import SuddenDeath from './SuddenDeath';
@@ -64,6 +66,8 @@ export default class TournamentModeFactory {
 				return new SpaghettiOnTheCarpet();
 			case TOURNAMENT_MODE_NOTHING_BONUS:
 				return new NothingBonus();
+			case TOURNAMENT_MODE_SHAPE_SHIFTER:
+				return new ShapeShifter();
 		}
 
 		throw `The tournament mode ${id} doesn't exist.`;

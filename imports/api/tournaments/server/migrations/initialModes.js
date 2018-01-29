@@ -11,6 +11,7 @@ import {
 	TOURNAMENT_MODE_NO_BONUSES,
 	TOURNAMENT_MODE_NOTHING_BONUS,
 	TOURNAMENT_MODE_RANDOM_BONUSES,
+	TOURNAMENT_MODE_SHAPE_SHIFTER,
 	TOURNAMENT_MODE_SMOKE_BOMB,
 	TOURNAMENT_MODE_SPAGHETTI_ON_THE_CARPET,
 	TOURNAMENT_MODE_SUDDEN_DEATH,
@@ -92,6 +93,11 @@ Meteor.startup(function() {
 			"_id": TOURNAMENT_MODE_NOTHING_BONUS,
 			"name": "Nothing bonus",
 			"description": "Bonuses spawning are doing nothing but obstruct"
+		},
+		{
+			"_id": TOURNAMENT_MODE_SHAPE_SHIFTER,
+			"name": "Shape shifter",
+			"description": "Bonuses spawning are shape shift at a very fast pace"
 		}
 	];
 
