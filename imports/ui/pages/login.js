@@ -11,22 +11,37 @@ Template.login.events({
 	'click [data-action=switch-for-create-account]': function() {
 		const loginForm = document.getElementById('login-form');
 		const createAccountForm = document.getElementById('create-account-form');
+		const forgotPasswordForm = document.getElementById('forgot-password-form');
+		const privacyPolicyForm = document.getElementById('privacy-policy-form');
 
-		removeFieldsInvalidMarkAndSwitchForm(createAccountForm, loginForm);
+		removeFieldsInvalidMarkAndSwitchForm(createAccountForm, [loginForm, forgotPasswordForm, privacyPolicyForm]);
 	},
 
 	'click [data-action=switch-for-forgot-password]': function() {
 		const loginForm = document.getElementById('login-form');
+		const createAccountForm = document.getElementById('create-account-form');
 		const forgotPasswordForm = document.getElementById('forgot-password-form');
+		const privacyPolicyForm = document.getElementById('privacy-policy-form');
 
-		removeFieldsInvalidMarkAndSwitchForm(forgotPasswordForm, loginForm);
+		removeFieldsInvalidMarkAndSwitchForm(forgotPasswordForm, [loginForm, createAccountForm, privacyPolicyForm]);
 	},
 
 	'click [data-action=switch-for-log-in]': function() {
 		const loginForm = document.getElementById('login-form');
 		const createAccountForm = document.getElementById('create-account-form');
+		const forgotPasswordForm = document.getElementById('forgot-password-form');
+		const privacyPolicyForm = document.getElementById('privacy-policy-form');
 
-		removeFieldsInvalidMarkAndSwitchForm(loginForm, createAccountForm);
+		removeFieldsInvalidMarkAndSwitchForm(loginForm, [createAccountForm, forgotPasswordForm, privacyPolicyForm]);
+	},
+
+	'click [data-action=switch-for-privacy-policy]': function() {
+		const loginForm = document.getElementById('login-form');
+		const createAccountForm = document.getElementById('create-account-form');
+		const forgotPasswordForm = document.getElementById('forgot-password-form');
+		const privacyPolicyForm = document.getElementById('privacy-policy-form');
+
+		removeFieldsInvalidMarkAndSwitchForm(privacyPolicyForm, [loginForm, createAccountForm, forgotPasswordForm]);
 	},
 
 	'click [data-action=close-login]': function() {
@@ -36,6 +51,44 @@ Template.login.events({
 
 	'focus input.field-in-error': function(e) {
 		removeFieldInvalidMark($(e.target));
+	},
+
+	'click [data-action=login-with-facebook]': function(e) {
+		const errorLabelContainer = $(e.target).find('.error-label-container');
+
+		removeErrorLabelContainer(errorLabelContainer);
+
+		Meteor.loginWithFacebook({requestPermissions: ['public_profile', 'email']}, function(error) {
+			if (error === undefined) {
+				if (actionAfterLoginCreateUser) {
+					actionAfterLoginCreateUser();
+					actionAfterLoginCreateUser = null;
+				}
+				Session.set('lightbox', null);
+			} else {
+				errorLabelContainer.show();
+				errorLabelContainer.html(error.reason);
+			}
+		});
+	},
+
+	'click [data-action=login-with-google]': function(e) {
+		const errorLabelContainer = $(e.target).find('.error-label-container');
+
+		removeErrorLabelContainer(errorLabelContainer);
+
+		Meteor.loginWithGoogle({}, function(error) {
+			if (error === undefined) {
+				if (actionAfterLoginCreateUser) {
+					actionAfterLoginCreateUser();
+					actionAfterLoginCreateUser = null;
+				}
+				Session.set('lightbox', null);
+			} else {
+				errorLabelContainer.show();
+				errorLabelContainer.html(error.reason);
+			}
+		});
 	},
 
 	'submit form[name=login]': function(e) {

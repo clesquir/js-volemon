@@ -1,4 +1,8 @@
 {
+  "facebookAppId": "",
+  "facebookSecret": "",
+  "googleClientId": "",
+  "googleSecret": "",
   "smtpUrl": "smtp://email:password@smtp.gmail.com:465",
   "public": {
     "STREAM_ALIAS": "socketio",

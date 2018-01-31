@@ -1,10 +1,24 @@
 <template name="login">
 
-	<div class="login-template restricted-width-lightbox-content">
+	<div class="login-template">
 
-		<form id="login-form" name="login">
+		<form id="login-form" name="login" class="restricted-width-lightbox-content">
 
 			<h1>Log in</h1>
+
+			<div class="login-buttons">
+				<div class="login-button login-button-facebook" data-action="login-with-facebook">
+					<div class="login-button-logo login-button-logo-facebook"></div>
+					<div class="login-button-text">Log in with Facebook</div>
+				</div>
+
+				<div class="login-button login-button-google" data-action="login-with-google">
+					<div class="login-button-logo login-button-logo-google"></div>
+					<div class="login-button-text">Log in with Google+</div>
+				</div>
+			</div>
+
+			<p>... or log in with us:</p>
 
 			<div class="form-section">
 				<label for="login-email-field">Email</label>
@@ -24,9 +38,11 @@
 
 			<p class="form-switch-link"><a data-action="switch-for-create-account">Don't have an account? Sign up!</a></p>
 
+			<p class="form-switch-link"><a data-action="switch-for-privacy-policy">Read our privacy policy</a></p>
+
 		</form>
 
-		<form id="forgot-password-form" name="forgotPassword">
+		<form id="forgot-password-form" name="forgotPassword" class="restricted-width-lightbox-content">
 
 			<h1>Forgot you password?</h1>
 
@@ -40,9 +56,11 @@
 
 			<input type="submit" class="button" value="Reset" />
 
+			<p class="form-switch-link"><a data-action="switch-for-log-in">Already have an account? Log in!</a></p>
+
 		</form>
 
-		<form id="password-token-sent-form">
+		<form id="password-token-sent-form" class="restricted-width-lightbox-content">
 
 			<h1>Email sent</h1>
 
@@ -52,7 +70,7 @@
 
 		</form>
 
-		<form id="create-account-form" name="createAccount">
+		<form id="create-account-form" name="createAccount" class="restricted-width-lightbox-content">
 
 			<h1>Create an account</h1>
 
@@ -82,7 +100,23 @@
 
 			<p class="form-switch-link"><a data-action="switch-for-log-in">Already have an account? Log in!</a></p>
 
+			<p class="form-switch-link"><a data-action="switch-for-privacy-policy">Read our privacy policy</a></p>
+
 		</form>
+
+		<div id="privacy-policy-form">
+
+			<p class="form-switch-link"><a data-action="switch-for-log-in">Log in!</a></p>
+
+			<p>-</p>
+
+			{{> privacyPolicy}}
+
+			<p>-</p>
+
+			<p class="form-switch-link"><a data-action="switch-for-log-in">Log in!</a></p>
+
+		</div>
 
 	</div>
 

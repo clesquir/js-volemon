@@ -16,7 +16,11 @@ removeErrorLabelContainer = function(errorLabelContainer) {
 	errorLabelContainer.html();
 };
 
-removeFieldsInvalidMarkAndSwitchForm = function(formToShow, formToHide) {
+/**
+ * @param formToShow
+ * @param {Array} formsToHide
+ */
+removeFieldsInvalidMarkAndSwitchForm = function(formToShow, formsToHide) {
 	const fieldsInError = $(formToShow).find('input.field-in-error');
 	const errorLabelContainer = $(formToShow).find('.error-label-container');
 
@@ -24,7 +28,10 @@ removeFieldsInvalidMarkAndSwitchForm = function(formToShow, formToHide) {
 		removeFieldInvalidMark($(field));
 	});
 
-	$(formToHide).hide();
+	for (let formToHide of formsToHide) {
+		$(formToHide).hide();
+	}
+
 	removeErrorLabelContainer(errorLabelContainer);
 	$(formToShow).show();
 

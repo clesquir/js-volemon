@@ -42,6 +42,7 @@ import '/imports/ui/views/afterGame.js';
 import '/imports/ui/views/gameCanvas.js';
 import '/imports/ui/views/gameSetup.js';
 import '/imports/ui/views/gamesList.js';
+import '/imports/ui/views/privacyPolicy.js';
 import '/imports/ui/views/reactions.js';
 import '/imports/ui/views/reactionsList.js';
 import '/imports/ui/views/recentGames.js';
@@ -116,5 +117,9 @@ Router.map(function() {
 	this.route('game', {
 		path: '/game/:_id',
 		controller: GameController
+	});
+
+	this.route('privacyPolicy', {
+		path: '/privacy-policy'
 	});
 });

@@ -1,8 +1,4 @@
 .login-template {
-	form {
-		animation: appear 1s linear both;
-	}
-
 	p {
 		margin: 10px 0;
 	}
@@ -30,8 +26,52 @@
 
 #login-form {
 	display: block;
+	margin: 0 auto;
 }
 
-#forgot-password-form, #password-token-sent-form, #create-account-form {
+#forgot-password-form, #password-token-sent-form, #create-account-form, #privacy-policy-form {
 	display: none;
+	margin: 0 auto;
+}
+
+.login-buttons {
+	margin: 25px auto;
+}
+
+.login-button {
+	width: 225px;
+	margin: 10px auto 0;
+	padding: 5px;
+	color: white;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+
+	.login-button-logo {
+		background-repeat: no-repeat;
+		background-size: 20px;
+		width: 20px;
+		height: 20px;
+		margin-left: 5px;
+	}
+
+	.login-button-text {
+		flex: 1;
+	}
+}
+
+.login-button-facebook {
+	background-color: #4267b2;
+
+	.login-button-logo-facebook {
+		background-image: url("/assets/login/facebook.png");
+	}
+}
+
+.login-button-google {
+	background-color: #cd4438;
+
+	.login-button-logo-google {
+		background-image: url("/assets/login/google.png");
+	}
 }

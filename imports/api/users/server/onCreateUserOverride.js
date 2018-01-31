@@ -6,14 +6,24 @@ import ProfileCreator from '/imports/api/profiles/server/ProfileCreator.js';
 import UserConfigurationCreator from '/imports/api/users/server/UserConfigurationCreator.js';
 
 Accounts.onCreateUser((options, user) => {
+	const configuration = options.configuration || {};
+
 	user._id = Random.id();
 
+	if (user.services.facebook) {
+		configuration.name = user.services.facebook.name;
+	}
+
+	if (user.services.google) {
+		configuration.name = user.services.google.name;
+	}
+
 	//Validate presence of name
-	if (options.configuration === undefined || options.configuration.name === undefined) {
+	if (configuration.name === undefined) {
 		throw new Error('Must set options.configuration.name');
 	}
 
-	UserConfigurationCreator.create(user._id, options.configuration.name);
+	UserConfigurationCreator.create(user._id, configuration.name);
 	ProfileCreator.create(user._id);
 	InitialEloScoreCreator.create(user._id);
 	const tournamentListeners = new TournamentListeners();

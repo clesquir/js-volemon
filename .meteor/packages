@@ -35,3 +35,6 @@ email@1.2.3
 reactive-var@1.0.11
 dynamic-import@0.2.0
 meteortesting:mocha
+accounts-facebook
+accounts-google
+service-configuration
