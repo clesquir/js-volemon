@@ -3,7 +3,12 @@
 	<div class="user-profile-information">
 		<div class="user-profile-name">{{userProfileName}}</div>
 		<div class="user-profile-id">{{userProfileId}}</div>
-		<div class="user-profile-email">{{userProfileEmail}}</div>
+		<div>
+			<span class="user-profile-email">{{userProfileEmail}}</span>
+			{{#if userProfileServiceName}}
+				<span class="user-profile-service-name"> ({{userProfileServiceName}})</span>
+			{{/if}}
+		</div>
 	</div>
 
 	<div id="user-profile-contents" class="view-selector-contents user-profile-statistics-shown">

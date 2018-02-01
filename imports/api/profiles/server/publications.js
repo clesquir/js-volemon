@@ -11,9 +11,21 @@ Meteor.publish('userProfile', function(userId) {
 
 	UserConfigurations.find({userId: userId}).forEach((userConfiguration) => {
 		const userId = userConfiguration.userId;
+		const user = Meteor.users.findOne(userId);
 
 		userProfile.userId = userId;
-		userProfile.email = Meteor.users.findOne(userId).emails[0].address;
+
+		if (user.services.facebook) {
+			userProfile.email = user.services.facebook.email;
+			userProfile.serviceName = 'facebook';
+		} else if (user.services.google) {
+			userProfile.email = user.services.google.email;
+			userProfile.serviceName = 'google';
+		}
+
+		if (user.emails && user.emails.length) {
+			userProfile.email = user.emails[0].address;
+		}
 		userProfile.username = userConfiguration.name;
 
 		this.added('userprofiles', userId, userProfile);

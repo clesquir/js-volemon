@@ -43,6 +43,12 @@ Template.userProfileComponent.helpers({
 		return userProfile ? userProfile.email.split('').reverse().join('') : '-';
 	},
 
+	userProfileServiceName: function() {
+		const userProfile = UserProfiles.findOne({userId: Session.get('userProfile')});
+
+		return userProfile ? userProfile.serviceName : '';
+	},
+
 	getUserId: function() {
 		return Session.get('userProfile');
 	}

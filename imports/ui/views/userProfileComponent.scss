@@ -19,4 +19,8 @@ $user-important-information: lighten($text-color, 30%);
 		direction: rtl;
 		unicode-bidi: bidi-override;
 	}
+
+	.user-profile-service-name {
+		color: $user-important-information;
+	}
 }
