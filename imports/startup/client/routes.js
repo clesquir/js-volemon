@@ -33,6 +33,7 @@ import '/imports/ui/components/lightbox.js';
 import '/imports/ui/components/loading.js';
 import '/imports/ui/components/shapeSelector.js';
 import '/imports/ui/components/switchButton.js';
+import '/imports/ui/components/weakConnection.js';
 import '/imports/ui/views/eloRanking.js';
 import '/imports/ui/views/eloRatingChange.js';
 import '/imports/ui/views/achievementPopup.js';
