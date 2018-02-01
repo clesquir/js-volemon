@@ -1,0 +1,55 @@
+.weak-connection-mask {
+	bottom: 0;
+	top: 0;
+	left: 0;
+	right: 0;
+	width: 100px;
+	height: 60px;
+	display: flex;
+	z-index: 2000;
+	position: fixed;
+	margin: auto;
+
+	$weak-connection-signal-color: darken($negative, 0%);
+	$weak-connection-signal-color-flash: darken($negative, 15%);
+
+	@keyframes colorflash {
+		0% {
+			color: $weak-connection-signal-color;
+		}
+		10% {
+			color: $weak-connection-signal-color-flash;
+		}
+		20% {
+			color: $weak-connection-signal-color;
+		}
+		100% {
+			color: $weak-connection-signal-color;
+		}
+	}
+
+	.weak-connection-icon {
+		margin: auto;
+		font-size: 4em;
+		text-shadow: 0 0 1px #000, 0 0 1px #000, 0 0 1px #000, 0 0 1px #000;
+
+		.weak-connection-icon-item {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			text-align: center;
+		}
+
+		.weak-connection-icon-wifi {
+			color: $weak-connection-signal-color;
+			animation: colorflash 2s infinite ease-in-out;
+		}
+
+		.weak-connection-icon-exclamation {
+			font-size: 0.9em;
+			color: lighten($negative, 5%);
+		}
+	}
+}
