@@ -1,0 +1,88 @@
+<template name="userSettings">
+
+	<div class="app-section app-section-top user-settings-page">
+
+		<div class="app-section-inner maximum-responsive-width">
+
+			<h1>Settings</h1>
+
+			<div class="user-profile-information">
+				<div class="user-profile-name">{{userProfileName}}</div>
+				<div class="user-profile-id">{{userProfileId}}</div>
+				<div>
+					<span class="user-profile-email">{{userProfileEmail}}</span>
+					{{#if userProfileServiceName}}
+						<span class="user-profile-service-name"> ({{userProfileServiceName}})</span>
+					{{/if}}
+				</div>
+			</div>
+
+			<div class="user-settings-option-group">
+				<div class="user-settings-option-group-title">Game options</div>
+
+				{{#if onDesktop}}
+					<div class="user-settings-option-row">
+						<div class="user-settings-option-icon"><i class="fa fa-bell"></i></div>
+						<div class="user-settings-option-label">
+							<div class="user-settings-option-title">
+								{{> switchButton label="Game notifications sound" dataAction="activate-user-notifications" onOffMethod=gameNotificationsSound}}
+							</div>
+							<div class="user-settings-option-description">
+								Ring a bell if you started a game and went strolling around
+							</div>
+						</div>
+					</div>
+
+					<div class="user-settings-option-row">
+						<div class="user-settings-option-icon"><i class="fa fa-keyboard-o"></i></div>
+						<div class="user-settings-option-label">
+							<div data-action="user-change-controls" class="user-settings-option-title">
+								Change controls
+							</div>
+							<div class="user-settings-option-description">
+								Assign custom keyboard keys to fit your gameplay
+							</div>
+						</div>
+					</div>
+				{{/if}}
+
+				<div class="user-settings-option-row">
+					<div class="user-settings-option-icon"><i class="fa fa-paint-brush"></i></div>
+					<div class="user-settings-option-label">
+						<div data-action="user-change-skin" class="user-settings-option-title">
+							Change skin
+						</div>
+						<div class="user-settings-option-description">
+							Enable weather adaptive plugin and choose a game skin
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="user-settings-option-group">
+				<div class="user-settings-option-group-title">Account</div>
+
+				<div class="user-settings-option-row">
+					<div class="user-settings-option-icon"><i class="fa fa-address-card"></i></div>
+					<div class="user-settings-option-label">
+						<div data-action="user-change-name" class="user-settings-option-title">Change name</div>
+						<div class="user-settings-option-description"></div>
+					</div>
+				</div>
+
+				{{#if hasPassword}}
+					<div class="user-settings-option-row">
+						<div class="user-settings-option-icon"><i class="fa fa-key"></i></div>
+						<div class="user-settings-option-label">
+							<div data-action="user-change-password" class="user-settings-option-title">Change password</div>
+							<div class="user-settings-option-description"></div>
+						</div>
+					</div>
+				{{/if}}
+			</div>
+
+		</div>
+
+	</div>
+
+</template>

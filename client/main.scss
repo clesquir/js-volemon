@@ -52,7 +52,7 @@ $desktop-max-height: 70em;
 @import "{}/imports/ui/stylesheets/view-selector.scss";
 
 @mixin mask {
-	background: rgba($background-color, .95);
+	background: rgba($background-color, 0.95);
 	bottom: 0;
 	top: 0;
 	left: 0;
@@ -100,6 +100,7 @@ $desktop-max-height: 70em;
 @import "{}/imports/ui/pages/rank.scss";
 @import "{}/imports/ui/pages/skins.scss";
 @import "{}/imports/ui/pages/tournament.scss";
+@import "{}/imports/ui/pages/userSettings.scss";
 
 html, body {
 	height: 100%;
@@ -115,7 +116,7 @@ body {
 	font-family: 'Oxygen', sans-serif;
 	cursor: default;
 	font-size: 16px;
-	letter-spacing: .04em;
+	letter-spacing: 0.04em;
 }
 
 body.active-lightbox {
@@ -144,8 +145,8 @@ h2 {
 .back-button {
 	position: absolute;
 	left: 0;
-	transition: opacity .2s ease-in-out;
-	opacity: .25;
+	transition: opacity 0.2s ease-in-out;
+	opacity: 0.25;
 
 	&:hover {
 		opacity: 1;
@@ -291,7 +292,7 @@ p {
 .user-profile-link {
 	border-style: dashed;
 	border-width: 0 0 1px 0;
-	border-color: rgba(lighten($text-color, 25%), .4);
+	border-color: rgba(lighten($text-color, 25%), 0.4);
 	padding-bottom: 2px;
 	transition: all 0.25s linear;
 
