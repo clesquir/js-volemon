@@ -9,7 +9,7 @@
 	font-family: inherit;
 	font-size: 15px;
 	font-weight: 600;
-	padding: .75em 1.25em;
+	padding: 0.75em 1.25em;
 	border-radius: 3px;
 	transition: transform 100ms linear;
 
@@ -48,7 +48,6 @@ $switch-button-height: 16px;
 	border-radius: 11px;
 	box-shadow: 0 0 1px rgba(0, 0, 0, 0.2) inset;
 	border: 1px solid rgba(0, 0, 0, 0.3);
-	cursor: pointer;
 	transition: all 0.3s linear;
 	outline: 0;
 
@@ -80,8 +79,14 @@ $switch-button-height: 16px;
 	}
 }
 
-.not-editable .switch-button {
-	cursor: auto;
+.switch-label, .switch-button {
+	cursor: pointer;
+}
+
+.not-editable {
+	.switch-label, .switch-button {
+		cursor: default;
+	}
 }
 
 p:not(.not-editable) .switch-button:focus {

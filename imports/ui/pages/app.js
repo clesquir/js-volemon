@@ -1,10 +1,9 @@
-import {Meteor} from 'meteor/meteor';
-import {Template} from 'meteor/templating';
-import {Session} from 'meteor/session';
-import {Tooltips} from 'meteor/lookback:tooltips';
-import {Router} from 'meteor/iron:router';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
-import {onMobileAndTablet} from '/imports/lib/utils.js';
+import {Router} from 'meteor/iron:router';
+import {Tooltips} from 'meteor/lookback:tooltips';
+import {Meteor} from 'meteor/meteor';
+import {Session} from 'meteor/session';
+import {Template} from 'meteor/templating';
 
 import './app.html';
 
@@ -27,16 +26,6 @@ Template.app.helpers({
 		const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
 
 		return userConfiguration && userConfiguration.name;
-	},
-
-	userMutedNotifications: function() {
-		const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
-
-		return userConfiguration && userConfiguration.muteNotifications;
-	},
-
-	onDesktop: function() {
-		return !onMobileAndTablet();
 	}
 });
 
@@ -67,7 +56,7 @@ Template.app.events({
 		}
 	},
 
-	'click [data-action=open-help]': function(e) {
+	'click [data-action=open-help]': function() {
 		Session.set('lightbox', 'help');
 	},
 
@@ -118,27 +107,11 @@ Template.app.events({
 		}
 	},
 
-	'click [data-action=user-edit-name]': function(e) {
-		Session.set('lightbox', 'username');
-	},
-
-	'click [data-action=user-password-change]': function(e) {
-		Session.set('lightbox', 'passwordChange');
-	},
-
-	'click [data-action=user-skin-change]': function(e) {
-		Session.set('lightbox', 'skins');
-	},
-
-	'click [data-action=user-change-controls]': function(e) {
-		Session.set('lightbox', 'keymaps');
-	},
-
 	'click [data-action=user-logout]': function() {
 		Meteor.logout(function() {});
 	},
 
-	'click [data-action=create-game]': function(e) {
+	'click [data-action=create-game]': function() {
 		Tooltips.hide();
 		Session.set('appLoadingMask', true);
 		actionAfterLoginCreateUser = function() {
@@ -165,10 +138,6 @@ Template.app.events({
 		actionAfterLoginCreateUser = null;
 	},
 
-	'click [data-action=mute-user-notifications]': function(e) {
-		Meteor.call('saveMuteNotifications');
-	},
-
 	'click [data-action="copy-url"]': function(e) {
 		const url = $(e.target).parent('.copyable-url-input').find('input[name=url]')[0].value;
 		const temporaryInput = $('<input>');
@@ -184,5 +153,5 @@ Template.app.events({
 		$(e.target).mouseout(function() {
 			$(e.target).attr('data-tooltip', 'Copy to clipboard');
 		});
-	},
+	}
 });

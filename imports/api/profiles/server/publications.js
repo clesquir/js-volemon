@@ -27,6 +27,7 @@ Meteor.publish('userProfile', function(userId) {
 			userProfile.email = user.emails[0].address;
 		}
 		userProfile.username = userConfiguration.name;
+		userProfile.hasPassword = !!user.services.password;
 
 		this.added('userprofiles', userId, userProfile);
 	});

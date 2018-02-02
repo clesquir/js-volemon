@@ -24,7 +24,7 @@ $skin-selection-color: darken($table-header-color, 15%);
 			opacity: 0.75;
 			font-weight: bold;
 			white-space: nowrap;
-			transition: all .2s ease-in-out;
+			transition: all 0.2s ease-in-out;
 			text-shadow: 0 0 2px #ffffff, 0 0 5px #ffffff, 0 0 10px #ffffff;
 			position: absolute;
 			width: 100%;
@@ -36,7 +36,7 @@ $skin-selection-color: darken($table-header-color, 15%);
 		}
 
 		&:hover {
-			box-shadow: 0 0 15px 2px rgba($skin-selection-color, .5);
+			box-shadow: 0 0 15px 2px rgba($skin-selection-color, 0.5);
 
 			.skin-item-name {
 				font-size: 1.2em;

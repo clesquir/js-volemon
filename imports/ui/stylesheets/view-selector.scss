@@ -4,8 +4,8 @@
 
 	i {
 		cursor: pointer;
-		transition: opacity .2s ease-in-out;
-		opacity: .25;
+		transition: opacity 0.2s ease-in-out;
+		opacity: 0.25;
 
 		& + & {
 			margin-left: 10px;

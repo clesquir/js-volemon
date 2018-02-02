@@ -17,8 +17,8 @@
 
 	& > div {
 		display: block;
-		-webkit-transition: -webkit-transform .75s ease-in-out;
-		transition: transform .75s ease-in-out;
+		-webkit-transition: -webkit-transform 0.75s ease-in-out;
+		transition: transform 0.75s ease-in-out;
 
 		&:before {
 			content: "\f27b";
@@ -57,7 +57,7 @@
 		}
 
 		.received-reaction-item {
-			transition: transform .2s ease-in-out;
+			transition: transform 0.2s ease-in-out;
 			transform: scale(0);
 
 			&.reaction-shown {
@@ -116,7 +116,7 @@
 
 	.reaction-list-items {
 		opacity: 0.25;
-		transition: all .2s ease-in-out;
+		transition: all 0.2s ease-in-out;
 
 		&:hover {
 			opacity: 1;
@@ -126,7 +126,7 @@
 			cursor: pointer;
 
 			& > div {
-				transition: all .2s ease-in-out;
+				transition: all 0.2s ease-in-out;
 			}
 
 			&:hover {
@@ -156,7 +156,7 @@
 	position: absolute;
 	top: 10%;
 	z-index: 1;
-	transition: all .5s ease-in-out;
+	transition: all 0.5s ease-in-out;
 	transform: scale(0.75);
 
 	&.cheer-no-viewers {
