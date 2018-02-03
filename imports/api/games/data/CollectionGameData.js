@@ -1,4 +1,3 @@
-import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGameConfiguration.js';
 import GameData from '/imports/api/games/data/GameData.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
@@ -11,7 +10,6 @@ import {
 	isGameStatusStarted,
 	isMatchPoint
 } from '/imports/api/games/utils.js';
-import {Meteor} from 'meteor/meteor';
 
 export default class CollectionGameData extends GameData {
 	/**
@@ -25,6 +23,9 @@ export default class CollectionGameData extends GameData {
 		this._activeBonuses = [];
 	}
 
+	/**
+	 * Init before starting game to gather newly joined players
+	 */
 	init() {
 		let game = this.fetchGame();
 
@@ -42,14 +43,6 @@ export default class CollectionGameData extends GameData {
 		this.updateActiveBonuses(game.activeBonuses);
 
 		this.initPlayers();
-
-		this.gameConfiguration = new DefaultGameConfiguration(this.gameId);
-		this.gameConfiguration.init();
-
-		if (this.gameConfiguration.overridesCurrentPlayerShape()) {
-			this.overriddenCurrentPlayerShape = this.gameConfiguration.currentPlayerShape();
-		}
-		this.listOfShapes = this.gameConfiguration.listOfShapes();
 	}
 
 	/**
@@ -69,11 +62,7 @@ export default class CollectionGameData extends GameData {
 			return PLAYER_DEFAULT_SHAPE;
 		}
 
-		if (this.overriddenCurrentPlayerShape && this.isGameStatusStarted() && this.isCurrentPlayerKey(playerKey)) {
-			return this.overriddenCurrentPlayerShape;
-		} else {
-			return player.shape;
-		}
+		return player.shape;
 	}
 
 	/**

@@ -18,16 +18,21 @@ import {Random} from 'meteor/random';
 export default class GameBonus {
 	/**
 	 * @param {Game} game
-	 * @param {LevelConfiguration} levelConfiguration
 	 * @param {Engine} engine
 	 * @param {GameData} gameData
 	 * @param {GameConfiguration} gameConfiguration
 	 * @param {GameStreamBundler} gameStreamBundler
 	 * @param {ServerNormalizedTime} serverNormalizedTime
 	 */
-	constructor(game, levelConfiguration, engine, gameData, gameConfiguration, gameStreamBundler, serverNormalizedTime) {
+	constructor(
+		game,
+		engine,
+		gameData,
+		gameConfiguration,
+		gameStreamBundler,
+		serverNormalizedTime
+	) {
 		this.game = game;
-		this.levelConfiguration = levelConfiguration;
 		this.engine = engine;
 		this.gameData = gameData;
 		this.gameConfiguration = gameConfiguration;
@@ -133,7 +138,7 @@ export default class GameBonus {
 						break;
 					case 'player2':
 						player2Count++;
-						xModifier = (this.levelConfiguration.width / 2);
+						xModifier = (this.gameConfiguration.levelConfiguration.width / 2);
 						sideCount = player2Count;
 						break;
 				}
@@ -142,7 +147,7 @@ export default class GameBonus {
 				if (bonusSprite === null) {
 					const bonusSprite = this.engine.drawBonus(
 						x,
-						this.levelConfiguration.height - (this.levelConfiguration.groundHeight / 2),
+						this.gameConfiguration.levelConfiguration.height - (this.gameConfiguration.levelConfiguration.groundHeight / 2),
 						BonusFactory.fromClassName(bonus.classNameToActivate(), this),
 						this.getBonusProgress(bonus, bonus.getDuration())
 					);
@@ -270,8 +275,8 @@ export default class GameBonus {
 		}
 
 		let textureShape = playerShape;
-		if (this.gameData.overriddenCurrentPlayerShape && this.gameData.isCurrentPlayerKey(playerKey)) {
-			textureShape = this.gameData.overriddenCurrentPlayerShape;
+		if (this.gameConfiguration.overridesCurrentPlayerShape() && this.gameData.isCurrentPlayerKey(playerKey)) {
+			textureShape = this.gameConfiguration.currentPlayerShape();
 		}
 		player.data.currentTextureKey = 'shape-' + textureShape;
 		player.data.currentPolygonObject = 'player-' + playerShape;
@@ -503,7 +508,7 @@ export default class GameBonus {
 	generateClouds() {
 		this.clouds = [
 			this.createCloud(
-				this.levelConfiguration.width / 4,
+				this.gameConfiguration.levelConfiguration.width / 4,
 				200,
 				{
 					angle: 56,
@@ -511,7 +516,7 @@ export default class GameBonus {
 				}
 			),
 			this.createCloud(
-				this.levelConfiguration.width / 4 * 3,
+				this.gameConfiguration.levelConfiguration.width / 4 * 3,
 				200,
 				{
 					angle: -63,
@@ -519,7 +524,7 @@ export default class GameBonus {
 				}
 			),
 			this.createCloud(
-				this.levelConfiguration.width / 4 * 2,
+				this.gameConfiguration.levelConfiguration.width / 4 * 2,
 				200,
 				{
 					scale: 1.1,
@@ -618,7 +623,7 @@ export default class GameBonus {
 	createRandomBonus() {
 		let bonus = BonusFactory.randomBonus(this, this.gameConfiguration);
 		let data = bonus.dataToStream();
-		data.initialX = this.levelConfiguration.width / 2 + Random.choice([-6, +6]);
+		data.initialX = this.gameConfiguration.levelConfiguration.width / 2 + Random.choice([-6, +6]);
 
 		//Create the bonus for host
 		this.createBonus(data);

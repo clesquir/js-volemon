@@ -1,13 +1,12 @@
-import {Meteor} from 'meteor/meteor';
-import {Template} from 'meteor/templating';
-import {Session} from 'meteor/session';
-import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGameConfiguration.js';
 import {elementInRelatedView} from '/imports/lib/utils.js';
 import {OPEN_SELECT_BOXES} from '/imports/ui/pages/app.js';
+import {Meteor} from 'meteor/meteor';
+import {Session} from 'meteor/session';
+import {Template} from 'meteor/templating';
 
 import './shapeSelector.html';
 
-const createShapeDropdownList = function(e) {
+const createShapeDropdownList = function(e, allowedListOfShapes) {
 	const listId = 'shape-selector-menu';
 	const dropdownList = $('<div>', {id: listId, 'class': listId + ' menubox-animation'});
 	dropdownList.appendTo('.app');
@@ -35,10 +34,7 @@ const createShapeDropdownList = function(e) {
 		dropdownList.css('left', shapeSelector.offset().left);
 	});
 
-	const configuration = new DefaultGameConfiguration(Session.get('game'));
-	configuration.init();
-
-	for (let shape of configuration.allowedListOfShapes()) {
+	for (let shape of allowedListOfShapes) {
 		let isSelectedShape = false;
 		if (shapeSelector.attr('data-selected-shape') === shape) {
 			isSelectedShape = true;
@@ -77,7 +73,7 @@ Template.shapeSelector.events({
 
 		let dropdownList = document.getElementById(listId);
 		if (!dropdownList) {
-			dropdownList = createShapeDropdownList(e);
+			dropdownList = createShapeDropdownList(e, this.allowedListOfShapes);
 		}
 
 		if ($(dropdownList).is(":visible")) {

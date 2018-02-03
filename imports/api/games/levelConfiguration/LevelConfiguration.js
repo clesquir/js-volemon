@@ -62,6 +62,11 @@ export default class LevelConfiguration {
 		);
 	}
 
+	/**
+	 * @param {number} width
+	 * @param {number} height
+	 * @returns {LevelConfiguration}
+	 */
 	static definedSize(width, height) {
 		const configuration = LevelConfiguration.defaultConfiguration();
 

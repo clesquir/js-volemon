@@ -1,13 +1,13 @@
-import {assert} from 'chai';
-import {resetDatabase} from 'meteor/xolvio:cleaner';
-import {Random} from 'meteor/random';
+import {ACHIEVEMENT_NINJA} from '/imports/api/achievements/constants.js';
 import Ninja from '/imports/api/achievements/server/listeners/Ninja.js';
 import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
-import {ACHIEVEMENT_NINJA} from '/imports/api/achievements/constants.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import GameFinished from '/imports/api/games/events/GameFinished.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
+import {assert} from 'chai';
+import {Random} from 'meteor/random';
+import {resetDatabase} from 'meteor/xolvio:cleaner';
 
 describe('AchievementListener#Ninja', function() {
 	const gameId = Random.id(5);
@@ -23,10 +23,6 @@ describe('AchievementListener#Ninja', function() {
 	};
 
 	beforeEach(function() {
-		resetDatabase();
-	});
-
-	afterEach(function() {
 		resetDatabase();
 	});
 

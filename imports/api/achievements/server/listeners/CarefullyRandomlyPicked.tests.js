@@ -1,14 +1,14 @@
-import {assert} from 'chai';
-import sinon from 'sinon';
-import {resetDatabase} from 'meteor/xolvio:cleaner';
-import {Random} from 'meteor/random';
+import {ACHIEVEMENT_CAREFULLY_RANDOMLY_PICKED} from '/imports/api/achievements/constants.js';
 import CarefullyRandomlyPicked from '/imports/api/achievements/server/listeners/CarefullyRandomlyPicked.js';
 import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
-import {ACHIEVEMENT_CAREFULLY_RANDOMLY_PICKED} from '/imports/api/achievements/constants.js';
 import PlayerWon from '/imports/api/games/events/PlayerWon.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
+import {assert} from 'chai';
+import {Random} from 'meteor/random';
+import {resetDatabase} from 'meteor/xolvio:cleaner';
+import sinon from 'sinon';
 
 describe('AchievementListener#CarefullyRandomlyPicked', function() {
 	const gameId = Random.id(5);
@@ -29,10 +29,6 @@ describe('AchievementListener#CarefullyRandomlyPicked', function() {
 	};
 
 	beforeEach(function() {
-		resetDatabase();
-	});
-
-	afterEach(function() {
 		resetDatabase();
 	});
 

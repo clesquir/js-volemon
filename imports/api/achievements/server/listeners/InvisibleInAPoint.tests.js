@@ -1,14 +1,14 @@
-import {assert} from 'chai';
-import {resetDatabase} from 'meteor/xolvio:cleaner';
-import {Random} from 'meteor/random';
+import {ACHIEVEMENT_INVISIBLE_IN_A_POINT} from '/imports/api/achievements/constants.js';
 import InvisibleInAPoint from '/imports/api/achievements/server/listeners/InvisibleInAPoint.js';
 import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
-import {ACHIEVEMENT_INVISIBLE_IN_A_POINT} from '/imports/api/achievements/constants.js';
+import {BONUS_INVISIBLE_MONSTER, BONUS_INVISIBLE_OPPONENT_MONSTER} from '/imports/api/games/bonusConstants.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import {BONUS_INVISIBLE_MONSTER, BONUS_INVISIBLE_OPPONENT_MONSTER} from '/imports/api/games/bonusConstants.js';
+import {assert} from 'chai';
+import {Random} from 'meteor/random';
+import {resetDatabase} from 'meteor/xolvio:cleaner';
 
 describe('AchievementListener#InvisibleInAGame', function() {
 	const gameId = Random.id(5);
@@ -23,10 +23,6 @@ describe('AchievementListener#InvisibleInAGame', function() {
 	};
 
 	beforeEach(function() {
-		resetDatabase();
-	});
-
-	afterEach(function() {
 		resetDatabase();
 	});
 

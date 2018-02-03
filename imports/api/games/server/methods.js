@@ -1,32 +1,20 @@
-import {Meteor} from 'meteor/meteor';
-import {Random} from 'meteor/random';
+import {CLIENT_POINTS_COLUMN, CLIENT_SIDE, HOST_POINTS_COLUMN, HOST_SIDE} from '/imports/api/games/constants.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
-import {
-	createGame,
-	joinGame,
-	startGame,
-	replyRematch,
-	onPlayerQuit
-} from '/imports/api/games/server/gameSetup.js';
-import {finishGame} from '/imports/api/games/server/onGameFinished.js';
-import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGameConfiguration.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import {
-	HOST_POINTS_COLUMN,
-	CLIENT_POINTS_COLUMN,
-	HOST_SIDE,
-	CLIENT_SIDE
-} from '/imports/api/games/constants.js';
+import {createGame, joinGame, onPlayerQuit, replyRematch, startGame} from '/imports/api/games/server/gameSetup.js';
+import {finishGame} from '/imports/api/games/server/onGameFinished.js';
 import {PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
 import {
+	GAME_STATUS_FINISHED,
 	GAME_STATUS_REGISTRATION,
-	GAME_STATUS_STARTED,
-	GAME_STATUS_FINISHED
+	GAME_STATUS_STARTED
 } from '/imports/api/games/statusConstants.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
-import {htmlEncode, getUTCTimeStamp} from '/imports/lib/utils.js';
 import {EventPublisher} from '/imports/lib/EventPublisher.js';
+import {getUTCTimeStamp, htmlEncode} from '/imports/lib/utils.js';
+import {Meteor} from 'meteor/meteor';
+import {Random} from 'meteor/random';
 
 /** @type {GameInitiator[]} */
 let gameInitiators = {};
@@ -130,9 +118,8 @@ Meteor.methods({
 			throw new Meteor.Error(404, 'Player not found');
 		}
 
-		const configuration = new DefaultGameConfiguration(gameId);
-		configuration.init();
-		const allowedListOfShapes = configuration.allowedListOfShapes();
+		const allowedListOfShapes = game.allowedListOfShapes || [];
+		const listOfShapes = game.listOfShapes || [];
 
 		if (allowedListOfShapes.indexOf(selectedShape) === -1) {
 			throw new Meteor.Error(
@@ -143,7 +130,7 @@ Meteor.methods({
 
 		let shape = selectedShape;
 		if (selectedShape === PLAYER_SHAPE_RANDOM) {
-			shape = Random.choice(configuration.listOfShapes());
+			shape = Random.choice(listOfShapes);
 		}
 
 		Players.update({_id: player._id}, {$set: {selectedShape: selectedShape, shape: shape}});

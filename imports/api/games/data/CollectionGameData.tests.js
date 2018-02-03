@@ -8,26 +8,28 @@ import CollectionGameData from './CollectionGameData.js';
 
 describe('CollectionGameData#getPlayerShapeFromKey', function() {
 	it('returns default shape when player 1 does not exist', function() {
-		StubCollections.add([Games, Players]);
+		StubCollections.add([Games]);
 		StubCollections.stub();
 
 		const gameId = Random.id(5);
 		Games.insert({_id: gameId});
 
 		const gameData = new CollectionGameData(gameId, Random.id(5));
+		gameData.init();
 		assert.strictEqual(PLAYER_DEFAULT_SHAPE, gameData.getPlayerShapeFromKey('player1'));
 
 		StubCollections.restore();
 	});
 
 	it('returns default shape when player 2 does not exist', function() {
-		StubCollections.add([Games, Players]);
+		StubCollections.add([Games]);
 		StubCollections.stub();
 
 		const gameId = Random.id(5);
 		Games.insert({_id: gameId});
 
 		const gameData = new CollectionGameData(gameId, Random.id(5));
+		gameData.init();
 		assert.strictEqual(PLAYER_DEFAULT_SHAPE, gameData.getPlayerShapeFromKey('player2'));
 
 		StubCollections.restore();

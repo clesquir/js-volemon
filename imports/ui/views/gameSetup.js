@@ -1,11 +1,11 @@
-import {Meteor} from 'meteor/meteor';
-import {Template} from 'meteor/templating';
-import {Session} from 'meteor/session';
-import {Router} from 'meteor/iron:router';
-import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGameConfiguration.js';
 import {POSSIBLE_NO_PLAYERS} from '/imports/api/games/constants.js';
+import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {playersCanPlayTournament} from '/imports/api/tournaments/utils.js';
+import {Router} from 'meteor/iron:router';
+import {Meteor} from 'meteor/meteor';
+import {Session} from 'meteor/session';
+import {Template} from 'meteor/templating';
 
 import './gameSetup.html';
 
@@ -80,10 +80,25 @@ Template.gameSetup.helpers({
 	},
 
 	shapeEditionAllowed: function() {
-		const configuration = new DefaultGameConfiguration(Session.get('game'));
-		configuration.init();
+		const game = Games.findOne(Session.get('game'));
 
-		return this.userId === Meteor.userId() && configuration.allowedListOfShapes().length > 1;
+		if (game) {
+			const allowedListOfShapes = game.allowedListOfShapes || [];
+
+			return this.userId === Meteor.userId() && allowedListOfShapes.length > 1;
+		} else {
+			return [];
+		}
+	},
+
+	allowedListOfShapes: function() {
+		const game = Games.findOne(Session.get('game'));
+
+		if (game) {
+			return game.allowedListOfShapes || [];
+		} else {
+			return [];
+		}
 	}
 });
 

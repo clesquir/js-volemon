@@ -1,6 +1,5 @@
 import Collisions from '/imports/api/games/collisions/Collisions.js';
 import {NORMAL_SCALE_PHYSICS_DATA} from '/imports/api/games/constants.js';
-import LevelConfiguration from '/imports/api/games/levelConfiguration/LevelConfiguration.js';
 import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
 
 export default class LevelComponents {
@@ -8,13 +7,13 @@ export default class LevelComponents {
 	 * @param {Collisions} collisions
 	 * @param {GameSkin} gameSkin
 	 * @param {Engine} engine
-	 * @param {LevelConfiguration} levelConfiguration
+	 * @param {GameConfiguration} gameConfiguration
 	 */
-	constructor(collisions, gameSkin, engine, levelConfiguration) {
+	constructor(collisions, gameSkin, engine, gameConfiguration) {
 		this.collisions = collisions;
 		this.gameSkin = gameSkin;
 		this.engine = engine;
-		this.levelConfiguration = levelConfiguration;
+		this.gameConfiguration = gameConfiguration;
 	}
 
 	preload() {
@@ -40,9 +39,9 @@ export default class LevelComponents {
 	createGround() {
 		this.gameSkin.createGroundComponents(
 			this.engine,
-			this.levelConfiguration.width,
-			this.levelConfiguration.height,
-			this.levelConfiguration.groundHeight,
+			this.gameConfiguration.levelConfiguration.width,
+			this.gameConfiguration.levelConfiguration.height,
+			this.gameConfiguration.levelConfiguration.groundHeight,
 			this.groundGroup
 		);
 	}
@@ -50,8 +49,8 @@ export default class LevelComponents {
 	createNet() {
 		this.gameSkin.createNetComponent(
 			this.engine,
-			(this.levelConfiguration.width / 2) - (this.levelConfiguration.netWidth / 2),
-			this.levelConfiguration.height - this.levelConfiguration.groundHeight - this.levelConfiguration.netHeight,
+			(this.gameConfiguration.levelConfiguration.width / 2) - (this.gameConfiguration.levelConfiguration.netWidth / 2),
+			this.gameConfiguration.levelConfiguration.height - this.gameConfiguration.levelConfiguration.groundHeight - this.gameConfiguration.levelConfiguration.netHeight,
 			this.groundGroup
 		);
 	}
@@ -59,10 +58,10 @@ export default class LevelComponents {
 	createBounds() {
 		//Host limits
 		this.engine.addBound(
-			(this.levelConfiguration.width / 4) * 3 - (this.levelConfiguration.netWidth / 4),
-			(this.levelConfiguration.height / 2),
-			(this.levelConfiguration.width / 2) + (this.levelConfiguration.netWidth / 2),
-			this.levelConfiguration.height,
+			(this.gameConfiguration.levelConfiguration.width / 4) * 3 - (this.gameConfiguration.levelConfiguration.netWidth / 4),
+			(this.gameConfiguration.levelConfiguration.height / 2),
+			(this.gameConfiguration.levelConfiguration.width / 2) + (this.gameConfiguration.levelConfiguration.netWidth / 2),
+			this.gameConfiguration.levelConfiguration.height,
 			this.collisions.playerDelimiterMaterial,
 			this.collisions.hostPlayerDelimiterCollisionGroup,
 			[this.collisions.hostPlayerCollisionGroup]
@@ -70,10 +69,10 @@ export default class LevelComponents {
 
 		//Client limits
 		this.engine.addBound(
-			(this.levelConfiguration.width / 4) + (this.levelConfiguration.netWidth / 4),
-			(this.levelConfiguration.height / 2),
-			(this.levelConfiguration.width / 2) + (this.levelConfiguration.netWidth / 2),
-			this.levelConfiguration.height,
+			(this.gameConfiguration.levelConfiguration.width / 4) + (this.gameConfiguration.levelConfiguration.netWidth / 4),
+			(this.gameConfiguration.levelConfiguration.height / 2),
+			(this.gameConfiguration.levelConfiguration.width / 2) + (this.gameConfiguration.levelConfiguration.netWidth / 2),
+			this.gameConfiguration.levelConfiguration.height,
 			this.collisions.playerDelimiterMaterial,
 			this.collisions.clientPlayerDelimiterCollisionGroup,
 			[this.collisions.clientPlayerCollisionGroup]
@@ -84,10 +83,10 @@ export default class LevelComponents {
 
 		//Net limit
 		this.engine.addBound(
-			this.levelConfiguration.width / 2,
-			this.levelConfiguration.height - (this.levelConfiguration.groundHeight + this.levelConfiguration.netHeight) / 2,
-			this.levelConfiguration.netWidth,
-			this.levelConfiguration.groundHeight + this.levelConfiguration.netHeight,
+			this.gameConfiguration.levelConfiguration.width / 2,
+			this.gameConfiguration.levelConfiguration.height - (this.gameConfiguration.levelConfiguration.groundHeight + this.gameConfiguration.levelConfiguration.netHeight) / 2,
+			this.gameConfiguration.levelConfiguration.netWidth,
+			this.gameConfiguration.levelConfiguration.groundHeight + this.gameConfiguration.levelConfiguration.netHeight,
 			this.collisions.netDelimiterMaterial,
 			this.collisions.netHitDelimiterCollisionGroup,
 			[
@@ -99,10 +98,10 @@ export default class LevelComponents {
 
 	createGroundBound() {
 		return this.engine.addBound(
-			this.levelConfiguration.width / 2,
-			this.levelConfiguration.height - (this.levelConfiguration.groundHeight / 2),
-			this.levelConfiguration.width,
-			this.levelConfiguration.groundHeight,
+			this.gameConfiguration.levelConfiguration.width / 2,
+			this.gameConfiguration.levelConfiguration.height - (this.gameConfiguration.levelConfiguration.groundHeight / 2),
+			this.gameConfiguration.levelConfiguration.width,
+			this.gameConfiguration.levelConfiguration.groundHeight,
 			this.collisions.groundDelimiterMaterial,
 			this.collisions.groundHitDelimiterCollisionGroup,
 			[

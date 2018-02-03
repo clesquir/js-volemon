@@ -1,9 +1,9 @@
-import {assert} from 'chai';
-import {resetDatabase} from 'meteor/xolvio:cleaner';
-import {Random} from 'meteor/random';
-import GameListener from './GameListener.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
+import {assert} from 'chai';
+import {Random} from 'meteor/random';
+import {resetDatabase} from 'meteor/xolvio:cleaner';
+import GameListener from './GameListener.js';
 
 describe('AchievementListener#GameListener', function() {
 	const gameId = Random.id(5);
@@ -11,10 +11,6 @@ describe('AchievementListener#GameListener', function() {
 	const opponentUserId = Random.id(5);
 
 	beforeEach(function() {
-		resetDatabase();
-	});
-
-	afterEach(function() {
 		resetDatabase();
 	});
 

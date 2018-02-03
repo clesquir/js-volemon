@@ -1,19 +1,19 @@
-import {assert} from 'chai';
-import {resetDatabase} from 'meteor/xolvio:cleaner';
-import {Random} from 'meteor/random';
+import {ACHIEVEMENT_BLANK_SCREEN} from '/imports/api/achievements/constants.js';
 import BlankScreen from '/imports/api/achievements/server/listeners/BlankScreen.js';
 import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
-import {ACHIEVEMENT_BLANK_SCREEN} from '/imports/api/achievements/constants.js';
-import BonusCaught from '/imports/api/games/events/BonusCaught.js';
-import BonusRemoved from '/imports/api/games/events/BonusRemoved.js';
-import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {
 	BONUS_CLOAKED_MONSTER,
 	BONUS_INVISIBLE_BALL,
 	BONUS_INVISIBLE_MONSTER
 } from '/imports/api/games/bonusConstants.js';
+import BonusCaught from '/imports/api/games/events/BonusCaught.js';
+import BonusRemoved from '/imports/api/games/events/BonusRemoved.js';
+import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
+import {assert} from 'chai';
+import {Random} from 'meteor/random';
+import {resetDatabase} from 'meteor/xolvio:cleaner';
 
 describe('AchievementListener#BlankScreen', function() {
 	const gameId = Random.id(5);
@@ -29,10 +29,6 @@ describe('AchievementListener#BlankScreen', function() {
 	};
 
 	beforeEach(function() {
-		resetDatabase();
-	});
-
-	afterEach(function() {
 		resetDatabase();
 	});
 

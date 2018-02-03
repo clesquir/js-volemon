@@ -12,7 +12,6 @@ import GameData from '/imports/api/games/data/GameData.js';
 import DesktopController from '/imports/api/games/deviceController/DesktopController.js';
 import MobileController from '/imports/api/games/deviceController/MobileController.js';
 import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
-import LevelConfiguration from '/imports/api/games/levelConfiguration/LevelConfiguration.js';
 import PluginFactory from '/imports/api/skins/plugins/PluginFactory.js';
 import SkinFactory from '/imports/api/skins/skins/SkinFactory.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
@@ -70,7 +69,6 @@ const initGame = function(gameId) {
 	gameData = new CollectionGameData(gameId, Meteor.userId());
 	gameData.init();
 	const gameConfiguration = new DefaultGameConfiguration(gameId);
-	gameConfiguration.init();
 
 	if (onMobileAndTablet()) {
 		deviceController = new MobileController('.game-canvas-container', 'mobile-controller');
@@ -92,7 +90,6 @@ const initGame = function(gameId) {
 
 	gameInitiator = new GameInitiator(
 		gameId,
-		LevelConfiguration.defaultConfiguration(),
 		deviceController,
 		engine,
 		gameData,

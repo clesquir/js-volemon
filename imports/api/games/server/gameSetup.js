@@ -67,7 +67,6 @@ export const createGame = function(userId, gameInitiators, tournamentId = null) 
 	} while (id === null);
 
 	const configuration = new DefaultGameConfiguration(id);
-	configuration.init();
 	Games.update({_id: id}, {$set: {forfeitMinimumPoints: configuration.forfeitMinimumPoints()}});
 	Games.update({_id: id}, {$set: {maximumPoints: configuration.maximumPoints()}});
 	Games.update({_id: id}, {$set: {hasBonuses: configuration.hasBonuses()}});
@@ -127,16 +126,16 @@ export const joinGame = function(userId, gameId, isReady = false) {
 		);
 	}
 
-	const configuration = new DefaultGameConfiguration(gameId);
-	configuration.init();
-	const allowedListOfShapes = configuration.allowedListOfShapes();
+	const allowedListOfShapes = game.allowedListOfShapes || [];
+	const listOfShapes = game.listOfShapes || [];
+
 	if (allowedListOfShapes.indexOf(selectedShape) === -1) {
 		selectedShape = allowedListOfShapes[0];
 	}
 
 	let shape = selectedShape;
 	if (selectedShape === PLAYER_SHAPE_RANDOM) {
-		shape = Random.choice(configuration.listOfShapes());
+		shape = Random.choice(listOfShapes);
 	}
 
 	return Players.insert({

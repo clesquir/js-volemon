@@ -13,18 +13,11 @@ import {
 import {PLAYER_LIST_OF_SHAPES, PLAYER_ALLOWED_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
 
 export default class GameConfiguration {
-	/**
-	 * @param {string} gameId
-	 */
-	constructor(gameId) {
-		this.gameId = gameId;
-		this.tournamentId = null;
-		/** @type {Classic} */
-		this.tournamentMode = null;
-	}
-
-	init() {
-	}
+	tournamentId = null;
+	/** @type {Classic} */
+	tournamentMode = null;
+	/** @type {LevelConfiguration} */
+	levelConfiguration = null;
 
 	hasTournament() {
 		return !!this.tournamentId;
@@ -46,6 +39,9 @@ export default class GameConfiguration {
 		return GAME_MAXIMUM_POINTS;
 	}
 
+	/**
+	 * @returns {string[]}
+	 */
 	listOfShapes() {
 		if (this.hasTournament() && this.tournamentMode.overridesListOfShapes()) {
 			return this.tournamentMode.listOfShapes();

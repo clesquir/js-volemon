@@ -1,14 +1,14 @@
-import {assert} from 'chai';
-import {resetDatabase} from 'meteor/xolvio:cleaner';
-import {Random} from 'meteor/random';
+import {ACHIEVEMENT_UNDESIRABLE} from '/imports/api/achievements/constants.js';
 import Undesirable from '/imports/api/achievements/server/listeners/Undesirable.js';
 import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
-import {ACHIEVEMENT_UNDESIRABLE} from '/imports/api/achievements/constants.js';
-import BonusCreated from '/imports/api/games/events/BonusCreated.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
+import BonusCreated from '/imports/api/games/events/BonusCreated.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
+import {assert} from 'chai';
+import {Random} from 'meteor/random';
+import {resetDatabase} from 'meteor/xolvio:cleaner';
 
 describe('AchievementListener#Undesirable', function() {
 	const gameId = Random.id(5);
@@ -24,10 +24,6 @@ describe('AchievementListener#Undesirable', function() {
 	};
 
 	beforeEach(function() {
-		resetDatabase();
-	});
-
-	afterEach(function() {
 		resetDatabase();
 	});
 

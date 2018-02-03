@@ -1,14 +1,14 @@
-import {assert} from 'chai';
-import sinon from 'sinon';
-import {resetDatabase} from 'meteor/xolvio:cleaner';
-import {Random} from 'meteor/random';
+import {ACHIEVEMENT_RAKSHASA} from '/imports/api/achievements/constants.js';
 import Rakshasa from '/imports/api/achievements/server/listeners/Rakshasa.js';
 import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
-import {ACHIEVEMENT_RAKSHASA} from '/imports/api/achievements/constants.js';
-import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import {BONUS_SHAPE_SHIFT} from '/imports/api/games/bonusConstants.js'
+import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
+import {assert} from 'chai';
+import {Random} from 'meteor/random';
+import {resetDatabase} from 'meteor/xolvio:cleaner';
+import sinon from 'sinon';
 
 describe('AchievementListener#Rakshasa', function() {
 	const gameId = Random.id(5);
@@ -42,10 +42,6 @@ describe('AchievementListener#Rakshasa', function() {
 	};
 
 	beforeEach(function() {
-		resetDatabase();
-	});
-
-	afterEach(function() {
 		resetDatabase();
 	});
 

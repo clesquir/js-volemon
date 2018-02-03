@@ -1,19 +1,15 @@
-import {assert} from 'chai';
-import {resetDatabase} from 'meteor/xolvio:cleaner';
-import {Random} from 'meteor/random';
+import {ACHIEVEMENT_TO_THE_SKY} from '/imports/api/achievements/constants.js';
 import ToTheSky from '/imports/api/achievements/server/listeners/ToTheSky.js';
 import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
-import {ACHIEVEMENT_TO_THE_SKY} from '/imports/api/achievements/constants.js';
+import {BONUS_BIG_JUMP_MONSTER, BONUS_BOUNCE_MONSTER, BONUS_SMALL_MONSTER} from '/imports/api/games/bonusConstants.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import BonusRemoved from '/imports/api/games/events/BonusRemoved.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
-import {
-	BONUS_SMALL_MONSTER,
-	BONUS_BIG_JUMP_MONSTER,
-	BONUS_BOUNCE_MONSTER
-} from '/imports/api/games/bonusConstants.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
+import {assert} from 'chai';
+import {Random} from 'meteor/random';
+import {resetDatabase} from 'meteor/xolvio:cleaner';
 
 describe('AchievementListener#ToTheSky', function() {
 	const gameId = Random.id(5);
@@ -29,10 +25,6 @@ describe('AchievementListener#ToTheSky', function() {
 	};
 
 	beforeEach(function() {
-		resetDatabase();
-	});
-
-	afterEach(function() {
 		resetDatabase();
 	});
 

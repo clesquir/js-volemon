@@ -8,7 +8,6 @@ export default class StaticGameData extends GameData {
 		this.hasBonuses = false;
 		this.createdBy = Random.id();
 		this.tournamentId = null;
-		this.listOfShapes = [PLAYER_DEFAULT_SHAPE];
 	}
 
 	/**

@@ -1,15 +1,15 @@
-import {assert} from 'chai';
-import {resetDatabase} from 'meteor/xolvio:cleaner';
-import {Random} from 'meteor/random';
+import {ACHIEVEMENT_BATTLE_OF_THE_GIANTS} from '/imports/api/achievements/constants.js';
 import BattleOfTheGiants from '/imports/api/achievements/server/listeners/BattleOfTheGiants.js';
 import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
-import {ACHIEVEMENT_BATTLE_OF_THE_GIANTS} from '/imports/api/achievements/constants.js';
+import {BONUS_BIG_MONSTER} from '/imports/api/games/bonusConstants.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import BonusRemoved from '/imports/api/games/events/BonusRemoved.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
-import {BONUS_BIG_MONSTER} from '/imports/api/games/bonusConstants.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
+import {assert} from 'chai';
+import {Random} from 'meteor/random';
+import {resetDatabase} from 'meteor/xolvio:cleaner';
 
 describe('AchievementListener#BattleOfTheGiants', function() {
 	const gameId = Random.id(5);
@@ -25,10 +25,6 @@ describe('AchievementListener#BattleOfTheGiants', function() {
 	};
 
 	beforeEach(function() {
-		resetDatabase();
-	});
-
-	afterEach(function() {
 		resetDatabase();
 	});
 

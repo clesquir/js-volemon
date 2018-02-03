@@ -4,7 +4,6 @@ import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
 import GameStreamInitiator from '/imports/api/games/client/GameStreamInitiator.js';
 import {CLIENT_POINTS_COLUMN, HOST_POINTS_COLUMN} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
-import LevelConfiguration from '/imports/api/games/levelConfiguration/LevelConfiguration.js';
 import {Players} from '/imports/api/games/players.js';
 import {GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
 import {Meteor} from 'meteor/meteor';
@@ -14,7 +13,6 @@ import {Session} from 'meteor/session';
 export default class GameInitiator {
 	/**
 	 * @param {string} gameId
-	 * @param {LevelConfiguration} levelConfiguration
 	 * @param {DeviceController} deviceController
 	 * @param {Engine} engine
 	 * @param {GameData} gameData
@@ -26,7 +24,6 @@ export default class GameInitiator {
 	 */
 	constructor(
 		gameId,
-		levelConfiguration,
 		deviceController,
 		engine,
 		gameData,
@@ -37,7 +34,6 @@ export default class GameInitiator {
 		gameNotifier
 	) {
 		this.gameId = gameId;
-		this.levelConfiguration = levelConfiguration;
 		this.deviceController = deviceController;
 		this.engine = engine;
 		this.gameData = gameData;
@@ -159,7 +155,6 @@ export default class GameInitiator {
 		this.gameData.init();
 		this.currentGame = new Game(
 			this.gameId,
-			this.levelConfiguration,
 			this.deviceController,
 			this.engine,
 			this.gameData,

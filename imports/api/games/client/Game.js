@@ -22,7 +22,6 @@ import {Session} from 'meteor/session';
 export default class Game {
 	/**
 	 * @param {string} gameId
-	 * @param {LevelConfiguration} levelConfiguration
 	 * @param {DeviceController} deviceController
 	 * @param {Engine} engine
 	 * @param {GameData} gameData
@@ -33,7 +32,6 @@ export default class Game {
 	 */
 	constructor(
 		gameId,
-		levelConfiguration,
 		deviceController,
 		engine,
 		gameData,
@@ -43,7 +41,6 @@ export default class Game {
 		serverNormalizedTime
 	) {
 		this.gameId = gameId;
-		this.levelConfiguration = levelConfiguration;
 		this.deviceController = deviceController;
 		this.engine = engine;
 		this.gameData = gameData;
@@ -61,7 +58,6 @@ export default class Game {
 
 		this.gameBonus = new GameBonus(
 			this,
-			this.levelConfiguration,
 			this.engine,
 			this.gameData,
 			this.gameConfiguration,
@@ -79,7 +75,7 @@ export default class Game {
 			this.collisions,
 			this.gameSkin,
 			this.engine,
-			this.levelConfiguration
+			this.gameConfiguration
 		);
 	}
 
@@ -126,8 +122,8 @@ export default class Game {
 	start() {
 		this.engine.start(
 			{
-				width: this.levelConfiguration.width,
-				height: this.levelConfiguration.height,
+				width: this.gameConfiguration.levelConfiguration.width,
+				height: this.gameConfiguration.levelConfiguration.height,
 				gravity: this.gameConfiguration.worldGravity(),
 				bonusRadius: this.gameConfiguration.bonusRadius(),
 				renderTo: 'gameContainer'
@@ -165,7 +161,7 @@ export default class Game {
 	}
 
 	createGame() {
-		this.gameSkin.createBackgroundComponents(this.engine, this.levelConfiguration.width, this.levelConfiguration.height);
+		this.gameSkin.createBackgroundComponents(this.engine, this.gameConfiguration.levelConfiguration.width, this.gameConfiguration.levelConfiguration.height);
 		this.createComponents();
 		this.gameBonus.createComponents();
 
@@ -187,38 +183,40 @@ export default class Game {
 		/**
 		 * Player 1
 		 */
+		const player1Key = 'player1';
 		this.player1 = this.engine.addSprite(
-			this.levelConfiguration.player1InitialX(),
-			this.levelConfiguration.playerInitialY(),
-			'shape-' + this.gameData.getPlayerShapeFromKey('player1')
+			this.gameConfiguration.levelConfiguration.player1InitialX(),
+			this.gameConfiguration.levelConfiguration.playerInitialY(),
+			'shape-' + this.playerShapeFromKey(player1Key)
 		);
-		this.player1.data.key = 'player1';
+		this.player1.data.key = player1Key;
 		this.initPlayer(
 			this.player1,
-			this.levelConfiguration.player1InitialX(),
-			this.levelConfiguration.playerInitialY(),
+			this.gameConfiguration.levelConfiguration.player1InitialX(),
+			this.gameConfiguration.levelConfiguration.playerInitialY(),
 			this.collisions.hostPlayerCollisionGroup
 		);
 
 		/**
 		 * Player 2
 		 */
+		const player2Key = 'player2';
 		this.player2 = this.engine.addSprite(
-			this.levelConfiguration.player2InitialX(),
-			this.levelConfiguration.playerInitialY(),
-			'shape-' + this.gameData.getPlayerShapeFromKey('player2')
+			this.gameConfiguration.levelConfiguration.player2InitialX(),
+			this.gameConfiguration.levelConfiguration.playerInitialY(),
+			'shape-' + this.playerShapeFromKey(player2Key)
 		);
-		this.player2.data.key = 'player2';
+		this.player2.data.key = player2Key;
 		this.initPlayer(
 			this.player2,
-			this.levelConfiguration.player2InitialX(),
-			this.levelConfiguration.playerInitialY(),
+			this.gameConfiguration.levelConfiguration.player2InitialX(),
+			this.gameConfiguration.levelConfiguration.playerInitialY(),
 			this.collisions.clientPlayerCollisionGroup
 		);
 
 		this.createBall(
-			this.levelConfiguration.ballInitialHostX(),
-			this.levelConfiguration.ballInitialY()
+			this.gameConfiguration.levelConfiguration.ballInitialHostX(),
+			this.gameConfiguration.levelConfiguration.ballInitialY()
 		);
 
 		this.levelComponents.createLevelComponents();
@@ -226,6 +224,23 @@ export default class Game {
 		this.addPlayerCanJumpOnBody(this.player2, this.levelComponents.groundBound);
 
 		this.createCountdownText();
+	}
+
+	/**
+	 * Override shape only if game is running and for current player (hidden shape)
+	 * @param {string} playerKey
+	 * @returns {string}
+	 */
+	playerShapeFromKey(playerKey) {
+		if (
+			this.gameConfiguration.overridesCurrentPlayerShape() &&
+			this.gameData.isGameStatusStarted() &&
+			this.gameData.isCurrentPlayerKey(playerKey)
+		) {
+			return this.gameConfiguration.currentPlayerShape();
+		} else {
+			return this.gameData.getPlayerShapeFromKey(playerKey);
+		}
 	}
 
 	createCountdownText() {
@@ -280,7 +295,7 @@ export default class Game {
 	}
 
 	initPlayerTexture(player) {
-		player.data.initialTextureKey = 'shape-' + this.gameData.getPlayerShapeFromKey(player.data.key);
+		player.data.initialTextureKey = 'shape-' + this.playerShapeFromKey(player.data.key);
 		player.data.currentTextureKey = player.data.initialTextureKey;
 	}
 
@@ -405,8 +420,8 @@ export default class Game {
 	}
 
 	spawnBall() {
-		const xBallPositionHostSide = this.levelConfiguration.ballInitialHostX();
-		const xBallPositionClientSide = this.levelConfiguration.ballInitialClientX();
+		const xBallPositionHostSide = this.gameConfiguration.levelConfiguration.ballInitialHostX();
+		const xBallPositionClientSide = this.gameConfiguration.levelConfiguration.ballInitialClientX();
 		let xBallPosition;
 
 		switch (this.gameData.lastPointTaken) {
@@ -427,7 +442,7 @@ export default class Game {
 				break;
 		}
 
-		this.engine.spawn(this.ball, xBallPosition, this.levelConfiguration.ballInitialY());
+		this.engine.spawn(this.ball, xBallPosition, this.gameConfiguration.levelConfiguration.ballInitialY());
 	}
 
 	updateGame() {
@@ -623,7 +638,7 @@ export default class Game {
 	hitGround(ball) {
 		let playerKey;
 
-		if (ball.x < this.levelConfiguration.width / 2) {
+		if (ball.x < this.gameConfiguration.levelConfiguration.width / 2) {
 			playerKey = 'player1';
 		} else {
 			playerKey = 'player2';
@@ -800,8 +815,8 @@ export default class Game {
 		this.gameSkin.cheer(
 			this.engine,
 			forHost,
-			forHost ? 0 : this.levelConfiguration.width,
-			this.levelConfiguration.height * 0.10 + 25
+			forHost ? 0 : this.gameConfiguration.levelConfiguration.width,
+			this.gameConfiguration.levelConfiguration.height * 0.10 + 25
 		);
 	}
 

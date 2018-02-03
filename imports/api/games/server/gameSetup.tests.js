@@ -4,7 +4,7 @@ import {resetDatabase} from 'meteor/xolvio:cleaner';
 import {joinGame} from '/imports/api/games/server/gameSetup.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import {PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_CROWN} from '/imports/api/games/shapeConstants.js';
+import {PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_CROWN, PLAYER_SHAPE_OBELISK} from '/imports/api/games/shapeConstants.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 
 describe('lib/client/gameSetup#joinGame', function() {
@@ -69,15 +69,15 @@ describe('lib/client/gameSetup#joinGame', function() {
 		assert.equal(userId, game.clientId);
 		assert.equal(username, game.clientName);
 	});
-	it('insert player', function() {
+	it('join player', function() {
 		Games.insert({_id: gameId});
 		joinGame(userId, gameId);
 
 		const player = Players.findOne({userId: userId});
 		assert.isNotNull(player);
 	});
-	it('insert player with last used shape', function() {
-		Games.insert({_id: gameId});
+	it('join player with last used shape', function() {
+		Games.insert({_id: gameId, allowedListOfShapes: [PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_CROWN]});
 		const lastShapeUsed = PLAYER_SHAPE_CROWN;
 		UserConfigurations.insert({userId: userId, name: username, lastShapeUsed: lastShapeUsed});
 		joinGame(userId, gameId);
@@ -87,8 +87,18 @@ describe('lib/client/gameSetup#joinGame', function() {
 		assert.equal(lastShapeUsed, player.selectedShape);
 		assert.equal(lastShapeUsed, player.shape);
 	});
-	it('insert player with default shape if no profile', function() {
-		Games.insert({_id: gameId});
+	it('join player with first allowed shape if last used shape is not allowed', function() {
+		Games.insert({_id: gameId, allowedListOfShapes: [PLAYER_SHAPE_OBELISK, PLAYER_DEFAULT_SHAPE]});
+		UserConfigurations.insert({userId: userId, name: username, lastShapeUsed: PLAYER_SHAPE_CROWN});
+		joinGame(userId, gameId);
+
+		const player = Players.findOne({userId: userId});
+		assert.isNotNull(player);
+		assert.equal(PLAYER_SHAPE_OBELISK, player.selectedShape);
+		assert.equal(PLAYER_SHAPE_OBELISK, player.shape);
+	});
+	it('join player with default shape if no profile', function() {
+		Games.insert({_id: gameId, allowedListOfShapes: [PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_CROWN]});
 		joinGame(userId, gameId);
 
 		const player = Players.findOne({userId: userId});
@@ -96,8 +106,8 @@ describe('lib/client/gameSetup#joinGame', function() {
 		assert.equal(PLAYER_DEFAULT_SHAPE, player.selectedShape);
 		assert.equal(PLAYER_DEFAULT_SHAPE, player.shape);
 	});
-	it('insert player with default shape if last used is not defined', function() {
-		Games.insert({_id: gameId});
+	it('join player with default shape if last used is not defined', function() {
+		Games.insert({_id: gameId, allowedListOfShapes: [PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_CROWN]});
 		UserConfigurations.insert({userId: userId, name: username});
 		joinGame(userId, gameId);
 

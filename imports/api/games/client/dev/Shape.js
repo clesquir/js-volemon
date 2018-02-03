@@ -19,30 +19,30 @@ export default class Shape {
 
 	start() {
 		const gameId = Random.id(5);
-		const gameConfiguration = new StaticGameConfiguration(gameId);
-		this.levelConfiguration = LevelConfiguration.definedSize(1450, 560);
+		this.gameConfiguration = new StaticGameConfiguration();
+		//Override levelConfiguration
+		this.gameConfiguration.levelConfiguration = LevelConfiguration.definedSize(1450, 560);
 		this.deviceController = new DesktopController(CustomKeymaps.defaultKeymaps());
 		this.deviceController.init();
 		this.engine = new PhaserEngine();
-		const gameData = new StaticGameData(gameId);
+		const gameData = new StaticGameData();
 		gameData.init();
 		this.game = new Game(
 			gameId,
-			this.levelConfiguration,
 			this.deviceController,
 			this.engine,
 			gameData,
-			gameConfiguration,
+			this.gameConfiguration,
 			new GameSkin(new DefaultSkin(), []),
 			new GameStreamBundler(null),
 			new ServerNormalizedTime()
 		);
 		this.engine.start(
 			{
-				width: this.levelConfiguration.width,
-				height: this.levelConfiguration.height,
-				gravity: gameConfiguration.worldGravity(),
-				bonusRadius: gameConfiguration.bonusRadius(),
+				width: this.gameConfiguration.levelConfiguration.width,
+				height: this.gameConfiguration.levelConfiguration.height,
+				gravity: this.gameConfiguration.worldGravity(),
+				bonusRadius: this.gameConfiguration.bonusRadius(),
 				renderTo: 'shapeGameContainer'
 			},
 			this.preloadGame, this.createGame, this.updateGame, this
@@ -68,7 +68,7 @@ export default class Shape {
 
 		this.game.collisions.init();
 
-		let xPosition = this.levelConfiguration.playerWidth() / 2;
+		let xPosition = this.gameConfiguration.levelConfiguration.playerWidth() / 2;
 
 		this.game.gameData.getPlayerShapeFromKey = function(playerKey) {
 			const shapeKey = playerKey.substr(6) - 1;
@@ -80,7 +80,7 @@ export default class Shape {
 
 			this.game['player' + playerIndex] = this.engine.addSprite(
 				xPosition,
-				this.levelConfiguration.playerInitialY(),
+				this.gameConfiguration.levelConfiguration.playerInitialY(),
 				'shape-' + PLAYER_LIST_OF_SHAPES[i]
 			);
 			this.game['player' + playerIndex].data.key = 'player' + playerIndex;
@@ -88,11 +88,11 @@ export default class Shape {
 			this.game.initPlayer(
 				this.game['player' + playerIndex],
 				xPosition,
-				this.levelConfiguration.playerInitialY(),
+				this.gameConfiguration.levelConfiguration.playerInitialY(),
 				this.game.collisions.hostPlayerCollisionGroup
 			);
 
-			xPosition += this.levelConfiguration.playerWidth() + 5;
+			xPosition += this.gameConfiguration.levelConfiguration.playerWidth() + 5;
 		}
 
 		this.game.createBall(100, 100);
