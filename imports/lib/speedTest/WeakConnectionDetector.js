@@ -10,9 +10,18 @@ export default class WeakConnectionDetector {
 		const speedTest = new SpeedTest();
 
 		Meteor.setInterval(() => {
-			speedTest.check(function(connectionSpeed) {
-				Session.set('weakConnectionDetected', (connectionSpeed < weakConnectionThreshold));
-			});
+			if (!navigator.onLine) {
+				Session.set('weakConnectionDetected', true);
+			} else {
+				if (navigator.connection) {
+					const connectionSpeed = navigator.connection.downlink * 1000;
+					Session.set('weakConnectionDetected', (connectionSpeed < weakConnectionThreshold));
+				} else {
+					speedTest.check(function(connectionSpeed) {
+						Session.set('weakConnectionDetected', (connectionSpeed < weakConnectionThreshold));
+					});
+				}
+			}
 		}, speedTestInterval);
 	}
 }

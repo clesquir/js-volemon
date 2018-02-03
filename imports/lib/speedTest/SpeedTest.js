@@ -1,5 +1,5 @@
 export default class SpeedTest {
-	constructor(maxTime = 2500, expiry = 5000) {
+	constructor(maxTime = 2500, expiry = 10000) {
 		this.maxTime = maxTime;
 		this.expiry = expiry;
 		this.images = [
