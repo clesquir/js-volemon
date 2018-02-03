@@ -122,8 +122,8 @@ export default class Game {
 	start() {
 		this.engine.start(
 			{
-				width: this.gameConfiguration.levelConfiguration.width,
-				height: this.gameConfiguration.levelConfiguration.height,
+				width: this.gameConfiguration.width(),
+				height: this.gameConfiguration.height(),
 				gravity: this.gameConfiguration.worldGravity(),
 				bonusRadius: this.gameConfiguration.bonusRadius(),
 				renderTo: 'gameContainer'
@@ -161,7 +161,11 @@ export default class Game {
 	}
 
 	createGame() {
-		this.gameSkin.createBackgroundComponents(this.engine, this.gameConfiguration.levelConfiguration.width, this.gameConfiguration.levelConfiguration.height);
+		this.gameSkin.createBackgroundComponents(
+			this.engine,
+			this.gameConfiguration.width(),
+			this.gameConfiguration.height()
+		);
 		this.createComponents();
 		this.gameBonus.createComponents();
 
@@ -185,15 +189,15 @@ export default class Game {
 		 */
 		const player1Key = 'player1';
 		this.player1 = this.engine.addSprite(
-			this.gameConfiguration.levelConfiguration.player1InitialX(),
-			this.gameConfiguration.levelConfiguration.playerInitialY(),
+			this.gameConfiguration.player1InitialX(),
+			this.gameConfiguration.playerInitialY(),
 			'shape-' + this.playerShapeFromKey(player1Key)
 		);
 		this.player1.data.key = player1Key;
 		this.initPlayer(
 			this.player1,
-			this.gameConfiguration.levelConfiguration.player1InitialX(),
-			this.gameConfiguration.levelConfiguration.playerInitialY(),
+			this.gameConfiguration.player1InitialX(),
+			this.gameConfiguration.playerInitialY(),
 			this.collisions.hostPlayerCollisionGroup
 		);
 
@@ -202,21 +206,21 @@ export default class Game {
 		 */
 		const player2Key = 'player2';
 		this.player2 = this.engine.addSprite(
-			this.gameConfiguration.levelConfiguration.player2InitialX(),
-			this.gameConfiguration.levelConfiguration.playerInitialY(),
+			this.gameConfiguration.player2InitialX(),
+			this.gameConfiguration.playerInitialY(),
 			'shape-' + this.playerShapeFromKey(player2Key)
 		);
 		this.player2.data.key = player2Key;
 		this.initPlayer(
 			this.player2,
-			this.gameConfiguration.levelConfiguration.player2InitialX(),
-			this.gameConfiguration.levelConfiguration.playerInitialY(),
+			this.gameConfiguration.player2InitialX(),
+			this.gameConfiguration.playerInitialY(),
 			this.collisions.clientPlayerCollisionGroup
 		);
 
 		this.createBall(
-			this.gameConfiguration.levelConfiguration.ballInitialHostX(),
-			this.gameConfiguration.levelConfiguration.ballInitialY()
+			this.gameConfiguration.ballInitialHostX(),
+			this.gameConfiguration.ballInitialY()
 		);
 
 		this.levelComponents.createLevelComponents();
@@ -420,8 +424,8 @@ export default class Game {
 	}
 
 	spawnBall() {
-		const xBallPositionHostSide = this.gameConfiguration.levelConfiguration.ballInitialHostX();
-		const xBallPositionClientSide = this.gameConfiguration.levelConfiguration.ballInitialClientX();
+		const xBallPositionHostSide = this.gameConfiguration.ballInitialHostX();
+		const xBallPositionClientSide = this.gameConfiguration.ballInitialClientX();
 		let xBallPosition;
 
 		switch (this.gameData.lastPointTaken) {
@@ -442,7 +446,7 @@ export default class Game {
 				break;
 		}
 
-		this.engine.spawn(this.ball, xBallPosition, this.gameConfiguration.levelConfiguration.ballInitialY());
+		this.engine.spawn(this.ball, xBallPosition, this.gameConfiguration.ballInitialY());
 	}
 
 	updateGame() {
@@ -638,7 +642,7 @@ export default class Game {
 	hitGround(ball) {
 		let playerKey;
 
-		if (ball.x < this.gameConfiguration.levelConfiguration.width / 2) {
+		if (ball.x < this.gameConfiguration.width() / 2) {
 			playerKey = 'player1';
 		} else {
 			playerKey = 'player2';
@@ -815,8 +819,8 @@ export default class Game {
 		this.gameSkin.cheer(
 			this.engine,
 			forHost,
-			forHost ? 0 : this.gameConfiguration.levelConfiguration.width,
-			this.gameConfiguration.levelConfiguration.height * 0.10 + 25
+			forHost ? 0 : this.gameConfiguration.width(),
+			this.gameConfiguration.height() * 0.10 + 25
 		);
 	}
 

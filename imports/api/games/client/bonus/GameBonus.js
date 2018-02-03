@@ -138,7 +138,7 @@ export default class GameBonus {
 						break;
 					case 'player2':
 						player2Count++;
-						xModifier = (this.gameConfiguration.levelConfiguration.width / 2);
+						xModifier = (this.gameConfiguration.width() / 2);
 						sideCount = player2Count;
 						break;
 				}
@@ -147,7 +147,7 @@ export default class GameBonus {
 				if (bonusSprite === null) {
 					const bonusSprite = this.engine.drawBonus(
 						x,
-						this.gameConfiguration.levelConfiguration.height - (this.gameConfiguration.levelConfiguration.groundHeight / 2),
+						this.gameConfiguration.height() - (this.gameConfiguration.groundHeight() / 2),
 						BonusFactory.fromClassName(bonus.classNameToActivate(), this),
 						this.getBonusProgress(bonus, bonus.getDuration())
 					);
@@ -508,7 +508,7 @@ export default class GameBonus {
 	generateClouds() {
 		this.clouds = [
 			this.createCloud(
-				this.gameConfiguration.levelConfiguration.width / 4,
+				this.gameConfiguration.width() / 4,
 				200,
 				{
 					angle: 56,
@@ -516,7 +516,7 @@ export default class GameBonus {
 				}
 			),
 			this.createCloud(
-				this.gameConfiguration.levelConfiguration.width / 4 * 3,
+				this.gameConfiguration.width() / 4 * 3,
 				200,
 				{
 					angle: -63,
@@ -524,7 +524,7 @@ export default class GameBonus {
 				}
 			),
 			this.createCloud(
-				this.gameConfiguration.levelConfiguration.width / 4 * 2,
+				this.gameConfiguration.width() / 4 * 2,
 				200,
 				{
 					scale: 1.1,
@@ -623,7 +623,7 @@ export default class GameBonus {
 	createRandomBonus() {
 		let bonus = BonusFactory.randomBonus(this, this.gameConfiguration);
 		let data = bonus.dataToStream();
-		data.initialX = this.gameConfiguration.levelConfiguration.width / 2 + Random.choice([-6, +6]);
+		data.initialX = this.gameConfiguration.width() / 2 + Random.choice([-6, +6]);
 
 		//Create the bonus for host
 		this.createBonus(data);

@@ -39,9 +39,9 @@ export default class LevelComponents {
 	createGround() {
 		this.gameSkin.createGroundComponents(
 			this.engine,
-			this.gameConfiguration.levelConfiguration.width,
-			this.gameConfiguration.levelConfiguration.height,
-			this.gameConfiguration.levelConfiguration.groundHeight,
+			this.gameConfiguration.width(),
+			this.gameConfiguration.height(),
+			this.gameConfiguration.groundHeight(),
 			this.groundGroup
 		);
 	}
@@ -49,8 +49,8 @@ export default class LevelComponents {
 	createNet() {
 		this.gameSkin.createNetComponent(
 			this.engine,
-			(this.gameConfiguration.levelConfiguration.width / 2) - (this.gameConfiguration.levelConfiguration.netWidth / 2),
-			this.gameConfiguration.levelConfiguration.height - this.gameConfiguration.levelConfiguration.groundHeight - this.gameConfiguration.levelConfiguration.netHeight,
+			(this.gameConfiguration.width() / 2) - (this.gameConfiguration.netWidth() / 2),
+			this.gameConfiguration.height() - this.gameConfiguration.groundHeight() - this.gameConfiguration.netHeight(),
 			this.groundGroup
 		);
 	}
@@ -58,10 +58,10 @@ export default class LevelComponents {
 	createBounds() {
 		//Host limits
 		this.engine.addBound(
-			(this.gameConfiguration.levelConfiguration.width / 4) * 3 - (this.gameConfiguration.levelConfiguration.netWidth / 4),
-			(this.gameConfiguration.levelConfiguration.height / 2),
-			(this.gameConfiguration.levelConfiguration.width / 2) + (this.gameConfiguration.levelConfiguration.netWidth / 2),
-			this.gameConfiguration.levelConfiguration.height,
+			(this.gameConfiguration.width() / 4) * 3 - (this.gameConfiguration.netWidth() / 4),
+			(this.gameConfiguration.height() / 2),
+			(this.gameConfiguration.width() / 2) + (this.gameConfiguration.netWidth() / 2),
+			this.gameConfiguration.height(),
 			this.collisions.playerDelimiterMaterial,
 			this.collisions.hostPlayerDelimiterCollisionGroup,
 			[this.collisions.hostPlayerCollisionGroup]
@@ -69,10 +69,10 @@ export default class LevelComponents {
 
 		//Client limits
 		this.engine.addBound(
-			(this.gameConfiguration.levelConfiguration.width / 4) + (this.gameConfiguration.levelConfiguration.netWidth / 4),
-			(this.gameConfiguration.levelConfiguration.height / 2),
-			(this.gameConfiguration.levelConfiguration.width / 2) + (this.gameConfiguration.levelConfiguration.netWidth / 2),
-			this.gameConfiguration.levelConfiguration.height,
+			(this.gameConfiguration.width() / 4) + (this.gameConfiguration.netWidth() / 4),
+			(this.gameConfiguration.height() / 2),
+			(this.gameConfiguration.width() / 2) + (this.gameConfiguration.netWidth() / 2),
+			this.gameConfiguration.height(),
 			this.collisions.playerDelimiterMaterial,
 			this.collisions.clientPlayerDelimiterCollisionGroup,
 			[this.collisions.clientPlayerCollisionGroup]
@@ -83,10 +83,10 @@ export default class LevelComponents {
 
 		//Net limit
 		this.engine.addBound(
-			this.gameConfiguration.levelConfiguration.width / 2,
-			this.gameConfiguration.levelConfiguration.height - (this.gameConfiguration.levelConfiguration.groundHeight + this.gameConfiguration.levelConfiguration.netHeight) / 2,
-			this.gameConfiguration.levelConfiguration.netWidth,
-			this.gameConfiguration.levelConfiguration.groundHeight + this.gameConfiguration.levelConfiguration.netHeight,
+			this.gameConfiguration.width() / 2,
+			this.gameConfiguration.height() - (this.gameConfiguration.groundHeight() + this.gameConfiguration.netHeight()) / 2,
+			this.gameConfiguration.netWidth(),
+			this.gameConfiguration.groundHeight() + this.gameConfiguration.netHeight(),
 			this.collisions.netDelimiterMaterial,
 			this.collisions.netHitDelimiterCollisionGroup,
 			[
@@ -98,10 +98,10 @@ export default class LevelComponents {
 
 	createGroundBound() {
 		return this.engine.addBound(
-			this.gameConfiguration.levelConfiguration.width / 2,
-			this.gameConfiguration.levelConfiguration.height - (this.gameConfiguration.levelConfiguration.groundHeight / 2),
-			this.gameConfiguration.levelConfiguration.width,
-			this.gameConfiguration.levelConfiguration.groundHeight,
+			this.gameConfiguration.width() / 2,
+			this.gameConfiguration.height() - (this.gameConfiguration.groundHeight() / 2),
+			this.gameConfiguration.width(),
+			this.gameConfiguration.groundHeight(),
 			this.collisions.groundDelimiterMaterial,
 			this.collisions.groundHitDelimiterCollisionGroup,
 			[

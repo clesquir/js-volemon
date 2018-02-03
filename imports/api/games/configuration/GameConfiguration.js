@@ -145,4 +145,56 @@ export default class GameConfiguration {
 
 		return this.tournamentMode.availableBonuses();
 	}
+
+	width() {
+		return this.levelConfiguration.width;
+	}
+
+	height() {
+		return this.levelConfiguration.height;
+	}
+
+	groundHeight() {
+		return this.levelConfiguration.groundHeight;
+	}
+
+	netHeight() {
+		return this.levelConfiguration.netHeight;
+	}
+
+	netWidth() {
+		return this.levelConfiguration.netWidth;
+	}
+
+	playerWidth() {
+		return this.levelConfiguration.playerWidth();
+	}
+
+	playerHeight() {
+		return this.levelConfiguration.playerHeight();
+	}
+
+	playerInitialY() {
+		return this.levelConfiguration.playerInitialY();
+	}
+
+	player1InitialX() {
+		return this.levelConfiguration.player1InitialX();
+	}
+
+	player2InitialX() {
+		return this.levelConfiguration.player2InitialX();
+	}
+
+	ballInitialY() {
+		return this.levelConfiguration.ballInitialY();
+	}
+
+	ballInitialHostX() {
+		return this.levelConfiguration.ballInitialHostX();
+	}
+
+	ballInitialClientX() {
+		return this.levelConfiguration.ballInitialClientX();
+	}
 }

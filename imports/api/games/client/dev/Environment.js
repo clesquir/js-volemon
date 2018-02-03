@@ -39,8 +39,8 @@ export default class Environment {
 		this.gameBonus = this.game.gameBonus;
 		this.game.engine.start(
 			{
-				width: this.gameConfiguration.levelConfiguration.width,
-				height: this.gameConfiguration.levelConfiguration.height,
+				width: this.gameConfiguration.width(),
+				height: this.gameConfiguration.height(),
 				gravity: this.gameConfiguration.worldGravity(),
 				bonusRadius: this.gameConfiguration.bonusRadius(),
 				renderTo: 'environmentGameContainer'
@@ -85,28 +85,28 @@ export default class Environment {
 		this.playerShape = PLAYER_DEFAULT_SHAPE;
 
 		this.game.player1 = this.gameEngine.addSprite(
-			this.gameConfiguration.levelConfiguration.player1InitialX(),
-			this.gameConfiguration.levelConfiguration.playerInitialY(),
+			this.gameConfiguration.player1InitialX(),
+			this.gameConfiguration.playerInitialY(),
 			'shape-' + this.playerShape
 		);
 		this.game.player1.data.key = 'player1';
 		this.game.initPlayer(
 			this.game.player1,
-			this.gameConfiguration.levelConfiguration.player1InitialX(),
-			this.gameConfiguration.levelConfiguration.playerInitialY(),
+			this.gameConfiguration.player1InitialX(),
+			this.gameConfiguration.playerInitialY(),
 			this.game.collisions.hostPlayerCollisionGroup
 		);
 
 		this.game.player2 = this.gameEngine.addSprite(
-			this.gameConfiguration.levelConfiguration.player2InitialX(),
-			this.gameConfiguration.levelConfiguration.playerInitialY(),
+			this.gameConfiguration.player2InitialX(),
+			this.gameConfiguration.playerInitialY(),
 			'shape-' + this.playerShape
 		);
 		this.game.player2.data.key = 'player2';
 		this.game.initPlayer(
 			this.game.player2,
-			this.gameConfiguration.levelConfiguration.player2InitialX(),
-			this.gameConfiguration.levelConfiguration.playerInitialY(),
+			this.gameConfiguration.player2InitialX(),
+			this.gameConfiguration.playerInitialY(),
 			this.game.collisions.hostPlayerCollisionGroup
 		);
 
