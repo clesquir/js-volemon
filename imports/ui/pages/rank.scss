@@ -37,6 +37,10 @@
 	opacity: 1;
 }
 
-#rank-line-chart canvas {
-	@include aspect-ratio(50, 50);
+#rank-line-chart {
+	position: relative;
+	margin: auto;
+	height: 90vh;
+	width: 90vw;
+	max-width: 100%;
 }

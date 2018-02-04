@@ -124,6 +124,7 @@ export default class RankChart {
 				},
 				options: {
 					responsive: true,
+					maintainAspectRatio: false,
 					elements: {
 						point: {
 							radius: 0
