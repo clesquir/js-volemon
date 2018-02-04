@@ -106,7 +106,7 @@ export default class GameSkin {
 		return sprite;
 	}
 
-	createNetComponent(engine, initialXLocation, initialYLocation, groundGroup) {
+	createNetComponent(engine, initialXLocation, initialYLocation, width, height, groundGroup) {
 		const netComponent = this.skin.netComponent();
 
 		const net = engine.addImage(
@@ -115,6 +115,8 @@ export default class GameSkin {
 			netComponent.key,
 			netComponent.frame
 		);
+		engine.setWidth(net, width);
+		engine.setHeight(net, height);
 		groundGroup.add(net);
 	}
 

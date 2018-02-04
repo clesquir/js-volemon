@@ -159,6 +159,10 @@ export default class GameConfiguration {
 	}
 
 	netHeight() {
+		if (this.hasTournament() && this.tournamentMode.overridesNetHeight()) {
+			return this.tournamentMode.netHeight();
+		}
+
 		return this.levelConfiguration.netHeight;
 	}
 
@@ -168,10 +172,6 @@ export default class GameConfiguration {
 
 	playerWidth() {
 		return this.levelConfiguration.playerWidth();
-	}
-
-	playerHeight() {
-		return this.levelConfiguration.playerHeight();
 	}
 
 	playerInitialY() {

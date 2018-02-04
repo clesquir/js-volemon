@@ -15,7 +15,8 @@ import {
 	TOURNAMENT_MODE_SMOKE_BOMB,
 	TOURNAMENT_MODE_SPAGHETTI_ON_THE_CARPET,
 	TOURNAMENT_MODE_SUDDEN_DEATH,
-	TOURNAMENT_MODE_SUPER_BOUNCE_WALLS
+	TOURNAMENT_MODE_SUPER_BOUNCE_WALLS,
+	TOURNAMENT_MODE_TINY_NET
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {Meteor} from 'meteor/meteor';
@@ -152,6 +153,14 @@ Meteor.startup(function() {
 			mode: TOURNAMENT_MODE_SHAPE_SHIFTER,
 			startDate: "2018-01-29 -04:00",
 			endDate: "2018-02-05 -04:00",
+			isPublished: false
+		},
+		{
+			_id: Random.id(5),
+			identifier: 'tournament_2018-02-05',
+			mode: TOURNAMENT_MODE_TINY_NET,
+			startDate: "2018-02-05 -04:00",
+			endDate: "2018-02-12 -04:00",
 			isPublished: false
 		}
 	];

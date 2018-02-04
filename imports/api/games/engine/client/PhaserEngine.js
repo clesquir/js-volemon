@@ -529,8 +529,16 @@ export default class PhaserEngine extends Engine {
 		return sprite.body.y;
 	}
 
+	setWidth(sprite, width) {
+		sprite.width = width;
+	}
+
 	getHeight(sprite) {
 		return sprite.height;
+	}
+
+	setHeight(sprite, height) {
+		sprite.height = height;
 	}
 
 	setAnchor(sprite, anchor) {

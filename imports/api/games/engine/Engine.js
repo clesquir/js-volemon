@@ -122,7 +122,13 @@ export default class Engine {
 	getYPosition(sprite) {
 	}
 
+	setWidth(sprite, width) {
+	}
+
 	getHeight(sprite) {
+	}
+
+	setHeight(sprite, height) {
 	}
 
 	isTimerRunning(timer) {

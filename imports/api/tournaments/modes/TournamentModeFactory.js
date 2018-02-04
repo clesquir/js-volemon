@@ -14,7 +14,8 @@ import {
 	TOURNAMENT_MODE_SMOKE_BOMB,
 	TOURNAMENT_MODE_SPAGHETTI_ON_THE_CARPET,
 	TOURNAMENT_MODE_SUDDEN_DEATH,
-	TOURNAMENT_MODE_SUPER_BOUNCE_WALLS
+	TOURNAMENT_MODE_SUPER_BOUNCE_WALLS,
+	TOURNAMENT_MODE_TINY_NET
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 import BigDrunk from './BigDrunk.js';
 import Classic from './Classic';
@@ -32,6 +33,7 @@ import SmokeBomb from './SmokeBomb';
 import SpaghettiOnTheCarpet from './SpaghettiOnTheCarpet.js';
 import SuddenDeath from './SuddenDeath';
 import SuperBounceWalls from './SuperBounceWalls';
+import TinyNet from './TinyNet';
 
 export default class TournamentModeFactory {
 	static fromId(id) {
@@ -68,6 +70,8 @@ export default class TournamentModeFactory {
 				return new NothingBonus();
 			case TOURNAMENT_MODE_SHAPE_SHIFTER:
 				return new ShapeShifter();
+			case TOURNAMENT_MODE_TINY_NET:
+				return new TinyNet();
 		}
 
 		throw `The tournament mode ${id} doesn't exist.`;

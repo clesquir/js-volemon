@@ -92,4 +92,11 @@ export default class Classic {
 
 	currentPlayerShape() {
 	}
+
+	overridesNetHeight() {
+		return false;
+	}
+
+	netHeight() {
+	}
 }

@@ -51,6 +51,8 @@ export default class LevelComponents {
 			this.engine,
 			(this.gameConfiguration.width() / 2) - (this.gameConfiguration.netWidth() / 2),
 			this.gameConfiguration.height() - this.gameConfiguration.groundHeight() - this.gameConfiguration.netHeight(),
+			this.gameConfiguration.netWidth(),
+			this.gameConfiguration.netHeight(),
 			this.groundGroup
 		);
 	}

@@ -15,7 +15,8 @@ import {
 	TOURNAMENT_MODE_SMOKE_BOMB,
 	TOURNAMENT_MODE_SPAGHETTI_ON_THE_CARPET,
 	TOURNAMENT_MODE_SUDDEN_DEATH,
-	TOURNAMENT_MODE_SUPER_BOUNCE_WALLS
+	TOURNAMENT_MODE_SUPER_BOUNCE_WALLS,
+	TOURNAMENT_MODE_TINY_NET
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 import {Meteor} from 'meteor/meteor';
 
@@ -98,6 +99,11 @@ Meteor.startup(function() {
 			"_id": TOURNAMENT_MODE_SHAPE_SHIFTER,
 			"name": "Shape shifter",
 			"description": "Bonuses spawning are shape shift at a very fast pace"
+		},
+		{
+			"_id": TOURNAMENT_MODE_TINY_NET,
+			"name": "Tiny net",
+			"description": "Virtually no net"
 		}
 	];
 
