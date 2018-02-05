@@ -94,5 +94,15 @@ Meteor.methods({
 		UserConfigurations.update({_id: userConfiguration._id}, {$set: {lastRecovery: getUTCTimeStamp()}});
 
 		Accounts.sendResetPasswordEmail(user._id);
+	},
+
+	unlinkFromService: function(serviceName) {
+		const user = Meteor.user();
+
+		if (!user) {
+			throw new Meteor.Error(401, 'You need to login to unlink from service');
+		}
+
+		Accounts.unlinkService(user._id, serviceName);
 	}
 });

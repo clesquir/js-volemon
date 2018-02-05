@@ -38,3 +38,4 @@ meteortesting:mocha
 accounts-facebook
 accounts-google
 service-configuration
+bozhao:link-accounts

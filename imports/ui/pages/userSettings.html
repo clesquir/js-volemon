@@ -9,12 +9,7 @@
 			<div class="user-profile-information">
 				<div class="user-profile-name">{{userProfileName}}</div>
 				<div class="user-profile-id">{{userProfileId}}</div>
-				<div>
-					<span class="user-profile-email">{{userProfileEmail}}</span>
-					{{#if userProfileServiceName}}
-						<span class="user-profile-service-name"> ({{userProfileServiceName}})</span>
-					{{/if}}
-				</div>
+				<div class="user-profile-email">{{userProfileEmail}}</div>
 			</div>
 
 			<div class="user-settings-option-group">
@@ -66,7 +61,6 @@
 					<div class="user-settings-option-icon"><i class="fa fa-address-card"></i></div>
 					<div class="user-settings-option-label">
 						<div data-action="user-change-name" class="user-settings-option-title">Change name</div>
-						<div class="user-settings-option-description"></div>
 					</div>
 				</div>
 
@@ -75,10 +69,39 @@
 						<div class="user-settings-option-icon"><i class="fa fa-key"></i></div>
 						<div class="user-settings-option-label">
 							<div data-action="user-change-password" class="user-settings-option-title">Change password</div>
-							<div class="user-settings-option-description"></div>
 						</div>
 					</div>
 				{{/if}}
+
+				<div class="user-settings-option-row">
+					<div class="user-settings-option-icon"><i class="fa fa-facebook"></i></div>
+					<div class="user-settings-option-label">
+						{{#if linkedToFacebook}}
+							{{#if canUnlinkExternalAccounts}}
+								<div data-action="user-unlink-facebook" class="user-settings-option-title">Unlink facebook</div>
+							{{else}}
+								<div class="user-settings-option-title">Linked with facebook!</div>
+							{{/if}}
+						{{else}}
+							<div data-action="user-link-to-facebook" class="user-settings-option-title">Link with facebook</div>
+						{{/if}}
+					</div>
+				</div>
+
+				<div class="user-settings-option-row">
+					<div class="user-settings-option-icon"><i class="fa fa-google-plus"></i></div>
+					<div class="user-settings-option-label">
+						{{#if linkedToGoogle}}
+							{{#if canUnlinkExternalAccounts}}
+								<div data-action="user-unlink-google" class="user-settings-option-title">Unlink google</div>
+							{{else}}
+								<div class="user-settings-option-title">Linked with google!</div>
+							{{/if}}
+						{{else}}
+							<div data-action="user-link-to-google" class="user-settings-option-title">Link with google</div>
+						{{/if}}
+					</div>
+				</div>
 			</div>
 
 		</div>

@@ -17,10 +17,8 @@ Meteor.publish('userProfile', function(userId) {
 
 		if (user.services.facebook) {
 			userProfile.email = user.services.facebook.email;
-			userProfile.serviceName = 'facebook';
 		} else if (user.services.google) {
 			userProfile.email = user.services.google.email;
-			userProfile.serviceName = 'google';
 		}
 
 		if (user.emails && user.emails.length) {
@@ -28,8 +26,21 @@ Meteor.publish('userProfile', function(userId) {
 		}
 		userProfile.username = userConfiguration.name;
 		userProfile.hasPassword = !!user.services.password;
+		userProfile.linkedToFacebook = !!user.services.facebook;
+		userProfile.linkedToGoogle = !!user.services.google;
 
 		this.added('userprofiles', userId, userProfile);
+	});
+
+	this.usersTracker = Meteor.users.find({_id: userId}).observe({
+		changed: (user) => {
+			const userId = user._id;
+
+			userProfile.linkedToFacebook = !!user.services.facebook;
+			userProfile.linkedToGoogle = !!user.services.google;
+
+			this.changed('userprofiles', userId, userProfile);
+		}
 	});
 
 	this.userConfigurationsTracker = UserConfigurations.find({userId: userId}).observe({
@@ -47,6 +58,7 @@ Meteor.publish('userProfile', function(userId) {
 	this.ready();
 
 	this.onStop(() => {
+		this.usersTracker.stop();
 		this.userConfigurationsTracker.stop();
 	});
 });

@@ -24,12 +24,6 @@ Template.userSettings.helpers({
 		return userProfile ? userProfile.email.split('').reverse().join('') : '-';
 	},
 
-	userProfileServiceName: function() {
-		const userProfile = UserProfiles.findOne({userId: Meteor.userId()});
-
-		return userProfile ? userProfile.serviceName : '';
-	},
-
 	gameNotificationsSound: function() {
 		const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
 
@@ -37,6 +31,24 @@ Template.userSettings.helpers({
 	},
 
 	hasPassword: function() {
+		const userProfile = UserProfiles.findOne({userId: Meteor.userId()});
+
+		return userProfile && userProfile.hasPassword;
+	},
+
+	linkedToFacebook: function() {
+		const userProfile = UserProfiles.findOne({userId: Meteor.userId()});
+
+		return userProfile && userProfile.linkedToFacebook;
+	},
+
+	linkedToGoogle: function() {
+		const userProfile = UserProfiles.findOne({userId: Meteor.userId()});
+
+		return userProfile && userProfile.linkedToGoogle;
+	},
+
+	canUnlinkExternalAccounts: function() {
 		const userProfile = UserProfiles.findOne({userId: Meteor.userId()});
 
 		return userProfile && userProfile.hasPassword;
@@ -66,5 +78,29 @@ Template.userSettings.events({
 
 	'click [data-action=user-change-password]': function() {
 		Session.set('lightbox', 'passwordChange');
+	},
+
+	'click [data-action=user-link-to-facebook]': function() {
+		Meteor.linkWithFacebook({requestPermissions: ['public_profile', 'email']}, function(error) {
+			if (error && error.error) {
+				alert(error.error);
+			}
+		});
+	},
+
+	'click [data-action=user-unlink-facebook]': function() {
+		Meteor.call('unlinkFromService', 'facebook');
+	},
+
+	'click [data-action=user-link-to-google]': function() {
+		Meteor.linkWithGoogle({}, function(error) {
+			if (error && error.error) {
+				alert(error.error);
+			}
+		});
+	},
+
+	'click [data-action=user-unlink-google]': function() {
+		Meteor.call('unlinkFromService', 'google');
 	}
 });
