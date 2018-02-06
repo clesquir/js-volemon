@@ -1,5 +1,5 @@
-import {Router} from 'meteor/iron:router';
 import {Games} from '/imports/api/games/games.js';
+import {Router} from 'meteor/iron:router';
 
 export default class GameRematch {
 
@@ -17,21 +17,13 @@ export default class GameRematch {
 			changed: (id, fields) => {
 				if (fields.hasOwnProperty('rematchGameId')) {
 					Session.set('appLoadingMask', true);
+					Session.set('appLoadingMask.text', 'Creating rematch...');
 
-					let timeout = 1000;
-					if (this.gameData.isUserClient()) {
-						timeout = 0;
-					} else if (this.gameData.isUserHost()) {
-						timeout = 500;
+					if (this.gameData.hasTournament()) {
+						Router.go('tournamentGame', {tournamentId: this.gameData.tournamentId, gameId: fields.rematchGameId});
+					} else {
+						Router.go('game', {_id: fields.rematchGameId});
 					}
-
-					Meteor.setTimeout(() => {
-						if (this.gameData.hasTournament()) {
-							Router.go('tournamentGame', {tournamentId: this.gameData.tournamentId, gameId: fields.rematchGameId});
-						} else {
-							Router.go('game', {_id: fields.rematchGameId});
-						}
-					}, timeout);
 				}
 			}
 		});

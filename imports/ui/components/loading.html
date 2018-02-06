@@ -1,11 +1,11 @@
 <template name="loading">
 	{{#if visible loadingMask}}
-	<div class="loading-mask">
-		<div class="loading-logo">
-			<div class="loading-diagonals"></div>
-			<div class="loading-v"></div>
+		<div class="loading-mask">
+			<div class="loading-logo">
+				<div class="loading-diagonals"></div>
+				<div class="loading-v"></div>
+			</div>
+			<div class="loading-mask-text">{{loadingText loadingMask}}</div>
 		</div>
-		<div class="loading-mask-text">Loading...</div>
-	</div>
 	{{/if}}
 </template>

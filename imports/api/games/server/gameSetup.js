@@ -1,5 +1,3 @@
-import {Meteor} from 'meteor/meteor';
-import {Random} from 'meteor/random';
 import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGameConfiguration.js';
 import {POSSIBLE_NO_PLAYERS} from '/imports/api/games/constants.js';
 import GameForfeited from '/imports/api/games/events/GameForfeited.js';
@@ -10,7 +8,9 @@ import GameInitiator from '/imports/api/games/server/GameInitiator.js';
 import {finishGame} from '/imports/api/games/server/onGameFinished.js';
 import {PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
 import {
-	GAME_STATUS_FORFEITED, GAME_STATUS_REGISTRATION, GAME_STATUS_STARTED,
+	GAME_STATUS_FORFEITED,
+	GAME_STATUS_REGISTRATION,
+	GAME_STATUS_STARTED,
 	GAME_STATUS_TIMEOUT
 } from '/imports/api/games/statusConstants.js';
 import {isForfeiting, isGameStatusFinished} from '/imports/api/games/utils.js';
@@ -18,6 +18,8 @@ import {playersCanPlayTournament} from '/imports/api/tournaments/utils.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 import {EventPublisher} from '/imports/lib/EventPublisher.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
+import {Meteor} from 'meteor/meteor';
+import {Random} from 'meteor/random';
 
 /**
  * @param {string} userId
@@ -224,7 +226,7 @@ export const replyRematch = function(userId, gameId, accepted, gameInitiators) {
 
 		Meteor.setTimeout(() => {
 			startGame(gameRematchId, gameInitiators);
-		}, 3000);
+		}, 5000);
 	}
 };
 

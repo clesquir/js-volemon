@@ -2,8 +2,8 @@ import RankChart from '/imports/api/ranks/client/RankChart.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {canPlayTournament, isTournamentActive} from '/imports/api/tournaments/utils.js';
 import CardSwitcher from '/imports/lib/client/CardSwitcher.js';
-import {loadStatistics} from '/imports/ui/views/statistics.js';
 import {timeElapsedSince} from '/imports/lib/utils.js';
+import {loadStatistics} from '/imports/ui/views/statistics.js';
 import {Router} from 'meteor/iron:router';
 import {Meteor} from 'meteor/meteor';
 import * as Moment from 'meteor/momentjs:moment';
@@ -145,16 +145,24 @@ Template.tournament.events({
 
 	'click [data-action=create-tournament-game]': function() {
 		Tooltips.hide();
-		Session.set('appLoadingMask', true);
 
-		Meteor.call('createTournamentGame', Session.get('tournament'), function(error, id) {
-			Session.set('appLoadingMask', false);
-			if (error) {
-				return alert(error);
-			}
+		if (!Meteor.userId()) {
+			Session.set('lightbox', 'login');
+		} else {
+			Session.set('appLoadingMask', true);
+			Session.set('appLoadingMask.text', 'Creating game...');
 
-			Router.go('tournamentGame', {tournamentId: Session.get('tournament'), gameId: id});
-		});
+			Meteor.call('createTournamentGame', Session.get('tournament'), function(error, id) {
+				Session.set('appLoadingMask', false);
+				Session.set('appLoadingMask.text', undefined);
+
+				if (error) {
+					return alert(error);
+				}
+
+				Router.go('tournamentGame', {tournamentId: Session.get('tournament'), gameId: id});
+			});
+		}
 	}
 });
 

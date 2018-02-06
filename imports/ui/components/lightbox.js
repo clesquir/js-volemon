@@ -1,5 +1,5 @@
-import {Template} from 'meteor/templating';
 import {Session} from 'meteor/session';
+import {Template} from 'meteor/templating';
 
 import './lightbox.html';
 
@@ -7,11 +7,6 @@ Template.lightbox.rendered = function() {
 	$(window).on('keydown', function(e) {
 		if (e.which === 27 && !Session.get('lightbox.escDisabled')) {
 			Session.set('lightbox', null);
-
-			if (actionOnLighboxClose) {
-				actionOnLighboxClose();
-				actionOnLighboxClose = null;
-			}
 		}
 	});
 };
@@ -32,12 +27,7 @@ Template.lightbox.helpers({
 });
 
 Template.lightbox.events({
-	'click [data-action="lightbox-close"]': function(e) {
+	'click [data-action="lightbox-close"]': function() {
 		Session.set('lightbox', null);
-
-		if (actionOnLighboxClose) {
-			actionOnLighboxClose();
-			actionOnLighboxClose = null;
-		}
 	}
 });

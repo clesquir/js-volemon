@@ -118,24 +118,15 @@ Template.gameSetup.events({
 	},
 
 	'click [data-action="join"]': function() {
-		actionAfterLoginCreateUser = function() {
+		if (!Meteor.userId()) {
+			Session.set('lightbox', 'login');
+		} else {
 			Meteor.call('joinGame', Session.get('game'), function(error) {
 				if (error) {
 					alert(error);
 				}
 			});
-		};
-
-		if (!Meteor.userId()) {
-			actionOnLighboxClose = function() {
-				actionAfterLoginCreateUser = null;
-			};
-
-			return Session.set('lightbox', 'login');
 		}
-
-		actionAfterLoginCreateUser();
-		actionAfterLoginCreateUser = null;
 	},
 
 	'click [data-action="leave"]': function() {

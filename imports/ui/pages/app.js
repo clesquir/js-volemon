@@ -113,29 +113,24 @@ Template.app.events({
 
 	'click [data-action=create-game]': function() {
 		Tooltips.hide();
-		Session.set('appLoadingMask', true);
-		actionAfterLoginCreateUser = function() {
+
+		if (!Meteor.userId()) {
+			Session.set('lightbox', 'login');
+		} else {
+			Session.set('appLoadingMask', true);
+			Session.set('appLoadingMask.text', 'Creating game...');
+
 			Meteor.call('createGame', function(error, id) {
 				Session.set('appLoadingMask', false);
+				Session.set('appLoadingMask.text', undefined);
+
 				if (error) {
 					return alert(error);
 				}
 
 				Router.go('game', {_id: id});
 			});
-		};
-
-		if (!Meteor.userId()) {
-			actionOnLighboxClose = function() {
-				actionAfterLoginCreateUser = null;
-			};
-
-			Session.set('appLoadingMask', false);
-			return Session.set('lightbox', 'login');
 		}
-
-		actionAfterLoginCreateUser();
-		actionAfterLoginCreateUser = null;
 	},
 
 	'click [data-action="copy-url"]': function(e) {

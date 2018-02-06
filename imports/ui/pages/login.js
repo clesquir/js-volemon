@@ -1,9 +1,9 @@
-import {Meteor} from 'meteor/meteor';
-import {Accounts} from 'meteor/accounts-base';
-import {Template} from 'meteor/templating';
-import {Session} from 'meteor/session';
-import '/imports/ui/util/form.js';
 import '/imports/ui/util/error-messages.js';
+import '/imports/ui/util/form.js';
+import {Accounts} from 'meteor/accounts-base';
+import {Meteor} from 'meteor/meteor';
+import {Session} from 'meteor/session';
+import {Template} from 'meteor/templating';
 
 import './login.html';
 
@@ -45,7 +45,6 @@ Template.login.events({
 	},
 
 	'click [data-action=close-login]': function() {
-		actionAfterLoginCreateUser = null;
 		Session.set('lightbox', null);
 	},
 
@@ -60,10 +59,6 @@ Template.login.events({
 
 		Meteor.loginWithFacebook({requestPermissions: ['public_profile', 'email']}, function(error) {
 			if (error === undefined) {
-				if (actionAfterLoginCreateUser) {
-					actionAfterLoginCreateUser();
-					actionAfterLoginCreateUser = null;
-				}
 				Session.set('lightbox', null);
 			} else {
 				errorLabelContainer.show();
@@ -79,10 +74,6 @@ Template.login.events({
 
 		Meteor.loginWithGoogle({}, function(error) {
 			if (error === undefined) {
-				if (actionAfterLoginCreateUser) {
-					actionAfterLoginCreateUser();
-					actionAfterLoginCreateUser = null;
-				}
 				Session.set('lightbox', null);
 			} else {
 				errorLabelContainer.show();
@@ -111,10 +102,6 @@ Template.login.events({
 			Meteor.loginWithPassword(emailField.val(), passwordField.val(), function(error) {
 				disableButton(e, false);
 				if (error === undefined) {
-					if (actionAfterLoginCreateUser) {
-						actionAfterLoginCreateUser();
-						actionAfterLoginCreateUser = null;
-					}
 					Session.set('lightbox', null);
 				} else {
 					errorLabelContainer.show();
@@ -184,7 +171,7 @@ Template.login.events({
 				hasErrors = true;
 			}
 
-			if (passwordConfirmationField.val() != passwordField.val()) {
+			if (passwordConfirmationField.val() !== passwordField.val()) {
 				addErrorToField(passwordConfirmationField, CONFIRMATION_MUST_MATCH_PASSWORD);
 				hasErrors = true;
 			}
@@ -201,10 +188,6 @@ Template.login.events({
 					function(error) {
 						disableButton(e, false);
 						if (error === undefined) {
-							if (actionAfterLoginCreateUser) {
-								actionAfterLoginCreateUser();
-								actionAfterLoginCreateUser = null;
-							}
 							Session.set('lightbox', null);
 						} else {
 							errorLabelContainer.show();

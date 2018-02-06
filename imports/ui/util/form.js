@@ -1,6 +1,3 @@
-actionAfterLoginCreateUser = null;
-actionOnLighboxClose = null;
-
 disableButton = function(e, disabled) {
 	const button = $(e.target).find('.button');
 	button.prop('disabled', disabled);
