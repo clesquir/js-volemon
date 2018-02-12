@@ -16,6 +16,7 @@ import {
 	TOURNAMENT_MODE_SPAGHETTI_ON_THE_CARPET,
 	TOURNAMENT_MODE_SUDDEN_DEATH,
 	TOURNAMENT_MODE_SUPER_BOUNCE_WALLS,
+	TOURNAMENT_MODE_TALL_NET,
 	TOURNAMENT_MODE_TINY_NET
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
@@ -161,6 +162,15 @@ Meteor.startup(function() {
 			mode: TOURNAMENT_MODE_TINY_NET,
 			startDate: "2018-02-05 -04:00",
 			endDate: "2018-02-12 -04:00",
+			isPublished: false
+		},
+		{
+			_id: Random.id(5),
+			identifier: 'tournament_2018-02-12',
+			mode: TOURNAMENT_MODE_TALL_NET,
+			description: 'AKA the soylent mode',
+			startDate: "2018-02-12 -04:00",
+			endDate: "2018-02-19 -04:00",
 			isPublished: false
 		}
 	];
