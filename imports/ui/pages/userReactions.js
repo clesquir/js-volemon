@@ -22,6 +22,7 @@ Template.userReactions.events({
 	'submit form[name=userReactions]': function(e) {
 		e.preventDefault();
 
+		const errorLabelContainer = $(e.target).find('.error-label-container');
 		const userReactions = UserReactions.findOne({userId: Meteor.userId()});
 		const customReactions = CustomReactions.fromUserReactions(userReactions.reactions);
 		let reactions = customReactions.reactionsList;
@@ -31,15 +32,17 @@ Template.userReactions.events({
 
 		for (let i = 0; i < reactions.length; i++) {
 			field = $(e.target).find('#reaction-text-field-'+reactions[i].index);
-
-			if (field.val()) {
-				newReactions['button'+reactions[i].index] = field.val();
-			} else {
-				newReactions['button'+reactions[i].index] = reactions[i].text;
-			}
+			newReactions['button'+reactions[i].index] = field.val();
 		}
 
-		disableButton(e, true);
-		Meteor.call('updateReactions', newReactions);
+		Meteor.call('updateReactions', newReactions, function(error) {
+			disableButton(e, false);
+			if (error === undefined) {
+				Session.set('lightbox', null);
+			} else {
+				errorLabelContainer.show();
+				errorLabelContainer.html(error.reason);
+			}
+		});
 	}
 });

@@ -4,33 +4,33 @@ export default class CustomReactions {
 		this.reactionsList = [
 			{
 				index: 5,
-				label: 'Button 5',
-				text: button5
+				label: '5',
+				text: button5 || 'Good game!'
 			},
 			{
 				index: 6,
-				label: 'Button 6',
-				text: button6
+				label: '6',
+				text: button6 || 'What a shot!'
 			},
 			{
 				index: 7,
-				label: 'Button 7',
-				text: button7
+				label: '7',
+				text: button7 || 'Lucky you!'
 			},
 			{
 				index: 8,
-				label: 'Button 8',
-				text: button8
+				label: '8',
+				text: button8 || 'Calculated.'
 			},
 			{
 				index: 9,
-				label: 'Button 9',
-				text: button9
+				label: '9',
+				text: button9 ||'Boring!'
 			},
 			{
 				index: 0,
-				label: 'Button 0',
-				text: button0
+				label: '0',
+				text: button0 || 'Oops!'
 			}
 		];
 	}

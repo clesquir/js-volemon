@@ -8,6 +8,7 @@ Template.reactionsList.helpers({
 	reactions: function() {
 		const userReactions = UserReactions.findOne({userId: Meteor.userId()});
 		const customReactions = CustomReactions.fromUserReactions(userReactions.reactions);
+
 		return [
 			{
 				index: 1,
