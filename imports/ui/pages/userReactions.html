@@ -1,0 +1,33 @@
+<template name="userReactions">
+
+	<div class="reactions-template">
+
+		<h1>Set custom reactions</h1>
+
+		<form name="userReactions">
+
+			<div id="reaction-list" class="table-list">
+				<div class="table-list-row table-list-header">
+					<div class="table-list-cell">Button</div>
+					<div class="table-list-cell">Reaction</div>
+				</div>
+
+				{{#each reactions}}
+					<div class="table-list-row">
+						<div class="table-list-cell">{{label}}</div>
+						<div class="table-list-cell">
+							<input id="reaction-text-field-{{index}}" type="text" autofocus="autofocus" autocomplete="off" name="reaction-{{index}}" maxlength="20" value="{{text}}" />
+						</div>
+					</div>
+				{{/each}}
+			</div>
+
+			<p id="reaction-info-container" style="visibility: hidden;"></p>
+
+			<input type="submit" class="button" value="Save" />
+
+		</form>
+
+	</div>
+
+</template>

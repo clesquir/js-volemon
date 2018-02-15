@@ -26,6 +26,7 @@ import '/imports/ui/pages/keymaps.js';
 import '/imports/ui/pages/login.js';
 import '/imports/ui/pages/passwordChange.js';
 import '/imports/ui/pages/rank.js';
+import '/imports/ui/pages/userReactions.js';
 import '/imports/ui/pages/skins.js';
 import '/imports/ui/pages/tournament.js';
 import '/imports/ui/pages/tournamentGame.js';
@@ -59,6 +60,7 @@ Router.configure({
 		return [
 			Meteor.subscribe('userConfiguration', Meteor.userId()),
 			Meteor.subscribe('userKeymaps', Meteor.userId()),
+			Meteor.subscribe('userReactions', Meteor.userId()),
 			Meteor.subscribe('achievements'),
 			Meteor.subscribe('userAchievements', Meteor.userId()),
 			Meteor.subscribe('skins')
