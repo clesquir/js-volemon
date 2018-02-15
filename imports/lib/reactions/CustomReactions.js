@@ -9,27 +9,27 @@ export default class CustomReactions {
 			},
 			{
 				index: 6,
-                label: 'Button 6',
+				label: 'Button 6',
 				text: button6
 			},
 			{
 				index: 7,
-                label: 'Button 7',
+				label: 'Button 7',
 				text: button7
 			},
 			{
 				index: 8,
-                label: 'Button 8',
+				label: 'Button 8',
 				text: button8
 			},
 			{
 				index: 9,
-                label: 'Button 9',
+				label: 'Button 9',
 				text: button9
 			},
 			{
 				index: 0,
-                label: 'Button 0',
+				label: 'Button 0',
 				text: button0
 			}
 		];

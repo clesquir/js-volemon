@@ -75,12 +75,12 @@ Meteor.methods({
 		const userReactions = UserReactions.findOne({userId: this.userId});
 
 		if (userReactions) {
-            UserReactions.update(
+			UserReactions.update(
 				{userId: this.userId},
 				{$set: {reactions: reactions}}
 			);
 		} else {
-            UserReactions.insert(
+			UserReactions.insert(
 				Object.assign(
 					{userId: this.userId},
 					{reactions: reactions}

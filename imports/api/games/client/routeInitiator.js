@@ -15,8 +15,6 @@ import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
 import PluginFactory from '/imports/api/skins/plugins/PluginFactory.js';
 import SkinFactory from '/imports/api/skins/skins/SkinFactory.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
-import {UserReactions} from '/imports/api/users/userReactions.js';
-import {CustomReactions} from '/imports/lib/reactions/CustomReactions.js';
 import {UserKeymaps} from '/imports/api/users/userKeymaps.js';
 import CustomKeymaps from '/imports/lib/keymaps/CustomKeymaps.js';
 import ClientStreamFactory from '/imports/lib/stream/client/ClientStreamFactory.js';
@@ -82,7 +80,6 @@ const initGame = function(gameId) {
 
 	const engine = new PhaserEngine();
 	const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
-	const userReactions = UserReactions.findOne({userId: Meteor.userId()});
 	const gameSkin = new GameSkin(
 		SkinFactory.fromId(userConfiguration ? userConfiguration.skinId : null),
 		PluginFactory.fromConfiguration(userConfiguration)

@@ -71,8 +71,8 @@ Template.userSettings.events({
 	},
 
 	'click [data-action=user-change-reactions]': function() {
-        const userReactions = UserReactions.findOne({userId: Meteor.userId()});
-        console.log(userReactions);
+		const userReactions = UserReactions.findOne({userId: Meteor.userId()});
+		console.log(userReactions);
 		Session.set('lightbox', 'userReactions');
 	},
 
