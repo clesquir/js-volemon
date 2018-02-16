@@ -1,5 +1,5 @@
-import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 import {UserProfiles} from '/imports/api/profiles/userprofiles.js';
+import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 import {onMobileAndTablet} from '/imports/lib/utils.js';
 import {Meteor} from "meteor/meteor";
 import {Session} from "meteor/session";
@@ -66,6 +66,10 @@ Template.userSettings.events({
 
 	'click [data-action=user-change-controls]': function() {
 		Session.set('lightbox', 'keymaps');
+	},
+
+	'click [data-action=user-change-reactions]': function() {
+		Session.set('lightbox', 'userReactions');
 	},
 
 	'click [data-action=user-change-skin]': function() {

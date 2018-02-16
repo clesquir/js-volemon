@@ -1,0 +1,26 @@
+.reaction-editor-items {
+	display: flex;
+	justify-content: center;
+	flex-flow: wrap;
+
+	.reaction-editor-item {
+		position: relative;
+		margin: 5px;
+
+		.reaction-keymap {
+			left: -6px;
+			top: -6px;
+		}
+
+		.reaction-editor-text {
+			text-align: center;
+			border-radius: 10px;
+			box-shadow: none;
+			border: $text-color solid 3px;
+			width: 140px;
+			height: 35px;
+			padding: 0;
+			font-size: 14px;
+		}
+	}
+}

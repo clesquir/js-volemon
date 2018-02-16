@@ -1,0 +1,26 @@
+<template name="userReactions">
+
+	<div class="user-reactions-template">
+
+		<h1>Define custom reactions</h1>
+
+		<form name="userReactions">
+
+			<p>Please use your judgment and stay respectful!</p>
+
+			<div class="reaction-editor-items">
+				{{#each reactions}}
+					<div class="reaction-editor-item">
+						<div class="reaction-keymap">{{index}}</div>
+						<input id="reaction-text-field-{{index}}" class="reaction-editor-text" type="text" autofocus="autofocus" autocomplete="off" name="reaction-{{index}}" maxlength="20" value="{{text}}" />
+					</div>
+				{{/each}}
+			</div>
+
+			<input type="submit" class="button" value="Save" />
+
+		</form>
+
+	</div>
+
+</template>

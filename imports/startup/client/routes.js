@@ -33,6 +33,7 @@ import '/imports/ui/pages/tournaments.js';
 import '/imports/ui/pages/tournamentUserProfile.js';
 import '/imports/ui/pages/username.js';
 import '/imports/ui/pages/userProfile.js';
+import '/imports/ui/pages/userReactions.js';
 import '/imports/ui/pages/userSettings.js';
 import '/imports/ui/views/achievementPopup.js';
 import '/imports/ui/views/achievementRanking.js';
@@ -59,6 +60,7 @@ Router.configure({
 		return [
 			Meteor.subscribe('userConfiguration', Meteor.userId()),
 			Meteor.subscribe('userKeymaps', Meteor.userId()),
+			Meteor.subscribe('userReactions', Meteor.userId()),
 			Meteor.subscribe('achievements'),
 			Meteor.subscribe('userAchievements', Meteor.userId()),
 			Meteor.subscribe('skins')
