@@ -2,27 +2,20 @@
 
 	<div class="user-reactions-template">
 
-		<h1>Set custom reactions</h1>
+		<h1>Define custom reactions</h1>
 
 		<form name="userReactions">
 
-			<div id="reaction-list" class="table-list">
-				<div class="table-list-row table-list-header">
-					<div class="table-list-cell label-cell">Button</div>
-					<div class="table-list-cell">Reaction</div>
-				</div>
+			<p>Please use your judgment and stay respectful!</p>
 
+			<div class="reaction-editor-items">
 				{{#each reactions}}
-					<div class="table-list-row">
-						<div class="table-list-cell label-cell">{{label}}</div>
-						<div class="table-list-cell">
-							<input id="reaction-text-field-{{index}}" type="text" autofocus="autofocus" autocomplete="off" name="reaction-{{index}}" maxlength="20" value="{{text}}" />
-						</div>
+					<div class="reaction-editor-item">
+						<div class="reaction-keymap">{{index}}</div>
+						<input id="reaction-text-field-{{index}}" class="reaction-editor-text" type="text" autofocus="autofocus" autocomplete="off" name="reaction-{{index}}" maxlength="20" value="{{text}}" />
 					</div>
 				{{/each}}
 			</div>
-
-			<p id="reaction-info-container" style="visibility: hidden;"></p>
 
 			<input type="submit" class="button" value="Save" />
 

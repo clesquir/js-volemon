@@ -1,11 +1,9 @@
-import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 import {UserProfiles} from '/imports/api/profiles/userprofiles.js';
+import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 import {onMobileAndTablet} from '/imports/lib/utils.js';
 import {Meteor} from "meteor/meteor";
 import {Session} from "meteor/session";
 import {Template} from "meteor/templating";
-import {UserReactions} from '/imports/api/users/userReactions.js';
-import CustomReactions from '/imports/lib/reactions/CustomReactions.js';
 
 import './userSettings.html';
 
@@ -71,8 +69,6 @@ Template.userSettings.events({
 	},
 
 	'click [data-action=user-change-reactions]': function() {
-		const userReactions = UserReactions.findOne({userId: Meteor.userId()});
-		console.log(userReactions);
 		Session.set('lightbox', 'userReactions');
 	},
 

@@ -1,13 +1,13 @@
-import {Template} from 'meteor/templating';
 import {UserReactions} from '/imports/api/users/userReactions.js';
 import CustomReactions from '/imports/lib/reactions/CustomReactions.js';
+import {Template} from 'meteor/templating';
 
 import './reactionsList.html';
 
 Template.reactionsList.helpers({
 	reactions: function() {
 		const userReactions = UserReactions.findOne({userId: Meteor.userId()});
-		const customReactions = CustomReactions.fromUserReactions(userReactions.reactions);
+		const customReactions = CustomReactions.fromUserReactions(userReactions);
 
 		return [
 			{
@@ -26,6 +26,6 @@ Template.reactionsList.helpers({
 				index: 4,
 				icon: 'laugh'
 			}
-		].concat(customReactions.reactionsList);
+		].concat(customReactions.reactions);
 	}
 });

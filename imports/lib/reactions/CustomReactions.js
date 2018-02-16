@@ -1,36 +1,29 @@
 export default class CustomReactions {
-
 	constructor(button5, button6, button7, button8, button9, button0) {
-		this.reactionsList = [
+		this.reactions = [
 			{
 				index: 5,
-				label: '5',
-				text: button5 || 'Good game!'
+				text: button5
 			},
 			{
 				index: 6,
-				label: '6',
-				text: button6 || 'What a shot!'
+				text: button6
 			},
 			{
 				index: 7,
-				label: '7',
-				text: button7 || 'Lucky you!'
+				text: button7
 			},
 			{
 				index: 8,
-				label: '8',
-				text: button8 || 'Calculated.'
+				text: button8
 			},
 			{
 				index: 9,
-				label: '9',
-				text: button9 ||'Boring!'
+				text: button9
 			},
 			{
 				index: 0,
-				label: '0',
-				text: button0 || 'Oops!'
+				text: button0
 			}
 		];
 	}
