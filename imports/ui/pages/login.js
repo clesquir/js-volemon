@@ -177,7 +177,7 @@ Template.login.events({
 			}
 
 			if (nameField.val().length > 20) {
-				addErrorToField(nameField, USERNAME_TOO_LONG);
+				addErrorToField(nameField, MAXIMUM_CHARACTERS_OF_20);
 				hasErrors = true;
 			}
 

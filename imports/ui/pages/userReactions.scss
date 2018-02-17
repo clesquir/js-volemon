@@ -17,10 +17,15 @@
 			border-radius: 10px;
 			box-shadow: none;
 			border: $text-color solid 3px;
-			width: 140px;
-			height: 35px;
+			width: 150px;
+			height: 45px;
 			padding: 0;
 			font-size: 14px;
+		}
+
+		.inline-form-error {
+			padding: 0 5px 5px 0;
+			font-size: 0.65em;
 		}
 	}
 }

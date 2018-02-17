@@ -32,7 +32,7 @@ Template.username.events({
 
 		if (!hasErrors) {
 			if (usernameField.val().length > 20) {
-				addErrorToField(usernameField, USERNAME_TOO_LONG);
+				addErrorToField(usernameField, MAXIMUM_CHARACTERS_OF_20);
 				hasErrors = true;
 			}
 

@@ -24,17 +24,51 @@ Template.userReactions.events({
 
 		const currentReactions = userReactions();
 		const reactionsToUpdate = {};
+		const fields = [];
 
 		for (let i = 0; i < currentReactions.length; i++) {
 			let field = $(e.target).find('#reaction-text-field-' + currentReactions[i].index);
+			fields.push(field);
 			reactionsToUpdate['button' + currentReactions[i].index] = field.val();
 		}
 
-		Meteor.call('updateReactions', reactionsToUpdate, function(error) {
-			disableButton(e, false);
-			if (error === undefined) {
-				Session.set('lightbox', null);
-			}
-		});
+		Promise.all(
+			[
+				new Promise(function(resolve, reject) {
+					if (validateFieldsPresenceAndMarkInvalid($(e.target), fields)) {
+						return reject();
+					} else {
+						return resolve();
+					}
+				}),
+				new Promise(function(resolve, reject) {
+					let hasErrors = false;
+
+					for (let field of fields) {
+						if (field.val().length > 20) {
+							addErrorToField(field, MAXIMUM_CHARACTERS_OF_20);
+							hasErrors = true;
+						}
+					}
+
+					if (hasErrors) {
+						return reject();
+					} else {
+						return resolve();
+					}
+				})
+			]
+		)
+			.then(
+				function() {
+					Meteor.call('updateReactions', reactionsToUpdate, function(error) {
+						disableButton(e, false);
+						if (error === undefined) {
+							Session.set('lightbox', null);
+						}
+					});
+				}
+			)
+			.catch(function() {});
 	}
 });
