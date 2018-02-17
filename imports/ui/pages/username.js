@@ -1,9 +1,9 @@
-import {Meteor} from 'meteor/meteor';
-import {Template} from 'meteor/templating';
-import {Session} from 'meteor/session';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
-import '/imports/ui/util/form.js';
 import '/imports/ui/util/error-messages.js';
+import '/imports/ui/util/form.js';
+import {Meteor} from 'meteor/meteor';
+import {Session} from 'meteor/session';
+import {Template} from 'meteor/templating';
 
 import './username.html';
 
@@ -19,24 +19,32 @@ Template.username.events({
 	'submit form[name=username]': function(e) {
 		e.preventDefault();
 
-		const user = Meteor.user();
 		const usernameField = $(e.target).find('#username-name-field');
 		const errorLabelContainer = $(e.target).find('.error-label-container');
-		let hasErrors;
 
 		removeErrorLabelContainer(errorLabelContainer);
 
-		hasErrors = validateFieldsPresenceAndMarkInvalid($(e.target), [
-			usernameField
-		]);
-
-		if (!hasErrors) {
-			if (usernameField.val().length > 20) {
-				addErrorToField(usernameField, MAXIMUM_CHARACTERS_OF_20);
-				hasErrors = true;
-			}
-
-			if (user && !hasErrors) {
+		Promise.resolve()
+			.then(
+				function() {
+					if (validateFieldsPresenceAndMarkInvalid($(e.target), [usernameField])) {
+						return Promise.reject();
+					} else {
+						return Promise.resolve();
+					}
+				}
+			)
+			.then(
+				function() {
+					if (usernameField.val().length > 20) {
+						addErrorToField(usernameField, MAXIMUM_CHARACTERS_OF_20);
+						return Promise.reject();
+					} else {
+						return Promise.resolve();
+					}
+				}
+			)
+			.then(function() {
 				disableButton(e, true);
 				Meteor.call('updateUserName', usernameField.val(), function(error) {
 					disableButton(e, false);
@@ -47,8 +55,8 @@ Template.username.events({
 						errorLabelContainer.html(error.reason);
 					}
 				});
-			}
-		}
+			})
+			.catch(function() {});
 	}
 });
 

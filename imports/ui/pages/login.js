@@ -88,27 +88,32 @@ Template.login.events({
 		const emailField = $(e.target).find('#login-email-field');
 		const passwordField = $(e.target).find('#login-password-field');
 		const errorLabelContainer = $(e.target).find('.error-label-container');
-		let hasErrors;
 
 		removeErrorLabelContainer(errorLabelContainer);
 
-		hasErrors = validateFieldsPresenceAndMarkInvalid($(e.target), [
-			emailField,
-			passwordField
-		]);
-
-		if (!hasErrors) {
-			disableButton(e, true);
-			Meteor.loginWithPassword(emailField.val(), passwordField.val(), function(error) {
-				disableButton(e, false);
-				if (error === undefined) {
-					Session.set('lightbox', null);
-				} else {
-					errorLabelContainer.show();
-					errorLabelContainer.html(error.reason);
+		Promise.resolve()
+			.then(
+				function() {
+					if (validateFieldsPresenceAndMarkInvalid($(e.target), [emailField, passwordField])) {
+						return Promise.reject();
+					} else {
+						return Promise.resolve();
+					}
 				}
-			});
-		}
+			)
+			.then(function() {
+				disableButton(e, true);
+				Meteor.loginWithPassword(emailField.val(), passwordField.val(), function(error) {
+					disableButton(e, false);
+					if (error === undefined) {
+						Session.set('lightbox', null);
+					} else {
+						errorLabelContainer.show();
+						errorLabelContainer.html(error.reason);
+					}
+				});
+			})
+			.catch(function() {});
 	},
 
 	'submit form[name=forgotPassword]': function(e) {
@@ -117,28 +122,34 @@ Template.login.events({
 		const form = document.getElementById('forgot-password-form');
 		const emailField = $(e.target).find('#forgot-password-email-field');
 		const errorLabelContainer = $(e.target).find('.error-label-container');
-		let hasErrors;
 
 		removeErrorLabelContainer(errorLabelContainer);
 
-		hasErrors = validateFieldsPresenceAndMarkInvalid($(e.target), [
-			emailField
-		]);
-
-		if (!hasErrors) {
-			disableButton(e, true);
-			Meteor.call('sendUserPasswordToken', emailField.val(), function(error) {
-				disableButton(e, false);
-				if (error === undefined) {
-					$(form).hide();
-					removeErrorLabelContainer(errorLabelContainer);
-					$(document.getElementById('password-token-sent-form')).show();
-				} else {
-					errorLabelContainer.show();
-					errorLabelContainer.html(error.reason);
+		Promise.resolve()
+			.then(
+				function() {
+					if (validateFieldsPresenceAndMarkInvalid($(e.target), [emailField])) {
+						return Promise.reject();
+					} else {
+						return Promise.resolve();
+					}
 				}
-			});
-		}
+			)
+			.then(function() {
+				disableButton(e, true);
+				Meteor.call('sendUserPasswordToken', emailField.val(), function(error) {
+					disableButton(e, false);
+					if (error === undefined) {
+						$(form).hide();
+						removeErrorLabelContainer(errorLabelContainer);
+						$(document.getElementById('password-token-sent-form')).show();
+					} else {
+						errorLabelContainer.show();
+						errorLabelContainer.html(error.reason);
+					}
+				});
+			})
+			.catch(function() {});
 	},
 
 	'submit form[name=createAccount]': function(e) {
@@ -148,40 +159,58 @@ Template.login.events({
 		const passwordField = $(e.target).find('#create-account-password-field');
 		const passwordConfirmationField = $(e.target).find('#create-account-password-confirmation-field');
 		const nameField = $(e.target).find('#create-account-name-field');
-		const errorLabelContainer = $(e.target).find('.error-label-container');
-		let hasErrors;
-
-		removeErrorLabelContainer(errorLabelContainer);
-
-		hasErrors = validateFieldsPresenceAndMarkInvalid($(e.target), [
+		const requiredFields = [
 			emailField,
 			passwordField,
 			passwordConfirmationField,
 			nameField
-		]);
+		];
+		const errorLabelContainer = $(e.target).find('.error-label-container');
 
-		if (!hasErrors) {
-			if (emailField.val().indexOf('@') === -1) {
-				addErrorToField(emailField, INVALID_EMAIL);
-				hasErrors = true;
-			}
+		removeErrorLabelContainer(errorLabelContainer);
 
-			if (passwordField.val().length < 6) {
-				addErrorToField(passwordField, PASSWORD_TOO_SHORT);
-				hasErrors = true;
-			}
+		Promise.resolve()
+			.then(
+				function() {
+					if (validateFieldsPresenceAndMarkInvalid($(e.target), requiredFields)) {
+						return Promise.reject();
+					} else {
+						return Promise.resolve();
+					}
+				}
+			)
+			.then(
+				function() {
+					let hasErrors = false;
 
-			if (passwordConfirmationField.val() !== passwordField.val()) {
-				addErrorToField(passwordConfirmationField, CONFIRMATION_MUST_MATCH_PASSWORD);
-				hasErrors = true;
-			}
+					if (emailField.val().indexOf('@') === -1) {
+						addErrorToField(emailField, INVALID_EMAIL);
+						hasErrors = true;
+					}
 
-			if (nameField.val().length > 20) {
-				addErrorToField(nameField, MAXIMUM_CHARACTERS_OF_20);
-				hasErrors = true;
-			}
+					if (passwordField.val().length < 6) {
+						addErrorToField(passwordField, PASSWORD_TOO_SHORT);
+						hasErrors = true;
+					}
 
-			if (!hasErrors) {
+					if (passwordConfirmationField.val() !== passwordField.val()) {
+						addErrorToField(passwordConfirmationField, CONFIRMATION_MUST_MATCH_PASSWORD);
+						hasErrors = true;
+					}
+
+					if (nameField.val().length > 20) {
+						addErrorToField(nameField, MAXIMUM_CHARACTERS_OF_20);
+						hasErrors = true;
+					}
+
+					if (hasErrors) {
+						return Promise.reject();
+					} else {
+						return Promise.resolve();
+					}
+				}
+			)
+			.then(function() {
 				disableButton(e, true);
 				Accounts.createUser(
 					{email: emailField.val(), password: passwordField.val(), configuration: {name: nameField.val()}},
@@ -195,8 +224,8 @@ Template.login.events({
 						}
 					}
 				);
-			}
-		}
+			})
+			.catch(function() {});
 	}
 });
 

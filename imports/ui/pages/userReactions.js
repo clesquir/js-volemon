@@ -32,16 +32,18 @@ Template.userReactions.events({
 			reactionsToUpdate['button' + currentReactions[i].index] = field.val();
 		}
 
-		Promise.all(
-			[
-				new Promise(function(resolve, reject) {
+		Promise.resolve()
+			.then(
+				function() {
 					if (validateFieldsPresenceAndMarkInvalid($(e.target), fields)) {
-						return reject();
+						return Promise.reject();
 					} else {
-						return resolve();
+						return Promise.resolve();
 					}
-				}),
-				new Promise(function(resolve, reject) {
+				}
+			)
+			.then(
+				function() {
 					let hasErrors = false;
 
 					for (let field of fields) {
@@ -52,15 +54,15 @@ Template.userReactions.events({
 					}
 
 					if (hasErrors) {
-						return reject();
+						return Promise.reject();
 					} else {
-						return resolve();
+						return Promise.resolve();
 					}
-				})
-			]
-		)
+				}
+			)
 			.then(
 				function() {
+					disableButton(e, true);
 					Meteor.call('updateReactions', reactionsToUpdate, function(error) {
 						disableButton(e, false);
 						if (error === undefined) {
