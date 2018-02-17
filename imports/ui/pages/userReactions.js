@@ -12,6 +12,10 @@ const userReactions = function() {
 	return customReactions.reactions;
 };
 
+Template.userReactions.rendered = function() {
+	this.find('#reaction-text-field-5').focus();
+};
+
 Template.userReactions.helpers({
 	reactions: function() {
 		return userReactions();
