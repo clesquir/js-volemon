@@ -9,4 +9,6 @@ before_script:
   - export PATH=$HOME/.meteor:$PATH
 cache:
   directories:
+    - $HOME/.meteor
+    - $HOME/.npm
     - node_modules
