@@ -8,6 +8,16 @@
 
 			<p>Please use your judgment and stay respectful!</p>
 
+			<p class="reactions-presets">
+				<label for="reactions-presets">Preset</label>
+				<select id="reactions-presets" name="presets">
+					<option value="null" selected>-</option>
+					<option value="default">Default</option>
+					<option value="friendly">Friendly</option>
+					<option value="angry">Angry</option>
+				</select>
+			</p>
+
 			<div class="reaction-editor-items">
 				{{#each reactions}}
 					<div class="reaction-editor-item">

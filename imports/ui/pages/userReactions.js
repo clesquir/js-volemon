@@ -22,7 +22,46 @@ Template.userReactions.helpers({
 	}
 });
 
+const setFromPreset = function(defaultReactions) {
+	for (let i = 0; i < defaultReactions.length; i++) {
+		let field = $(document).find('#reaction-text-field-' + defaultReactions[i].index);
+		field.val(defaultReactions[i].text);
+	}
+};
+
 Template.userReactions.events({
+	'change select[name=presets]': function(e) {
+		switch (e.target.value) {
+			case 'default':
+				setFromPreset(CustomReactions.defaultReactions().reactions);
+				break;
+			case 'friendly':
+				setFromPreset(
+					new CustomReactions(
+						'Great game!',
+						'Nice shot!',
+						'You are blessed!',
+						'Unexpected!',
+						'Come on!',
+						'Oopsy!'
+					).reactions
+				);
+				break;
+			case 'angry':
+				setFromPreset(
+					new CustomReactions(
+						'Slow clap...',
+						'Take that!',
+						'Really?!...',
+						'Calculated.',
+						'ZzzzZzzzZz...',
+						'Wow...'
+					).reactions
+				);
+				break;
+		}
+	},
+
 	'submit form[name=userReactions]': function(e) {
 		e.preventDefault();
 
