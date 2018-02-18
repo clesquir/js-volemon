@@ -13,6 +13,12 @@ input[type=text], input[type=password], input[type=email] {
 	letter-spacing: inherit;
 }
 
+input:disabled {
+	background-color: darken($form-background-color, 20%);
+	box-shadow: 0 0 0 $input-border-width lighten($input-border-color, 20%);
+	color: lighten($text-color, 20%);
+}
+
 input.field-in-error {
 	box-shadow: 0 0 0 $input-border-width $negative;
 	background-color: lighten($negative, 40%);

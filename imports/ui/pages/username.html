@@ -6,14 +6,33 @@
 
 			<h1>Change name</h1>
 
-			<div class="form-section">
-				<label for="username-name-field">Name</label>
-				<input id="username-name-field" type="text" autofocus="autofocus" autocomplete="off" name="name" maxlength="20" value="{{value}}" />
-			</div>
+			{{#if canChangeUsername}}
+				<p class="information-box">
+					<strong>Please note:</strong> You can change your username only once every 30 days.
+					Do not use any provocative words or signs.
+					Choose it carefully!
+				</p>
 
-			<p class="error-label-container"></p>
+				<div class="form-section">
+					<label for="username-name-field">Name</label>
+					<input id="username-name-field" type="text" autofocus="autofocus" autocomplete="off" name="name" maxlength="20" value="{{value}}" />
+				</div>
 
-			<input type="submit" class="button" value="Save" />
+				<p class="error-label-container"></p>
+
+				<input type="submit" class="button" value="Save" />
+			{{else}}
+				<p class="information-box">
+					You cannot change your username right now because you've changed it in the last 30 days.
+				</p>
+
+				<div class="form-section">
+					<label for="username-name-field">Name</label>
+					<input id="username-name-field" type="text" value="{{value}}" disabled />
+				</div>
+
+				<input type="button" class="button" data-action="close-username" value="Close" />
+			{{/if}}
 
 		</form>
 

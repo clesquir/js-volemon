@@ -143,6 +143,11 @@ h2 {
 	color: lighten($text-color, 15%);
 }
 
+.information-box {
+	font-size: 0.85em;
+	color: lighten($text-color, 15%);
+}
+
 .back-button {
 	position: absolute;
 	left: 0;

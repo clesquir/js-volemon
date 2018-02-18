@@ -1,5 +1,6 @@
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
+import {USERNAME_CHANGE_FREQUENCY} from '/imports/api/users/constants.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 import {UserKeymaps} from '/imports/api/users/userKeymaps.js';
 import {UserReactions} from '/imports/api/users/userReactions.js';
@@ -16,10 +17,26 @@ Meteor.methods({
 			throw new Error('Name must be filled.');
 		}
 
-		UserConfigurations.update({userId: this.userId}, {$set: {name: name}});
-		Players.update({userId: this.userId}, {$set: {name: name}}, {multi: true});
-		Games.update({hostId: this.userId}, {$set: {hostName: name}}, {multi: true});
-		Games.update({clientId: this.userId}, {$set: {clientName: name}}, {multi: true});
+		const userConfiguration = UserConfigurations.findOne({userId: this.userId});
+
+		if (userConfiguration.name !== name) {
+			if (
+				userConfiguration.lastUsernameUpdate &&
+				userConfiguration.lastUsernameUpdate + USERNAME_CHANGE_FREQUENCY > getUTCTimeStamp()
+			) {
+				throw new Meteor.Error(429, "You can change your username only once every 30 days.");
+			}
+
+			UserConfigurations.update({userId: this.userId}, {
+				$set: {
+					name: name,
+					lastUsernameUpdate: getUTCTimeStamp()
+				}
+			});
+			Players.update({userId: this.userId}, {$set: {name: name}}, {multi: true});
+			Games.update({hostId: this.userId}, {$set: {hostName: name}}, {multi: true});
+			Games.update({clientId: this.userId}, {$set: {clientName: name}}, {multi: true});
+		}
 	},
 
 	saveZoomedInGame: function(zoomedIn) {

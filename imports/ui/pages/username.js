@@ -1,4 +1,6 @@
+import {USERNAME_CHANGE_FREQUENCY} from '/imports/api/users/constants.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
+import {getUTCTimeStamp} from '/imports/lib/utils.js';
 import '/imports/ui/util/error-messages.js';
 import '/imports/ui/util/form.js';
 import {Meteor} from 'meteor/meteor';
@@ -8,6 +10,15 @@ import {Template} from 'meteor/templating';
 import './username.html';
 
 Template.username.helpers({
+	canChangeUsername: function() {
+		const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
+
+		return (
+			userConfiguration &&
+			userConfiguration.lastUsernameUpdate + USERNAME_CHANGE_FREQUENCY <= getUTCTimeStamp()
+		);
+	},
+
 	value: function() {
 		const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
 
@@ -16,6 +27,10 @@ Template.username.helpers({
 });
 
 Template.username.events({
+	'click [data-action=close-username]': function() {
+		Session.set('lightbox', null);
+	},
+
 	'submit form[name=username]': function(e) {
 		e.preventDefault();
 
