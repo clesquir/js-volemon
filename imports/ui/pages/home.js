@@ -8,9 +8,7 @@ import {browserSupportsWebRTC, onMobileAndTablet} from '/imports/lib/utils.js';
 import './home.html';
 
 Template.home.onCreated(function() {
-	this.autorun(() => {
-		loadStatistics(Meteor.userId());
-	});
+	loadStatistics(Meteor.userId());
 });
 
 let cardSwitcher;

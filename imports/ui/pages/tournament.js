@@ -20,9 +20,7 @@ class RankChartCollection extends Mongo.Collection {}
 const RankChartData = new RankChartCollection('tournamentrankchartdata');
 
 Template.tournament.onCreated(function() {
-	this.autorun(() => {
-		loadStatistics(Meteor.userId(), Session.get('tournament'));
-	});
+	loadStatistics(Meteor.userId(), Session.get('tournament'));
 });
 
 let cardSwitcher;

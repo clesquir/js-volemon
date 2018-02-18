@@ -7,9 +7,7 @@ import {loadStatistics} from '/imports/ui/views/statistics.js';
 import './userProfileComponent.html';
 
 Template.userProfileComponent.onCreated(function() {
-	this.autorun(() => {
-		loadStatistics(Session.get('userProfile'), this.data && this.data.tournamentId);
-	});
+	loadStatistics(Session.get('userProfile'), Session.get('tournament'));
 });
 
 let cardSwitcher;
