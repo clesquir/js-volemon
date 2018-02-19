@@ -3,27 +3,27 @@ export default class CustomReactions {
 		this.reactions = [
 			{
 				index: 5,
-				text: button5
+				text: button5.substring(0, 20)
 			},
 			{
 				index: 6,
-				text: button6
+				text: button6.substring(0, 20)
 			},
 			{
 				index: 7,
-				text: button7
+				text: button7.substring(0, 20)
 			},
 			{
 				index: 8,
-				text: button8
+				text: button8.substring(0, 20)
 			},
 			{
 				index: 9,
-				text: button9
+				text: button9.substring(0, 20)
 			},
 			{
 				index: 0,
-				text: button0
+				text: button0.substring(0, 20)
 			}
 		];
 	}
