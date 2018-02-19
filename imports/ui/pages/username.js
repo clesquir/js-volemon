@@ -9,14 +9,15 @@ import {Template} from 'meteor/templating';
 
 import './username.html';
 
+Template.username.rendered = function() {
+	if (canChangeUsername()) {
+		this.find('[name=name]').focus();
+	}
+};
+
 Template.username.helpers({
 	canChangeUsername: function() {
-		const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
-
-		return (
-			userConfiguration &&
-			userConfiguration.lastUsernameUpdate + USERNAME_CHANGE_FREQUENCY <= getUTCTimeStamp()
-		);
+		return canChangeUsername();
 	},
 
 	value: function() {
@@ -75,6 +76,14 @@ Template.username.events({
 	}
 });
 
-Template.username.rendered = function() {
-	this.find('[name=name]').focus();
+const canChangeUsername = function() {
+	const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
+
+	return (
+		userConfiguration &&
+		(
+			!userConfiguration.lastUsernameUpdate ||
+			userConfiguration.lastUsernameUpdate + USERNAME_CHANGE_FREQUENCY <= getUTCTimeStamp()
+		)
+	);
 };
