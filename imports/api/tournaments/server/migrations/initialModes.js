@@ -17,6 +17,7 @@ import {
 	TOURNAMENT_MODE_SUDDEN_DEATH,
 	TOURNAMENT_MODE_SUPER_BOUNCE_WALLS,
 	TOURNAMENT_MODE_TALL_NET,
+	TOURNAMENT_MODE_TEENY_TINY_WORLD,
 	TOURNAMENT_MODE_TINY_NET
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 import {Meteor} from 'meteor/meteor';
@@ -109,6 +110,11 @@ Meteor.startup(function() {
 		{
 			"_id": TOURNAMENT_MODE_TALL_NET,
 			"name": "Tall net"
+		},
+		{
+			"_id": TOURNAMENT_MODE_TEENY_TINY_WORLD,
+			"name": "Teeny-tiny world",
+			"description": "Bonuses spawning are small-monster and small-ball and the net is tiny"
 		}
 	];
 
