@@ -1,4 +1,5 @@
 import {Meteor} from 'meteor/meteor';
+const he = require('he');
 
 export default class GameReaction {
 	/**
@@ -106,9 +107,20 @@ export default class GameReaction {
 		reactionListItem.empty();
 
 		if (reactionText === undefined) {
-			reactionListItem.append('<div class="reaction-list-item"><div class="reaction-icon reaction-icon-' + reactionIcon + '"></div></div>');
+			reactionListItem.append(
+				'<div class="reaction-list-item">' +
+				'<div class="reaction-icon reaction-icon-' + reactionIcon + '">' +
+				'</div>' +
+				'</div>'
+			);
 		} else {
-			reactionListItem.append('<div class="reaction-list-item reaction-list-item-text"><div class="reaction-text">' + reactionText + '</div></div>');
+			reactionListItem.append(
+				'<div class="reaction-list-item reaction-list-item-text">' +
+				'<div class="reaction-text">' +
+				he.encode(reactionText) +
+				'</div>' +
+				'</div>'
+			);
 		}
 
 		const timeout = Meteor.setTimeout(() => {
