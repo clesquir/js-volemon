@@ -47,5 +47,21 @@ $bonus-background-size: $bonus-size - 3;
 .help-reactions {
 	.reaction-list {
 		margin: 36px 0 16px;
+		@include horizontal-breakpoint(mobile) {
+			margin: 16px 0 16px;
+		}
+		@include horizontal-breakpoint(mobileportrait) {
+			margin: 0;
+		}
+
+		.reaction-list-items {
+			transform: scale(0.9);
+			@include horizontal-breakpoint(mobile) {
+				transform: scale(0.7);
+			}
+			@include horizontal-breakpoint(mobileportrait) {
+				transform: scale(0.5);
+			}
+		}
 	}
 }

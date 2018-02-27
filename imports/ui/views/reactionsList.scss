@@ -26,7 +26,7 @@
 		justify-content: center;
 		flex-direction: column;
 		@include horizontal-breakpoint(mobile) {
-			transform: scale(0.75);
+			transform: scale(0.7);
 		}
 		@include horizontal-breakpoint(mobileportrait) {
 			transform: scale(0.55);
@@ -36,7 +36,7 @@
 			display: flex;
 			justify-content: center;
 			flex-flow: wrap;
-			width: 475px;
+			width: 550px;
 
 			.reaction-list-item {
 				position: relative;
@@ -60,9 +60,9 @@
 }
 
 .reaction-list-item-text {
-	flex-basis: 140px;
-	width: 140px;
-	max-width: 140px;
+	flex-basis: 160px;
+	width: 160px;
+	max-width: 160px;
 	height: 35px;
 	display: flex;
 	flex-direction: column;
