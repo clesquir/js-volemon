@@ -114,7 +114,7 @@ Meteor.startup(function() {
 		{
 			"_id": TOURNAMENT_MODE_TEENY_TINY_WORLD,
 			"name": "Teeny-tiny world",
-			"description": "Bonuses spawning are small-monster and small-ball and the net is tiny"
+			"description": "Super fast spawning bonuses are small-monster and small-ball and the net is tiny"
 		}
 	];
 
