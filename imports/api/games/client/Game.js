@@ -124,6 +124,7 @@ export default class Game {
 				height: this.gameConfiguration.height(),
 				gravity: this.gameConfiguration.worldGravity(),
 				bonusRadius: this.gameConfiguration.bonusRadius(),
+				backgroundColor: this.gameSkin.backgroundColor(),
 				renderTo: 'gameContainer'
 			},
 			this.preloadGame, this.createGame, this.updateGame, this
@@ -191,6 +192,7 @@ export default class Game {
 			this.gameConfiguration.playerInitialY(),
 			'shape-' + this.playerShapeFromKey(player1Key)
 		);
+		this.engine.initData(this.player1);
 		this.player1.data.key = player1Key;
 		this.initPlayer(
 			this.player1,
@@ -208,6 +210,7 @@ export default class Game {
 			this.gameConfiguration.playerInitialY(),
 			'shape-' + this.playerShapeFromKey(player2Key)
 		);
+		this.engine.initData(this.player2);
 		this.player2.data.key = player2Key;
 		this.initPlayer(
 			this.player2,
@@ -246,11 +249,19 @@ export default class Game {
 	}
 
 	createCountdownText() {
-		this.countdownText = this.engine.addText(this.engine.getCenterX(), this.engine.getCenterY(), '', {
-			font: "75px 'Oxygen Mono', sans-serif",
-			fill: '#363636',
-			align: 'center'
-		});
+		this.countdownText = this.engine.addText(
+			this.gameConfiguration.width() / 2,
+			this.gameConfiguration.height() / 2,
+			'3',
+			{
+				fontFamily: "'Oxygen Mono', sans-serif",
+				fontSize: 75,
+				color: '#363636',
+				font: "75px 'Oxygen Mono', sans-serif",
+				fill: '#363636',
+				align: 'center'
+			}
+		);
 	}
 
 	addPlayerCanJumpOnBody(player, body) {
@@ -325,8 +336,8 @@ export default class Game {
 
 	setupPlayerBody(player) {
 		this.engine.loadSpriteTexture(player, player.data.currentTextureKey);
-		this.engine.setFixedRotation(player, true);
 		this.engine.setMass(player, player.data.currentMass);
+		this.engine.setFixedRotation(player, true);
 
 		if (this.engine.getIsFrozen(player)) {
 			this.engine.setGravity(player, 0);
@@ -347,6 +358,7 @@ export default class Game {
 	createBall(initialXLocation, initialYLocation) {
 		this.ball = this.gameSkin.createBallComponent(this.engine, initialXLocation, initialYLocation);
 
+		this.engine.initData(this.ball);
 		this.ball.data.initialGravity = BALL_GRAVITY_SCALE;
 		this.ball.data.currentGravity = this.ball.data.initialGravity;
 		this.ball.data.isFrozen = false;
@@ -403,10 +415,8 @@ export default class Game {
 		if (timerLeft > 0) {
 			this.countdownTimer = this.engine.createTimer(timerLeft, () => {
 				this.countdownText.text = '';
-				this.countdownTimer.stop();
 				this.resumeGame();
 			}, this);
-			this.countdownTimer.start();
 		} else {
 			this.resumeGame();
 		}

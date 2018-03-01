@@ -116,6 +116,8 @@ export default class LevelComponents {
 	}
 
 	shake() {
-		this.engine.shake(this.groundGroup, 5, 20);
+		for (let child of this.groundGroup.getChildren()) {
+			this.engine.shake(child, 5, 20);
+		}
 	}
 }

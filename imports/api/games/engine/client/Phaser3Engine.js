@@ -1,6 +1,3 @@
-PIXI = require('phaser-ce/build/custom/pixi');
-p2 = require('phaser-ce/build/custom/p2');
-Phaser = require('phaser-ce/build/custom/phaser-split');
 import Engine from '/imports/api/games/engine/Engine.js';
 import {
 	NORMAL_SCALE_PHYSICS_DATA,
@@ -12,98 +9,73 @@ import {
 } from '/imports/api/games/constants.js';
 import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
 
-export default class PhaserEngine extends Engine {
+WEBGL_RENDERER = true;
+CANVAS_RENDERER = true;
+const Phaser = require('phaser/dist/phaser');
+
+export default class Phaser3Engine extends Engine {
 	start(worldConfiguration, preloadGame, createGame, updateGame, scope) {
 		//Create loading mask
 		Session.set('gameLoadingMask', true);
 		this.bonusRadius = worldConfiguration.bonusRadius;
 
+		const me = this;
+		me.currentScene = null;
 		this.game = new Phaser.Game({
 			width: worldConfiguration.width,
 			height: worldConfiguration.height,
 			backgroundColor: worldConfiguration.backgroundColor,
-			renderer: Phaser.AUTO,
-			enableDebug: false,
-			parent: worldConfiguration.renderTo
-		});
-
-		this.game.state.add('boot', {
-			create: () => {
-				this.game.physics.startSystem(Phaser.Physics.P2JS);
-				this.game.physics.p2.setImpactEvents(true);
-				this.game.physics.p2.gravity.y = worldConfiguration.gravity;
-				this.game.physics.p2.world.defaultContactMaterial.friction = 0;
-				this.game.physics.p2.world.setGlobalStiffness(1e10);
-				this.game.physics.p2.restitution = 0;
-				this.game.stage.disableVisibilityChange = true;
-
-				this.game.state.start('load');
-			}
-		});
-
-		this.game.state.add('load', {
-			create: () => {
-				preloadGame.call(scope);
-
-				this.game.load.onLoadComplete.add(() => {
-					if (this.game.state) {
-						this.game.state.start('play');
-					}
-				}, this);
-				this.game.load.start();
-			}
-		});
-
-		this.game.state.add('play', {
-			preload: () => {
-				for (let shape of PLAYER_LIST_OF_SHAPES) {
-					this.loadScaledPhysics(NORMAL_SCALE_PHYSICS_DATA, SMALL_SCALE_PHYSICS_DATA, 'player-' + shape, SMALL_SCALE_PLAYER_BONUS);
-					this.loadScaledPhysics(NORMAL_SCALE_PHYSICS_DATA, BIG_SCALE_PHYSICS_DATA, 'player-' + shape, BIG_SCALE_BONUS);
-				}
-				this.loadScaledPhysics(NORMAL_SCALE_PHYSICS_DATA, SMALL_SCALE_PHYSICS_DATA, 'ball', SMALL_SCALE_BALL_BONUS);
-				this.loadScaledPhysics(NORMAL_SCALE_PHYSICS_DATA, BIG_SCALE_PHYSICS_DATA, 'ball', BIG_SCALE_BONUS);
+			type: Phaser.AUTO,
+			parent: worldConfiguration.renderTo,
+			banner: {
+				hidePhaser: true
 			},
-			create: createGame.bind(scope),
-			update: updateGame.bind(scope)
-		});
+			physics: {
+				default: 'matter',
+				matter: {
+					debug: true,
+					gravity: {
+						x: 0,
+						y: worldConfiguration.gravity
+					}
+				}
+			},
+			scene: {
+				preload: function() {
+					me.currentScene = this;
+					preloadGame.call(scope);
+				},
 
-		this.game.state.start('boot');
+				create: function() {
+					for (let shape of PLAYER_LIST_OF_SHAPES) {
+						me.loadScaledPhysics(NORMAL_SCALE_PHYSICS_DATA, SMALL_SCALE_PHYSICS_DATA, 'player-' + shape, SMALL_SCALE_PLAYER_BONUS);
+						me.loadScaledPhysics(NORMAL_SCALE_PHYSICS_DATA, BIG_SCALE_PHYSICS_DATA, 'player-' + shape, BIG_SCALE_BONUS);
+					}
+					me.loadScaledPhysics(NORMAL_SCALE_PHYSICS_DATA, SMALL_SCALE_PHYSICS_DATA, 'ball', SMALL_SCALE_BALL_BONUS);
+					me.loadScaledPhysics(NORMAL_SCALE_PHYSICS_DATA, BIG_SCALE_PHYSICS_DATA, 'ball', BIG_SCALE_BONUS);
+
+					createGame.call(scope);
+				},
+
+				update: function() {
+					updateGame.call(scope);
+				}
+			}
+		});
 	}
 
 	stop() {
-		this.game.state.destroy();
-		this.game.destroy();
+		this.currentScene.sys.game.destroy(true);
 	}
 
 	createGame() {
-		this.setupScaling();
-
 		//Hide loading mask
 		Session.set('gameLoadingMask');
 	}
 
-	setupScaling() {
-		this.game.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
-		this.game.scale.setUserScale(
-			$(this.game.scale.parentNode).width() / this.game.width,
-			$(this.game.scale.parentNode).height() / this.game.height
-		);
-		this.game.scale.setResizeCallback(() => {
-			const hScale = $(this.game.scale.parentNode).width() / this.game.width;
-			const vScale = $(this.game.scale.parentNode).height() / this.game.height;
-
-			if (!this.game.scale.scaleFactorInversed || (this.game.scale.scaleFactorInversed.x !== hScale &&  this.game.scale.scaleFactorInversed.y !== vScale)) {
-				this.game.scale.setUserScale(
-					hScale,
-					vScale
-				);
-			}
-		});
-	}
-
 	loadScaledPhysics(originalPhysicsKey, newPhysicsKey, shapeKey, scale) {
 		const newData = [];
-		const data = this.game.cache.getPhysicsData(originalPhysicsKey, shapeKey);
+		const data = this.currentScene.cache.json.get(originalPhysicsKey)[shapeKey];
 
 		for (let i = 0; i < data.length; i++) {
 			let vertices = [];
@@ -118,57 +90,55 @@ export default class PhaserEngine extends Engine {
 		}
 
 		let item = {};
-		if (this.game.cache.checkKey(Phaser.Cache.PHYSICS, newPhysicsKey)) {
-			item = this.game.cache.getPhysicsData(newPhysicsKey);
+		if (this.currentScene.cache.json.has(newPhysicsKey)) {
+			item = this.currentScene.cache.json.get(newPhysicsKey);
 		}
 
 		item[shapeKey] = newData;
-		this.game.load.physics(newPhysicsKey, '', item);
+		this.currentScene.cache.json.add(newPhysicsKey, item);
 	}
 
 	loadImage(key, path) {
-		this.game.load.image(key, path);
+		this.currentScene.load.image(key, path);
 	}
 
 	loadAtlas(key, imagePath, jsonPath) {
-		this.game.load.atlasJSONHash(key, imagePath, jsonPath);
+		this.currentScene.load.atlas(key, imagePath, jsonPath);
 	}
 
 	loadSpriteSheet(key, path, width, height) {
-		this.game.load.spritesheet(key, path, width, height);
+		this.currentScene.load.spritesheet(key, path, width, height);
 	}
 
 	loadData(key, path) {
-		this.game.load.physics(key, path);
+		this.currentScene.load.json(key, path);
 	}
 
 	addGroup(enableBody = false) {
-		const group = this.game.add.group();
-
-		group.enableBody = enableBody;
-
-		return group;
+		return this.currentScene.add.group();
 	}
 
 	addBound(x, y, w, h, material, collisionGroup, colliders, debug) {
-		const bound = new Phaser.Physics.P2.Body(this.game, {}, x, y, 0);
-		bound.setRectangleFromSprite({width: w, height: h, rotation: 0});
-		this.game.physics.p2.addBody(bound);
-		bound.debug = !!debug;
+		const bound = this.currentScene.matter.add.rectangle(x, y, w, h, { isStatic: true, friction: 0, frictionStatic: 0 });
 
-		bound.static = true;
-		bound.setCollisionGroup(collisionGroup);
-		bound.setMaterial(material);
-
-		for (let collider of colliders) {
-			bound.collides(collider);
-		}
+		bound.collisionFilter.category = collisionGroup;
+		this.collidesBodyWith(bound, colliders);
 
 		return bound;
 	}
 
+	collidesBodyWith(body, categories) {
+		let flags = 0;
+
+		for (let i = 0; i < categories.length; i++) {
+			flags |= categories[i];
+		}
+
+		body.collisionFilter.mask = flags;
+	}
+
 	addImage(x, y, key, frame, group) {
-		return this.game.add.image(x, y, key, frame, group);
+		return this.currentScene.add.image(x, y, key, frame);
 	}
 
 	addSprite(x, y, key, disableBody = false, frame, debugBody = false) {
@@ -176,7 +146,7 @@ export default class PhaserEngine extends Engine {
 	}
 
 	addGroupedSprite(x, y, key, group, disableBody = false, frame, debugBody = false) {
-		const sprite = this.game.add.sprite(x, y, key, frame, group);
+		const sprite = this.currentScene.matter.add.sprite(x, y, key, frame);
 
 		if (!disableBody) {
 			this.enableBody(sprite, debugBody);
@@ -186,19 +156,21 @@ export default class PhaserEngine extends Engine {
 	}
 
 	loadSpriteTexture(sprite, key) {
-		sprite.loadTexture(key);
+		sprite.setTexture(key);
 	}
 
 	addTileSprite(x, y, width, height, key, frame, disableBody = true, group, debugBody = false) {
-		const tileSprite = this.game.add.tileSprite(
-			x,
-			y,
+		const tileSprite = this.currentScene.add.tileSprite(
+			x + width / 2,
+			y + height / 2,
 			width,
 			height,
 			key,
-			frame,
-			group
+			frame
 		);
+		if (group) {
+			group.add(tileSprite);
+		}
 
 		if (!disableBody) {
 			this.enableBody(tileSprite, debugBody);
@@ -207,76 +179,43 @@ export default class PhaserEngine extends Engine {
 		return tileSprite;
 	}
 
-	addGraphics(x, y, group) {
-		return this.game.add.graphics(x, y, group);
+	addGraphics(config) {
+		return this.currentScene.add.graphics(config);
 	}
 
 	addText(x, y, text, style) {
-		const textObject = this.game.add.text(x, y, text, style);
+		const textObject = this.currentScene.add.text(x, y, text, style);
 
-		textObject.smoothed = true;
-		this.setAnchor(textObject, 0.5);
+		textObject.setOrigin(0.5);
 
 		return textObject;
 	}
 
-	/**
-	 * @param x
-	 * @param y
-	 * @param {null} lineConfig
-	 * @param lineConfig.width
-	 * @param lineConfig.color
-	 * @param {null} fillConfig
-	 * @param fillConfig.color
-	 * @param diameter
-	 * @returns {*}
-	 */
-	drawCircle(x, y, lineConfig = null, fillConfig = null, diameter) {
-		const circle = this.addGraphics(x, y);
-
-		if (lineConfig !== null) {
-			circle.lineStyle(lineConfig.width, lineConfig.color);
-		}
-		if (fillConfig !== null) {
-			circle.beginFill(fillConfig.color);
-		}
-		circle.drawCircle(0, 0, diameter);
-		circle.endFill();
-
-		return circle;
-	}
-
 	drawRectangle(x, y, w, h, config) {
-		const graphics = this.addGraphics(x, y);
+		const graphics = this.addGraphics({x: x, y: y, fillStyle: {color: config.color, opacity: config.opacity}});
 
-		graphics.beginFill(config.color, config.opacity);
-		graphics.drawRect(0, 0, w, h);
-		graphics.endFill();
+		graphics.fillRect(0, 0, w, h);
 	}
 
 	createTimer(seconds, fn, scope) {
-		const timer = this.game.time.create();
-
-		timer.add(Phaser.Timer.SECOND * seconds, fn, scope);
-		timer.start();
-
-		return timer;
+		return this.currentScene.time.delayedCall(seconds * 1000, fn, [], scope);
 	}
 
 	createCollisionGroup() {
-		return this.game.physics.p2.createCollisionGroup();
+		return this.currentScene.matter.world.nextCategory();
 	}
 
 	createMaterial(material) {
-		return this.game.physics.p2.createMaterial(material);
+		//@todo
+		// return this.currentScene.physics.p2.createMaterial(material);
 	}
 
 	isTimerRunning(timer) {
-		return timer.running;
+		return timer.getProgress() < 1;
 	}
 
 	getTimerRemainingDuration(timer) {
-		return timer.duration;
+		return timer.delay - timer.getElapsedSeconds();
 	}
 
 	getKey(spriteBody) {
@@ -299,31 +238,43 @@ export default class PhaserEngine extends Engine {
 	}
 
 	initWorldContactMaterial() {
-		this.worldMaterial = this.createMaterial('world');
-
-		this.game.physics.p2.updateBoundsCollisionGroup();
-		this.game.physics.p2.setWorldMaterial(this.worldMaterial);
+		this.currentScene.matter.world.setBounds();
 	}
 
 	createWorldContactMaterial(material, config) {
-		this.game.physics.p2.createContactMaterial(material, this.worldMaterial, config);
+		// this.currentScene.physics.p2.createContactMaterial(material, this.worldMaterial, config);
 	}
 
 	createContactMaterial(materialA, materialB, config) {
-		this.game.physics.p2.createContactMaterial(materialA, materialB, config);
+		// this.currentScene.physics.p2.createContactMaterial(materialA, materialB, config);
 	}
 
 	loadPolygon(sprite, key, object) {
-		sprite.body.clearShapes();
-		sprite.body.loadPolygon(key, object);
+		const data = this.currentScene.cache.json.get(key)[object];
+
+		let vertices = [];
+		for (let i = 0; i < data.length; i++) {
+			let polygon = [];
+			for (let j = 0; j < data[i].shape.length; j += 2) {
+				polygon[j] = data[i].shape[j];
+				polygon[j + 1] = data[i].shape[j + 1];
+			}
+
+			vertices = vertices.concat(polygon);
+		}
+
+		sprite.setBody({
+			type: 'fromVerts',
+			verts: this.currentScene.matter.world.fromPath(vertices.join(' '))
+		});
 	}
 
 	initData(sprite) {
-		sprite.data = {};
+		sprite.setData();
 	}
 
 	enableBody(sprite, debug) {
-		this.game.physics.p2.enable(sprite, debug);
+		// this.currentScene.physics.p2.enable(sprite, debug);
 	}
 
 	distanceMultiplier() {
@@ -331,7 +282,7 @@ export default class PhaserEngine extends Engine {
 	}
 
 	gravityDistanceAtTime(sprite, t) {
-		const gravity = this.game.physics.p2.gravity.y * sprite.body.data.gravityScale;
+		const gravity = this.currentScene.physics.p2.gravity.y * sprite.body.data.gravityScale;
 
 		return 0.5 * gravity * t * t;
 	}
@@ -386,7 +337,7 @@ export default class PhaserEngine extends Engine {
 			const velocityY = (distanceY - distanceGravityY) / t;
 			sprite.body.velocity.y = velocityY * this.distanceMultiplier();
 
-			this.game.time.events.add(
+			this.currentScene.time.events.add(
 				maxTime,
 				moveToInterpolatedPosition,
 				this
@@ -412,67 +363,62 @@ export default class PhaserEngine extends Engine {
 	}
 
 	freeze(sprite) {
-		const body = sprite.body;
-
-		body.setZeroRotation();
-		body.setZeroVelocity();
-		this.setGravity(sprite, 0);
+		sprite.setVelocity(0, 0);
+		sprite.setStatic(true);
 		sprite.data.isFrozen = true;
 	}
-	
+
 	unfreeze(sprite) {
-		this.setGravity(sprite, sprite.data.currentGravity);
+		sprite.setStatic(false);
 		sprite.data.isFrozen = false;
 	}
 
 	spawn(sprite, x, y) {
-		sprite.body.setZeroRotation();
-		sprite.body.setZeroVelocity();
-		sprite.reset(x, y);
+		sprite.setVelocity(0, 0);
+		sprite.setPosition(x, y);
 	}
 
 	addPlayerEye(player, isHost, currentPolygonKey, currentPolygonObject) {
-		let eyeConfiguration = this.game.cache.getPhysicsData(currentPolygonKey)[currentPolygonObject][0].eyeConfiguration;
-
-		const eyeX = (isHost ? 1 : -1) * eyeConfiguration.x;
-		const eyeY = eyeConfiguration.y;
-		const eyeRadius = player.data.eyeRadius = eyeConfiguration.eyeRadius;
-		const pupilRadius = player.data.pupilRadius = eyeConfiguration.pupilRadius;
-
-		if (player.data.eye) {
-			player.data.eye.pupil.destroy();
-			player.data.eye.destroy();
-		}
-
-		//eyeball
-		player.data.eye = this.addGraphics(eyeX, eyeY);
-		player.data.eye.beginFill(0xffffff);
-		player.data.eye.lineStyle(1, 0x363636);
-		player.data.eye.drawCircle(0, 0, eyeRadius);
-
-		//pupil
-		player.data.eye.pupil = this.addGraphics();
-		player.data.eye.pupil.beginFill(0x363636);
-		player.data.eye.pupil.drawCircle(0, 0, pupilRadius);
-		player.data.eye.pupil.beginFill(0x363636);
-
-		player.data.eye.addChild(player.data.eye.pupil);
-		player.addChild(player.data.eye);
+		//@todo
+		// let eyeConfiguration = this.currentScene.cache.json.get(currentPolygonKey)[currentPolygonObject][0].eyeConfiguration;
+		//
+		// const eyeX = (isHost ? 1 : -1) * eyeConfiguration.x;
+		// const eyeY = eyeConfiguration.y;
+		// const eyeRadius = player.data.eyeRadius = eyeConfiguration.eyeRadius;
+		// const pupilRadius = player.data.pupilRadius = eyeConfiguration.pupilRadius;
+		//
+		// if (player.data.eye) {
+		// 	player.data.eye.pupil.destroy();
+		// 	player.data.eye.destroy();
+		// }
+		//
+		// //eyeball
+		// player.data.eye = this.addGraphics({x: eyeX, y: eyeY, fillStyle: {color: 0xffffff}, lineStyle: {width: 1, color: 0x363636}});
+		// player.data.eye.strokeCircle(0, 0, eyeRadius);
+		// player.data.eye.fillCircle(0, 0, eyeRadius);
+		//
+		// //pupil
+		// player.data.eye.pupil = this.addGraphics({fillStyle: {color: 0x363636}});
+		// player.data.eye.pupil.fillCircle(0, 0, pupilRadius);
+		//
+		// player.data.eye.addChild(player.data.eye.pupil);
+		// player.addChild(player.data.eye);
 	}
 
 	updatePlayerEye(player, ball) {
-		const eye = player.data.eye;
-		const eyeRadius = player.data.eyeRadius;
-		const pupilRadius = player.data.pupilRadius;
-
-		const dx = player.x + eye.x - ball.x;
-		const dy = player.y + eye.y - ball.y;
-		const r = Math.sqrt(dx * dx + dy * dy);
-		const max = (eyeRadius - pupilRadius) / 2;
-		const x = (r < max) ? dx : dx * max / r;
-		const y = (r < max) ? dy : dy * max / r;
-
-		eye.pupil.position.setTo(x * -1, y * -1);
+		//@todo
+		// const eye = player.data.eye;
+		// const eyeRadius = player.data.eyeRadius;
+		// const pupilRadius = player.data.pupilRadius;
+		//
+		// const dx = player.x + eye.x - ball.x;
+		// const dy = player.y + eye.y - ball.y;
+		// const r = Math.sqrt(dx * dx + dy * dy);
+		// const max = (eyeRadius - pupilRadius) / 2;
+		// const x = (r < max) ? dx : dx * max / r;
+		// const y = (r < max) ? dy : dy * max / r;
+		//
+		// eye.pupil.position.setTo(x * -1, y * -1);
 	}
 
 	getMass(sprite) {
@@ -480,11 +426,11 @@ export default class PhaserEngine extends Engine {
 	}
 
 	setMass(sprite, mass) {
-		sprite.body.mass = mass;
+		sprite.setMass(mass);
 	}
 
 	setFixedRotation(sprite, fixedRotation) {
-		sprite.body.fixedRotation = fixedRotation;
+		sprite.setFixedRotation();
 	}
 
 	getGravity(sprite) {
@@ -492,7 +438,8 @@ export default class PhaserEngine extends Engine {
 	}
 
 	setGravity(sprite, gravity) {
-		sprite.body.data.gravityScale = gravity;
+		//@todo
+		// sprite.body.data.gravityScale = gravity;
 	}
 
 	setDamping(sprite, damping) {
@@ -504,7 +451,7 @@ export default class PhaserEngine extends Engine {
 	}
 
 	setHorizontalSpeed(sprite, velocityX) {
-		sprite.body.velocity.x = velocityX;
+		sprite.setVelocityX(velocityX);
 	}
 
 	getVerticalSpeed(sprite) {
@@ -512,27 +459,19 @@ export default class PhaserEngine extends Engine {
 	}
 
 	setVerticalSpeed(sprite, velocityY) {
-		sprite.body.velocity.y = velocityY;
+		sprite.setVelocityY(velocityY);
 	}
 
 	getXPosition(sprite) {
-		return sprite.body.x;
+		return sprite.x;
 	}
 
 	getYPosition(sprite) {
-		return sprite.body.y;
-	}
-
-	setWidth(sprite, width) {
-		sprite.width = width;
+		return sprite.y;
 	}
 
 	getHeight(sprite) {
 		return sprite.height;
-	}
-
-	setHeight(sprite, height) {
-		sprite.height = height;
 	}
 
 	setAnchor(sprite, anchor) {
@@ -540,15 +479,33 @@ export default class PhaserEngine extends Engine {
 	}
 
 	setMaterial(sprite, material) {
-		sprite.body.setMaterial(material);
+		//@todo
+		// sprite.body.setMaterial(material);
 	}
 
 	setCollisionGroup(sprite, collisionGroup) {
-		sprite.body.setCollisionGroup(collisionGroup);
+		sprite.setCollisionCategory(collisionGroup);
 	}
 
 	collidesWith(sprite, collisionGroup, callback, scope) {
-		sprite.body.collides(collisionGroup, callback, scope);
+		if (sprite.data.collisionGroups === undefined) {
+			//Default collision with world
+			sprite.data.collisionGroups = [1];
+		}
+		sprite.data.collisionGroups.push(collisionGroup);
+
+		sprite.setCollidesWith(sprite.data.collisionGroups);
+
+		if (callback) {
+			this.currentScene.matter.world.on('collisionstart', function(event, bodyA, bodyB) {
+				if (
+					bodyA.gameObject === sprite &&
+					bodyB.collisionFilter.category === collisionGroup
+				) {
+					callback.call(scope, bodyA, bodyB);
+				}
+			});
+		}
 	}
 
 	constrainVelocity(sprite, maxVelocity) {
@@ -572,21 +529,14 @@ export default class PhaserEngine extends Engine {
 	}
 
 	hasSurfaceTouchingPlayerBottom(player) {
-		for (let i = 0; i < this.game.physics.p2.world.narrowphase.contactEquations.length; i++) {
-			const contact = this.game.physics.p2.world.narrowphase.contactEquations[i];
+		for (let body of player.data.canJumpOnBodies) {
 			if (
-				(contact.bodyA === player.body.data && this.canPlayerJumpOnBody(player, contact.bodyB)) ||
-				(contact.bodyB === player.body.data && this.canPlayerJumpOnBody(player, contact.bodyA))
+				player.body.bounds.min.y <= body.bounds.max.y &&
+				player.body.bounds.max.y >= body.bounds.min.y &&
+				player.body.bounds.min.x <= body.bounds.max.x &&
+				player.body.bounds.max.x >= body.bounds.min.x
 			) {
-				let dot = p2.vec2.dot(contact.normalA, p2.vec2.fromValues(0, 1));
-
-				if (contact.bodyA === player.body.data) {
-					dot *= -1;
-				}
-
-				if (dot > 0.5) {
-					return true;
-				}
+				return true;
 			}
 		}
 
@@ -605,12 +555,18 @@ export default class PhaserEngine extends Engine {
 	}
 
 	setOpacity(sprite, opacity) {
-		sprite.alpha = opacity;
+		sprite.setAlpha(opacity);
 	}
 
 	animateSetOpacity(sprite, opacityTo, opacityFrom, duration) {
 		this.setOpacity(sprite, opacityFrom);
-		this.game.add.tween(sprite).to({alpha: opacityTo}, duration).start();
+		this.currentScene.tweens.add(
+			{
+				targets: [sprite],
+				alpha: opacityTo,
+				duration: duration
+			}
+		);
 	}
 
 	/**
@@ -628,12 +584,20 @@ export default class PhaserEngine extends Engine {
 	}
 
 	scale(sprite, x, y) {
-		sprite.scale.setTo(x, y);
+		sprite.scaleX = x;
+		sprite.scaleY = y;
 	}
 
 	animateScale(sprite, xTo, yTo, xFrom, yFrom, duration) {
 		this.scale(sprite, xFrom, yFrom);
-		this.game.add.tween(sprite.scale).to({x: xTo, y: yTo}, duration).start();
+		this.currentScene.tweens.add(
+			{
+				targets: [sprite],
+				scaleX: xTo,
+				scaleY: yTo,
+				duration: duration
+			}
+		);
 	}
 
 	updateText(textComponent, text) {
@@ -649,7 +613,7 @@ export default class PhaserEngine extends Engine {
 	}
 
 	emitParticules(x, y, xMinSpeed, xMaxSpeed, yMinSpeed, yMaxSpeed, keys, frames, particlesQuantity, explode, lifespan, frequency, quantity) {
-		const emitter = this.game.add.emitter(x, y);
+		const emitter = this.currentScene.add.emitter(x, y);
 		emitter.bounce.setTo(0.5, 0.5);
 		emitter.setXSpeed(xMinSpeed, xMaxSpeed);
 		emitter.setYSpeed(yMinSpeed, yMaxSpeed);
@@ -658,22 +622,15 @@ export default class PhaserEngine extends Engine {
 	}
 
 	shake(sprite, move, time) {
-		const initialX = sprite.x;
-		const initialY = sprite.y;
-
-		this.game.add.tween(sprite)
-			.to({y: "-" + move}, time).to({y: "+" + move * 2}, time * 2).to({y: "-" + move}, time)
-			.to({y: "-" + move}, time).to({y: "+" + move * 2}, time * 2).to({y: "-" + move}, time)
-			.to({y: "-" + move / 2}, time).to({y: "+" + move}, time * 2).to({y: "-" + move / 2}, time)
-			.to({y: initialY}, time)
-			.start();
-
-		this.game.add.tween(sprite)
-			.to({x: "-" + move}, time).to({x: "+" + move * 2}, time * 2).to({x: "-" + move}, time)
-			.to({x: "-" + move}, time).to({x: "+" + move * 2}, time * 2).to({x: "-" + move}, time)
-			.to({x: "-" + move / 2}, time).to({x: "+" + move}, time * 2).to({x: "-" + move / 2}, time)
-			.to({x: initialX}, time)
-			.start();
+		this.currentScene.tweens.add({
+			targets: sprite,
+			x: '-=' + move,
+			y: '-=' + move,
+			duration: time,
+			ease: 'Sine.easeInOut',
+			yoyo: true,
+			repeat: 6
+		});
 	}
 
 	activateAnimation(sprite) {
@@ -682,8 +639,8 @@ export default class PhaserEngine extends Engine {
 
 		this.scale(sprite, 1, 1);
 		this.setOpacity(sprite, 0.5);
-		this.game.add.tween(sprite.scale).to({x: scale, y: scale}, duration).start();
-		this.game.add.tween(sprite).to({alpha: 0}, duration).start();
+		this.currentScene.add.tween(sprite.scale).to({x: scale, y: scale}, duration).start();
+		this.currentScene.add.tween(sprite).to({alpha: 0}, duration).start();
 		setTimeout(() => {
 			sprite.destroy();
 		}, duration);
@@ -723,8 +680,8 @@ export default class PhaserEngine extends Engine {
 		let canvas;
 
 		if (!canvasContainer) {
-			canvas = this.game.add.bitmapData(radius * 2, radius * 2);
-			canvasContainer = this.game.add.sprite(0, 0, canvas);
+			canvas = this.currentScene.add.bitmapData(radius * 2, radius * 2);
+			canvasContainer = this.currentScene.add.sprite(0, 0, canvas);
 
 			this.setAnchor(canvasContainer, 0.5);
 			canvasContainer.angle = -90;
@@ -774,7 +731,6 @@ export default class PhaserEngine extends Engine {
 		bonusSprite.data.initialGravity = bonusGravityScale;
 		bonusSprite.data.currentGravity = bonusSprite.data.initialGravity;
 
-		this.setFixedRotation(bonusSprite, false);
 		this.setGravity(bonusSprite, bonusSprite.data.currentGravity);
 		this.setDamping(bonusSprite, 0);
 
@@ -782,15 +738,10 @@ export default class PhaserEngine extends Engine {
 	}
 
 	showBallHitPoint(x, y, diameter) {
-		this.activateAnimation(
-			this.drawCircle(
-				x,
-				y,
-				{color: 0xffffff, width: 2},
-				null,
-				diameter
-			)
-		);
+		const graphics = this.addGraphics({x: x, y: y, lineStyle: {width: 2, color: 0xffffff}});
+		graphics.strokeCircle(0, 0, diameter);
+
+		this.activateAnimation(graphics);
 	}
 
 	activateAnimationBonus(x, y, bonus) {

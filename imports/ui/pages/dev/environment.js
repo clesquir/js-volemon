@@ -15,7 +15,7 @@ Template.environment.rendered = function() {
 	environment.start();
 
 	environment.onGameCreated = () => {
-		environment.disableGroundHit();
+		environment.enableGroundHit();
 	};
 };
 

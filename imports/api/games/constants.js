@@ -6,8 +6,8 @@ export const CLIENT_POINTS_COLUMN = 'clientPoints';
 export const HOST_SIDE = 'host';
 export const CLIENT_SIDE = 'client';
 
-export const PLAYER_VELOCITY_X_ON_MOVE = 280;
-export const PLAYER_VELOCITY_Y_ON_JUMP = 420;
+export const PLAYER_VELOCITY_X_ON_MOVE = 4.6;//280;
+export const PLAYER_VELOCITY_Y_ON_JUMP = 8.4;//420;
 export const PLAYER_MASS = 200;
 export const PLAYER_FROZEN_MASS = 2000;
 export const PLAYER_GRAVITY_SCALE = 1;
@@ -22,7 +22,7 @@ export const BALL_SMALL_GRAVITY_SCALE = 0.2;
 export const BONUS_RADIUS = 15;
 export const BONUS_GRAVITY_SCALE = 0.3636363636;
 
-export const WORLD_GRAVITY = 770;
+export const WORLD_GRAVITY = 1;
 export const WORLD_RESTITUTION = 1;
 
 export const NORMAL_SCALE_PHYSICS_DATA = 'physicsData';

@@ -5,6 +5,7 @@ export default class Engine {
 	 * @param worldConfiguration.height
 	 * @param worldConfiguration.gravity
 	 * @param worldConfiguration.bonusRadius
+	 * @param worldConfiguration.backgroundColor
 	 * @param worldConfiguration.renderTo
 	 * @param preloadGame
 	 * @param createGame
@@ -38,7 +39,7 @@ export default class Engine {
 	loadPolygon(sprite, key, object) {
 	}
 
-	changeBackgroundColor(hex) {
+	initData(sprite) {
 	}
 
 	drawRectangle(x, y, w, h, config) {
@@ -47,7 +48,7 @@ export default class Engine {
 	addGroup(enableBody = false) {
 	}
 
-	addText(x, y, text, style, group) {
+	addText(x, y, text, style) {
 	}
 
 	updateText(textComponent, text) {
@@ -108,12 +109,6 @@ export default class Engine {
 	}
 
 	setHorizontalSpeed(sprite, velocityX) {
-	}
-
-	getCenterX() {
-	}
-
-	getCenterY() {
 	}
 
 	getXPosition(sprite) {

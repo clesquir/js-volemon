@@ -17,6 +17,13 @@ export default class GameSkin {
 	}
 
 	/**
+	 * @returns {string}
+	 */
+	backgroundColor() {
+		return this.skin.backgroundColor();
+	}
+
+	/**
 	 * @param {Engine} engine
 	 */
 	preload(engine) {
@@ -24,7 +31,6 @@ export default class GameSkin {
 		let imagesToLoad = this.skin.imagesToLoad();
 		let spriteSheetToLoad = this.skin.spriteSheetsToLoad();
 		let dataToLoad = this.skin.dataToLoad();
-		let background = this.skin.backgroundColor();
 
 		for (let plugin of this.plugins) {
 			atlasJSONHash = atlasJSONHash.concat(plugin.atlasJSONHash());
@@ -45,8 +51,6 @@ export default class GameSkin {
 		for (let data of dataToLoad) {
 			engine.loadData(data.key, data.path);
 		}
-
-		engine.changeBackgroundColor(background);
 	}
 
 	/**

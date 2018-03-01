@@ -2,10 +2,11 @@ import Game from '/imports/api/games/client/Game.js';
 import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
 import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
-import StaticGameConfiguration from '/imports/api/games/configuration/StaticGameConfiguration.js';
+import StaticLevelGameConfiguration from '/imports/api/games/configuration/StaticLevelGameConfiguration.js';
 import StaticGameData from '/imports/api/games/data/StaticGameData.js';
 import DesktopController from '/imports/api/games/deviceController/DesktopController.js';
-import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
+import Phaser3Engine from '/imports/api/games/engine/client/Phaser3Engine.js';
+import LevelConfiguration from '/imports/api/games/levelConfiguration/LevelConfiguration.js';
 import {PLAYER_DEFAULT_SHAPE} from '/imports/api/games/shapeConstants.js';
 import DefaultSkin from '/imports/api/skins/skins/DefaultSkin.js';
 import CustomKeymaps from '/imports/lib/keymaps/CustomKeymaps.js';
@@ -20,19 +21,20 @@ export default class Environment {
 		const gameId = Random.id(5);
 		this.gameData = new StaticGameData();
 		this.gameData.init();
-		this.gameConfiguration = new StaticGameConfiguration();
+		this.gameConfiguration = new StaticLevelGameConfiguration(LevelConfiguration.definedSize(900, 400));
 		this.gameStreamBundler = new GameStreamBundler(null);
 		this.deviceController = new DesktopController(CustomKeymaps.defaultKeymaps());
 		this.deviceController.init();
-		this.gameEngine = new PhaserEngine();
+		this.engine = new Phaser3Engine();
 		this.serverNormalizedTime = new ServerNormalizedTime();
+		this.gameSkin = new GameSkin(new DefaultSkin(), []);
 		this.game = new Game(
 			gameId,
 			this.deviceController,
-			this.gameEngine,
+			this.engine,
 			this.gameData,
 			this.gameConfiguration,
-			new GameSkin(new DefaultSkin(), []),
+			this.gameSkin,
 			this.gameStreamBundler,
 			this.serverNormalizedTime
 		);
@@ -43,6 +45,7 @@ export default class Environment {
 				height: this.gameConfiguration.height(),
 				gravity: this.gameConfiguration.worldGravity(),
 				bonusRadius: this.gameConfiguration.bonusRadius(),
+				backgroundColor: this.gameSkin.backgroundColor(),
 				renderTo: 'environmentGameContainer'
 			},
 			this.preloadGame, this.createGame, this.updateGame, this
@@ -52,7 +55,7 @@ export default class Environment {
 	stop() {
 		if (this.game) {
 			this.deviceController.stopMonitoring();
-			this.gameEngine.stop();
+			this.engine.stop();
 		}
 	}
 
@@ -67,7 +70,7 @@ export default class Environment {
 		this.gameBonus.createComponents();
 
 		this.deviceController.startMonitoring();
-		this.gameEngine.createGame();
+		this.engine.createGame();
 
 		this.game.gameInitiated = true;
 
@@ -84,11 +87,12 @@ export default class Environment {
 
 		this.playerShape = PLAYER_DEFAULT_SHAPE;
 
-		this.game.player1 = this.gameEngine.addSprite(
+		this.game.player1 = this.engine.addSprite(
 			this.gameConfiguration.player1InitialX(),
 			this.gameConfiguration.playerInitialY(),
 			'shape-' + this.playerShape
 		);
+		this.engine.initData(this.game.player1);
 		this.game.player1.data.key = 'player1';
 		this.game.initPlayer(
 			this.game.player1,
@@ -97,11 +101,12 @@ export default class Environment {
 			this.game.collisions.hostPlayerCollisionGroup
 		);
 
-		this.game.player2 = this.gameEngine.addSprite(
+		this.game.player2 = this.engine.addSprite(
 			this.gameConfiguration.player2InitialX(),
 			this.gameConfiguration.playerInitialY(),
 			'shape-' + this.playerShape
 		);
+		this.engine.initData(this.game.player2);
 		this.game.player2.data.key = 'player2';
 		this.game.initPlayer(
 			this.game.player2,

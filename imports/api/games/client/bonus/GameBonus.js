@@ -582,7 +582,7 @@ export default class GameBonus {
 
 				this.engine.createTimer(250, () => {
 					smokeBomb.destroy();
-				}, this).start();
+				}, this);
 			}
 		}
 	}

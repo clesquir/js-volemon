@@ -5,7 +5,7 @@ import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
 import StaticLevelGameConfiguration from '/imports/api/games/configuration/StaticLevelGameConfiguration.js';
 import StaticGameData from '/imports/api/games/data/StaticGameData.js';
 import DesktopController from '/imports/api/games/deviceController/DesktopController.js';
-import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
+import Phaser3Engine from '/imports/api/games/engine/client/Phaser3Engine.js';
 import LevelConfiguration from '/imports/api/games/levelConfiguration/LevelConfiguration.js';
 import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants';
 import DefaultSkin from '/imports/api/skins/skins/DefaultSkin.js';
@@ -22,16 +22,17 @@ export default class Shape {
 		this.gameConfiguration = new StaticLevelGameConfiguration(LevelConfiguration.definedSize(1450, 560));
 		this.deviceController = new DesktopController(CustomKeymaps.defaultKeymaps());
 		this.deviceController.init();
-		this.engine = new PhaserEngine();
+		this.engine = new Phaser3Engine();
 		const gameData = new StaticGameData();
 		gameData.init();
+		this.gameSkin = new GameSkin(new DefaultSkin(), []);
 		this.game = new Game(
 			gameId,
 			this.deviceController,
 			this.engine,
 			gameData,
 			this.gameConfiguration,
-			new GameSkin(new DefaultSkin(), []),
+			this.gameSkin,
 			new GameStreamBundler(null),
 			new ServerNormalizedTime()
 		);
@@ -41,6 +42,7 @@ export default class Shape {
 				height: this.gameConfiguration.height(),
 				gravity: this.gameConfiguration.worldGravity(),
 				bonusRadius: this.gameConfiguration.bonusRadius(),
+				backgroundColor: this.gameSkin.backgroundColor(),
 				renderTo: 'shapeGameContainer'
 			},
 			this.preloadGame, this.createGame, this.updateGame, this
@@ -81,6 +83,7 @@ export default class Shape {
 				this.gameConfiguration.playerInitialY(),
 				'shape-' + PLAYER_LIST_OF_SHAPES[i]
 			);
+			this.engine.initData(this.game['player' + playerIndex]);
 			this.game['player' + playerIndex].data.key = 'player' + playerIndex;
 			this.game['player' + playerIndex].data.shape = PLAYER_LIST_OF_SHAPES[i];
 			this.game.initPlayer(
@@ -149,8 +152,7 @@ export default class Shape {
 	}
 
 	startCountdownTimer() {
-		this.countdownTimer = this.engine.createTimer(3, this.resumeGame, this);
-		this.countdownTimer.start();
+		this.engine.createTimer(3, this.resumeGame, this);
 	}
 
 	resumeGame() {
