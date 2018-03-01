@@ -1,7 +1,7 @@
 module.exports = {
 	servers: {
 		one: {
-			"host": "volemon.cloudalto.net",
+			"host": "159.203.28.108",
 			"username": "root"
 		}
 	},
