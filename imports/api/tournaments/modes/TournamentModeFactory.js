@@ -1,5 +1,6 @@
 import {
 	TOURNAMENT_MODE_BIG_DRUNK,
+	TOURNAMENT_MODE_BLANK_SCREEN,
 	TOURNAMENT_MODE_CLASSIC,
 	TOURNAMENT_MODE_HARDCORE,
 	TOURNAMENT_MODE_HIDDEN_SHAPE,
@@ -20,6 +21,7 @@ import {
 	TOURNAMENT_MODE_TINY_NET
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 import BigDrunk from './BigDrunk.js';
+import BlankScreen from './BlankScreen';
 import Classic from './Classic';
 import Hardcore from './Hardcore';
 import HiddenShape from './HiddenShape.js';
@@ -80,6 +82,8 @@ export default class TournamentModeFactory {
 				return new TallNet();
 			case TOURNAMENT_MODE_TEENY_TINY_WORLD:
 				return new TeenyTinyWorld();
+			case TOURNAMENT_MODE_BLANK_SCREEN:
+				return new BlankScreen();
 		}
 
 		throw `The tournament mode ${id} doesn't exist.`;

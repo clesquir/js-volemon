@@ -18,7 +18,8 @@ import {
 	TOURNAMENT_MODE_SUPER_BOUNCE_WALLS,
 	TOURNAMENT_MODE_TALL_NET,
 	TOURNAMENT_MODE_TEENY_TINY_WORLD,
-	TOURNAMENT_MODE_TINY_NET
+	TOURNAMENT_MODE_TINY_NET,
+	TOURNAMENT_MODE_BLANK_SCREEN
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 import {Meteor} from 'meteor/meteor';
 
@@ -115,6 +116,11 @@ Meteor.startup(function() {
 			"_id": TOURNAMENT_MODE_TEENY_TINY_WORLD,
 			"name": "Teeny-tiny world",
 			"description": "Super fast spawning bonuses are small-monster and small-ball and the net is tiny"
+		},
+		{
+			"_id": TOURNAMENT_MODE_BLANK_SCREEN,
+			"name": "Blank screen",
+			"description": "Fast spawning bonuses are only derived from invisible"
 		}
 	];
 
