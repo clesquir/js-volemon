@@ -18,7 +18,8 @@ import {
 	TOURNAMENT_MODE_SUPER_BOUNCE_WALLS,
 	TOURNAMENT_MODE_TALL_NET,
 	TOURNAMENT_MODE_TEENY_TINY_WORLD,
-	TOURNAMENT_MODE_TINY_NET
+	TOURNAMENT_MODE_TINY_NET,
+	TOURNAMENT_MODE_CATCH_ME_IF_YOU_CAN
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 import BigDrunk from './BigDrunk.js';
 import BlankScreen from './BlankScreen';
@@ -40,6 +41,7 @@ import SuperBounceWalls from './SuperBounceWalls';
 import TallNet from './TallNet';
 import TeenyTinyWorld from './TeenyTinyWorld';
 import TinyNet from './TinyNet';
+import CatchMeIfYouCan from './CatchMeIfYouCan';
 
 export default class TournamentModeFactory {
 	static fromId(id) {
@@ -84,6 +86,8 @@ export default class TournamentModeFactory {
 				return new TeenyTinyWorld();
 			case TOURNAMENT_MODE_BLANK_SCREEN:
 				return new BlankScreen();
+			case TOURNAMENT_MODE_CATCH_ME_IF_YOU_CAN:
+				return new CatchMeIfYouCan();
 		}
 
 		throw `The tournament mode ${id} doesn't exist.`;

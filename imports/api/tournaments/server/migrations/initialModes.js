@@ -19,7 +19,8 @@ import {
 	TOURNAMENT_MODE_TALL_NET,
 	TOURNAMENT_MODE_TEENY_TINY_WORLD,
 	TOURNAMENT_MODE_TINY_NET,
-	TOURNAMENT_MODE_BLANK_SCREEN
+	TOURNAMENT_MODE_BLANK_SCREEN,
+	TOURNAMENT_MODE_CATCH_ME_IF_YOU_CAN
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 import {Meteor} from 'meteor/meteor';
 
@@ -121,6 +122,11 @@ Meteor.startup(function() {
 			"_id": TOURNAMENT_MODE_BLANK_SCREEN,
 			"name": "Blank screen",
 			"description": "Fast spawning bonuses are only derived from invisible"
+		},
+		{
+			"_id": TOURNAMENT_MODE_CATCH_ME_IF_YOU_CAN,
+			"name": "Catch me if you can",
+			"description": "Fast spawning bonuses are freeze and fast monster"
 		}
 	];
 
