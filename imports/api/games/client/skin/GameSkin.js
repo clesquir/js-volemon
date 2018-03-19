@@ -55,7 +55,7 @@ export default class GameSkin {
 	 * @param ySize
 	 */
 	createBackgroundComponents(engine, xSize, ySize) {
-		let backgroundComponents = this.skin.backgroundComponents();
+		let backgroundComponents = this.skin.backgroundComponents(xSize, ySize);
 
 		this.renderBackgroundComponents(backgroundComponents, engine);
 

@@ -23,11 +23,13 @@ export default class DevaltoSkin extends Skin {
 	}
 
 	/**
+	 * @param xSize
+	 * @param ySize
 	 * @returns {{key: {string}, frame: {string}, animation: {frame: {string}, frames: {string}[], speed: {int}}, x: {int}, y: {int}, width: {int}, height: {int}}[]}
 	 */
-	backgroundComponents() {
+	backgroundComponents(xSize, ySize) {
 		return [
-			{key: 'devalto-skin', frame: 'background', x: 0, y: 0, width: 840, height: 560}
+			{key: 'devalto-skin', frame: 'background', x: 0, y: 0, width: xSize, height: ySize}
 		];
 	}
 

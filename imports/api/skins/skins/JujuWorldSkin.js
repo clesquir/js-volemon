@@ -16,11 +16,13 @@ export default class JujuWorldSkin extends Skin {
 	}
 
 	/**
+	 * @param xSize
+	 * @param ySize
 	 * @returns {{key: {string}, frame: {string}, animation: {frame: {string}, frames: {string}[], speed: {int}}, x: {int}, y: {int}, width: {int}, height: {int}}[]}
 	 */
-	backgroundComponents() {
+	backgroundComponents(xSize, ySize) {
 		return [
-			{key: 'juju-world-skin', frame: 'background', x: 0, y: 0, width: 840, height: 560}
+			{key: 'juju-world-skin', frame: 'background', x: 0, y: 0, width: xSize, height: ySize}
 		];
 	}
 

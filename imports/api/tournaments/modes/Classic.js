@@ -99,4 +99,14 @@ export default class Classic {
 
 	netHeight() {
 	}
+
+	overridesLevelSize() {
+		return false;
+	}
+
+	/**
+	 * @returns {{width: int, height: int}}
+	 */
+	levelSize() {
+	}
 }

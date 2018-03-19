@@ -1,7 +1,9 @@
 import {
 	TOURNAMENT_MODE_BIG_DRUNK,
 	TOURNAMENT_MODE_BLANK_SCREEN,
+	TOURNAMENT_MODE_CATCH_ME_IF_YOU_CAN,
 	TOURNAMENT_MODE_CLASSIC,
+	TOURNAMENT_MODE_FOOTBALL_FIELD,
 	TOURNAMENT_MODE_HARDCORE,
 	TOURNAMENT_MODE_HIDDEN_SHAPE,
 	TOURNAMENT_MODE_INSTANT_DEATH_BONUS,
@@ -18,12 +20,13 @@ import {
 	TOURNAMENT_MODE_SUPER_BOUNCE_WALLS,
 	TOURNAMENT_MODE_TALL_NET,
 	TOURNAMENT_MODE_TEENY_TINY_WORLD,
-	TOURNAMENT_MODE_TINY_NET,
-	TOURNAMENT_MODE_CATCH_ME_IF_YOU_CAN
+	TOURNAMENT_MODE_TINY_NET
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 import BigDrunk from './BigDrunk.js';
 import BlankScreen from './BlankScreen';
+import CatchMeIfYouCan from './CatchMeIfYouCan';
 import Classic from './Classic';
+import FootballField from './FootballField';
 import Hardcore from './Hardcore';
 import HiddenShape from './HiddenShape.js';
 import InstantDeathBonus from './InstantDeathBonus';
@@ -41,7 +44,6 @@ import SuperBounceWalls from './SuperBounceWalls';
 import TallNet from './TallNet';
 import TeenyTinyWorld from './TeenyTinyWorld';
 import TinyNet from './TinyNet';
-import CatchMeIfYouCan from './CatchMeIfYouCan';
 
 export default class TournamentModeFactory {
 	static fromId(id) {
@@ -88,6 +90,8 @@ export default class TournamentModeFactory {
 				return new BlankScreen();
 			case TOURNAMENT_MODE_CATCH_ME_IF_YOU_CAN:
 				return new CatchMeIfYouCan();
+			case TOURNAMENT_MODE_FOOTBALL_FIELD:
+				return new FootballField();
 		}
 
 		throw `The tournament mode ${id} doesn't exist.`;

@@ -23,15 +23,17 @@ export default class MarioBrosSkin extends Skin {
 	}
 
 	/**
+	 * @param xSize
+	 * @param ySize
 	 * @returns {{key: {string}, frame: {string}, animation: {frame: {string}, frames: {string}[], speed: {int}}, x: {int}, y: {int}, width: {int}, height: {int}}[]}
 	 */
-	backgroundComponents() {
+	backgroundComponents(xSize, ySize) {
 		return [
 			{
 				key: 'mario-bros-skin',
 				frame: 'background-mountain',
 				x: 145,
-				y: 402,
+				y: ySize - 158,
 				width: 200,
 				height: 88
 			},
@@ -39,7 +41,7 @@ export default class MarioBrosSkin extends Skin {
 				key: 'mario-bros-skin',
 				frame: 'background-bush',
 				x: 490,
-				y: 450,
+				y: ySize - 110,
 				width: 120,
 				height: 40
 			},
@@ -47,7 +49,7 @@ export default class MarioBrosSkin extends Skin {
 				key: 'mario-bros-skin',
 				frame: 'background-cloud',
 				x: 550,
-				y: 86,
+				y: ySize - 474,
 				width: 160,
 				height: 60
 			}

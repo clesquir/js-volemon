@@ -20,7 +20,8 @@ import {
 	TOURNAMENT_MODE_TEENY_TINY_WORLD,
 	TOURNAMENT_MODE_TINY_NET,
 	TOURNAMENT_MODE_BLANK_SCREEN,
-	TOURNAMENT_MODE_CATCH_ME_IF_YOU_CAN
+	TOURNAMENT_MODE_CATCH_ME_IF_YOU_CAN,
+	TOURNAMENT_MODE_FOOTBALL_FIELD
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 import {Meteor} from 'meteor/meteor';
 
@@ -127,6 +128,11 @@ Meteor.startup(function() {
 			"_id": TOURNAMENT_MODE_CATCH_ME_IF_YOU_CAN,
 			"name": "Catch me if you can",
 			"description": "Fast spawning bonuses are freeze and fast monster"
+		},
+		{
+			"_id": TOURNAMENT_MODE_FOOTBALL_FIELD,
+			"name": "Football field",
+			"description": "2 VS 2 level size"
 		}
 	];
 

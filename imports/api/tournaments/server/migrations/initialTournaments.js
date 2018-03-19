@@ -1,6 +1,6 @@
 import {TournamentModes} from '/imports/api/tournaments/tournamentModes.js';
 import {
-	TOURNAMENT_MODE_CATCH_ME_IF_YOU_CAN
+	TOURNAMENT_MODE_FOOTBALL_FIELD
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {Meteor} from 'meteor/meteor';
@@ -10,10 +10,10 @@ Meteor.startup(function() {
 	const tournaments = [
 		{
 			_id: Random.id(5),
-			identifier: 'tournament_2018-03-12',
-			mode: TOURNAMENT_MODE_CATCH_ME_IF_YOU_CAN,
-			startDate: "2018-03-12 -04:00",
-			endDate: "2018-03-19 -04:00",
+			identifier: 'tournament_2018-03-19',
+			mode: TOURNAMENT_MODE_FOOTBALL_FIELD,
+			startDate: "2018-03-19 -04:00",
+			endDate: "2018-03-26 -04:00",
 			isPublished: false
 		}
 	];

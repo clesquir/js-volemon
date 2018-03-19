@@ -48,6 +48,13 @@ export default class DefaultGameConfiguration extends GameConfiguration {
 	 * @private
 	 */
 	initLevelConfiguration() {
-		this.levelConfiguration = LevelConfiguration.defaultConfiguration();
+		if (this.hasTournament() && this.tournamentMode.overridesLevelSize()) {
+			this.levelConfiguration = LevelConfiguration.definedSize(
+				this.tournamentMode.levelSize().width,
+				this.tournamentMode.levelSize().height
+			);
+		} else {
+			this.levelConfiguration = LevelConfiguration.defaultConfiguration();
+		}
 	}
 }
