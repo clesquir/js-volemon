@@ -46,6 +46,10 @@ import TeenyTinyWorld from './TeenyTinyWorld';
 import TinyNet from './TinyNet';
 
 export default class TournamentModeFactory {
+	/**
+	 * @param id
+	 * @returns {Classic}
+	 */
 	static fromId(id) {
 		switch(id) {
 			case TOURNAMENT_MODE_CLASSIC:

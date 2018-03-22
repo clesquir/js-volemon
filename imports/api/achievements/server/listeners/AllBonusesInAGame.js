@@ -1,9 +1,16 @@
-import GameListener from './GameListener.js';
 import {ACHIEVEMENT_ALL_BONUSES_IN_A_GAME} from '/imports/api/achievements/constants.js';
-import BonusCaught from '/imports/api/games/events/BonusCaught.js';
+import {BONUS_NOTHING} from '/imports/api/games/bonusConstants.js';
 import BonusFactory from '/imports/api/games/BonusFactory.js';
+import BonusCaught from '/imports/api/games/events/BonusCaught.js';
+import GameListener from './GameListener.js';
 
 export default class AllBonusesInAGame extends GameListener {
+	allowedForTournamentGame() {
+		const tournamentMode = this.tournamentMode();
+
+		return !tournamentMode.overridesAvailableBonuses();
+	}
+
 	addListeners() {
 		this.addListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
 	}
@@ -38,7 +45,9 @@ export default class AllBonusesInAGame extends GameListener {
 
 		this.bonusesCaught = {};
 		for (let bonus of bonuses) {
-			this.bonusesCaught[bonus] = false;
+			if (this.bonusEnabled(bonus)) {
+				this.bonusesCaught[bonus] = false;
+			}
 		}
 	}
 
@@ -64,5 +73,14 @@ export default class AllBonusesInAGame extends GameListener {
 		}
 
 		return true;
+	}
+
+	/**
+	 * @private
+	 * @param bonus
+	 * @returns {boolean}
+	 */
+	bonusEnabled(bonus) {
+		return (bonus !== BONUS_NOTHING);
 	}
 }

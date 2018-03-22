@@ -4,6 +4,12 @@ import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import {BONUS_RANDOM} from '/imports/api/games/bonusConstants.js';
 
 export default class RandomInAGame extends GameListener {
+	allowedForTournamentGame() {
+		const tournamentMode = this.tournamentMode();
+
+		return !tournamentMode.overridesRandomBonusKeyList();
+	}
+
 	addListeners() {
 		this.addListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
 	}

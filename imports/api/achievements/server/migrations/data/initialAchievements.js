@@ -50,6 +50,7 @@ export const INITIAL_ACHIVEMENTS = [
 		"description": "# of shutouts",
 		"type": TYPE_QUANTITY,
 		"displayOrder": 4,
+		"conditionalForTournamentGame": true,
 		"levels": [{"level": 1, "number": 50}, {"level": 2, "number": 100}, {"level": 3, "number": 200}]
 	},
 	{
@@ -154,6 +155,7 @@ export const INITIAL_ACHIVEMENTS = [
 		"description": "Caught all bonuses in a game",
 		"type": TYPE_TIMES,
 		"displayOrder": 17,
+		"conditionalForTournamentGame": true,
 		"levels": [{"level": 1, "number": 1}, {"level": 2, "number": 2}, {"level": 3, "number": 3}]
 	},
 	{
@@ -172,6 +174,7 @@ export const INITIAL_ACHIVEMENTS = [
 		"description": "# of invincible bonuses caught in a lifetime",
 		"type": TYPE_QUANTITY,
 		"displayOrder": 19,
+		"conditionalForTournamentGame": true,
 		"levels": [{"level": 1, "number": 2}, {"level": 2, "number": 4}, {"level": 3, "number": 8}]
 	},
 	{
@@ -190,6 +193,7 @@ export const INITIAL_ACHIVEMENTS = [
 		"description": "# of games won under a minute",
 		"type": TYPE_TIMES,
 		"displayOrder": 21,
+		"conditionalForTournamentGame": true,
 		"levels": [{"level": 1, "number": 2}, {"level": 2, "number": 4}, {"level": 3, "number": 8}]
 	},
 	{
@@ -199,6 +203,7 @@ export const INITIAL_ACHIVEMENTS = [
 		"description": "# of random bonuses caught in a game",
 		"type": TYPE_QUANTITY,
 		"displayOrder": 22,
+		"conditionalForTournamentGame": true,
 		"levels": [{"level": 1, "number": 3}, {"level": 2, "number": 6}, {"level": 3, "number": 12}]
 	},
 	{
@@ -208,6 +213,7 @@ export const INITIAL_ACHIVEMENTS = [
 		"description": "# of tie games",
 		"type": TYPE_QUANTITY,
 		"displayOrder": 23,
+		"conditionalForTournamentGame": true,
 		"levels": [{"level": 1, "number": 10}, {"level": 2, "number": 25}, {"level": 3, "number": 50}]
 	},
 	{
@@ -226,6 +232,7 @@ export const INITIAL_ACHIVEMENTS = [
 		"description": "# of games over 2:00 without activating any bonuses",
 		"type": TYPE_QUANTITY,
 		"displayOrder": 25,
+		"conditionalForTournamentGame": true,
 		"levels": [{"level": 1, "number": 1}, {"level": 2, "number": 5}, {"level": 3, "number": 10}]
 	},
 	{
@@ -271,6 +278,7 @@ export const INITIAL_ACHIVEMENTS = [
 		"description": "# of won games when opponent was leading 4-0",
 		"type": TYPE_QUANTITY,
 		"displayOrder": 30,
+		"conditionalForTournamentGame": true,
 		"levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 20}]
 	},
 	{
@@ -307,6 +315,7 @@ export const INITIAL_ACHIVEMENTS = [
 		"description": "# of shutouts with the dot shape against a different shape player",
 		"type": TYPE_QUANTITY,
 		"displayOrder": 34,
+		"conditionalForTournamentGame": true,
 		"levels": [{"level": 1, "number": 1}, {"level": 2, "number": 5}, {"level": 3, "number": 10}]
 	},
 	{

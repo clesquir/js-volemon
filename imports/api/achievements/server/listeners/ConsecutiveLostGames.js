@@ -4,10 +4,6 @@ import PlayerLost from '/imports/api/games/events/PlayerLost.js';
 import PlayerWon from '/imports/api/games/events/PlayerWon.js';
 
 export default class ConsecutiveLostGames extends GameListener {
-	allowedForTournamentGame() {
-		return true;
-	}
-
 	addListeners() {
 		this.addListener(PlayerLost.prototype.constructor.name, this.onPlayerLost);
 		this.addListener(PlayerWon.prototype.constructor.name, this.onPlayerWon);

@@ -6,10 +6,6 @@ import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {BONUS_BIG_MONSTER} from '/imports/api/games/bonusConstants.js';
 
 export default class BattleOfTheGiants extends GameListener {
-	allowedForTournamentGame() {
-		return true;
-	}
-
 	addListeners() {
 		this.addListener(PointTaken.prototype.constructor.name, this.onPointTaken);
 		this.addListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);

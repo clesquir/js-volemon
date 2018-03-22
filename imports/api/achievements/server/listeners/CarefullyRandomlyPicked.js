@@ -5,10 +5,6 @@ import {Players} from '/imports/api/games/players.js';
 import {PLAYER_LIST_OF_SHAPES, PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
 
 export default class CarefullyRandomlyPicked extends GameListener {
-	allowedForTournamentGame() {
-		return true;
-	}
-
 	addListeners() {
 		this.addListener(PlayerWon.prototype.constructor.name, this.onPlayerWon);
 	}

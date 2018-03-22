@@ -21,7 +21,12 @@
 					<div class="achievement-level-info">{{achievementLevel ../userAchievements 3}}</div>
 				</div>
 				<div class="achievement-information">
-					<div class="achievement-name">{{name}}</div>
+					<div class="achievement-name">
+						{{name}}
+						{{#if conditionalForTournamentGame }}
+							<div class="conditional-achievement" data-tooltip="Achievement conditional to tournaments"></div>
+						{{/if}}
+					</div>
 					{{#if showDescription ../userAchievements}}
 						<div class="achievement-description">
 							{{description}}: {{achievementProgress ../userAchievements}}

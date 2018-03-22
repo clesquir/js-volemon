@@ -1,9 +1,16 @@
-import GameListener from './GameListener.js';
 import {ACHIEVEMENT_FULL_STOP} from '/imports/api/achievements/constants.js';
+import {GAME_MAXIMUM_POINTS} from '/imports/api/games/constants.js';
 import PlayerWon from '/imports/api/games/events/PlayerWon.js';
 import {PLAYER_SHAPE_DOT} from '/imports/api/games/shapeConstants.js'
+import GameListener from './GameListener.js';
 
 export default class FullStop extends GameListener {
+	allowedForTournamentGame() {
+		const tournamentMode = this.tournamentMode();
+
+		return !tournamentMode.overridesMaximumPoints() || tournamentMode.maximumPoints() === GAME_MAXIMUM_POINTS;
+	}
+
 	addListeners() {
 		this.addListener(PlayerWon.prototype.constructor.name, this.onPlayerWon);
 	}

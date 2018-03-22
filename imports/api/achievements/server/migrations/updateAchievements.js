@@ -1,19 +1,42 @@
-import {Meteor} from 'meteor/meteor';
 import {Achievements} from '/imports/api/achievements/achievements.js';
-import {ACHIEVEMENT_RAKSHASA} from '/imports/api/achievements/constants.js'
+import {
+	ACHIEVEMENT_ALL_BONUSES_IN_A_GAME,
+	ACHIEVEMENT_FULL_STOP,
+	ACHIEVEMENT_GAMES_WON_UNDER_A_MINUTE,
+	ACHIEVEMENT_HOW_TO_TIE_A_TIE,
+	ACHIEVEMENT_INVINCIBLE_IN_A_LIFETIME,
+	ACHIEVEMENT_NINJA,
+	ACHIEVEMENT_RANDOM_IN_A_GAME,
+	ACHIEVEMENT_SHUTOUTS,
+	ACHIEVEMENT_SNOOZER
+} from '/imports/api/achievements/constants.js';
+import {Meteor} from 'meteor/meteor';
 
 Meteor.startup(function() {
 	/**
 	 * Migration for updating achievements
 	 */
-	const rakshasa = Achievements.findOne({_id: ACHIEVEMENT_RAKSHASA});
-	if (rakshasa !== undefined && rakshasa.levels[2].number === 3) {
+	updateConditionalForTournamentGame(ACHIEVEMENT_SHUTOUTS);
+	updateConditionalForTournamentGame(ACHIEVEMENT_ALL_BONUSES_IN_A_GAME);
+	updateConditionalForTournamentGame(ACHIEVEMENT_INVINCIBLE_IN_A_LIFETIME);
+	updateConditionalForTournamentGame(ACHIEVEMENT_GAMES_WON_UNDER_A_MINUTE);
+	updateConditionalForTournamentGame(ACHIEVEMENT_RANDOM_IN_A_GAME);
+	updateConditionalForTournamentGame(ACHIEVEMENT_HOW_TO_TIE_A_TIE);
+	updateConditionalForTournamentGame(ACHIEVEMENT_NINJA);
+	updateConditionalForTournamentGame(ACHIEVEMENT_SNOOZER);
+	updateConditionalForTournamentGame(ACHIEVEMENT_FULL_STOP);
+});
+
+const updateConditionalForTournamentGame = function(id) {
+	const achievement = Achievements.findOne({_id: id});
+	if (achievement !== undefined && !achievement.conditionalForTournamentGame) {
 		Achievements.update(
-			{_id: ACHIEVEMENT_RAKSHASA},
-			{$set: {
-				description: 'Morph into all shapes in a life time',
-				"levels": [{"level": 1, "number": 1}, {"level": 2, "number": 3}, {"level": 3, "number": 6}]
-			}}
+			{_id: id},
+			{
+				$set: {
+					conditionalForTournamentGame: true
+				}
+			}
 		);
 	}
-});
+};

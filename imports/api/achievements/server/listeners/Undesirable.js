@@ -1,9 +1,10 @@
-import GameListener from './GameListener.js';
 import {ACHIEVEMENT_UNDESIRABLE} from '/imports/api/achievements/constants.js';
+import {BONUS_NOTHING} from '/imports/api/games/bonusConstants.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import BonusCreated from '/imports/api/games/events/BonusCreated.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
-import {getUTCTimeStamp, getArrayMax} from '/imports/lib/utils.js';
+import {getArrayMax, getUTCTimeStamp} from '/imports/lib/utils.js';
+import GameListener from './GameListener.js';
 
 export default class Undesirable extends GameListener {
 	addListeners() {
@@ -69,7 +70,10 @@ export default class Undesirable extends GameListener {
 		if (!this.bonuses) {
 			this.initBonuses();
 		}
-		this.bonuses[identifier] = createdAt;
+
+		if (this.bonusEnabled(identifier)) {
+			this.bonuses[identifier] = createdAt;
+		}
 	}
 
 	/**
@@ -98,5 +102,14 @@ export default class Undesirable extends GameListener {
 
 			this.updateNumberIfHigher(ACHIEVEMENT_UNDESIRABLE, getArrayMax(elapsedTimes));
 		}
+	}
+
+	/**
+	 * @private
+	 * @param identifier
+	 * @returns {boolean}
+	 */
+	bonusEnabled(identifier) {
+		return (identifier.indexOf(BONUS_NOTHING) === -1);
 	}
 }

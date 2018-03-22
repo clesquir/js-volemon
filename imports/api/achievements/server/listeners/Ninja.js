@@ -4,6 +4,12 @@ import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import GameFinished from '/imports/api/games/events/GameFinished.js';
 
 export default class Ninja extends GameListener {
+	allowedForTournamentGame() {
+		const tournamentMode = this.tournamentMode();
+
+		return !tournamentMode.overridesHasBonuses();
+	}
+
 	addListeners() {
 		this.addListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
 		this.addListener(GameFinished.prototype.constructor.name, this.onGameFinished);

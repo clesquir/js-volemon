@@ -1,6 +1,8 @@
 import {GAME_MAXIMUM_POINTS} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
+import TournamentModeFactory from '/imports/api/tournaments/modes/TournamentModeFactory.js';
+import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import Listener from './Listener';
 
 export default class GameListener extends Listener {
@@ -32,7 +34,7 @@ export default class GameListener extends Listener {
 	}
 
 	allowedForTournamentGame() {
-		return false;
+		return true;
 	}
 
 	allowedForPracticeGame() {
@@ -72,6 +74,19 @@ export default class GameListener extends Listener {
 		const game = Games.findOne({_id: this.gameId});
 
 		return game && !!game.tournamentId;
+	}
+
+	/**
+	 * @returns {Classic}
+	 */
+	tournamentMode() {
+		if (!this.isTournamentGame()) {
+			throw 'This is not a tournament game';
+		}
+
+		const game = Games.findOne({_id: this.gameId});
+		const tournament = Tournaments.findOne({_id: game.tournamentId});
+		return TournamentModeFactory.fromId(tournament.mode._id);
 	}
 
 	isPracticeGame() {
