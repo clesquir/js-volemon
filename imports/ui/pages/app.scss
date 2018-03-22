@@ -8,6 +8,8 @@ $logo-height: 40px;
 $small-logo-height: 25px;
 
 .app-header {
+	position: fixed;
+	z-index: 2;
 	background: $header-background-color;
 	color: $header-text-color;
 	width: 100%;
@@ -17,7 +19,6 @@ $small-logo-height: 25px;
 	display: flex;
 	align-items: center;
 	border-bottom: 4px solid $header-border-bottom-color;
-	position: relative;
 	max-height: 55px;
 
 	@include horizontal-breakpoint(tablet) {
@@ -183,6 +184,11 @@ $small-logo-height: 25px;
 	flex-direction: column;
 	position: relative;
 	margin: 0 20px;
+	margin-top: 54px;
+
+	@include horizontal-breakpoint(tablet) {
+		margin-top: 39px;
+	}
 }
 
 .app-section {
