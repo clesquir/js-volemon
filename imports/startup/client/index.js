@@ -2,7 +2,7 @@ import SkinStartup from '/imports/api/skins/client/Startup.js';
 import UserStartup from '/imports/api/users/client/Startup.js';
 import MobileAddressBarHider from '/imports/lib/MobileAddressBarHider.js';
 import '/imports/lib/rollbar/client/Init.js';
-import WeakConnectionDetector from '/imports/lib/speedTest/WeakConnectionDetector.js';
+import InternetConnectionDetector from '/imports/lib/InternetConnectionDetector.js';
 import WindowFocus from '/imports/lib/WindowFocus.js';
 import './connectionMonitor.js';
 import './register-api.js';
@@ -13,5 +13,5 @@ Meteor.startup(() => {
 	UserStartup.start();
 	MobileAddressBarHider.start();
 	WindowFocus.start();
-	WeakConnectionDetector.start();
+	InternetConnectionDetector.start();
 });

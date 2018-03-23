@@ -13,7 +13,7 @@ import '/imports/ui/components/lightbox.js';
 import '/imports/ui/components/loading.js';
 import '/imports/ui/components/shapeSelector.js';
 import '/imports/ui/components/switchButton.js';
-import '/imports/ui/components/weakConnection.js';
+import '/imports/ui/components/noInternetConnection.js';
 
 import '/imports/ui/pages/app.js';
 import '/imports/ui/pages/dev/environment.js';
