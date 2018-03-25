@@ -11,6 +11,7 @@ import {
 	TOURNAMENT_MODE_MASSIVE_HARDCORE_BLIND_BULLETPROOF,
 	TOURNAMENT_MODE_MOON_GRAVITY,
 	TOURNAMENT_MODE_NO_BONUSES,
+	TOURNAMENT_MODE_NOT_ENOUGH_SPACE,
 	TOURNAMENT_MODE_NOTHING_BONUS,
 	TOURNAMENT_MODE_RANDOM_BONUSES,
 	TOURNAMENT_MODE_SHAPE_SHIFTER,
@@ -34,6 +35,7 @@ import JupiterGravity from './JupiterGravity';
 import MassiveHardcoreBlindBulletproof from './MassiveHardcoreBlindBulletproof.js';
 import MoonGravity from './MoonGravity';
 import NoBonuses from './NoBonuses';
+import NotEnoughSpace from './NotEnoughSpace';
 import NothingBonus from './NothingBonus.js';
 import RandomBonuses from './RandomBonuses';
 import ShapeShifter from './ShapeShifter';
@@ -96,6 +98,8 @@ export default class TournamentModeFactory {
 				return new CatchMeIfYouCan();
 			case TOURNAMENT_MODE_FOOTBALL_FIELD:
 				return new FootballField();
+			case TOURNAMENT_MODE_NOT_ENOUGH_SPACE:
+				return new NotEnoughSpace();
 		}
 
 		throw `The tournament mode ${id} doesn't exist.`;
