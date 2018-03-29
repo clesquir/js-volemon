@@ -1,7 +1,7 @@
 import {Meteor} from "meteor/meteor";
 import {Session} from "meteor/session";
 
-const testInterval = 2500;
+const testInterval = 10000;
 
 export default class InternetConnectionDetector {
 	static start() {
