@@ -1,6 +1,6 @@
 import {TournamentModes} from '/imports/api/tournaments/tournamentModes.js';
 import {
-	TOURNAMENT_MODE_NOT_ENOUGH_SPACE
+	TOURNAMENT_MODE_PAUSE_PLAY
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {Meteor} from 'meteor/meteor';
@@ -10,10 +10,10 @@ Meteor.startup(function() {
 	const tournaments = [
 		{
 			_id: Random.id(5),
-			identifier: 'tournament_2018-03-26',
-			mode: TOURNAMENT_MODE_NOT_ENOUGH_SPACE,
-			startDate: "2018-03-26 -04:00",
-			endDate: "2018-04-02 -04:00",
+			identifier: 'tournament_2018-04-02',
+			mode: TOURNAMENT_MODE_PAUSE_PLAY,
+			startDate: "2018-04-02 -04:00",
+			endDate: "2018-04-09 -04:00",
 			isPublished: false
 		}
 	];

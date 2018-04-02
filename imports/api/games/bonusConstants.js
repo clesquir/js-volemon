@@ -8,6 +8,7 @@ export const BONUS_BIG_JUMP_MONSTER = 'BigJumpMonsterBonus';
 export const BONUS_SLOW_MONSTER = 'SlowMonsterBonus';
 export const BONUS_FAST_MONSTER = 'FastMonsterBonus';
 export const BONUS_FREEZE_MONSTER = 'FreezeMonsterBonus';
+export const BONUS_UNFREEZE_MONSTER = 'UnfreezeMonsterBonus';
 export const BONUS_REVERSE_MOVE_MONSTER = 'ReverseMoveMonsterBonus';
 export const BONUS_INVINCIBLE_MONSTER = 'InvincibleMonsterBonus';
 export const BONUS_INVISIBLE_MONSTER = 'InvisibleMonsterBonus';

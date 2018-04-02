@@ -22,6 +22,7 @@ import SlowMonsterBonus from '/imports/api/games/bonus/SlowMonsterBonus.js';
 import SmallBallBonus from '/imports/api/games/bonus/SmallBallBonus.js';
 import SmallMonsterBonus from '/imports/api/games/bonus/SmallMonsterBonus.js';
 import SmokeBombBonus from '/imports/api/games/bonus/SmokeBombBonus.js';
+import UnfreezeMonsterBonus from '/imports/api/games/bonus/UnfreezeMonsterBonus.js';
 import {
 	BONUS_BIG_BALL,
 	BONUS_BIG_JUMP_MONSTER,
@@ -46,7 +47,8 @@ import {
 	BONUS_SLOW_MONSTER,
 	BONUS_SMALL_BALL,
 	BONUS_SMALL_MONSTER,
-	BONUS_SMOKE_BOMB
+	BONUS_SMOKE_BOMB,
+	BONUS_UNFREEZE_MONSTER
 } from '/imports/api/games/bonusConstants.js';
 import {Random} from 'meteor/random';
 
@@ -167,6 +169,8 @@ export default class BonusFactory {
 				return new FastMonsterBonus(game, bonusClass);
 			case BONUS_FREEZE_MONSTER:
 				return new FreezeMonsterBonus(game, bonusClass);
+			case BONUS_UNFREEZE_MONSTER:
+				return new UnfreezeMonsterBonus(game, bonusClass);
 			case BONUS_REVERSE_MOVE_MONSTER:
 				return new ReverseMoveMonsterBonus(game, bonusClass);
 			case BONUS_INVINCIBLE_MONSTER:

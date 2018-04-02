@@ -21,7 +21,8 @@ import {
 	TOURNAMENT_MODE_SUPER_BOUNCE_WALLS,
 	TOURNAMENT_MODE_TALL_NET,
 	TOURNAMENT_MODE_TEENY_TINY_WORLD,
-	TOURNAMENT_MODE_TINY_NET
+	TOURNAMENT_MODE_TINY_NET,
+	TOURNAMENT_MODE_PAUSE_PLAY
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 import BigDrunk from './BigDrunk.js';
 import BlankScreen from './BlankScreen';
@@ -46,6 +47,7 @@ import SuperBounceWalls from './SuperBounceWalls';
 import TallNet from './TallNet';
 import TeenyTinyWorld from './TeenyTinyWorld';
 import TinyNet from './TinyNet';
+import PausePlay from './PausePlay';
 
 export default class TournamentModeFactory {
 	/**
@@ -100,6 +102,8 @@ export default class TournamentModeFactory {
 				return new FootballField();
 			case TOURNAMENT_MODE_NOT_ENOUGH_SPACE:
 				return new NotEnoughSpace();
+			case TOURNAMENT_MODE_PAUSE_PLAY:
+				return new PausePlay();
 		}
 
 		throw `The tournament mode ${id} doesn't exist.`;

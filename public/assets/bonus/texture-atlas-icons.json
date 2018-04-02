@@ -575,15 +575,39 @@
         "x": 0.5,
         "y": 0.5
       }
+    },
+    "unfreeze-monster": {
+      "frame": {
+        "x": 217,
+        "y": 1,
+        "w": 34,
+        "h": 34
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 34
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
     }
   },
   "meta": {
     "app": "http://free-tex-packer.com/",
-    "version": "0.2.6",
+    "version": "0.3.0",
     "image": "texture-atlas-icons.png",
     "format": "RGBA8888",
     "size": {
-      "w": 216,
+      "w": 252,
       "h": 286
     },
     "scale": 1

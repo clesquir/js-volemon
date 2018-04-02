@@ -1,4 +1,5 @@
 import MonsterBonus from '/imports/api/games/bonus/MonsterBonus.js';
+import UnfreezeMonsterBonus from '/imports/api/games/bonus/UnfreezeMonsterBonus.js';
 
 export default class FreezeMonsterBonus extends MonsterBonus {
 	constructor(...args) {
@@ -9,7 +10,10 @@ export default class FreezeMonsterBonus extends MonsterBonus {
 	}
 
 	isSimilarBonusForPlayerKey(bonus, playerKey) {
-		return bonus instanceof FreezeMonsterBonus && playerKey === this.activatorPlayerKey;
+		return (
+			(bonus instanceof FreezeMonsterBonus || bonus instanceof UnfreezeMonsterBonus) &&
+			playerKey === this.activatorPlayerKey
+		);
 	}
 
 	start() {
