@@ -13,6 +13,8 @@ export default class PausePlay extends Classic {
 		return [
 			BONUS_FREEZE_MONSTER,
 			BONUS_UNFREEZE_MONSTER,
+			BONUS_UNFREEZE_MONSTER,
+			BONUS_UNFREEZE_MONSTER,
 		];
 	}
 
@@ -23,7 +25,9 @@ export default class PausePlay extends Classic {
 	randomBonusKeyList() {
 		return [
 			BONUS_FREEZE_MONSTER,
-			BONUS_UNFREEZE_MONSTER
+			BONUS_UNFREEZE_MONSTER,
+			BONUS_UNFREEZE_MONSTER,
+			BONUS_UNFREEZE_MONSTER,
 		];
 	}
 
