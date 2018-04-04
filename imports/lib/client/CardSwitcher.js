@@ -8,6 +8,7 @@ export default class CardSwitcher {
 	constructor(swiperSelector, swipeCallbacks) {
 		$(document).ready(() => {
 			this.swiper = new Swiper(swiperSelector, {
+				simulateTouch: false,
 				direction: 'horizontal'
 			});
 
