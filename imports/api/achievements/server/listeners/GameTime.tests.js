@@ -11,7 +11,6 @@ import {resetDatabase} from 'meteor/xolvio:cleaner';
 describe('AchievementListener#GameTime', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
-	const listener = (new GameTime()).forGame(gameId, userId);
 	const assertGameTimeUserAchievementNumberEquals = function(number) {
 		const achievement = UserAchievements.findOne();
 		assert.notEqual(undefined, achievement);
@@ -30,6 +29,7 @@ describe('AchievementListener#GameTime', function() {
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
+		const listener = (new GameTime()).forGame(gameId, userId);
 		listener.onGameFinished(new GameFinished(gameId, 2000));
 
 		assert.equal(1, UserAchievements.find().count());
@@ -41,6 +41,7 @@ describe('AchievementListener#GameTime', function() {
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
+		const listener = (new GameTime()).forGame(gameId, userId);
 		listener.onGameFinished(new GameFinished(Random.id(5), 2000));
 		assert.equal(0, UserAchievements.find().count());
 	});
@@ -49,6 +50,7 @@ describe('AchievementListener#GameTime', function() {
 		Games.insert({_id: gameId, createdBy: userId});
 
 		assert.equal(0, UserAchievements.find().count());
+		const listener = (new GameTime()).forGame(gameId, userId);
 		listener.onGameFinished(new GameFinished(gameId, 2000));
 		assert.equal(0, UserAchievements.find().count());
 	});
@@ -58,6 +60,7 @@ describe('AchievementListener#GameTime', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_GAME_TIME, number: 2000});
 
+		const listener = (new GameTime()).forGame(gameId, userId);
 		listener.onGameFinished(new GameFinished(gameId, 3000));
 
 		assertGameTimeUserAchievementNumberEquals(3000);
@@ -68,6 +71,7 @@ describe('AchievementListener#GameTime', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_GAME_TIME, number: 2000});
 
+		const listener = (new GameTime()).forGame(gameId, userId);
 		listener.onGameFinished(new GameFinished(gameId, 1500));
 
 		assertGameTimeUserAchievementNumberEquals(2000);
@@ -78,6 +82,7 @@ describe('AchievementListener#GameTime', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_GAME_TIME, number: 2000});
 
+		const listener = (new GameTime()).forGame(gameId, userId);
 		listener.onGameFinished(new GameFinished(Random.id(5), 3000));
 
 		assertGameTimeUserAchievementNumberEquals(2000);
@@ -87,6 +92,7 @@ describe('AchievementListener#GameTime', function() {
 		Games.insert({_id: gameId, createdBy: userId});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_GAME_TIME, number: 2000});
 
+		const listener = (new GameTime()).forGame(gameId, userId);
 		listener.onGameFinished(new GameFinished(gameId, 3000));
 
 		assertGameTimeUserAchievementNumberEquals(2000);

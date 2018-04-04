@@ -11,7 +11,6 @@ import {resetDatabase} from 'meteor/xolvio:cleaner';
 describe('AchievementListener#GamesWonUnderAMinute', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
-	const listener = (new GamesWonUnderAMinute()).forGame(gameId, userId);
 	const assertGamesWonUnderAMinuteUserAchievementNumberEquals = function(number) {
 		const achievement = UserAchievements.findOne();
 		assert.notEqual(undefined, achievement);
@@ -30,6 +29,7 @@ describe('AchievementListener#GamesWonUnderAMinute', function() {
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
+		const listener = (new GamesWonUnderAMinute()).forGame(gameId, userId);
 		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
 
 		assert.equal(1, UserAchievements.find().count());
@@ -41,6 +41,7 @@ describe('AchievementListener#GamesWonUnderAMinute', function() {
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
+		const listener = (new GamesWonUnderAMinute()).forGame(gameId, userId);
 		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
 		assert.equal(0, UserAchievements.find().count());
 	});
@@ -50,6 +51,7 @@ describe('AchievementListener#GamesWonUnderAMinute', function() {
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
+		const listener = (new GamesWonUnderAMinute()).forGame(gameId, userId);
 		listener.onPlayerWon(new PlayerWon(Random.id(5), userId, 5, 0));
 		assert.equal(0, UserAchievements.find().count());
 	});
@@ -59,6 +61,7 @@ describe('AchievementListener#GamesWonUnderAMinute', function() {
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
+		const listener = (new GamesWonUnderAMinute()).forGame(gameId, userId);
 		listener.onPlayerWon(new PlayerWon(gameId, Random.id(5), 5, 0));
 		assert.equal(0, UserAchievements.find().count());
 	});
@@ -68,6 +71,7 @@ describe('AchievementListener#GamesWonUnderAMinute', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_GAMES_WON_UNDER_A_MINUTE, number: 1});
 
+		const listener = (new GamesWonUnderAMinute()).forGame(gameId, userId);
 		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
 
 		assertGamesWonUnderAMinuteUserAchievementNumberEquals(2);
@@ -78,6 +82,7 @@ describe('AchievementListener#GamesWonUnderAMinute', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_GAMES_WON_UNDER_A_MINUTE, number: 1});
 
+		const listener = (new GamesWonUnderAMinute()).forGame(gameId, userId);
 		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
 
 		assertGamesWonUnderAMinuteUserAchievementNumberEquals(1);
@@ -88,6 +93,7 @@ describe('AchievementListener#GamesWonUnderAMinute', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_GAMES_WON_UNDER_A_MINUTE, number: 1});
 
+		const listener = (new GamesWonUnderAMinute()).forGame(gameId, userId);
 		listener.onPlayerWon(new PlayerWon(Random.id(5), userId, 5, 0));
 
 		assertGamesWonUnderAMinuteUserAchievementNumberEquals(1);
@@ -97,6 +103,7 @@ describe('AchievementListener#GamesWonUnderAMinute', function() {
 		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_GAMES_WON_UNDER_A_MINUTE, number: 1});
 
+		const listener = (new GamesWonUnderAMinute()).forGame(gameId, userId);
 		listener.onPlayerWon(new PlayerWon(gameId, Random.id(5), 5, 0));
 
 		assertGamesWonUnderAMinuteUserAchievementNumberEquals(1);

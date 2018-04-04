@@ -12,7 +12,6 @@ import {Players} from '/imports/api/games/players.js';
 describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
-	const listener = (new ConsecutiveDaysPlayed()).forGame(gameId, userId);
 	const assertConsecutiveDaysPlayedUserAchievementValuesEqual = function(number, lastDatePlayed, consecutiveDays) {
 		const achievement = UserAchievements.findOne();
 		assert.notEqual(undefined, achievement);
@@ -22,6 +21,11 @@ describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 		assert.strictEqual(number, achievement.number);
 		assert.strictEqual(lastDatePlayed, achievement.lastDatePlayed);
 		assert.strictEqual(consecutiveDays, achievement.consecutiveDays);
+	};
+	const stubTodaysDate = function(listener, lastDatePlayed) {
+		stub = sinon.stub(listener, 'todaysDate').callsFake(function() {
+			return lastDatePlayed;
+		});
 	};
 	let stub;
 
@@ -39,9 +43,8 @@ describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 	it('creates achievement if not created', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		let lastDatePlayed = Moment.moment([2017, 0, 1]).valueOf();
-		stub = sinon.stub(listener, 'todaysDate').callsFake(function() {
-			return lastDatePlayed;
-		});
+		const listener = (new ConsecutiveDaysPlayed()).forGame(gameId, userId);
+		stubTodaysDate(listener, lastDatePlayed);
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onGameFinished(new GameFinished(gameId, 2000));
@@ -51,6 +54,7 @@ describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 	});
 
 	it('do not create achievement if not gameId', function() {
+		const listener = (new ConsecutiveDaysPlayed()).forGame(gameId, userId);
 		Players.insert({gameId: gameId, userId: userId});
 
 		listener.onGameFinished(new GameFinished(Random.id(5), 2000));
@@ -58,6 +62,7 @@ describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 	});
 
 	it('do not create achievement if user is not in game', function() {
+		const listener = (new ConsecutiveDaysPlayed()).forGame(gameId, userId);
 		listener.onGameFinished(new GameFinished(gameId, 2000));
 		assert.equal(0, UserAchievements.find().count());
 	});
@@ -65,9 +70,8 @@ describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 	it('increment achievement if last increment was yesterday', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		let lastDatePlayed = Moment.moment([2017, 0, 1]).valueOf();
-		stub = sinon.stub(listener, 'todaysDate').callsFake(function() {
-			return lastDatePlayed;
-		});
+		let listener = (new ConsecutiveDaysPlayed()).forGame(gameId, userId);
+		stubTodaysDate(listener, lastDatePlayed);
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onGameFinished(new GameFinished(gameId, 2000));
@@ -76,6 +80,8 @@ describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 		assertConsecutiveDaysPlayedUserAchievementValuesEqual(1, lastDatePlayed, 1);
 
 		lastDatePlayed = Moment.moment([2017, 0, 2]).valueOf();
+		listener = (new ConsecutiveDaysPlayed()).forGame(gameId, userId);
+		stubTodaysDate(listener, lastDatePlayed);
 
 		listener.onGameFinished(new GameFinished(gameId, 2000));
 
@@ -85,15 +91,17 @@ describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 	it('do not reset nor increase achievement if last increment was today', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		let lastDatePlayed = Moment.moment([2017, 0, 1]).valueOf();
-		stub = sinon.stub(listener, 'todaysDate').callsFake(function() {
-			return lastDatePlayed;
-		});
+		let listener = (new ConsecutiveDaysPlayed()).forGame(gameId, userId);
+		stubTodaysDate(listener, lastDatePlayed);
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onGameFinished(new GameFinished(gameId, 2000));
 
 		assert.equal(1, UserAchievements.find().count());
 		assertConsecutiveDaysPlayedUserAchievementValuesEqual(1, lastDatePlayed, 1);
+
+		listener = (new ConsecutiveDaysPlayed()).forGame(gameId, userId);
+		stubTodaysDate(listener, lastDatePlayed);
 
 		listener.onGameFinished(new GameFinished(gameId, 2000));
 
@@ -103,9 +111,8 @@ describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 	it('reset achievement if last increment was before yesterday', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		let lastDatePlayed = Moment.moment([2017, 0, 1]).valueOf();
-		stub = sinon.stub(listener, 'todaysDate').callsFake(function() {
-			return lastDatePlayed;
-		});
+		let listener = (new ConsecutiveDaysPlayed()).forGame(gameId, userId);
+		stubTodaysDate(listener, lastDatePlayed);
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onGameFinished(new GameFinished(gameId, 2000));
@@ -114,6 +121,8 @@ describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 		assertConsecutiveDaysPlayedUserAchievementValuesEqual(1, lastDatePlayed, 1);
 
 		lastDatePlayed = Moment.moment([2017, 0, 3]).valueOf();
+		listener = (new ConsecutiveDaysPlayed()).forGame(gameId, userId);
+		stubTodaysDate(listener, lastDatePlayed);
 
 		listener.onGameFinished(new GameFinished(gameId, 2000));
 
@@ -123,9 +132,8 @@ describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 	it('do not increment achievement if consecutive days have already been higher', function() {
 		Players.insert({gameId: gameId, userId: userId});
 		let lastDatePlayed = Moment.moment([2017, 0, 1]).valueOf();
-		stub = sinon.stub(listener, 'todaysDate').callsFake(function() {
-			return lastDatePlayed;
-		});
+		let listener = (new ConsecutiveDaysPlayed()).forGame(gameId, userId);
+		stubTodaysDate(listener, lastDatePlayed);
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onGameFinished(new GameFinished(gameId, 2000));
@@ -134,18 +142,24 @@ describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 		assertConsecutiveDaysPlayedUserAchievementValuesEqual(1, lastDatePlayed, 1);
 
 		lastDatePlayed = Moment.moment([2017, 0, 2]).valueOf();
+		listener = (new ConsecutiveDaysPlayed()).forGame(gameId, userId);
+		stubTodaysDate(listener, lastDatePlayed);
 
 		listener.onGameFinished(new GameFinished(gameId, 2000));
 
 		assertConsecutiveDaysPlayedUserAchievementValuesEqual(2, lastDatePlayed, 2);
 
 		lastDatePlayed = Moment.moment([2017, 0, 4]).valueOf();
+		listener = (new ConsecutiveDaysPlayed()).forGame(gameId, userId);
+		stubTodaysDate(listener, lastDatePlayed);
 
 		listener.onGameFinished(new GameFinished(gameId, 2000));
 
 		assertConsecutiveDaysPlayedUserAchievementValuesEqual(2, lastDatePlayed, 1);
 
 		lastDatePlayed = Moment.moment([2017, 0, 5]).valueOf();
+		listener = (new ConsecutiveDaysPlayed()).forGame(gameId, userId);
+		stubTodaysDate(listener, lastDatePlayed);
 
 		listener.onGameFinished(new GameFinished(gameId, 2000));
 
