@@ -1,6 +1,7 @@
 import {GAME_MAXIMUM_POINTS} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
+import {Profiles} from '/imports/api/profiles/profiles.js';
 import TournamentModeFactory from '/imports/api/tournaments/modes/TournamentModeFactory.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import Listener from './Listener';
@@ -41,22 +42,68 @@ export default class GameListener extends Listener {
 		return false;
 	}
 
-	userPlayer() {
-		return Players.findOne({gameId: this.gameId, userId: this.userId});
+	getGame() {
+		if (!this.game) {
+			this.game = Games.findOne({_id: this.gameId});
+		}
+
+		return this.game;
+	}
+
+	getTournament() {
+		if (!this.tournament) {
+			const game = this.getGame();
+			this.tournament = Tournaments.findOne({_id: game.tournamentId});
+		}
+
+		return this.tournament;
+	}
+
+	getCurrentPlayer() {
+		if (!this.currentPlayer) {
+			this.currentPlayer = Players.findOne({gameId: this.gameId, userId: this.userId});
+		}
+
+		return this.currentPlayer;
+	}
+
+	getCurrentPlayerProfile() {
+		if (!this.currentPlayerProfile) {
+			this.currentPlayerProfile = Profiles.findOne({userId: this.userId});
+		}
+
+		return this.currentPlayerProfile;
+	}
+
+	getOppositePlayer() {
+		if (!this.oppositePlayer) {
+			this.oppositePlayer = Players.findOne({gameId: this.gameId, userId: {$ne: this.userId}});
+		}
+
+		return this.oppositePlayer;
+	}
+
+	getOppositePlayerProfile() {
+		if (!this.oppositePlayerProfile) {
+			const opponentPlayer = this.getOppositePlayer();
+			this.oppositePlayerProfile = Profiles.findOne({userId: opponentPlayer.userId});
+		}
+
+		return this.oppositePlayerProfile;
 	}
 
 	/**
 	 * @returns {boolean}
 	 */
 	userIsGamePlayer() {
-		return !!this.userPlayer();
+		return !!this.getCurrentPlayer();
 	}
 
 	/**
 	 * @returns {string|null}
 	 */
 	userPlayerKey() {
-		const game = Games.findOne({_id: this.gameId});
+		const game = this.getGame();
 
 		let userPlayerKey = null;
 		if (game) {
@@ -71,7 +118,7 @@ export default class GameListener extends Listener {
 	}
 
 	isTournamentGame() {
-		const game = Games.findOne({_id: this.gameId});
+		const game = this.getGame();
 
 		return game && !!game.tournamentId;
 	}
@@ -84,19 +131,18 @@ export default class GameListener extends Listener {
 			throw 'This is not a tournament game';
 		}
 
-		const game = Games.findOne({_id: this.gameId});
-		const tournament = Tournaments.findOne({_id: game.tournamentId});
+		const tournament = this.getTournament();
 		return TournamentModeFactory.fromId(tournament.mode._id);
 	}
 
 	isPracticeGame() {
-		const game = Games.findOne({_id: this.gameId});
+		const game = this.getGame();
 
 		return game && !!game.isPracticeGame;
 	}
 
 	gameMaximumPoints() {
-		const game = Games.findOne({_id: this.gameId});
+		const game = this.getGame();
 
 		if (game) {
 			return game.maximumPoints;
@@ -106,7 +152,7 @@ export default class GameListener extends Listener {
 	}
 
 	currentPlayerShape() {
-		const player = this.userPlayer();
+		const player = this.getCurrentPlayer();
 
 		if (player) {
 			return player.shape;
@@ -116,7 +162,7 @@ export default class GameListener extends Listener {
 	}
 
 	oppositePlayerShape() {
-		const player = Players.findOne({gameId: this.gameId, userId: {$ne: this.userId}});
+		const player = this.getOppositePlayer();
 
 		if (player) {
 			return player.shape;

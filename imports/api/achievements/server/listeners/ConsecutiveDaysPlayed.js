@@ -25,7 +25,7 @@ export default class ConsecutiveDaysPlayed extends GameListener {
 			event.gameId === this.gameId &&
 			this.userIsGamePlayer()
 		) {
-			const userAchievement = this.userAchievement(ACHIEVEMENT_CONSECUTIVE_DAYS_PLAYED);
+			const userAchievement = this.getUserAchievement(ACHIEVEMENT_CONSECUTIVE_DAYS_PLAYED);
 
 			if (!userAchievement) {
 				this.insertAchievement(

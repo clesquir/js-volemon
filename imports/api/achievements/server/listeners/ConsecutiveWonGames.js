@@ -41,7 +41,7 @@ export default class ConsecutiveWonGames extends GameListener {
 	}
 
 	resetNumberSinceLastReset() {
-		const userAchievement = this.userAchievement(ACHIEVEMENT_CONSECUTIVE_WON_GAMES);
+		const userAchievement = this.getUserAchievement(ACHIEVEMENT_CONSECUTIVE_WON_GAMES);
 		this.numberSinceLastReset = 0;
 
 		if (!userAchievement) {

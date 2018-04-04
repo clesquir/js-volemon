@@ -37,7 +37,7 @@ export default class Listener {
 	 * @param {string} achievementId
 	 */
 	incrementNumber(achievementId) {
-		const userAchievement = this.userAchievement(achievementId);
+		const userAchievement = this.getUserAchievement(achievementId);
 
 		let number = 1;
 		if (userAchievement) {
@@ -52,7 +52,7 @@ export default class Listener {
 	 * @param {int} number
 	 */
 	updateNumberIfHigher(achievementId, number) {
-		const userAchievement = this.userAchievement(achievementId);
+		const userAchievement = this.getUserAchievement(achievementId);
 
 		if (!userAchievement) {
 			this.insertOrUpdateAchievement(userAchievement, achievementId, number);
@@ -81,7 +81,7 @@ export default class Listener {
 	 * @param {string} achievementId
 	 */
 	initNumberSinceLastReset(achievementId) {
-		const userAchievement = this.userAchievement(achievementId);
+		const userAchievement = this.getUserAchievement(achievementId);
 
 		this.numberSinceLastReset = 0;
 		if (userAchievement) {
@@ -93,7 +93,7 @@ export default class Listener {
 	 * @param {string} achievementId
 	 */
 	updatetNumberSinceLastReset(achievementId) {
-		const userAchievement = this.userAchievement(achievementId);
+		const userAchievement = this.getUserAchievement(achievementId);
 
 		if (!userAchievement) {
 			this.insertAchievement(achievementId, {numberSinceLastReset: this.numberSinceLastReset});
@@ -132,6 +132,8 @@ export default class Listener {
 				data
 			)
 		);
+		//Reinitialize storage
+		this.userAchievement = null;
 	}
 
 	/**
@@ -154,6 +156,8 @@ export default class Listener {
 				)
 			}
 		);
+		//Reinitialize storage
+		this.userAchievement = null;
 	}
 
 	/**
@@ -161,12 +165,16 @@ export default class Listener {
 	 * @param achievementId
 	 * @returns {*}
 	 */
-	userAchievement(achievementId) {
-		return UserAchievements.findOne(
-			{
-				userId: this.userId,
-				achievementId: achievementId
-			}
-		);
+	getUserAchievement(achievementId) {
+		if (!this.userAchievement) {
+			this.userAchievement = UserAchievements.findOne(
+				{
+					userId: this.userId,
+					achievementId: achievementId
+				}
+			);
+		}
+
+		return this.userAchievement;
 	}
 }

@@ -1,8 +1,7 @@
-import GameListener from './GameListener.js';
 import {ACHIEVEMENT_CAREFULLY_RANDOMLY_PICKED} from '/imports/api/achievements/constants.js';
 import PlayerWon from '/imports/api/games/events/PlayerWon.js';
-import {Players} from '/imports/api/games/players.js';
 import {PLAYER_LIST_OF_SHAPES, PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
+import GameListener from './GameListener.js';
 
 export default class CarefullyRandomlyPicked extends GameListener {
 	addListeners() {
@@ -21,7 +20,7 @@ export default class CarefullyRandomlyPicked extends GameListener {
 			event.gameId === this.gameId &&
 			event.userId === this.userId
 		) {
-			const player = Players.findOne({gameId: this.gameId, userId: this.userId});
+			const player = this.getCurrentPlayer();
 
 			if (player.selectedShape === PLAYER_SHAPE_RANDOM) {
 				this.updateShapesWon(player.shape);
@@ -30,7 +29,7 @@ export default class CarefullyRandomlyPicked extends GameListener {
 	}
 
 	updateShapesWon(playerShape) {
-		const userAchievement = this.userAchievement(ACHIEVEMENT_CAREFULLY_RANDOMLY_PICKED);
+		const userAchievement = this.getUserAchievement(ACHIEVEMENT_CAREFULLY_RANDOMLY_PICKED);
 		let currentNumber = 0;
 		let wonShapes = {};
 

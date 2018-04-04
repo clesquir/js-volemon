@@ -27,7 +27,7 @@ export default class Rakshasa extends GameListener {
 	}
 
 	updateShapesCaught(playerShape) {
-		const userAchievement = this.userAchievement(ACHIEVEMENT_RAKSHASA);
+		const userAchievement = this.getUserAchievement(ACHIEVEMENT_RAKSHASA);
 		let currentNumber = 0;
 		let shapes = {};
 
