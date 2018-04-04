@@ -648,6 +648,7 @@ export default class GameBonus {
 		);
 
 		bonusSprite.identifier = data.bonusIdentifier;
+		bonus.createdAt = data.createdAt;
 		bonusSprite.data.bonus = bonus;
 
 		this.bonuses.push(bonusSprite);
