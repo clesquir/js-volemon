@@ -2,7 +2,9 @@
 	{{#if visible}}
 		<div class="lightbox">
 
-			<a href="#" class="lightbox-close" data-action="lightbox-close">&times;</a>
+			{{#if closable}}
+				<a href="#" class="lightbox-close" data-action="lightbox-close">&times;</a>
+			{{/if}}
 
 			<div class="lightbox-inner">
 				{{> UI.dynamic template=template}}

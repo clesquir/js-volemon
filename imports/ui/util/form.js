@@ -1,6 +1,11 @@
+import ButtonEnabler from '/imports/ui/util/ButtonEnabler.js';
+
 disableButton = function(e, disabled) {
-	const button = $(e.target).find('.button');
-	button.prop('disabled', disabled);
+	if (disabled) {
+		ButtonEnabler.disableButton(e.target);
+	} else {
+		ButtonEnabler.enableButton(e.target);
+	}
 };
 
 removeFieldInvalidMark = function(field) {

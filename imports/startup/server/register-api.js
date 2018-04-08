@@ -1,7 +1,9 @@
 import '/imports/api/achievements/server/publications.js';
 import '/imports/api/games/server/bonusMethods.js';
+import '/imports/api/games/server/matchMakingMethods.js';
 import '/imports/api/games/server/methods.js';
 import '/imports/api/games/server/publications.js';
+import '/imports/api/games/server/matchMakingPublications.js';
 import '/imports/api/games/server/recentGamesMethods.js';
 import '/imports/api/profiles/server/methods.js';
 import '/imports/api/profiles/server/publications.js';

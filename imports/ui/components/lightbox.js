@@ -5,7 +5,7 @@ import './lightbox.html';
 
 Template.lightbox.rendered = function() {
 	$(window).on('keydown', function(e) {
-		if (e.which === 27 && !Session.get('lightbox.escDisabled')) {
+		if (e.which === 27 && !Session.get('lightbox.escDisabled') && Session.get('lightbox.closable') !== false) {
 			Session.set('lightbox', null);
 		}
 	});
@@ -20,6 +20,9 @@ Template.lightbox.helpers({
 		}
 
 		return Session.get('lightbox');
+	},
+	closable: function() {
+		return Session.get('lightbox.closable') !== false;
 	},
 	template: function() {
 		return Session.get('lightbox');

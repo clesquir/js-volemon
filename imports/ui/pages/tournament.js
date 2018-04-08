@@ -141,25 +141,16 @@ Template.tournament.events({
 		}
 	},
 
-	'click [data-action=create-tournament-game]': function() {
+	'click [data-action=play-tournament-game]': function() {
 		Tooltips.hide();
 
 		if (!Meteor.userId()) {
 			Session.set('lightbox', 'login');
 		} else {
-			Session.set('appLoadingMask', true);
-			Session.set('appLoadingMask.text', 'Creating game...');
-
-			Meteor.call('createTournamentGame', Session.get('tournament'), function(error, id) {
-				Session.set('appLoadingMask', false);
-				Session.set('appLoadingMask.text', undefined);
-
-				if (error) {
-					return alert(error);
-				}
-
-				Router.go('tournamentGame', {tournamentId: Session.get('tournament'), gameId: id});
-			});
+			Session.set('lightbox', 'matchMaking');
+			Session.set('lightbox.closable', false);
+			Session.set('matchMaking.modeSelection', 'tournament');
+			Session.set('matchMaking.tournamentId', Session.get('tournament'));
 		}
 	}
 });

@@ -24,10 +24,11 @@ import {Random} from 'meteor/random';
 /**
  * @param {string} userId
  * @param {GameInitiator[]} gameInitiators
+ * @param modeSelection
  * @param tournamentId
  * @returns {string}
  */
-export const createGame = function(userId, gameInitiators, tournamentId = null) {
+export const createGame = function(userId, gameInitiators, modeSelection, tournamentId = null) {
 	let id = null;
 
 	const userConfiguration = UserConfigurations.findOne({userId: userId});
@@ -44,6 +45,7 @@ export const createGame = function(userId, gameInitiators, tournamentId = null) 
 		try {
 			id = Games.insert({
 				_id: Random.id(5),
+				modeSelection: modeSelection,
 				tournamentId: tournamentId,
 				status: GAME_STATUS_REGISTRATION,
 				createdAt: getUTCTimeStamp(),
@@ -212,7 +214,7 @@ export const replyRematch = function(userId, gameId, accepted, gameInitiators) {
 	if (notAskingForRematch.count() === 0 && !game.gameRematchId) {
 		const clientPlayer = Players.findOne({gameId: gameId, userId: {$ne: game.createdBy}});
 
-		const gameRematchId = createGame(clientPlayer.userId, gameInitiators, game.tournamentId);
+		const gameRematchId = createGame(clientPlayer.userId, gameInitiators, game.modeSelection, game.tournamentId);
 
 		Games.update(
 			{_id: gameRematchId},

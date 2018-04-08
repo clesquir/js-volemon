@@ -11,6 +11,7 @@ import {UserSettingsController} from '/imports/startup/client/controllers/UserSe
 
 import '/imports/ui/components/lightbox.js';
 import '/imports/ui/components/loading.js';
+import '/imports/ui/components/matchMaking.js';
 import '/imports/ui/components/shapeSelector.js';
 import '/imports/ui/components/switchButton.js';
 import '/imports/ui/components/noInternetConnection.js';

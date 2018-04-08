@@ -2,52 +2,25 @@ import {CLIENT_POINTS_COLUMN, CLIENT_SIDE, HOST_POINTS_COLUMN, HOST_SIDE} from '
 import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
+import GameInitiatorCollection from '/imports/api/games/server/GameInitiatorCollection.js';
 import {createGame, joinGame, onPlayerQuit, replyRematch, startGame} from '/imports/api/games/server/gameSetup.js';
 import {finishGame} from '/imports/api/games/server/onGameFinished.js';
-import {PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
 import {
 	GAME_STATUS_FINISHED,
 	GAME_STATUS_REGISTRATION,
 	GAME_STATUS_STARTED
 } from '/imports/api/games/statusConstants.js';
-import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 import {EventPublisher} from '/imports/lib/EventPublisher.js';
-import {getUTCTimeStamp, htmlEncode} from '/imports/lib/utils.js';
+import {getUTCTimeStamp} from '/imports/lib/utils.js';
 import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
 
-/** @type {GameInitiator[]} */
-let gameInitiators = {};
-
 Meteor.methods({
-	createGame: function() {
-		const user = Meteor.user();
-
-		if (!user) {
-			throw new Meteor.Error(401, 'You need to login to create a game');
-		}
-
-		const id = createGame(user._id, gameInitiators);
-
-		Meteor.call('joinGame', id, true);
-
-		return id;
-	},
-
-	createTournamentGame: function(tournamentId) {
-		const user = Meteor.user();
-
-		if (!user) {
-			throw new Meteor.Error(401, 'You need to login to create a game');
-		}
-
-		const id = createGame(user._id, gameInitiators, tournamentId);
-
-		Meteor.call('joinGame', id, true);
-
-		return id;
-	},
-
+	/**
+	 * @deprecated
+	 * @param gameId
+	 * @param isPracticeGame
+	 */
 	updatePracticeGame: function(gameId, isPracticeGame) {
 		const user = Meteor.user();
 		const game = Games.findOne(gameId);
@@ -67,6 +40,11 @@ Meteor.methods({
 		Games.update({_id: game._id}, {$set: {isPracticeGame: isPracticeGame ? 1 : 0}});
 	},
 
+	/**
+	 * @deprecated
+	 * @param gameId
+	 * @param isPrivate
+	 */
 	updateGamePrivacy: function(gameId, isPrivate) {
 		const user = Meteor.user();
 		const game = Games.findOne(gameId);
@@ -86,6 +64,12 @@ Meteor.methods({
 		Games.update({_id: game._id}, {$set: {isPrivate: isPrivate ? 1 : 0}});
 	},
 
+	/**
+	 * @deprecated
+	 * @param gameId
+	 * @param isReady
+	 * @returns {*}
+	 */
 	joinGame: function(gameId, isReady) {
 		const user = Meteor.user();
 
@@ -96,47 +80,10 @@ Meteor.methods({
 		return joinGame(user._id, gameId, isReady);
 	},
 
-	updatePlayerShape: function(gameId, selectedShape) {
-		const user = Meteor.user();
-		const game = Games.findOne(gameId);
-		let player;
-
-		if (!user) {
-			throw new Meteor.Error(401, 'You need to login to update your player shape');
-		}
-
-		if (!game) {
-			throw new Meteor.Error(404, 'Game not found');
-		}
-
-		if (game.status !== GAME_STATUS_REGISTRATION) {
-			throw new Meteor.Error('not-allowed', 'Game already started');
-		}
-
-		player = Players.findOne({gameId: gameId, userId: user._id});
-		if (!player) {
-			throw new Meteor.Error(404, 'Player not found');
-		}
-
-		const allowedListOfShapes = game.allowedListOfShapes || [];
-		const listOfShapes = game.listOfShapes || [];
-
-		if (allowedListOfShapes.indexOf(selectedShape) === -1) {
-			throw new Meteor.Error(
-				'not-allowed',
-				'The requested shape is not allowed: ' + htmlEncode(selectedShape)
-			);
-		}
-
-		let shape = selectedShape;
-		if (selectedShape === PLAYER_SHAPE_RANDOM) {
-			shape = Random.choice(listOfShapes);
-		}
-
-		Players.update({_id: player._id}, {$set: {selectedShape: selectedShape, shape: shape}});
-		UserConfigurations.update({userId: this.userId}, {$set: {'lastShapeUsed': selectedShape}});
-	},
-
+	/**
+	 * @deprecated
+	 * @param gameId
+	 */
 	setPlayerIsReady: function(gameId) {
 		const user = Meteor.user();
 		const game = Games.findOne(gameId);
@@ -159,6 +106,10 @@ Meteor.methods({
 		Players.update({_id: player._id}, {$set: {isReady: true}});
 	},
 
+	/**
+	 * @deprecated
+	 * @param gameId
+	 */
 	leaveGame: function(gameId) {
 		const user = Meteor.user();
 		const game = Games.findOne(gameId);
@@ -190,12 +141,8 @@ Meteor.methods({
 			Players.remove({gameId: gameId});
 			//Remove game
 			Games.remove(gameId);
-
 			//Stop streaming
-			if (gameInitiators[gameId]) {
-				gameInitiators[gameId].stop();
-				delete gameInitiators[gameId];
-			}
+			GameInitiatorCollection.unset(gameId);
 		} else if (user._id !== game.hostId) {
 			Games.update(
 				{_id: gameId},
@@ -208,8 +155,12 @@ Meteor.methods({
 		}
 	},
 
+	/**
+	 * @deprecated
+	 * @param gameId
+	 */
 	startGame: function(gameId) {
-		startGame(gameId, gameInitiators);
+		startGame(gameId, GameInitiatorCollection.get());
 	},
 
 	addGameViewer: function(gameId) {
@@ -258,10 +209,7 @@ Meteor.methods({
 			const activePlayers = Players.find({gameId: gameId, hasQuit: false});
 			if (activePlayers.count() === 0) {
 				//Stop streaming
-				if (gameInitiators[gameId]) {
-					gameInitiators[gameId].stop();
-					delete gameInitiators[gameId];
-				}
+				GameInitiatorCollection.unset(gameId);
 			}
 		}
 	},
@@ -300,7 +248,7 @@ Meteor.methods({
 	},
 
 	removeVacantGameStreams: function() {
-		const gameIds = Object.keys(gameInitiators);
+		const gameIds = Object.keys(GameInitiatorCollection.get());
 		const players = Players.find({gameId: {$in: gameIds}, hasQuit: false});
 
 		const stillOccupiedGames = [];
@@ -314,10 +262,7 @@ Meteor.methods({
 
 		for (let gameId of vacantGameIds) {
 			//Stop streaming
-			if (gameInitiators[gameId]) {
-				gameInitiators[gameId].stop();
-				delete gameInitiators[gameId];
-			}
+			GameInitiatorCollection.unset(gameId);
 		}
 	},
 
@@ -403,6 +348,6 @@ Meteor.methods({
 			throw new Meteor.Error(401, 'You need to login to ask for rematch');
 		}
 
-		replyRematch(user._id, gameId, accepted, gameInitiators);
+		replyRematch(user._id, gameId, accepted, GameInitiatorCollection.get());
 	}
 });

@@ -14,22 +14,22 @@
 
 			<div class="app-header-section app-header-section-button app-header-section-button-home" title="Home">
 				<a href="{{pathFor 'home'}}">
-					<i class="fa fa-home"></i>
+					<i class="menu-icon fa fa-home"></i>
 					<div class="app-header-button-title">Home</div>
 				</a>
 			</div>
 
-			<div class="app-header-section app-header-section-button app-header-section-button-create-game" title="Create a game">
-				<a data-action="create-game">
-					<i class="fa fa-plus-circle"></i>
-					<div class="app-header-button-title">Create game</div>
+			<div class="app-header-section app-header-section-button app-header-section-button-play-game" title="Play">
+				<a data-action="play-game">
+					<i class="menu-icon fa fa-play-circle"></i>
+					<div class="app-header-button-title">Play</div>
 				</a>
 			</div>
 
-			<div class="app-header-section app-header-section-button app-header-section-button-games-list" title="View the games list">
+			<div class="app-header-section app-header-section-button app-header-section-button-games-list" title="Watch games">
 				<a href="{{pathFor 'games'}}">
-					<i class="fa fa-list"></i>
-					<div class="app-header-button-title">Games list</div>
+					<i class="menu-icon icomoon icon-tv"></i>
+					<div class="app-header-button-title">Watch games</div>
 				</a>
 			</div>
 
@@ -42,7 +42,7 @@
 
 			<div class="app-header-section app-header-section-button app-header-section-button-view-rank" title="View rank">
 				<a href="{{pathFor 'rank'}}">
-					<i class="fa fa-line-chart"></i>
+					<i class="menu-icon fa fa-line-chart"></i>
 					<div class="app-header-button-title">View rank</div>
 				</a>
 			</div>
@@ -51,7 +51,7 @@
 
 			<div class="app-header-section app-header-section-button app-header-section-button-open-help" title="Help">
 				<a data-action="open-help">
-					<i class="fa fa-question-circle"></i>
+					<i class="menu-icon fa fa-question-circle"></i>
 					<div class="app-header-button-title">Help</div>
 				</a>
 			</div>
@@ -70,7 +70,7 @@
 						</div>
 					{{else}}
 						<a data-action="user-log-in">
-							<span class="log-in-menu"><i class="fa fa-power-off"></i></span>
+							<span class="log-in-menu"><i class="menu-icon fa fa-power-off"></i></span>
 							<span class="log-in-text-menu">Log in</span>
 						</a>
 					{{/if}}
