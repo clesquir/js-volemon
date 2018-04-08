@@ -286,6 +286,7 @@ export default class Game {
 		player.data.alwaysJump = false;
 		player.data.canJumpOnBodies = [];
 		player.data.isInvincible = false;
+		player.data.canActivateBonuses = true;
 
 		this.initPlayerTexture(player);
 		this.initPlayerPolygon(player);

@@ -72,7 +72,7 @@
         "y": 0.5
       }
     },
-    "bounce-monster": {
+    "bonus-repellent": {
       "frame": {
         "x": 37,
         "y": 1,
@@ -96,7 +96,7 @@
         "y": 0.5
       }
     },
-    "cloaked-monster": {
+    "bounce-monster": {
       "frame": {
         "x": 1,
         "y": 107,
@@ -120,10 +120,34 @@
         "y": 0.5
       }
     },
-    "cloud": {
+    "cloaked-monster": {
       "frame": {
         "x": 37,
         "y": 37,
+        "w": 34,
+        "h": 34
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 34
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "cloud": {
+      "frame": {
+        "x": 73,
+        "y": 1,
         "w": 32,
         "h": 32
       },
@@ -145,30 +169,6 @@
       }
     },
     "drunk-monster": {
-      "frame": {
-        "x": 73,
-        "y": 1,
-        "w": 34,
-        "h": 34
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 34,
-        "h": 34
-      },
-      "sourceSize": {
-        "w": 34,
-        "h": 34
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "fast-monster": {
       "frame": {
         "x": 1,
         "y": 143,
@@ -192,10 +192,34 @@
         "y": 0.5
       }
     },
-    "freeze-monster": {
+    "fast-monster": {
       "frame": {
         "x": 37,
-        "y": 71,
+        "y": 73,
+        "w": 34,
+        "h": 34
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 34
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "freeze-monster": {
+      "frame": {
+        "x": 73,
+        "y": 35,
         "w": 34,
         "h": 34
       },
@@ -217,30 +241,6 @@
       }
     },
     "instant-death": {
-      "frame": {
-        "x": 109,
-        "y": 1,
-        "w": 34,
-        "h": 34
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 34,
-        "h": 34
-      },
-      "sourceSize": {
-        "w": 34,
-        "h": 34
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "invincible-monster": {
       "frame": {
         "x": 1,
         "y": 179,
@@ -264,10 +264,34 @@
         "y": 0.5
       }
     },
-    "invisible-ball": {
+    "invincible-monster": {
       "frame": {
         "x": 37,
-        "y": 107,
+        "y": 109,
+        "w": 34,
+        "h": 34
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 34
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "invisible-ball": {
+      "frame": {
+        "x": 73,
+        "y": 71,
         "w": 32,
         "h": 32
       },
@@ -290,31 +314,7 @@
     },
     "invisible-monster": {
       "frame": {
-        "x": 73,
-        "y": 37,
-        "w": 34,
-        "h": 34
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 34,
-        "h": 34
-      },
-      "sourceSize": {
-        "w": 34,
-        "h": 34
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "invisible-opponent-monster": {
-      "frame": {
-        "x": 145,
+        "x": 109,
         "y": 1,
         "w": 34,
         "h": 34
@@ -336,7 +336,7 @@
         "y": 0.5
       }
     },
-    "junk-food-monster": {
+    "invisible-opponent-monster": {
       "frame": {
         "x": 1,
         "y": 215,
@@ -360,10 +360,34 @@
         "y": 0.5
       }
     },
-    "no-jump-monster": {
+    "junk-food-monster": {
       "frame": {
         "x": 37,
-        "y": 141,
+        "y": 145,
+        "w": 34,
+        "h": 34
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 34
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "no-jump-monster": {
+      "frame": {
+        "x": 73,
+        "y": 105,
         "w": 34,
         "h": 34
       },
@@ -385,30 +409,6 @@
       }
     },
     "nothing": {
-      "frame": {
-        "x": 73,
-        "y": 73,
-        "w": 32,
-        "h": 32
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 1,
-        "y": 1,
-        "w": 32,
-        "h": 32
-      },
-      "sourceSize": {
-        "w": 34,
-        "h": 34
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "random": {
       "frame": {
         "x": 109,
         "y": 37,
@@ -432,20 +432,20 @@
         "y": 0.5
       }
     },
-    "reverse-move-monster": {
+    "random": {
       "frame": {
-        "x": 181,
+        "x": 145,
         "y": 1,
-        "w": 34,
-        "h": 34
+        "w": 32,
+        "h": 32
       },
       "rotated": false,
-      "trimmed": false,
+      "trimmed": true,
       "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 34,
-        "h": 34
+        "x": 1,
+        "y": 1,
+        "w": 32,
+        "h": 32
       },
       "sourceSize": {
         "w": 34,
@@ -456,7 +456,7 @@
         "y": 0.5
       }
     },
-    "shape-shift-monster": {
+    "reverse-move-monster": {
       "frame": {
         "x": 1,
         "y": 251,
@@ -480,10 +480,34 @@
         "y": 0.5
       }
     },
-    "slow-monster": {
+    "shape-shift-monster": {
       "frame": {
         "x": 37,
-        "y": 177,
+        "y": 181,
+        "w": 34,
+        "h": 34
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 34
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "slow-monster": {
+      "frame": {
+        "x": 73,
+        "y": 141,
         "w": 34,
         "h": 34
       },
@@ -506,8 +530,8 @@
     },
     "small-ball": {
       "frame": {
-        "x": 71,
-        "y": 107,
+        "x": 107,
+        "y": 71,
         "w": 32,
         "h": 32
       },
@@ -530,8 +554,8 @@
     },
     "small-monster": {
       "frame": {
-        "x": 107,
-        "y": 73,
+        "x": 143,
+        "y": 37,
         "w": 34,
         "h": 34
       },
@@ -554,8 +578,8 @@
     },
     "smoke-bomb": {
       "frame": {
-        "x": 143,
-        "y": 37,
+        "x": 179,
+        "y": 1,
         "w": 32,
         "h": 32
       },
@@ -578,8 +602,8 @@
     },
     "unfreeze-monster": {
       "frame": {
-        "x": 217,
-        "y": 1,
+        "x": 1,
+        "y": 287,
         "w": 34,
         "h": 34
       },
@@ -607,8 +631,8 @@
     "image": "texture-atlas-icons.png",
     "format": "RGBA8888",
     "size": {
-      "w": 252,
-      "h": 286
+      "w": 212,
+      "h": 322
     },
     "scale": 1
   }

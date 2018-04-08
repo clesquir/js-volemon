@@ -1,13 +1,13 @@
 import BigBallBonus from '/imports/api/games/bonus/BigBallBonus.js';
 import BigJumpMonsterBonus from '/imports/api/games/bonus/BigJumpMonsterBonus.js';
 import BigMonsterBonus from '/imports/api/games/bonus/BigMonsterBonus.js';
+import BonusRepellentMonsterBonus from '/imports/api/games/bonus/BonusRepellentMonsterBonus.js';
 import BounceMonsterBonus from '/imports/api/games/bonus/BounceMonsterBonus.js';
 import CloakedMonsterBonus from '/imports/api/games/bonus/CloakedMonsterBonus.js';
 import CloudBonus from '/imports/api/games/bonus/CloudBonus.js';
 import DrunkMonsterBonus from '/imports/api/games/bonus/DrunkMonsterBonus.js';
 import FastMonsterBonus from '/imports/api/games/bonus/FastMonsterBonus.js';
 import FreezeMonsterBonus from '/imports/api/games/bonus/FreezeMonsterBonus.js';
-import UnfreezeMonsterBonus from '/imports/api/games/bonus/UnfreezeMonsterBonus.js';
 import InstantDeathBonus from '/imports/api/games/bonus/InstantDeathBonus.js';
 import InvincibleMonsterBonus from '/imports/api/games/bonus/InvincibleMonsterBonus.js';
 import InvisibleBallBonus from '/imports/api/games/bonus/InvisibleBallBonus.js';
@@ -22,6 +22,7 @@ import SlowMonsterBonus from '/imports/api/games/bonus/SlowMonsterBonus.js';
 import SmallBallBonus from '/imports/api/games/bonus/SmallBallBonus.js';
 import SmallMonsterBonus from '/imports/api/games/bonus/SmallMonsterBonus.js';
 import SmokeBombBonus from '/imports/api/games/bonus/SmokeBombBonus.js';
+import UnfreezeMonsterBonus from '/imports/api/games/bonus/UnfreezeMonsterBonus.js';
 import CardSwitcher from '/imports/lib/client/CardSwitcher.js';
 import {onMobileAndTablet} from '/imports/lib/utils.js';
 import {Template} from 'meteor/templating';
@@ -75,6 +76,7 @@ Template.help.helpers({
 			new CloakedMonsterBonus(),
 			new ShapeShiftMonsterBonus(),
 			new InvincibleMonsterBonus(),
+			new BonusRepellentMonsterBonus(),
 			new DrunkMonsterBonus(),
 			new InstantDeathBonus(),
 		];

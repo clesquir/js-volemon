@@ -659,7 +659,7 @@ export default class GameBonus {
 	}
 
 	onBonusCollidesPlayer(bonusSprite, player) {
-		if (this.gameData.isUserHost() && bonusSprite.data.bonus.canActivate()) {
+		if (this.gameData.isUserHost() && player.sprite.data.canActivateBonuses && bonusSprite.data.bonus.canActivate()) {
 			const playerKey = this.engine.getKey(player);
 			const activatedAt = this.serverNormalizedTime.getServerTimestamp();
 			const payload = {

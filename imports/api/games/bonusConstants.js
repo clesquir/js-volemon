@@ -23,3 +23,4 @@ export const BONUS_SMOKE_BOMB = 'SmokeBomb';
 export const BONUS_INSTANT_DEATH = 'InstantDeath';
 export const BONUS_DRUNK_MONSTER = 'DrunkMonsterBonus';
 export const BONUS_NOTHING = 'NothingBonus';
+export const BONUS_REPELLENT = 'BonusRepellent';

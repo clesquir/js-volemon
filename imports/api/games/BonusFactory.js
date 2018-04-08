@@ -1,6 +1,7 @@
 import BigBallBonus from '/imports/api/games/bonus/BigBallBonus.js';
 import BigJumpMonsterBonus from '/imports/api/games/bonus/BigJumpMonsterBonus.js';
 import BigMonsterBonus from '/imports/api/games/bonus/BigMonsterBonus.js';
+import BonusRepellentMonsterBonus from '/imports/api/games/bonus/BonusRepellentMonsterBonus.js';
 import BounceMonsterBonus from '/imports/api/games/bonus/BounceMonsterBonus.js';
 import CloakedMonsterBonus from '/imports/api/games/bonus/CloakedMonsterBonus.js';
 import CloudBonus from '/imports/api/games/bonus/CloudBonus.js';
@@ -42,6 +43,7 @@ import {
 	BONUS_NO_JUMP_MONSTER,
 	BONUS_NOTHING,
 	BONUS_RANDOM,
+	BONUS_REPELLENT,
 	BONUS_REVERSE_MOVE_MONSTER,
 	BONUS_SHAPE_SHIFT,
 	BONUS_SLOW_MONSTER,
@@ -114,6 +116,7 @@ export default class BonusFactory {
 			BONUS_REVERSE_MOVE_MONSTER,
 			BONUS_INVISIBLE_MONSTER,
 			BONUS_INVISIBLE_OPPONENT_MONSTER,
+			BONUS_REPELLENT,
 			BONUS_CLOUD,
 			BONUS_NO_JUMP_MONSTER,
 			BONUS_BOUNCE_MONSTER,
@@ -175,6 +178,8 @@ export default class BonusFactory {
 				return new ReverseMoveMonsterBonus(game, bonusClass);
 			case BONUS_INVINCIBLE_MONSTER:
 				return new InvincibleMonsterBonus(game, bonusClass);
+			case BONUS_REPELLENT:
+				return new BonusRepellentMonsterBonus(game, bonusClass);
 			case BONUS_INVISIBLE_MONSTER:
 				return new InvisibleMonsterBonus(game, bonusClass);
 			case BONUS_INVISIBLE_OPPONENT_MONSTER:
