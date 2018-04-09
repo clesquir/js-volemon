@@ -1,6 +1,6 @@
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import {GAME_STATUS_REGISTRATION, GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
+import {GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
 import {TournamentEloScores} from '/imports/api/tournaments/tournamentEloScores.js';
 import {TournamentProfiles} from '/imports/api/tournaments/tournamentProfiles.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
@@ -64,7 +64,7 @@ Meteor.publish('tournamentGames', function(tournamentId) {
 			{
 				isPrivate: 0,
 				tournamentId: tournamentId,
-				status: {$in: [GAME_STATUS_REGISTRATION, GAME_STATUS_STARTED]}
+				status: {$in: [GAME_STATUS_STARTED]}
 			},
 			{
 				sort: [['createdAt', 'asc']],

@@ -3,7 +3,7 @@ import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import GameInitiatorCollection from '/imports/api/games/server/GameInitiatorCollection.js';
-import {createGame, joinGame, onPlayerQuit, replyRematch, startGame} from '/imports/api/games/server/gameSetup.js';
+import {joinGame, onPlayerQuit, replyRematch, startGame} from '/imports/api/games/server/gameSetup.js';
 import {finishGame} from '/imports/api/games/server/onGameFinished.js';
 import {
 	GAME_STATUS_FINISHED,
