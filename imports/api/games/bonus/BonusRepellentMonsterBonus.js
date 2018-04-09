@@ -3,7 +3,7 @@ import MonsterBonus from '/imports/api/games/bonus/MonsterBonus.js';
 export default class BonusRepellentMonsterBonus extends MonsterBonus {
 	constructor(...args) {
 		super(...args);
-		this.durationMilliseconds = 20000;
+		this.durationMilliseconds = 30000;
 		this.atlasFrame = 'bonus-repellent';
 		this.description = 'Bonus repellent';
 	}
