@@ -1,11 +1,18 @@
-import {moment} from 'meteor/momentjs:moment';
 import {locationDetector} from '/imports/lib/geoLocation/LocationDetector.js';
 import {
-	CONDITION_CLEAR, CONDITION_CLOUD, CONDITION_FOG, CONDITION_RAIN, CONDITION_THUNDER, CONDITION_SNOW, CONDITION_WIND,
-	TIME_OF_DAY_DAYLIGHT, TIME_OF_DAY_NIGHT, TIME_OF_DAY_TWILIGHT,
+	CONDITION_CLEAR,
+	CONDITION_CLOUD,
+	CONDITION_FOG,
+	CONDITION_RAIN,
+	CONDITION_SNOW,
+	CONDITION_THUNDER,
+	CONDITION_WIND,
+	TIME_OF_DAY_DAYLIGHT,
+	TIME_OF_DAY_NIGHT,
+	TIME_OF_DAY_TWILIGHT,
 	WeatherApi
 } from '/imports/lib/weatherApi/WeatherApi.js';
-import {getUTCTimeStamp} from '/imports/lib/utils.js';
+import {moment} from 'meteor/momentjs:moment';
 
 const maximumAge = 15 * 60 * 1000;
 
@@ -92,11 +99,11 @@ export class YahooWeatherApi extends WeatherApi {
 	 */
 	delayRequest() {
 		const lastWeatherRequest = localStorage.getItem('lastWeatherRequest') || 0;
-		if (getUTCTimeStamp() - lastWeatherRequest < maximumAge) {
+		if ((new Date()).getTime() - lastWeatherRequest < maximumAge) {
 			return true;
 		}
 		//Delay next call if the locationDetector was not able to get current coordinates yet
-		localStorage.setItem('lastWeatherRequest', getUTCTimeStamp());
+		localStorage.setItem('lastWeatherRequest', (new Date()).getTime());
 
 		return false;
 	}

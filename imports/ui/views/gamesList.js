@@ -1,10 +1,10 @@
-import {Meteor} from 'meteor/meteor';
-import {Template} from 'meteor/templating';
-import {ReactiveVar} from 'meteor/reactive-var';
-import {Router} from 'meteor/iron:router';
 import {GAME_STATUS_REGISTRATION, GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
-import {getUTCTimeStamp, timeElapsedSince} from '/imports/lib/utils.js';
+import {timeElapsedSince} from '/imports/lib/utils.js';
+import {Router} from 'meteor/iron:router';
+import {Meteor} from 'meteor/meteor';
+import {ReactiveVar} from 'meteor/reactive-var';
+import {Template} from 'meteor/templating';
 
 import './gamesList.html';
 
@@ -69,7 +69,7 @@ Template.gamesList.events({
 Template.gamesList.onCreated(function() {
 	this.uptime = new ReactiveVar(0);
 	this.uptimeInterval = Meteor.setInterval(() => {
-		this.uptime.set(getUTCTimeStamp());
+		this.uptime.set((new Date()).getTime());
 	}, 10000);
 });
 

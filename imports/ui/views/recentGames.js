@@ -1,10 +1,10 @@
+import {padNumber, timeElapsedSince} from '/imports/lib/utils.js';
 import {Meteor} from 'meteor/meteor';
+import * as Moment from 'meteor/momentjs:moment';
 import {Mongo} from 'meteor/mongo';
-import {Template} from 'meteor/templating';
 import {ReactiveDict} from 'meteor/reactive-dict';
 import {Session} from 'meteor/session';
-import * as Moment from 'meteor/momentjs:moment';
-import {getUTCTimeStamp, padNumber, timeElapsedSince} from '/imports/lib/utils.js';
+import {Template} from 'meteor/templating';
 
 import './recentGames.html';
 
@@ -87,7 +87,7 @@ Template.recentGames.events({
 Template.recentGames.onCreated(function() {
 	this.uptime = new ReactiveVar(0);
 	this.uptimeInterval = Meteor.setInterval(() => {
-		this.uptime.set(getUTCTimeStamp());
+		this.uptime.set((new Date()).getTime());
 	}, 10000);
 });
 

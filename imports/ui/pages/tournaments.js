@@ -1,12 +1,12 @@
-import {getUTCTimeStamp, timeDifference, timeElapsedSince} from '/imports/lib/utils.js';
+import {timeDifference, timeElapsedSince} from '/imports/lib/utils.js';
 import {Router} from 'meteor/iron:router';
 import {Meteor} from 'meteor/meteor';
 import * as Moment from 'meteor/momentjs:moment';
 import {Mongo} from 'meteor/mongo';
 import {ReactiveDict} from 'meteor/reactive-dict';
 import {ReactiveVar} from 'meteor/reactive-var';
-import {Template} from 'meteor/templating';
 import {Session} from "meteor/session";
+import {Template} from 'meteor/templating';
 
 import './tournaments.html';
 
@@ -99,7 +99,7 @@ Template.tournaments.events({
 Template.tournaments.onCreated(function() {
 	this.uptime = new ReactiveVar(0);
 	this.uptimeInterval = Meteor.setInterval(() => {
-		this.uptime.set(getUTCTimeStamp());
+		this.uptime.set((new Date()).getTime());
 	}, 10000);
 
 	initPastTournaments();

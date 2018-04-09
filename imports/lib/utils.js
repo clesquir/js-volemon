@@ -1,4 +1,5 @@
 import * as Moment from 'meteor/momentjs:moment';
+
 const DetectRTC = require('detectrtc');
 
 export const padNumber = function(number, size = 2) {
@@ -96,10 +97,10 @@ export const timeDifference = function(time, prefix = '', suffix = '') {
 };
 
 export const callAtFrequence = function(lastCallTime, frequenceTime, callback) {
-	if (getUTCTimeStamp() - lastCallTime >= frequenceTime) {
+	if ((new Date()).getTime() - lastCallTime >= frequenceTime) {
 		callback();
 
-		lastCallTime = getUTCTimeStamp();
+		lastCallTime = (new Date()).getTime();
 	}
 
 	return lastCallTime;
