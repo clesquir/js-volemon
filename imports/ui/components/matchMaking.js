@@ -15,6 +15,13 @@ const showModeSelection = function() {
 	return !Session.get('matchMaking.modeSelection') && PlayableTournaments.find().count() > 0;
 };
 
+const showTournamentNotAvailable = function() {
+	return (
+		Session.get('matchMaking.tournamentId') &&
+		!PlayableTournaments.findOne({_id: Session.get('matchMaking.tournamentId')})
+	);
+};
+
 const showShapeSelection = function() {
 	return !Session.get('matchMaking.shapeIsSelected');
 };
@@ -40,6 +47,14 @@ const updateTips = function() {
 				`Following the monsters' eyes can help you locate an invisible ball`,
 				`Being a small monster can help you avoid maluses`,
 				`Stabilizing the ball can help you when paused`,
+				`The big monster bonus can help you stabilize the auto-jump and the high-jump maluses`,
+				`Things can get a little out of hand with the fast monster bonus`,
+				`You can throw maluses on the enemy when on bonus repellent`,
+				`Smashing the ball on a bonus is unpredictable`,
+				`The only way to get an invincible bonus is through a random`,
+				`The "empty" bonus can be a good weapon`,
+				`Doing something suicidal can unlock achievements`,
+				`Activating a smoke bomb at the net can fool the enemy`,
 			]
 		)
 	);
@@ -101,8 +116,12 @@ Template.matchMaking.helpers({
 		return this.mode.description;
 	},
 
+	showTournamentNotAvailable: function() {
+		return showTournamentNotAvailable();
+	},
+
 	showShapeSelection: function() {
-		return !showModeSelection() && showShapeSelection();
+		return !showModeSelection() && !showTournamentNotAvailable() && showShapeSelection();
 	},
 
 	shapeEditionAllowed: function() {
@@ -136,7 +155,7 @@ Template.matchMaking.helpers({
 	},
 
 	showStartMatchMaking: function() {
-		return !showModeSelection() && !Session.get('matchMaking.onGoing');
+		return !showModeSelection() && !showTournamentNotAvailable() && !Session.get('matchMaking.onGoing');
 	},
 
 	isMatchMakingOnGoing: function() {
@@ -169,6 +188,14 @@ Template.matchMaking.helpers({
 		}
 
 		return '';
+	},
+
+	modeSelectionUrl: function() {
+		return Session.get('matchMaking.modeSelection');
+	},
+
+	tournamentIdUrl: function() {
+		return Session.get('matchMaking.tournamentId') || 'none';
 	},
 
 	tips: function() {

@@ -69,6 +69,52 @@
 	margin-bottom: 5px;
 }
 
+.share-match-making {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	.share-title {
+		opacity: 0.5;
+	}
+
+	.copyable-url-input {
+		font-size: 0.85em;
+		position: relative;
+		display: flex;
+		width: 300px;
+		margin-top: 5px;
+		padding-bottom: 2px;
+		opacity: 0.5;
+		transition: opacity 0.25s ease-in-out;
+
+		&:hover {
+			opacity: 0.75;
+		}
+
+		input {
+			flex: 1 1 auto;
+			background-color: transparent;
+			box-shadow: none;
+			cursor: pointer;
+			padding: 0 15px 0 0;
+			text-overflow: ellipsis;
+			font-size: 0.8em;
+		}
+
+		.clipboard-copy {
+			top: 0;
+			right: 0;
+			cursor: pointer;
+			position: absolute;
+
+			&:active {
+				color: $header-text-color;
+			}
+		}
+	}
+}
+
 .cancel-button {
 	width: 60px;
 	box-shadow: inset $negative 0 0 0 2px;

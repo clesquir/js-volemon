@@ -5,6 +5,7 @@ import {RankController} from '/imports/startup/client/controllers/RankController
 import {TournamentController} from '/imports/startup/client/controllers/TournamentController.js';
 import {TournamentGameController} from '/imports/startup/client/controllers/TournamentGameController.js';
 import {TournamentsController} from '/imports/startup/client/controllers/TournamentsController.js';
+import {MatchMakingController} from '/imports/startup/client/controllers/MatchMakingController.js';
 import {TournamentUserProfileController} from '/imports/startup/client/controllers/TournamentUserProfileController.js';
 import {UserProfileController} from '/imports/startup/client/controllers/UserProfileController.js';
 import {UserSettingsController} from '/imports/startup/client/controllers/UserSettingsController.js';
@@ -123,6 +124,11 @@ Router.map(function() {
 	this.route('tournamentUserProfile', {
 		path: '/tournament/:tournamentId/profile/:userId',
 		controller: TournamentUserProfileController
+	});
+
+	this.route('matchMaking', {
+		path: '/match-making/:modeSelection/tournament/:tournamentId',
+		controller: MatchMakingController
 	});
 
 	this.route('game', {

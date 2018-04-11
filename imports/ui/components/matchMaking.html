@@ -19,6 +19,12 @@
 			</div>
 		{{/if}}
 
+		{{#if showTournamentNotAvailable}}
+			<h1>Tournament not available</h1>
+
+			Select another mode or tournament to play!
+		{{/if}}
+
 		{{#if showShapeSelection}}
 			<h1 class="tournament-name">{{selectedMode}}</h1>
 			<p class="tournament-description">{{selectedTournamentDescription}}</p>
@@ -45,6 +51,14 @@
 			<p class="tournament-description">{{selectedTournamentDescription}}</p>
 
 			<h2>Looking for players...</h2>
+
+			<div class="share-match-making">
+				<div class="share-title"><i class="fa fa-share-alt"></i> Ask a friend to play</div>
+				<div class="copyable-url-input">
+					<input type="text" value="{{urlFor 'matchMaking' modeSelection=modeSelectionUrl tournamentId=tournamentIdUrl}}" readonly="readonly" name="url" />
+					<i class="fa fa-clipboard clipboard-copy" data-action="copy-url" data-tooltip="Copy to clipboard" data-tooltip-direction="s"></i>
+				</div>
+			</div>
 
 			<div class="match-making-body">
 				<div class="loading-logo">
