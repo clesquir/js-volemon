@@ -79,6 +79,7 @@ $desktop-max-height: 70em;
 //Pages
 @import "{}/imports/ui/components/lightbox.scss";
 @import "{}/imports/ui/components/loading.scss";
+@import "{}/imports/ui/components/matchMaking.scss";
 @import "{}/imports/ui/components/shapeSelector.scss";
 @import "{}/imports/ui/components/noInternetConnection.scss";
 @import "{}/imports/ui/views/achievementPopup.scss";
@@ -120,7 +121,7 @@ body {
 	letter-spacing: 0.04em;
 }
 
-body.active-lightbox {
+body.active-lightbox, body.active-lightbox .app {
 	overflow: hidden;
 }
 
@@ -226,15 +227,6 @@ p {
 	div + div {
 		margin-left: 5px;
 	}
-
-	.create-game-button {
-		font-size: 18px;
-		cursor: pointer;
-
-		&:hover {
-			color: $text-color;
-		}
-	}
 }
 
 .tournament-game-cell {
@@ -317,5 +309,49 @@ p {
 
 	.switch-label {
 		display: inline-block;
+	}
+}
+
+$loading-time: 3s;
+
+@keyframes loading-logo-rotation {
+	0% {
+		transform: rotate(0deg) scale(1);
+	}
+	25% {
+		transform: rotate(180deg) scale(0);
+	}
+	50% {
+		transform: rotate(180deg) scale(0);
+	}
+	75% {
+		transform: rotate(180deg) scale(0);
+	}
+	100% {
+		transform: rotate(360deg) scale(1);
+	}
+}
+
+.loading-logo {
+	width: 32px;
+	height: 32px;
+	position: relative;
+	margin-right: 10px;
+
+	& > div {
+		position: absolute;
+		width: 32px;
+		height: 32px;
+	}
+
+	.loading-diagonals {
+		background-image: url("/assets/loading/diagonals.png");
+		animation: loading-logo-rotation $loading-time ease-in-out infinite;
+	}
+
+	.loading-v {
+		background-image: url("/assets/loading/v.png");
+		animation: loading-logo-rotation $loading-time ease-in-out infinite;
+		animation-delay: -$loading-time / 2;
 	}
 }

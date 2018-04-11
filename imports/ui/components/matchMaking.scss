@@ -1,0 +1,121 @@
+.match-making-body {
+	position: relative;
+	margin: 25px auto 15px;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+
+	.loading-logo {
+		width: 100px;
+		height: 100px;
+
+		& > div {
+			width: 100px;
+			height: 100px;
+		}
+
+		.loading-diagonals {
+			background-image: url("/assets/loading/big-diagonals.png");
+			background-size: 100px;
+		}
+
+		.loading-v {
+			background-image: url("/assets/loading/big-v.png");
+			background-size: 100px;
+		}
+	}
+
+	.match-making-tips {
+		margin-top: 30px;
+		font-size: 0.75em;
+	}
+}
+
+.match-selection-items {
+	display: flex;
+	flex-direction: column;
+}
+
+.match-selection {
+	display: flex;
+	flex-direction: column;
+	cursor: pointer;
+	color: #777;
+	transform: scale(1);
+	transition: all 0.25s linear;
+	padding: 10px;
+
+	.match-selection-item {
+		flex: 1;
+		text-align: center;
+		text-overflow: ellipsis;
+	}
+
+	.match-selection-title {
+		font-size: 18px;
+	}
+
+	.match-selection-description {
+		font-size: 10px;
+	}
+
+	&:hover {
+		color: $text-color;
+		transform: scale(1.15);
+	}
+}
+
+.lightbox h1.tournament-name {
+	margin-bottom: 5px;
+}
+
+.share-match-making {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	.share-title {
+		opacity: 0.5;
+	}
+
+	.copyable-url-input {
+		font-size: 0.85em;
+		position: relative;
+		display: flex;
+		width: 300px;
+		margin-top: 5px;
+		padding-bottom: 2px;
+		opacity: 0.5;
+		transition: opacity 0.25s ease-in-out;
+
+		&:hover {
+			opacity: 0.75;
+		}
+
+		input {
+			flex: 1 1 auto;
+			background-color: transparent;
+			box-shadow: none;
+			cursor: pointer;
+			padding: 0 15px 0 0;
+			text-overflow: ellipsis;
+			font-size: 0.8em;
+		}
+
+		.clipboard-copy {
+			top: 0;
+			right: 0;
+			cursor: pointer;
+			position: absolute;
+
+			&:active {
+				color: $header-text-color;
+			}
+		}
+	}
+}
+
+.cancel-button {
+	width: 60px;
+	box-shadow: inset $negative 0 0 0 2px;
+}

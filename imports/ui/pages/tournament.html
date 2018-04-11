@@ -26,10 +26,14 @@
 				{{/if}}
 			{{/if}}
 
+			{{#if canPlayTournament}}
+				<a href="#" class="play-game-button button" data-action="play-tournament-game">Play</a>
+			{{/if}}
+
 			<div id="tournament-contents" class="view-selector-contents {{#if isTournamentActive}}tournament-games-shown{{else}}tournament-statistics-shown{{/if}}">
 				<div class="view-selector swiper-selector">
 					{{#if isTournamentActive}}
-						<i class="fa fa-list view-tournament-games" data-action="view-tournament-games" data-tooltip="Games"></i>
+						<i class="icomoon icon-tv view-tournament-games" data-action="view-tournament-games" data-tooltip="Watch games"></i>
 					{{/if}}
 					<i class="fa fa-pie-chart view-tournament-statistics" data-action="view-tournament-statistics" data-tooltip="Statistics"></i>
 					<i class="fa fa-hashtag view-tournament-rank" data-action="view-tournament-rank" data-tooltip="Rank"></i>
@@ -41,14 +45,10 @@
 						{{#if isTournamentActive}}
 							<div class="view-selector-content swiper-slide tournament-games" data-slide="tournament-games">
 								<h2 class="games-list-header">
-									<div>Games list</div>
-									{{#if canPlayTournament}}
-										<div class="create-game-button" data-action="create-tournament-game" data-tooltip="Create a game">
-											<i class="fa fa-plus-circle"></i>
-										</div>
-									{{/if}}
+									<div>Watch games</div>
 								</h2>
-								<p>You can create, join or view a game.</p>
+
+								<p>These are the tournament games you can watch</p>
 
 								{{> gamesList games=tournamentGames showTournamentName=false}}
 							</div>

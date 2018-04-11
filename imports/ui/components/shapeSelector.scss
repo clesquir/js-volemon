@@ -3,17 +3,17 @@ $shape-list: 'random', 'half-circle', 'triangle', 'x', 'rectangle', 'hyphen', 'o
 	'equal', 'magnet', 'crown', 'rhombus', 'hexagon', 'dot', 'ellipse', 'triple-colon';
 $number-of-shapes: length($shape-list);
 
-@mixin shape-content($position) {
-	transform: translateY(($position - 1) * -21px);
+@mixin shape-content($position, $height) {
+	transform: translateY(($position - 1) * -$height);
 }
 
 .shape-selector {
-	display: inline-block;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 
 	.shape-selector-caret {
-		display: inline-block;
-		margin-left: 2px;
-		vertical-align: text-top;
+		margin-left: 10px;
 	}
 
 	&.shape-selectable {
@@ -36,9 +36,29 @@ $number-of-shapes: length($shape-list);
 
 	@each $shape in $shape-list {
 		&.shape-#{$shape} .shape-content-scroller {
-			@include shape-content($shape-number);
+			@include shape-content($shape-number, 21px);
 		}
 		$shape-number: $shape-number + 1;
+	}
+}
+
+.match-making-body {
+	.shape-selector-container {
+		width: 98px;
+		height: 49px;
+
+		.shape-content-scroller {
+			background-image: url("/assets/component/shape/player-shapes-selection.png");
+			height: $number-of-shapes * (49px + 5px);
+			width: 98px;
+		}
+
+		@each $shape in $shape-list {
+			&.shape-#{$shape} .shape-content-scroller {
+				@include shape-content($shape-number, 49px + 5px);
+			}
+			$shape-number: $shape-number + 1;
+		}
 	}
 }
 
@@ -51,13 +71,14 @@ $number-of-shapes: length($shape-list);
 	@include menubox;
 	overflow-y: scroll;
 	overflow-x: hidden;
+	z-index: 9000;
 
 	@include vertical-breakpoint(tablet) {
 		max-height: 80px;
 	}
 
 	@include horizontal-breakpoint(mobile) {
-		width: 47px;
+		width: 115px;
 		max-height: 115px;
 	}
 

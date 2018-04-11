@@ -1,0 +1,80 @@
+<template name="matchMaking">
+	<div>
+		{{#if showModeSelection}}
+			<h1>Select a game mode</h1>
+
+			<div class="match-making-body match-selection-items">
+				<div class="match-selection" data-action="select-mode-selection" data-mode-selection="1vs1">
+					<div class="match-selection-item match-selection-title">1 VS 1</div>
+				</div>
+
+				{{#each tournaments}}
+					<div class="match-selection" data-action="select-mode-selection" data-mode-selection="tournament" data-tournament-id="{{_id}}">
+						<div class="match-selection-item match-selection-title">
+							<div class="card-cell card-title card-cell-ellipsis">{{name}}</div>
+						</div>
+						<div class="match-selection-item match-selection-description">{{description}}</div>
+					</div>
+				{{/each}}
+			</div>
+		{{/if}}
+
+		{{#if showTournamentNotAvailable}}
+			<h1>Tournament not available</h1>
+
+			Select another mode or tournament to play!
+		{{/if}}
+
+		{{#if showShapeSelection}}
+			<h1 class="tournament-name">{{selectedMode}}</h1>
+			<p class="tournament-description">{{selectedTournamentDescription}}</p>
+
+			{{#if shapeEditionAllowed}}
+				<h2>Select a shape</h2>
+
+				<div class="match-making-body">
+					{{> shapeSelector selectedShape=selectedShape allowedListOfShapes=allowedListOfShapes}}
+				</div>
+			{{else}}
+				<h2>Shape</h2>
+
+				<div class="match-making-body">
+					<div class="shape-selector-container shape-{{selectedShape}}">
+						<div class="shape-content-scroller"></div>
+					</div>
+				</div>
+			{{/if}}
+		{{/if}}
+
+		{{#if isMatchMakingOnGoing}}
+			<h1 class="tournament-name">{{selectedMode}}</h1>
+			<p class="tournament-description">{{selectedTournamentDescription}}</p>
+
+			<h2>Looking for players...</h2>
+
+			<div class="share-match-making">
+				<div class="share-title"><i class="fa fa-share-alt"></i> Ask a friend to play</div>
+				<div class="copyable-url-input">
+					<input type="text" value="{{urlFor 'matchMaking' modeSelection=modeSelectionUrl tournamentId=tournamentIdUrl}}" readonly="readonly" name="url" />
+					<i class="fa fa-clipboard clipboard-copy" data-action="copy-url" data-tooltip="Copy to clipboard" data-tooltip-direction="s"></i>
+				</div>
+			</div>
+
+			<div class="match-making-body">
+				<div class="loading-logo">
+					<div class="loading-diagonals"></div>
+					<div class="loading-v"></div>
+				</div>
+
+				<div class="match-making-tips">{{tips}}</div>
+			</div>
+		{{/if}}
+
+		<div class="buttons">
+			{{#if showStartMatchMaking}}
+				<a href="#" data-action="start-match-making" class="button">Play</a>
+			{{/if}}
+			<a href="#" data-action="cancel-match-making" class="button cancel-button">Cancel</a>
+		</div>
+	</div>
+</template>

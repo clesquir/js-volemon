@@ -24,7 +24,7 @@ const createShapeDropdownList = function(e, allowedListOfShapes) {
 		}
 	}, 0);
 
-	const shapeSelector = $(e.target).closest('.shape-selector');
+	const shapeSelector = $(e.currentTarget);
 	dropdownList.css('top', shapeSelector.offset().top);
 	dropdownList.css('left', shapeSelector.offset().left);
 
@@ -48,14 +48,14 @@ const createShapeDropdownList = function(e, allowedListOfShapes) {
 			'</div>'
 		);
 		listItem.click(function(e) {
-			const parent = $(e.target).closest('.shape-selector-container');
-			const child = $(e.target).find('.shape-selector-container');
+			const parent = $(e.currentTarget).find('.shape-selector-container');
+			const child = $(e.currentTarget).find('.shape-selector-container');
 
 			let selectedShape = child.attr('data-shape');
 			if (parent.length) {
 				selectedShape = parent.attr('data-shape');
 			}
-			Meteor.call('updatePlayerShape', Session.get('game'), selectedShape);
+			Meteor.call('updateMatchMakingShape', Session.get('matchMaking.tournamentId'), selectedShape);
 		});
 		listItem.appendTo(dropdownList);
 

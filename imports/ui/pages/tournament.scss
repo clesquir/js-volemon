@@ -3,19 +3,25 @@
 @include view-selector-shown(tournament-rank-shown, view-tournament-rank, tournament-rank);
 @include view-selector-shown(tournament-line-chart-shown, view-tournament-line-chart, tournament-line-chart);
 
+.tournament-page {
+	.play-game-button {
+		margin-bottom: 15px;
+	}
+}
+
 .tournament-name {
 	margin-bottom: 5px;
 }
 
 .tournament-description {
 	margin-top: 0;
-	margin-bottom: 25px;
+	margin-bottom: 15px;
 	font-size: 0.85em;
 }
 
 .tournament-retries-container {
 	display: flex;
-	margin: 10px 0 20px;
+	margin: 10px 0 10px;
 	justify-content: center;
 
 	.retries-availables {

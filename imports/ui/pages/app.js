@@ -111,25 +111,14 @@ Template.app.events({
 		Meteor.logout(function() {});
 	},
 
-	'click [data-action=create-game]': function() {
+	'click [data-action=play-game]': function() {
 		Tooltips.hide();
 
 		if (!Meteor.userId()) {
 			Session.set('lightbox', 'login');
 		} else {
-			Session.set('appLoadingMask', true);
-			Session.set('appLoadingMask.text', 'Creating game...');
-
-			Meteor.call('createGame', function(error, id) {
-				Session.set('appLoadingMask', false);
-				Session.set('appLoadingMask.text', undefined);
-
-				if (error) {
-					return alert(error);
-				}
-
-				Router.go('game', {_id: id});
-			});
+			Session.set('lightbox', 'matchMaking');
+			Session.set('lightbox.closable', false);
 		}
 	},
 

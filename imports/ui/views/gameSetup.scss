@@ -6,33 +6,33 @@
 	.switch-label {
 		width: 115px;
 	}
-}
 
-.copyable-url-input {
-	position: relative;
-	display: flex;
+	.copyable-url-input {
+		position: relative;
+		display: flex;
 
-	input {
-		flex: 1 1 auto;
-		background-color: $background-color-dark;
-		box-shadow: 0 0 0 $input-border-width $background-color-darker;
-		cursor: pointer;
-		padding-right: 40px;
-	}
-
-	.fa-clipboard {
-		cursor: pointer;
-		position: absolute;
-		opacity: 0.5;
-		top: 16px;
-		right: 16px;
-
-		&:hover {
-			opacity: 1;
+		input {
+			flex: 1 1 auto;
+			background-color: $background-color-dark;
+			box-shadow: 0 0 0 $input-border-width $background-color-darker;
+			cursor: pointer;
+			padding-right: 40px;
 		}
 
-		&:active {
-			color: $header-text-color;
+		.fa-clipboard {
+			cursor: pointer;
+			position: absolute;
+			opacity: 0.5;
+			top: 16px;
+			right: 16px;
+
+			&:hover {
+				opacity: 1;
+			}
+
+			&:active {
+				color: $header-text-color;
+			}
 		}
 	}
 }
