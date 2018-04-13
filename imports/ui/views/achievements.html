@@ -31,6 +31,11 @@
 						<div class="achievement-description">
 							{{description}}: {{achievementProgress ../userAchievements}}
 						</div>
+						{{#if showCurrentStreak ../userAchievements}}
+							<div class="achievement-current-streak">
+								Current streak: {{achievementCurrentStreak ../userAchievements}}
+							</div>
+						{{/if}}
 					{{/if}}
 				</div>
 			</div>

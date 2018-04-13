@@ -33,7 +33,7 @@ export default class ConsecutiveDaysPlayed extends GameListener {
 					{
 						number: 1,
 						lastDatePlayed: this.todaysDate(),
-						consecutiveDays: 1
+						numberSinceLastReset: 1
 					}
 				);
 			} else {
@@ -66,11 +66,11 @@ export default class ConsecutiveDaysPlayed extends GameListener {
 	increaseConsecutiveDays(userAchievement) {
 		const dataToUpdate = {
 			lastDatePlayed: this.todaysDate(),
-			consecutiveDays: userAchievement.consecutiveDays + 1
+			numberSinceLastReset: userAchievement.numberSinceLastReset + 1
 		};
 
-		if (dataToUpdate.consecutiveDays > userAchievement.number) {
-			dataToUpdate.number = dataToUpdate.consecutiveDays;
+		if (dataToUpdate.numberSinceLastReset > userAchievement.number) {
+			dataToUpdate.number = dataToUpdate.numberSinceLastReset;
 		}
 
 		this.updateAchievement(
@@ -84,7 +84,7 @@ export default class ConsecutiveDaysPlayed extends GameListener {
 			ACHIEVEMENT_CONSECUTIVE_DAYS_PLAYED,
 			{
 				lastDatePlayed: this.todaysDate(),
-				consecutiveDays: 1
+				numberSinceLastReset: 1
 			}
 		);
 	}

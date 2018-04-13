@@ -26,6 +26,17 @@ const getUserAchievementNumber = function(achievement, userAchievements) {
 	return userAchievementNumber;
 };
 
+const getUserAchievementNumberSinceLastReset = function(achievement, userAchievements) {
+	let numberSinceLastReset = undefined;
+	userAchievements.forEach((userAchievement) => {
+		if (userAchievement.achievementId === achievement._id) {
+			numberSinceLastReset = userAchievement.numberSinceLastReset;
+		}
+	});
+
+	return numberSinceLastReset;
+};
+
 const achievementLevelReached = function(achievement, userAchievements, level) {
 	const achievementNumber = getAchievementNumber(achievement, level);
 	const userAchievementNumber = getUserAchievementNumber(achievement, userAchievements);
@@ -57,15 +68,16 @@ Template.achievements.helpers({
 	},
 
 	achievementProgress: function(userAchievements) {
-		let number = 0;
-		userAchievements.forEach((userAchievement) => {
-			if (userAchievement.achievementId === this._id) {
-				number = userAchievement.number;
-			}
-		});
-
 		const userAchievementNumber = getUserAchievementNumber(this, userAchievements);
 
 		return formatAchievementNumber(this.type, userAchievementNumber);
+	},
+
+	showCurrentStreak: function(userAchivements) {
+		return getUserAchievementNumberSinceLastReset(this, userAchivements) !== undefined;
+	},
+
+	achievementCurrentStreak: function(userAchivements) {
+		return getUserAchievementNumberSinceLastReset(this, userAchivements);
 	}
 });

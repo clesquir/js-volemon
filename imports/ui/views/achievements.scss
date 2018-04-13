@@ -109,9 +109,19 @@ $gold-color: #eadc5e;
 
 	.achievement-description {
 		font-size: 15px;
+		color: lighten($text-color, 15%);
 
 		@include horizontal-breakpoint(mobile) {
 			font-size: 12px;
+		}
+	}
+
+	.achievement-current-streak {
+		font-size: 13px;
+		color: lighten($text-color, 30%);
+
+		@include horizontal-breakpoint(mobile) {
+			font-size: 10px;
 		}
 	}
 }

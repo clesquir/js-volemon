@@ -12,7 +12,7 @@ import {Players} from '/imports/api/games/players.js';
 describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
-	const assertConsecutiveDaysPlayedUserAchievementValuesEqual = function(number, lastDatePlayed, consecutiveDays) {
+	const assertConsecutiveDaysPlayedUserAchievementValuesEqual = function(number, lastDatePlayed, numberSinceLastReset) {
 		const achievement = UserAchievements.findOne();
 		assert.notEqual(undefined, achievement);
 
@@ -20,7 +20,7 @@ describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 		assert.strictEqual(ACHIEVEMENT_CONSECUTIVE_DAYS_PLAYED, achievement.achievementId);
 		assert.strictEqual(number, achievement.number);
 		assert.strictEqual(lastDatePlayed, achievement.lastDatePlayed);
-		assert.strictEqual(consecutiveDays, achievement.consecutiveDays);
+		assert.strictEqual(numberSinceLastReset, achievement.numberSinceLastReset);
 	};
 	const stubTodaysDate = function(listener, lastDatePlayed) {
 		stub = sinon.stub(listener, 'todaysDate').callsFake(function() {
