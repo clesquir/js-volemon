@@ -211,7 +211,9 @@ export const replyRematch = function(userId, gameId, accepted, gameInitiators) {
 	Players.update({_id: player._id}, {$set: {askedForRematch: accepted}});
 
 	const notAskingForRematch = Players.find({gameId: gameId, askedForRematch: {$ne: true}});
-	if (notAskingForRematch.count() === 0 && !game.gameRematchId) {
+	if (notAskingForRematch.count() === 0 && !game.rematchInCreation) {
+		Games.update({_id: game._id}, {$set: {rematchInCreation: true}});
+
 		const clientPlayer = Players.findOne({gameId: gameId, userId: {$ne: game.createdBy}});
 
 		const gameRematchId = createGame(clientPlayer.userId, gameInitiators, game.modeSelection, game.tournamentId);
