@@ -4,21 +4,6 @@
 	}
 }
 
-#rank-line-chart-display {
-	.display-chart-period {
-		margin-bottom: 10px;
-		font-size: 14px;
-
-		& > span {
-			cursor: pointer;
-
-			&.active {
-				font-weight: bold;
-			}
-		}
-	}
-}
-
 @include view-selector-shown(rank-elo-ranking-shown, view-elo-ranking, rank-elo-ranking);
 @include view-selector-shown(rank-achievements-ranking-shown, view-achievements-ranking, rank-achievements-ranking);
 @include view-selector-shown(rank-line-chart-display-shown, view-line-chart-display, rank-line-chart-display);

@@ -355,3 +355,16 @@ $loading-time: 3s;
 		animation-delay: -$loading-time / 2;
 	}
 }
+
+.display-chart-period {
+	margin-bottom: 10px;
+	font-size: 14px;
+
+	& > span {
+		cursor: pointer;
+
+		&.active {
+			font-weight: bold;
+		}
+	}
+}

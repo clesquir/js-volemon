@@ -24,6 +24,7 @@
 						<i class="fa fa-pie-chart view-user-statistics" data-action="view-user-statistics" data-tooltip="Statistics"></i>
 						<i class="fa fa-trophy view-user-achievements" data-action="view-user-achievements" data-tooltip="Achievements"></i>
 						<i class="fa fa-list view-user-recent-games" data-action="view-user-recent-games" data-tooltip="Recent games"></i>
+						<i class="fa fa-line-chart view-user-line-chart" data-action="view-user-line-chart" data-tooltip="ELO line chart"></i>
 					</div>
 
 					<div class="swiper-container home-swiper-container">
@@ -46,6 +47,25 @@
 								<h2>Recent games</h2>
 
 								{{> recentGames userId=getUserId}}
+							</div>
+
+							<div class="view-selector-content swiper-slide user-line-chart" data-slide="user-line-chart">
+								{{> loading loadingMask="lineChartDisplayLoadingMask"}}
+
+								<h2>ELO line chart</h2>
+
+								<div class="display-chart-period">
+									<span data-action="display-chart-all-time">All time</span> |
+									<span data-action="display-chart-60-days">60 days</span> |
+									<span data-action="display-chart-30-days">30 days</span> |
+									<span data-action="display-chart-14-days">14 days</span> |
+									<span data-action="display-chart-7-days">7 days</span>
+								</div>
+								<div>
+									<div id="rank-line-chart">
+										<canvas id="rank-line-chart-canvas"></canvas>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>

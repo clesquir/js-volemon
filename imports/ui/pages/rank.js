@@ -1,8 +1,9 @@
+import RankChart from '/imports/api/ranks/client/RankChart.js';
+import {highlightSelectedChartPeriodItem} from '/imports/api/ranks/utils.js';
+import CardSwitcher from '/imports/lib/client/CardSwitcher.js';
 import {Meteor} from 'meteor/meteor';
 import {Mongo} from 'meteor/mongo';
 import {Template} from 'meteor/templating';
-import RankChart from '/imports/api/ranks/client/RankChart.js';
-import CardSwitcher from '/imports/lib/client/CardSwitcher.js';
 
 import './rank.html';
 
@@ -153,15 +154,4 @@ const updateRankChart = function(e, minDateLabel, minDate) {
 		rankChart.update(minDateLabel, minDate);
 		Session.set('lineChartDisplayLoadingMask', false);
 	});
-};
-
-const highlightSelectedChartPeriodItem = function(e) {
-	const parent = $(e.target).parents('.display-chart-period')[0];
-	const displayChartPeriodItems = $(parent).find('span');
-
-	displayChartPeriodItems.each(function(index, field) {
-		$(field).removeClass('active');
-	});
-
-	$(e.target).addClass('active');
 };
