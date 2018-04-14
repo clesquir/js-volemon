@@ -1,17 +1,31 @@
 <template name="matchMaking">
-	<div>
+	<div class="match-making">
 		{{#if showModeSelection}}
 			<h1>Select a game mode</h1>
 
 			<div class="match-making-body match-selection-items">
 				<div class="match-selection" data-action="select-mode-selection" data-mode-selection="1vs1">
-					<div class="match-selection-item match-selection-title">1 VS 1</div>
+					<div class="match-selection-item match-selection-title">
+						<div>1 VS 1</div>
+						<div class="currently-waiting-match-making">
+							<div class="currently-waiting-match-making-number">{{numberOfPlayersWaiting "1vs1" null}}</div>
+							<i class="currently-waiting-match-making-icon fa fa-user-circle"></i>
+						</div>
+					</div>
 				</div>
 
 				{{#each tournaments}}
 					<div class="match-selection" data-action="select-mode-selection" data-mode-selection="tournament" data-tournament-id="{{_id}}">
 						<div class="match-selection-item match-selection-title">
-							<div class="card-cell card-title card-cell-ellipsis">{{name}}</div>
+							<div class="card-cell card-title card-cell-ellipsis">
+								<div>
+									<div>{{name}}</div>
+									<div class="currently-waiting-match-making">
+										<div class="currently-waiting-match-making-number">{{numberOfPlayersWaiting "tournament" this._id}}</div>
+										<i class="currently-waiting-match-making-icon fa fa-user-circle"></i>
+									</div>
+								</div>
+							</div>
 						</div>
 						<div class="match-selection-item match-selection-description">{{description}}</div>
 					</div>
@@ -26,7 +40,13 @@
 		{{/if}}
 
 		{{#if showShapeSelection}}
-			<h1 class="tournament-name">{{selectedMode}}</h1>
+			<h1 class="tournament-name">
+				<div>{{selectedMode}}</div>
+				<div class="currently-waiting-match-making">
+					<div class="currently-waiting-match-making-number">{{numberOfPlayersWaiting modeSelectionCode tournamentIdCode}}</div>
+					<i class="currently-waiting-match-making-icon fa fa-user-circle"></i>
+				</div>
+			</h1>
 			<p class="tournament-description">{{selectedTournamentDescription}}</p>
 
 			{{#if shapeEditionAllowed}}
@@ -55,7 +75,7 @@
 			<div class="share-match-making">
 				<div class="share-title"><i class="fa fa-share-alt"></i> Ask a friend to play</div>
 				<div class="copyable-url-input">
-					<input type="text" value="{{urlFor 'matchMaking' modeSelection=modeSelectionUrl tournamentId=tournamentIdUrl}}" readonly="readonly" name="url" />
+					<input type="text" value="{{urlFor 'matchMaking' modeSelection=modeSelectionCode tournamentId=tournamentIdUrl}}" readonly="readonly" name="url" />
 					<i class="fa fa-clipboard clipboard-copy" data-action="copy-url" data-tooltip="Copy to clipboard" data-tooltip-direction="s"></i>
 				</div>
 			</div>

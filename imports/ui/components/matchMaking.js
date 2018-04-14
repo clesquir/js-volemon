@@ -77,10 +77,8 @@ Template.matchMaking.onCreated(function() {
 	hintUpdater = Meteor.setInterval(() => {
 		updateTips();
 	}, 10000);
-	Session.set('loadingMask', true);
-	Meteor.subscribe('playableTournaments', Meteor.userId(), function() {
-		Session.set('loadingMask', false);
-	});
+	Meteor.subscribe('matchMakings');
+	Meteor.subscribe('playableTournaments', Meteor.userId());
 });
 
 Template.matchMaking.destroyed = function() {
@@ -114,6 +112,16 @@ Template.matchMaking.helpers({
 		}
 
 		return this.mode.description;
+	},
+
+	numberOfPlayersWaiting: function(modeSelection, tournamentId) {
+		if (tournamentId === 'none') {
+			tournamentId = null;
+		}
+
+		const match = MatchMakers.findOne({modeSelection: modeSelection, tournamentId: tournamentId});
+
+		return match && match.usersToMatch.length;
 	},
 
 	showTournamentNotAvailable: function() {
@@ -190,8 +198,12 @@ Template.matchMaking.helpers({
 		return '';
 	},
 
-	modeSelectionUrl: function() {
+	modeSelectionCode: function() {
 		return Session.get('matchMaking.modeSelection');
+	},
+
+	tournamentIdCode: function() {
+		return Session.get('matchMaking.tournamentId');
 	},
 
 	tournamentIdUrl: function() {
@@ -213,12 +225,6 @@ Template.matchMaking.events({
 		ButtonEnabler.disableButton(e.target);
 		Session.set('matchMaking.shapeIsSelected', true);
 		Session.set('matchMaking.onGoing', true);
-
-		Meteor.subscribe(
-			'matchMakings',
-			Session.get('matchMaking.modeSelection') || '1vs1',
-			Session.get('matchMaking.tournamentId')
-		);
 
 		matchMakingTracker = MatchMakers.find().observeChanges({
 			changed: (id, fields) => {

@@ -2,6 +2,12 @@ import {Meteor} from 'meteor/meteor';
 import {Session} from 'meteor/session';
 
 export const MatchMakingController = RouteController.extend({
+	waitOn: function() {
+		return [
+			Meteor.subscribe('matchMakings'),
+			Meteor.subscribe('playableTournaments', Meteor.userId())
+		];
+	},
 	onBeforeAction: function() {
 		if (!Meteor.userId()) {
 			Router.go('home');
