@@ -1,6 +1,7 @@
 import MatchMakingGameConfiguration from '/imports/api/games/configuration/MatchMakingGameConfiguration.js';
 import {MatchMakers} from '/imports/api/games/matchMakers.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
+import {getRandomInt} from '/imports/lib/utils.js';
 import ButtonEnabler from '/imports/ui/util/ButtonEnabler.js';
 import {Meteor} from "meteor/meteor";
 import {Mongo} from "meteor/mongo";
@@ -26,42 +27,63 @@ const showShapeSelection = function() {
 	return !Session.get('matchMaking.shapeIsSelected');
 };
 
-const updateTips = function() {
-	Session.set(
-		'matchMaking.tips',
-		Random.choice(
-			[
-				'A drop shot at the net can be deadly',
-				'Every shape has their strengths and weaknesses',
-				'Mastering the player shape is the key',
-				'Loosing can be a way to unlock achievements',
-				'Squeezing the ball against the wall can create a powerful shot',
-				'Winning against a higher score player can be tough but it worths it',
-				'Participating to all tournaments is a way to unlock achievement',
-				'Rage quitting is forfeiting',
-				'Random bonus can help you in a dangerous situation',
-				'Some bonuses cancel other ones',
-				'Some specific bonus combinations unlock achievements',
-				'Waiting can be the best offensive',
-				'Drop shot at the net works only against some people',
-				`Following the monsters' eyes can help you locate an invisible ball`,
-				`Being a small monster can help you avoid maluses`,
-				`Stabilizing the ball can help you when paused`,
-				`The big monster bonus can help you stabilize the auto-jump and the high-jump maluses`,
-				`Things can get a little out of hand with the fast monster bonus`,
-				`You can throw maluses on the enemy when on bonus repellent`,
-				`Smashing the ball on a bonus is unpredictable`,
-				`The only way to get an invincible bonus is through a random`,
-				`The "empty" bonus can be a good weapon`,
-				`Doing something suicidal can unlock achievements`,
-				`Activating a smoke bomb at the net can fool the enemy`,
-			]
-		)
-	);
-};
+class TipsUpdater {
+	start() {
+		let tipsIndex = getRandomInt(0, this.numberOfTips() - 1);
+		let shuffledTips = _.chain(this.tips()).shuffle().value();
+
+		Session.set('matchMaking.tips', shuffledTips[tipsIndex]);
+
+		this.interval = Meteor.setInterval(() => {
+			tipsIndex++;
+			if (tipsIndex >= this.numberOfTips()) {
+				tipsIndex = 0;
+			}
+
+			Session.set('matchMaking.tips', shuffledTips[tipsIndex]);
+		}, 10000);
+	}
+
+	stop() {
+		Meteor.clearInterval(this.interval);
+	}
+
+	numberOfTips() {
+		return this.tips().length;
+	}
+
+	tips() {
+		return [
+			'A drop shot at the net can be deadly',
+			'Every shape has their strengths and weaknesses',
+			'Mastering the player shape is the key',
+			'Loosing can be a way to unlock achievements',
+			'Squeezing the ball against the wall can create a powerful shot',
+			'Winning against a higher score player can be tough but it worths it',
+			'Participating to all tournaments is a way to unlock achievement',
+			'Rage quitting is forfeiting',
+			'Random bonus can help you in a dangerous situation',
+			'Some bonuses cancel other ones',
+			'Some specific bonus combinations unlock achievements',
+			'Waiting can be the best offensive',
+			'Drop shot at the net works only against some people',
+			`Following the monsters' eyes can help you locate an invisible ball`,
+			`Being a small monster can help you avoid maluses`,
+			`Stabilizing the ball can help you when paused`,
+			`Big monster bonus can help you stabilize the auto-jump and the high-jump maluses`,
+			`Things can get a little out of hand with the fast monster bonus`,
+			`You can throw maluses on the enemy when on bonus repellent`,
+			`Smashing the ball on a bonus is unpredictable`,
+			`The only way to get an invincible bonus is through a random`,
+			`The "empty" bonus can be a good weapon`,
+			`Doing something suicidal can unlock achievements`,
+			`Activating a smoke bomb at the net can fool the enemy`,
+		];
+	}
+}
 
 const closeMatchMaking = function() {
-	Meteor.clearInterval(hintUpdater);
+	tipsUpdater.stop();
 	if (matchMakingTracker) {
 		matchMakingTracker.stop();
 	}
@@ -69,14 +91,11 @@ const closeMatchMaking = function() {
 	Session.set('lightbox.closable', true);
 };
 
-let hintUpdater;
+const tipsUpdater = new TipsUpdater();
 let matchMakingTracker;
 
 Template.matchMaking.onCreated(function() {
-	updateTips();
-	hintUpdater = Meteor.setInterval(() => {
-		updateTips();
-	}, 10000);
+	tipsUpdater.start();
 	Meteor.subscribe('matchMakings');
 	Meteor.subscribe('playableTournaments', Meteor.userId());
 });
