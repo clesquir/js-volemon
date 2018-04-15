@@ -48,7 +48,7 @@ $switch-button-height: 16px;
 	border-radius: 11px;
 	box-shadow: 0 0 1px rgba(0, 0, 0, 0.2) inset;
 	border: 1px solid rgba(0, 0, 0, 0.3);
-	transition: all 0.3s linear;
+	transition: all 0.25s linear;
 	outline: 0;
 
 	&.off-value {
@@ -75,7 +75,7 @@ $switch-button-height: 16px;
 		width: $switch-button-height;
 		top: 1px;
 		box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
-		transition: all 0.2s linear;
+		transition: all 0.25s linear;
 	}
 }
 

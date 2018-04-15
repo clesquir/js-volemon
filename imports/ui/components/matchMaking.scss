@@ -42,7 +42,7 @@
 		flex-direction: column;
 		align-items: center;
 		cursor: pointer;
-		color: lighten($text-color, 25%);
+		color: lighten($text-color, 30%);
 		transform: scale(1);
 		transition: all 0.25s linear;
 		padding: 10px;
@@ -60,8 +60,12 @@
 			.currently-waiting-match-making {
 				top: 2px;
 				right: -25px;
-				color: lighten($text-color, 35%);
+				color: lighten($text-color, 40%);
 				transition: all 0.25s linear;
+
+				&.has-players-waiting-match-making {
+					color: lighten($text-color, 20%);
+				}
 
 				.currently-waiting-match-making-number {
 					font-size: 8px;
@@ -69,7 +73,6 @@
 
 				.currently-waiting-match-making-icon {
 					font-size: 9px;
-					transition: all 0.25s linear;
 				}
 			}
 		}
@@ -81,15 +84,6 @@
 		&:hover {
 			color: $text-color;
 			transform: scale(1.15);
-
-			.currently-waiting-match-making {
-				color: lighten($text-color, 20%);
-
-				.currently-waiting-match-making-icon {
-					transform: rotate(20deg);
-					font-size: 11px;
-				}
-			}
 		}
 	}
 
@@ -100,6 +94,13 @@
 		.currently-waiting-match-making {
 			top: 5px;
 			right: -30px;
+			font-weight: normal;
+			color: lighten($text-color, 40%);
+			transition: all 0.25s linear;
+
+			&.has-players-waiting-match-making {
+				color: lighten($text-color, 20%);
+			}
 
 			.currently-waiting-match-making-number {
 				font-size: 11px;

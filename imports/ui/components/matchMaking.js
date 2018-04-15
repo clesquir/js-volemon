@@ -133,11 +133,13 @@ Template.matchMaking.helpers({
 		return this.mode.description;
 	},
 
-	numberOfPlayersWaiting: function(modeSelection, tournamentId) {
-		if (tournamentId === 'none') {
-			tournamentId = null;
-		}
+	hasPlayersWaiting: function(modeSelection, tournamentId) {
+		const match = MatchMakers.findOne({modeSelection: modeSelection, tournamentId: tournamentId});
 
+		return match && match.usersToMatch.length > 0;
+	},
+
+	numberOfPlayersWaiting: function(modeSelection, tournamentId) {
 		const match = MatchMakers.findOne({modeSelection: modeSelection, tournamentId: tournamentId});
 
 		return match && match.usersToMatch.length;
@@ -217,15 +219,15 @@ Template.matchMaking.helpers({
 		return '';
 	},
 
-	modeSelectionCode: function() {
+	modeSelection: function() {
 		return Session.get('matchMaking.modeSelection');
 	},
 
-	tournamentIdCode: function() {
+	tournamentId: function() {
 		return Session.get('matchMaking.tournamentId');
 	},
 
-	tournamentIdUrl: function() {
+	tournamentIdForUrl: function() {
 		return Session.get('matchMaking.tournamentId') || 'none';
 	},
 
