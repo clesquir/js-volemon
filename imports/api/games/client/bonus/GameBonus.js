@@ -701,6 +701,10 @@ export default class GameBonus {
 		const bonus = correspondingBonusSprite.data.bonus;
 		let bonusToActivate = bonus.bonusToActivate();
 
+		if (this.gameConfiguration.overridesBonusDuration()) {
+			bonusToActivate.durationMilliseconds = this.gameConfiguration.bonusDuration(bonusToActivate.durationMilliseconds);
+		}
+
 		bonusToActivate.reassignBeforeActivationData(beforeActivationData);
 		bonusToActivate.activate(playerKey, activatedAt);
 		bonusToActivate.start();

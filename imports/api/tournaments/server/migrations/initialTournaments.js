@@ -1,6 +1,6 @@
 import {TournamentModes} from '/imports/api/tournaments/tournamentModes.js';
 import {
-	TOURNAMENT_MODE_CLASSIC
+	TOURNAMENT_MODE_BONUS_DURATION
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {Meteor} from 'meteor/meteor';
@@ -10,12 +10,12 @@ Meteor.startup(function() {
 	const tournaments = [
 		{
 			_id: Random.id(5),
-			identifier: 'tournament_2018-04-09',
-			mode: TOURNAMENT_MODE_CLASSIC,
-			name: 'Classic',
-			description: 'Introducing: Bonus Repellent',
-			startDate: "2018-04-09 -04:00",
-			endDate: "2018-04-16 -04:00",
+			identifier: 'tournament_2018-04-16',
+			mode: TOURNAMENT_MODE_BONUS_DURATION,
+			name: "Can't wipe it off",
+			description: 'Unlimited bonuses effect time',
+			startDate: "2018-04-16 -04:00",
+			endDate: "2018-04-23 -04:00",
 			isPublished: false
 		}
 	];

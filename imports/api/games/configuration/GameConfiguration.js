@@ -146,6 +146,18 @@ export default class GameConfiguration {
 		return this.tournamentMode.availableBonuses();
 	}
 
+	overridesBonusDuration() {
+		return (this.hasTournament() && this.tournamentMode.overridesBonusDuration());
+	}
+
+	bonusDuration(bonusDuration) {
+		if (!this.overridesBonusDuration()) {
+			throw 'The bonus duration is not overridden';
+		}
+
+		return this.tournamentMode.bonusDuration(bonusDuration);
+	}
+
 	width() {
 		return this.levelConfiguration.width;
 	}

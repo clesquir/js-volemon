@@ -51,6 +51,13 @@ export default class Classic {
 	availableBonuses() {
 	}
 
+	overridesBonusDuration() {
+		return false;
+	}
+
+	bonusDuration(bonusDuration) {
+	}
+
 	overridesForfeitMinimumPoints() {
 		return false;
 	}

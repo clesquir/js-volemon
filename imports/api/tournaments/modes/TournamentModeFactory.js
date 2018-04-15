@@ -1,6 +1,7 @@
 import {
 	TOURNAMENT_MODE_BIG_DRUNK,
 	TOURNAMENT_MODE_BLANK_SCREEN,
+	TOURNAMENT_MODE_BONUS_DURATION,
 	TOURNAMENT_MODE_CATCH_ME_IF_YOU_CAN,
 	TOURNAMENT_MODE_CLASSIC,
 	TOURNAMENT_MODE_FOOTBALL_FIELD,
@@ -13,6 +14,7 @@ import {
 	TOURNAMENT_MODE_NO_BONUSES,
 	TOURNAMENT_MODE_NOT_ENOUGH_SPACE,
 	TOURNAMENT_MODE_NOTHING_BONUS,
+	TOURNAMENT_MODE_PAUSE_PLAY,
 	TOURNAMENT_MODE_RANDOM_BONUSES,
 	TOURNAMENT_MODE_SHAPE_SHIFTER,
 	TOURNAMENT_MODE_SMOKE_BOMB,
@@ -21,33 +23,33 @@ import {
 	TOURNAMENT_MODE_SUPER_BOUNCE_WALLS,
 	TOURNAMENT_MODE_TALL_NET,
 	TOURNAMENT_MODE_TEENY_TINY_WORLD,
-	TOURNAMENT_MODE_TINY_NET,
-	TOURNAMENT_MODE_PAUSE_PLAY
+	TOURNAMENT_MODE_TINY_NET
 } from '/imports/api/tournaments/tournamentModesConstants.js';
-import BigDrunk from './BigDrunk.js';
+import BigDrunk from './BigDrunk';
 import BlankScreen from './BlankScreen';
+import BonusDuration from './BonusDuration';
 import CatchMeIfYouCan from './CatchMeIfYouCan';
 import Classic from './Classic';
 import FootballField from './FootballField';
 import Hardcore from './Hardcore';
-import HiddenShape from './HiddenShape.js';
+import HiddenShape from './HiddenShape';
 import InstantDeathBonus from './InstantDeathBonus';
 import JupiterGravity from './JupiterGravity';
-import MassiveHardcoreBlindBulletproof from './MassiveHardcoreBlindBulletproof.js';
+import MassiveHardcoreBlindBulletproof from './MassiveHardcoreBlindBulletproof';
 import MoonGravity from './MoonGravity';
 import NoBonuses from './NoBonuses';
 import NotEnoughSpace from './NotEnoughSpace';
-import NothingBonus from './NothingBonus.js';
+import NothingBonus from './NothingBonus';
+import PausePlay from './PausePlay';
 import RandomBonuses from './RandomBonuses';
 import ShapeShifter from './ShapeShifter';
 import SmokeBomb from './SmokeBomb';
-import SpaghettiOnTheCarpet from './SpaghettiOnTheCarpet.js';
+import SpaghettiOnTheCarpet from './SpaghettiOnTheCarpet';
 import SuddenDeath from './SuddenDeath';
 import SuperBounceWalls from './SuperBounceWalls';
 import TallNet from './TallNet';
 import TeenyTinyWorld from './TeenyTinyWorld';
 import TinyNet from './TinyNet';
-import PausePlay from './PausePlay';
 
 export default class TournamentModeFactory {
 	/**
@@ -104,6 +106,8 @@ export default class TournamentModeFactory {
 				return new NotEnoughSpace();
 			case TOURNAMENT_MODE_PAUSE_PLAY:
 				return new PausePlay();
+			case TOURNAMENT_MODE_BONUS_DURATION:
+				return new BonusDuration();
 		}
 
 		throw `The tournament mode ${id} doesn't exist.`;

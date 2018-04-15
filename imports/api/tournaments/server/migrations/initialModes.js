@@ -23,7 +23,8 @@ import {
 	TOURNAMENT_MODE_CATCH_ME_IF_YOU_CAN,
 	TOURNAMENT_MODE_FOOTBALL_FIELD,
 	TOURNAMENT_MODE_NOT_ENOUGH_SPACE,
-	TOURNAMENT_MODE_PAUSE_PLAY
+	TOURNAMENT_MODE_PAUSE_PLAY,
+	TOURNAMENT_MODE_BONUS_DURATION
 } from '/imports/api/tournaments/tournamentModesConstants.js';
 import {Meteor} from 'meteor/meteor';
 
@@ -145,6 +146,11 @@ Meteor.startup(function() {
 			"_id": TOURNAMENT_MODE_PAUSE_PLAY,
 			"name": "Pause/play",
 			"description": "Fast spawning bonuses are freeze and unfreeze"
+		},
+		{
+			"_id": TOURNAMENT_MODE_BONUS_DURATION,
+			"name": "Bonus duration",
+			"description": "Bonus effect time changed"
 		}
 	];
 
