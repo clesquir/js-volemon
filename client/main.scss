@@ -149,6 +149,10 @@ h2 {
 	color: lighten($text-color, 15%);
 }
 
+.last-update-date {
+	white-space: nowrap;
+}
+
 .back-button {
 	position: absolute;
 	left: 0;

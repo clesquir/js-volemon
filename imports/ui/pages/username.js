@@ -4,6 +4,7 @@ import {getUTCTimeStamp} from '/imports/lib/utils.js';
 import '/imports/ui/util/error-messages.js';
 import '/imports/ui/util/form.js';
 import {Meteor} from 'meteor/meteor';
+import * as Moment from 'meteor/momentjs:moment';
 import {Session} from 'meteor/session';
 import {Template} from 'meteor/templating';
 
@@ -24,6 +25,16 @@ Template.username.helpers({
 		const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
 
 		return userConfiguration ? userConfiguration.name : null;
+	},
+
+	lastUsernameUpdate: function() {
+		const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
+
+		if (userConfiguration && userConfiguration.lastUsernameUpdate) {
+			return Moment.moment(userConfiguration.lastUsernameUpdate).format('YYYY-MM-DD');
+		}
+
+		return '';
 	}
 });
 
