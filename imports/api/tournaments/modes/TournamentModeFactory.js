@@ -15,6 +15,7 @@ import {
 	TOURNAMENT_MODE_NOT_ENOUGH_SPACE,
 	TOURNAMENT_MODE_NOTHING_BONUS,
 	TOURNAMENT_MODE_PAUSE_PLAY,
+	TOURNAMENT_MODE_PLAYER_VELOCITY,
 	TOURNAMENT_MODE_RANDOM_BONUSES,
 	TOURNAMENT_MODE_SHAPE_SHIFTER,
 	TOURNAMENT_MODE_SMOKE_BOMB,
@@ -41,6 +42,7 @@ import NoBonuses from './NoBonuses';
 import NotEnoughSpace from './NotEnoughSpace';
 import NothingBonus from './NothingBonus';
 import PausePlay from './PausePlay';
+import PlayerVelocity from './PlayerVelocity';
 import RandomBonuses from './RandomBonuses';
 import ShapeShifter from './ShapeShifter';
 import SmokeBomb from './SmokeBomb';
@@ -108,6 +110,8 @@ export default class TournamentModeFactory {
 				return new PausePlay();
 			case TOURNAMENT_MODE_BONUS_DURATION:
 				return new BonusDuration();
+			case TOURNAMENT_MODE_PLAYER_VELOCITY:
+				return new PlayerVelocity();
 		}
 
 		throw `The tournament mode ${id} doesn't exist.`;

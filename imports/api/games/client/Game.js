@@ -9,9 +9,7 @@ import {
 	HOST_SIDE,
 	NORMAL_SCALE_PHYSICS_DATA,
 	PLAYER_GRAVITY_SCALE,
-	PLAYER_MASS,
-	PLAYER_VELOCITY_X_ON_MOVE,
-	PLAYER_VELOCITY_Y_ON_JUMP
+	PLAYER_MASS
 } from '/imports/api/games/constants.js';
 import {BALL_INTERVAL, PLAYER_INTERVAL} from '/imports/api/games/emissionConstants.js';
 import LevelComponents from '/imports/api/games/levelComponents/LevelComponents.js';
@@ -274,8 +272,8 @@ export default class Game {
 		player.data.currentMass = player.data.initialMass;
 		player.data.initialGravity = PLAYER_GRAVITY_SCALE;
 		player.data.currentGravity = player.data.initialGravity;
-		player.data.velocityXOnMove = PLAYER_VELOCITY_X_ON_MOVE;
-		player.data.velocityYOnJump = PLAYER_VELOCITY_Y_ON_JUMP;
+		player.data.velocityXOnMove = this.gameConfiguration.playerXVelocity();
+		player.data.velocityYOnJump = this.gameConfiguration.playerYVelocity();
 		player.data.doingDropShot = false;
 		player.data.playerCollisionGroup = playerCollisionGroup;
 		//Bonus

@@ -1,16 +1,18 @@
 import {
+	BONUS_RADIUS,
 	GAME_FORFEIT_MINIMUM_POINTS,
 	GAME_MAXIMUM_POINTS,
-	BONUS_RADIUS,
+	PLAYER_VELOCITY_X_ON_MOVE,
+	PLAYER_VELOCITY_Y_ON_JUMP,
 	WORLD_GRAVITY,
 	WORLD_RESTITUTION
 } from '/imports/api/games/constants.js';
 import {
-	BONUS_SPAWN_MINIMUM_FREQUENCE,
+	BONUS_SPAWN_INITIAL_MAXIMUM_FREQUENCE,
 	BONUS_SPAWN_INITIAL_MINIMUM_FREQUENCE,
-	BONUS_SPAWN_INITIAL_MAXIMUM_FREQUENCE
+	BONUS_SPAWN_MINIMUM_FREQUENCE
 } from '/imports/api/games/emissionConstants.js';
-import {PLAYER_LIST_OF_SHAPES, PLAYER_ALLOWED_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
+import {PLAYER_ALLOWED_LIST_OF_SHAPES, PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
 
 export default class GameConfiguration {
 	tournamentId = null;
@@ -208,5 +210,21 @@ export default class GameConfiguration {
 
 	ballInitialClientX() {
 		return this.levelConfiguration.ballInitialClientX();
+	}
+
+	playerXVelocity() {
+		if (this.hasTournament() && this.tournamentMode.overridesPlayerXVelocity()) {
+			return this.tournamentMode.playerXVelocity();
+		}
+
+		return PLAYER_VELOCITY_X_ON_MOVE;
+	}
+
+	playerYVelocity() {
+		if (this.hasTournament() && this.tournamentMode.overridesPlayerYVelocity()) {
+			return this.tournamentMode.playerYVelocity();
+		}
+
+		return PLAYER_VELOCITY_Y_ON_JUMP;
 	}
 }

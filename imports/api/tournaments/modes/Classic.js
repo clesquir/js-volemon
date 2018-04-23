@@ -116,4 +116,18 @@ export default class Classic {
 	 */
 	levelSize() {
 	}
+
+	overridesPlayerXVelocity() {
+		return false;
+	}
+
+	playerXVelocity() {
+	}
+
+	overridesPlayerYVelocity() {
+		return false;
+	}
+
+	playerYVelocity() {
+	}
 }

@@ -136,13 +136,17 @@ Template.matchMaking.helpers({
 	hasPlayersWaiting: function(modeSelection, tournamentId) {
 		const match = MatchMakers.findOne({modeSelection: modeSelection, tournamentId: tournamentId});
 
-		return match && match.usersToMatch.length > 0;
+		return match && match.usersToMatch && match.usersToMatch.length > 0;
 	},
 
 	numberOfPlayersWaiting: function(modeSelection, tournamentId) {
 		const match = MatchMakers.findOne({modeSelection: modeSelection, tournamentId: tournamentId});
 
-		return match && match.usersToMatch.length;
+		if (match && match.usersToMatch) {
+			return match.usersToMatch.length;
+		}
+
+		return 0;
 	},
 
 	showTournamentNotAvailable: function() {
