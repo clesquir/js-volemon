@@ -39,7 +39,7 @@
 			Select another mode or tournament to play!
 		{{/if}}
 
-		{{#if showShapeSelection}}
+		{{#if showSelectedModeTitle}}
 			<h1 class="tournament-name">
 				<div>{{selectedMode}}</div>
 				<div class="currently-waiting-match-making {{#if hasPlayersWaiting modeSelection tournamentId}}has-players-waiting-match-making{{/if}}">
@@ -48,30 +48,28 @@
 				</div>
 			</h1>
 			<p class="tournament-description">{{selectedTournamentDescription}}</p>
-
-			{{#if shapeEditionAllowed}}
-				<h2>Select a shape</h2>
-
-				<div class="match-making-body">
-					{{> shapeSelector selectedShape=selectedShape allowedListOfShapes=allowedListOfShapes}}
-				</div>
-			{{else}}
-				<h2>Shape</h2>
-
-				<div class="match-making-body">
-					<div class="shape-selector-container shape-{{selectedShape}}">
-						<div class="shape-content-scroller"></div>
-					</div>
-				</div>
-			{{/if}}
 		{{/if}}
 
-		{{#if isMatchMakingOnGoing}}
-			<h1 class="tournament-name">{{selectedMode}}</h1>
-			<p class="tournament-description">{{selectedTournamentDescription}}</p>
+		{{#if showShapeSelection}}
+			<div class="shape-match-making">
+				<div class="shape-title">Shape:</div>
+				<div class="shape-selector">
+					{{#if shapeEditionAllowed}}
+						{{> shapeSelector selectedShape=selectedShape allowedListOfShapes=allowedListOfShapes}}
+					{{else}}
+						<div class="shape-selector-container shape-{{selectedShape}}">
+							<div class="shape-content-scroller"></div>
+						</div>
+					{{/if}}
+				</div>
+			</div>
+		{{/if}}
 
-			<h2>Looking for players...</h2>
+		{{#if matchMakingStatus}}
+			<div class="match-making-status">{{matchMakingStatus}}</div>
+		{{/if}}
 
+		{{#if showShare}}
 			<div class="share-match-making">
 				<div class="share-title"><i class="fa fa-share-alt"></i> Ask a friend to play</div>
 				<div class="copyable-url-input">
@@ -79,7 +77,9 @@
 					<i class="fa fa-clipboard clipboard-copy" data-action="copy-url" data-tooltip="Copy to clipboard" data-tooltip-direction="s"></i>
 				</div>
 			</div>
+		{{/if}}
 
+		{{#if showLoading}}
 			<div class="match-making-body">
 				<div class="loading-logo">
 					<div class="loading-diagonals"></div>
@@ -91,10 +91,12 @@
 		{{/if}}
 
 		<div class="buttons">
-			{{#if showStartMatchMaking}}
-				<a href="#" data-action="start-match-making" class="button">Play</a>
+			{{#if showStartGame}}
+				<a href="#" data-action="start-game" class="button" {{startGameDisabling}}>Play!</a>
 			{{/if}}
-			<a href="#" data-action="cancel-match-making" class="button cancel-button">Cancel</a>
+			{{#if showCancelMatchMaking}}
+				<a href="#" data-action="cancel-match-making" class="button cancel-button">Cancel</a>
+			{{/if}}
 		</div>
 	</div>
 </template>

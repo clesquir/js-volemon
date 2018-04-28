@@ -4,7 +4,7 @@ import WindowFocus from '/imports/lib/WindowFocus.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 
 export default class GameNotifier {
-	onClientJoined() {
+	onMatched() {
 		if (!WindowFocus.isFocused()) {
 			if (!this.userMutedNotifications()) {
 				NotificationSound.playConnectSound();
@@ -24,7 +24,7 @@ export default class GameNotifier {
 		}
 	}
 
-	onClientReady() {
+	onGameReady() {
 		if (!WindowFocus.isFocused()) {
 			if (!this.userMutedNotifications()) {
 				NotificationSound.playPlayerReadySound();

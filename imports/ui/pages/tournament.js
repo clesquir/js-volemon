@@ -147,10 +147,10 @@ Template.tournament.events({
 		if (!Meteor.userId()) {
 			Session.set('lightbox', 'login');
 		} else {
-			Session.set('lightbox', 'matchMaking');
-			Session.set('lightbox.closable', false);
 			Session.set('matchMaking.modeSelection', 'tournament');
 			Session.set('matchMaking.tournamentId', Session.get('tournament'));
+			Session.set('lightbox', 'matchMaking');
+			Session.set('lightbox.closable', false);
 		}
 	}
 });

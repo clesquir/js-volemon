@@ -10,31 +10,7 @@
 
 			{{else}}
 
-				{{#if isHost}}
-					<h1>Creating a game</h1>
-
-					<p>Share this link with someone</p>
-					<p>
-						<div class="copyable-url-input">
-							<input type="text" value="{{urlFor 'game' _id=game._id}}" readonly="readonly" name="url" />
-							<i class="fa fa-clipboard" data-action="copy-url" data-tooltip="Copy to clipboard" data-tooltip-direction="s"></i>
-						</div>
-					</p>
-				{{else}}
-					<h1>Joining a game</h1>
-				{{/if}}
-
-				<div class="switch-containers">
-					<div>
-						<p class="{{#unless isHost}}not-editable{{/unless}}">
-							{{> switchButton label="Private" dataAction="update-privacy" onOffMethod=isPrivateGame}}
-						</p>
-
-						<p class="{{#unless isHost}}not-editable{{/unless}}">
-							{{> switchButton label="Practice game" dataAction="update-practice-game" onOffMethod=isPracticeGame}}
-						</p>
-					</div>
-				</div>
+				<h1>Game setup</h1>
 
 				{{> gameSetup}}
 

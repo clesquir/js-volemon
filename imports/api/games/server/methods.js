@@ -3,7 +3,8 @@ import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import GameInitiatorCollection from '/imports/api/games/server/GameInitiatorCollection.js';
-import {joinGame, onPlayerQuit, replyRematch, startGame} from '/imports/api/games/server/gameSetup.js';
+import {onPlayerQuit, replyRematch, startGame} from '/imports/api/games/server/gameSetup.js';
+import UserMatch from '/imports/api/games/server/matchMaking/UserMatch.js';
 import {finishGame} from '/imports/api/games/server/onGameFinished.js';
 import {
 	GAME_STATUS_FINISHED,
@@ -18,71 +19,6 @@ import {Random} from 'meteor/random';
 
 Meteor.methods({
 	/**
-	 * @deprecated
-	 * @param gameId
-	 * @param isPracticeGame
-	 */
-	updatePracticeGame: function(gameId, isPracticeGame) {
-		const user = Meteor.user();
-		const game = Games.findOne(gameId);
-
-		if (!user) {
-			throw new Meteor.Error(401, 'You need to login to update practice game property');
-		}
-
-		if (!game) {
-			throw new Meteor.Error(404, 'Game not found');
-		}
-
-		if (game.createdBy !== user._id) {
-			throw new Meteor.Error('not-allowed', 'Only the creator can update the practice game property');
-		}
-
-		Games.update({_id: game._id}, {$set: {isPracticeGame: isPracticeGame ? 1 : 0}});
-	},
-
-	/**
-	 * @deprecated
-	 * @param gameId
-	 * @param isPrivate
-	 */
-	updateGamePrivacy: function(gameId, isPrivate) {
-		const user = Meteor.user();
-		const game = Games.findOne(gameId);
-
-		if (!user) {
-			throw new Meteor.Error(401, 'You need to login to update game privacy property');
-		}
-
-		if (!game) {
-			throw new Meteor.Error(404, 'Game not found');
-		}
-
-		if (game.createdBy !== user._id) {
-			throw new Meteor.Error('not-allowed', 'Only the creator can update this game privacy');
-		}
-
-		Games.update({_id: game._id}, {$set: {isPrivate: isPrivate ? 1 : 0}});
-	},
-
-	/**
-	 * @deprecated
-	 * @param gameId
-	 * @param isReady
-	 * @returns {*}
-	 */
-	joinGame: function(gameId, isReady) {
-		const user = Meteor.user();
-
-		if (!user) {
-			throw new Meteor.Error(401, 'You need to login to join a game');
-		}
-
-		return joinGame(user._id, gameId, isReady);
-	},
-
-	/**
-	 * @deprecated
 	 * @param gameId
 	 */
 	setPlayerIsReady: function(gameId) {
@@ -103,12 +39,28 @@ Meteor.methods({
 			throw new Meteor.Error(404, 'Player not found');
 		}
 
-		Games.update({_id: game._id}, {$set: {isReady: true}});
 		Players.update({_id: player._id}, {$set: {isReady: true}});
+
+		//Start game if all players are ready
+		const players = Players.find({gameId: gameId});
+
+		let hasPlayersNotReady = false;
+		players.forEach(function(player) {
+			if (player.isReady === false) {
+				hasPlayersNotReady = true;
+			}
+		});
+
+		if (!hasPlayersNotReady) {
+			Games.update({_id: gameId}, {$set: {isReady: true}});
+			Meteor.setTimeout(() => {
+				startGame(gameId, GameInitiatorCollection.get());
+			}, 5000);
+			UserMatch.removeMatch(gameId);
+		}
 	},
 
 	/**
-	 * @deprecated
 	 * @param gameId
 	 */
 	leaveGame: function(gameId) {
@@ -154,14 +106,6 @@ Meteor.methods({
 				}}
 			);
 		}
-	},
-
-	/**
-	 * @deprecated
-	 * @param gameId
-	 */
-	startGame: function(gameId) {
-		startGame(gameId, GameInitiatorCollection.get());
 	},
 
 	addGameViewer: function(gameId) {
@@ -237,7 +181,7 @@ Meteor.methods({
 	},
 
 	removeTimeoutPlayersAndGames: function(timeoutInterval) {
-		const games = Games.find({status: {$in: [GAME_STATUS_STARTED]}});
+		const games = Games.find({status: GAME_STATUS_STARTED});
 		const gameIds = [];
 
 		games.forEach(function(game) {

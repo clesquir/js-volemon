@@ -1,3 +1,4 @@
+import {Games} from '/imports/api/games/games.js';
 import {MatchMakers} from '/imports/api/games/matchMakers.js';
 import GameCreator from '/imports/api/games/server/GameCreator.js';
 import {Meteor} from "meteor/meteor";
@@ -5,40 +6,36 @@ import {Random} from 'meteor/random';
 
 export default class UserMatch {
 	static match(modeSelection, tournamentId, matchedUsers) {
-		const match = MatchMakers.findOne({modeSelection: modeSelection, tournamentId: tournamentId});
 		const gameId = GameCreator.fromMatchMaker(matchedUsers, modeSelection, tournamentId);
 
 		//Remove from usersToMatch
-		let remainingUsersToMatch = match.usersToMatch;
-		for (let userId of matchedUsers) {
-			const index = remainingUsersToMatch.indexOf(userId);
-			if (index !== -1) {
-				remainingUsersToMatch.splice(index, 1);
-			}
-		}
-		MatchMakers.update({_id: match._id}, {$set: {usersToMatch: remainingUsersToMatch}});
+		MatchMakers.update(
+			{modeSelection: modeSelection, tournamentId: tournamentId},
+			{$pull: {usersToMatch: {$in: matchedUsers}}}
+		);
 
 		//Add to matched with gameId
-		let matched = match.matched.concat({
+		let matchedItem = {
 			users: matchedUsers,
 			gameId: gameId
-		});
-		MatchMakers.update({_id: match._id}, {$set: {matched: matched}});
+		};
+		MatchMakers.update(
+			{modeSelection: modeSelection, tournamentId: tournamentId},
+			{$push: {matched: matchedItem}}
+		);
+	}
 
-		//Remove matched after a while
+	static removeMatch(gameId) {
+		//timeout to allow some time to users to get the game info
 		Meteor.setTimeout(() => {
-			const match = MatchMakers.findOne({modeSelection: modeSelection, tournamentId: tournamentId});
+			const game = Games.findOne(gameId);
 
-			matched = match.matched;
-			for (let i = 0; i < matched.length; i++) {
-				let item = matched[i];
-				if (matched[i].gameId === gameId) {
-					matched.splice(i, 1);
-					break;
-				}
+			if (game) {
+				MatchMakers.update(
+					{modeSelection: game.modeSelection, tournamentId: game.tournamentId},
+					{$pull: {matched: {gameId: gameId}}}
+				);
 			}
-
-			MatchMakers.update({_id: match._id}, {$set: {matched: matched}});
-		}, 10000);
+		}, 5000);
 	}
 }

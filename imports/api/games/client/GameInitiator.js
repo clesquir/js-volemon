@@ -61,18 +61,6 @@ export default class GameInitiator {
 
 		this.gameChangesTracker = Games.find({_id: this.gameId}).observeChanges({
 			changed: (id, fields) => {
-				if (fields.hasOwnProperty('clientId')) {
-					if (fields.clientId !== null) {
-						this.gameNotifier.onClientJoined();
-					} else {
-						this.gameNotifier.onClientLeft();
-					}
-				}
-
-				if (fields.hasOwnProperty('isReady') && fields.isReady) {
-					this.gameNotifier.onClientReady();
-				}
-
 				if (fields.hasOwnProperty('status')) {
 					this.gameData.updateStatus(fields.status);
 
