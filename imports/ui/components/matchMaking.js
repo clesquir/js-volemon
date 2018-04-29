@@ -3,8 +3,8 @@ import MatchMakingGameConfiguration from '/imports/api/games/configuration/Match
 import {Games} from '/imports/api/games/games.js';
 import {MatchMakers} from '/imports/api/games/matchMakers.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
-import TipsUpdater from '/imports/lib/TipsUpdater.js';
 import ButtonEnabler from '/imports/ui/util/ButtonEnabler.js';
+import TipsUpdater from '/imports/ui/util/TipsUpdater.js';
 import {Meteor} from "meteor/meteor";
 import {Mongo} from "meteor/mongo";
 import {Session} from "meteor/session";
