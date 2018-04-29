@@ -20,7 +20,7 @@
     "keycode": "^2.2.0",
     "lodash.throttle": "^4.1.1",
     "meteor-node-stubs": "^0.3.3",
-    "phaser": "^3.1.2",
+    "phaser": "^3.6.0",
     "phaser-ce": "^2.10.3",
     "rollbar": "^2.3.9",
     "sc-cluster-broker-client": "^1.0.5",
