@@ -10,6 +10,7 @@ import {
 	GAME_STATUS_REGISTRATION,
 	GAME_STATUS_STARTED
 } from '/imports/api/games/statusConstants.js';
+import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 import {EventPublisher} from '/imports/lib/EventPublisher.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 import {Meteor} from 'meteor/meteor';
@@ -170,7 +171,25 @@ Meteor.methods({
 			throw new Meteor.Error(404, 'Game not found');
 		}
 
-		Games.update({_id: gameId}, {$set: {viewers: game.viewers + 1}});
+		for (let i = 0; i < game.viewers.length; i++) {
+			if (game.viewers[i].id === this.connection.id) {
+				return;
+			}
+		}
+
+		let viewer = {id: this.connection.id, userId: null, name: 'Guest'};
+		if (Meteor.user()) {
+			viewer.userId = Meteor.user()._id;
+			const userConfiguration = UserConfigurations.findOne({userId: Meteor.user()._id});
+			if (userConfiguration) {
+				viewer.name = userConfiguration.name;
+			}
+		}
+
+		Games.update(
+			{_id: gameId},
+			{$push: {viewers: viewer}}
+		);
 	},
 
 	removeGameViewer: function(gameId) {
@@ -180,7 +199,10 @@ Meteor.methods({
 			throw new Meteor.Error(404, 'Game not found');
 		}
 
-		Games.update({_id: gameId}, {$set: {viewers: game.viewers - 1}});
+		Games.update(
+			{_id: gameId},
+			{$pull: {'viewers': {id: this.connection.id}}}
+		);
 	},
 
 	quitGame: function(gameId) {

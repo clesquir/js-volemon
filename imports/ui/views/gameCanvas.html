@@ -27,11 +27,11 @@
 		</div>
 
 		<div class="viewers-container">
-			<span>
-				{{#if hasViewer}}
+			{{#if hasViewer}}
+				<span data-tooltip="{{viewersList}}" data-tooltip-direction="s">
 					{{viewers}}<i class="fa fa-eye"></i>
-				{{/if}}
-			</span>
+				</span>
+			{{/if}}
 		</div>
 
 		{{! Game container }}

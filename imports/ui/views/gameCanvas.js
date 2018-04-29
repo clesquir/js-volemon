@@ -50,11 +50,21 @@ Template.gameCanvas.helpers({
 	},
 
 	hasViewer: function() {
-		return this.game.viewers > 0;
+		return this.game.viewers.length > 0;
 	},
 
 	viewers: function() {
-		return this.game.viewers;
+		return this.game.viewers.length;
+	},
+
+	viewersList: function() {
+		const viewersList = [];
+
+		for (let i = 0; i < this.game.viewers.length; i++) {
+			viewersList.push(this.game.viewers[i].name);
+		}
+
+		return viewersList.join('<br />');
 	},
 
 	isGamePlayer: function() {

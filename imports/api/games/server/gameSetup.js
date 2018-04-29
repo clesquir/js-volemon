@@ -60,7 +60,7 @@ export const createGame = function(userId, gameInitiators, modeSelection, tourna
 				clientPoints: 0,
 				lastPointTaken: null,
 				activeBonuses: [],
-				viewers: 0
+				viewers: []
 			});
 		} catch (e) {
 			//If the id is already taken loop until it finds a unique id

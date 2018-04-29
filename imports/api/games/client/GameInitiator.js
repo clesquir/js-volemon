@@ -119,10 +119,7 @@ export default class GameInitiator {
 
 	stop() {
 		if (this.hasActiveGame()) {
-			const player = Players.findOne({gameId: this.gameId, userId: Meteor.userId()});
-			if (!player) {
-				Meteor.call('removeGameViewer', this.gameId);
-			}
+			Meteor.call('removeGameViewer', this.gameId);
 
 			this.currentGame.stop();
 			this.currentGame = null;
