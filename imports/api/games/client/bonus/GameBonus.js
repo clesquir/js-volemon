@@ -224,7 +224,6 @@ export default class GameBonus {
 		if (!correspondingBonusSprite) {
 			//if bonus has been removed do not recreate
 			if (this.removedBonuses.indexOf(bonusIdentifier) !== -1) {
-				Rollbar.log('Bonus moving after destroy', {gameId: this.game.gameId});
 				return;
 			}
 

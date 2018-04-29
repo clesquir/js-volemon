@@ -358,14 +358,12 @@ export default class ClientP2P {
 
 	onPeerError(peer) {
 		if (peer.fromSocketId && peer.hasInitiated) {
-			Rollbar.log('Peer error', {peer: peer});
 			this.disconnectPeer(peer);
 		}
 	}
 
 	onReadyPeerNotReady(peer) {
 		if (peer.fromSocketId && peer.hasInitiated) {
-			Rollbar.log('Peer fromSocketId disconnecting', {peer: peer});
 			this.disconnectPeer(peer);
 		}
 	}
