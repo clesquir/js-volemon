@@ -64,7 +64,7 @@ Meteor.publish('tournamentGames', function(tournamentId) {
 			{
 				isPrivate: 0,
 				tournamentId: tournamentId,
-				status: {$in: [GAME_STATUS_STARTED]}
+				status: GAME_STATUS_STARTED
 			},
 			{
 				sort: [['createdAt', 'asc']],

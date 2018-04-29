@@ -1,6 +1,7 @@
-import {Meteor} from 'meteor/meteor';
 import {Games} from '/imports/api/games/games.js';
+import {GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
+import {Meteor} from 'meteor/meteor';
 
 export const GamesController = RouteController.extend({
 	waitOn: function() {
@@ -10,7 +11,7 @@ export const GamesController = RouteController.extend({
 	},
 	data: function() {
 		return {
-			games: Games.find({}, {sort: [['createdAt', 'desc']]}),
+			games: Games.find({status: GAME_STATUS_STARTED}, {sort: [['createdAt', 'desc']]}),
 			tournaments: Tournaments.find()
 		};
 	}

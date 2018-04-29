@@ -42,26 +42,6 @@ $number-of-shapes: length($shape-list);
 	}
 }
 
-.match-making-body {
-	.shape-selector-container {
-		width: 98px;
-		height: 49px;
-
-		.shape-content-scroller {
-			background-image: url("/assets/component/shape/player-shapes-selection.png");
-			height: $number-of-shapes * (49px + 5px);
-			width: 98px;
-		}
-
-		@each $shape in $shape-list {
-			&.shape-#{$shape} .shape-content-scroller {
-				@include shape-content($shape-number, 49px + 5px);
-			}
-			$shape-number: $shape-number + 1;
-		}
-	}
-}
-
 .shape-selector-menu {
 	display: none;
 	position: absolute;

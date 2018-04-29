@@ -54,11 +54,9 @@ export default class ImmediateMatchMaker extends MatchMaker {
 		const match = MatchMakers.findOne({usersToMatch: userId});
 
 		if (match) {
-			const usersToMatch = match.usersToMatch;
-			usersToMatch.splice(usersToMatch.indexOf(userId), 1);
 			MatchMakers.update(
 				{_id: match._id},
-				{$set: {usersToMatch: usersToMatch.splice(usersToMatch.indexOf(userId), 1)}}
+				{$pull: {usersToMatch: userId}}
 			);
 		}
 

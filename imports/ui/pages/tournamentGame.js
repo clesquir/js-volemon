@@ -1,4 +1,3 @@
-import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
 import {isGameStatusOnGoing} from '/imports/api/games/utils.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
@@ -28,9 +27,5 @@ Template.tournamentGame.helpers({
 		}
 
 		return tournament.mode.description;
-	},
-
-	isHost: function() {
-		return this.game.createdBy === Meteor.userId();
 	}
 });

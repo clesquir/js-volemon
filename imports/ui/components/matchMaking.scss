@@ -1,3 +1,5 @@
+$loading-logo-size: 75px;
+
 .match-making {
 	.match-making-body {
 		position: relative;
@@ -7,28 +9,29 @@
 		flex-direction: column;
 
 		.loading-logo {
-			width: 100px;
-			height: 100px;
+			width: $loading-logo-size;
+			height: $loading-logo-size;
 
 			& > div {
-				width: 100px;
-				height: 100px;
+				width: $loading-logo-size;
+				height: $loading-logo-size;
 			}
 
 			.loading-diagonals {
 				background-image: url("/assets/loading/big-diagonals.png");
-				background-size: 100px;
+				background-size: $loading-logo-size;
 			}
 
 			.loading-v {
 				background-image: url("/assets/loading/big-v.png");
-				background-size: 100px;
+				background-size: $loading-logo-size;
 			}
 		}
 
 		.match-making-tips {
 			margin-top: 30px;
 			font-size: 0.75em;
+			color: lighten($text-color, 30%);
 		}
 	}
 
@@ -166,6 +169,25 @@
 				}
 			}
 		}
+	}
+
+	.shape-match-making {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		margin-top: 15px;
+		margin-bottom: 15px;
+
+		.shape-title {
+			margin-right: 10px;
+			font-size: 0.8em;
+		}
+	}
+
+	.match-making-status {
+		font-size: 0.9em;
+		margin-top: 30px;
+		margin-bottom: 10px;
 	}
 
 	.cancel-button {
