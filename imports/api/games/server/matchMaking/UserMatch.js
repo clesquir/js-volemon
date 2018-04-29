@@ -26,16 +26,13 @@ export default class UserMatch {
 	}
 
 	static removeMatch(gameId) {
-		//timeout to allow some time to users to get the game info
-		Meteor.setTimeout(() => {
-			const game = Games.findOne(gameId);
+		const game = Games.findOne(gameId);
 
-			if (game) {
-				MatchMakers.update(
-					{modeSelection: game.modeSelection, tournamentId: game.tournamentId},
-					{$pull: {matched: {gameId: gameId}}}
-				);
-			}
-		}, 5000);
+		if (game) {
+			MatchMakers.update(
+				{modeSelection: game.modeSelection, tournamentId: game.tournamentId},
+				{$pull: {matched: {gameId: gameId}}}
+			);
+		}
 	}
 }

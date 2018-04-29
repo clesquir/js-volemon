@@ -55,8 +55,8 @@ Meteor.methods({
 			Games.update({_id: gameId}, {$set: {isReady: true}});
 			Meteor.setTimeout(() => {
 				startGame(gameId, GameInitiatorCollection.get());
+				UserMatch.removeMatch(gameId);
 			}, 5000);
-			UserMatch.removeMatch(gameId);
 		}
 	},
 
