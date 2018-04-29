@@ -3,12 +3,12 @@ import {
 	TOURNAMENT_MODE_BIG_DRUNK,
 	TOURNAMENT_MODE_BLANK_SCREEN,
 	TOURNAMENT_MODE_BONUS_DURATION,
+	TOURNAMENT_MODE_BONUS_OVERRIDE,
 	TOURNAMENT_MODE_CATCH_ME_IF_YOU_CAN,
 	TOURNAMENT_MODE_CLASSIC,
 	TOURNAMENT_MODE_FOOTBALL_FIELD,
 	TOURNAMENT_MODE_HARDCORE,
 	TOURNAMENT_MODE_HIDDEN_SHAPE,
-	TOURNAMENT_MODE_INSTANT_DEATH_BONUS,
 	TOURNAMENT_MODE_JUPITER_GRAVITY,
 	TOURNAMENT_MODE_MASSIVE_HARDCORE_BLIND_BULLETPROOF,
 	TOURNAMENT_MODE_MOON_GRAVITY,
@@ -44,11 +44,6 @@ Meteor.startup(function() {
 			"_id": TOURNAMENT_MODE_RANDOM_BONUSES,
 			"name": "Random bonuses tournament",
 			"description": "Only random bonuses are spawning"
-		},
-		{
-			"_id": TOURNAMENT_MODE_INSTANT_DEATH_BONUS,
-			"name": "Instant death bonus tournament",
-			"description": "Bonuses spawning are only instant death"
 		},
 		{
 			"_id": TOURNAMENT_MODE_SMOKE_BOMB,
@@ -152,6 +147,11 @@ Meteor.startup(function() {
 			"_id": TOURNAMENT_MODE_BONUS_DURATION,
 			"name": "Bonus duration",
 			"description": "Bonus effect time changed"
+		},
+		{
+			"_id": TOURNAMENT_MODE_BONUS_OVERRIDE,
+			"name": "Bonus overridden",
+			"description": "Available bonuses changed"
 		},
 		{
 			"_id": TOURNAMENT_MODE_PLAYER_VELOCITY,

@@ -1,7 +1,5 @@
 import {TournamentModes} from '/imports/api/tournaments/tournamentModes.js';
-import {
-	TOURNAMENT_MODE_PLAYER_VELOCITY
-} from '/imports/api/tournaments/tournamentModesConstants.js';
+import {TOURNAMENT_MODE_BONUS_OVERRIDE} from '/imports/api/tournaments/tournamentModesConstants.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
@@ -9,13 +7,22 @@ import {Random} from 'meteor/random';
 Meteor.startup(function() {
 	const tournaments = [
 		{
+			identifier: "tournament_2018-02-19",
+			name: "Instant death bonus tournament",
+			description: "Bonuses spawning are only instant death",
+			mode: TOURNAMENT_MODE_BONUS_OVERRIDE,
+			startDate: "2018-02-19 -04:00",
+			endDate: "2018-02-26 -04:00",
+			isPublished: true
+		},
+		{
 			_id: Random.id(5),
-			identifier: 'tournament_2018-04-23',
-			mode: TOURNAMENT_MODE_PLAYER_VELOCITY,
-			name: "On steroids",
-			description: 'Player movements are freaking fast',
-			startDate: "2018-04-23 -04:00",
-			endDate: "2018-04-30 -04:00",
+			identifier: 'tournament_2018-04-30',
+			mode: TOURNAMENT_MODE_BONUS_OVERRIDE,
+			name: "Le parapluie!!!",
+			description: 'Repellent, instant death and invincible bonuses',
+			startDate: "2018-04-30 -04:00",
+			endDate: "2018-05-07 -04:00",
 			isPublished: false
 		}
 	];
