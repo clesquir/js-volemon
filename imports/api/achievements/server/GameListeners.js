@@ -11,9 +11,9 @@ import ConsecutiveWonGames from '/imports/api/achievements/server/listeners/Cons
 import DavidVsGoliath from '/imports/api/achievements/server/listeners/DavidVsGoliath.js';
 import FullStop from '/imports/api/achievements/server/listeners/FullStop.js';
 import GamesPlayed from '/imports/api/achievements/server/listeners/GamesPlayed.js';
-import GameTime from '/imports/api/achievements/server/listeners/GameTime.js';
 import GamesWonUnderAMinute from '/imports/api/achievements/server/listeners/GamesWonUnderAMinute.js';
 import GamesWonWithXShape from '/imports/api/achievements/server/listeners/GamesWonWithXShape.js';
+import GameTime from '/imports/api/achievements/server/listeners/GameTime.js';
 import HowToTieATie from '/imports/api/achievements/server/listeners/HowToTieATie.js';
 import InvincibleInALifetime from '/imports/api/achievements/server/listeners/InvincibleInALifetime.js';
 import InvisibleInAGame from '/imports/api/achievements/server/listeners/InvisibleInAGame.js';
@@ -31,6 +31,7 @@ import Shutouts from '/imports/api/achievements/server/listeners/Shutouts.js';
 import SimultaneousActivatedBonuses from '/imports/api/achievements/server/listeners/SimultaneousActivatedBonuses.js';
 import Snoozer from '/imports/api/achievements/server/listeners/Snoozer.js';
 import TeenyTinyWorld from '/imports/api/achievements/server/listeners/TeenyTinyWorld.js';
+import TheyAreAllOver from '/imports/api/achievements/server/listeners/TheyAreAllOver.js';
 import ToTheSky from '/imports/api/achievements/server/listeners/ToTheSky.js';
 import TripleColon from '/imports/api/achievements/server/listeners/TripleColon.js';
 import Undesirable from '/imports/api/achievements/server/listeners/Undesirable.js';
@@ -96,6 +97,7 @@ export default class GameListeners {
 			this.listeners.push((new FullStop()).forGame(this.gameId, player.userId));
 			this.listeners.push((new Undesirable()).forGame(this.gameId, player.userId));
 			this.listeners.push((new TeenyTinyWorld()).forGame(this.gameId, player.userId));
+			this.listeners.push((new TheyAreAllOver()).forGame(this.gameId, player.userId));
 		});
 	}
 
