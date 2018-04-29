@@ -39,6 +39,7 @@ import {
 	ACHIEVEMENT_TO_THE_SKY,
 	ACHIEVEMENT_TRIPLE_COLON,
 	ACHIEVEMENT_UNDESIRABLE,
+	ACHIEVEMENT_SUICIDAL_TENDENCIES,
 	TYPE_MS,
 	TYPE_QUANTITY,
 	TYPE_TIMES
@@ -396,5 +397,14 @@ export const INITIAL_ACHIVEMENTS = [
 		"type": TYPE_QUANTITY,
 		"displayOrder": 40,
 		"levels": [{"level": 1, "number": 10}, {"level": 2, "number": 20}, {"level": 3, "number": 30}]
+	},
+	{
+		"_id": ACHIEVEMENT_SUICIDAL_TENDENCIES,
+		"isSecret": true,
+		"name": "Suicidal tendencies",
+		"description": "# of random bonuses caught in an Instant Kill tournament",
+		"type": TYPE_QUANTITY,
+		"displayOrder": 41,
+		"levels": [{"level": 1, "number": 15}, {"level": 2, "number": 30}, {"level": 3, "number": 60}]
 	}
 ];

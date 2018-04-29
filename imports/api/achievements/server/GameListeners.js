@@ -30,6 +30,7 @@ import RandomInAGame from '/imports/api/achievements/server/listeners/RandomInAG
 import Shutouts from '/imports/api/achievements/server/listeners/Shutouts.js';
 import SimultaneousActivatedBonuses from '/imports/api/achievements/server/listeners/SimultaneousActivatedBonuses.js';
 import Snoozer from '/imports/api/achievements/server/listeners/Snoozer.js';
+import SuicidalTendencies from '/imports/api/achievements/server/listeners/SuicidalTendencies.js';
 import TeenyTinyWorld from '/imports/api/achievements/server/listeners/TeenyTinyWorld.js';
 import TheyAreAllOver from '/imports/api/achievements/server/listeners/TheyAreAllOver.js';
 import ToTheSky from '/imports/api/achievements/server/listeners/ToTheSky.js';
@@ -98,6 +99,7 @@ export default class GameListeners {
 			this.listeners.push((new Undesirable()).forGame(this.gameId, player.userId));
 			this.listeners.push((new TeenyTinyWorld()).forGame(this.gameId, player.userId));
 			this.listeners.push((new TheyAreAllOver()).forGame(this.gameId, player.userId));
+			this.listeners.push((new SuicidalTendencies()).forGame(this.gameId, player.userId));
 		});
 	}
 
