@@ -113,6 +113,8 @@ let gameStartTracker;
 Template.matchMaking.onCreated(function() {
 	tipsUpdater.start();
 	Session.set('matchMaking.isLoading', true);
+	Session.set('matchMaking.gameId', null);
+	Session.set('matchMaking.playerIsReady', false);
 
 	Promise.resolve()
 		.then(function() {
@@ -318,6 +320,14 @@ Template.matchMaking.helpers({
 		}
 
 		return '';
+	},
+
+	matchMakingStatusClass: function() {
+		if (Session.get('matchMaking.gameId')) {
+			return 'matched-status';
+		}
+
+		return '';
 	}
 });
 
@@ -329,14 +339,14 @@ Template.matchMaking.events({
 		startMatchMaking();
 	},
 
-	'click [data-action="start-game"]': function(e) {
+	'click [data-action="start-game"]:not([disabled])': function(e) {
 		ButtonEnabler.disableButton(e.target);
 		Meteor.call('setPlayerIsReady', Session.get('matchMaking.gameId'), function() {
 			Session.set('matchMaking.playerIsReady', true);
 		});
 	},
 
-	'click [data-action=cancel-match-making]': function(e) {
+	'click [data-action=cancel-match-making]:not([disabled])': function(e) {
 		ButtonEnabler.disableButton(e.target);
 		Meteor.call('cancelMatchMaking', function(error, cancelAllowed) {
 			ButtonEnabler.enableButton(e.target);

@@ -188,6 +188,11 @@ $loading-logo-size: 75px;
 		font-size: 0.9em;
 		margin-top: 30px;
 		margin-bottom: 10px;
+		transition: all 0.25s linear;
+
+		&.matched-status {
+			font-size: 1.5em;
+		}
 	}
 
 	.cancel-button {
