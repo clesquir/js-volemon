@@ -200,14 +200,14 @@ Template.afterGame.helpers({
 });
 
 Template.afterGame.events({
-	'click [data-action="game-rematch"]:not([disabled])': function() {
+	'click [data-action="game-rematch"]:not([disabled])': function(e) {
 		ButtonEnabler.disableButton(e.target);
 		Meteor.call('replyRematch', Session.get('game'), true, function() {
 			ButtonEnabler.enableButton(e.target);
 		});
 	},
 
-	'click [data-action="declined-game-rematch"]:not([disabled])': function() {
+	'click [data-action="declined-game-rematch"]:not([disabled])': function(e) {
 		ButtonEnabler.disableButton(e.target);
 		Meteor.call('replyRematch', Session.get('game'), false, function() {
 			ButtonEnabler.enableButton(e.target);
