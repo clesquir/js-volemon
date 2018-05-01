@@ -98,5 +98,9 @@
 				<a href="#" data-action="cancel-match-making" class="button cancel-button">Cancel</a>
 			{{/if}}
 		</div>
+
+		{{#if waitingForPlayersReady}}
+			<p>Waiting for all players to be ready...</p>
+		{{/if}}
 	</div>
 </template>

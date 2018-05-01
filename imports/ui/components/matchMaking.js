@@ -268,6 +268,10 @@ Template.matchMaking.helpers({
 		return !Session.get('matchMaking.isLoading') && !Session.get('matchMaking.gameId');
 	},
 
+	waitingForPlayersReady: function() {
+		return Session.get('matchMaking.playerIsReady');
+	},
+
 	selectedMode: function() {
 		switch (Session.get('matchMaking.modeSelection')) {
 			case '1vs1':
