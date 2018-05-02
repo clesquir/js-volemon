@@ -110,7 +110,7 @@ const initGame = function(gameId) {
 
 const quitGame = function(gameId) {
 	if (gameId) {
-		Meteor.call('quitGame', gameId);
+		Meteor.call('quitGame', gameId, Meteor.userId());
 	}
 };
 

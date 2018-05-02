@@ -24,22 +24,14 @@ import {EventPublisher} from '/imports/lib/EventPublisher.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 
 describe('games/methods#leaveGame', function() {
-	const sandbox = sinon.sandbox.create();
 	const userId = Random.id(4);
 
 	beforeEach(function() {
 		resetDatabase();
-		sandbox.stub(Meteor, 'user').callsFake(function() {
-			return {_id: userId};
-		});
-	});
-
-	afterEach(function() {
-		sandbox.restore();
 	});
 
 	it('throws 404 if game does not exist', function(done) {
-		Meteor.call('leaveGame', Random.id(5), function(error) {
+		Meteor.call('leaveGame', Random.id(5), userId, function(error) {
 			try {
 				assert.isObject(error);
 				assert.propertyVal(error, 'error', 404);
@@ -55,7 +47,7 @@ describe('games/methods#leaveGame', function() {
 		const gameId = Random.id(5);
 		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED});
 
-		Meteor.call('leaveGame', gameId, function(error) {
+		Meteor.call('leaveGame', gameId, userId, function(error) {
 			try {
 				assert.isObject(error);
 				assert.propertyVal(error, 'error', 'not-allowed');
@@ -71,7 +63,7 @@ describe('games/methods#leaveGame', function() {
 		const gameId = Random.id(5);
 		Games.insert({_id: gameId, status: GAME_STATUS_REGISTRATION});
 
-		Meteor.call('leaveGame', gameId, function(error) {
+		Meteor.call('leaveGame', gameId, userId, function(error) {
 			try {
 				assert.isObject(error);
 				assert.propertyVal(error, 'error', 404);
@@ -91,7 +83,7 @@ describe('games/methods#leaveGame', function() {
 		Players.insert({_id: '2', gameId: gameId, userId: userId});
 		Players.insert({_id: creatorPlayerId, gameId: gameId, userId: 1});
 
-		Meteor.call('leaveGame', gameId, function(error) {
+		Meteor.call('leaveGame', gameId, userId, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 
@@ -124,7 +116,7 @@ describe('games/methods#leaveGame', function() {
 		Players.insert({_id: creatorPlayerId, gameId: notRelatedGameId, userId: userId});
 		Players.insert({_id: '4', gameId: notRelatedGameId, userId: 1});
 
-		Meteor.call('leaveGame', gameId, function(error) {
+		Meteor.call('leaveGame', gameId, userId, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 
@@ -155,12 +147,6 @@ describe('GameMethods#quitGame', function() {
 	const playerId1 = Random.id(5);
 	const playerId2 = Random.id(5);
 
-	const stubUser = function(userId) {
-		sandbox.stub(Meteor, 'user').callsFake(function() {
-			return {_id: userId};
-		});
-	};
-
 	beforeEach(function() {
 		resetDatabase();
 	});
@@ -170,8 +156,7 @@ describe('GameMethods#quitGame', function() {
 	});
 
 	it('does not throw exception if game does not exist', function(done) {
-		stubUser(userId1);
-		Meteor.call('quitGame', Random.id(5), function(error) {
+		Meteor.call('quitGame', Random.id(5), userId1, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 			} catch(exception) {
@@ -184,8 +169,7 @@ describe('GameMethods#quitGame', function() {
 	it('does not throw exception if player does not exist', function(done) {
 		Games.insert({_id: gameId, status: GAME_STATUS_TIMEOUT});
 
-		stubUser(userId1);
-		Meteor.call('quitGame', gameId, function(error) {
+		Meteor.call('quitGame', gameId, userId1, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 			} catch(exception) {
@@ -202,8 +186,7 @@ describe('GameMethods#quitGame', function() {
 		let meteorCallSpy = sandbox.spy(Meteor, 'call');
 		meteorCallSpy.withArgs('leaveGame');
 
-		stubUser(userId1);
-		Meteor.call('quitGame', gameId, function(error) {
+		Meteor.call('quitGame', gameId, userId1, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 				assert.isTrue(meteorCallSpy.withArgs('leaveGame').calledOnce);
@@ -218,8 +201,7 @@ describe('GameMethods#quitGame', function() {
 		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED});
 		Players.insert({_id: playerId1, gameId: gameId, userId: userId1, hasQuit: false});
 
-		stubUser(userId1);
-		Meteor.call('quitGame', gameId, function(error) {
+		Meteor.call('quitGame', gameId, userId1, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 
@@ -242,8 +224,7 @@ describe('GameMethods#quitGame', function() {
 		Games.insert({_id: gameId, status: GAME_STATUS_TIMEOUT});
 		Players.insert({_id: playerId1, gameId: gameId, userId: userId1, hasQuit: false});
 
-		stubUser(userId1);
-		Meteor.call('quitGame', gameId, function(error) {
+		Meteor.call('quitGame', gameId, userId1, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 
@@ -266,8 +247,7 @@ describe('GameMethods#quitGame', function() {
 		Games.insert({_id: gameId, status: GAME_STATUS_STARTED});
 		Players.insert({_id: Random.id(5), gameId: gameId, userId: userId1, hasQuit: false});
 
-		stubUser(userId1);
-		Meteor.call('quitGame', gameId, function(error) {
+		Meteor.call('quitGame', gameId, userId1, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 
@@ -306,8 +286,7 @@ describe('GameMethods#quitGame', function() {
 		Profiles.insert({userId: userId1, numberOfWin: 0, numberOfLost: 0});
 		Profiles.insert({userId: userId2, numberOfWin: 0, numberOfLost: 0});
 
-		stubUser(userId1);
-		Meteor.call('quitGame', gameId, function(error) {
+		Meteor.call('quitGame', gameId, userId1, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 
@@ -344,8 +323,7 @@ describe('GameMethods#quitGame', function() {
 		Profiles.insert({userId: userId1, numberOfWin: 0, numberOfLost: 0});
 		Profiles.insert({userId: userId2, numberOfWin: 0, numberOfLost: 0});
 
-		stubUser(userId1);
-		Meteor.call('quitGame', gameId, function(error) {
+		Meteor.call('quitGame', gameId, userId1, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 
@@ -382,8 +360,7 @@ describe('GameMethods#quitGame', function() {
 		Profiles.insert({userId: userId1, numberOfWin: 0, numberOfLost: 0});
 		Profiles.insert({userId: userId2, numberOfWin: 0, numberOfLost: 0});
 
-		stubUser(userId2);
-		Meteor.call('quitGame', gameId, function(error) {
+		Meteor.call('quitGame', gameId, userId2, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 
@@ -420,8 +397,7 @@ describe('GameMethods#quitGame', function() {
 		Profiles.insert({userId: userId1, numberOfWin: 0, numberOfLost: 0});
 		Profiles.insert({userId: userId2, numberOfWin: 0, numberOfLost: 0});
 
-		stubUser(userId2);
-		Meteor.call('quitGame', gameId, function(error) {
+		Meteor.call('quitGame', gameId, userId2, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 
@@ -458,8 +434,7 @@ describe('GameMethods#quitGame', function() {
 		Profiles.insert({userId: userId1, eloRating: 1000});
 		Profiles.insert({userId: userId2, eloRating: 1000});
 
-		stubUser(userId1);
-		Meteor.call('quitGame', gameId, function(error) {
+		Meteor.call('quitGame', gameId, userId1, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 
@@ -504,8 +479,7 @@ describe('GameMethods#quitGame', function() {
 		Profiles.insert({userId: userId1, eloRating: 1000});
 		Profiles.insert({userId: userId2, eloRating: 1000});
 
-		stubUser(userId2);
-		Meteor.call('quitGame', gameId, function(error) {
+		Meteor.call('quitGame', gameId, userId2, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 
@@ -559,8 +533,7 @@ describe('GameMethods#quitGame', function() {
 		EventPublisher.on(GameFinished.prototype.constructor.name, function() {gameFinishedCalled = true;}, this);
 		EventPublisher.on(GameForfeited.prototype.constructor.name, function() {gameForfeitedCalled = true;}, this);
 
-		stubUser(userId1);
-		Meteor.call('quitGame', gameId, function(error) {
+		Meteor.call('quitGame', gameId, userId1, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 

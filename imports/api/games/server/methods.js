@@ -60,17 +60,9 @@ Meteor.methods({
 		}
 	},
 
-	/**
-	 * @param gameId
-	 */
-	leaveGame: function(gameId) {
-		const user = Meteor.user();
+	leaveGame: function(gameId, userId) {
 		const game = Games.findOne(gameId);
 		let player;
-
-		if (!user) {
-			throw new Meteor.Error(401, 'You need to login to leave a game');
-		}
 
 		if (!game) {
 			throw new Meteor.Error(404, 'Game not found');
@@ -80,7 +72,7 @@ Meteor.methods({
 			throw new Meteor.Error('not-allowed', 'Game already started');
 		}
 
-		player = Players.findOne({gameId: gameId, userId: user._id});
+		player = Players.findOne({gameId: gameId, userId: userId});
 
 		if (!player) {
 			throw new Meteor.Error(404, 'Player not found');
@@ -89,14 +81,14 @@ Meteor.methods({
 		Players.remove(player._id);
 
 		//if player is game creator, remove game and all players
-		if (game.createdBy === user._id) {
+		if (game.createdBy === userId) {
 			//Remove all players
 			Players.remove({gameId: gameId});
 			//Remove game
 			Games.remove(gameId);
 			//Stop streaming
 			GameInitiatorCollection.unset(gameId);
-		} else if (user._id !== game.hostId) {
+		} else if (userId !== game.hostId) {
 			Games.update(
 				{_id: gameId},
 				{$set: {
@@ -149,15 +141,14 @@ Meteor.methods({
 		);
 	},
 
-	quitGame: function(gameId) {
-		const user = Meteor.user();
+	quitGame: function(gameId, userId) {
 		const game = Games.findOne(gameId);
 
-		if (!user || !game) {
+		if (!game) {
 			return;
 		}
 
-		const player = Players.findOne({userId: user._id, gameId: gameId});
+		const player = Players.findOne({userId: userId, gameId: gameId});
 
 		if (!player) {
 			return;
@@ -165,7 +156,7 @@ Meteor.methods({
 
 		//If game has not started, leaveGame instead
 		if (game.status === GAME_STATUS_REGISTRATION) {
-			Meteor.call('leaveGame', gameId);
+			Meteor.call('leaveGame', gameId, userId);
 		} else {
 			Players.update({_id: player._id}, {$set: {hasQuit: getUTCTimeStamp()}});
 
