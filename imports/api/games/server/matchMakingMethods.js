@@ -49,13 +49,13 @@ Meteor.methods({
 		matchMaker.subscribe(Meteor.userId(), modeSelection, tournamentId);
 	},
 
-	cancelMatchMaking: function() {
+	cancelMatchMaking: function(userId) {
 		const matchMaker = new ImmediateMatchMaker();
 
-		if (!matchMaker.canUnsubscribe(Meteor.userId())) {
+		if (!matchMaker.canUnsubscribe(userId)) {
 			return false;
 		}
 
-		return matchMaker.unsubscribe(Meteor.userId());
+		return matchMaker.unsubscribe(userId);
 	}
 });

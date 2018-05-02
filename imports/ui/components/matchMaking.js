@@ -50,11 +50,17 @@ const monitorWhenMatched = function() {
 				if (match) {
 					for (let matched of match.matched) {
 						if (matched.users.indexOf(Meteor.userId()) !== -1) {
-							Session.set('matchMaking.gameId', matched.gameId);
-							monitorGameStart();
-							break;
+							if (!Session.get('matchMaking.gameId')) {
+								Session.set('matchMaking.gameId', matched.gameId);
+								monitorGameStart();
+							}
+							return;
 						}
 					}
+				}
+
+				if (Session.get('matchMaking.gameId')) {
+					Session.set('matchMaking.kickedOut', true);
 				}
 			}
 		}
@@ -90,6 +96,7 @@ const reinitSessionVariables = function() {
 	Session.set('matchMaking.tournamentId', null);
 	Session.set('matchMaking.gameId', null);
 	Session.set('matchMaking.playerIsReady', false);
+	Session.set('matchMaking.kickedOut', false);
 };
 
 const closeMatchMaking = function() {
@@ -115,6 +122,7 @@ Template.matchMaking.onCreated(function() {
 	Session.set('matchMaking.isLoading', true);
 	Session.set('matchMaking.gameId', null);
 	Session.set('matchMaking.playerIsReady', false);
+	Session.set('matchMaking.kickedOut', false);
 
 	Promise.resolve()
 		.then(function() {
@@ -143,6 +151,7 @@ Template.matchMaking.onCreated(function() {
 
 Template.matchMaking.destroyed = function() {
 	closeMatchMaking();
+	Meteor.call('cancelMatchMaking', Meteor.userId());
 };
 
 Template.matchMaking.helpers({
@@ -155,7 +164,7 @@ Template.matchMaking.helpers({
 	},
 
 	showShare: function() {
-		return !!Session.get('matchMaking.modeSelection') && !Session.get('matchMaking.gameId');
+		return !!Session.get('matchMaking.modeSelection') && !Session.get('matchMaking.gameId') && !Session.get('matchMaking.kickedOut');
 	},
 
 	tournaments: function() {
@@ -261,15 +270,19 @@ Template.matchMaking.helpers({
 	},
 
 	showLoading: function() {
-		return Session.get('matchMaking.isLoading') || Session.get('matchMaking.modeSelection');
+		return (Session.get('matchMaking.isLoading') || Session.get('matchMaking.modeSelection')) && !Session.get('matchMaking.kickedOut');
+	},
+
+	showRetry: function() {
+		return Session.get('matchMaking.kickedOut');
 	},
 
 	showCancelMatchMaking: function() {
-		return !Session.get('matchMaking.isLoading') && !Session.get('matchMaking.gameId');
+		return !Session.get('matchMaking.isLoading') || Session.get('matchMaking.kickedOut');
 	},
 
 	waitingForPlayersReady: function() {
-		return Session.get('matchMaking.playerIsReady');
+		return Session.get('matchMaking.playerIsReady') && !Session.get('matchMaking.kickedOut');
 	},
 
 	selectedMode: function() {
@@ -317,7 +330,9 @@ Template.matchMaking.helpers({
 	},
 
 	matchMakingStatus: function() {
-		if (Session.get('matchMaking.gameId')) {
+		if (Session.get('matchMaking.kickedOut')) {
+			return "Your opponent has left...";
+		} else if (Session.get('matchMaking.gameId')) {
 			return "You've been matched! Ready?";
 		} else if (Session.get('matchMaking.modeSelection')) {
 			return "Looking for players...";
@@ -327,7 +342,7 @@ Template.matchMaking.helpers({
 	},
 
 	matchMakingStatusClass: function() {
-		if (Session.get('matchMaking.gameId')) {
+		if (Session.get('matchMaking.kickedOut') || Session.get('matchMaking.gameId')) {
 			return 'matched-status';
 		}
 
@@ -343,6 +358,24 @@ Template.matchMaking.events({
 		startMatchMaking();
 	},
 
+	'click [data-action=retry-match-making]:not([disabled])': function(e) {
+		ButtonEnabler.disableButton(e.target);
+
+		Session.set('matchMaking.gameId', null);
+		Session.set('matchMaking.playerIsReady', false);
+		Session.set('matchMaking.kickedOut', false);
+		if (matchMakingTracker) {
+			matchMakingTracker.stop();
+		}
+		if (gameStartTracker) {
+			gameStartTracker.stop();
+		}
+
+		startMatchMaking();
+
+		ButtonEnabler.enableButton(e.target);
+	},
+
 	'click [data-action="start-game"]:not([disabled])': function(e) {
 		ButtonEnabler.disableButton(e.target);
 		Meteor.call('setPlayerIsReady', Session.get('matchMaking.gameId'), function() {
@@ -352,7 +385,7 @@ Template.matchMaking.events({
 
 	'click [data-action=cancel-match-making]:not([disabled])': function(e) {
 		ButtonEnabler.disableButton(e.target);
-		Meteor.call('cancelMatchMaking', function(error, cancelAllowed) {
+		Meteor.call('cancelMatchMaking', Meteor.userId(), function(error, cancelAllowed) {
 			ButtonEnabler.enableButton(e.target);
 			if (cancelAllowed) {
 				closeMatchMaking();

@@ -94,6 +94,9 @@
 			{{#if showStartGame}}
 				<a href="#" data-action="start-game" class="button" {{startGameDisabling}}>Play!</a>
 			{{/if}}
+			{{#if showRetry}}
+				<a href="#" data-action="retry-match-making" class="button">Retry</a>
+			{{/if}}
 			{{#if showCancelMatchMaking}}
 				<a href="#" data-action="cancel-match-making" class="button cancel-button">Cancel</a>
 			{{/if}}

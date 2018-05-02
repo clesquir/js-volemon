@@ -1,3 +1,4 @@
+import {Games} from '/imports/api/games/games.js';
 import {MatchMakers} from '/imports/api/games/matchMakers.js';
 import MatchMaker from '/imports/api/games/server/matchMaking/MatchMaker.js';
 import UserMatch from '/imports/api/games/server/matchMaking/UserMatch.js';
@@ -37,13 +38,21 @@ export default class ImmediateMatchMaker extends MatchMaker {
 	}
 
 	canUnsubscribe(userId) {
-		const match = MatchMakers.findOne(
-			{
-				'matched.users': userId
-			}
-		);
+		const match = MatchMakers.findOne({'matched.users': userId});
 
-		return !match;
+		if (match) {
+			for (let matched of match.matched) {
+				if (matched.users.indexOf(userId) !== -1) {
+					const game = Games.findOne(matched.gameId);
+
+					if (game) {
+						return !game.isReady;
+					}
+				}
+			}
+		}
+
+		return true;
 	}
 
 	unsubscribe(userId) {
@@ -51,12 +60,19 @@ export default class ImmediateMatchMaker extends MatchMaker {
 			return false;
 		}
 
-		const match = MatchMakers.findOne({usersToMatch: userId});
-
+		let match = MatchMakers.findOne({usersToMatch: userId});
 		if (match) {
 			MatchMakers.update(
 				{_id: match._id},
 				{$pull: {usersToMatch: userId}}
+			);
+		}
+
+		match = MatchMakers.findOne({'matched.users': userId});
+		if (match) {
+			MatchMakers.update(
+				{_id: match._id},
+				{$pull: {matched: {users: userId}}}
 			);
 		}
 
