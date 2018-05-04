@@ -14,6 +14,16 @@
 					</div>
 				</div>
 
+				<div class="match-selection" data-action="select-mode-selection" data-mode-selection="2vs2">
+					<div class="match-selection-item match-selection-title">
+						<div>2 VS 2</div>
+						<div class="currently-waiting-match-making {{#if hasPlayersWaiting '2vs2' null}}has-players-waiting-match-making{{/if}}">
+							<div class="currently-waiting-match-making-number">{{numberOfPlayersWaiting "2vs2" null}}</div>
+							<i class="currently-waiting-match-making-icon fa fa-user-circle"></i>
+						</div>
+					</div>
+				</div>
+
 				{{#each tournaments}}
 					<div class="match-selection" data-action="select-mode-selection" data-mode-selection="tournament" data-tournament-id="{{_id}}">
 						<div class="match-selection-item match-selection-title">

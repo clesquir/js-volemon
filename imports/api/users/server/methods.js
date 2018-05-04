@@ -34,8 +34,7 @@ Meteor.methods({
 				}
 			});
 			Players.update({userId: this.userId}, {$set: {name: name}}, {multi: true});
-			Games.update({hostId: this.userId}, {$set: {hostName: name}}, {multi: true});
-			Games.update({clientId: this.userId}, {$set: {clientName: name}}, {multi: true});
+			Games.update({'players.id': this.userId}, {$set: {'players.name': name}}, {multi: true});
 		}
 	},
 

@@ -9,10 +9,7 @@ Meteor.methods({
 	recentGames: function(userId, tournamentId, skip, limit) {
 		//Fetch game ids for these limited games
 		const gameQuery = {
-			$or: [
-				{hostId: userId},
-				{clientId: userId}
-			],
+			'players.id': userId,
 			status: GAME_STATUS_FINISHED
 		};
 
@@ -25,11 +22,9 @@ Meteor.methods({
 			{
 				sort: [['startedAt', 'desc']],
 				fields: {
-					'hostId': 1,
-					'hostName': 1,
+					'gameMode': 1,
+					'players': 1,
 					'hostPoints': 1,
-					'clientId': 1,
-					'clientName': 1,
 					'clientPoints': 1,
 					'createdBy': 1,
 					'startedAt': 1,
@@ -43,19 +38,26 @@ Meteor.methods({
 		const gamesById = {};
 		games.forEach(function(game) {
 			gamesById[game._id] = game;
+			gamesById[game._id].shapes = [];
 		});
 
 		const players = Players.find({gameId: {$in: Object.keys(gamesById)}});
 		for (let gameId in gamesById) {
-			players.forEach(function(player) {
-				if (gameId === player.gameId) {
-					if (gamesById[gameId].hostId === player.userId) {
-						gamesById[gameId].hostShape = player.shape;
-					} else if (gamesById[gameId].clientId === player.userId) {
-						gamesById[gameId].clientShape = player.shape;
+			if (gamesById.hasOwnProperty(gameId)) {
+				players.forEach(function(player) {
+					if (gameId === player.gameId) {
+						if (gamesById[gameId].players[0].id === player.userId) {
+							gamesById[gameId].shapes[0] = player.shape;
+						} else if (gamesById[gameId].players[1].id === player.userId) {
+							gamesById[gameId].shapes[1] = player.shape;
+						} else if (gamesById[gameId].players[2].id === player.userId) {
+							gamesById[gameId].shapes[2] = player.shape;
+						} else if (gamesById[gameId].players[3].id === player.userId) {
+							gamesById[gameId].shapes[3] = player.shape;
+						}
 					}
-				}
-			});
+				});
+			}
 		}
 
 		let eloScores = [];

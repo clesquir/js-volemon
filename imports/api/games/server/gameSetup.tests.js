@@ -1,11 +1,12 @@
-import {Random} from 'meteor/random';
-import {assert} from 'chai';
-import {resetDatabase} from 'meteor/xolvio:cleaner';
-import {joinGame} from '/imports/api/games/server/gameSetup.js';
+import {ONE_VS_ONE_GAME_MODE} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
+import {joinGame} from '/imports/api/games/server/gameSetup.js';
 import {PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_CROWN, PLAYER_SHAPE_OBELISK} from '/imports/api/games/shapeConstants.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
+import {assert} from 'chai';
+import {Random} from 'meteor/random';
+import {resetDatabase} from 'meteor/xolvio:cleaner';
 
 describe('lib/client/gameSetup#joinGame', function() {
 	beforeEach(function() {
@@ -48,7 +49,7 @@ describe('lib/client/gameSetup#joinGame', function() {
 		let exception;
 
 		try {
-			Games.insert({_id: gameId});
+			Games.insert({_id: gameId, gameMode: ONE_VS_ONE_GAME_MODE});
 			Players.insert({userId: Random.id(5), gameId: gameId});
 			Players.insert({userId: Random.id(5), gameId: gameId});
 			joinGame(userId, gameId);
@@ -60,14 +61,14 @@ describe('lib/client/gameSetup#joinGame', function() {
 		assert.propertyVal(exception, 'error', 'not-allowed');
 		assert.propertyVal(exception, 'reason', 'Maximum players reached');
 	});
-	it('updates game clientId and clientName', function() {
+	it('updates game player names', function() {
 		Games.insert({_id: gameId});
 		UserConfigurations.insert({userId: userId, name: username});
 		joinGame(userId, gameId);
 
 		const game = Games.findOne({_id: gameId});
-		assert.equal(userId, game.clientId);
-		assert.equal(username, game.clientName);
+
+		assert.deepEqual([{id: userId, name: username}], game.players);
 	});
 	it('join player', function() {
 		Games.insert({_id: gameId});

@@ -1,5 +1,6 @@
 import GameNotifier from '/imports/api/games/client/GameNotifier.js';
 import MatchMakingGameConfiguration from '/imports/api/games/configuration/MatchMakingGameConfiguration.js';
+import {ONE_VS_ONE_GAME_MODE, TOURNAMENT_GAME_SELECTION, TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
 import {MatchMakers} from '/imports/api/games/matchMakers.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
@@ -35,7 +36,7 @@ const startMatchMaking = function() {
 
 	Meteor.call(
 		'startMatchMaking',
-		Session.get('matchMaking.modeSelection') || '1vs1',
+		Session.get('matchMaking.modeSelection') || ONE_VS_ONE_GAME_MODE,
 		Session.get('matchMaking.tournamentId'),
 		function(error) {}
 	);
@@ -287,9 +288,11 @@ Template.matchMaking.helpers({
 
 	selectedMode: function() {
 		switch (Session.get('matchMaking.modeSelection')) {
-			case '1vs1':
+			case ONE_VS_ONE_GAME_MODE:
 				return '1 VS 1';
-			case 'tournament':
+			case TWO_VS_TWO_GAME_MODE:
+				return '2 VS 2';
+			case TOURNAMENT_GAME_SELECTION:
 				const tournament = PlayableTournaments.findOne({_id: Session.get('matchMaking.tournamentId')});
 
 				if (tournament) {
@@ -302,7 +305,7 @@ Template.matchMaking.helpers({
 
 	selectedTournamentDescription: function() {
 		switch (Session.get('matchMaking.modeSelection')) {
-			case 'tournament':
+			case TOURNAMENT_GAME_SELECTION:
 				const tournament = PlayableTournaments.findOne({_id: Session.get('matchMaking.tournamentId')});
 
 				if (tournament) {

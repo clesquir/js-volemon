@@ -1,4 +1,3 @@
-export const POSSIBLE_NO_PLAYERS = [2];
 export const GAME_FORFEIT_MINIMUM_POINTS = 3;
 export const GAME_MAXIMUM_POINTS = 5;
 export const HOST_POINTS_COLUMN = 'hostPoints';
@@ -32,3 +31,7 @@ export const NORMAL_SCALE_BONUS = 1;
 export const SMALL_SCALE_PLAYER_BONUS = 0.5;
 export const SMALL_SCALE_BALL_BONUS = 0.75;
 export const BIG_SCALE_BONUS = 1.5;
+
+export const ONE_VS_ONE_GAME_MODE = '1vs1';
+export const TWO_VS_TWO_GAME_MODE = '2vs2';
+export const TOURNAMENT_GAME_SELECTION = 'tournament';
