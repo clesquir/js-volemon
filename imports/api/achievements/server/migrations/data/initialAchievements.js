@@ -249,6 +249,7 @@ export const INITIAL_ACHIVEMENTS = [
 		"description": "# of points scored when both players are big",
 		"type": TYPE_QUANTITY,
 		"displayOrder": 24,
+		"deniedForTwoVersusTwo": true,
 		"levels": [{"level": 1, "number": 1}, {"level": 2, "number": 2}, {"level": 3, "number": 3}]
 	},
 	{
@@ -268,6 +269,7 @@ export const INITIAL_ACHIVEMENTS = [
 		"description": "# of points scored when paused",
 		"type": TYPE_QUANTITY,
 		"displayOrder": 26,
+		"deniedForTwoVersusTwo": true,
 		"levels": [{"level": 1, "number": 1}, {"level": 2, "number": 10}, {"level": 3, "number": 20}]
 	},
 	{
@@ -286,6 +288,7 @@ export const INITIAL_ACHIVEMENTS = [
 		"description": "Bonuses combo: Invisible ball, both players either invisible or cloaked",
 		"type": TYPE_TIMES,
 		"displayOrder": 28,
+		"deniedForTwoVersusTwo": true,
 		"levels": [{"level": 1, "number": 1}, {"level": 2, "number": 2}, {"level": 3, "number": 3}]
 	},
 	{
@@ -295,6 +298,7 @@ export const INITIAL_ACHIVEMENTS = [
 		"description": "# of won games against opponent with ELO 150 points higher",
 		"type": TYPE_QUANTITY,
 		"displayOrder": 29,
+		"deniedForTwoVersusTwo": true,
 		"levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 20}]
 	},
 	{
@@ -342,6 +346,7 @@ export const INITIAL_ACHIVEMENTS = [
 		"type": TYPE_QUANTITY,
 		"displayOrder": 34,
 		"conditionalForTournamentGame": true,
+		"deniedForTwoVersusTwo": true,
 		"levels": [{"level": 1, "number": 1}, {"level": 2, "number": 5}, {"level": 3, "number": 10}]
 	},
 	{
@@ -360,6 +365,7 @@ export const INITIAL_ACHIVEMENTS = [
 		"description": "Bonuses combo: Small ball, both players are small",
 		"type": TYPE_TIMES,
 		"displayOrder": 36,
+		"deniedForTwoVersusTwo": true,
 		"levels": [{"level": 1, "number": 1}, {"level": 2, "number": 5}, {"level": 3, "number": 10}]
 	},
 	{

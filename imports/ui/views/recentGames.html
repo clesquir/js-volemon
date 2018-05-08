@@ -12,8 +12,8 @@
 					</div>
 				</div>
 				<div class="card-row card-row-top">
-					<div class="card-cell card-title card-cell-ellipsis">{{hostNames}}</div>
-					<div class="card-cell card-title card-cell-ellipsis">{{clientNames}}</div>
+					<div class="card-cell card-title card-cell-ellipsis">{{{hostNames}}}</div>
+					<div class="card-cell card-title card-cell-ellipsis">{{{clientNames}}}</div>
 				</div>
 				<div class="card-row">
 					<div class="card-cell recent-game-shape-cell recent-game-shape-cell-host">
@@ -35,14 +35,14 @@
 						<div class="recent-game-shape-container">
 							<div class="recent-game-shape-icon"></div>
 							<div class="recent-game-shape-shape">
-								<div class="shape-selector-container shape-{{shape 1}}">
-									<div class="shape-content-scroller"></div>
-								</div>
 								{{#if shape 3}}
 									<div class="shape-selector-container shape-{{shape 3}}">
 										<div class="shape-content-scroller"></div>
 									</div>
 								{{/if}}
+								<div class="shape-selector-container shape-{{shape 1}}">
+									<div class="shape-content-scroller"></div>
+								</div>
 							</div>
 						</div>
 					</div>

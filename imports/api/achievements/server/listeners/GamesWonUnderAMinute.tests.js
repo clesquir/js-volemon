@@ -11,6 +11,7 @@ import {resetDatabase} from 'meteor/xolvio:cleaner';
 describe('AchievementListener#GamesWonUnderAMinute', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
+	const opponentUserId = Random.id(5);
 	const assertGamesWonUnderAMinuteUserAchievementNumberEquals = function(number) {
 		const achievement = UserAchievements.findOne();
 		assert.notEqual(undefined, achievement);
@@ -25,7 +26,7 @@ describe('AchievementListener#GamesWonUnderAMinute', function() {
 	});
 
 	it('creates achievement if not created on player won', function() {
-		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000});
+		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
@@ -37,7 +38,7 @@ describe('AchievementListener#GamesWonUnderAMinute', function() {
 	});
 
 	it('do not create achievement if not created if game duration not under a minute on player won', function() {
-		Games.insert({_id: gameId, createdBy: userId, gameDuration: 60000});
+		Games.insert({_id: gameId, createdBy: userId, gameDuration: 60000, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
@@ -47,7 +48,7 @@ describe('AchievementListener#GamesWonUnderAMinute', function() {
 	});
 
 	it('do not create achievement if not created if not gameId on player won', function() {
-		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000});
+		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
@@ -57,7 +58,7 @@ describe('AchievementListener#GamesWonUnderAMinute', function() {
 	});
 
 	it('do not create achievement if not created if not userId on player won', function() {
-		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000});
+		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
@@ -67,7 +68,7 @@ describe('AchievementListener#GamesWonUnderAMinute', function() {
 	});
 
 	it('update achievement on player won', function() {
-		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000});
+		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_GAMES_WON_UNDER_A_MINUTE, number: 1});
 
@@ -78,7 +79,7 @@ describe('AchievementListener#GamesWonUnderAMinute', function() {
 	});
 
 	it('do not update achievement if game duration not under a minute on player won', function() {
-		Games.insert({_id: gameId, createdBy: userId, gameDuration: 60000});
+		Games.insert({_id: gameId, createdBy: userId, gameDuration: 60000, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_GAMES_WON_UNDER_A_MINUTE, number: 1});
 
@@ -89,7 +90,7 @@ describe('AchievementListener#GamesWonUnderAMinute', function() {
 	});
 
 	it('do not update achievement if not gameId on player won', function() {
-		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000});
+		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_GAMES_WON_UNDER_A_MINUTE, number: 1});
 
@@ -100,7 +101,7 @@ describe('AchievementListener#GamesWonUnderAMinute', function() {
 	});
 
 	it('do not update achievement if not userId on player won', function() {
-		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000});
+		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000, players: [{id: userId}, {id: opponentUserId}]});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_GAMES_WON_UNDER_A_MINUTE, number: 1});
 
 		const listener = (new GamesWonUnderAMinute()).forGame(gameId, userId);

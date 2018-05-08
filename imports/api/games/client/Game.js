@@ -78,13 +78,9 @@ export default class Game {
 	}
 
 	getCurrentPlayer() {
-		if (this.gameData.isUserHost()) {
-			return this.player1;
-		} else if (this.gameData.isUserClient()) {
-			return this.player2;
-		}
+		const key = this.gameData.getCurrentPlayerKey();
 
-		return null;
+		return this.getPlayerFromKey(key);
 	}
 
 	getPlayerFromKey(playerKey) {
@@ -92,9 +88,31 @@ export default class Game {
 			return this.player1;
 		} else if (playerKey === 'player2') {
 			return this.player2;
-		} else {
-			return null;
+		} else if (playerKey === 'player3') {
+			return this.player3;
+		} else if (playerKey === 'player4') {
+			return this.player4;
 		}
+
+		return null;
+	}
+
+	isPlayerKeyHostSide(playerKey) {
+		return (playerKey === 'player1' || playerKey === 'player3');
+	}
+
+	isPlayerKeyClientSide(playerKey) {
+		return (playerKey === 'player2' || playerKey === 'player4');
+	}
+
+	playerPointSide(playerKey) {
+		if (this.isPlayerKeyHostSide(playerKey)) {
+			return CLIENT_POINTS_COLUMN;
+		} else if (this.isPlayerKeyClientSide(playerKey)) {
+			return HOST_POINTS_COLUMN;
+		}
+
+		return null;
 	}
 
 	playerInitialPolygonFromKey(playerKey) {
@@ -146,6 +164,10 @@ export default class Game {
 		if (!this.gameHasEnded) {
 			this.reinitPlayer(this.player1);
 			this.reinitPlayer(this.player2);
+			if (this.gameData.isTwoVersusTwo()) {
+				this.reinitPlayer(this.player3);
+				this.reinitPlayer(this.player4);
+			}
 
 			this.deviceController.stopMonitoring();
 			Session.set('userCurrentlyPlaying', false);
@@ -216,6 +238,46 @@ export default class Game {
 			this.collisions.clientPlayerCollisionGroup
 		);
 
+		if (this.gameData.isTwoVersusTwo()) {
+			/**
+			 * Player 3
+			 */
+			const player3Key = 'player3';
+			this.player3 = this.engine.addSprite(
+				this.gameConfiguration.player3InitialX(),
+				this.gameConfiguration.playerInitialY(),
+				'shape-' + this.playerShapeFromKey(player3Key)
+			);
+			this.player3.data.key = player3Key;
+			this.initPlayer(
+				this.player3,
+				this.gameConfiguration.player3InitialX(),
+				this.gameConfiguration.playerInitialY(),
+				this.collisions.hostPlayerCollisionGroup
+			);
+			this.addPlayerCanJumpOnBody(this.player1, this.player3.body);
+			this.addPlayerCanJumpOnBody(this.player3, this.player1.body);
+
+			/**
+			 * Player 4
+			 */
+			const player4Key = 'player4';
+			this.player4 = this.engine.addSprite(
+				this.gameConfiguration.player4InitialX(),
+				this.gameConfiguration.playerInitialY(),
+				'shape-' + this.playerShapeFromKey(player4Key)
+			);
+			this.player4.data.key = player4Key;
+			this.initPlayer(
+				this.player4,
+				this.gameConfiguration.player4InitialX(),
+				this.gameConfiguration.playerInitialY(),
+				this.collisions.clientPlayerCollisionGroup
+			);
+			this.addPlayerCanJumpOnBody(this.player2, this.player4.body);
+			this.addPlayerCanJumpOnBody(this.player4, this.player2.body);
+		}
+
 		this.createBall(
 			this.gameConfiguration.ballInitialHostX(),
 			this.gameConfiguration.ballInitialY()
@@ -224,6 +286,10 @@ export default class Game {
 		this.levelComponents.createLevelComponents();
 		this.addPlayerCanJumpOnBody(this.player1, this.levelComponents.groundBound);
 		this.addPlayerCanJumpOnBody(this.player2, this.levelComponents.groundBound);
+		if (this.gameData.isTwoVersusTwo()) {
+			this.addPlayerCanJumpOnBody(this.player3, this.levelComponents.groundBound);
+			this.addPlayerCanJumpOnBody(this.player4, this.levelComponents.groundBound);
+		}
 
 		this.createCountdownText();
 	}
@@ -415,6 +481,10 @@ export default class Game {
 	respawnSprites() {
 		this.spawnPlayer(this.player1);
 		this.spawnPlayer(this.player2);
+		if (this.gameData.isTwoVersusTwo()) {
+			this.spawnPlayer(this.player3);
+			this.spawnPlayer(this.player4);
+		}
 		this.spawnBall();
 	}
 
@@ -453,9 +523,13 @@ export default class Game {
 
 		this.engine.updatePlayerEye(this.player1, this.ball);
 		this.engine.updatePlayerEye(this.player2, this.ball);
+		if (this.gameData.isTwoVersusTwo()) {
+			this.engine.updatePlayerEye(this.player3, this.ball);
+			this.engine.updatePlayerEye(this.player4, this.ball);
+		}
 
 		//Do not allow ball movement if it is frozen
-		if (this.gameData.isUserHost() && this.ball.data.isFrozen) {
+		if (this.gameData.isUserCreator() && this.ball.data.isFrozen) {
 			this.engine.setHorizontalSpeed(this.ball, 0);
 			this.engine.setVerticalSpeed(this.ball, 0);
 		}
@@ -471,7 +545,7 @@ export default class Game {
 
 			this.updateCountdown();
 
-			if (this.gameData.isUserHost()) {
+			if (this.gameData.isUserCreator()) {
 				this.sendBallPosition();
 			}
 		} else if (this.gameData.hasGameAborted()) {
@@ -532,7 +606,7 @@ export default class Game {
 		let playerPositionData = this.engine.getPositionData(player);
 		let playerInterval = PLAYER_INTERVAL;
 
-		playerPositionData.isHost = this.gameData.isUserHost();
+		playerPositionData.key = player.data.key;
 		playerPositionData.doingDropShot = player.data.doingDropShot;
 
 		if (JSON.stringify(this.lastPlayerPositionData) === JSON.stringify(playerPositionData)) {
@@ -543,7 +617,7 @@ export default class Game {
 		this.lastPlayerUpdate = this.gameStreamBundler.addToBundledStreamsAtFrequence(
 			this.lastPlayerUpdate,
 			playerInterval,
-			'moveOppositePlayer',
+			'moveClientPlayer',
 			playerPositionData
 		);
 	}
@@ -573,16 +647,16 @@ export default class Game {
 			Math.round(this.engine.getVerticalSpeed(player)) < 0 &&
 			!this.engine.hasSurfaceTouchingPlayerBottom(player) &&
 			(
-				(playerKey === 'player1' && Math.round(this.engine.getHorizontalSpeed(player)) > 0) ||
-				(playerKey === 'player2' && Math.round(this.engine.getHorizontalSpeed(player)) < 0)
+				(this.isPlayerKeyHostSide(playerKey) && Math.round(this.engine.getHorizontalSpeed(player)) > 0) ||
+				(this.isPlayerKeyClientSide(playerKey) && Math.round(this.engine.getHorizontalSpeed(player)) < 0)
 			)
 		);
 	}
 
 	isBallInFrontOfPlayer(ball, player, playerKey) {
 		return (
-			(playerKey === 'player1' && this.engine.getXPosition(player) < this.engine.getXPosition(ball)) ||
-			(playerKey === 'player2' && this.engine.getXPosition(ball) < this.engine.getXPosition(player))
+			(this.isPlayerKeyHostSide(playerKey) && this.engine.getXPosition(player) < this.engine.getXPosition(ball)) ||
+			(this.isPlayerKeyClientSide(playerKey) && this.engine.getXPosition(ball) < this.engine.getXPosition(player))
 		);
 	}
 
@@ -620,8 +694,8 @@ export default class Game {
 
 	ballMovingTowardsPlayer(ball, playerKey) {
 		return (
-			(playerKey === 'player1' && this.engine.getHorizontalSpeed(ball) < 0) ||
-			(playerKey === 'player2' && this.engine.getHorizontalSpeed(ball) > 0)
+			(this.isPlayerKeyHostSide(playerKey) && this.engine.getHorizontalSpeed(ball) < 0) ||
+			(this.isPlayerKeyClientSide(playerKey) && this.engine.getHorizontalSpeed(ball) > 0)
 		);
 	}
 
@@ -629,25 +703,37 @@ export default class Game {
 		this.engine.setVerticalSpeed(ball, BALL_VERTICAL_SPEED_ON_PLAYER_HIT);
 	}
 
-	canAddGamePoint(playerKey) {
+	canAddGamePoint() {
 		return (
 			this.gameResumed === true &&
-			this.gameData.isUserHost() &&
-			this.getPlayerFromKey(playerKey) &&
-			!this.getPlayerFromKey(playerKey).data.isInvincible
+			this.gameData.isUserCreator()
 		);
 	}
 
+	canAddPointOnSide(side) {
+		if (side === CLIENT_POINTS_COLUMN) {
+			return !(
+				(this.getPlayerFromKey('player1') && this.getPlayerFromKey('player1').data.isInvincible) ||
+				(this.getPlayerFromKey('player3') && this.getPlayerFromKey('player3').data.isInvincible)
+			);
+		} else {
+			return !(
+				(this.getPlayerFromKey('player2') && this.getPlayerFromKey('player2').data.isInvincible) ||
+				(this.getPlayerFromKey('player4') && this.getPlayerFromKey('player4').data.isInvincible)
+			);
+		}
+	}
+
 	hitGround(ball) {
-		let playerKey;
+		let pointSide;
 
 		if (ball.x < this.gameConfiguration.width() / 2) {
-			playerKey = 'player1';
+			pointSide = CLIENT_POINTS_COLUMN;
 		} else {
-			playerKey = 'player2';
+			pointSide = HOST_POINTS_COLUMN;
 		}
 
-		if (this.canAddGamePoint(playerKey)) {
+		if (this.canAddGamePoint() && this.canAddPointOnSide(pointSide)) {
 			//Send to client
 			this.gameStreamBundler.emitStream(
 				'showBallHitPoint-' + this.gameId,
@@ -664,19 +750,11 @@ export default class Game {
 				this.engine.getHeight(this.ball)
 			);
 
-			this.addGamePoint(playerKey);
+			this.addGamePoint(pointSide);
 		}
 	}
 
-	addGamePoint(playerKey) {
-		let pointSide;
-
-		if (playerKey === 'player1') {
-			pointSide = CLIENT_POINTS_COLUMN;
-		} else {
-			pointSide = HOST_POINTS_COLUMN;
-		}
-
+	addGamePoint(pointSide) {
 		this.gameResumed = false;
 
 		Meteor.apply('addGamePoints', [this.gameId, pointSide], {noRetry: true}, () => {});
@@ -741,14 +819,8 @@ export default class Game {
 		return this.gameData.isGameStatusStarted();
 	}
 
-	moveOppositePlayer(data) {
-		let player;
-
-		if (data.isHost) {
-			player = this.player1;
-		} else {
-			player = this.player2;
-		}
+	moveClientPlayer(data) {
+		let player = this.getPlayerFromKey(data.key);
 
 		if (!this.gameInitiated || !player || !this.gameIsOnGoing()) {
 			return;
@@ -800,6 +872,10 @@ export default class Game {
 	stopGame() {
 		this.engine.freeze(this.player1);
 		this.engine.freeze(this.player2);
+		if (this.gameData.isTwoVersusTwo()) {
+			this.engine.freeze(this.player3);
+			this.engine.freeze(this.player4);
+		}
 		this.engine.freeze(this.ball);
 
 		this.gameBonus.onGameStop();

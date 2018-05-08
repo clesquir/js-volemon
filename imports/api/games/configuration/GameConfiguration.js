@@ -200,6 +200,14 @@ export default class GameConfiguration {
 		return this.levelConfiguration.player2InitialX();
 	}
 
+	player3InitialX() {
+		return this.levelConfiguration.player3InitialX();
+	}
+
+	player4InitialX() {
+		return this.levelConfiguration.player4InitialX();
+	}
+
 	ballInitialY() {
 		return this.levelConfiguration.ballInitialY();
 	}

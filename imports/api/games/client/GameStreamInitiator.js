@@ -39,9 +39,9 @@ export default class GameStreamInitiator {
 				bundledData.moveClientBall.timestamp = timestamp;
 				this.moveClientBall.call(this, bundledData.moveClientBall);
 			}
-			if (bundledData.moveOppositePlayer) {
-				bundledData.moveOppositePlayer.timestamp = timestamp;
-				this.moveOppositePlayer.call(this, bundledData.moveOppositePlayer);
+			if (bundledData.moveClientPlayer) {
+				bundledData.moveClientPlayer.timestamp = timestamp;
+				this.moveClientPlayer.call(this, bundledData.moveClientPlayer);
 			}
 			if (bundledData.createBonus) {
 				this.createBonus.call(this, bundledData.createBonus);
@@ -65,11 +65,11 @@ export default class GameStreamInitiator {
 		}
 	}
 
-	moveOppositePlayer(playerData) {
+	moveClientPlayer(playerData) {
 		let gameInitiator = this.gameInitiator;
 
 		if (gameInitiator.hasActiveGame()) {
-			gameInitiator.currentGame.moveOppositePlayer(playerData);
+			gameInitiator.currentGame.moveClientPlayer(playerData);
 		}
 	}
 

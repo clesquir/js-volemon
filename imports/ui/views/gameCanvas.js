@@ -29,7 +29,7 @@ Template.gameCanvas.helpers({
 
 	clientNames: function() {
 		if (this.game.gameMode === TWO_VS_TWO_GAME_MODE) {
-			return this.game.players[1].name + ' / ' + this.game.players[3].name;
+			return this.game.players[3].name + ' / ' + this.game.players[1].name;
 		} else {
 			return this.game.players[1].name;
 		}

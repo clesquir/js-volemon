@@ -17,18 +17,18 @@ Template.gamesList.helpers({
 	},
 
 	hostNames: function() {
-		if (this.game.gameMode === TWO_VS_TWO_GAME_MODE) {
-			return this.game.players[0].name + '<br />' + this.game.players[2].name;
+		if (this.gameMode === TWO_VS_TWO_GAME_MODE) {
+			return this.players[0].name + '<br />' + this.players[2].name;
 		} else {
-			return this.game.players[0].name;
+			return this.players[0].name;
 		}
 	},
 
 	clientNames: function() {
-		if (this.game.gameMode === TWO_VS_TWO_GAME_MODE) {
-			return this.game.players[1].name + '<br />' + this.game.players[3].name;
+		if (this.gameMode === TWO_VS_TWO_GAME_MODE) {
+			return this.players[3].name + '<br />' + this.players[1].name;
 		} else {
-			return this.game.players[1].name;
+			return this.players[1].name;
 		}
 	},
 

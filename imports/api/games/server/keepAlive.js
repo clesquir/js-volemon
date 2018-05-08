@@ -10,36 +10,31 @@ const VACANT_GAME_STREAMS_REMOVAL_INTERVAL = 300000;
 
 export const startKeepAlive = function(gameId, stream) {
 	let game = Games.findOne(gameId);
-	let players = Players.find({gameId: gameId});
-	let hostPlayer = null;
-	let clientPlayer = null;
-	players.forEach(function(player) {
-		if (game.createdBy === player.userId) {
-			hostPlayer = player;
-		} else {
-			clientPlayer = player;
-		}
-	});
 
 	stream.on('sendBundledData-' + gameId, Meteor.bindEnvironment((bundledData) => {
-		if (bundledData.moveOppositePlayer) {
+		const moveClientPlayer = bundledData.moveClientPlayer;
+		if (moveClientPlayer) {
 			let movedPlayer = null;
-			if (bundledData.moveOppositePlayer.isHost) {
-				movedPlayer = hostPlayer;
-			} else {
-				movedPlayer = clientPlayer;
+			if (moveClientPlayer.key === 'player1') {
+				movedPlayer = game.players[0];
+			} else if (moveClientPlayer.key === 'player2') {
+				movedPlayer = game.players[1];
+			} else if (moveClientPlayer.key === 'player3') {
+				movedPlayer = game.players[3];
+			} else if (moveClientPlayer.key === 'player4') {
+				movedPlayer = game.players[4];
 			}
 
 			if (movedPlayer) {
-				if (!lastKeepAliveUpdateByPlayerIds[movedPlayer._id]) {
-					lastKeepAliveUpdateByPlayerIds[movedPlayer._id] = 0;
+				if (!lastKeepAliveUpdateByPlayerIds[movedPlayer.id]) {
+					lastKeepAliveUpdateByPlayerIds[movedPlayer.id] = 0;
 				}
 
-				lastKeepAliveUpdateByPlayerIds[movedPlayer._id] = callAtFrequence(
-					lastKeepAliveUpdateByPlayerIds[movedPlayer._id],
+				lastKeepAliveUpdateByPlayerIds[movedPlayer.id] = callAtFrequence(
+					lastKeepAliveUpdateByPlayerIds[movedPlayer.id],
 					KEEP_ALIVE_INTERVAL,
 					() => {
-						Players.update({_id: movedPlayer._id}, {$set: {lastKeepAlive: getUTCTimeStamp()}});
+						Players.update({userId: movedPlayer.id}, {$set: {lastKeepAlive: getUTCTimeStamp()}});
 					}
 				);
 			}

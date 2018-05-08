@@ -170,3 +170,13 @@ $gold-color: #eadc5e;
 	background-size: 16px 16px;
 	background-repeat: no-repeat;
 }
+
+.denied-achievement-for-two-versus-two {
+	display: inline-block;
+	vertical-align: text-top;
+	width: 16px;
+	height: 16px;
+	background-image: url("/assets/two-versus-two-disabled.png");
+	background-size: 16px 16px;
+	background-repeat: no-repeat;
+}

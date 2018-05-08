@@ -1,14 +1,11 @@
 import {Achievements} from '/imports/api/achievements/achievements.js';
 import {
-	ACHIEVEMENT_ALL_BONUSES_IN_A_GAME,
+	ACHIEVEMENT_BATTLE_OF_THE_GIANTS,
+	ACHIEVEMENT_BLANK_SCREEN,
+	ACHIEVEMENT_DAVID_VS_GOLIATH,
 	ACHIEVEMENT_FULL_STOP,
-	ACHIEVEMENT_GAMES_WON_UNDER_A_MINUTE,
-	ACHIEVEMENT_HOW_TO_TIE_A_TIE,
-	ACHIEVEMENT_INVINCIBLE_IN_A_LIFETIME,
-	ACHIEVEMENT_NINJA,
-	ACHIEVEMENT_RANDOM_IN_A_GAME,
-	ACHIEVEMENT_SHUTOUTS,
-	ACHIEVEMENT_SNOOZER
+	ACHIEVEMENT_I_WAS_THERE_WAITING,
+	ACHIEVEMENT_TEENY_TINY_WORLD
 } from '/imports/api/achievements/constants.js';
 import {Meteor} from 'meteor/meteor';
 
@@ -16,25 +13,22 @@ Meteor.startup(function() {
 	/**
 	 * Migration for updating achievements
 	 */
-	updateConditionalForTournamentGame(ACHIEVEMENT_SHUTOUTS);
-	updateConditionalForTournamentGame(ACHIEVEMENT_ALL_BONUSES_IN_A_GAME);
-	updateConditionalForTournamentGame(ACHIEVEMENT_INVINCIBLE_IN_A_LIFETIME);
-	updateConditionalForTournamentGame(ACHIEVEMENT_GAMES_WON_UNDER_A_MINUTE);
-	updateConditionalForTournamentGame(ACHIEVEMENT_RANDOM_IN_A_GAME);
-	updateConditionalForTournamentGame(ACHIEVEMENT_HOW_TO_TIE_A_TIE);
-	updateConditionalForTournamentGame(ACHIEVEMENT_NINJA);
-	updateConditionalForTournamentGame(ACHIEVEMENT_SNOOZER);
-	updateConditionalForTournamentGame(ACHIEVEMENT_FULL_STOP);
+	updateDeniedForTwoVersusTwoGame(ACHIEVEMENT_BATTLE_OF_THE_GIANTS);
+	updateDeniedForTwoVersusTwoGame(ACHIEVEMENT_I_WAS_THERE_WAITING);
+	updateDeniedForTwoVersusTwoGame(ACHIEVEMENT_BLANK_SCREEN);
+	updateDeniedForTwoVersusTwoGame(ACHIEVEMENT_DAVID_VS_GOLIATH);
+	updateDeniedForTwoVersusTwoGame(ACHIEVEMENT_FULL_STOP);
+	updateDeniedForTwoVersusTwoGame(ACHIEVEMENT_TEENY_TINY_WORLD);
 });
 
-const updateConditionalForTournamentGame = function(id) {
+const updateDeniedForTwoVersusTwoGame = function(id) {
 	const achievement = Achievements.findOne({_id: id});
-	if (achievement !== undefined && !achievement.conditionalForTournamentGame) {
+	if (achievement !== undefined && !achievement.deniedForTwoVersusTwo) {
 		Achievements.update(
 			{_id: id},
 			{
 				$set: {
-					conditionalForTournamentGame: true
+					deniedForTwoVersusTwo: true
 				}
 			}
 		);

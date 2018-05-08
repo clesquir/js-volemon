@@ -11,11 +11,12 @@ export default class GameReaction {
 		this.gameId = gameId;
 		this.stream = stream;
 		this.gameData = gameData;
+		this.reactionTimeout = {};
 	}
 
 	init() {
 		this.stream.on('reaction-' + this.gameId, (data) => {
-			this.triggerReaction(data.isHost, data.reactionIcon, data.reactionText);
+			this.triggerReaction(data.playerKey, data.reactionIcon, data.reactionText);
 		});
 
 		$(document).on(
@@ -25,7 +26,7 @@ export default class GameReaction {
 					const keymap = String.fromCharCode(e.which);
 
 					if (!this.gameData.isUserViewer() && $.isNumeric(keymap)) {
-						this.onReactionSelection($(`div[data-reaction-keymap="${keymap}"]:first`), this.gameData.isUserHost());
+						this.onReactionSelection($(`div[data-reaction-keymap="${keymap}"]:first`));
 					}
 				},
 				700,
@@ -49,60 +50,54 @@ export default class GameReaction {
 
 	/**
 	 * @param {Element} reactionButton
-	 * @param {boolean} isUserHost
 	 */
-	onReactionSelection(reactionButton, isUserHost) {
+	onReactionSelection(reactionButton) {
 		this.emitReaction(
-			isUserHost,
+			this.gameData.getCurrentPlayerKey(),
 			reactionButton.attr('data-reaction-icon'),
 			reactionButton.attr('data-reaction-text')
 		);
 	}
 
 	/**
-	 * @param {boolean} isHost
+	 * @param {boolean} playerKey
 	 * @param {string} reactionIcon
 	 * @param {string} reactionText
 	 */
-	emitReaction(isHost, reactionIcon, reactionText) {
+	emitReaction(playerKey, reactionIcon, reactionText) {
 		this.stream.emit(
 			'reaction-' + this.gameId,
 			{
-				isHost: isHost,
+				playerKey: playerKey,
 				reactionIcon: reactionIcon,
 				reactionText: reactionText
 			}
 		);
-		this.triggerReaction(isHost, reactionIcon, reactionText);
+		this.triggerReaction(playerKey, reactionIcon, reactionText);
 	}
 
 	/**
-	 * @param {boolean} isHost
+	 * @param {boolean} playerKey
 	 * @param {string} reactionIcon
 	 * @param {string} reactionText
 	 */
-	triggerReaction(isHost, reactionIcon, reactionText) {
-		let selector = '#reaction-from-client .received-reaction-item';
-		if (isHost) {
-			selector = '#reaction-from-host .received-reaction-item';
-			Meteor.clearTimeout(this.hostReactionTimeout);
-		} else {
-			Meteor.clearTimeout(this.clientReactionTimeout);
-		}
+	triggerReaction(playerKey, reactionIcon, reactionText) {
+		const reactionListItem = $(`#reaction-from-${playerKey} .received-reaction-item`).first();
 
-		const reactionListItem = $(selector).first();
+		Meteor.clearTimeout(this.reactionTimeout[playerKey]);
+
 		if (reactionListItem.is('.reaction-shown')) {
 			reactionListItem.removeClass('reaction-shown');
 
 			Meteor.setTimeout(() => {
-				this.showReaction(reactionListItem, isHost, reactionIcon, reactionText);
+				this.showReaction(reactionListItem, playerKey, reactionIcon, reactionText);
 			}, 200);
 		} else {
-			this.showReaction(reactionListItem, isHost, reactionIcon, reactionText);
+			this.showReaction(reactionListItem, playerKey, reactionIcon, reactionText);
 		}
 	}
 
-	showReaction(reactionListItem, isHost, reactionIcon, reactionText) {
+	showReaction(reactionListItem, playerKey, reactionIcon, reactionText) {
 		reactionListItem.addClass('reaction-shown');
 		reactionListItem.empty();
 
@@ -123,15 +118,9 @@ export default class GameReaction {
 			);
 		}
 
-		const timeout = Meteor.setTimeout(() => {
+		this.reactionTimeout[playerKey] = Meteor.setTimeout(() => {
 			reactionListItem.removeClass('reaction-shown');
 		}, 2000);
-
-		if (isHost) {
-			this.hostReactionTimeout = timeout;
-		} else {
-			this.clientReactionTimeout = timeout;
-		}
 	}
 
 	stop() {

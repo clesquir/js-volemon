@@ -81,7 +81,7 @@ Template.recentGames.helpers({
 
 	clientNames: function() {
 		if (this.gameMode === TWO_VS_TWO_GAME_MODE) {
-			return this.players[1].name + '<br />' + this.players[3].name;
+			return this.players[3].name + '<br />' + this.players[1].name;
 		} else {
 			return this.players[1].name;
 		}

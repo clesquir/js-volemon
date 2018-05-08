@@ -6,16 +6,17 @@ import {
 	playerHasNotRepliedRematch,
 	playerLeftGame
 } from '/imports/api/games/client/gameSetup.js';
+import {TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {
-	forfeitPlayerName,
-	getWinnerName,
+	forfeitSide,
 	hasGameStatusEndedWithAWinner,
 	isGamePlayer,
 	isGameStatusFinished,
 	isGameStatusForfeit,
-	isGameStatusTimeout
+	isGameStatusTimeout,
+	winnerSide
 } from '/imports/api/games/utils.js';
 import {playersCanPlayTournament} from '/imports/api/tournaments/utils.js';
 import CardSwitcher from '/imports/lib/client/CardSwitcher.js';
@@ -67,6 +68,37 @@ Template.afterGame.helpers({
 		return !!this.game.tournamentId;
 	},
 
+	isTwoVersusTwo: function() {
+		return this.game.gameMode === TWO_VS_TWO_GAME_MODE;
+	},
+
+	playersList: function(playersCollection) {
+		if (this.game.gameMode === TWO_VS_TWO_GAME_MODE) {
+			const players = {};
+
+			playersCollection.forEach((player) => {
+				if (this.game.players[0].id === player.userId) {
+					players[0] = player;
+				} else if (this.game.players[1].id === player.userId) {
+					players[1] = player;
+				} else if (this.game.players[2].id === player.userId) {
+					players[2] = player;
+				} else if (this.game.players[3].id === player.userId) {
+					players[3] = player;
+				}
+			});
+
+			return [
+				players[0],
+				players[2],
+				players[3],
+				players[1],
+			];
+		} else {
+			return playersCollection;
+		}
+	},
+
 	gameDurations: function() {
 		const pointsDuration = Array.from(this.game.pointsDuration);
 		const durationsSorted = Array.from(this.game.pointsDuration).sort(function(a, b) {
@@ -92,13 +124,26 @@ Template.afterGame.helpers({
 		}).join('<span class="game-duration-separator"> &#8226; </span>');
 	},
 
+	afterGameColorClass: function() {
+		if (isGameStatusFinished(this.game.status)) {
+			switch(winnerSide(this.game)) {
+				case 'Red':
+					return 'game-won-red-color';
+				case 'Blue':
+					return 'game-won-blue-color';
+			}
+		}
+
+		return '';
+	},
+
 	getAfterGameTitle: function() {
 		if (isGameStatusTimeout(this.game.status)) {
 			return 'The game has timed out...';
 		} else if (isGameStatusForfeit(this.game.status)) {
-			return forfeitPlayerName(this.game) + ' has forfeited';
+			return forfeitSide(this.game) + ' has forfeited';
 		} else if (isGameStatusFinished(this.game.status)) {
-			return getWinnerName(this.game) + ' wins';
+			return winnerSide(this.game) + ' wins';
 		}
 	},
 

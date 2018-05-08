@@ -118,6 +118,7 @@ export default class Environment {
 	}
 
 	overrideGame() {
+		this.gameData.isUserCreator = () => {return true;};
 		this.gameData.isUserHost = () => {return true;};
 		this.gameData.isGameStatusStarted = () => {return true;};
 		this.gameData.getPlayerShapeFromKey = () => {return this.playerShape;};
@@ -137,7 +138,8 @@ export default class Environment {
 		const maxY = 465;
 		let y = Math.floor(Math.random() * (maxY - minY)) + minY;
 
-		this.game.moveOppositePlayer({
+		this.game.moveClientPlayer({
+			key: 'player2',
 			x: x,
 			y: y,
 			velocityX: (this.game.player2.x > x ? -100 : 100),

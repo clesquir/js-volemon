@@ -3,6 +3,10 @@ import PlayerWon from '/imports/api/games/events/PlayerWon.js';
 import GameListener from './GameListener.js';
 
 export default class DavidVsGoliath extends GameListener {
+	allowedFor2Vs2() {
+		return false;
+	}
+
 	addListeners() {
 		this.addListener(PlayerWon.prototype.constructor.name, this.onPlayerWon);
 	}

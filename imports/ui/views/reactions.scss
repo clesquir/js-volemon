@@ -52,6 +52,10 @@
 		display: flex;
 		justify-content: center;
 
+		&.received-reaction-2vs2 {
+			width: 25%;
+		}
+
 		@include horizontal-breakpoint(tablet) {
 			top: 0;
 		}
@@ -72,6 +76,11 @@
 				&:before {
 					content: "";
 					position: absolute;
+					top: 10px;
+					left: -20px;
+					border-right: 20px solid $text-color;
+					border-top: 2px solid transparent;
+					border-bottom: 10px solid transparent;
 				}
 
 				.reaction-icon {
@@ -81,28 +90,20 @@
 		}
 	}
 
-	#reaction-from-host {
+	#reaction-from-player1 {
 		left: 0;
-
-		.reaction-list-item:before {
-			top: 10px;
-			left: -20px;
-			border-right: 20px solid $text-color;
-			border-top: 2px solid transparent;
-			border-bottom: 10px solid transparent;
-		}
 	}
 
-	#reaction-from-client {
+	#reaction-from-player2 {
 		right: 0;
+	}
 
-		.reaction-list-item:before {
-			top: 10px;
-			right: -20px;
-			border-left: 20px solid $text-color;
-			border-top: 2px solid transparent;
-			border-bottom: 10px solid transparent;
-		}
+	#reaction-from-player3 {
+		left: 25%;
+	}
+
+	#reaction-from-player4 {
+		right: 25%;
 	}
 }
 

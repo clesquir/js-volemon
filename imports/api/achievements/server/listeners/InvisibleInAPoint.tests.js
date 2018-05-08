@@ -13,6 +13,7 @@ import {resetDatabase} from 'meteor/xolvio:cleaner';
 describe('AchievementListener#InvisibleInAGame', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
+	const opponentUserId = Random.id(5);
 	const assertInvisibleInAPointUserAchievementNumberEquals = function(number) {
 		const achievement = UserAchievements.findOne();
 		assert.notEqual(undefined, achievement);
@@ -27,7 +28,7 @@ describe('AchievementListener#InvisibleInAGame', function() {
 	});
 
 	it('creates achievement if not created on invisible bonus caught', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		const listener = (new InvisibleInAPoint()).forGame(gameId, userId);
 
@@ -39,7 +40,7 @@ describe('AchievementListener#InvisibleInAGame', function() {
 	});
 
 	it('creates achievement if not created on invisible opponent bonus caught', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		const listener = (new InvisibleInAPoint()).forGame(gameId, userId);
 
@@ -51,7 +52,7 @@ describe('AchievementListener#InvisibleInAGame', function() {
 	});
 
 	it('do not create achievement if not created if not gameId on invisible bonus caught', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		const listener = (new InvisibleInAPoint()).forGame(gameId, userId);
 
@@ -61,7 +62,7 @@ describe('AchievementListener#InvisibleInAGame', function() {
 	});
 
 	it('do not create achievement if not created if activated bonus is not invisible on bonus caught', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		const listener = (new InvisibleInAPoint()).forGame(gameId, userId);
 
@@ -71,7 +72,7 @@ describe('AchievementListener#InvisibleInAGame', function() {
 	});
 
 	it('do not create achievement if not created if current user is not player key on invisible bonus caught', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		const listener = (new InvisibleInAPoint()).forGame(gameId, userId);
 
@@ -81,7 +82,7 @@ describe('AchievementListener#InvisibleInAGame', function() {
 	});
 
 	it('update achievement if higher on invisible bonus caught', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_INVISIBLE_IN_A_POINT, number: 1});
 		const listener = (new InvisibleInAPoint()).forGame(gameId, userId);
@@ -96,7 +97,7 @@ describe('AchievementListener#InvisibleInAGame', function() {
 	});
 
 	it('achievement should be 2 if invisible bonus caught then point is taken then caught twice', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		const listener = (new InvisibleInAPoint()).forGame(gameId, userId);
 
@@ -118,7 +119,7 @@ describe('AchievementListener#InvisibleInAGame', function() {
 	});
 
 	it('do not update achievement if not gameId on invisible bonus caught', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		const listener = (new InvisibleInAPoint()).forGame(gameId, userId);
 
@@ -132,7 +133,7 @@ describe('AchievementListener#InvisibleInAGame', function() {
 	});
 
 	it('do not update achievement if activated bonus is not invisible on bonus caught', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		const listener = (new InvisibleInAPoint()).forGame(gameId, userId);
 
@@ -146,7 +147,7 @@ describe('AchievementListener#InvisibleInAGame', function() {
 	});
 
 	it('do not update achievement if current user is not player key on invisible bonus caught', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		const listener = (new InvisibleInAPoint()).forGame(gameId, userId);
 

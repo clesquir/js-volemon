@@ -221,9 +221,12 @@ export const replyRematch = function(userId, gameId, accepted, gameInitiators) {
 	if (notAskingForRematch.count() === 0 && !game.rematchInCreation) {
 		Games.update({_id: game._id}, {$set: {rematchInCreation: true}});
 
-		const clientPlayer = Players.findOne({gameId: gameId, userId: {$ne: game.createdBy}});
+		let rematchGameCreator = game.players[1].id;
+		if (game.gameMode === TWO_VS_TWO_GAME_MODE) {
+			rematchGameCreator = game.players[2].id;
+		}
 
-		const gameRematchId = createGame(clientPlayer.userId, gameInitiators, game.modeSelection, game.tournamentId);
+		const gameRematchId = createGame(rematchGameCreator, gameInitiators, game.modeSelection, game.tournamentId);
 
 		Games.update(
 			{_id: gameRematchId},
@@ -231,10 +234,10 @@ export const replyRematch = function(userId, gameId, accepted, gameInitiators) {
 		);
 
 		if (game.gameMode === TWO_VS_TWO_GAME_MODE) {
-			joinGame(game.players[2].id, gameRematchId, true);
 			joinGame(game.players[3].id, gameRematchId, true);
-			joinGame(game.players[0].id, gameRematchId, true);
+			joinGame(game.players[2].id, gameRematchId, true);
 			joinGame(game.players[1].id, gameRematchId, true);
+			joinGame(game.players[0].id, gameRematchId, true);
 		} else {
 			joinGame(game.players[1].id, gameRematchId, true);
 			joinGame(game.players[0].id, gameRematchId, true);
@@ -252,7 +255,7 @@ export const onPlayerQuit = function(player) {
 	const game = Games.findOne(player.gameId);
 
 	if (game.status !== GAME_STATUS_REGISTRATION) {
-		//@todo do not timeout/forfeit if it is not creator on 2vs2 games
+		//@todo 2vs2 do not timeout/forfeit if it is not creator on 2vs2 games
 
 		if (isForfeiting(game)) {
 			Players.update({_id: player._id}, {$set: {hasForfeited: true}});
