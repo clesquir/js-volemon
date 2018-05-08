@@ -16,6 +16,22 @@ export default class DevaltoSkin extends Skin {
 	}
 
 	/**
+	 * @param xSize
+	 * @param ySize
+	 * @returns {{key: {string}, path: {string}}[]}
+	 */
+	imagesToLoad(xSize, ySize) {
+		let background = 840;
+		if (xSize > 840) {
+			background = 1020;
+		}
+
+		return [
+			{key: 'background', path: `/assets/skin/devalto/background-${background}.png`}
+		];
+	}
+
+	/**
 	 * @returns {string}
 	 */
 	backgroundColor() {
@@ -29,7 +45,7 @@ export default class DevaltoSkin extends Skin {
 	 */
 	backgroundComponents(xSize, ySize) {
 		return [
-			{key: 'devalto-skin', frame: 'background', x: 0, y: 0, width: xSize, height: ySize}
+			{key: 'background', x: 0, y: 0, width: xSize, height: ySize}
 		];
 	}
 

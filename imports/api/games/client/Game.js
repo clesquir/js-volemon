@@ -176,7 +176,11 @@ export default class Game {
 	}
 
 	preloadGame() {
-		this.gameSkin.preload(this.engine);
+		this.gameSkin.preload(
+			this.engine,
+			this.gameConfiguration.width(),
+			this.gameConfiguration.height()
+		);
 		this.levelComponents.preload();
 	}
 
