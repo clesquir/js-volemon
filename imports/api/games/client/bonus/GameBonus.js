@@ -516,25 +516,27 @@ export default class GameBonus {
 		this.clouds = [
 			this.createCloud(
 				this.gameConfiguration.width() / 4,
-				200,
+				.35 * this.gameConfiguration.height(),
 				{
+					scale: 0.00119 * this.gameConfiguration.width(),
 					angle: 56,
 					opacity: 0.925
 				}
 			),
 			this.createCloud(
 				this.gameConfiguration.width() / 4 * 3,
-				200,
+				.35 * this.gameConfiguration.height(),
 				{
+					scale: 0.00119 * this.gameConfiguration.width(),
 					angle: -63,
 					opacity: 0.925
 				}
 			),
 			this.createCloud(
 				this.gameConfiguration.width() / 4 * 2,
-				200,
+				.35 * this.gameConfiguration.height(),
 				{
-					scale: 1.1,
+					scale: 0.00131 * this.gameConfiguration.width(),
 					angle: 37,
 					opacity: 0.925
 				}
