@@ -1,3 +1,4 @@
+import {TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import {GAME_STATUS_REGISTRATION, GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {timeElapsedSince} from '/imports/lib/utils.js';
@@ -15,28 +16,20 @@ Template.gamesList.helpers({
 		return tournament && (tournament.name || tournament.mode.name);
 	},
 
-	hasOpponent: function() {
-		return (this.clientName !== null);
+	hostNames: function() {
+		if (this.gameMode === TWO_VS_TWO_GAME_MODE) {
+			return this.players[0].name + '<br />' + this.players[2].name;
+		} else {
+			return this.players[0].name;
+		}
 	},
 
-	hostName: function() {
-		let hostName = '-';
-
-		if (this.hostName !== null) {
-			hostName = this.hostName;
+	clientNames: function() {
+		if (this.gameMode === TWO_VS_TWO_GAME_MODE) {
+			return this.players[3].name + '<br />' + this.players[1].name;
+		} else {
+			return this.players[1].name;
 		}
-
-		return hostName;
-	},
-
-	clientName: function() {
-		let clientName = '-';
-
-		if (this.clientName !== null) {
-			clientName = this.clientName;
-		}
-
-		return clientName;
 	},
 
 	createdAt: function() {

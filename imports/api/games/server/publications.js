@@ -14,7 +14,7 @@ Meteor.publish('games', function() {
 			},
 			{
 				sort: [['createdAt', 'asc']],
-				fields: {tournamentId: 1, hostName: 1, clientName: 1, createdAt: 1, status: 1}
+				fields: {tournamentId: 1, gameMode: 1, players: 1, createdAt: 1, status: 1}
 			}
 		),
 		Tournaments.find()

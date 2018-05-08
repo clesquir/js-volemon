@@ -10,9 +10,11 @@ export default class Skin {
 	}
 
 	/**
+	 * @param xSize
+	 * @param ySize
 	 * @returns {{key: {string}, path: {string}}[]}
 	 */
-	imagesToLoad() {
+	imagesToLoad(xSize, ySize) {
 		return [];
 	}
 

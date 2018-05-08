@@ -13,6 +13,7 @@ import sinon from 'sinon';
 describe('AchievementListener#CarefullyRandomlyPicked', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
+	const opponentUserId = Random.id(5);
 	let listOfShapesFn = function() {return []};
 	const stubListOfShapes = function(listener) {
 		sinon.stub(listener, 'listOfShapes').callsFake(function() {
@@ -38,7 +39,7 @@ describe('AchievementListener#CarefullyRandomlyPicked', function() {
 		};
 		const listener = (new CarefullyRandomlyPicked()).forGame(gameId, userId);
 		stubListOfShapes(listener);
-		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000});
+		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId, selectedShape: PLAYER_SHAPE_RANDOM, shape: 'a'});
 
 		assert.equal(0, UserAchievements.find().count());
@@ -54,7 +55,7 @@ describe('AchievementListener#CarefullyRandomlyPicked', function() {
 		};
 		const listener = (new CarefullyRandomlyPicked()).forGame(gameId, userId);
 		stubListOfShapes(listener);
-		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000});
+		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId, selectedShape: PLAYER_SHAPE_RANDOM, shape: 'b'});
 		UserAchievements.insert({
 			userId: userId,
@@ -74,7 +75,7 @@ describe('AchievementListener#CarefullyRandomlyPicked', function() {
 		};
 		let listener = (new CarefullyRandomlyPicked()).forGame(gameId, userId);
 		stubListOfShapes(listener);
-		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000});
+		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId, selectedShape: PLAYER_SHAPE_RANDOM, shape: 'b'});
 		UserAchievements.insert({
 			userId: userId,
@@ -142,7 +143,7 @@ describe('AchievementListener#CarefullyRandomlyPicked', function() {
 		};
 		const listener = (new CarefullyRandomlyPicked()).forGame(gameId, userId);
 		stubListOfShapes(listener);
-		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000});
+		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId, selectedShape: PLAYER_SHAPE_RANDOM, shape: 'a'});
 		UserAchievements.insert({
 			userId: userId,
@@ -162,7 +163,7 @@ describe('AchievementListener#CarefullyRandomlyPicked', function() {
 		};
 		const listener = (new CarefullyRandomlyPicked()).forGame(gameId, userId);
 		stubListOfShapes(listener);
-		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000});
+		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId, selectedShape: PLAYER_SHAPE_RANDOM, shape: 'a'});
 		UserAchievements.insert({
 			userId: userId,
@@ -182,7 +183,7 @@ describe('AchievementListener#CarefullyRandomlyPicked', function() {
 		};
 		const listener = (new CarefullyRandomlyPicked()).forGame(gameId, userId);
 		stubListOfShapes(listener);
-		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000});
+		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId, selectedShape: PLAYER_SHAPE_RANDOM, shape: 'a'});
 		UserAchievements.insert({
 			userId: userId,

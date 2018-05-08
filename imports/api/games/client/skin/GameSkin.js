@@ -18,10 +18,12 @@ export default class GameSkin {
 
 	/**
 	 * @param {Engine} engine
+	 * @param xSize
+	 * @param ySize
 	 */
-	preload(engine) {
+	preload(engine, xSize, ySize) {
 		let atlasJSONHash = this.skin.atlasJSONHash();
-		let imagesToLoad = this.skin.imagesToLoad();
+		let imagesToLoad = this.skin.imagesToLoad(xSize, ySize);
 		let spriteSheetToLoad = this.skin.spriteSheetsToLoad();
 		let dataToLoad = this.skin.dataToLoad();
 		let background = this.skin.backgroundColor();
@@ -63,7 +65,7 @@ export default class GameSkin {
 			for (let modifier of plugin.backgroundColorModifier()) {
 				engine.drawRectangle(0, 0, xSize, ySize, modifier);
 			}
-			this.renderBackgroundComponents(plugin.backgroundComponents(), engine);
+			this.renderBackgroundComponents(plugin.backgroundComponents(xSize, ySize), engine);
 		}
 	}
 

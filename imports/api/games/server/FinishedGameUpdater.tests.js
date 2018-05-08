@@ -1,12 +1,12 @@
+import {EloScores} from '/imports/api/games/eloscores.js';
+import {Games} from '/imports/api/games/games.js';
+import EloScoreCreator from '/imports/api/games/server/EloScoreCreator.js';
+import {GAME_STATUS_FINISHED} from '/imports/api/games/statusConstants.js';
+import {Profiles} from '/imports/api/profiles/profiles.js';
+import ProfileUpdater from '/imports/api/profiles/server/ProfileUpdater.js';
 import {assert} from 'chai'
 import {Random} from 'meteor/random';
 import {resetDatabase} from 'meteor/xolvio:cleaner';
-import EloScoreCreator from '/imports/api/games/server/EloScoreCreator.js';
-import {EloScores} from '/imports/api/games/eloscores.js';
-import {Games} from '/imports/api/games/games.js';
-import {GAME_STATUS_FINISHED} from '/imports/api/games/statusConstants.js';
-import ProfileUpdater from '/imports/api/profiles/server/ProfileUpdater.js';
-import {Profiles} from '/imports/api/profiles/profiles.js';
 import FinishedGameUpdater from './FinishedGameUpdater.js';
 
 describe('FinishedGameUpdater', function() {
@@ -39,7 +39,7 @@ describe('FinishedGameUpdater', function() {
 		});
 		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED});
 
-		finishedGameUpdater.updateElo(gameId, hostUserId, clientUserId);
+		finishedGameUpdater.updateElo(gameId, [hostUserId], [clientUserId]);
 
 		let hostProfile = Profiles.findOne({_id: hostProfileId});
 		assert.isObject(hostProfile);
@@ -79,7 +79,7 @@ describe('FinishedGameUpdater', function() {
 		});
 		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED});
 
-		finishedGameUpdater.updateElo(gameId, hostUserId, clientUserId);
+		finishedGameUpdater.updateElo(gameId, [hostUserId], [clientUserId]);
 
 		let eloScoresHost = EloScores.findOne({userId: hostUserId});
 		assert.isObject(eloScoresHost);
@@ -113,7 +113,7 @@ describe('FinishedGameUpdater', function() {
 		});
 		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED});
 
-		finishedGameUpdater.updateStatistics(gameId, hostUserId, clientUserId);
+		finishedGameUpdater.updateStatistics(gameId, [hostUserId], [clientUserId]);
 
 		let hostProfile = Profiles.findOne({_id: hostProfileId});
 		assert.isObject(hostProfile);
@@ -125,7 +125,7 @@ describe('FinishedGameUpdater', function() {
 		assert.propertyVal(clientProfile, 'numberOfWin', 0);
 		assert.propertyVal(clientProfile, 'numberOfLost', 1);
 
-		finishedGameUpdater.updateStatistics(gameId, clientUserId, hostUserId);
+		finishedGameUpdater.updateStatistics(gameId, [clientUserId], [hostUserId]);
 
 		hostProfile = Profiles.findOne({_id: hostProfileId});
 		assert.isObject(hostProfile);
@@ -137,7 +137,7 @@ describe('FinishedGameUpdater', function() {
 		assert.propertyVal(clientProfile, 'numberOfWin', 1);
 		assert.propertyVal(clientProfile, 'numberOfLost', 1);
 
-		finishedGameUpdater.updateStatistics(gameId, hostUserId, clientUserId);
+		finishedGameUpdater.updateStatistics(gameId, [hostUserId], [clientUserId]);
 
 		hostProfile = Profiles.findOne({_id: hostProfileId});
 		assert.isObject(hostProfile);
@@ -192,7 +192,7 @@ describe('FinishedGameUpdater', function() {
 			maximumPoints: 5
 		});
 
-		finishedGameUpdater.updateStatistics(gameId, hostUserId, clientUserId);
+		finishedGameUpdater.updateStatistics(gameId, [hostUserId], [clientUserId]);
 
 		let hostProfile = Profiles.findOne({_id: hostProfileId});
 		assert.isObject(hostProfile);
@@ -217,7 +217,7 @@ describe('FinishedGameUpdater', function() {
 			maximumPoints: 1
 		});
 
-		finishedGameUpdater.updateStatistics(gameId, hostUserId, clientUserId);
+		finishedGameUpdater.updateStatistics(gameId, [hostUserId], [clientUserId]);
 
 		hostProfile = Profiles.findOne({_id: hostProfileId});
 		assert.isObject(hostProfile);
@@ -242,7 +242,7 @@ describe('FinishedGameUpdater', function() {
 			maximumPoints: 1
 		});
 
-		finishedGameUpdater.updateStatistics(gameId, hostUserId, clientUserId);
+		finishedGameUpdater.updateStatistics(gameId, [hostUserId], [clientUserId]);
 
 		hostProfile = Profiles.findOne({_id: hostProfileId});
 		assert.isObject(hostProfile);
@@ -267,7 +267,7 @@ describe('FinishedGameUpdater', function() {
 			maximumPoints: 5
 		});
 
-		finishedGameUpdater.updateStatistics(gameId, clientUserId, hostUserId);
+		finishedGameUpdater.updateStatistics(gameId, [clientUserId], [hostUserId]);
 
 		hostProfile = Profiles.findOne({_id: hostProfileId});
 		assert.isObject(hostProfile);
@@ -292,7 +292,7 @@ describe('FinishedGameUpdater', function() {
 			maximumPoints: 5
 		});
 
-		finishedGameUpdater.updateStatistics(gameId, hostUserId, clientUserId);
+		finishedGameUpdater.updateStatistics(gameId, [hostUserId], [clientUserId]);
 
 		hostProfile = Profiles.findOne({_id: hostProfileId});
 		assert.isObject(hostProfile);
@@ -317,7 +317,7 @@ describe('FinishedGameUpdater', function() {
 			maximumPoints: 5
 		});
 
-		finishedGameUpdater.updateStatistics(gameId, clientUserId, hostUserId);
+		finishedGameUpdater.updateStatistics(gameId, [clientUserId], [hostUserId]);
 
 		hostProfile = Profiles.findOne({_id: hostProfileId});
 		assert.isObject(hostProfile);

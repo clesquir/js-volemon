@@ -13,6 +13,7 @@ import {resetDatabase} from 'meteor/xolvio:cleaner';
 describe('AchievementListener#SimultaneousActivatedBonuses', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
+	const opponentUserId = Random.id(5);
 	const assertSimultaneousActivatedBonusesUserAchievementNumberEquals = function(number) {
 		const achievement = UserAchievements.findOne();
 		assert.notEqual(undefined, achievement);
@@ -28,7 +29,7 @@ describe('AchievementListener#SimultaneousActivatedBonuses', function() {
 
 	it('increment if all different bonus', function() {
 		const listener = (new SimultaneousActivatedBonuses()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
@@ -40,7 +41,7 @@ describe('AchievementListener#SimultaneousActivatedBonuses', function() {
 
 	it('do not increment if same bonus', function() {
 		const listener = (new SimultaneousActivatedBonuses()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
@@ -58,7 +59,7 @@ describe('AchievementListener#SimultaneousActivatedBonuses', function() {
 
 	it('do not increment if not gameId', function() {
 		const listener = (new SimultaneousActivatedBonuses()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
@@ -68,7 +69,7 @@ describe('AchievementListener#SimultaneousActivatedBonuses', function() {
 
 	it('do not increment if target is not current user', function() {
 		const listener = (new SimultaneousActivatedBonuses()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
@@ -78,7 +79,7 @@ describe('AchievementListener#SimultaneousActivatedBonuses', function() {
 
 	it('number is reduced when calling remove on existent bonus', function() {
 		const listener = (new SimultaneousActivatedBonuses()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: 'a', targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
@@ -90,7 +91,7 @@ describe('AchievementListener#SimultaneousActivatedBonuses', function() {
 
 	it('number is not reduced when calling remove on not existent bonus', function() {
 		const listener = (new SimultaneousActivatedBonuses()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: 'a', targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
@@ -102,7 +103,7 @@ describe('AchievementListener#SimultaneousActivatedBonuses', function() {
 
 	it('do not reduce if not gameId', function() {
 		const listener = (new SimultaneousActivatedBonuses()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: 'a', targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
@@ -114,7 +115,7 @@ describe('AchievementListener#SimultaneousActivatedBonuses', function() {
 
 	it('do not reduce if target is not current user', function() {
 		const listener = (new SimultaneousActivatedBonuses()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: 'a', targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
@@ -126,7 +127,7 @@ describe('AchievementListener#SimultaneousActivatedBonuses', function() {
 
 	it('number is 0 on point taken', function() {
 		const listener = (new SimultaneousActivatedBonuses()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: 'a', targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
@@ -138,7 +139,7 @@ describe('AchievementListener#SimultaneousActivatedBonuses', function() {
 
 	it('do not reset if not gameId', function() {
 		const listener = (new SimultaneousActivatedBonuses()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: 'a', targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
@@ -150,7 +151,7 @@ describe('AchievementListener#SimultaneousActivatedBonuses', function() {
 
 	it('do not reset if user is not game player', function() {
 		const listener = (new SimultaneousActivatedBonuses()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 
 		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: 'a', targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
 		assert.strictEqual(1, listener.numberOfActivatedBonuses());

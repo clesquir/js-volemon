@@ -1,14 +1,12 @@
-import {Meteor} from 'meteor/meteor';
-import {Template} from 'meteor/templating';
-import {Session} from 'meteor/session';
 import {gameData, serverNormalizedTime} from '/imports/api/games/client/routeInitiator.js';
+import {TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import {Players} from '/imports/api/games/players.js';
-import {
-	isGamePlayer,
-	isGameStatusStarted
-} from '/imports/api/games/utils.js';
+import {isGamePlayer, isGameStatusStarted} from '/imports/api/games/utils.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 import {onMobileAndTablet, padNumber} from '/imports/lib/utils.js';
+import {Meteor} from 'meteor/meteor';
+import {Session} from 'meteor/session';
+import {Template} from 'meteor/templating';
 
 import './gameCanvas.html';
 
@@ -17,13 +15,11 @@ Template.gameCanvas.helpers({
 		return padNumber(this.game.hostPoints);
 	},
 
-	hostName: function() {
-		const player = Players.findOne({gameId: Session.get('game'), userId: this.game.createdBy});
-
-		if (player) {
-			return player.name;
+	hostNames: function() {
+		if (this.game.gameMode === TWO_VS_TWO_GAME_MODE) {
+			return this.game.players[0].name + ' / ' + this.game.players[2].name;
 		} else {
-			return 'Player 1';
+			return this.game.players[0].name;
 		}
 	},
 
@@ -31,13 +27,11 @@ Template.gameCanvas.helpers({
 		return padNumber(this.game.clientPoints);
 	},
 
-	clientName: function() {
-		const player = Players.findOne({gameId: Session.get('game'), userId: {$ne: this.game.createdBy}});
-
-		if (player) {
-			return player.name;
+	clientNames: function() {
+		if (this.game.gameMode === TWO_VS_TWO_GAME_MODE) {
+			return this.game.players[3].name + ' / ' + this.game.players[1].name;
 		} else {
-			return 'Player 2';
+			return this.game.players[1].name;
 		}
 	},
 

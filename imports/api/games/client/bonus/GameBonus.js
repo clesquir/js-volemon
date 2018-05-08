@@ -48,6 +48,10 @@ export default class GameBonus {
 		this.removedBonuses = [];
 	}
 
+	getPlayerFromKey(playerKey) {
+		return this.game.getPlayerFromKey(playerKey);
+	}
+
 	playerInitialPolygonFromKey(playerKey) {
 		return this.game.playerInitialPolygonFromKey(playerKey);
 	}
@@ -104,7 +108,7 @@ export default class GameBonus {
 			this.engine.constrainVelocity(bonus, 1000);
 		}
 
-		if (this.gameData.isUserHost()) {
+		if (this.gameData.isUserCreator()) {
 			this.createBonusIfTimeHasElapsed();
 			this.sendBonusesPosition();
 		}
@@ -124,6 +128,8 @@ export default class GameBonus {
 		const padding = 5;
 		let player1Count = 0;
 		let player2Count = 0;
+		let player3Count = 0;
+		let player4Count = 0;
 
 		this.activeBonuses.forEach((bonus) => {
 			if (bonus.getTargetPlayerKey()) {
@@ -138,8 +144,21 @@ export default class GameBonus {
 						break;
 					case 'player2':
 						player2Count++;
-						xModifier = (this.gameConfiguration.width() / 2);
 						sideCount = player2Count;
+						xModifier = (this.gameConfiguration.width() / 2);
+						if (this.gameData.isTwoVersusTwo()) {
+							xModifier = (this.gameConfiguration.width() / 4 * 3);
+						}
+						break;
+					case 'player3':
+						player3Count++;
+						sideCount = player3Count;
+						xModifier = (this.gameConfiguration.width() / 4);
+						break;
+					case 'player4':
+						player4Count++;
+						sideCount = player4Count;
+						xModifier = (this.gameConfiguration.width() / 2);
 						break;
 				}
 				const x = xModifier + padding + (sideCount * ((this.gameConfiguration.bonusRadius() * 2) + padding));
@@ -378,10 +397,7 @@ export default class GameBonus {
 		player.isHiddenToHimself = true;
 
 		if (!this.gameData.isUserViewer()) {
-			if (
-				this.gameData.isUserHostTargetPlayer(playerKey) ||
-				this.gameData.isUserClientTargetPlayer(playerKey)
-			) {
+			if (this.gameData.isCurrentPlayerKey(playerKey)) {
 				//Target player cannot see himself
 				this.engine.setOpacity(player, 0);
 			} else {
@@ -407,8 +423,7 @@ export default class GameBonus {
 
 		if (player.isHiddenToOpponent) {
 			if (
-				this.gameData.isUserHostTargetPlayer(playerKey) ||
-				this.gameData.isUserClientTargetPlayer(playerKey) ||
+				this.gameData.isCurrentPlayerKey(playerKey) ||
 				this.gameData.isUserViewer()
 			) {
 				this.engine.setOpacity(player, 0.5);
@@ -428,10 +443,7 @@ export default class GameBonus {
 		player.isHiddenToOpponent = true;
 
 		if (!this.gameData.isUserViewer()) {
-			if (
-				this.gameData.isUserHostNotTargetPlayer(playerKey) ||
-				this.gameData.isUserClientNotTargetPlayer(playerKey)
-			) {
+			if (!this.gameData.isCurrentPlayerKey(playerKey)) {
 				//Opponent cannot see player
 				this.engine.setOpacity(player, 0);
 			} else {
@@ -456,11 +468,7 @@ export default class GameBonus {
 		player.isHiddenToOpponent = false;
 
 		if (player.isHiddenToHimself) {
-			if (
-				this.gameData.isUserHostNotTargetPlayer(playerKey) ||
-				this.gameData.isUserClientNotTargetPlayer(playerKey) ||
-				this.gameData.isUserViewer()
-			) {
+			if (!this.gameData.isCurrentPlayerKey(playerKey)) {
 				this.engine.setOpacity(player, 0.5);
 			}
 		} else {
@@ -508,25 +516,27 @@ export default class GameBonus {
 		this.clouds = [
 			this.createCloud(
 				this.gameConfiguration.width() / 4,
-				200,
+				.35 * this.gameConfiguration.height(),
 				{
+					scale: 0.00119 * this.gameConfiguration.width(),
 					angle: 56,
 					opacity: 0.925
 				}
 			),
 			this.createCloud(
 				this.gameConfiguration.width() / 4 * 3,
-				200,
+				.35 * this.gameConfiguration.height(),
 				{
+					scale: 0.00119 * this.gameConfiguration.width(),
 					angle: -63,
 					opacity: 0.925
 				}
 			),
 			this.createCloud(
 				this.gameConfiguration.width() / 4 * 2,
-				200,
+				.35 * this.gameConfiguration.height(),
 				{
-					scale: 1.1,
+					scale: 0.00131 * this.gameConfiguration.width(),
 					angle: 37,
 					opacity: 0.925
 				}
@@ -588,14 +598,12 @@ export default class GameBonus {
 	}
 
 	killPlayer(playerKey) {
-		const player = this.game.getPlayerFromKey(playerKey);
-
-		if (!player) {
-			return;
-		}
-
-		if (this.game.canAddGamePoint(playerKey)) {
-			this.game.addGamePoint(playerKey);
+		if (
+			this.game.canAddGamePoint() &&
+			this.getPlayerFromKey(playerKey) &&
+			!this.getPlayerFromKey(playerKey).data.isInvincible
+		) {
+			this.game.addGamePoint(this.game.playerPointSide(playerKey));
 		}
 	}
 
@@ -658,7 +666,7 @@ export default class GameBonus {
 	}
 
 	onBonusCollidesPlayer(bonusSprite, player) {
-		if (this.gameData.isUserHost() && player.sprite.data.canActivateBonuses && bonusSprite.data.bonus.canActivate()) {
+		if (this.gameData.isUserCreator() && player.sprite.data.canActivateBonuses && bonusSprite.data.bonus.canActivate()) {
 			const playerKey = this.engine.getKey(player);
 			const activatedAt = this.serverNormalizedTime.getServerTimestamp();
 			const payload = {
@@ -714,7 +722,7 @@ export default class GameBonus {
 		this.deactivateSimilarBonusForPlayerKey(bonusToActivate, playerKey);
 
 		this.activeBonuses.push(bonusToActivate);
-		if (this.gameData.isUserHost()) {
+		if (this.gameData.isUserCreator()) {
 			Meteor.call(
 				'addActiveBonusToGame',
 				this.game.gameId,
@@ -757,7 +765,7 @@ export default class GameBonus {
 			if (bonus.check(this.serverNormalizedTime.getServerTimestamp())) {
 				stillActiveBonuses.push(bonus);
 			} else {
-				if (this.gameData.isUserHost()) {
+				if (this.gameData.isUserCreator()) {
 					Meteor.call('removeActiveBonusFromGame', this.game.gameId, bonus.getIdentifier());
 				}
 

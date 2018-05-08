@@ -1,4 +1,10 @@
-import {CLIENT_POINTS_COLUMN, CLIENT_SIDE, HOST_POINTS_COLUMN, HOST_SIDE} from '/imports/api/games/constants.js';
+import {
+	CLIENT_POINTS_COLUMN,
+	CLIENT_SIDE,
+	HOST_POINTS_COLUMN,
+	HOST_SIDE,
+	TWO_VS_TWO_GAME_MODE
+} from '/imports/api/games/constants.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
@@ -88,15 +94,9 @@ Meteor.methods({
 			Games.remove(gameId);
 			//Stop streaming
 			GameInitiatorCollection.unset(gameId);
-		} else if (userId !== game.hostId) {
-			Games.update(
-				{_id: gameId},
-				{$set: {
-					clientId: null,
-					clientName: null,
-					isReady: false
-				}}
-			);
+		} else {
+			Games.update({_id: gameId}, {$pull: {players: {id: userId}}});
+			Games.update({_id: gameId}, {$set: {isReady: false}});
 		}
 	},
 
@@ -281,20 +281,30 @@ Meteor.methods({
 		EventPublisher.publish(new PointTaken(game._id, pointDuration, pointScoredByHost, hostPoints, clientPoints));
 
 		if (isGameFinished) {
-			let winnerUserId;
-			let loserUserId;
+			const winnerUserIds = [];
+			const loserUserIds = [];
 			switch (columnName) {
 				case HOST_POINTS_COLUMN:
-					winnerUserId = game.hostId;
-					loserUserId = game.clientId;
+					winnerUserIds.push(game.players[0].id);
+					loserUserIds.push(game.players[1].id);
+
+					if (game.gameMode === TWO_VS_TWO_GAME_MODE) {
+						winnerUserIds.push(game.players[2].id);
+						loserUserIds.push(game.players[3].id);
+					}
 					break;
 				case CLIENT_POINTS_COLUMN:
-					winnerUserId = game.clientId;
-					loserUserId = game.hostId;
+					winnerUserIds.push(game.players[1].id);
+					loserUserIds.push(game.players[0].id);
+
+					if (game.gameMode === TWO_VS_TWO_GAME_MODE) {
+						winnerUserIds.push(game.players[3].id);
+						loserUserIds.push(game.players[2].id);
+					}
 					break;
 			}
 
-			finishGame(game._id, winnerUserId, loserUserId);
+			finishGame(game._id, winnerUserIds, loserUserIds);
 		}
 	},
 

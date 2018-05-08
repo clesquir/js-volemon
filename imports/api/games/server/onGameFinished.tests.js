@@ -27,7 +27,7 @@ describe('finishGame', function() {
 		Games.insert({_id: gameId, status: GAME_STATUS_STARTED});
 
 		expect(() => {
-			finishGame(gameId, winnerUserId, loserUserId);
+			finishGame(gameId, [winnerUserId], [loserUserId]);
 		}).to.throw('Game has not finished with a winner');
 	});
 
@@ -41,7 +41,7 @@ describe('finishGame', function() {
 		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED});
 
 		expect(() => {
-			finishGame(gameId, winnerUserId, loserUserId);
+			finishGame(gameId, [winnerUserId], [loserUserId]);
 		}).to.throw('Winner does not exist');
 	});
 
@@ -55,7 +55,7 @@ describe('finishGame', function() {
 		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED});
 
 		expect(() => {
-			finishGame(gameId, winnerUserId, loserUserId);
+			finishGame(gameId, [winnerUserId], [loserUserId]);
 		}).to.throw('Loser does not exist');
 	});
 
@@ -83,7 +83,7 @@ describe('finishGame', function() {
 			eloRating: 1000
 		});
 
-		finishGame(gameId, winnerUserId, loserUserId);
+		finishGame(gameId, [winnerUserId], [loserUserId]);
 
 		const winnerProfile = Profiles.findOne({userId: winnerUserId});
 		assert.isObject(winnerProfile);
@@ -126,7 +126,7 @@ describe('finishGame', function() {
 			eloRating: 1000
 		});
 
-		finishGame(gameId, winnerUserId, loserUserId);
+		finishGame(gameId, [winnerUserId], [loserUserId]);
 
 		const winnerProfile = TournamentProfiles.findOne({userId: winnerUserId, tournamentId: tournamentId});
 		assert.isObject(winnerProfile);

@@ -12,10 +12,18 @@
 	{{/if}}
 
 	<div class="received-reaction-container">
-		<div id="reaction-from-host" class="received-reaction">
+		<div id="reaction-from-player1" class="received-reaction {{#if gameIs2Vs2}}received-reaction-2vs2{{/if}}">
 			<div class="received-reaction-item reaction-hidden"></div>
 		</div>
-		<div id="reaction-from-client" class="received-reaction">
+		{{#if gameIs2Vs2}}
+			<div id="reaction-from-player3" class="received-reaction received-reaction-2vs2">
+				<div class="received-reaction-item reaction-hidden"></div>
+			</div>
+			<div id="reaction-from-player4" class="received-reaction received-reaction-2vs2">
+				<div class="received-reaction-item reaction-hidden"></div>
+			</div>
+		{{/if}}
+		<div id="reaction-from-player2" class="received-reaction {{#if gameIs2Vs2}}received-reaction-2vs2{{/if}}">
 			<div class="received-reaction-item reaction-hidden"></div>
 		</div>
 	</div>

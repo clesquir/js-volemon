@@ -14,13 +14,9 @@
 					{{/if}}
 				{{/if}}
 				<div class="card-row card-row-top">
-					{{#if hasOpponent}}
-						<div class="card-cell card-title card-cell-ellipsis">{{hostName}}</div>
-						<div class="card-cell card-title" style="flex: 0;">vs</div>
-						<div class="card-cell card-title card-cell-ellipsis">{{clientName}}</div>
-					{{else}}
-						<div class="card-cell card-title card-cell-ellipsis">{{hostName}}</div>
-					{{/if}}
+					<div class="card-cell card-title card-cell-ellipsis">{{{hostNames}}}</div>
+					<div class="card-cell card-title" style="flex: 0;">vs</div>
+					<div class="card-cell card-title card-cell-ellipsis">{{{clientNames}}}</div>
 				</div>
 				<div class="card-row card-row-bottom">
 					<div class="card-cell card-left">{{createdAt}}</div>

@@ -1,3 +1,4 @@
+import {TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import {padNumber, timeElapsedSince} from '/imports/lib/utils.js';
 import {Meteor} from 'meteor/meteor';
 import * as Moment from 'meteor/momentjs:moment';
@@ -68,6 +69,26 @@ Template.recentGames.helpers({
 
 		return '<span class="' + hostScoreClass + '">' + padNumber(hostPoints) + '</span>' + '&nbsp;-&nbsp;' +
 			'<span class="' + clientScoreClass + '">' + padNumber(clientPoints) + '</span>';
+	},
+
+	hostNames: function() {
+		if (this.gameMode === TWO_VS_TWO_GAME_MODE) {
+			return this.players[0].name + '<br />' + this.players[2].name;
+		} else {
+			return this.players[0].name;
+		}
+	},
+
+	clientNames: function() {
+		if (this.gameMode === TWO_VS_TWO_GAME_MODE) {
+			return this.players[3].name + '<br />' + this.players[1].name;
+		} else {
+			return this.players[1].name;
+		}
+	},
+
+	shape: function(index) {
+		return this.shapes[index];
 	},
 
 	hasMoreGames: function() {

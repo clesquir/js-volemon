@@ -40,7 +40,7 @@ export default class MarioBrosSkin extends Skin {
 			{
 				key: 'mario-bros-skin',
 				frame: 'background-bush',
-				x: 490,
+				x: xSize - 350,
 				y: ySize - 110,
 				width: 120,
 				height: 40
@@ -48,8 +48,8 @@ export default class MarioBrosSkin extends Skin {
 			{
 				key: 'mario-bros-skin',
 				frame: 'background-cloud',
-				x: 550,
-				y: ySize - 474,
+				x: xSize - 290,
+				y: 86,
 				width: 160,
 				height: 60
 			}

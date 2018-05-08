@@ -11,6 +11,7 @@ import {resetDatabase} from 'meteor/xolvio:cleaner';
 describe('AchievementListener#GameTime', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
+	const opponentUserId = Random.id(5);
 	const assertGameTimeUserAchievementNumberEquals = function(number) {
 		const achievement = UserAchievements.findOne();
 		assert.notEqual(undefined, achievement);
@@ -25,7 +26,7 @@ describe('AchievementListener#GameTime', function() {
 	});
 
 	it('creates achievement if not created on game finished', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
@@ -37,7 +38,7 @@ describe('AchievementListener#GameTime', function() {
 	});
 
 	it('do not create achievement if not created if not gameId on game finished', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
@@ -47,7 +48,7 @@ describe('AchievementListener#GameTime', function() {
 	});
 
 	it('do not create achievement if not created if current user is not game player on game finished', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 
 		assert.equal(0, UserAchievements.find().count());
 		const listener = (new GameTime()).forGame(gameId, userId);
@@ -56,7 +57,7 @@ describe('AchievementListener#GameTime', function() {
 	});
 
 	it('update achievement if higher on game finished', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_GAME_TIME, number: 2000});
 
@@ -67,7 +68,7 @@ describe('AchievementListener#GameTime', function() {
 	});
 
 	it('do not update achievement if not higher on game finished', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_GAME_TIME, number: 2000});
 
@@ -78,7 +79,7 @@ describe('AchievementListener#GameTime', function() {
 	});
 
 	it('do not update achievement if not gameId on game finished', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_GAME_TIME, number: 2000});
 
@@ -89,7 +90,7 @@ describe('AchievementListener#GameTime', function() {
 	});
 
 	it('do not update achievement if current user is not game player on game finished', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_GAME_TIME, number: 2000});
 
 		const listener = (new GameTime()).forGame(gameId, userId);

@@ -3,7 +3,6 @@ import {PLAYER_DEFAULT_SHAPE} from '/imports/api/games/shapeConstants.js';
 
 export default class StaticGameData extends GameData {
 	init() {
-		this.currentUserId = Random.id();
 		this.maximumPoints = 1;
 		this.hasBonuses = false;
 		this.createdBy = Random.id();
@@ -26,8 +25,20 @@ export default class StaticGameData extends GameData {
 		return PLAYER_DEFAULT_SHAPE;
 	}
 
+	getCurrentPlayerKey() {
+		return 'player1';
+	}
+
 	isCurrentPlayerKey(playerKey) {
 		return false;
+	}
+
+	isTwoVersusTwo() {
+		return false;
+	}
+
+	isUserCreator() {
+		return true;
 	}
 
 	isUserHost() {
@@ -39,22 +50,6 @@ export default class StaticGameData extends GameData {
 	}
 
 	isUserViewer() {
-		return false;
-	}
-
-	isUserHostTargetPlayer(playerKey) {
-		return false;
-	}
-
-	isUserClientTargetPlayer(playerKey) {
-		return false;
-	}
-
-	isUserHostNotTargetPlayer(playerKey) {
-		return false;
-	}
-
-	isUserClientNotTargetPlayer(playerKey) {
 		return false;
 	}
 

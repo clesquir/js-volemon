@@ -33,6 +33,14 @@ export default class LevelConfiguration {
 		return this.width - this.player1InitialX();
 	}
 
+	player3InitialX() {
+		return this.player1InitialX() + this.playerWidth() * 2;
+	}
+
+	player4InitialX() {
+		return this.width - this.player3InitialX();
+	}
+
 	ballRadius() {
 		return 12;
 	}
@@ -58,6 +66,19 @@ export default class LevelConfiguration {
 			560,
 			70,
 			70,
+			8
+		);
+	}
+
+	/**
+	 * @returns {LevelConfiguration}
+	 */
+	static defaultTwoVersusTwoConfiguration() {
+		return new LevelConfiguration(
+			1020,
+			680,
+			70,
+			71,
 			8
 		);
 	}

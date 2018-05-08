@@ -12,7 +12,7 @@ describe('CollectionGameData#getPlayerShapeFromKey', function() {
 		StubCollections.stub();
 
 		const gameId = Random.id(5);
-		Games.insert({_id: gameId});
+		Games.insert({_id: gameId, players: []});
 
 		const gameData = new CollectionGameData(gameId, Random.id(5));
 		gameData.init();
@@ -26,7 +26,7 @@ describe('CollectionGameData#getPlayerShapeFromKey', function() {
 		StubCollections.stub();
 
 		const gameId = Random.id(5);
-		Games.insert({_id: gameId});
+		Games.insert({_id: gameId, players: []});
 
 		const gameData = new CollectionGameData(gameId, Random.id(5));
 		gameData.init();
@@ -41,7 +41,7 @@ describe('CollectionGameData#getPlayerShapeFromKey', function() {
 
 		const gameId = Random.id(5);
 		const createdByUserId = 1;
-		Games.insert({_id: gameId, createdBy: createdByUserId});
+		Games.insert({_id: gameId, createdBy: createdByUserId, players: [{id: createdByUserId}]});
 		Players.insert({
 			_id: Random.id(5),
 			gameId: gameId,
@@ -61,7 +61,7 @@ describe('CollectionGameData#getPlayerShapeFromKey', function() {
 		StubCollections.stub();
 
 		const gameId = Random.id(5);
-		Games.insert({_id: gameId, createdBy: 1});
+		Games.insert({_id: gameId, createdBy: 1, players: [{id: 1}, {id: 2}]});
 		Players.insert({_id: Random.id(5), gameId: gameId, userId: 2, shape: PLAYER_SHAPE_RECTANGLE});
 
 		const gameData = new CollectionGameData(gameId, Random.id(5));

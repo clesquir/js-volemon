@@ -16,7 +16,16 @@ export default class GameData {
 	getPlayerPolygonFromKey(playerKey) {
 	}
 
+	getCurrentPlayerKey() {
+	}
+
 	isCurrentPlayerKey(playerKey) {
+	}
+
+	isTwoVersusTwo() {
+	}
+
+	isUserCreator() {
 	}
 
 	isUserHost() {
@@ -26,18 +35,6 @@ export default class GameData {
 	}
 
 	isUserViewer() {
-	}
-
-	isUserHostTargetPlayer(playerKey) {
-	}
-
-	isUserClientTargetPlayer(playerKey) {
-	}
-
-	isUserHostNotTargetPlayer(playerKey) {
-	}
-
-	isUserClientNotTargetPlayer(playerKey) {
 	}
 
 	isGameStatusOnGoing() {

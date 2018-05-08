@@ -11,6 +11,10 @@ export default class FullStop extends GameListener {
 		return !tournamentMode.overridesMaximumPoints() || tournamentMode.maximumPoints() === GAME_MAXIMUM_POINTS;
 	}
 
+	allowedFor2Vs2() {
+		return false;
+	}
+
 	addListeners() {
 		this.addListener(PlayerWon.prototype.constructor.name, this.onPlayerWon);
 	}

@@ -6,6 +6,10 @@ import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {BONUS_SMALL_BALL, BONUS_SMALL_MONSTER} from '/imports/api/games/bonusConstants.js';
 
 export default class TeenyTinyWorld extends GameListener {
+	allowedFor2Vs2() {
+		return false;
+	}
+
 	addListeners() {
 		this.addListener(PointTaken.prototype.constructor.name, this.onPointTaken);
 		this.addListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
