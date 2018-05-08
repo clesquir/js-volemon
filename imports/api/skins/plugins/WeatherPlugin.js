@@ -48,9 +48,11 @@ export default class WeatherPlugin extends Plugin {
 	}
 
 	/**
+	 * @param xSize
+	 * @param ySize
 	 * @returns {{key: {string}, frame: {string}, animation: {frame: {string}, frames: {string}[], speed: {int}}, x: {int}, y: {int}, width: {int}, height: {int}}[]}
 	 */
-	backgroundComponents() {
+	backgroundComponents(xSize, ySize) {
 		const condition = this.weatherApi.condition();
 		const keys = [];
 
@@ -62,7 +64,7 @@ export default class WeatherPlugin extends Plugin {
 						frame: CONDITION_FOG,
 						x: 0,
 						y: 0,
-						width: 840,
+						width: xSize,
 						height: 238
 					}
 				);
@@ -74,7 +76,7 @@ export default class WeatherPlugin extends Plugin {
 						frame: CONDITION_CLOUD,
 						x: 0,
 						y: 0,
-						width: 840,
+						width: xSize,
 						height: 177
 					}
 				);
@@ -90,7 +92,7 @@ export default class WeatherPlugin extends Plugin {
 						},
 						x: 0,
 						y: 0,
-						width: 840,
+						width: xSize,
 						height: 359
 					}
 				);
@@ -100,7 +102,7 @@ export default class WeatherPlugin extends Plugin {
 						frame: CONDITION_CLOUD,
 						x: 0,
 						y: 0,
-						width: 840,
+						width: xSize,
 						height: 177
 					}
 				);
@@ -116,7 +118,7 @@ export default class WeatherPlugin extends Plugin {
 						},
 						x: 0,
 						y: 0,
-						width: 840,
+						width: xSize,
 						height: 312
 					}
 				);
@@ -126,7 +128,7 @@ export default class WeatherPlugin extends Plugin {
 						frame: CONDITION_CLOUD,
 						x: 0,
 						y: 0,
-						width: 840,
+						width: xSize,
 						height: 177
 					}
 				);
@@ -152,7 +154,7 @@ export default class WeatherPlugin extends Plugin {
 						},
 						x: 0,
 						y: 0,
-						width: 840,
+						width: xSize,
 						height: 280
 					}
 				);
@@ -166,7 +168,7 @@ export default class WeatherPlugin extends Plugin {
 						},
 						x: 0,
 						y: 0,
-						width: 840,
+						width: xSize,
 						height: 312
 					}
 				);
@@ -176,7 +178,7 @@ export default class WeatherPlugin extends Plugin {
 						frame: CONDITION_CLOUD,
 						x: 0,
 						y: 0,
-						width: 840,
+						width: xSize,
 						height: 177
 					}
 				);

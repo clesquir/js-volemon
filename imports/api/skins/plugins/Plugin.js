@@ -41,9 +41,11 @@ export default class Plugin {
 	}
 
 	/**
+	 * @param xSize
+	 * @param ySize
 	 * @returns {{key: {string}, frame: {string}, animation: {frame: {string}, frames: {string}[], speed: {int}}, x: {int}, y: {int}, width: {int}, height: {int}}[]}
 	 */
-	backgroundComponents() {
+	backgroundComponents(xSize, ySize) {
 		return [];
 	}
 

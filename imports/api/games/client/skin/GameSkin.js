@@ -63,7 +63,7 @@ export default class GameSkin {
 			for (let modifier of plugin.backgroundColorModifier()) {
 				engine.drawRectangle(0, 0, xSize, ySize, modifier);
 			}
-			this.renderBackgroundComponents(plugin.backgroundComponents(), engine);
+			this.renderBackgroundComponents(plugin.backgroundComponents(xSize, ySize), engine);
 		}
 	}
 
