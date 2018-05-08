@@ -55,7 +55,12 @@ const createShapeDropdownList = function(e, allowedListOfShapes) {
 			if (parent.length) {
 				selectedShape = parent.attr('data-shape');
 			}
-			Meteor.call('updateMatchMakingShape', Session.get('matchMaking.tournamentId'), selectedShape);
+			Meteor.call(
+				'updateMatchMakingShape',
+				Session.get('matchMaking.gameId'),
+				Session.get('matchMaking.tournamentId'),
+				selectedShape
+			);
 		});
 		listItem.appendTo(dropdownList);
 

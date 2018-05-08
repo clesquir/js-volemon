@@ -1,13 +1,14 @@
 import MatchMakingGameConfiguration from '/imports/api/games/configuration/MatchMakingGameConfiguration.js';
+import {Players} from '/imports/api/games/players.js';
+import ImmediateMatchMaker from '/imports/api/games/server/matchMaking/ImmediateMatchMaker.js';
 import {PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 import {htmlEncode} from '/imports/lib/utils.js';
-import ImmediateMatchMaker from '/imports/api/games/server/matchMaking/ImmediateMatchMaker.js';
 import {Meteor} from "meteor/meteor";
 
 Meteor.methods({
-	updateMatchMakingShape: function(tournamentId, selectedShape) {
+	updateMatchMakingShape: function(gameId, tournamentId, selectedShape) {
 		const user = Meteor.user();
 
 		if (!user) {
@@ -31,6 +32,7 @@ Meteor.methods({
 			shape = Random.choice(listOfShapes);
 		}
 
+		Players.update({gameId: gameId, userId: user._id}, {$set: {selectedShape: selectedShape, shape: shape}});
 		UserConfigurations.update(
 			{userId: this.userId},
 			{
