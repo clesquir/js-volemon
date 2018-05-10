@@ -6,6 +6,7 @@ import {Router} from 'meteor/iron:router';
 import {Meteor} from 'meteor/meteor';
 import {ReactiveVar} from 'meteor/reactive-var';
 import {Template} from 'meteor/templating';
+const he = require('he');
 
 import './gamesList.html';
 
@@ -18,17 +19,17 @@ Template.gamesList.helpers({
 
 	hostNames: function() {
 		if (this.gameMode === TWO_VS_TWO_GAME_MODE) {
-			return this.players[0].name + '<br />' + this.players[2].name;
+			return he.encode(this.players[0].name) + '<br />' + he.encode(this.players[2].name);
 		} else {
-			return this.players[0].name;
+			return he.encode(this.players[0].name);
 		}
 	},
 
 	clientNames: function() {
 		if (this.gameMode === TWO_VS_TWO_GAME_MODE) {
-			return this.players[3].name + '<br />' + this.players[1].name;
+			return he.encode(this.players[3].name) + '<br />' + he.encode(this.players[1].name);
 		} else {
-			return this.players[1].name;
+			return he.encode(this.players[1].name);
 		}
 	},
 
