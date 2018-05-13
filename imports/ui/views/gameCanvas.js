@@ -7,8 +7,9 @@ import {onMobileAndTablet, padNumber} from '/imports/lib/utils.js';
 import {Meteor} from 'meteor/meteor';
 import {Session} from 'meteor/session';
 import {Template} from 'meteor/templating';
-
 import './gameCanvas.html';
+
+const he = require('he');
 
 Template.gameCanvas.helpers({
 	hostPoints: function() {
@@ -55,7 +56,7 @@ Template.gameCanvas.helpers({
 		const viewersList = [];
 
 		for (let i = 0; i < this.game.viewers.length; i++) {
-			viewersList.push(this.game.viewers[i].name);
+			viewersList.push(he.encode(this.game.viewers[i].name));
 		}
 
 		return viewersList.join('<br />');
