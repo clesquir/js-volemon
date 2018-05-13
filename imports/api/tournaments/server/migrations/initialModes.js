@@ -7,11 +7,10 @@ import {
 	TOURNAMENT_MODE_CATCH_ME_IF_YOU_CAN,
 	TOURNAMENT_MODE_CLASSIC,
 	TOURNAMENT_MODE_FOOTBALL_FIELD,
+	TOURNAMENT_MODE_GRAVITY_OVERRIDE,
 	TOURNAMENT_MODE_HARDCORE,
 	TOURNAMENT_MODE_HIDDEN_SHAPE,
-	TOURNAMENT_MODE_JUPITER_GRAVITY,
 	TOURNAMENT_MODE_MASSIVE_HARDCORE_BLIND_BULLETPROOF,
-	TOURNAMENT_MODE_MOON_GRAVITY,
 	TOURNAMENT_MODE_NO_BONUSES,
 	TOURNAMENT_MODE_NOT_ENOUGH_SPACE,
 	TOURNAMENT_MODE_NOTHING_BONUS,
@@ -59,16 +58,6 @@ Meteor.startup(function() {
 			"_id": TOURNAMENT_MODE_SUPER_BOUNCE_WALLS,
 			"name": "Super bounce walls tournament",
 			"description": "Walls are super bouncy"
-		},
-		{
-			"_id": TOURNAMENT_MODE_MOON_GRAVITY,
-			"name": "Moon gravity",
-			"description": "The gravity force is weak with this one"
-		},
-		{
-			"_id": TOURNAMENT_MODE_JUPITER_GRAVITY,
-			"name": "Jupiter gravity",
-			"description": "The gravity force is strong with this one"
 		},
 		{
 			"_id": TOURNAMENT_MODE_NO_BONUSES,
@@ -152,6 +141,11 @@ Meteor.startup(function() {
 			"_id": TOURNAMENT_MODE_BONUS_OVERRIDE,
 			"name": "Bonus overridden",
 			"description": "Available bonuses changed"
+		},
+		{
+			"_id": TOURNAMENT_MODE_GRAVITY_OVERRIDE,
+			"name": "Gravity overridden",
+			"description": "Gravity changed"
 		},
 		{
 			"_id": TOURNAMENT_MODE_PLAYER_VELOCITY,
