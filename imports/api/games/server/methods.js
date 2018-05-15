@@ -7,6 +7,7 @@ import {
 } from '/imports/api/games/constants.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {Games} from '/imports/api/games/games.js';
+import {MatchMakers} from '/imports/api/games/matchMakers.js';
 import {Players} from '/imports/api/games/players.js';
 import GameInitiatorCollection from '/imports/api/games/server/GameInitiatorCollection.js';
 import {onPlayerQuit, replyRematch, startGame} from '/imports/api/games/server/gameSetup.js';
@@ -28,11 +29,11 @@ Meteor.methods({
 	 * @param gameId
 	 */
 	setPlayerIsReady: function(gameId) {
-		const user = Meteor.user();
+		const userId = Meteor.userId();
 		const game = Games.findOne(gameId);
 		let player;
 
-		if (!user) {
+		if (!userId) {
 			throw new Meteor.Error(401, 'You need to login to set player ready');
 		}
 
@@ -40,12 +41,26 @@ Meteor.methods({
 			throw new Meteor.Error(404, 'Game not found');
 		}
 
-		player = Players.findOne({gameId: gameId, userId: user._id});
+		player = Players.findOne({gameId: gameId, userId: userId});
 		if (!player) {
 			throw new Meteor.Error(404, 'Player not found');
 		}
 
 		Players.update({_id: player._id}, {$set: {isReady: true}});
+		const match = MatchMakers.findOne({'matched.users.id': userId});
+		if (match) {
+			for (let i = 0; i < match.matched.length; i++) {
+				const users = match.matched[i].users;
+				for (let j = 0; j < users.length; j++) {
+					if (users[j].id === userId) {
+						const update = {};
+						update[`matched.${i}.users.${j}.isReady`] = true;
+						MatchMakers.update({'matched.users.id': userId}, {$set: update});
+						break;
+					}
+				}
+			}
+		}
 
 		//Start game if all players are ready
 		const players = Players.find({gameId: gameId});

@@ -73,8 +73,6 @@ Template.recentGames.helpers({
 	},
 
 	hostNames: function() {
-		console.log(this);
-
 		if (this.gameMode === TWO_VS_TWO_GAME_MODE) {
 			return he.encode(this.players[0].name) + '<br />' + he.encode(this.players[2].name);
 		} else {

@@ -8,16 +8,16 @@ import {Meteor} from "meteor/meteor";
 import {Random} from 'meteor/random';
 
 export default class ImmediateMatchMaker extends MatchMaker {
-	subscribe(userId, modeSelection, tournamentId) {
+	subscribe(userId, userName, modeSelection, tournamentId) {
 		let match = MatchMakers.findOne({modeSelection: modeSelection, tournamentId: tournamentId});
 
 		if (match) {
-			let usersToMatch = match.usersToMatch;
-
-			if (usersToMatch.indexOf(userId) === -1) {
+			if (!this.userPresentInArray(match.usersToMatch, userId)) {
 				//Add to the usersToMatch
-				usersToMatch = usersToMatch.concat([userId]);
-				MatchMakers.update({_id: match._id}, {$set: {usersToMatch: usersToMatch}});
+				MatchMakers.update(
+					{_id: match._id},
+					{$push: {usersToMatch: {id: userId, name: userName}}}
+				);
 
 				//Complete match
 				match = MatchMakers.findOne({modeSelection: modeSelection, tournamentId: tournamentId});
@@ -32,7 +32,7 @@ export default class ImmediateMatchMaker extends MatchMaker {
 					_id: Random.id(5),
 					modeSelection: modeSelection,
 					tournamentId: tournamentId,
-					usersToMatch: [userId],
+					usersToMatch: [{id: userId, name: userName}],
 					matched: []
 				}
 			);
@@ -40,11 +40,11 @@ export default class ImmediateMatchMaker extends MatchMaker {
 	}
 
 	canUnsubscribe(userId) {
-		const match = MatchMakers.findOne({'matched.users': userId});
+		const match = MatchMakers.findOne({'matched.users.id': userId});
 
 		if (match) {
 			for (let matched of match.matched) {
-				if (matched.users.indexOf(userId) !== -1) {
+				if (this.userPresentInArray(matched.users, userId)) {
 					const game = Games.findOne(matched.gameId);
 
 					if (game) {
@@ -62,25 +62,46 @@ export default class ImmediateMatchMaker extends MatchMaker {
 			return false;
 		}
 
-		let match = MatchMakers.findOne({usersToMatch: userId});
+		let match = MatchMakers.findOne({'usersToMatch.id': userId});
 		if (match) {
 			MatchMakers.update(
 				{_id: match._id},
-				{$pull: {usersToMatch: userId}}
+				{$pull: {usersToMatch: {id: userId}}}
 			);
 		}
 
-		match = MatchMakers.findOne({'matched.users': userId});
+		match = MatchMakers.findOne({'matched.users.id': userId});
 		if (match) {
 			MatchMakers.update(
 				{_id: match._id},
-				{$pull: {matched: {users: userId}}}
+				{$pull: {matched: {'users.id': userId}}}
 			);
 		}
 
 		return true;
 	}
 
+	/**
+	 * @private
+	 * @param users
+	 * @param userId
+	 * @returns {boolean}
+	 */
+	userPresentInArray(users, userId) {
+		for (let user of users) {
+			if (user.id === userId) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * @private
+	 * @param match
+	 * @returns {Array}
+	 */
 	matchedUsers(match) {
 		let gameMode = match.modeSelection;
 		if (match.modeSelection === TOURNAMENT_GAME_SELECTION) {

@@ -48,7 +48,13 @@ Meteor.methods({
 	startMatchMaking: function(modeSelection, tournamentId) {
 		const matchMaker = new ImmediateMatchMaker();
 
-		matchMaker.subscribe(Meteor.userId(), modeSelection, tournamentId);
+		const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
+		let userName = '';
+		if (userConfiguration) {
+			userName = userConfiguration.name;
+		}
+
+		matchMaker.subscribe(Meteor.userId(), userName, modeSelection, tournamentId);
 	},
 
 	cancelMatchMaking: function(userId) {

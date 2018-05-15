@@ -6,11 +6,14 @@ import {MatchMakers} from '/imports/api/games/matchMakers.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 import ButtonEnabler from '/imports/ui/util/ButtonEnabler.js';
 import TipsUpdater from '/imports/ui/util/TipsUpdater.js';
+import {Tooltips} from 'meteor/lookback:tooltips';
 import {Meteor} from "meteor/meteor";
 import {Mongo} from "meteor/mongo";
 import {Session} from "meteor/session";
 import {Template} from "meteor/templating";
 import './matchMaking.html';
+
+const he = require('he');
 
 class PlayableTournamentsCollection extends Mongo.Collection {}
 const PlayableTournaments = new PlayableTournamentsCollection('playableTournaments');
@@ -42,15 +45,25 @@ const startMatchMaking = function() {
 	);
 };
 
+const userPresentInArray = function(users, userId) {
+	for (let user of users) {
+		if (user.id === userId) {
+			return true;
+		}
+	}
+
+	return false;
+};
+
 const monitorWhenMatched = function() {
 	matchMakingTracker = MatchMakers.find().observeChanges({
 		changed: (id, fields) => {
 			if (fields.hasOwnProperty('matched')) {
-				const match = MatchMakers.findOne({'matched.users': Meteor.userId()});
+				const match = MatchMakers.findOne({'matched.users.id': Meteor.userId()});
 
 				if (match) {
 					for (let matched of match.matched) {
-						if (matched.users.indexOf(Meteor.userId()) !== -1) {
+						if (userPresentInArray(matched.users, Meteor.userId())) {
 							if (!Session.get('matchMaking.gameId')) {
 								Session.set('matchMaking.gameId', matched.gameId);
 								monitorGameStart();
@@ -194,6 +207,22 @@ Template.matchMaking.helpers({
 		return match && match.usersToMatch && match.usersToMatch.length > 0;
 	},
 
+	playersWaiting: function(modeSelection, tournamentId) {
+		const match = MatchMakers.findOne({modeSelection: modeSelection, tournamentId: tournamentId});
+
+		if (match && match.usersToMatch) {
+			const players = [];
+
+			for (let userToMatch of match.usersToMatch) {
+				players.push(he.encode(userToMatch.name));
+			}
+
+			return players.join('<br />');
+		}
+
+		return '';
+	},
+
 	numberOfPlayersWaiting: function(modeSelection, tournamentId) {
 		const match = MatchMakers.findOne({modeSelection: modeSelection, tournamentId: tournamentId});
 
@@ -247,14 +276,14 @@ Template.matchMaking.helpers({
 			return false;
 		}
 
-		const match = MatchMakers.findOne({'matched.users': Meteor.userId()});
+		const match = MatchMakers.findOne({'matched.users.id': Meteor.userId()});
 
 		if (!match) {
 			return false;
 		}
 
 		for (let matched of match.matched) {
-			if (matched.users.indexOf(Meteor.userId()) !== -1) {
+			if (userPresentInArray(matched.users, Meteor.userId())) {
 				return true;
 			}
 		}
@@ -344,6 +373,24 @@ Template.matchMaking.helpers({
 		return '';
 	},
 
+	showListOfMatched: function() {
+		return !!Session.get('matchMaking.gameId');
+	},
+
+	listOfMatched: function() {
+		const match = MatchMakers.findOne({'matched.users.id': Meteor.userId()});
+
+		if (match) {
+			for (let matched of match.matched) {
+				if (userPresentInArray(matched.users, Meteor.userId())) {
+					return matched.users;
+				}
+			}
+		}
+
+		return [];
+	},
+
 	matchMakingStatusClass: function() {
 		if (Session.get('matchMaking.kickedOut') || Session.get('matchMaking.gameId')) {
 			return 'matched-status';
@@ -358,6 +405,7 @@ Template.matchMaking.events({
 		Session.set('matchMaking.tournamentId', $(e.currentTarget).attr('data-tournament-id'));
 		Session.set('matchMaking.modeSelection', $(e.currentTarget).attr('data-mode-selection'));
 
+		Tooltips.hide();
 		startMatchMaking();
 	},
 

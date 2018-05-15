@@ -1,5 +1,5 @@
 export default class MatchMaker {
-	subscribe(userId, modeSelection, tournamentId) {
+	subscribe(userId, userName, modeSelection, tournamentId) {
 	}
 
 	canUnsubscribe(userId) {

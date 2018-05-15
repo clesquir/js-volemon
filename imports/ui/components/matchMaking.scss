@@ -195,6 +195,23 @@ $loading-logo-size: 75px;
 		}
 	}
 
+	.matched-user-team-red {
+		color: $host-color;
+	}
+
+	.matched-user-team-blue {
+		color: $client-color;
+	}
+
+	.matched-user-is-ready {
+		opacity: 0.25;
+		transition: opacity 0.25s ease-in-out;
+
+		&.matched-user-ready {
+			opacity: 1;
+		}
+	}
+
 	.cancel-button {
 		width: 60px;
 		box-shadow: inset $negative 0 0 0 2px;
