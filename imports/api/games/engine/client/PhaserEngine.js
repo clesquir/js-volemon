@@ -578,20 +578,22 @@ export default class PhaserEngine extends Engine {
 	}
 
 	hasSurfaceTouchingPlayerBottom(player) {
-		for (let i = 0; i < this.game.physics.p2.world.narrowphase.contactEquations.length; i++) {
-			const contact = this.game.physics.p2.world.narrowphase.contactEquations[i];
-			if (
-				(contact.bodyA === player.body.data && this.canPlayerJumpOnBody(player, contact.bodyB)) ||
-				(contact.bodyB === player.body.data && this.canPlayerJumpOnBody(player, contact.bodyA))
-			) {
-				let dot = p2.vec2.dot(contact.normalA, p2.vec2.fromValues(0, 1));
+		if (this.game.physics.p2) {
+			for (let i = 0; i < this.game.physics.p2.world.narrowphase.contactEquations.length; i++) {
+				const contact = this.game.physics.p2.world.narrowphase.contactEquations[i];
+				if (
+					(contact.bodyA === player.body.data && this.canPlayerJumpOnBody(player, contact.bodyB)) ||
+					(contact.bodyB === player.body.data && this.canPlayerJumpOnBody(player, contact.bodyA))
+				) {
+					let dot = p2.vec2.dot(contact.normalA, p2.vec2.fromValues(0, 1));
 
-				if (contact.bodyA === player.body.data) {
-					dot *= -1;
-				}
+					if (contact.bodyA === player.body.data) {
+						dot *= -1;
+					}
 
-				if (dot > 0.5) {
-					return true;
+					if (dot > 0.5) {
+						return true;
+					}
 				}
 			}
 		}
