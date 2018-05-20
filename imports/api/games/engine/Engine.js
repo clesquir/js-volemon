@@ -176,6 +176,9 @@ export default class Engine {
 	animateSetOpacity(sprite, opacityTo, opacityFrom, duration) {
 	}
 
+	setTint(sprite, hex) {
+	}
+
 	/**
 	 * @param sprite
 	 * @param {{frame: {string}, frames: {string}[], speed: {int}}} animation

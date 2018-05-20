@@ -13,8 +13,16 @@
 		color: $host-color;
 	}
 
+	.host-second-player {
+		color: lighten($host-color, 15%);
+	}
+
 	.client-player {
 		color: $client-color;
+	}
+
+	.client-second-player {
+		color: lighten($client-color, 15%);
 	}
 
 	& > div {

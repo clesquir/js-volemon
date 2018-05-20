@@ -621,6 +621,10 @@ export default class PhaserEngine extends Engine {
 		this.game.add.tween(sprite).to({alpha: opacityTo}, duration).start();
 	}
 
+	setTint(sprite, hex) {
+		sprite.tint = Phaser.Color.hexToRGB(hex);
+	}
+
 	/**
 	 * @param sprite
 	 * @param {{frame: {string}, frames: {string}[], speed: {int}}} animation
