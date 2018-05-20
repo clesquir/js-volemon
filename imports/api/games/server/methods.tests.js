@@ -153,7 +153,7 @@ describe('games/methods#leaveGame', function() {
 });
 
 describe('GameMethods#quitGame', function() {
-	const sandbox = sinon.sandbox.create();
+	const sandbox = sinon.createSandbox();
 	const gameId = Random.id(5);
 	const userId1 = Random.id(5);
 	const userId2 = Random.id(5);

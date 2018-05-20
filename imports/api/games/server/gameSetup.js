@@ -32,12 +32,6 @@ import {Random} from 'meteor/random';
 export const createGame = function(userId, gameInitiators, modeSelection, tournamentId = null) {
 	let id = null;
 
-	const userConfiguration = UserConfigurations.findOne({userId: userId});
-	let username = '';
-	if (userConfiguration) {
-		username = userConfiguration.name;
-	}
-
 	if (!playersCanPlayTournament(tournamentId, [{userId: userId}])) {
 		throw new Meteor.Error('not-allowed', 'Cannot join this tournament');
 	}
