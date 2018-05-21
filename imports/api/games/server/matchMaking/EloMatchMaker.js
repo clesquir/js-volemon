@@ -2,11 +2,14 @@ import {ONE_VS_ONE_GAME_MODE, TOURNAMENT_GAME_SELECTION, TWO_VS_TWO_GAME_MODE} f
 import {MatchMakers} from '/imports/api/games/matchMakers.js';
 import MatchMaker from '/imports/api/games/server/matchMaking/MatchMaker.js';
 import UserMatch from '/imports/api/games/server/matchMaking/UserMatch.js';
+import {INITIAL_ELO_RATING} from '/imports/api/profiles/constants.js';
+import {Profiles} from '/imports/api/profiles/profiles.js';
+import {TournamentProfiles} from '/imports/api/tournaments/tournamentProfiles.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {Meteor} from "meteor/meteor";
 import {Random} from 'meteor/random';
 
-export default class ImmediateMatchMaker extends MatchMaker {
+export default class EloMatchMaker extends MatchMaker {
 	subscribe(userId, userName, modeSelection, tournamentId) {
 		let match = MatchMakers.findOne({modeSelection: modeSelection, tournamentId: tournamentId});
 
@@ -29,7 +32,7 @@ export default class ImmediateMatchMaker extends MatchMaker {
 	/**
 	 * @private
 	 * @param match
-	 * @returns {Array}
+	 * @returns {{id: {string}, name: {string}}[]}
 	 */
 	matchedUsers(match) {
 		let gameMode = match.modeSelection;
@@ -46,16 +49,72 @@ export default class ImmediateMatchMaker extends MatchMaker {
 		switch (gameMode) {
 			case ONE_VS_ONE_GAME_MODE:
 				if (match.usersToMatch.length === 2) {
-					return match.usersToMatch;
+					const matchedUsers = this.sortByEloRating(match.usersToMatch, match.tournamentId);
+
+					return [matchedUsers[0], matchedUsers[1]];
 				}
 				break;
 			case TWO_VS_TWO_GAME_MODE:
 				if (match.usersToMatch.length === 4) {
-					return match.usersToMatch;
+					const matchedUsers = this.sortByEloRating(match.usersToMatch, match.tournamentId);
+
+					return [matchedUsers[0], matchedUsers[1], matchedUsers[3], matchedUsers[2]];
 				}
 				break;
 		}
 
 		return [];
+	}
+
+	/**
+	 * @private
+	 * @param usersToMatch
+	 * @param tournamentId
+	 * @returns {{id: {string}, name: {string}}[]}
+	 */
+	sortByEloRating(usersToMatch, tournamentId) {
+		const unsortedUsers = {};
+
+		for (let user of usersToMatch) {
+			const eloRating = this.getEloRating(tournamentId, user.id);
+
+			if (unsortedUsers[eloRating] === undefined) {
+				unsortedUsers[eloRating] = [];
+			}
+			unsortedUsers[eloRating].push(user);
+		}
+
+		const sortedUsers = [];
+		Object.keys(unsortedUsers).sort((a, b) => a - b).forEach(function(key) {
+			for (let user of unsortedUsers[key]) {
+				sortedUsers.push(user);
+			}
+		});
+
+		return sortedUsers;
+	}
+
+	/**
+	 * @private
+	 * @param tournamentId
+	 * @param userId
+	 * @returns {Number}
+	 */
+	getEloRating(tournamentId, userId) {
+		let profile;
+
+		if (tournamentId) {
+			profile = TournamentProfiles.findOne({tournamentId: tournamentId, userId: userId});
+		}
+
+		if (!profile) {
+			profile = Profiles.findOne({userId: userId});
+		}
+
+		if (profile) {
+			return profile.eloRating;
+		} else {
+			return INITIAL_ELO_RATING;
+		}
 	}
 }

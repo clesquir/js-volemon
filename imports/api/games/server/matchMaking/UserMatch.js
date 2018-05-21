@@ -17,7 +17,7 @@ export default class UserMatch {
 				{
 					id: user.id,
 					name: user.name,
-					team: i % 2 ? 'blue' : 'red',
+					position: i + 1,
 					isReady: false
 				}
 			);

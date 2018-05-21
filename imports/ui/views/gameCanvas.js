@@ -18,9 +18,10 @@ Template.gameCanvas.helpers({
 
 	hostNames: function() {
 		if (this.game.gameMode === TWO_VS_TWO_GAME_MODE) {
-			return this.game.players[0].name + ' / ' + this.game.players[2].name;
+			return '<span class="host-player">' + he.encode(this.game.players[0].name) + '</span>' + ' / ' +
+				'<span class="host-second-player">' + he.encode(this.game.players[2].name) + '</span>';
 		} else {
-			return this.game.players[0].name;
+			return '<span class="host-player">' + he.encode(this.game.players[0].name) + '</span>';
 		}
 	},
 
@@ -30,9 +31,10 @@ Template.gameCanvas.helpers({
 
 	clientNames: function() {
 		if (this.game.gameMode === TWO_VS_TWO_GAME_MODE) {
-			return this.game.players[3].name + ' / ' + this.game.players[1].name;
+			return '<span class="client-second-player">' + he.encode(this.game.players[3].name) + '</span>' + ' / ' +
+				'<span class="client-player">' + he.encode(this.game.players[1].name) + '</span>';
 		} else {
-			return this.game.players[1].name;
+			return '<span class="client-player">' + he.encode(this.game.players[1].name) + '</span>';
 		}
 	},
 

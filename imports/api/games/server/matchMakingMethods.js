@@ -1,6 +1,6 @@
 import MatchMakingGameConfiguration from '/imports/api/games/configuration/MatchMakingGameConfiguration.js';
 import {Players} from '/imports/api/games/players.js';
-import ImmediateMatchMaker from '/imports/api/games/server/matchMaking/ImmediateMatchMaker.js';
+import EloMatchMaker from '/imports/api/games/server/matchMaking/EloMatchMaker.js';
 import {PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
@@ -46,7 +46,7 @@ Meteor.methods({
 	},
 
 	startMatchMaking: function(modeSelection, tournamentId) {
-		const matchMaker = new ImmediateMatchMaker();
+		const matchMaker = new EloMatchMaker();
 
 		const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
 		let userName = '';
@@ -58,7 +58,7 @@ Meteor.methods({
 	},
 
 	cancelMatchMaking: function(userId) {
-		const matchMaker = new ImmediateMatchMaker();
+		const matchMaker = new EloMatchMaker();
 
 		if (!matchMaker.canUnsubscribe(userId)) {
 			return false;
