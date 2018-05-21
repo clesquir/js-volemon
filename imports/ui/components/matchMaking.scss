@@ -195,12 +195,20 @@ $loading-logo-size: 75px;
 		}
 	}
 
-	.matched-user-team-red {
-		color: $host-color;
+	.matched-user-position-1 {
+		color: $host-primary-color;
 	}
 
-	.matched-user-team-blue {
-		color: $client-color;
+	.matched-user-position-2 {
+		color: $client-primary-color;
+	}
+
+	.matched-user-position-3 {
+		color: $host-second-color;
+	}
+
+	.matched-user-position-4 {
+		color: $client-second-color;
 	}
 
 	.matched-user-is-ready {

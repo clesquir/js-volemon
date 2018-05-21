@@ -217,7 +217,7 @@ export default class Game {
 			this.gameConfiguration.playerInitialY(),
 			'shape-' + this.playerShapeFromKey(player1Key)
 		);
-		this.engine.setTint(this.player1, '#c94141');
+		this.engine.setTint(this.player1, '#a73030');
 		this.player1.data.key = player1Key;
 		this.initPlayer(
 			this.player1,
@@ -235,7 +235,7 @@ export default class Game {
 			this.gameConfiguration.playerInitialY(),
 			'shape-' + this.playerShapeFromKey(player2Key)
 		);
-		this.engine.setTint(this.player2, '#3363a1');
+		this.engine.setTint(this.player2, '#274b7a');
 		this.player2.data.key = player2Key;
 		this.initPlayer(
 			this.player2,
@@ -254,7 +254,7 @@ export default class Game {
 				this.gameConfiguration.playerInitialY(),
 				'shape-' + this.playerShapeFromKey(player3Key)
 			);
-			this.engine.setTint(this.player3, '#da7d7d');
+			this.engine.setTint(this.player3, '#d46969');
 			this.player3.data.key = player3Key;
 			this.initPlayer(
 				this.player3,
@@ -274,7 +274,7 @@ export default class Game {
 				this.gameConfiguration.playerInitialY(),
 				'shape-' + this.playerShapeFromKey(player4Key)
 			);
-			this.engine.setTint(this.player4, '#5789ca');
+			this.engine.setTint(this.player4, '#437bc4');
 			this.player4.data.key = player4Key;
 			this.initPlayer(
 				this.player4,

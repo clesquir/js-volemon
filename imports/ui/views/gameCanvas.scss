@@ -10,19 +10,19 @@
 	z-index: 1;
 
 	.host-player {
-		color: $host-color;
+		color: $host-primary-color;
 	}
 
 	.host-second-player {
-		color: lighten($host-color, 15%);
+		color: $host-second-color;
 	}
 
 	.client-player {
-		color: $client-color;
+		color: $client-primary-color;
 	}
 
 	.client-second-player {
-		color: lighten($client-color, 15%);
+		color: $client-second-color;
 	}
 
 	& > div {
