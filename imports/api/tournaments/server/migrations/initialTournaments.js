@@ -1,6 +1,6 @@
 import {TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import {TournamentModes} from '/imports/api/tournaments/tournamentModes.js';
-import {TOURNAMENT_MODE_GRAVITY_OVERRIDE} from '/imports/api/tournaments/tournamentModesConstants.js';
+import {TOURNAMENT_MODE_BONUS_OVERRIDE} from '/imports/api/tournaments/tournamentModesConstants.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
@@ -8,31 +8,14 @@ import {Random} from 'meteor/random';
 Meteor.startup(function() {
 	const tournaments = [
 		{
-			identifier: "tournament_2017-11-06_moon",
-			name: "Moon gravity",
-			description: "The gravity force is weak with this one",
-			mode: TOURNAMENT_MODE_GRAVITY_OVERRIDE,
-			startDate: "2017-11-06 -04:00",
-			endDate: "2017-11-11 -04:00",
-			isPublished: true
-		},
-		{
-			identifier: "tournament_2017-11-06_jupiter",
-			name: "Jupiter gravity",
-			description: "The gravity force is strong with this one",
-			mode: TOURNAMENT_MODE_GRAVITY_OVERRIDE,
-			startDate: "2017-11-06 -04:00",
-			endDate: "2017-11-11 -04:00",
-			isPublished: true
-		},
-		{
-			identifier: "tournament_2018-05-14",
-			name: "Jupiter gravity",
-			description: "2 VS 2 strong gravity",
-			mode: TOURNAMENT_MODE_GRAVITY_OVERRIDE,
+			id: Random.id(5),
+			identifier: "tournament_2018-05-21",
+			name: "2 VS 2 Instant death bonus",
+			description: "Bonuses spawning are only instant death",
+			mode: TOURNAMENT_MODE_BONUS_OVERRIDE,
 			gameMode: TWO_VS_TWO_GAME_MODE,
-			startDate: "2018-05-13 -04:00",
-			endDate: "2018-05-21 -04:00",
+			startDate: "2018-05-21 -04:00",
+			endDate: "2018-05-28 -04:00",
 			isPublished: false
 		}
 	];
