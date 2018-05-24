@@ -58,7 +58,9 @@ export default class EloMatchMaker extends MatchMaker {
 				if (match.usersToMatch.length === 4) {
 					const matchedUsers = this.sortByEloRating(match.usersToMatch, match.tournamentId);
 
-					return [matchedUsers[0], matchedUsers[1], matchedUsers[3], matchedUsers[2]];
+					//Match lowest 0 with highest 3 and both middle together
+					//Highest will be the host
+					return [matchedUsers[3], matchedUsers[1], matchedUsers[0], matchedUsers[2]];
 				}
 				break;
 		}

@@ -16,7 +16,7 @@ describe('EloMatchMaker', function() {
 				{id: 3, name: 'c', eloRating: 1000},
 				{id: 4, name: 'd', eloRating: 1100},
 			],
-			expected: [1, 2, 4, 3],
+			expected: [4, 2, 1, 3],
 		},
 		{
 			name: 'half and half',
@@ -26,7 +26,7 @@ describe('EloMatchMaker', function() {
 				{id: 3, name: 'c', eloRating: 1100},
 				{id: 4, name: 'd', eloRating: 900},
 			],
-			expected: [1, 4, 3, 2],
+			expected: [3, 4, 1, 2],
 		},
 		{
 			name: 'all high but one',
@@ -36,7 +36,7 @@ describe('EloMatchMaker', function() {
 				{id: 3, name: 'c', eloRating: 1100},
 				{id: 4, name: 'd', eloRating: 900},
 			],
-			expected: [4, 1, 3, 2],
+			expected: [3, 1, 4, 2],
 		},
 		{
 			name: 'all low but one',
@@ -46,7 +46,7 @@ describe('EloMatchMaker', function() {
 				{id: 3, name: 'c', eloRating: 900},
 				{id: 4, name: 'd', eloRating: 1000},
 			],
-			expected: [1, 2, 4, 3],
+			expected: [4, 2, 1, 3],
 		},
 		{
 			name: 'all equal',
@@ -56,7 +56,7 @@ describe('EloMatchMaker', function() {
 				{id: 3, name: 'c', eloRating: 1000},
 				{id: 4, name: 'd', eloRating: 1000},
 			],
-			expected: [1, 2, 4, 3],
+			expected: [4, 2, 1, 3],
 		},
 		{
 			name: 'first really high',
@@ -66,7 +66,7 @@ describe('EloMatchMaker', function() {
 				{id: 3, name: 'c', eloRating: 1000},
 				{id: 4, name: 'd', eloRating: 1000},
 			],
-			expected: [2, 3, 1, 4],
+			expected: [1, 3, 2, 4],
 		},
 		{
 			name: 'still 1, 2, 3, 4',
@@ -76,7 +76,7 @@ describe('EloMatchMaker', function() {
 				{id: 3, name: 'c', eloRating: 1100},
 				{id: 4, name: 'd', eloRating: 1000},
 			],
-			expected: [1, 2, 3, 4],
+			expected: [3, 2, 1, 4],
 		},
 	];
 
