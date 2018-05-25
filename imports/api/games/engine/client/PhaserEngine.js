@@ -578,7 +578,7 @@ export default class PhaserEngine extends Engine {
 	}
 
 	hasSurfaceTouchingPlayerBottom(player) {
-		if (this.game.physics.p2) {
+		if (this.game.physics && this.game.physics.p2) {
 			for (let i = 0; i < this.game.physics.p2.world.narrowphase.contactEquations.length; i++) {
 				const contact = this.game.physics.p2.world.narrowphase.contactEquations[i];
 				if (
