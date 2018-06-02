@@ -16,9 +16,9 @@ import {
 	TOURNAMENT_MODE_PAUSE_PLAY,
 	TOURNAMENT_MODE_PLAYER_VELOCITY,
 	TOURNAMENT_MODE_RANDOM_BONUSES,
+	TOURNAMENT_MODE_SHAPE_OVERRIDE,
 	TOURNAMENT_MODE_SHAPE_SHIFTER,
 	TOURNAMENT_MODE_SMOKE_BOMB,
-	TOURNAMENT_MODE_SPAGHETTI_ON_THE_CARPET,
 	TOURNAMENT_MODE_SUDDEN_DEATH,
 	TOURNAMENT_MODE_SUPER_BOUNCE_WALLS,
 	TOURNAMENT_MODE_TALL_NET,
@@ -42,9 +42,9 @@ import NothingBonus from './NothingBonus';
 import PausePlay from './PausePlay';
 import PlayerVelocity from './PlayerVelocity';
 import RandomBonuses from './RandomBonuses';
+import ShapeOverride from './ShapeOverride';
 import ShapeShifter from './ShapeShifter';
 import SmokeBomb from './SmokeBomb';
-import SpaghettiOnTheCarpet from './SpaghettiOnTheCarpet';
 import SuddenDeath from './SuddenDeath';
 import SuperBounceWalls from './SuperBounceWalls';
 import TallNet from './TallNet';
@@ -78,8 +78,6 @@ export default class TournamentModeFactory {
 				return new BigDrunk();
 			case TOURNAMENT_MODE_HIDDEN_SHAPE:
 				return new HiddenShape();
-			case TOURNAMENT_MODE_SPAGHETTI_ON_THE_CARPET:
-				return new SpaghettiOnTheCarpet();
 			case TOURNAMENT_MODE_NOTHING_BONUS:
 				return new NothingBonus();
 			case TOURNAMENT_MODE_SHAPE_SHIFTER:
@@ -106,6 +104,8 @@ export default class TournamentModeFactory {
 				return new BonusOverride();
 			case TOURNAMENT_MODE_GRAVITY_OVERRIDE:
 				return new GravityOverride();
+			case TOURNAMENT_MODE_SHAPE_OVERRIDE:
+				return new ShapeOverride();
 			case TOURNAMENT_MODE_PLAYER_VELOCITY:
 				return new PlayerVelocity();
 		}

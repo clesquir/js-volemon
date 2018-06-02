@@ -1,4 +1,19 @@
-import {BONUS_INSTANT_DEATH} from '/imports/api/games/bonusConstants.js';
+import {
+	BONUS_BIG_BALL,
+	BONUS_INVISIBLE_BALL,
+	BONUS_SMALL_MONSTER,
+	BONUS_BIG_JUMP_MONSTER,
+	BONUS_SLOW_MONSTER,
+	BONUS_FREEZE_MONSTER,
+	BONUS_REVERSE_MOVE_MONSTER,
+	BONUS_INVISIBLE_MONSTER,
+	BONUS_CLOUD,
+	BONUS_NO_JUMP_MONSTER,
+	BONUS_BOUNCE_MONSTER,
+	BONUS_SHAPE_SHIFT,
+	BONUS_SMOKE_BOMB,
+	BONUS_INSTANT_DEATH
+} from '/imports/api/games/bonusConstants.js';
 import Classic from './Classic';
 
 export default class BonusOverride extends Classic {
@@ -8,7 +23,20 @@ export default class BonusOverride extends Classic {
 
 	availableBonuses() {
 		return [
-			BONUS_INSTANT_DEATH
+			BONUS_BIG_BALL,
+			BONUS_INVISIBLE_BALL,
+			BONUS_SMALL_MONSTER,
+			BONUS_BIG_JUMP_MONSTER,
+			BONUS_SLOW_MONSTER,
+			BONUS_FREEZE_MONSTER,
+			BONUS_REVERSE_MOVE_MONSTER,
+			BONUS_INVISIBLE_MONSTER,
+			BONUS_CLOUD,
+			BONUS_NO_JUMP_MONSTER,
+			BONUS_BOUNCE_MONSTER,
+			BONUS_SHAPE_SHIFT,
+			BONUS_SMOKE_BOMB,
+			BONUS_INSTANT_DEATH,
 		];
 	}
 }
