@@ -40,7 +40,16 @@
 				<a href="#" class="button {{#if modeIsSelected '2vs2'}}option-selected{{/if}}" data-action="change-mode" data-mode-id="2vs2">2 VS 2</a>
 			</div>
 
-			<div id="skinGameContainer" class="page game"></div>
+			<div class="game-container">
+				<div id="skinGameContainer" class="page game"></div>
+
+				<div id="cheer-host" class="cheer-item cheer-host cheer-for-viewer" data-action="cheer-host">
+					<div class="cheer-icon"></div>
+				</div>
+				<div id="cheer-client" class="cheer-item cheer-client cheer-for-viewer" data-action="cheer-client">
+					<div class="cheer-icon"></div>
+				</div>
+			</div>
 
 		</div>
 

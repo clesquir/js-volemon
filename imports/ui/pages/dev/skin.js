@@ -52,5 +52,13 @@ Template.skin.events({
 		skin.stop();
 		skin = new Skin();
 		skin.start();
+	},
+
+	'click [data-action="cheer-host"]': function() {
+		skin.cheerPlayer(true);
+	},
+
+	'click [data-action="cheer-client"]': function() {
+		skin.cheerPlayer(false);
 	}
 });
