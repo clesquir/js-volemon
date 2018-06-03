@@ -180,4 +180,8 @@ export default class Skin {
 	updateGame() {
 		this.game.updateGame();
 	}
+
+	cheerPlayer(forHost) {
+		this.game.cheer(forHost);
+	}
 }
