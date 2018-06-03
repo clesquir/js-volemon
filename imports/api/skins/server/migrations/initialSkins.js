@@ -1,5 +1,5 @@
 import {Meteor} from 'meteor/meteor';
-import {SKIN_DEFAULT, SKIN_DEVALTO, SKIN_MARIO_BROS, SKIN_JUJU_WORLD} from '/imports/api/skins/skinConstants.js';
+import {SKIN_DEFAULT, SKIN_DEVALTO, SKIN_MARIO_BROS, SKIN_JUJU_WORLD, SKIN_INDUSTRIAL} from '/imports/api/skins/skinConstants.js';
 import {Skins} from '/imports/api/skins/skins.js';
 
 Meteor.startup(function() {
@@ -19,11 +19,16 @@ Meteor.startup(function() {
 			name: "Mario bros.",
 			displayOrder: 3
 		},
-		{
-			_id: SKIN_JUJU_WORLD,
-			name: "Juju's world",
-			displayOrder: 4
-		}
+        {
+            _id: SKIN_JUJU_WORLD,
+            name: "Juju's world",
+            displayOrder: 4
+        },
+        {
+            _id: SKIN_INDUSTRIAL,
+            name: "Industrial Revolution",
+            displayOrder: 5
+        }
 	];
 
 	for (let expectedSkin of skins) {
