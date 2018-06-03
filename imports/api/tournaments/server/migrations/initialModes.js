@@ -8,6 +8,7 @@ import {
 	TOURNAMENT_MODE_CLASSIC,
 	TOURNAMENT_MODE_FOOTBALL_FIELD,
 	TOURNAMENT_MODE_GRAVITY_OVERRIDE,
+	TOURNAMENT_MODE_SHAPE_OVERRIDE,
 	TOURNAMENT_MODE_HARDCORE,
 	TOURNAMENT_MODE_HIDDEN_SHAPE,
 	TOURNAMENT_MODE_MASSIVE_HARDCORE_BLIND_BULLETPROOF,
@@ -19,7 +20,6 @@ import {
 	TOURNAMENT_MODE_RANDOM_BONUSES,
 	TOURNAMENT_MODE_SHAPE_SHIFTER,
 	TOURNAMENT_MODE_SMOKE_BOMB,
-	TOURNAMENT_MODE_SPAGHETTI_ON_THE_CARPET,
 	TOURNAMENT_MODE_SUDDEN_DEATH,
 	TOURNAMENT_MODE_SUPER_BOUNCE_WALLS,
 	TOURNAMENT_MODE_TALL_NET,
@@ -77,11 +77,6 @@ Meteor.startup(function() {
 			"_id": TOURNAMENT_MODE_HIDDEN_SHAPE,
 			"name": "Hidden shape",
 			"description": "Monsters shapes are randomly picked and hidden"
-		},
-		{
-			"_id": TOURNAMENT_MODE_SPAGHETTI_ON_THE_CARPET,
-			"name": "Spaghetti on the carpet",
-			"description": "Only available shapes are hyphen and obelisk"
 		},
 		{
 			"_id": TOURNAMENT_MODE_NOTHING_BONUS,
@@ -146,6 +141,11 @@ Meteor.startup(function() {
 			"_id": TOURNAMENT_MODE_GRAVITY_OVERRIDE,
 			"name": "Gravity overridden",
 			"description": "Gravity changed"
+		},
+		{
+			"_id": TOURNAMENT_MODE_SHAPE_OVERRIDE,
+			"name": "Shape overridden",
+			"description": "Available shapes changed"
 		},
 		{
 			"_id": TOURNAMENT_MODE_PLAYER_VELOCITY,

@@ -1,0 +1,49 @@
+<template name="skin">
+
+	<style>
+		#devSkin .skin-options {
+			margin-top: 10px;
+		}
+
+		#devSkin .skin-options .button {
+			font-size: 10px;
+		}
+
+		#devSkin canvas {
+			margin: 10px auto;
+			position: relative;
+			width: 100% !important;
+			height: 100% !important;
+		}
+
+		.option-selected {
+			background: #b0b0b0;
+		}
+
+		.option-selected:hover {
+			background: #a0a0a0;
+		}
+	</style>
+
+	<div id="devSkin" class="app-section app-section-center">
+
+		<div class="app-section-inner">
+
+			<div class="skin-options">
+				{{#each skins}}
+					<a href="#" class="button {{#if skinIsSelected _id}}option-selected{{/if}}" data-action="change-skin" data-skin-id="{{_id}}">{{name}}</a>
+				{{/each}}
+			</div>
+
+			<div class="skin-options">
+				<a href="#" class="button {{#if modeIsSelected '1vs1'}}option-selected{{/if}}" data-action="change-mode" data-mode-id="1vs1">1 VS 1</a>
+				<a href="#" class="button {{#if modeIsSelected '2vs2'}}option-selected{{/if}}" data-action="change-mode" data-mode-id="2vs2">2 VS 2</a>
+			</div>
+
+			<div id="skinGameContainer" class="page game"></div>
+
+		</div>
+
+	</div>
+
+</template>
