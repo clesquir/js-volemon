@@ -1,3 +1,5 @@
+import {TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
+
 export default class LevelConfiguration {
 	width = 0;
 	height = 0;
@@ -81,6 +83,14 @@ export default class LevelConfiguration {
 			71,
 			8
 		);
+	}
+
+	static fromMode(mode) {
+		if (mode === TWO_VS_TWO_GAME_MODE) {
+			return LevelConfiguration.defaultTwoVersusTwoConfiguration();
+		}
+
+		return LevelConfiguration.defaultConfiguration();
 	}
 
 	/**
