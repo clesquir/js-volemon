@@ -37,10 +37,10 @@ Template.recentGames.helpers({
 
 		if (
 			(
-				userId === this.createdBy &&
+				(this.players[0].id === userId || (this.players[2] && this.players[2].id === userId)) &&
 				hostPoints > clientPoints
 			) || (
-				userId !== this.createdBy &&
+				(this.players[1].id === userId || (this.players[3] && this.players[3].id === userId)) &&
 				clientPoints > hostPoints
 			)
 		) {
@@ -56,7 +56,7 @@ Template.recentGames.helpers({
 		let hostScoreClass = '';
 		let clientScoreClass = '';
 
-		if (userId === this.createdBy) {
+		if (this.players[0].id === userId || (this.players[2] && this.players[2].id === userId)) {
 			hostScoreClass = 'loosing-score';
 			if (hostPoints > clientPoints) {
 				hostScoreClass = 'winning-score';
