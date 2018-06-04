@@ -1,0 +1,75 @@
+{"frames": [
+
+{
+	"filename": "ball",
+	"frame": {"x":932,"y":42,"w":24,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
+	"sourceSize": {"w":24,"h":24},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "ground",
+	"frame": {"x":1,"y":1,"w":840,"h":70},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":840,"h":70},
+	"sourceSize": {"w":840,"h":70},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "net",
+	"frame": {"x":843,"y":1,"w":8,"h":70},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":8,"h":70},
+	"sourceSize": {"w":8,"h":70},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "spark-1",
+	"frame": {"x":853,"y":54,"w":17,"h":20},
+	"rotated": true,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":17,"h":20},
+	"sourceSize": {"w":17,"h":20},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "spark-2",
+	"frame": {"x":896,"y":42,"w":29,"h":34},
+	"rotated": true,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":29,"h":34},
+	"sourceSize": {"w":29,"h":34},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "spark-3",
+	"frame": {"x":896,"y":1,"w":39,"h":44},
+	"rotated": true,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":39,"h":44},
+	"sourceSize": {"w":39,"h":44},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "spark-4",
+	"frame": {"x":853,"y":1,"w":41,"h":51},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":41,"h":51},
+	"sourceSize": {"w":41,"h":51},
+	"pivot": {"x":0.5,"y":0.5}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "texture-atlas.png",
+	"format": "RGBA8888",
+	"size": {"w":957,"h":72},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:a163cb8a767a1ae4a6ac7d0838d945d0:f5cb3c15a217ca33055c045155f6a322:a973cd4a72d4c90ced76930eac7fdc63$"
+}
+}
