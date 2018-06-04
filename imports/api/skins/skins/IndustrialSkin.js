@@ -80,8 +80,8 @@ export default class IndustrialSkin extends Skin {
 	confettisComponent() {
 		return {
 			key: 'industrial-skin',
-			hostFrames: ['confettis-juju-nipple', 'confettis-kwak'],
-			clientFrames: ['confettis-chateau-nipple', 'confettis-chateau-beard']
+			hostFrames: ['spark-1', 'spark-2', 'spark-3', 'spark-4'],
+			clientFrames: ['spark-1', 'spark-2', 'spark-3', 'spark-4']
 		};
 	}
 }
