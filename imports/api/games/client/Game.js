@@ -13,6 +13,7 @@ import {
 } from '/imports/api/games/constants.js';
 import {BALL_INTERVAL, PLAYER_INTERVAL} from '/imports/api/games/emissionConstants.js';
 import LevelComponents from '/imports/api/games/levelComponents/LevelComponents.js';
+import {ArtificialIntelligence} from '/imports/api/games/artificialIntelligence/ArtificialIntelligence.js';
 import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
 import {Session} from 'meteor/session';
@@ -75,6 +76,7 @@ export default class Game {
 			this.engine,
 			this.gameConfiguration
 		);
+		this.artificialIntelligence = new ArtificialIntelligence();
 	}
 
 	getCurrentPlayer() {
@@ -543,7 +545,14 @@ export default class Game {
 		}
 
 		if (this.gameIsOnGoing()) {
-			this.inputs();
+			if (this.gameData.isFirstPlayerComputer()) {
+				this.moveComputer(this.player1);
+			} else {
+				this.inputs();
+			}
+			if (this.gameData.isSecondPlayerComputer()) {
+				this.moveComputer(this.player2);
+			}
 
 			this.engine.constrainVelocity(this.ball, 1000);
 
@@ -775,6 +784,34 @@ export default class Game {
 			return false;
 		}
 
+		this.movePlayer(
+			player,
+			this.isLeftKeyDown(),
+			this.isRightKeyDown(),
+			this.isUpKeyDown(),
+			this.isDropShotKeyDown()
+		);
+
+		return true;
+	}
+
+	moveComputer(player) {
+		this.artificialIntelligence.computeMovement(
+			player.data,
+			this.engine.fullPositionData(player),
+			this.engine.fullPositionData(this.ball)
+		);
+
+		this.movePlayer(
+			player,
+			this.artificialIntelligence.movesLeft(),
+			this.artificialIntelligence.movesRight(),
+			this.artificialIntelligence.jumps(),
+			this.artificialIntelligence.dropshots()
+		);
+	}
+
+	movePlayer(player, movesLeft, movesRight, jumps, dropshots) {
 		player.data.doingDropShot = false;
 
 		if (player.data.isFrozen) {
@@ -783,22 +820,22 @@ export default class Game {
 		} else {
 			const moveModifier = player.data.moveModifier();
 			const moveReversal = (player.data.isMoveReversed ? -1 : 1);
-			if (this.isLeftKeyDown()) {
+			if (movesLeft) {
 				this.engine.setHorizontalSpeed(player, moveModifier * moveReversal * -player.data.velocityXOnMove);
-			} else if (this.isRightKeyDown()) {
+			} else if (movesRight) {
 				this.engine.setHorizontalSpeed(player, moveModifier * moveReversal * player.data.velocityXOnMove);
 			} else {
 				this.engine.setHorizontalSpeed(player, 0);
 			}
 
 			if (this.engine.hasSurfaceTouchingPlayerBottom(player)) {
-				if (player.data.alwaysJump || (this.isUpKeyDown() && player.data.canJump)) {
+				if (player.data.alwaysJump || (jumps && player.data.canJump)) {
 					this.engine.setVerticalSpeed(player, -player.data.velocityYOnJump);
 				} else {
 					this.engine.setVerticalSpeed(player, 0);
 				}
 			} else {
-				player.data.doingDropShot = this.isDropShotKeyDown();
+				player.data.doingDropShot = dropshots;
 			}
 		}
 

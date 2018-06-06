@@ -1,5 +1,5 @@
 import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGameConfiguration.js';
-import {ONE_VS_ONE_GAME_MODE, TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
+import {ONE_VS_COMPUTER_GAME_MODE, ONE_VS_ONE_GAME_MODE, TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import GameForfeited from '/imports/api/games/events/GameForfeited.js';
 import GameTimedOut from '/imports/api/games/events/GameTimedOut.js';
 import {Games} from '/imports/api/games/games.js';
@@ -50,7 +50,7 @@ export const createGame = function(userId, gameInitiators, modeSelection, tourna
 	do {
 		try {
 			id = Games.insert({
-				_id: Random.id(5),
+				_id: Random.id(10),
 				gameMode: gameMode,
 				modeSelection: modeSelection,
 				tournamentId: tournamentId,
@@ -58,8 +58,8 @@ export const createGame = function(userId, gameInitiators, modeSelection, tourna
 				createdAt: getUTCTimeStamp(),
 				createdBy: userId,
 				players: [],
-				isPracticeGame: 0,
-				isPrivate: 0,
+				isPracticeGame: modeSelection === ONE_VS_COMPUTER_GAME_MODE,
+				isPrivate: modeSelection === ONE_VS_COMPUTER_GAME_MODE,
 				hostPoints: 0,
 				clientPoints: 0,
 				lastPointTaken: null,

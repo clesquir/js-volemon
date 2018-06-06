@@ -22,6 +22,12 @@ export default class GameData {
 	isCurrentPlayerKey(playerKey) {
 	}
 
+	isFirstPlayerComputer() {
+	}
+
+	isSecondPlayerComputer() {
+	}
+
 	isTwoVersusTwo() {
 	}
 

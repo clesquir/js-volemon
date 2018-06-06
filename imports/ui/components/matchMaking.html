@@ -4,6 +4,12 @@
 			<h1>Select a game mode</h1>
 
 			<div class="match-making-body match-selection-items">
+				<div class="match-selection" data-action="select-mode-selection" data-mode-selection="1vsCPU">
+					<div class="match-selection-item match-selection-title">
+						<div>1 VS CPU</div>
+					</div>
+				</div>
+
 				<div class="match-selection" data-action="select-mode-selection" data-mode-selection="1vs1">
 					<div class="match-selection-item match-selection-title">
 						<div>1 VS 1</div>
@@ -52,10 +58,12 @@
 		{{#if showSelectedModeTitle}}
 			<h1 class="tournament-name">
 				<div>{{selectedMode}}</div>
-				<div class="currently-waiting-match-making {{#if hasPlayersWaiting modeSelection tournamentId}}has-players-waiting-match-making{{/if}}" data-tooltip="{{playersWaiting modeSelection tournamentId}}" data-tooltip-direction="s">
-					<div class="currently-waiting-match-making-number">{{numberOfPlayersWaiting modeSelection tournamentId}}</div>
-					<i class="currently-waiting-match-making-icon fa fa-user-circle"></i>
-				</div>
+				{{#if showCurrentWaitingForMode}}
+					<div class="currently-waiting-match-making {{#if hasPlayersWaiting modeSelection tournamentId}}has-players-waiting-match-making{{/if}}" data-tooltip="{{playersWaiting modeSelection tournamentId}}" data-tooltip-direction="s">
+						<div class="currently-waiting-match-making-number">{{numberOfPlayersWaiting modeSelection tournamentId}}</div>
+						<i class="currently-waiting-match-making-icon fa fa-user-circle"></i>
+					</div>
+				{{/if}}
 			</h1>
 			<p class="tournament-description">{{selectedTournamentDescription}}</p>
 		{{/if}}

@@ -6,7 +6,7 @@ import {
 	playerHasNotRepliedRematch,
 	playerLeftGame
 } from '/imports/api/games/client/gameSetup.js';
-import {TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
+import {ONE_VS_COMPUTER_GAME_MODE, TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {
@@ -186,6 +186,7 @@ Template.afterGame.helpers({
 		const players = Players.find({gameId: Session.get('game')});
 
 		return (
+			this.game.gameMode !== ONE_VS_COMPUTER_GAME_MODE &&
 			isGamePlayer(Session.get('game')) &&
 			playersCanPlayTournament(this.game.tournamentId, players) &&
 			!playerAcceptedRematch(players) &&
@@ -208,6 +209,7 @@ Template.afterGame.helpers({
 		const players = Players.find({gameId: Session.get('game')});
 
 		return (
+			this.game.gameMode !== ONE_VS_COMPUTER_GAME_MODE &&
 			playerLeftGame(players) &&
 			!playerDeclinedRematch(players)
 		);

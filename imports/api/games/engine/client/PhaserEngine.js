@@ -308,6 +308,20 @@ export default class PhaserEngine extends Engine {
 		};
 	}
 
+	/**
+	 * @param sprite
+	 * @returns {{x: number, y: number, velocityX: number, velocityY: number, width: number, height: number}}
+	 */
+	fullPositionData(sprite) {
+		return Object.assign(
+			{
+				width: this.getWidth(sprite),
+				height: this.getWidth(sprite)
+			},
+			this.getPositionData(sprite)
+		);
+	}
+
 	initWorldContactMaterial() {
 		this.worldMaterial = this.createMaterial('world');
 
@@ -527,6 +541,10 @@ export default class PhaserEngine extends Engine {
 
 	getYPosition(sprite) {
 		return sprite.body.y;
+	}
+
+	getWidth(sprite) {
+		return sprite.width;
 	}
 
 	setWidth(sprite, width) {

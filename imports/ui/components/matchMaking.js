@@ -1,6 +1,11 @@
 import GameNotifier from '/imports/api/games/client/GameNotifier.js';
 import MatchMakingGameConfiguration from '/imports/api/games/configuration/MatchMakingGameConfiguration.js';
-import {ONE_VS_ONE_GAME_MODE, TOURNAMENT_GAME_SELECTION, TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
+import {
+	ONE_VS_COMPUTER_GAME_MODE,
+	ONE_VS_ONE_GAME_MODE,
+	TOURNAMENT_GAME_SELECTION,
+	TWO_VS_TWO_GAME_MODE
+} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
 import {MatchMakers} from '/imports/api/games/matchMakers.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
@@ -317,6 +322,8 @@ Template.matchMaking.helpers({
 
 	selectedMode: function() {
 		switch (Session.get('matchMaking.modeSelection')) {
+			case ONE_VS_COMPUTER_GAME_MODE:
+				return '1 VS CPU';
 			case ONE_VS_ONE_GAME_MODE:
 				return '1 VS 1';
 			case TWO_VS_TWO_GAME_MODE:
@@ -330,6 +337,10 @@ Template.matchMaking.helpers({
 		}
 
 		return '';
+	},
+
+	showCurrentWaitingForMode: function() {
+		return Session.get('matchMaking.modeSelection') !== ONE_VS_COMPUTER_GAME_MODE;
 	},
 
 	selectedTournamentDescription: function() {
@@ -365,7 +376,11 @@ Template.matchMaking.helpers({
 		if (Session.get('matchMaking.kickedOut')) {
 			return "Your opponent has left...";
 		} else if (Session.get('matchMaking.gameId')) {
-			return "You've been matched! Ready?";
+			if (Session.get('matchMaking.modeSelection') === ONE_VS_COMPUTER_GAME_MODE) {
+				return "Ready when you are!";
+			} else {
+				return "You've been matched! Ready?";
+			}
 		} else if (Session.get('matchMaking.modeSelection')) {
 			return "Looking for players...";
 		}
