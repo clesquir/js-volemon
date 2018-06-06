@@ -1,27 +1,27 @@
-import {Meteor} from 'meteor/meteor';
-import {Random} from 'meteor/random';
-import {resetDatabase} from 'meteor/xolvio:cleaner';
-import {assert} from 'chai';
-import sinon from 'sinon';
-import PointTaken from '/imports/api/games/events/PointTaken.js';
-import PlayerWon from '/imports/api/games/events/PlayerWon.js';
-import PlayerLost from '/imports/api/games/events/PlayerLost.js';
-import GameForfeited from '/imports/api/games/events/GameForfeited.js';
-import GameFinished from '/imports/api/games/events/GameFinished.js';
+import {HOST_POINTS_COLUMN, ONE_VS_ONE_GAME_MODE} from '/imports/api/games/constants.js';
 import {EloScores} from '/imports/api/games/eloscores.js';
+import GameFinished from '/imports/api/games/events/GameFinished.js';
+import GameForfeited from '/imports/api/games/events/GameForfeited.js';
+import PlayerLost from '/imports/api/games/events/PlayerLost.js';
+import PlayerWon from '/imports/api/games/events/PlayerWon.js';
+import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import {HOST_POINTS_COLUMN} from '/imports/api/games/constants.js';
+import '/imports/api/games/server/methods.js';
 import {
+	GAME_STATUS_FINISHED,
 	GAME_STATUS_REGISTRATION,
 	GAME_STATUS_STARTED,
-	GAME_STATUS_FINISHED,
 	GAME_STATUS_TIMEOUT
 } from '/imports/api/games/statusConstants.js';
-import '/imports/api/games/server/methods.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
 import {EventPublisher} from '/imports/lib/EventPublisher.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
+import {assert} from 'chai';
+import {Meteor} from 'meteor/meteor';
+import {Random} from 'meteor/random';
+import {resetDatabase} from 'meteor/xolvio:cleaner';
+import sinon from 'sinon';
 
 describe('games/methods#leaveGame', function() {
 	const userId = Random.id(4);
@@ -669,6 +669,7 @@ describe('GameMethods#addGamePoints', function() {
 		Games.insert({
 			_id: gameId,
 			createdBy: userId1,
+			gameMode: ONE_VS_ONE_GAME_MODE,
 			players: [{id: userId1}, {id: userId2}],
 			status: GAME_STATUS_STARTED,
 			hostPoints: 4,
@@ -708,6 +709,7 @@ describe('GameMethods#addGamePoints', function() {
 		Games.insert({
 			_id: gameId,
 			createdBy: userId1,
+			gameMode: ONE_VS_ONE_GAME_MODE,
 			players: [{id: userId1}, {id: userId2}],
 			status: GAME_STATUS_STARTED,
 			hostPoints: 4,
@@ -753,6 +755,7 @@ describe('GameMethods#addGamePoints', function() {
 		Games.insert({
 			_id: gameId,
 			createdBy: userId1,
+			gameMode: ONE_VS_ONE_GAME_MODE,
 			players: [{id: userId1}, {id: userId2}],
 			status: GAME_STATUS_STARTED,
 			hostPoints: 4,
