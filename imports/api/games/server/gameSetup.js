@@ -271,11 +271,15 @@ export const onPlayerQuit = function(player) {
 				}
 			} else {
 				if (player.userId === game.players[0].id) {
-					winnerUserIds.push(game.players[1].id);
+					if (game.gameMode === ONE_VS_ONE_GAME_MODE) {
+						winnerUserIds.push(game.players[1].id);
+					}
 					loserUserIds.push(game.players[0].id);
 				} else {
 					winnerUserIds.push(game.players[0].id);
-					loserUserIds.push(game.players[1].id);
+					if (game.gameMode === ONE_VS_ONE_GAME_MODE) {
+						loserUserIds.push(game.players[1].id);
+					}
 				}
 			}
 

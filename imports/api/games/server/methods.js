@@ -308,6 +308,7 @@ Meteor.methods({
 					}
 
 					if (game.gameMode === TWO_VS_TWO_GAME_MODE) {
+						loserUserIds.push(game.players[1].id);
 						winnerUserIds.push(game.players[2].id);
 						loserUserIds.push(game.players[3].id);
 					}
@@ -320,6 +321,7 @@ Meteor.methods({
 					}
 
 					if (game.gameMode === TWO_VS_TWO_GAME_MODE) {
+						winnerUserIds.push(game.players[1].id);
 						winnerUserIds.push(game.players[3].id);
 						loserUserIds.push(game.players[2].id);
 					}
