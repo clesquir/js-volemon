@@ -1,4 +1,9 @@
-import {ONE_VS_ONE_GAME_MODE, TOURNAMENT_GAME_SELECTION, TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
+import {
+	ONE_VS_COMPUTER_GAME_MODE,
+	ONE_VS_ONE_GAME_MODE,
+	TOURNAMENT_GAME_SELECTION,
+	TWO_VS_TWO_GAME_MODE
+} from '/imports/api/games/constants.js';
 import {MatchMakers} from '/imports/api/games/matchMakers.js';
 import MatchMaker from '/imports/api/games/server/matchMaking/MatchMaker.js';
 import UserMatch from '/imports/api/games/server/matchMaking/UserMatch.js';
@@ -47,6 +52,8 @@ export default class EloMatchMaker extends MatchMaker {
 		}
 
 		switch (gameMode) {
+			case ONE_VS_COMPUTER_GAME_MODE:
+				return match.usersToMatch;
 			case ONE_VS_ONE_GAME_MODE:
 				if (match.usersToMatch.length === 2) {
 					const matchedUsers = this.sortByEloRating(match.usersToMatch, match.tournamentId);

@@ -1,4 +1,4 @@
-import {TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
+import {ONE_VS_COMPUTER_GAME_MODE, TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import GameData from '/imports/api/games/data/GameData.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
@@ -97,6 +97,14 @@ export default class CollectionGameData extends GameData {
 		let player = this.playerFromKey(playerKey);
 
 		return player && this.currentPlayer && player._id === this.currentPlayer._id;
+	}
+
+	isFirstPlayerComputer() {
+		return false;
+	}
+
+	isSecondPlayerComputer() {
+		return this.gameMode === ONE_VS_COMPUTER_GAME_MODE;
 	}
 
 	isTwoVersusTwo() {

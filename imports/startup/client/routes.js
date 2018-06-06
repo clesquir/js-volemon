@@ -18,6 +18,7 @@ import '/imports/ui/components/shapeSelector.js';
 import '/imports/ui/components/switchButton.js';
 
 import '/imports/ui/pages/app.js';
+import '/imports/ui/pages/dev/ai.js';
 import '/imports/ui/pages/dev/environment.js';
 import '/imports/ui/pages/dev/shape.js';
 import '/imports/ui/pages/dev/skin.js';
@@ -84,6 +85,9 @@ Router.map(function() {
 
 	//This is use for various game environment tests
 	if (Meteor.isDevelopment) {
+		this.route('ai', {
+			path: '/dev/ai'
+		});
 		this.route('environment', {
 			path: '/dev/environment'
 		});

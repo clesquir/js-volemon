@@ -122,6 +122,9 @@ export default class Engine {
 	getYPosition(sprite) {
 	}
 
+	getWidth(sprite) {
+	}
+
 	setWidth(sprite, width) {
 	}
 
@@ -197,6 +200,13 @@ export default class Engine {
 	 * @returns {{x: number, y: number, velocityX: number, velocityY: number}}
 	 */
 	getPositionData(sprite) {
+	}
+
+	/**
+	 * @param sprite
+	 * @returns {{x: number, y: number, velocityX: number, velocityY: number, width: number, height: number}}
+	 */
+	fullPositionData(sprite) {
 	}
 
 	interpolateMoveTo(sprite, serverNormalizedTimestamp, data, canMoveCallback, slideToLocation = false) {
