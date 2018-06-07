@@ -22,6 +22,7 @@ module.exports = {
 			]
 		},
 		env: {
+			// ROOT_URL: "https://volemon.cloudalto.net",
 			ROOT_URL: "http://volemon.cloudalto.net",
 			MONGO_URL: 'mongodb://localhost/meteor'
 		},
@@ -31,10 +32,11 @@ module.exports = {
 
 	// proxy: {
 	// 	domains: 'volemon.cloudalto.net',
-		// ssl: {
-		// 	forceSSL: true,
-		// 	letsEncryptEmail: 'clesquir@gmail.com'
-		// }
+	// 	nginxServerConfig: './mup/default',
+	// 	ssl: {
+	// 		forceSSL: true,
+	// 		letsEncryptEmail: 'clesquir@gmail.com'
+	// 	}
 	// },
 
 	mongo: {
