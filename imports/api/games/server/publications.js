@@ -9,7 +9,7 @@ Meteor.publish('games', function() {
 	return [
 		Games.find(
 			{
-				isPrivate: false,
+				isPrivate: {$nin: [1, true]},
 				status: GAME_STATUS_STARTED
 			},
 			{

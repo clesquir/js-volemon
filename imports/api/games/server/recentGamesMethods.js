@@ -11,7 +11,7 @@ Meteor.methods({
 		const gameQuery = {
 			'players.id': userId,
 			status: GAME_STATUS_FINISHED,
-			isPracticeGame: 0
+			isPracticeGame: {$nin: [1, true]}
 		};
 
 		if (tournamentId) {
