@@ -284,6 +284,7 @@ describe('GameMethods#quitGame', function() {
 		Games.insert({
 			_id: gameId,
 			createdBy: userId1,
+			gameMode: ONE_VS_ONE_GAME_MODE,
 			players: [{id: userId1}, {id: userId2}],
 			status: GAME_STATUS_STARTED,
 			hostPoints: 3,
@@ -321,6 +322,7 @@ describe('GameMethods#quitGame', function() {
 		Games.insert({
 			_id: gameId,
 			createdBy: userId1,
+			gameMode: ONE_VS_ONE_GAME_MODE,
 			players: [{id: userId1}, {id: userId2}],
 			status: GAME_STATUS_STARTED,
 			hostPoints: 0,
@@ -358,6 +360,7 @@ describe('GameMethods#quitGame', function() {
 		Games.insert({
 			_id: gameId,
 			createdBy: userId1,
+			gameMode: ONE_VS_ONE_GAME_MODE,
 			players: [{id: userId1}, {id: userId2}],
 			status: GAME_STATUS_STARTED,
 			hostPoints: 3,
@@ -395,6 +398,7 @@ describe('GameMethods#quitGame', function() {
 		Games.insert({
 			_id: gameId,
 			createdBy: userId1,
+			gameMode: ONE_VS_ONE_GAME_MODE,
 			players: [{id: userId1}, {id: userId2}],
 			status: GAME_STATUS_STARTED,
 			hostPoints: 0,
@@ -432,6 +436,7 @@ describe('GameMethods#quitGame', function() {
 		Games.insert({
 			_id: gameId,
 			createdBy: userId1,
+			gameMode: ONE_VS_ONE_GAME_MODE,
 			players: [{id: userId1}, {id: userId2}],
 			status: GAME_STATUS_STARTED,
 			hostPoints: 4,
@@ -477,6 +482,7 @@ describe('GameMethods#quitGame', function() {
 		Games.insert({
 			_id: gameId,
 			createdBy: userId1,
+			gameMode: ONE_VS_ONE_GAME_MODE,
 			players: [{id: userId1}, {id: userId2}],
 			status: GAME_STATUS_STARTED,
 			hostPoints: 4,
@@ -522,6 +528,7 @@ describe('GameMethods#quitGame', function() {
 		Games.insert({
 			_id: gameId,
 			createdBy: userId1,
+			gameMode: ONE_VS_ONE_GAME_MODE,
 			players: [{id: userId1}, {id: userId2}],
 			status: GAME_STATUS_STARTED,
 			hostPoints: 4,
