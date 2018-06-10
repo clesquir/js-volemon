@@ -11,36 +11,25 @@ import {Random} from 'meteor/random';
 Meteor.startup(function() {
 	const tournaments = [
 		{
-			id: Random.id(5),
-			identifier: "tournament_2018-01-15",
-			name: "Spaghetti on the carpet",
-			description: "Only hyphen and obelisk shapes: 5 game losses allowed",
+			_id: Random.id(5),
+			identifier: "tournament_2018-06-11_1v1",
+			name: "1 VS 1: Spaghetti in the strainer",
+			description: "Allowed shapes are obelisk and triple-colon",
 			mode: TOURNAMENT_MODE_SHAPE_OVERRIDE,
 			gameMode: ONE_VS_ONE_GAME_MODE,
-			startDate: "2018-01-15 -04:00",
-			endDate: "2018-01-22 -04:00",
-			numberOfLostAllowed: 5
-		},
-		{
-			id: Random.id(5),
-			identifier: "tournament_2018-06-04_1v1",
-			name: "1 VS 1: Super bad",
-			description: "Bonuses spawning are only maluses",
-			mode: TOURNAMENT_MODE_BONUS_OVERRIDE,
-			gameMode: ONE_VS_ONE_GAME_MODE,
-			startDate: "2018-06-04 -04:00",
-			endDate: "2018-06-11 -04:00",
+			startDate: "2018-06-11 -04:00",
+			endDate: "2018-06-18 -04:00",
 			isPublished: false
 		},
 		{
-			id: Random.id(5),
-			identifier: "tournament_2018-06-04_2v2",
-			name: "2 VS 2: Spaghetti in the strainer",
-			description: "Allowed shapes are obelisk and triple-colon",
-			mode: TOURNAMENT_MODE_SHAPE_OVERRIDE,
+			_id: Random.id(5),
+			identifier: "tournament_2018-06-11_2v2",
+			name: "2 VS 2: Super bad",
+			description: "Bonuses spawning are only maluses",
+			mode: TOURNAMENT_MODE_BONUS_OVERRIDE,
 			gameMode: TWO_VS_TWO_GAME_MODE,
-			startDate: "2018-06-04 -04:00",
-			endDate: "2018-06-11 -04:00",
+			startDate: "2018-06-11 -04:00",
+			endDate: "2018-06-18 -04:00",
 			isPublished: false
 		}
 	];
