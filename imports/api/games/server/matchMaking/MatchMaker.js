@@ -1,6 +1,8 @@
 import {Games} from '/imports/api/games/games.js';
 import {MatchMakers} from '/imports/api/games/matchMakers.js';
-import UserMatch from 'imports/api/games/server/matchMaking/UserMatch';
+import UserMatch from '/imports/api/games/server/matchMaking/UserMatch.js';
+import {Meteor} from "meteor/meteor";
+import {Random} from 'meteor/random';
 
 export default class MatchMaker {
 	subscribe(userId, userName, modeSelection, tournamentId) {

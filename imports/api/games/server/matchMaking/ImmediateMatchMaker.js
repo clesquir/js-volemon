@@ -4,9 +4,7 @@ import {
 	TOURNAMENT_GAME_SELECTION,
 	TWO_VS_TWO_GAME_MODE
 } from '/imports/api/games/constants.js';
-import {MatchMakers} from '/imports/api/games/matchMakers.js';
 import MatchMaker from '/imports/api/games/server/matchMaking/MatchMaker.js';
-import UserMatch from '/imports/api/games/server/matchMaking/UserMatch.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {Meteor} from "meteor/meteor";
 import {Random} from 'meteor/random';
