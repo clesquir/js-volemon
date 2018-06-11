@@ -15,25 +15,6 @@ import {Meteor} from "meteor/meteor";
 import {Random} from 'meteor/random';
 
 export default class EloMatchMaker extends MatchMaker {
-	subscribe(userId, userName, modeSelection, tournamentId) {
-		let match = MatchMakers.findOne({modeSelection: modeSelection, tournamentId: tournamentId});
-
-		if (match) {
-			if (!this.userPresentInArray(match.usersToMatch, userId)) {
-				this.addToUserToMatch(userId, userName, modeSelection, tournamentId);
-
-				//Complete match
-				match = MatchMakers.findOne({modeSelection: modeSelection, tournamentId: tournamentId});
-				const matchedUsers = this.matchedUsers(match);
-				if (matchedUsers.length > 0) {
-					UserMatch.match(modeSelection, tournamentId, matchedUsers);
-				}
-			}
-		} else {
-			this.initMatchMaker(userId, userName, modeSelection, tournamentId);
-		}
-	}
-
 	/**
 	 * @private
 	 * @param match
