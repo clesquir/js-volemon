@@ -607,6 +607,14 @@ export default class GameBonus {
 		}
 	}
 
+	scaleGravity(scale) {
+		this.engine.setWorldGravity(this.gameConfiguration.worldGravity() * scale);
+	}
+
+	resetGravityScale() {
+		this.engine.setWorldGravity(this.gameConfiguration.worldGravity());
+	}
+
 	regenerateLastBonusCreatedAndFrequenceTime() {
 		this.lastBonusCreated = Date.now();
 		this.bonusFrequenceTime = getRandomInt(

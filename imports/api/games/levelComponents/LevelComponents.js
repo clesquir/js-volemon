@@ -23,7 +23,7 @@ export default class LevelComponents {
 
 		this.engine.loadData(NORMAL_SCALE_PHYSICS_DATA, '/assets/component/shape/physicsData.json');
 
-		this.engine.loadAtlas('bonus-icon', '/assets/bonus/texture-atlas-icons.png', '/assets/bonus/texture-atlas-icons.json');
+		this.engine.loadAtlas('bonus-icon', '/assets/bonus/texture-atlas.png', '/assets/bonus/texture-atlas.json');
 		this.engine.loadImage('cloud', '/assets/bonus/cloud.png');
 		this.engine.loadImage('shape-hidden', '/assets/component/shape/player-hidden.png');
 	}

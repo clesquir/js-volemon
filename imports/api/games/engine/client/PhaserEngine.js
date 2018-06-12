@@ -507,6 +507,10 @@ export default class PhaserEngine extends Engine {
 		sprite.body.fixedRotation = fixedRotation;
 	}
 
+	setWorldGravity(gravity) {
+		this.game.physics.p2.gravity.y = gravity;
+	}
+
 	getGravity(sprite) {
 		return sprite.body.data.gravityScale;
 	}

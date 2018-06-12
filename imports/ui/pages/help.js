@@ -83,7 +83,7 @@ Template.help.helpers({
 		const helpList = [];
 		let textureAtlasFrames = [];
 		$.ajax({
-			url: '/assets/bonus/texture-atlas-icons.json',
+			url: '/assets/bonus/texture-atlas.json',
 			async: false
 		}).done(function(json) {
 			textureAtlasFrames = json.frames;
