@@ -4,9 +4,7 @@ import {
 	TOURNAMENT_GAME_SELECTION,
 	TWO_VS_TWO_GAME_MODE
 } from '/imports/api/games/constants.js';
-import {MatchMakers} from '/imports/api/games/matchMakers.js';
 import MatchMaker from '/imports/api/games/server/matchMaking/MatchMaker.js';
-import UserMatch from '/imports/api/games/server/matchMaking/UserMatch.js';
 import {INITIAL_ELO_RATING} from '/imports/api/profiles/constants.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
 import {TournamentProfiles} from '/imports/api/tournaments/tournamentProfiles.js';
@@ -15,25 +13,6 @@ import {Meteor} from "meteor/meteor";
 import {Random} from 'meteor/random';
 
 export default class EloMatchMaker extends MatchMaker {
-	subscribe(userId, userName, modeSelection, tournamentId) {
-		let match = MatchMakers.findOne({modeSelection: modeSelection, tournamentId: tournamentId});
-
-		if (match) {
-			if (!this.userPresentInArray(match.usersToMatch, userId)) {
-				this.addToUserToMatch(userId, userName, modeSelection, tournamentId);
-
-				//Complete match
-				match = MatchMakers.findOne({modeSelection: modeSelection, tournamentId: tournamentId});
-				const matchedUsers = this.matchedUsers(match);
-				if (matchedUsers.length > 0) {
-					UserMatch.match(modeSelection, tournamentId, matchedUsers);
-				}
-			}
-		} else {
-			this.initMatchMaker(userId, userName, modeSelection, tournamentId);
-		}
-	}
-
 	/**
 	 * @private
 	 * @param match

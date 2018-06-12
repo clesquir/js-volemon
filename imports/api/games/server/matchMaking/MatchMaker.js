@@ -1,8 +1,27 @@
 import {Games} from '/imports/api/games/games.js';
 import {MatchMakers} from '/imports/api/games/matchMakers.js';
+import UserMatch from '/imports/api/games/server/matchMaking/UserMatch.js';
+import {Meteor} from "meteor/meteor";
+import {Random} from 'meteor/random';
 
 export default class MatchMaker {
 	subscribe(userId, userName, modeSelection, tournamentId) {
+		let match = MatchMakers.findOne({modeSelection: modeSelection, tournamentId: tournamentId});
+
+		if (match) {
+			if (!this.userPresentInArray(match.usersToMatch, userId)) {
+				this.addToUserToMatch(userId, userName, modeSelection, tournamentId);
+			}
+		} else {
+			this.initMatchMaker(userId, userName, modeSelection, tournamentId);
+		}
+
+		//Complete match
+		match = MatchMakers.findOne({modeSelection: modeSelection, tournamentId: tournamentId});
+		const matchedUsers = this.matchedUsers(match);
+		if (matchedUsers.length > 0) {
+			UserMatch.match(modeSelection, tournamentId, matchedUsers);
+		}
 	}
 
 	canUnsubscribe(userId) {
