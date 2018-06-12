@@ -125,8 +125,7 @@ export default class BonusFactory {
 			BONUS_CLOAKED_MONSTER,
 			BONUS_SHAPE_SHIFT,
 			BONUS_SMOKE_BOMB,
-			BONUS_NOTHING,
-			BONUS_HIGH_GRAVITY
+			BONUS_NOTHING
 		];
 	}
 
