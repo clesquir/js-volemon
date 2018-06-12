@@ -2,6 +2,7 @@ import Skin from '/imports/api/games/client/dev/Skin.js';
 import {ONE_VS_ONE_GAME_MODE} from '/imports/api/games/constants.js';
 import {SKIN_DEFAULT} from '/imports/api/skins/skinConstants.js';
 import {Skins} from '/imports/api/skins/skins.js';
+import {padNumber} from '/imports/lib/utils.js';
 import {ReactiveVar} from 'meteor/reactive-var';
 import {Template} from 'meteor/templating';
 
@@ -34,7 +35,35 @@ Template.skin.helpers({
 
 	modeIsSelected: function(mode) {
 		return Session.get('dev.skin.currentMode') === mode;
-	}
+	},
+
+	hostPoints: function() {
+		let points = 0;
+
+		if (skin && skin.game) {
+			points = skin.game.hostPoints;
+		}
+
+		return padNumber(points);
+	},
+
+	clientPoints: function() {
+		let points = 0;
+
+		if (skin && skin.game) {
+			points = skin.game.clientPoints;
+		}
+
+		return padNumber(points);
+	},
+
+	matchTimer: function() {
+		return Session.get('matchTimer');
+	},
+
+	pointTimer: function() {
+		return Session.get('pointTimer');
+	},
 });
 
 Template.skin.events({

@@ -41,6 +41,28 @@
 			</div>
 
 			<div class="game-container">
+				{{! Names and Points }}
+
+				<div class="players-names-container">
+					<div class="players-names">
+						<div><span class="host-player">Host</span></div>
+						<div><span class="client-player">Client</span></div>
+					</div>
+				</div>
+
+				<div class="players-points-container">
+					<div class="players-points">
+						<div class="host-player">{{hostPoints}}</div>
+						<div class="separator">|</div>
+						<div class="client-player">{{clientPoints}}</div>
+					</div>
+				</div>
+
+				<div class="timers-container">
+					<div class="match-timer">{{matchTimer}}</div>
+					<div class="point-timer">{{pointTimer}}</div>
+				</div>
+
 				<div id="devGameContainer" class="page game"></div>
 
 				<div id="cheer-host" class="cheer-item cheer-host cheer-for-viewer" data-action="cheer-host">
