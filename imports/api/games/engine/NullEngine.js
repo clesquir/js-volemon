@@ -61,6 +61,9 @@ export default class NullEngine extends Engine {
 		return sprite.data.mass;
 	}
 
+	setWorldGravity(gravity) {
+	}
+
 	setGravity(sprite, gravity) {
 		sprite.data.gravity = gravity;
 	}

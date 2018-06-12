@@ -161,6 +161,9 @@ export default class Engine {
 	getMass(sprite) {
 	}
 
+	setWorldGravity(gravity) {
+	}
+
 	setGravity(sprite, gravity) {
 	}
 
