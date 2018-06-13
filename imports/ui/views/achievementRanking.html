@@ -9,7 +9,7 @@
 		<div class="table-list-row {{getHighlightedClassIfCurrentUser}}">
 			<div class="table-list-cell center-aligned-cell rank-cell" style="flex: 0 0 50px;">{{getRank @index}}</div>
 			<div class="table-list-cell">
-				<a class="user-profile-link" href="{{pathFor 'userProfile' userId=this.userId}}">{{username}}</a>
+				<a class="clickable-link" href="{{pathFor 'userProfile' userId=this.userId}}">{{username}}</a>
 			</div>
 			<div class="table-list-cell user-achievement small-star" style="flex: 0 0 150px;">
 				<div class="achievement-item">

@@ -14,9 +14,9 @@
 				<div class="table-list-cell center-aligned-cell rank-cell" style="flex: 0 0 50px;">{{getRank @index}}</div>
 				<div class="table-list-cell">
 					{{#if tournamentId}}
-						<a class="user-profile-link" href="{{pathFor 'tournamentUserProfile' tournamentId=tournamentId userId=this.userId}}">{{username}}</a>
+						<a class="clickable-link" href="{{pathFor 'tournamentUserProfile' tournamentId=tournamentId userId=this.userId}}">{{username}}</a>
 					{{else}}
-						<a class="user-profile-link" href="{{pathFor 'userProfile' userId=this.userId}}">{{username}}</a>
+						<a class="clickable-link" href="{{pathFor 'userProfile' userId=this.userId}}">{{username}}</a>
 					{{/if}}
 				</div>
 				<div class="table-list-cell right-aligned-cell hideable-cell" style="flex: 0 0 50px;">{{numberOfWin}}</div>

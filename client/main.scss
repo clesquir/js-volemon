@@ -291,18 +291,6 @@ p {
 	}
 }
 
-.user-profile-link {
-	border-style: dashed;
-	border-width: 0 0 1px 0;
-	border-color: rgba(lighten($text-color, 25%), 0.4);
-	padding-bottom: 2px;
-	transition: all 0.25s linear;
-
-	&:hover {
-		border-color: rgba(lighten($text-color, 25%), 1);
-	}
-}
-
 .switch-containers {
 	display: flex;
 

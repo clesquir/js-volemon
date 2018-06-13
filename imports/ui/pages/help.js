@@ -125,6 +125,10 @@ Template.help.events({
 
 	'click [data-action=view-help-reactions]': function(e) {
 		cardSwitcher.slideTo(2);
+	},
+
+	'click [data-action=user-change-controls]': function() {
+		Session.set('lightbox', 'keymaps');
 	}
 });
 

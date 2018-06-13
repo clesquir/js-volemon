@@ -87,13 +87,13 @@
 					{{#if showActionAfterGame}}
 						<strong>What do you want to do next?</strong>
 						{{#if showAskForRematch}}
-							<div><a href="#" data-action="game-rematch">Ask for a rematch</a></div>
+							<div><a href="#" class="clickable-link" data-action="game-rematch">Ask for a rematch</a></div>
 						{{/if}}
-						<div><a href="{{pathFor 'home'}}">Go to the homepage</a></div>
+						<div><a href="{{pathFor 'home'}}" class="clickable-link">Go to the homepage</a></div>
 						{{#if isTournament}}
-							<div><a href="{{pathFor 'tournament' tournamentId=this.game.tournamentId}}">Go to the tournament page</a></div>
+							<div><a href="{{pathFor 'tournament' tournamentId=this.game.tournamentId}}" class="clickable-link">Go to the tournament page</a></div>
 						{{else}}
-							<div><a href="{{pathFor 'rank'}}">View rank</a></div>
+							<div><a href="{{pathFor 'rank'}}" class="clickable-link">View rank</a></div>
 						{{/if}}
 					{{/if}}
 

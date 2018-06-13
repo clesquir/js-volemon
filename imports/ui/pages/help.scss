@@ -14,7 +14,9 @@ $bonus-background-size: $bonus-size - 3;
 	}
 
 	img {
-		box-shadow: 0 0 15px 0 lighten($background-color, 10%);
+		$help-shadow-color: darken($background-color, 50%);
+		box-shadow: 0 1px 1px 0 rgba($help-shadow-color,.08), 0 1px 3px 1px rgba($help-shadow-color,.16);
+		border-radius: 3px;
 		width: 285px;
 		height: 200px;
 
