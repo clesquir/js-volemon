@@ -8,6 +8,7 @@ import CloudBonus from '/imports/api/games/bonus/CloudBonus.js';
 import DrunkMonsterBonus from '/imports/api/games/bonus/DrunkMonsterBonus.js';
 import FastMonsterBonus from '/imports/api/games/bonus/FastMonsterBonus.js';
 import FreezeMonsterBonus from '/imports/api/games/bonus/FreezeMonsterBonus.js';
+import HighGravity from '/imports/api/games/bonus/HighGravity.js';
 import InstantDeathBonus from '/imports/api/games/bonus/InstantDeathBonus.js';
 import InvincibleMonsterBonus from '/imports/api/games/bonus/InvincibleMonsterBonus.js';
 import InvisibleBallBonus from '/imports/api/games/bonus/InvisibleBallBonus.js';
@@ -60,6 +61,7 @@ Template.help.helpers({
 			new SmallBallBonus(),
 			new BigBallBonus(),
 			new InvisibleBallBonus(),
+			new HighGravity(),
 			new NothingBonus(),
 			new SmallMonsterBonus(),
 			new BigMonsterBonus(),
@@ -93,7 +95,7 @@ Template.help.helpers({
 			let x = 0;
 			let y = 0;
 			for (let frame in textureAtlasFrames) {
-				if (frame === bonus.atlasFrame) {
+				if (textureAtlasFrames[frame].filename === bonus.atlasFrame) {
 					x = textureAtlasFrames[frame].frame.x;
 					y = textureAtlasFrames[frame].frame.y;
 					break;
