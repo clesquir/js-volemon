@@ -72,6 +72,10 @@
 	}
 }
 
+.players-names-container, .players-points-container, .timers-container {
+	text-shadow: 0 0 1px #c9c9c9, 0 0 1px #c9c9c9, 0 0 1px #c9c9c9, 0 0 15px #c9c9c9;
+}
+
 .viewers-container {
 	position: absolute;
 	width: 100%;
