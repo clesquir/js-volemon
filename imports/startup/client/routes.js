@@ -55,6 +55,7 @@ import '/imports/ui/views/recentGames.js';
 import '/imports/ui/views/statistics.js';
 import '/imports/ui/views/userProfileComponent.js';
 import {Router} from 'meteor/iron:router';
+import {Tooltips} from 'meteor/lookback:tooltips';
 import {Meteor} from 'meteor/meteor';
 
 Router.configure({
@@ -69,6 +70,10 @@ Router.configure({
 			Meteor.subscribe('userAchievements', Meteor.userId()),
 			Meteor.subscribe('skins')
 		];
+	},
+	onBeforeAction: function() {
+		Tooltips.hide();
+		this.next();
 	}
 });
 
