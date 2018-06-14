@@ -124,15 +124,18 @@ Meteor.methods({
 		}
 
 		for (let i = 0; i < game.viewers.length; i++) {
-			if (game.viewers[i].id === this.connection.id) {
+			if (
+				game.viewers[i].id === this.connection.id ||
+				game.viewers[i].userId === Meteor.userId()
+			) {
 				return;
 			}
 		}
 
 		let viewer = {id: this.connection.id, userId: null, name: 'Guest'};
-		if (Meteor.user()) {
-			viewer.userId = Meteor.user()._id;
-			const userConfiguration = UserConfigurations.findOne({userId: Meteor.user()._id});
+		if (Meteor.userId()) {
+			viewer.userId = Meteor.userId();
+			const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
 			if (userConfiguration) {
 				viewer.name = userConfiguration.name;
 			}
@@ -154,6 +157,11 @@ Meteor.methods({
 		Games.update(
 			{_id: gameId},
 			{$pull: {'viewers': {id: this.connection.id}}}
+		);
+
+		Games.update(
+			{_id: gameId},
+			{$pull: {'viewers': {userId: Meteor.userId()}}}
 		);
 	},
 
