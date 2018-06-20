@@ -1,4 +1,4 @@
-import {TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
+import {ONE_VS_COMPUTER_GAME_MODE, TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import {padNumber, timeElapsedSince} from '/imports/lib/utils.js';
 import {Meteor} from 'meteor/meteor';
 import * as Moment from 'meteor/momentjs:moment';
@@ -6,9 +6,9 @@ import {Mongo} from 'meteor/mongo';
 import {ReactiveDict} from 'meteor/reactive-dict';
 import {Session} from 'meteor/session';
 import {Template} from 'meteor/templating';
-const he = require('he');
-
 import './recentGames.html';
+
+const he = require('he');
 
 const RECENT_GAMES_LIMIT = 5;
 const RECENT_GAMES_INCREMENT = 5;
@@ -83,6 +83,8 @@ Template.recentGames.helpers({
 	clientNames: function() {
 		if (this.gameMode === TWO_VS_TWO_GAME_MODE) {
 			return he.encode(this.players[3].name) + '<br />' + he.encode(this.players[1].name);
+		} else if (this.gameMode === ONE_VS_COMPUTER_GAME_MODE) {
+			return 'CPU';
 		} else {
 			return he.encode(this.players[1].name);
 		}

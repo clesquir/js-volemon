@@ -10,8 +10,7 @@ Meteor.methods({
 		//Fetch game ids for these limited games
 		const gameQuery = {
 			'players.id': userId,
-			status: GAME_STATUS_FINISHED,
-			isPracticeGame: {$nin: [1, true]}
+			status: GAME_STATUS_FINISHED
 		};
 
 		if (tournamentId) {

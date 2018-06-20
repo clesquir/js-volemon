@@ -59,7 +59,7 @@ export const createGame = function(userId, gameInitiators, modeSelection, tourna
 				createdBy: userId,
 				players: [],
 				isPracticeGame: gameMode === ONE_VS_COMPUTER_GAME_MODE,
-				isPrivate: gameMode === ONE_VS_COMPUTER_GAME_MODE,
+				isPrivate: false,
 				hostPoints: 0,
 				clientPoints: 0,
 				lastPointTaken: null,
