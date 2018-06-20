@@ -146,7 +146,7 @@ export default class Game {
 				bonusRadius: this.gameConfiguration.bonusRadius(),
 				renderTo: 'gameContainer'
 			},
-			this.preloadGame, this.createGame, this.updateGame, this
+			this.preloadGame, this.createGame, this.updateGame, this, false
 		);
 	}
 
@@ -799,7 +799,9 @@ export default class Game {
 		this.artificialIntelligence.computeMovement(
 			player.data,
 			this.engine.fullPositionData(player),
-			this.engine.fullPositionData(this.ball)
+			this.engine.fullPositionData(this.ball),
+			this.gameConfiguration,
+			this.engine
 		);
 
 		this.movePlayer(

@@ -10,8 +10,9 @@ export default class Engine {
 	 * @param createGame
 	 * @param updateGame
 	 * @param scope
+	 * @param {boolean} debug
 	 */
-	start(worldConfiguration, preloadGame, createGame, updateGame, scope) {
+	start(worldConfiguration, preloadGame, createGame, updateGame, scope, debug = false) {
 	}
 
 	stop() {
@@ -207,7 +208,7 @@ export default class Engine {
 
 	/**
 	 * @param sprite
-	 * @returns {{x: number, y: number, velocityX: number, velocityY: number, width: number, height: number}}
+	 * @returns {{x: number, y: number, velocityX: number, velocityY: number, gravityScale: number, width: number, height: number}}
 	 */
 	fullPositionData(sprite) {
 	}
@@ -249,5 +250,8 @@ export default class Engine {
 	}
 
 	shake(sprite, move, time) {
+	}
+
+	drawBallPrediction(px, py) {
 	}
 }
