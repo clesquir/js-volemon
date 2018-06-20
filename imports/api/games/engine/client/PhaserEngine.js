@@ -13,7 +13,7 @@ import {
 import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
 
 export default class PhaserEngine extends Engine {
-	start(worldConfiguration, preloadGame, createGame, updateGame, scope) {
+	start(worldConfiguration, preloadGame, createGame, updateGame, scope, debug = false) {
 		//Create loading mask
 		Session.set('gameLoadingMask', true);
 		this.bonusRadius = worldConfiguration.bonusRadius;
@@ -22,7 +22,7 @@ export default class PhaserEngine extends Engine {
 			width: worldConfiguration.width,
 			height: worldConfiguration.height,
 			renderer: Phaser.AUTO,
-			enableDebug: false,
+			enableDebug: debug,
 			parent: worldConfiguration.renderTo
 		});
 
@@ -310,11 +310,12 @@ export default class PhaserEngine extends Engine {
 
 	/**
 	 * @param sprite
-	 * @returns {{x: number, y: number, velocityX: number, velocityY: number, width: number, height: number}}
+	 * @returns {{x: number, y: number, velocityX: number, velocityY: number, gravityScale: number, width: number, height: number}}
 	 */
 	fullPositionData(sprite) {
 		return Object.assign(
 			{
+				gravityScale: this.getGravity(sprite),
 				width: this.getWidth(sprite),
 				height: this.getWidth(sprite)
 			},
@@ -852,5 +853,18 @@ export default class PhaserEngine extends Engine {
 		bonusSprite.addChild(sprite);
 
 		return bonusSprite;
+	}
+
+	drawBallPrediction(x, y) {
+		if (this.game.debug.geom) {
+			if (!this.ballPredictionIndicator) {
+				this.ballPredictionIndicator = new Phaser.Rectangle(0, 0, 10, 10);
+			}
+
+			this.ballPredictionIndicator.x = x - 5;
+			this.ballPredictionIndicator.y = y - 5;
+
+			this.game.debug.geom(this.ballPredictionIndicator, 'rgb(0, 200, 0, 0.5)');
+		}
 	}
 }

@@ -52,7 +52,7 @@ export default class Dev {
 				bonusRadius: this.gameConfiguration.bonusRadius(),
 				renderTo: 'devGameContainer'
 			},
-			this.preloadGame, this.createGame, this.updateGame, this
+			this.preloadGame, this.createGame, this.updateGame, this, true
 		);
 	}
 
