@@ -21,41 +21,44 @@ export class ArtificialIntelligence {
 		const height = gameConfiguration.height();
 		const gravity = Math.abs(gameConfiguration.worldGravity() * ballPosition.gravityScale);
 		const halfWidth = (width / 2);
-		const isLeft = modifiers.key === 'player1' || modifiers.key === 'player3';
+		const isLeft = this.isLeftPlayer(modifiers.key);
+		const isRight = !isLeft;
 		const groundY = height - gameConfiguration.groundHeight();
-		const distanceMultiplier = 1.502636245994042;
+		const netY = groundY - gameConfiguration.netHeight();
 
-		let t = this.timeToGroundY(ballPosition.velocityY, gravity, Math.abs(ballPosition.y - groundY));
-		let px = ballPosition.x + ballPosition.velocityX * t;
-		let py = ballPosition.y + (ballPosition.velocityY / distanceMultiplier * t) + 0.5 * gravity * t * t;
+		let timeToGround = this.timeToReachY(ballPosition.velocityY, gravity, Math.abs(ballPosition.y - groundY + computerPosition.height / 2));
+		let xAtGround = ballPosition.x + ballPosition.velocityX * timeToGround;
 
 		//wall rebounds
-		if (px < 0) {
-			px = -px;
-		} else if (px > width) {
-			px = 2 * width - px;
+		if (xAtGround < 0) {
+			xAtGround = -xAtGround;
+		} else if (xAtGround > width) {
+			xAtGround = 2 * width - xAtGround;
 		}
 
-		//ball rebounds
-		if (
-			(
-				(ballPosition.x < halfWidth && px > halfWidth) ||
-				(ballPosition.x > halfWidth && px < halfWidth)
-			)
-		) {
-			px = 2 * halfWidth - px;
+		//out of bounds
+		if (xAtGround > width) {
+			xAtGround = width;
 		}
 
-		engine.drawBallPrediction(px, py);
+		//net rebounds
+		if ((isLeft && xAtGround > halfWidth) || (isRight && xAtGround < halfWidth)) {
+			let timeToNet = this.timeToReachY(ballPosition.velocityY, gravity, Math.abs(ballPosition.y - netY));
+			let xAtNet = ballPosition.x + ballPosition.velocityX * timeToNet;
+
+			if ((isLeft && xAtNet < halfWidth) || (isRight && xAtNet > halfWidth)) {
+				xAtGround = halfWidth + (isLeft ? -1 : 1) * gameConfiguration.netWidth();
+			}
+		}
+
+		engine.drawBallPrediction(xAtGround, groundY);
 
 		if (isLeft) {
-			if (px < halfWidth) {
-				this.jumpToReach(computerPosition, ballPosition, px, t);
-
-				if (px > computerPosition.x + computerPosition.width / 4) {
+			if (xAtGround < halfWidth) {
+				if (xAtGround > computerPosition.x + computerPosition.width / 4) {
 					//ball is in front
 					this.right = true;
-				} else if (px < computerPosition.x + computerPosition.width / 6) {
+				} else if (xAtGround < computerPosition.x + computerPosition.width / 6) {
 					//ball is behind
 					this.left = true;
 				}
@@ -63,13 +66,11 @@ export class ArtificialIntelligence {
 				this.moveToCenter(modifiers.key, computerPosition, gameConfiguration);
 			}
 		} else {
-			if (px > halfWidth) {
-				this.jumpToReach(computerPosition, ballPosition, px, t);
-
-				if (px < computerPosition.x - computerPosition.width / 4) {
+			if (xAtGround > halfWidth) {
+				if (xAtGround < computerPosition.x - computerPosition.width / 4) {
 					//ball is in front
 					this.left = true;
-				} else if (px > computerPosition.x - computerPosition.width / 6) {
+				} else if (xAtGround > computerPosition.x - computerPosition.width / 6) {
 					//ball is behind
 					this.right = true;
 				}
@@ -104,32 +105,13 @@ export class ArtificialIntelligence {
 
 	/**
 	 * @private
-	 */
-	jumpToReach(computerPosition, ballPosition, px, t) {
-		const DEP_X = 0.15;
-		const halfPlayerWidth = computerPosition.width / 2;
-		const halfBallWidth = ballPosition.width / 2;
-
-		if (
-			ballPosition.y < computerPosition.y - computerPosition.height / 2 &&
-			Math.abs(ballPosition.velocityX) > 0 &&
-			(Math.abs((computerPosition.x + halfPlayerWidth) - (px + halfBallWidth)) - halfPlayerWidth - halfBallWidth) > (1000 * t * DEP_X)
-		) {
-			//ball is above us and we won't reach it if we don't jump
-			this.jump = true;
-		}
-	}
-
-	/**
-	 * @private
 	 * @param key
 	 * @param computerPosition
 	 * @param gameConfiguration
 	 */
 	moveToCenter(key, computerPosition, gameConfiguration) {
 		const width = gameConfiguration.width();
-		const isLeft = key === 'player1' || key === 'player3';
-		const halfSpace = (isLeft ? width * 1 / 4 : width * 3 / 4);
+		const halfSpace = (this.isLeftPlayer(key) ? width * 1 / 4 : width * 3 / 4);
 
 		if (computerPosition.x + computerPosition.width / 4 < halfSpace) {
 			this.right = true;
@@ -138,9 +120,9 @@ export class ArtificialIntelligence {
 		}
 	}
 
-	timeToGroundY(velocityY, gravity, distanceToGround) {
+	timeToReachY(velocityY, gravity, distance) {
 		const delta = Math.sqrt(
-			(velocityY * velocityY) + (2 * gravity * distanceToGround)
+			(velocityY * velocityY) + (2 * gravity * distance)
 		);
 
 		if (delta === 0) {
@@ -154,5 +136,9 @@ export class ArtificialIntelligence {
 		}
 
 		return t;
+	}
+
+	isLeftPlayer(key) {
+		return key === 'player1' || key === 'player3';
 	}
 }
