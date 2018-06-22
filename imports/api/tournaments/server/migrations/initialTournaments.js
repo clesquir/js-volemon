@@ -1,6 +1,6 @@
 import {ONE_VS_ONE_GAME_MODE, TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import {TournamentModes} from '/imports/api/tournaments/tournamentModes.js';
-import {TOURNAMENT_MODE_CLASSIC} from '/imports/api/tournaments/tournamentModesConstants.js';
+import {TOURNAMENT_MODE_BONUS_OVERRIDE, TOURNAMENT_MODE_FOOTBALL_FIELD} from '/imports/api/tournaments/tournamentModesConstants.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
@@ -9,24 +9,46 @@ Meteor.startup(function() {
 	const tournaments = [
 		{
 			_id: Random.id(5),
-			identifier: "tournament_2018-06-18_1v1",
-			name: "1 VS 1: Classic",
-			description: "Introducing high gravity bonus",
-			mode: TOURNAMENT_MODE_CLASSIC,
+			identifier: "tournament_2018-06-22_1v1",
+			name: "1 VS 1: Gravity mashup",
+			description: "Introducing low gravity bonus",
+			mode: TOURNAMENT_MODE_BONUS_OVERRIDE,
 			gameMode: ONE_VS_ONE_GAME_MODE,
-			startDate: "2018-06-18 -04:00",
-			endDate: "2018-06-25 -04:00",
+			startDate: "2018-06-22 -04:00",
+			endDate: "2018-07-09 -04:00",
 			isPublished: false
 		},
 		{
 			_id: Random.id(5),
-			identifier: "tournament_2018-06-18_2v2",
-			name: "2 VS 2: Classic",
-			description: "Introducing high gravity bonus",
-			mode: TOURNAMENT_MODE_CLASSIC,
+			identifier: "tournament_2018-06-22_2v2",
+			name: "2 VS 2: Gravity mashup",
+			description: "Introducing low gravity bonus",
+			mode: TOURNAMENT_MODE_BONUS_OVERRIDE,
 			gameMode: TWO_VS_TWO_GAME_MODE,
-			startDate: "2018-06-18 -04:00",
-			endDate: "2018-06-25 -04:00",
+			startDate: "2018-06-22 -04:00",
+			endDate: "2018-07-09 -04:00",
+			isPublished: false
+		},
+		{
+			_id: Random.id(5),
+			identifier: "tournament_2018-07-02_1v1",
+			name: "1 VS 1: Football field",
+			description: "Wider field than the 2v2 field",
+			mode: TOURNAMENT_MODE_FOOTBALL_FIELD,
+			gameMode: ONE_VS_ONE_GAME_MODE,
+			startDate: "2018-07-02 -04:00",
+			endDate: "2018-07-16 -04:00",
+			isPublished: false
+		},
+		{
+			_id: Random.id(5),
+			identifier: "tournament_2018-07-02_2v2",
+			name: "2 VS 2: Football field",
+			description: "Wider field than the 2v2 field",
+			mode: TOURNAMENT_MODE_FOOTBALL_FIELD,
+			gameMode: TWO_VS_TWO_GAME_MODE,
+			startDate: "2018-07-02 -04:00",
+			endDate: "2018-07-16 -04:00",
 			isPublished: false
 		}
 	];

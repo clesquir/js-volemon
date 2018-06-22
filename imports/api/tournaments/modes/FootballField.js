@@ -15,8 +15,8 @@ export default class FootballField extends Classic {
 
 	levelSize() {
 		return {
-			width: 1020,
-			height: 680
+			width: 1200,
+			height: 800
 		};
 	}
 }
