@@ -14,6 +14,7 @@ import InvincibleMonsterBonus from '/imports/api/games/bonus/InvincibleMonsterBo
 import InvisibleBallBonus from '/imports/api/games/bonus/InvisibleBallBonus.js';
 import InvisibleMonsterBonus from '/imports/api/games/bonus/InvisibleMonsterBonus.js';
 import InvisibleOpponentMonsterBonus from '/imports/api/games/bonus/InvisibleOpponentMonsterBonus.js';
+import LowGravity from '/imports/api/games/bonus/LowGravity.js';
 import NoJumpMonsterBonus from '/imports/api/games/bonus/NoJumpMonsterBonus.js';
 import NothingBonus from '/imports/api/games/bonus/NothingBonus.js';
 import RandomBonus from '/imports/api/games/bonus/RandomBonus.js';
@@ -61,6 +62,7 @@ Template.help.helpers({
 			new SmallBallBonus(),
 			new BigBallBonus(),
 			new InvisibleBallBonus(),
+			new LowGravity(),
 			new HighGravity(),
 			new NothingBonus(),
 			new SmallMonsterBonus(),

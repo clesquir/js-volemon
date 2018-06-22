@@ -426,7 +426,7 @@
       }
     },
     {
-      "filename": "no-jump-monster",
+      "filename": "low-gravity",
       "frame": {
         "x": 73,
         "y": 109,
@@ -451,7 +451,7 @@
       }
     },
     {
-      "filename": "nothing",
+      "filename": "no-jump-monster",
       "frame": {
         "x": 109,
         "y": 73,
@@ -476,7 +476,7 @@
       }
     },
     {
-      "filename": "random",
+      "filename": "nothing",
       "frame": {
         "x": 145,
         "y": 37,
@@ -501,7 +501,7 @@
       }
     },
     {
-      "filename": "reverse-move-monster",
+      "filename": "random",
       "frame": {
         "x": 181,
         "y": 1,
@@ -526,7 +526,7 @@
       }
     },
     {
-      "filename": "shape-shift-monster",
+      "filename": "reverse-move-monster",
       "frame": {
         "x": 1,
         "y": 217,
@@ -551,7 +551,7 @@
       }
     },
     {
-      "filename": "slow-monster",
+      "filename": "shape-shift-monster",
       "frame": {
         "x": 37,
         "y": 181,
@@ -576,7 +576,7 @@
       }
     },
     {
-      "filename": "small-ball",
+      "filename": "slow-monster",
       "frame": {
         "x": 73,
         "y": 145,
@@ -601,7 +601,7 @@
       }
     },
     {
-      "filename": "small-monster",
+      "filename": "small-ball",
       "frame": {
         "x": 109,
         "y": 109,
@@ -626,7 +626,7 @@
       }
     },
     {
-      "filename": "smoke-bomb",
+      "filename": "small-monster",
       "frame": {
         "x": 145,
         "y": 73,
@@ -651,10 +651,35 @@
       }
     },
     {
-      "filename": "unfreeze-monster",
+      "filename": "smoke-bomb",
       "frame": {
         "x": 181,
         "y": 37,
+        "w": 34,
+        "h": 34
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 34
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "unfreeze-monster",
+      "frame": {
+        "x": 217,
+        "y": 1,
         "w": 34,
         "h": 34
       },
@@ -682,7 +707,7 @@
     "image": "texture-atlas.png",
     "format": "RGBA8888",
     "size": {
-      "w": 216,
+      "w": 252,
       "h": 252
     },
     "scale": 1

@@ -15,6 +15,7 @@ import InvisibleBallBonus from '/imports/api/games/bonus/InvisibleBallBonus.js';
 import InvisibleMonsterBonus from '/imports/api/games/bonus/InvisibleMonsterBonus.js';
 import InvisibleOpponentMonsterBonus from '/imports/api/games/bonus/InvisibleOpponentMonsterBonus.js';
 import JunkFoodMonster from '/imports/api/games/bonus/JunkFoodMonsterBonus.js';
+import LowGravity from '/imports/api/games/bonus/LowGravity.js';
 import NoJumpMonsterBonus from '/imports/api/games/bonus/NoJumpMonsterBonus.js';
 import NothingBonus from '/imports/api/games/bonus/NothingBonus.js';
 import RandomBonus from '/imports/api/games/bonus/RandomBonus.js';
@@ -42,6 +43,7 @@ import {
 	BONUS_INVISIBLE_MONSTER,
 	BONUS_INVISIBLE_OPPONENT_MONSTER,
 	BONUS_JUNK_FOOD_MONSTER,
+	BONUS_LOW_GRAVITY,
 	BONUS_NO_JUMP_MONSTER,
 	BONUS_NOTHING,
 	BONUS_RANDOM,
@@ -109,6 +111,7 @@ export default class BonusFactory {
 			BONUS_SMALL_BALL,
 			BONUS_BIG_BALL,
 			BONUS_INVISIBLE_BALL,
+			BONUS_LOW_GRAVITY,
 			BONUS_HIGH_GRAVITY,
 			BONUS_SMALL_MONSTER,
 			BONUS_BIG_MONSTER,
@@ -203,6 +206,8 @@ export default class BonusFactory {
 				return new InstantDeathBonus(game, bonusClass);
 			case BONUS_DRUNK_MONSTER:
 				return new DrunkMonsterBonus(game, bonusClass);
+			case BONUS_LOW_GRAVITY:
+				return new LowGravity(game, bonusClass);
 			case BONUS_HIGH_GRAVITY:
 				return new HighGravity(game, bonusClass);
 			case BONUS_NOTHING:
