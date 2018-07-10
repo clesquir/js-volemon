@@ -60,6 +60,10 @@ export default class StaticGameData extends GameData {
 		return false;
 	}
 
+	isUserPlayer() {
+		return false;
+	}
+
 	isUserViewer() {
 		return false;
 	}

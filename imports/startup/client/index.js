@@ -17,9 +17,9 @@ Meteor.startup(() => {
 	WindowFocus.start();
 	InternetConnectionDetector.start();
 
-	window.onbeforeunload = function(e) {
+	window.addEventListener('unload', function(e) {
 		const event = (e || window.event);
 
 		EventPublisher.publish(new PageUnload(event));
-	};
+	});
 });

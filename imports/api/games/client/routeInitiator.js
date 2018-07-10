@@ -16,6 +16,8 @@ import PluginFactory from '/imports/api/skins/plugins/PluginFactory.js';
 import SkinFactory from '/imports/api/skins/skins/SkinFactory.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 import {UserKeymaps} from '/imports/api/users/userKeymaps.js';
+import {EventPublisher} from '/imports/lib/EventPublisher.js';
+import PageUnload from '/imports/lib/events/PageUnload.js';
 import CustomKeymaps from '/imports/lib/keymaps/CustomKeymaps.js';
 import ClientStreamFactory from '/imports/lib/stream/client/ClientStreamFactory.js';
 import StreamConfiguration from '/imports/lib/stream/StreamConfiguration.js';
@@ -40,23 +42,56 @@ export let gameReaction = null;
 /** @type {GameCheer} */
 export let gameCheer = null;
 
+const isLeavingUserGame = function() {
+	return gameData && gameData.isGameStatusStarted() && gameData.isUserPlayer();
+};
+
+const beforeActiveGameUnload = function(e) {
+	if (isLeavingUserGame()) {
+		e.returnValue = `Are you sure you want to leave the game?`;
+
+		return e.returnValue;
+	}
+};
+
+const unbindOnPageLeft = function() {
+	quitGame(Session.get('game'));
+	destroyGame(Session.get('game'));
+};
+
 export const onRenderGameController = function() {
 	initGame(Session.get('game'));
-
-	$(window).bind('beforeunload', function() {
-		quitGame(Session.get('game'));
-		destroyGame(Session.get('game'));
-	});
-
 	updateConnectionIndicator();
+
+	EventPublisher.on(
+		PageUnload.prototype.constructor.name,
+		unbindOnPageLeft,
+		null
+	);
+
+	window.onbeforeunload = beforeActiveGameUnload;
 };
 
 export const onStopGameController = function() {
-	quitGame(Session.get('game'));
-	destroyGame(Session.get('game'));
+	if (isLeavingUserGame()) {
+		if (!confirm(`Are you sure you want to leave the game?`)) {
+			this.redirect(this.url);
+			return;
+		}
+	}
+
+	unbindOnPageLeft();
 	destroyConnectionIndicator();
 	unsetGameSessions();
 	Session.set('gameLoadingMask');
+
+	window.onbeforeunload = undefined;
+
+	EventPublisher.off(
+		PageUnload.prototype.constructor.name,
+		unbindOnPageLeft,
+		null
+	);
 };
 
 const initGame = function(gameId) {
@@ -110,6 +145,7 @@ const initGame = function(gameId) {
 
 const quitGame = function(gameId) {
 	if (gameId) {
+		Meteor.call('removeGameViewer', gameId, Meteor.userId());
 		Meteor.call('quitGame', gameId, Meteor.userId());
 	}
 };

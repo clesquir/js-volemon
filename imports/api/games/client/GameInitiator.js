@@ -107,8 +107,6 @@ export default class GameInitiator {
 
 	stop() {
 		if (this.hasActiveGame()) {
-			Meteor.call('removeGameViewer', this.gameId, Meteor.userId());
-
 			this.currentGame.stop();
 			this.currentGame = null;
 		}

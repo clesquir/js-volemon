@@ -40,6 +40,9 @@ export default class GameData {
 	isUserClient() {
 	}
 
+	isUserPlayer() {
+	}
+
 	isUserViewer() {
 	}
 

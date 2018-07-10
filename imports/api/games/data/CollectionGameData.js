@@ -123,8 +123,12 @@ export default class CollectionGameData extends GameData {
 		return this.currentUserId && this.clientUserIds.indexOf(this.currentUserId) !== -1;
 	}
 
+	isUserPlayer() {
+		return this.isUserHost() || this.isUserClient();
+	}
+
 	isUserViewer() {
-		return (!this.isUserHost() && !this.isUserClient());
+		return !this.isUserPlayer();
 	}
 
 	isGameStatusOnGoing() {
