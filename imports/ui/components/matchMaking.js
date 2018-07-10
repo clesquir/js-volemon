@@ -9,6 +9,8 @@ import {
 import {Games} from '/imports/api/games/games.js';
 import {MatchMakers} from '/imports/api/games/matchMakers.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
+import {EventPublisher} from '/imports/lib/EventPublisher.js';
+import PageUnload from '/imports/lib/events/PageUnload.js';
 import ButtonEnabler from '/imports/ui/util/ButtonEnabler.js';
 import TipsUpdater from '/imports/ui/util/TipsUpdater.js';
 import {Tooltips} from 'meteor/lookback:tooltips';
@@ -131,6 +133,11 @@ const closeMatchMaking = function() {
 	Session.set('lightbox.closable', true);
 };
 
+const unbindOnPageLeft = function() {
+	closeMatchMaking();
+	Meteor.call('cancelMatchMaking', Meteor.userId());
+};
+
 const tipsUpdater = new TipsUpdater();
 const gameNotifier = new GameNotifier();
 let matchMakingTracker;
@@ -166,11 +173,22 @@ Template.matchMaking.onCreated(function() {
 			}
 		})
 		.catch(function() {});
+
+	EventPublisher.on(
+		PageUnload.prototype.constructor.name,
+		unbindOnPageLeft,
+		null
+	);
 });
 
 Template.matchMaking.destroyed = function() {
-	closeMatchMaking();
-	Meteor.call('cancelMatchMaking', Meteor.userId());
+	unbindOnPageLeft();
+
+	EventPublisher.off(
+		PageUnload.prototype.constructor.name,
+		unbindOnPageLeft,
+		null
+	);
 };
 
 Template.matchMaking.helpers({
