@@ -1,4 +1,5 @@
 import {ONE_VS_COMPUTER_GAME_MODE, TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
+import {PLAYER_DEFAULT_SHAPE} from '/imports/api/games/shapeConstants.js';
 import {padNumber, timeElapsedSince} from '/imports/lib/utils.js';
 import {Meteor} from 'meteor/meteor';
 import * as Moment from 'meteor/momentjs:moment';
@@ -40,7 +41,7 @@ Template.recentGames.helpers({
 				(this.players[0].id === userId || (this.players[2] && this.players[2].id === userId)) &&
 				hostPoints > clientPoints
 			) || (
-				(this.players[1].id === userId || (this.players[3] && this.players[3].id === userId)) &&
+				((this.players[1] && this.players[1].id === userId) || (this.players[3] && this.players[3].id === userId)) &&
 				clientPoints > hostPoints
 			)
 		) {
@@ -91,6 +92,10 @@ Template.recentGames.helpers({
 	},
 
 	shape: function(index) {
+		if (index === 1 && this.gameMode === ONE_VS_COMPUTER_GAME_MODE) {
+			return PLAYER_DEFAULT_SHAPE;
+		}
+
 		return this.shapes[index];
 	},
 
