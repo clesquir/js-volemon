@@ -116,7 +116,7 @@ Meteor.methods({
 		}
 	},
 
-	addGameViewer: function(gameId) {
+	addGameViewer: function(gameId, userId) {
 		let game = Games.findOne(gameId);
 
 		if (!game) {
@@ -126,16 +126,16 @@ Meteor.methods({
 		for (let i = 0; i < game.viewers.length; i++) {
 			if (
 				game.viewers[i].id === this.connection.id ||
-				game.viewers[i].userId === Meteor.userId()
+				game.viewers[i].userId === userId
 			) {
 				return;
 			}
 		}
 
 		let viewer = {id: this.connection.id, userId: null, name: 'Guest'};
-		if (Meteor.userId()) {
-			viewer.userId = Meteor.userId();
-			const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
+		if (userId) {
+			viewer.userId = userId;
+			const userConfiguration = UserConfigurations.findOne({userId: userId});
 			if (userConfiguration) {
 				viewer.name = userConfiguration.name;
 			}
@@ -147,7 +147,7 @@ Meteor.methods({
 		);
 	},
 
-	removeGameViewer: function(gameId) {
+	removeGameViewer: function(gameId, userId) {
 		let game = Games.findOne(gameId);
 
 		if (!game) {
@@ -161,7 +161,7 @@ Meteor.methods({
 
 		Games.update(
 			{_id: gameId},
-			{$pull: {'viewers': {userId: Meteor.userId()}}}
+			{$pull: {'viewers': {userId: userId}}}
 		);
 	},
 
