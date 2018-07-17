@@ -800,6 +800,7 @@ export default class Game {
 			player.data,
 			this.engine.fullPositionData(player),
 			this.engine.fullPositionData(this.ball),
+			this.gameBonus.bonusesFullPositionData(),
 			this.gameConfiguration,
 			this.engine
 		);
