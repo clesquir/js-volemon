@@ -5,6 +5,7 @@ import BonusRepellentMonsterBonus from '/imports/api/games/bonus/BonusRepellentM
 import BounceMonsterBonus from '/imports/api/games/bonus/BounceMonsterBonus.js';
 import CloakedMonsterBonus from '/imports/api/games/bonus/CloakedMonsterBonus.js';
 import CloudBonus from '/imports/api/games/bonus/CloudBonus.js';
+import CureBonus from '/imports/api/games/bonus/CureBonus.js';
 import DrunkMonsterBonus from '/imports/api/games/bonus/DrunkMonsterBonus.js';
 import FastMonsterBonus from '/imports/api/games/bonus/FastMonsterBonus.js';
 import FreezeMonsterBonus from '/imports/api/games/bonus/FreezeMonsterBonus.js';
@@ -18,6 +19,7 @@ import JunkFoodMonster from '/imports/api/games/bonus/JunkFoodMonsterBonus.js';
 import LowGravity from '/imports/api/games/bonus/LowGravity.js';
 import NoJumpMonsterBonus from '/imports/api/games/bonus/NoJumpMonsterBonus.js';
 import NothingBonus from '/imports/api/games/bonus/NothingBonus.js';
+import PoisonBonus from '/imports/api/games/bonus/PoisonBonus.js';
 import RandomBonus from '/imports/api/games/bonus/RandomBonus.js';
 import ReverseMoveMonsterBonus from '/imports/api/games/bonus/ReverseMoveMonsterBonus.js';
 import ShapeShiftMonsterBonus from '/imports/api/games/bonus/ShapeShiftMonsterBonus.js';
@@ -33,6 +35,7 @@ import {
 	BONUS_BOUNCE_MONSTER,
 	BONUS_CLOAKED_MONSTER,
 	BONUS_CLOUD,
+	BONUS_CURE,
 	BONUS_DRUNK_MONSTER,
 	BONUS_FAST_MONSTER,
 	BONUS_FREEZE_MONSTER,
@@ -46,6 +49,7 @@ import {
 	BONUS_LOW_GRAVITY,
 	BONUS_NO_JUMP_MONSTER,
 	BONUS_NOTHING,
+	BONUS_POISON,
 	BONUS_RANDOM,
 	BONUS_REPELLENT,
 	BONUS_REVERSE_MOVE_MONSTER,
@@ -210,6 +214,10 @@ export default class BonusFactory {
 				return new LowGravity(game, bonusClass);
 			case BONUS_HIGH_GRAVITY:
 				return new HighGravity(game, bonusClass);
+			case BONUS_POISON:
+				return new PoisonBonus(game, bonusClass);
+			case BONUS_CURE:
+				return new CureBonus(game, bonusClass);
 			case BONUS_NOTHING:
 				return new NothingBonus(game, bonusClass);
 			case BONUS_RANDOM:

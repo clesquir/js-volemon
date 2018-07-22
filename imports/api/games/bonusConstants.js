@@ -26,3 +26,5 @@ export const BONUS_NOTHING = 'NothingBonus';
 export const BONUS_REPELLENT = 'BonusRepellent';
 export const BONUS_LOW_GRAVITY = 'LowGravity';
 export const BONUS_HIGH_GRAVITY = 'HighGravity';
+export const BONUS_POISON = 'Poison';
+export const BONUS_CURE = 'Cure';

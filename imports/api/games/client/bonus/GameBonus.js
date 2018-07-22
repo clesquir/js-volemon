@@ -607,12 +607,15 @@ export default class GameBonus {
 		}
 	}
 
-	killPlayer(playerKey) {
-		if (
-			this.game.canAddGamePoint() &&
+	isInvincible(playerKey) {
+		return (
 			this.getPlayerFromKey(playerKey) &&
-			!this.getPlayerFromKey(playerKey).data.isInvincible
-		) {
+			this.getPlayerFromKey(playerKey).data.isInvincible
+		);
+	}
+
+	killPlayer(playerKey) {
+		if (this.game.canAddGamePoint() && !this.isInvincible(playerKey)) {
 			this.game.addGamePoint(this.game.playerPointSide(playerKey));
 		}
 	}

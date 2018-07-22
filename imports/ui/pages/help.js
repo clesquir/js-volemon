@@ -5,7 +5,7 @@ import BonusRepellentMonsterBonus from '/imports/api/games/bonus/BonusRepellentM
 import BounceMonsterBonus from '/imports/api/games/bonus/BounceMonsterBonus.js';
 import CloakedMonsterBonus from '/imports/api/games/bonus/CloakedMonsterBonus.js';
 import CloudBonus from '/imports/api/games/bonus/CloudBonus.js';
-import DrunkMonsterBonus from '/imports/api/games/bonus/DrunkMonsterBonus.js';
+import CureBonus from '/imports/api/games/bonus/CureBonus.js';
 import FastMonsterBonus from '/imports/api/games/bonus/FastMonsterBonus.js';
 import FreezeMonsterBonus from '/imports/api/games/bonus/FreezeMonsterBonus.js';
 import HighGravity from '/imports/api/games/bonus/HighGravity.js';
@@ -17,6 +17,7 @@ import InvisibleOpponentMonsterBonus from '/imports/api/games/bonus/InvisibleOpp
 import LowGravity from '/imports/api/games/bonus/LowGravity.js';
 import NoJumpMonsterBonus from '/imports/api/games/bonus/NoJumpMonsterBonus.js';
 import NothingBonus from '/imports/api/games/bonus/NothingBonus.js';
+import PoisonBonus from '/imports/api/games/bonus/PoisonBonus.js';
 import RandomBonus from '/imports/api/games/bonus/RandomBonus.js';
 import ReverseMoveMonsterBonus from '/imports/api/games/bonus/ReverseMoveMonsterBonus.js';
 import ShapeShiftMonsterBonus from '/imports/api/games/bonus/ShapeShiftMonsterBonus.js';
@@ -81,8 +82,9 @@ Template.help.helpers({
 			new ShapeShiftMonsterBonus(),
 			new InvincibleMonsterBonus(),
 			new BonusRepellentMonsterBonus(),
-			new DrunkMonsterBonus(),
 			new InstantDeathBonus(),
+			new PoisonBonus(),
+			new CureBonus(),
 		];
 		const helpList = [];
 		let textureAtlasFrames = [];
