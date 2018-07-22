@@ -855,7 +855,7 @@ export default class PhaserEngine extends Engine {
 		return bonusSprite;
 	}
 
-	drawBallPrediction(x, y) {
+	drawBallPrediction(x, y, color) {
 		if (this.game.debug.geom) {
 			if (!this.ballPredictionIndicator) {
 				this.ballPredictionIndicator = new Phaser.Rectangle(0, 0, 10, 10);
@@ -864,7 +864,7 @@ export default class PhaserEngine extends Engine {
 			this.ballPredictionIndicator.x = x - 5;
 			this.ballPredictionIndicator.y = y - 5;
 
-			this.game.debug.geom(this.ballPredictionIndicator, 'rgb(0, 200, 0, 0.5)');
+			this.game.debug.geom(this.ballPredictionIndicator, color);
 		}
 	}
 }

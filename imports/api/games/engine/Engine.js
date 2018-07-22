@@ -252,6 +252,6 @@ export default class Engine {
 	shake(sprite, move, time) {
 	}
 
-	drawBallPrediction(px, py) {
+	drawBallPrediction(px, py, color) {
 	}
 }

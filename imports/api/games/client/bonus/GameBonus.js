@@ -205,6 +205,16 @@ export default class GameBonus {
 		return 1 - ((this.serverNormalizedTime.getServerTimestamp() - activeBonus.activatedAt) / duration);
 	}
 
+	bonusesFullPositionData() {
+		let bonusesData = [];
+
+		for (let bonus of this.bonuses) {
+			bonusesData.push(this.engine.fullPositionData(bonus));
+		}
+
+		return bonusesData;
+	}
+
 	sendBonusesPosition() {
 		let bonusesData = [];
 
