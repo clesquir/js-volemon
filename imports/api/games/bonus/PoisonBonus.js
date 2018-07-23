@@ -1,4 +1,5 @@
 import CureBonus from '/imports/api/games/bonus/CureBonus.js';
+import InvincibleMonsterBonus from '/imports/api/games/bonus/InvincibleMonsterBonus.js';
 import MonsterBonus from '/imports/api/games/bonus/MonsterBonus.js';
 
 export default class PoisonBonus extends MonsterBonus {
@@ -19,10 +20,18 @@ export default class PoisonBonus extends MonsterBonus {
 			}
 		}
 
+		if (bonus instanceof InvincibleMonsterBonus && playerKey === this.activatorPlayerKey) {
+			return true;
+		}
+
 		return false;
 	}
 
 	start() {
+		if (this.game.isInvincible.call(this.game, this.activatorPlayerKey)) {
+			this.durationMilliseconds = 0;
+			this.deactivate();
+		}
 	}
 
 	stop() {
