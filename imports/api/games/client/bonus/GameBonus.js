@@ -616,7 +616,18 @@ export default class GameBonus {
 
 	killPlayer(playerKey) {
 		if (this.game.canAddGamePoint() && !this.isInvincible(playerKey)) {
-			this.game.addGamePoint(this.game.playerPointSide(playerKey));
+			this.engine.kill(this.getPlayerFromKey(playerKey));
+
+			//Send to client
+			const serverTimestamp = this.serverNormalizedTime.getServerTimestamp();
+			this.gameStreamBundler.emitStream(
+				'killPlayer-' + this.game.gameId,
+				{
+					playerKey: playerKey,
+					killedAt: serverTimestamp
+				},
+				serverTimestamp
+			);
 		}
 	}
 

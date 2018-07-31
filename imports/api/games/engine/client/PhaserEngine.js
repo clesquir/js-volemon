@@ -711,6 +711,36 @@ export default class PhaserEngine extends Engine {
 			.start();
 	}
 
+	kill(sprite) {
+		this.playDeathAnimation(sprite);
+		sprite.kill();
+	}
+
+	playDeathAnimation(sprite) {
+		const scale = 0.25;
+		const move = 20;
+		const duration = 750;
+
+		const spriteB = this.game.add.sprite(sprite.width, sprite.height, sprite.generateTexture());
+		spriteB.x = sprite.x;
+		spriteB.y = sprite.y;
+		this.setAnchor(spriteB, 0.5);
+		this.setOpacity(spriteB, this.getOpacity(sprite));
+
+		this.game.add.tween(spriteB.scale).to({x: scale, y: scale}, duration).start();
+		this.game.add.tween(spriteB)
+			.to({alpha: '-' + 0.25, x: '-' + move / 2, y: "-" + move}, duration / 4)
+			.to({alpha: '-' + 0.25, x: '+' + move, y: "-" + move}, duration / 4)
+			.to({alpha: '-' + 0.25, x: '-' + move, y: "-" + move}, duration / 4)
+			.to({alpha: '-' + 0.25, x: '+' + move, y: "-" + move}, duration / 4)
+			.start();
+		setTimeout(() => {
+			if (spriteB) {
+				spriteB.destroy();
+			}
+		}, duration);
+	}
+
 	activateAnimation(sprite) {
 		const duration = 250;
 		const scale = 4;
@@ -720,7 +750,9 @@ export default class PhaserEngine extends Engine {
 		this.game.add.tween(sprite.scale).to({x: scale, y: scale}, duration).start();
 		this.game.add.tween(sprite).to({alpha: 0}, duration).start();
 		setTimeout(() => {
-			sprite.destroy();
+			if (sprite) {
+				sprite.destroy();
+			}
 		}, duration);
 	}
 

@@ -28,6 +28,10 @@ export default class GameStreamInitiator {
 			);
 		});
 
+		this.stream.on('killPlayer-' + gameId, (data) => {
+			this.killPlayer(data.playerKey, data.killedAt);
+		});
+
 		this.stream.on('showBallHitPoint-' + gameId, (data) => {
 			this.showBallHitPoint(data.x, data.y, data.diameter);
 		});
@@ -89,6 +93,14 @@ export default class GameStreamInitiator {
 		}
 	}
 
+	killPlayer(playerKey, killedAt) {
+		let gameInitiator = this.gameInitiator;
+
+		if (gameInitiator.hasActiveGame()) {
+			gameInitiator.currentGame.killPlayer(playerKey, killedAt);
+		}
+	}
+
 	showBallHitPoint(x, y, diameter) {
 		let gameInitiator = this.gameInitiator;
 
@@ -111,6 +123,7 @@ export default class GameStreamInitiator {
 
 		this.stream.off('play-' + gameId);
 		this.stream.off('activateBonus-' + gameId);
+		this.stream.off('killPlayer-' + gameId);
 		this.stream.off('sendBundledData-' + gameId);
 		this.stream.off('showBallHitPoint-' + gameId);
 	}

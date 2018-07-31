@@ -38,6 +38,10 @@ Template.environment.helpers({
 });
 
 Template.environment.events({
+	'click [data-action="kill-player"]': function() {
+		environment.killPlayer();
+	},
+
 	'click [data-action="create-random-bonus"]': function() {
 		environment.createRandomBonus();
 	},

@@ -1,21 +1,10 @@
 import {
 	BONUS_POISON,
-	BONUS_CURE,
+	BONUS_INSTANT_DEATH,
 } from '/imports/api/games/bonusConstants.js';
 import Classic from './Classic';
 
 export default class BonusOverride extends Classic {
-	overridesRandomBonusKeyList() {
-		return true;
-	}
-
-	randomBonusKeyList() {
-		return [
-			BONUS_POISON,
-			BONUS_CURE,
-		];
-	}
-
 	overridesAvailableBonuses() {
 		return true;
 	}
@@ -23,7 +12,7 @@ export default class BonusOverride extends Classic {
 	availableBonuses() {
 		return [
 			BONUS_POISON,
-			BONUS_CURE,
+			BONUS_INSTANT_DEATH,
 		];
 	}
 }

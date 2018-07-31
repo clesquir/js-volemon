@@ -87,6 +87,10 @@ export default class Environment extends Dev {
 		Meteor.clearInterval(this.movingInterval);
 	}
 
+	killPlayer() {
+		this.gameBonus.killPlayer('player1');
+	}
+
 	createRandomBonus() {
 		this.gameBonus.createRandomBonus();
 	}

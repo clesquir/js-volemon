@@ -51,6 +51,7 @@ export default class Game {
 		this.lastPlayerPositionData = {};
 		this.lastBallUpdate = 0;
 		this.lastPlayerUpdate = 0;
+		this.lastPointAt = 0;
 		this.gameResumed = false;
 		this.gameInitiated = false;
 		this.gameStreamBundler.resetBundledStreams();
@@ -152,6 +153,7 @@ export default class Game {
 
 	onPointTaken() {
 		if (this.gameInitiated) {
+			this.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
 			this.shakeLevel();
 			this.resumeOnTimerEnd();
 		}
@@ -730,13 +732,13 @@ export default class Game {
 	canAddPointOnSide(side) {
 		if (side === CLIENT_POINTS_COLUMN) {
 			return !(
-				(this.getPlayerFromKey('player1') && this.getPlayerFromKey('player1').data.isInvincible) ||
-				(this.getPlayerFromKey('player3') && this.getPlayerFromKey('player3').data.isInvincible)
+				this.gameBonus.isInvincible('player1') ||
+				this.gameBonus.isInvincible('player3')
 			);
 		} else {
 			return !(
-				(this.getPlayerFromKey('player2') && this.getPlayerFromKey('player2').data.isInvincible) ||
-				(this.getPlayerFromKey('player4') && this.getPlayerFromKey('player4').data.isInvincible)
+				this.gameBonus.isInvincible('player2') ||
+				this.gameBonus.isInvincible('player4')
 			);
 		}
 	}
@@ -949,6 +951,12 @@ export default class Game {
 
 	showBallHitPoint(x, y, diameter) {
 		this.engine.showBallHitPoint(x, y, diameter);
+	}
+
+	killPlayer(playerKey, killedAt) {
+		if (killedAt > this.lastPointAt) {
+			this.engine.kill(this.getPlayerFromKey(playerKey));
+		}
 	}
 
 	shakeLevel() {

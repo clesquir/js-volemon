@@ -9,24 +9,24 @@ Meteor.startup(function() {
 	const tournaments = [
 		{
 			_id: Random.id(5),
-			identifier: "tournament_2018-07-23_1v1",
-			name: "1 VS 1: Poison/Cure",
-			description: "Poison and Cure bonuses",
+			identifier: "tournament_2018-07-30_1v1",
+			name: "1 VS 1: Ready to die",
+			description: "Poison and Instant death bonuses",
 			mode: TOURNAMENT_MODE_BONUS_OVERRIDE,
 			gameMode: ONE_VS_ONE_GAME_MODE,
-			startDate: "2018-07-23 -04:00",
-			endDate: "2018-07-30 -04:00",
+			startDate: "2018-07-30 -04:00",
+			endDate: "2018-08-06 -04:00",
 			isPublished: false
 		},
 		{
 			_id: Random.id(5),
-			identifier: "tournament_2018-07-23_2v2",
-			name: "2 VS 2: Poison/Cure",
-			description: "Poison and Cure bonuses",
+			identifier: "tournament_2018-07-30_2v2",
+			name: "2 VS 2: Ready to die",
+			description: "Poison and Instant death bonuses",
 			mode: TOURNAMENT_MODE_BONUS_OVERRIDE,
 			gameMode: TWO_VS_TWO_GAME_MODE,
-			startDate: "2018-07-23 -04:00",
-			endDate: "2018-07-30 -04:00",
+			startDate: "2018-07-30 -04:00",
+			endDate: "2018-08-06 -04:00",
 			isPublished: false
 		}
 	];
