@@ -1,7 +1,7 @@
 import * as Moment from 'meteor/momentjs:moment';
 import GameListener from './GameListener.js';
 import {ACHIEVEMENT_CONSECUTIVE_DAYS_PLAYED} from '/imports/api/achievements/constants.js';
-import GameFinished from '/imports/api/games/events/PlayerWon.js';
+import GameFinished from '/imports/api/games/events/GameFinished.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 
 export default class ConsecutiveDaysPlayed extends GameListener {
