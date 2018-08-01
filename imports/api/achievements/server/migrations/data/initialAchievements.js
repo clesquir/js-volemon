@@ -41,6 +41,7 @@ import {
 	ACHIEVEMENT_UNDESIRABLE,
 	ACHIEVEMENT_SUICIDAL_TENDENCIES,
 	ACHIEVEMENT_INTOXICATED,
+	ACHIEVEMENT_GONE_BUT_NOT_FORGOTTEN,
 	TYPE_MS,
 	TYPE_QUANTITY,
 	TYPE_TIMES
@@ -422,5 +423,14 @@ export const INITIAL_ACHIVEMENTS = [
 		"type": TYPE_QUANTITY,
 		"displayOrder": 42,
 		"levels": [{"level": 1, "number": 25}, {"level": 2, "number": 50}, {"level": 3, "number": 100}]
+	},
+	{
+		"_id": ACHIEVEMENT_GONE_BUT_NOT_FORGOTTEN,
+		"isSecret": true,
+		"name": "Gone but not forgotten",
+		"description": "# of points scored when killed",
+		"type": TYPE_QUANTITY,
+		"displayOrder": 43,
+		"levels": [{"level": 1, "number": 15}, {"level": 2, "number": 30}, {"level": 3, "number": 60}]
 	}
 ];

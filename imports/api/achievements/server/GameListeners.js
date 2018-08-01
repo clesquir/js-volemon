@@ -14,6 +14,7 @@ import GamesPlayed from '/imports/api/achievements/server/listeners/GamesPlayed.
 import GamesWonUnderAMinute from '/imports/api/achievements/server/listeners/GamesWonUnderAMinute.js';
 import GamesWonWithXShape from '/imports/api/achievements/server/listeners/GamesWonWithXShape.js';
 import GameTime from '/imports/api/achievements/server/listeners/GameTime.js';
+import GoneButNotForgotten from '/imports/api/achievements/server/listeners/GoneButNotForgotten.js';
 import HowToTieATie from '/imports/api/achievements/server/listeners/HowToTieATie.js';
 import Intoxicated from '/imports/api/achievements/server/listeners/Intoxicated.js';
 import InvincibleInALifetime from '/imports/api/achievements/server/listeners/InvincibleInALifetime.js';
@@ -102,6 +103,7 @@ export default class GameListeners {
 			this.listeners.push((new TheyAreAllOver()).forGame(this.gameId, player.userId));
 			this.listeners.push((new SuicidalTendencies()).forGame(this.gameId, player.userId));
 			this.listeners.push((new Intoxicated()).forGame(this.gameId, player.userId));
+			this.listeners.push((new GoneButNotForgotten()).forGame(this.gameId, player.userId));
 		});
 	}
 
