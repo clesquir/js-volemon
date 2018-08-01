@@ -326,7 +326,7 @@
       }
     },
     {
-      "filename": "invincible-monster",
+      "filename": "invincible-instant-death",
       "frame": {
         "x": 109,
         "y": 37,
@@ -351,7 +351,7 @@
       }
     },
     {
-      "filename": "invisible-ball",
+      "filename": "invincible-monster",
       "frame": {
         "x": 145,
         "y": 1,
@@ -376,7 +376,7 @@
       }
     },
     {
-      "filename": "invisible-monster",
+      "filename": "invisible-ball",
       "frame": {
         "x": 1,
         "y": 181,
@@ -401,7 +401,7 @@
       }
     },
     {
-      "filename": "invisible-opponent-monster",
+      "filename": "invisible-monster",
       "frame": {
         "x": 37,
         "y": 145,
@@ -426,7 +426,7 @@
       }
     },
     {
-      "filename": "junk-food-monster",
+      "filename": "invisible-opponent-monster",
       "frame": {
         "x": 73,
         "y": 109,
@@ -451,7 +451,7 @@
       }
     },
     {
-      "filename": "low-gravity",
+      "filename": "junk-food-monster",
       "frame": {
         "x": 109,
         "y": 73,
@@ -476,7 +476,7 @@
       }
     },
     {
-      "filename": "no-jump-monster",
+      "filename": "low-gravity",
       "frame": {
         "x": 145,
         "y": 37,
@@ -501,7 +501,7 @@
       }
     },
     {
-      "filename": "nothing",
+      "filename": "no-jump-monster",
       "frame": {
         "x": 181,
         "y": 1,
@@ -526,7 +526,7 @@
       }
     },
     {
-      "filename": "poison",
+      "filename": "nothing",
       "frame": {
         "x": 1,
         "y": 217,
@@ -551,7 +551,7 @@
       }
     },
     {
-      "filename": "random",
+      "filename": "poison",
       "frame": {
         "x": 37,
         "y": 181,
@@ -576,7 +576,7 @@
       }
     },
     {
-      "filename": "reverse-move-monster",
+      "filename": "random",
       "frame": {
         "x": 73,
         "y": 145,
@@ -601,7 +601,7 @@
       }
     },
     {
-      "filename": "shape-shift-monster",
+      "filename": "reverse-move-monster",
       "frame": {
         "x": 109,
         "y": 109,
@@ -626,7 +626,7 @@
       }
     },
     {
-      "filename": "slow-monster",
+      "filename": "shape-shift-monster",
       "frame": {
         "x": 145,
         "y": 73,
@@ -651,7 +651,7 @@
       }
     },
     {
-      "filename": "small-ball",
+      "filename": "slow-monster",
       "frame": {
         "x": 181,
         "y": 37,
@@ -676,7 +676,7 @@
       }
     },
     {
-      "filename": "small-monster",
+      "filename": "small-ball",
       "frame": {
         "x": 217,
         "y": 1,
@@ -701,7 +701,7 @@
       }
     },
     {
-      "filename": "smoke-bomb",
+      "filename": "small-monster",
       "frame": {
         "x": 1,
         "y": 253,
@@ -726,10 +726,35 @@
       }
     },
     {
-      "filename": "unfreeze-monster",
+      "filename": "smoke-bomb",
       "frame": {
         "x": 37,
         "y": 217,
+        "w": 34,
+        "h": 34
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 34
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "unfreeze-monster",
+      "frame": {
+        "x": 73,
+        "y": 181,
         "w": 34,
         "h": 34
       },

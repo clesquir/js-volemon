@@ -16,6 +16,11 @@ export default class BaseBonus {
 		this.activatedAt = null;
 		this.atlasFrame = '';
 		this.description = '';
+
+		this.init();
+	}
+
+	init() {
 	}
 
 	dataToStream() {
@@ -36,6 +41,10 @@ export default class BaseBonus {
 
 	getClassName() {
 		return this.className;
+	}
+
+	hasRandomBonus() {
+		return false;
 	}
 
 	bonusToActivate() {

@@ -5,7 +5,7 @@ export default class InstantDeathBonus extends BaseBonus {
 		super(...args);
 		this.durationMilliseconds = 0;
 		this.atlasFrame = 'instant-death';
-		this.description = 'Instant death (only available in tournament)';
+		this.description = 'Instant death';
 	}
 
 	isSimilarBonusForPlayerKey(bonus, playerKey) {

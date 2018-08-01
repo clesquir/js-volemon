@@ -11,6 +11,7 @@ import FastMonsterBonus from '/imports/api/games/bonus/FastMonsterBonus.js';
 import FreezeMonsterBonus from '/imports/api/games/bonus/FreezeMonsterBonus.js';
 import HighGravity from '/imports/api/games/bonus/HighGravity.js';
 import InstantDeathBonus from '/imports/api/games/bonus/InstantDeathBonus.js';
+import InvincibleInstantDeathBonus from '/imports/api/games/bonus/InvincibleInstantDeathBonus.js';
 import InvincibleMonsterBonus from '/imports/api/games/bonus/InvincibleMonsterBonus.js';
 import InvisibleBallBonus from '/imports/api/games/bonus/InvisibleBallBonus.js';
 import InvisibleMonsterBonus from '/imports/api/games/bonus/InvisibleMonsterBonus.js';
@@ -41,6 +42,7 @@ import {
 	BONUS_FREEZE_MONSTER,
 	BONUS_HIGH_GRAVITY,
 	BONUS_INSTANT_DEATH,
+	BONUS_INVINCIBLE_INSTANT_DEATH,
 	BONUS_INVINCIBLE_MONSTER,
 	BONUS_INVISIBLE_BALL,
 	BONUS_INVISIBLE_MONSTER,
@@ -126,6 +128,8 @@ export default class BonusFactory {
 			BONUS_REVERSE_MOVE_MONSTER,
 			BONUS_INVISIBLE_MONSTER,
 			BONUS_INVISIBLE_OPPONENT_MONSTER,
+			BONUS_INVINCIBLE_INSTANT_DEATH,
+			BONUS_POISON,
 			BONUS_REPELLENT,
 			BONUS_CLOUD,
 			BONUS_NO_JUMP_MONSTER,
@@ -208,6 +212,8 @@ export default class BonusFactory {
 				return new SmokeBombBonus(game, bonusClass);
 			case BONUS_INSTANT_DEATH:
 				return new InstantDeathBonus(game, bonusClass);
+			case BONUS_INVINCIBLE_INSTANT_DEATH:
+				return new InvincibleInstantDeathBonus(game, bonusClass);
 			case BONUS_DRUNK_MONSTER:
 				return new DrunkMonsterBonus(game, bonusClass);
 			case BONUS_LOW_GRAVITY:
@@ -230,7 +236,7 @@ export default class BonusFactory {
 	static fromData(data, game) {
 		const bonus = this.fromClassName(data.bonusClass, game);
 
-		if (bonus instanceof RandomBonus) {
+		if (bonus.hasRandomBonus()) {
 			bonus.setRandomBonus(this.fromClassName(data.randomBonusClass, game));
 		}
 
