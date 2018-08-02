@@ -410,7 +410,7 @@ export const INITIAL_ACHIVEMENTS = [
 		"_id": ACHIEVEMENT_SUICIDAL_TENDENCIES,
 		"isSecret": true,
 		"name": "Suicidal tendencies",
-		"description": "# of random bonuses caught in an Instant Kill tournament",
+		"description": `# of random bonuses caught in an "Instant Death" tournament`,
 		"type": TYPE_QUANTITY,
 		"displayOrder": 41,
 		"levels": [{"level": 1, "number": 15}, {"level": 2, "number": 30}, {"level": 3, "number": 60}]

@@ -4,7 +4,7 @@ export default class InvincibleMonsterBonus extends MonsterBonus {
 	constructor(...args) {
 		super(...args);
 		this.atlasFrame = 'invincible-monster';
-		this.description = 'Invincible player (only available in random)';
+		this.description = 'Prevents being killed by instant death, poison and ball touching the ground';
 	}
 
 	isSimilarBonusForPlayerKey(bonus, playerKey) {
