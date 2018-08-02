@@ -1,18 +1,36 @@
 .view-selector {
-	text-align: center;
-	font-size: 22px;
+	display: flex;
+	justify-content: center;
+	align-items: baseline;
 
-	i {
+	div {
 		cursor: pointer;
 		transition: opacity 0.25s ease-in-out;
 		opacity: 0.25;
-
-		& + & {
-			margin-left: 10px;
-		}
+		display: flex;
+		align-items: center;
+		margin: 3px;
 
 		&:hover {
 			opacity: 1;
+		}
+
+		.fa {
+			font-size: 22px;
+		}
+
+		.icomoon {
+			font-size: 22px;
+			margin-top: -4px;
+		}
+
+		span {
+			font-size: 10px;
+			margin-left: 5px;
+
+			@include horizontal-breakpoint(tablet) {
+				display: none;
+			}
 		}
 	}
 }
