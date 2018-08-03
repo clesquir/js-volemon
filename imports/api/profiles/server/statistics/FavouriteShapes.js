@@ -1,6 +1,7 @@
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {PLAYER_SHAPE_HALF_CIRCLE} from '/imports/api/games/shapeConstants.js';
+import {GAME_STATUS_FINISHED, GAME_STATUS_FORFEITED} from '/imports/api/games/statusConstants.js';
 
 export default class FavouriteShapes {
 	static get(userId, tournamentId) {
@@ -35,25 +36,26 @@ export default class FavouriteShapes {
 	 * @param tournamentId
 	 */
 	static players(userId, tournamentId) {
-		let players = Players.find({userId: userId});
+		const players = Players.find({userId: userId});
+		const playerGameIds = [];
 
-		if (tournamentId) {
-			const playerGameIds = [];
+		players.forEach((player) => {
+			playerGameIds.push(player.gameId);
+		});
 
-			players.forEach((player) => {
-				playerGameIds.push(player.gameId);
-			});
+		const games = Games.find(
+			{
+				_id: {$in: playerGameIds},
+				tournamentId: tournamentId,
+				status: {$in: [GAME_STATUS_FINISHED, GAME_STATUS_FORFEITED]}
+			}
+		);
+		const finishedGameIds = [];
 
-			const games = Games.find({_id: {$in: playerGameIds}, tournamentId: tournamentId});
-			const tournamentGameIds = [];
+		games.forEach((game) => {
+			finishedGameIds.push(game._id);
+		});
 
-			games.forEach((game) => {
-				tournamentGameIds.push(game._id);
-			});
-
-			players = Players.find({userId: userId, gameId: {$in: tournamentGameIds}});
-		}
-
-		return players;
+		return Players.find({userId: userId, gameId: {$in: finishedGameIds}});
 	}
 }

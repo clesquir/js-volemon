@@ -197,6 +197,13 @@ export default class GameListener extends Listener {
 		return playerKey === this.userPlayerKey();
 	}
 
+	playerKeyIsTeammate(playerKey) {
+		return (
+			playerKey !== this.userPlayerKey() &&
+			this.isPlayerHostSide() === this.isPlayerKeyHostSide(playerKey)
+		);
+	}
+
 	/**
 	 * @param {string} playerKey
 	 * @returns {boolean}
@@ -208,10 +215,18 @@ export default class GameListener extends Listener {
 	}
 
 	isPlayerHostSide() {
-		return ('player1' === this.userPlayerKey() || 'player3' === this.userPlayerKey());
+		return this.isPlayerKeyHostSide(this.userPlayerKey());
+	}
+
+	isPlayerKeyHostSide(playerKey) {
+		return ('player1' === playerKey || 'player3' === playerKey);
 	}
 
 	isPlayerClientSide() {
-		return ('player2' === this.userPlayerKey() || 'player4' === this.userPlayerKey());
+		return this.isPlayerKeyClientSide(this.userPlayerKey());
+	}
+
+	isPlayerKeyClientSide(playerKey) {
+		return ('player2' === playerKey || 'player4' === playerKey);
 	}
 }

@@ -8,9 +8,13 @@
 					<div id="game-statistics-contents" class="after-game-item view-selector-contents {{#if isNotAPracticeGame}}after-game-elo-scores-shown{{else}}after-game-durations-shown{{/if}}">
 						<div class="view-selector swiper-selector">
 							{{#if isNotAPracticeGame}}
-								<i class="fa fa-arrow-circle-up view-elo-scores" data-action="view-elo-scores" data-tooltip="ELO"></i>
+								<div class="view-elo-scores" data-action="view-elo-scores">
+									<i class="fa fa-arrow-circle-up"></i><span>ELO</span>
+								</div>
 							{{/if}}
-							<i class="fa fa-clock-o view-game-durations" data-action="view-game-durations" data-tooltip="Durations"></i>
+							<div class="view-game-durations" data-action="view-game-durations">
+								<i class="fa fa-clock-o"></i><span>Durations</span>
+							</div>
 						</div>
 
 						<div class="swiper-container after-game-swiper-container">

@@ -217,7 +217,7 @@ export const replyRematch = function(userId, gameId, accepted, gameInitiators) {
 
 		let rematchGameCreator = game.players[1].id;
 		if (game.gameMode === TWO_VS_TWO_GAME_MODE) {
-			rematchGameCreator = game.players[2].id;
+			rematchGameCreator = game.players[3].id;
 		}
 
 		const gameRematchId = createGame(rematchGameCreator, gameInitiators, game.modeSelection, game.tournamentId);

@@ -33,11 +33,19 @@
 			<div id="tournament-contents" class="view-selector-contents {{#if isTournamentActive}}tournament-games-shown{{else}}tournament-statistics-shown{{/if}}">
 				<div class="view-selector swiper-selector">
 					{{#if isTournamentActive}}
-						<i class="icomoon icon-tv view-tournament-games" data-action="view-tournament-games" data-tooltip="Watch games"></i>
+						<div class="view-tournament-games" data-action="view-tournament-games">
+							<i class="icomoon icon-tv"></i><span>Watch games</span>
+						</div>
 					{{/if}}
-					<i class="fa fa-pie-chart view-tournament-statistics" data-action="view-tournament-statistics" data-tooltip="Statistics"></i>
-					<i class="fa fa-hashtag view-tournament-rank" data-action="view-tournament-rank" data-tooltip="Rank"></i>
-					<i class="fa fa-line-chart view-tournament-line-chart" data-action="view-tournament-line-chart" data-tooltip="ELO line chart"></i>
+					<div class="view-tournament-statistics" data-action="view-tournament-statistics">
+						<i class="fa fa-pie-chart"></i><span>Statistics</span>
+					</div>
+					<div class="view-tournament-rank" data-action="view-tournament-rank">
+						<i class="fa fa-hashtag"></i><span>Rank</span>
+					</div>
+					<div class="view-tournament-line-chart" data-action="view-tournament-line-chart">
+						<i class="fa fa-line-chart"></i><span>ELO line chart</span>
+					</div>
 				</div>
 
 				<div class="swiper-container tournament-swiper-container">
