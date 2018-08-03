@@ -21,6 +21,7 @@ export const BONUS_RANDOM = 'RandomBonus';
 export const BONUS_SHAPE_SHIFT = 'ShapeShiftMonsterBonus';
 export const BONUS_SMOKE_BOMB = 'SmokeBomb';
 export const BONUS_INSTANT_DEATH = 'InstantDeath';
+export const BONUS_INVINCIBLE_INSTANT_DEATH = 'InvincibleInstantDeathBonus';
 export const BONUS_DRUNK_MONSTER = 'DrunkMonsterBonus';
 export const BONUS_NOTHING = 'NothingBonus';
 export const BONUS_REPELLENT = 'BonusRepellent';

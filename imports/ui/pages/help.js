@@ -19,6 +19,7 @@ import NoJumpMonsterBonus from '/imports/api/games/bonus/NoJumpMonsterBonus.js';
 import NothingBonus from '/imports/api/games/bonus/NothingBonus.js';
 import PoisonBonus from '/imports/api/games/bonus/PoisonBonus.js';
 import RandomBonus from '/imports/api/games/bonus/RandomBonus.js';
+import InvincibleInstantDeathBonus from '/imports/api/games/bonus/InvincibleInstantDeathBonus.js';
 import ReverseMoveMonsterBonus from '/imports/api/games/bonus/ReverseMoveMonsterBonus.js';
 import ShapeShiftMonsterBonus from '/imports/api/games/bonus/ShapeShiftMonsterBonus.js';
 import SlowMonsterBonus from '/imports/api/games/bonus/SlowMonsterBonus.js';
@@ -80,9 +81,10 @@ Template.help.helpers({
 			new InvisibleOpponentMonsterBonus(),
 			new CloakedMonsterBonus(),
 			new ShapeShiftMonsterBonus(),
-			new InvincibleMonsterBonus(),
 			new BonusRepellentMonsterBonus(),
+			new InvincibleMonsterBonus(),
 			new InstantDeathBonus(),
+			new InvincibleInstantDeathBonus(),
 			new PoisonBonus(),
 			new CureBonus(),
 		];

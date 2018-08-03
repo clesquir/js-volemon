@@ -6,7 +6,7 @@ export default class PoisonBonus extends MonsterBonus {
 		super(...args);
 		this.durationMilliseconds = 10000;
 		this.atlasFrame = 'poison';
-		this.description = '10s before death (only available in tournament)';
+		this.description = '10s before death';
 	}
 
 	isSimilarBonusForPlayerKey(bonus, playerKey) {
