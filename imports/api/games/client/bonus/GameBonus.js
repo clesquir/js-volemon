@@ -616,7 +616,7 @@ export default class GameBonus {
 
 	killPlayer(playerKey) {
 		if (this.game.canAddGamePoint() && !this.isInvincible(playerKey)) {
-			this.engine.kill(this.getPlayerFromKey(playerKey));
+			this.killAndRemovePlayer(playerKey);
 
 			//Send to client
 			const serverTimestamp = this.serverNormalizedTime.getServerTimestamp();
@@ -629,6 +629,11 @@ export default class GameBonus {
 				serverTimestamp
 			);
 		}
+	}
+
+	killAndRemovePlayer(playerKey) {
+		this.engine.kill(this.getPlayerFromKey(playerKey));
+		this.deactivateBonusesForPlayerKey(playerKey);
 	}
 
 	scaleGravity(scale) {
@@ -780,6 +785,14 @@ export default class GameBonus {
 		}
 
 		this.bonuses = bonuses;
+	}
+
+	deactivateBonusesForPlayerKey(playerKey) {
+		for (let bonus of this.activeBonuses) {
+			if (bonus.getTargetPlayerKey() === playerKey) {
+				bonus.deactivate();
+			}
+		}
 	}
 
 	deactivateSimilarBonusForPlayerKey(newBonus, playerKey) {

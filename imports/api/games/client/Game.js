@@ -955,7 +955,7 @@ export default class Game {
 
 	killPlayer(playerKey, killedAt) {
 		if (killedAt > this.lastPointAt) {
-			this.engine.kill(this.getPlayerFromKey(playerKey));
+			this.gameBonus.killAndRemovePlayer(playerKey);
 		}
 	}
 
