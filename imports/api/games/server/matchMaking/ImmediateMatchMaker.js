@@ -11,7 +11,7 @@ import {Random} from 'meteor/random';
 
 export default class ImmediateMatchMaker extends MatchMaker {
 	/**
-	 * @private
+	 * @protected
 	 * @param match
 	 * @returns {Array}
 	 */

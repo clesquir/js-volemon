@@ -14,7 +14,7 @@ import {Random} from 'meteor/random';
 
 export default class EloMatchMaker extends MatchMaker {
 	/**
-	 * @private
+	 * @protected
 	 * @param match
 	 * @returns {{id: {string}, name: {string}}[]}
 	 */
@@ -37,7 +37,8 @@ export default class EloMatchMaker extends MatchMaker {
 				if (match.usersToMatch.length === 2) {
 					const matchedUsers = this.sortByEloRating(match.usersToMatch, match.tournamentId);
 
-					return [matchedUsers[0], matchedUsers[1]];
+					//Highest is host
+					return [matchedUsers[1], matchedUsers[0]];
 				}
 				break;
 			case TWO_VS_TWO_GAME_MODE:

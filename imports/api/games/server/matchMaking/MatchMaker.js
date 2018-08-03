@@ -108,4 +108,11 @@ export default class MatchMaker {
 			{$push: {usersToMatch: {id: userId, name: userName}}}
 		);
 	}
+
+	/**
+	 * @protected
+	 */
+	matchedUsers(match) {
+		throw 'Abstract';
+	}
 }
