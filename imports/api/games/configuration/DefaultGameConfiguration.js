@@ -1,7 +1,7 @@
 import {TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
 import LevelConfiguration from '/imports/api/games/levelConfiguration/LevelConfiguration.js';
-import TournamentModeFactory from '/imports/api/tournaments/modes/TournamentModeFactory.js';
+import TournamentMode from '/imports/api/tournaments/TournamentMode.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import GameConfiguration from './GameConfiguration.js';
 
@@ -41,8 +41,8 @@ export default class DefaultGameConfiguration extends GameConfiguration {
 	initTournament() {
 		const tournament = Tournaments.findOne({_id: this.tournamentId});
 
-		/** @type Classic */
-		this.tournamentMode = TournamentModeFactory.fromId(tournament.mode._id);
+		/** @type TournamentMode */
+		this.tournamentMode = TournamentMode.fromTournament(tournament);
 	}
 
 	/**

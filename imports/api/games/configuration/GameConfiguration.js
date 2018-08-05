@@ -16,7 +16,7 @@ import {PLAYER_ALLOWED_LIST_OF_SHAPES, PLAYER_LIST_OF_SHAPES} from '/imports/api
 
 export default class GameConfiguration {
 	tournamentId = null;
-	/** @type {Classic} */
+	/** @type {TournamentMode} */
 	tournamentMode = null;
 	/** @type {LevelConfiguration} */
 	levelConfiguration = null;
@@ -81,10 +81,6 @@ export default class GameConfiguration {
 	}
 
 	bonusRadius() {
-		if (this.hasTournament() && this.tournamentMode.overridesBonusRadius()) {
-			return this.tournamentMode.bonusRadius();
-		}
-
 		return BONUS_RADIUS;
 	}
 
