@@ -37,18 +37,18 @@ export default class Classic {
 	bonusSpawnInitialMaximumFrequence() {
 	}
 
-	overridesRandomBonusKeyList() {
-		return false;
-	}
-
-	randomBonusKeyList() {
-	}
-
 	overridesAvailableBonuses() {
 		return false;
 	}
 
 	availableBonuses() {
+	}
+
+	overridesAvailableBonusesForRandom() {
+		return false;
+	}
+
+	availableBonusesForRandom() {
 	}
 
 	overridesBonusDuration() {

@@ -71,42 +71,25 @@ export default class BonusFactory {
 	 * @returns {BaseBonus}
 	 */
 	static randomBonus(game, gameConfiguration) {
-		const bonus = this.fromClassName(this.randomBonusKey(gameConfiguration), game);
-
-		if (bonus instanceof RandomBonus) {
-			bonus.setRandomBonus(
-				this.fromClassName(
-					Random.choice(this.availableBonusesForRandom(gameConfiguration)),
-					game
-				)
-			);
-		}
-
-		return bonus;
-	}
-
-	/**
-	 * @param {GameConfiguration} gameConfiguration
-	 * @returns {string}
-	 */
-	static randomBonusKey(gameConfiguration) {
 		let availableBonuses = this.availableBonuses();
 
 		if (gameConfiguration.overridesAvailableBonuses()) {
 			availableBonuses = gameConfiguration.availableBonuses();
 		}
 
-		let randomBonusKeyList = availableBonuses.concat(
-			[
-				BONUS_RANDOM
-			]
-		);
+		const bonus = this.fromClassName(Random.choice(availableBonuses), game);
 
-		if (gameConfiguration.overridesRandomBonusKeyList()) {
-			randomBonusKeyList = gameConfiguration.randomBonusKeyList();
+		if (bonus instanceof RandomBonus) {
+			let availableBonusesForRandom = this.availableBonusesForRandom();
+
+			if (gameConfiguration.overridesAvailableBonusesForRandom()) {
+				availableBonusesForRandom = gameConfiguration.availableBonusesForRandom();
+			}
+
+			bonus.setRandomBonus(this.fromClassName(Random.choice(availableBonusesForRandom), game));
 		}
 
-		return Random.choice(randomBonusKeyList);
+		return bonus;
 	}
 
 	/**
@@ -137,7 +120,8 @@ export default class BonusFactory {
 			BONUS_CLOAKED_MONSTER,
 			BONUS_SHAPE_SHIFT,
 			BONUS_SMOKE_BOMB,
-			BONUS_NOTHING
+			BONUS_NOTHING,
+			BONUS_RANDOM
 		];
 	}
 
@@ -146,17 +130,31 @@ export default class BonusFactory {
 	 * @returns {Array.<string>}
 	 */
 	static availableBonusesForRandom(gameConfiguration) {
-		let availableBonuses = this.availableBonuses();
-
-		if (gameConfiguration.overridesAvailableBonuses()) {
-			availableBonuses = gameConfiguration.availableBonuses();
-		}
-
-		return availableBonuses.concat(
-			[
-				BONUS_INVINCIBLE_MONSTER
-			]
-		);
+		return [
+			BONUS_SMALL_BALL,
+			BONUS_BIG_BALL,
+			BONUS_INVISIBLE_BALL,
+			BONUS_LOW_GRAVITY,
+			BONUS_HIGH_GRAVITY,
+			BONUS_SMALL_MONSTER,
+			BONUS_BIG_MONSTER,
+			BONUS_BIG_JUMP_MONSTER,
+			BONUS_SLOW_MONSTER,
+			BONUS_FAST_MONSTER,
+			BONUS_FREEZE_MONSTER,
+			BONUS_REVERSE_MOVE_MONSTER,
+			BONUS_INVISIBLE_MONSTER,
+			BONUS_INVISIBLE_OPPONENT_MONSTER,
+			BONUS_POISON,
+			BONUS_REPELLENT,
+			BONUS_CLOUD,
+			BONUS_NO_JUMP_MONSTER,
+			BONUS_BOUNCE_MONSTER,
+			BONUS_CLOAKED_MONSTER,
+			BONUS_SHAPE_SHIFT,
+			BONUS_SMOKE_BOMB,
+			BONUS_INVINCIBLE_MONSTER,
+		];
 	}
 
 	/**

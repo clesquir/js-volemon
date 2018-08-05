@@ -12,18 +12,7 @@ export default class TeenyTinyWorld extends Classic {
 	availableBonuses() {
 		return [
 			BONUS_SMALL_BALL,
-			BONUS_SMALL_MONSTER
-		];
-	}
-
-	overridesRandomBonusKeyList() {
-		return true;
-	}
-
-	randomBonusKeyList() {
-		return [
-			BONUS_SMALL_BALL,
-			BONUS_SMALL_MONSTER
+			BONUS_SMALL_MONSTER,
 		];
 	}
 

@@ -18,19 +18,6 @@ export default class PausePlay extends Classic {
 		];
 	}
 
-	overridesRandomBonusKeyList() {
-		return true;
-	}
-
-	randomBonusKeyList() {
-		return [
-			BONUS_FREEZE_MONSTER,
-			BONUS_UNFREEZE_MONSTER,
-			BONUS_UNFREEZE_MONSTER,
-			BONUS_UNFREEZE_MONSTER,
-		];
-	}
-
 	overridesBonusSpawnInitialMinimumFrequence() {
 		return true;
 	}

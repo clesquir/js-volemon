@@ -19,16 +19,6 @@ export default class ShapeShifter extends Classic {
 		return BONUS_SPAWN_MINIMUM_FREQUENCE;
 	}
 
-	overridesRandomBonusKeyList() {
-		return true;
-	}
-
-	randomBonusKeyList() {
-		return [
-			BONUS_SHAPE_SHIFT
-		];
-	}
-
 	overridesAvailableBonuses() {
 		return true;
 	}

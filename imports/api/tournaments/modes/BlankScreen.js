@@ -20,19 +20,6 @@ export default class BlankScreen extends Classic {
 		];
 	}
 
-	overridesRandomBonusKeyList() {
-		return true;
-	}
-
-	randomBonusKeyList() {
-		return [
-			BONUS_INVISIBLE_BALL,
-			BONUS_INVISIBLE_MONSTER,
-			BONUS_INVISIBLE_OPPONENT_MONSTER,
-			BONUS_CLOAKED_MONSTER
-		];
-	}
-
 	overridesBonusSpawnInitialMinimumFrequence() {
 		return true;
 	}

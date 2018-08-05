@@ -1,7 +1,7 @@
+import {BONUS_INVINCIBLE_MONSTER, BONUS_INVISIBLE_MONSTER} from '/imports/api/games/bonusConstants.js';
+import {BONUS_SPAWN_MINIMUM_FREQUENCE} from '/imports/api/games/emissionConstants.js';
 import {Random} from 'meteor/random';
 import Classic from './Classic';
-import {BONUS_INVISIBLE_MONSTER} from '/imports/api/games/bonusConstants.js';
-import {BONUS_SPAWN_MINIMUM_FREQUENCE} from '/imports/api/games/emissionConstants.js';
 
 const bonusRadius = 16;
 const gravity = 1500;
@@ -45,7 +45,8 @@ export default class MassiveHardcoreBlindBulletproof extends Classic {
 
 	availableBonuses() {
 		return [
-			BONUS_INVISIBLE_MONSTER
+			BONUS_INVISIBLE_MONSTER,
+			BONUS_INVINCIBLE_MONSTER
 		];
 	}
 }

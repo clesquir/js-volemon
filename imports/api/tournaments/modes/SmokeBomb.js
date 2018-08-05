@@ -5,16 +5,6 @@ const MINIMUM_FREQUENCE = 8000;
 const MAXIMUM_FREQUENCE = 10000;
 
 export default class SmokeBomb extends Classic {
-	overridesRandomBonusKeyList() {
-		return true;
-	}
-
-	randomBonusKeyList() {
-		return [
-			BONUS_SMOKE_BOMB
-		];
-	}
-
 	overridesAvailableBonuses() {
 		return true;
 	}
