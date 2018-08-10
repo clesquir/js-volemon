@@ -4,9 +4,9 @@
   "description": "HTML5 version of the Volemon (or Slime Volley) game implemented in Meteor",
   "main": "index.js",
   "dependencies": {
-    "@babel/runtime": "^7.0.0-beta.49",
-    "buffer": "^5.1.0",
-    "bufferutil": "^3.0.5",
+    "@babel/runtime": "^7.0.0-beta.55",
+    "buffer": "^5.2.0",
+    "bufferutil": "^4.0.0",
     "chai": "^4.1.2",
     "chart.js": "^2.7.2",
     "component-emitter": "^1.2.1",
@@ -21,18 +21,18 @@
     "keycode": "^2.2.0",
     "lodash.throttle": "^4.1.1",
     "meteor-node-stubs": "^0.4.1",
-    "phaser-ce": "^2.10.6",
-    "rollbar": "^2.4.1",
+    "phaser-ce": "^2.11.0",
+    "rollbar": "^2.4.4",
     "sc-cluster-broker-client": "^1.0.5",
     "simple-peer": "^9.1.2",
-    "sinon": "^5.1.1",
+    "sinon": "^6.1.5",
     "socket.io": "^2.1.1",
     "socket.io-client": "^2.1.1",
     "socket.io-parser": "^3.2.0",
-    "socketcluster": "^13.1.8",
-    "socketcluster-client": "^13.0.0",
-    "swiper": "^4.3.3",
-    "utf-8-validate": "^4.0.2"
+    "socketcluster": "^14.0.4",
+    "socketcluster-client": "^13.0.1",
+    "swiper": "^4.3.5",
+    "utf-8-validate": "^5.0.1"
   },
   "devDependencies": {
     "phantomjs-prebuilt": "^2.1.16"
