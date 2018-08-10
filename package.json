@@ -6,7 +6,7 @@
   "dependencies": {
     "@babel/runtime": "7.0.0-beta.55",
     "buffer": "^5.2.0",
-    "bufferutil": "^4.0.0",
+    "bufferutil": "^3.0.5",
     "chai": "^4.1.2",
     "chart.js": "^2.7.2",
     "component-emitter": "^1.2.1",
@@ -32,7 +32,7 @@
     "socketcluster": "^14.0.4",
     "socketcluster-client": "^13.0.1",
     "swiper": "^4.3.5",
-    "utf-8-validate": "^5.0.1"
+    "utf-8-validate": "^4.0.2"
   },
   "devDependencies": {
     "phantomjs-prebuilt": "^2.1.16"
