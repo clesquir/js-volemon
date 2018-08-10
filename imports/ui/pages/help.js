@@ -5,17 +5,21 @@ import BonusRepellentMonsterBonus from '/imports/api/games/bonus/BonusRepellentM
 import BounceMonsterBonus from '/imports/api/games/bonus/BounceMonsterBonus.js';
 import CloakedMonsterBonus from '/imports/api/games/bonus/CloakedMonsterBonus.js';
 import CloudBonus from '/imports/api/games/bonus/CloudBonus.js';
-import DrunkMonsterBonus from '/imports/api/games/bonus/DrunkMonsterBonus.js';
+import CureBonus from '/imports/api/games/bonus/CureBonus.js';
 import FastMonsterBonus from '/imports/api/games/bonus/FastMonsterBonus.js';
 import FreezeMonsterBonus from '/imports/api/games/bonus/FreezeMonsterBonus.js';
+import HighGravity from '/imports/api/games/bonus/HighGravity.js';
 import InstantDeathBonus from '/imports/api/games/bonus/InstantDeathBonus.js';
 import InvincibleMonsterBonus from '/imports/api/games/bonus/InvincibleMonsterBonus.js';
 import InvisibleBallBonus from '/imports/api/games/bonus/InvisibleBallBonus.js';
 import InvisibleMonsterBonus from '/imports/api/games/bonus/InvisibleMonsterBonus.js';
 import InvisibleOpponentMonsterBonus from '/imports/api/games/bonus/InvisibleOpponentMonsterBonus.js';
+import LowGravity from '/imports/api/games/bonus/LowGravity.js';
 import NoJumpMonsterBonus from '/imports/api/games/bonus/NoJumpMonsterBonus.js';
 import NothingBonus from '/imports/api/games/bonus/NothingBonus.js';
+import PoisonBonus from '/imports/api/games/bonus/PoisonBonus.js';
 import RandomBonus from '/imports/api/games/bonus/RandomBonus.js';
+import InvincibleInstantDeathBonus from '/imports/api/games/bonus/InvincibleInstantDeathBonus.js';
 import ReverseMoveMonsterBonus from '/imports/api/games/bonus/ReverseMoveMonsterBonus.js';
 import ShapeShiftMonsterBonus from '/imports/api/games/bonus/ShapeShiftMonsterBonus.js';
 import SlowMonsterBonus from '/imports/api/games/bonus/SlowMonsterBonus.js';
@@ -60,6 +64,8 @@ Template.help.helpers({
 			new SmallBallBonus(),
 			new BigBallBonus(),
 			new InvisibleBallBonus(),
+			new LowGravity(),
+			new HighGravity(),
 			new NothingBonus(),
 			new SmallMonsterBonus(),
 			new BigMonsterBonus(),
@@ -75,15 +81,17 @@ Template.help.helpers({
 			new InvisibleOpponentMonsterBonus(),
 			new CloakedMonsterBonus(),
 			new ShapeShiftMonsterBonus(),
-			new InvincibleMonsterBonus(),
 			new BonusRepellentMonsterBonus(),
-			new DrunkMonsterBonus(),
+			new InvincibleMonsterBonus(),
 			new InstantDeathBonus(),
+			new InvincibleInstantDeathBonus(),
+			new PoisonBonus(),
+			new CureBonus(),
 		];
 		const helpList = [];
 		let textureAtlasFrames = [];
 		$.ajax({
-			url: '/assets/bonus/texture-atlas-icons.json',
+			url: '/assets/bonus/texture-atlas.json',
 			async: false
 		}).done(function(json) {
 			textureAtlasFrames = json.frames;
@@ -93,7 +101,7 @@ Template.help.helpers({
 			let x = 0;
 			let y = 0;
 			for (let frame in textureAtlasFrames) {
-				if (frame === bonus.atlasFrame) {
+				if (textureAtlasFrames[frame].filename === bonus.atlasFrame) {
 					x = textureAtlasFrames[frame].frame.x;
 					y = textureAtlasFrames[frame].frame.y;
 					break;
@@ -123,6 +131,10 @@ Template.help.events({
 
 	'click [data-action=view-help-reactions]': function(e) {
 		cardSwitcher.slideTo(2);
+	},
+
+	'click [data-action=user-change-controls]': function() {
+		Session.set('lightbox', 'keymaps');
 	}
 });
 

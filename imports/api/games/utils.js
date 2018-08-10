@@ -71,43 +71,36 @@ export const isDeucePoint = function(hostPoints, clientPoints, maximumPoints) {
 	return hostPoints === matchPoint && clientPoints === matchPoint;
 };
 
-export const forfeitPlayerName = function(game) {
-	let forfeitName = 'Nobody';
-
+export const forfeitSide = function(game) {
 	if (isGameStatusForfeit(game.status)) {
-		const forfeitPlayers = Players.find({gameId: game._id, hasForfeited: true});
+		const forfeitPlayer = Players.findOne({gameId: game._id, hasForfeited: true});
 
-		forfeitPlayers.forEach(function(player) {
-			forfeitName = player.name;
-		});
-	}
-
-	return forfeitName;
-};
-
-export const getWinnerName = function(game) {
-	let winnerName = 'Nobody';
-	let winner;
-
-	if (isGameStatusFinished(game.status)) {
-		if (game.hostPoints > game.clientPoints) {
-			winner = Players.findOne({gameId: game._id, userId: game.createdBy});
-
-			if (winner) {
-				winnerName = winner.name;
-			} else {
-				winnerName = 'Player 1';
-			}
-		} else if (game.clientPoints > game.hostPoints) {
-			winner = Players.findOne({gameId: game._id, userId: {$ne: game.createdBy}});
-
-			if (winner) {
-				winnerName = winner.name;
-			} else {
-				winnerName = 'Player 2';
+		if (forfeitPlayer) {
+			if (
+				game.players[0].id === forfeitPlayer.userId ||
+				(game.players[2] && game.players[2].id === forfeitPlayer.userId)
+			) {
+				return 'Red';
+			} else if (
+				game.players[1].id === forfeitPlayer.userId ||
+				(game.players[3] && game.players[3].id === forfeitPlayer.userId)
+			) {
+				return 'Blue';
 			}
 		}
 	}
 
-	return winnerName;
+	return 'Nobody';
+};
+
+export const winnerSide = function(game) {
+	if (isGameStatusFinished(game.status)) {
+		if (game.hostPoints > game.clientPoints) {
+			return 'Red';
+		} else if (game.clientPoints > game.hostPoints) {
+			return 'Blue';
+		}
+	}
+
+	return 'Nobody';
 };

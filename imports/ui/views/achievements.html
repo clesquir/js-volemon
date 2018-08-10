@@ -26,6 +26,9 @@
 						{{#if conditionalForTournamentGame }}
 							<div class="conditional-achievement" data-tooltip="Enabled only in some tournaments"></div>
 						{{/if}}
+						{{#if deniedForTwoVersusTwo }}
+							<div class="denied-achievement-for-two-versus-two" data-tooltip="Disabled in 2 VS 2 games"></div>
+						{{/if}}
 					</div>
 					{{#if showDescription ../userAchievements}}
 						<div class="achievement-description">

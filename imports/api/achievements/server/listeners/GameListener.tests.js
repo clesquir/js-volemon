@@ -16,7 +16,7 @@ describe('AchievementListener#GameListener', function() {
 
 	it('Returns if user is game player', function() {
 		const listener = (new GameListener()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 
 		assert.isFalse(listener.userIsGamePlayer());
 
@@ -26,15 +26,15 @@ describe('AchievementListener#GameListener', function() {
 	});
 
 	it('Returns null when player is not in game', function() {
-		const listener = (new GameListener()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: opponentUserId});
+		const listener = (new GameListener()).forGame(gameId, Random.id(5));
+		Games.insert({_id: gameId, createdBy: opponentUserId, players: [{id: opponentUserId}, {id: userId}]});
 
 		assert.isNull(listener.userPlayerKey());
 	});
 
 	it('Returns user player key when host', function() {
 		const listener = (new GameListener()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.strictEqual('player1', listener.userPlayerKey());
@@ -42,15 +42,15 @@ describe('AchievementListener#GameListener', function() {
 
 	it('Returns user player key when host', function() {
 		const listener = (new GameListener()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: opponentUserId});
+		Games.insert({_id: gameId, createdBy: opponentUserId, players: [{id: opponentUserId}, {id: userId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.strictEqual('player2', listener.userPlayerKey());
 	});
 
 	it('Returns if player key is user when not in game', function() {
-		const listener = (new GameListener()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: opponentUserId});
+		const listener = (new GameListener()).forGame(gameId, Random.id(5));
+		Games.insert({_id: gameId, createdBy: opponentUserId, players: [{id: opponentUserId}, {id: userId}]});
 
 		assert.isFalse(listener.playerKeyIsUser('player1'));
 		assert.isFalse(listener.playerKeyIsUser('player2'));
@@ -58,7 +58,7 @@ describe('AchievementListener#GameListener', function() {
 
 	it('Returns if player key is user when host', function() {
 		const listener = (new GameListener()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.isTrue(listener.playerKeyIsUser('player1'));
@@ -67,7 +67,7 @@ describe('AchievementListener#GameListener', function() {
 
 	it('Returns if player key is user when client', function() {
 		const listener = (new GameListener()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: opponentUserId});
+		Games.insert({_id: gameId, createdBy: opponentUserId, players: [{id: opponentUserId}, {id: userId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.isTrue(listener.playerKeyIsUser('player2'));
@@ -75,8 +75,8 @@ describe('AchievementListener#GameListener', function() {
 	});
 
 	it('Returns if player key is opponent when not in game', function() {
-		const listener = (new GameListener()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: opponentUserId});
+		const listener = (new GameListener()).forGame(gameId, Random.id(5));
+		Games.insert({_id: gameId, createdBy: opponentUserId, players: [{id: opponentUserId}, {id: userId}]});
 
 		assert.isFalse(listener.playerKeyIsOpponent('player1'));
 		assert.isFalse(listener.playerKeyIsOpponent('player2'));
@@ -84,7 +84,7 @@ describe('AchievementListener#GameListener', function() {
 
 	it('Returns if player key is opponent when host', function() {
 		const listener = (new GameListener()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: opponentUserId});
+		Games.insert({_id: gameId, createdBy: opponentUserId, players: [{id: opponentUserId}, {id: userId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
@@ -94,7 +94,7 @@ describe('AchievementListener#GameListener', function() {
 
 	it('Returns if player key is opponent when client', function() {
 		const listener = (new GameListener()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
@@ -104,47 +104,47 @@ describe('AchievementListener#GameListener', function() {
 
 	it('Returns if user player is host when not in game', function() {
 		const listener = (new GameListener()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: opponentUserId});
+		Games.insert({_id: gameId, createdBy: opponentUserId, players: [{id: opponentUserId}, {id: userId}]});
 
-		assert.isFalse(listener.playerIsHost());
+		assert.isFalse(listener.isPlayerHostSide());
 	});
 
 	it('Returns if user player is host when host', function() {
 		const listener = (new GameListener()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
-		assert.isTrue(listener.playerIsHost());
+		assert.isTrue(listener.isPlayerHostSide());
 	});
 
 	it('Returns if user player is host when client', function() {
 		const listener = (new GameListener()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: opponentUserId});
+		Games.insert({_id: gameId, createdBy: opponentUserId, players: [{id: opponentUserId}, {id: userId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
-		assert.isFalse(listener.playerIsHost());
+		assert.isFalse(listener.isPlayerHostSide());
 	});
 
 	it('Returns if user player is client when not in game', function() {
-		const listener = (new GameListener()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: opponentUserId});
+		const listener = (new GameListener()).forGame(gameId, Random.id(5));
+		Games.insert({_id: gameId, createdBy: opponentUserId, players: [{id: opponentUserId}, {id: userId}]});
 
-		assert.isFalse(listener.playerIsClient());
+		assert.isFalse(listener.isPlayerClientSide());
 	});
 
 	it('Returns if user player is client when host', function() {
 		const listener = (new GameListener()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: opponentUserId});
+		Games.insert({_id: gameId, createdBy: opponentUserId, players: [{id: opponentUserId}, {id: userId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
-		assert.isTrue(listener.playerIsClient());
+		assert.isTrue(listener.isPlayerClientSide());
 	});
 
 	it('Returns if user player is client when client', function() {
 		const listener = (new GameListener()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
-		assert.isFalse(listener.playerIsClient());
+		assert.isFalse(listener.isPlayerClientSide());
 	});
 });

@@ -188,6 +188,36 @@ $loading-logo-size: 75px;
 		font-size: 0.9em;
 		margin-top: 30px;
 		margin-bottom: 10px;
+		transition: all 0.25s linear;
+
+		&.matched-status {
+			font-size: 1.5em;
+		}
+	}
+
+	.matched-user-position-1 {
+		color: $host-primary-color;
+	}
+
+	.matched-user-position-2 {
+		color: $client-primary-color;
+	}
+
+	.matched-user-position-3 {
+		color: $host-second-color;
+	}
+
+	.matched-user-position-4 {
+		color: $client-second-color;
+	}
+
+	.matched-user-is-ready {
+		opacity: 0.25;
+		transition: opacity 0.25s ease-in-out;
+
+		&.matched-user-ready {
+			opacity: 1;
+		}
 	}
 
 	.cancel-button {

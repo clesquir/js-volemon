@@ -1,5 +1,5 @@
 import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGameConfiguration.js';
-import {POSSIBLE_NO_PLAYERS} from '/imports/api/games/constants.js';
+import {ONE_VS_COMPUTER_GAME_MODE, ONE_VS_ONE_GAME_MODE, TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import GameForfeited from '/imports/api/games/events/GameForfeited.js';
 import GameTimedOut from '/imports/api/games/events/GameTimedOut.js';
 import {Games} from '/imports/api/games/games.js';
@@ -14,6 +14,7 @@ import {
 	GAME_STATUS_TIMEOUT
 } from '/imports/api/games/statusConstants.js';
 import {isForfeiting, isGameStatusFinished} from '/imports/api/games/utils.js';
+import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {playersCanPlayTournament} from '/imports/api/tournaments/utils.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 import {EventPublisher} from '/imports/lib/EventPublisher.js';
@@ -31,31 +32,34 @@ import {Random} from 'meteor/random';
 export const createGame = function(userId, gameInitiators, modeSelection, tournamentId = null) {
 	let id = null;
 
-	const userConfiguration = UserConfigurations.findOne({userId: userId});
-	let username = '';
-	if (userConfiguration) {
-		username = userConfiguration.name;
-	}
-
 	if (!playersCanPlayTournament(tournamentId, [{userId: userId}])) {
 		throw new Meteor.Error('not-allowed', 'Cannot join this tournament');
+	}
+
+	let gameMode = modeSelection;
+	if (tournamentId) {
+		const tournament = Tournaments.findOne(tournamentId);
+
+		if (tournament && tournament.gameMode) {
+			gameMode = tournament.gameMode;
+		} else {
+			gameMode = ONE_VS_ONE_GAME_MODE;
+		}
 	}
 
 	do {
 		try {
 			id = Games.insert({
-				_id: Random.id(5),
+				_id: Random.id(10),
+				gameMode: gameMode,
 				modeSelection: modeSelection,
 				tournamentId: tournamentId,
 				status: GAME_STATUS_REGISTRATION,
 				createdAt: getUTCTimeStamp(),
 				createdBy: userId,
-				hostId: userId,
-				hostName: username,
-				clientId: null,
-				clientName: null,
-				isPracticeGame: 0,
-				isPrivate: 0,
+				players: [],
+				isPracticeGame: gameMode === ONE_VS_COMPUTER_GAME_MODE,
+				isPrivate: false,
 				hostPoints: 0,
 				clientPoints: 0,
 				lastPointTaken: null,
@@ -102,7 +106,9 @@ export const joinGame = function(userId, gameId, isReady = false) {
 	}
 
 	const players = Players.find({gameId: gameId});
-	if (players.count() >= POSSIBLE_NO_PLAYERS) {
+	if (game.gameMode === ONE_VS_ONE_GAME_MODE && players.count() >= 2) {
+		throw new Meteor.Error('not-allowed', 'Maximum players reached');
+	} else if (game.gameMode === TWO_VS_TWO_GAME_MODE && players.count() >= 4) {
 		throw new Meteor.Error('not-allowed', 'Maximum players reached');
 	}
 
@@ -120,15 +126,10 @@ export const joinGame = function(userId, gameId, isReady = false) {
 		}
 	}
 
-	if (userId !== game.hostId) {
-		Games.update(
-			{_id: gameId},
-			{$set: {
-				clientId: userId,
-				clientName: username
-			}}
-		);
-	}
+	Games.update(
+		{_id: gameId},
+		{$push: {players: {id: userId, name: username}}}
+	);
 
 	const allowedListOfShapes = game.allowedListOfShapes || [];
 	const listOfShapes = game.listOfShapes || [];
@@ -214,17 +215,27 @@ export const replyRematch = function(userId, gameId, accepted, gameInitiators) {
 	if (notAskingForRematch.count() === 0 && !game.rematchInCreation) {
 		Games.update({_id: game._id}, {$set: {rematchInCreation: true}});
 
-		const clientPlayer = Players.findOne({gameId: gameId, userId: {$ne: game.createdBy}});
+		let rematchGameCreator = game.players[1].id;
+		if (game.gameMode === TWO_VS_TWO_GAME_MODE) {
+			rematchGameCreator = game.players[3].id;
+		}
 
-		const gameRematchId = createGame(clientPlayer.userId, gameInitiators, game.modeSelection, game.tournamentId);
+		const gameRematchId = createGame(rematchGameCreator, gameInitiators, game.modeSelection, game.tournamentId);
 
 		Games.update(
 			{_id: gameRematchId},
 			{$set: {isPracticeGame: game.isPracticeGame, isPrivate: game.isPrivate}}
 		);
 
-		joinGame(clientPlayer.userId, gameRematchId, true);
-		joinGame(game.createdBy, gameRematchId, true);
+		if (game.gameMode === TWO_VS_TWO_GAME_MODE) {
+			joinGame(game.players[3].id, gameRematchId, true);
+			joinGame(game.players[2].id, gameRematchId, true);
+			joinGame(game.players[1].id, gameRematchId, true);
+			joinGame(game.players[0].id, gameRematchId, true);
+		} else {
+			joinGame(game.players[1].id, gameRematchId, true);
+			joinGame(game.players[0].id, gameRematchId, true);
+		}
 
 		Games.update({_id: game._id}, {$set: {rematchGameId: gameRematchId}});
 
@@ -238,18 +249,41 @@ export const onPlayerQuit = function(player) {
 	const game = Games.findOne(player.gameId);
 
 	if (game.status !== GAME_STATUS_REGISTRATION) {
+		//@todo 2vs2 do not timeout/forfeit if it is not creator on 2vs2 games
+
 		if (isForfeiting(game)) {
 			Players.update({_id: player._id}, {$set: {hasForfeited: true}});
 			Games.update({_id: game._id}, {$set: {status: GAME_STATUS_FORFEITED}});
 
-			let winnerUserId = null;
-			if (player.userId === game.hostId) {
-				winnerUserId = game.clientId;
+			const winnerUserIds = [];
+			const loserUserIds = [];
+			if (game.gameMode === TWO_VS_TWO_GAME_MODE) {
+				if (player.userId === game.players[0].id || player.userId === game.players[2].id) {
+					winnerUserIds.push(game.players[1].id);
+					winnerUserIds.push(game.players[3].id);
+					loserUserIds.push(game.players[0].id);
+					loserUserIds.push(game.players[2].id);
+				} else if (player.userId === game.players[1].id || player.userId === game.players[3].id) {
+					winnerUserIds.push(game.players[0].id);
+					winnerUserIds.push(game.players[2].id);
+					loserUserIds.push(game.players[1].id);
+					loserUserIds.push(game.players[3].id);
+				}
 			} else {
-				winnerUserId = game.hostId;
+				if (player.userId === game.players[0].id) {
+					if (game.gameMode === ONE_VS_ONE_GAME_MODE) {
+						winnerUserIds.push(game.players[1].id);
+					}
+					loserUserIds.push(game.players[0].id);
+				} else {
+					winnerUserIds.push(game.players[0].id);
+					if (game.gameMode === ONE_VS_ONE_GAME_MODE) {
+						loserUserIds.push(game.players[1].id);
+					}
+				}
 			}
 
-			finishGame(game._id, winnerUserId, player.userId);
+			finishGame(game._id, winnerUserIds, loserUserIds);
 			EventPublisher.publish(new GameForfeited(game._id));
 		} else if (game.status === GAME_STATUS_STARTED) {
 			Games.update({_id: game._id}, {$set: {status: GAME_STATUS_TIMEOUT}});

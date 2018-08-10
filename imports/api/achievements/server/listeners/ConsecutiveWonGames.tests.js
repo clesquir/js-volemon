@@ -12,6 +12,7 @@ import {resetDatabase} from 'meteor/xolvio:cleaner';
 describe('AchievementListener#ConsecutiveWonGames', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
+	const opponentUserId = Random.id(5);
 	const assertConsecutiveWonGamesUserAchievementNumberEquals = function(number) {
 		const achievement = UserAchievements.findOne();
 		assert.notEqual(undefined, achievement);
@@ -26,7 +27,7 @@ describe('AchievementListener#ConsecutiveWonGames', function() {
 	});
 
 	it('creates achievement to 1 if not created on player won', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
@@ -39,7 +40,7 @@ describe('AchievementListener#ConsecutiveWonGames', function() {
 	});
 
 	it('creates achievement to 0 if not created on player won', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
@@ -52,7 +53,7 @@ describe('AchievementListener#ConsecutiveWonGames', function() {
 	});
 
 	it('do not create achievement if not created if not gameId on player won', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
@@ -62,7 +63,7 @@ describe('AchievementListener#ConsecutiveWonGames', function() {
 	});
 
 	it('do not create achievement if not created if not gameId on player lost', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
@@ -72,7 +73,7 @@ describe('AchievementListener#ConsecutiveWonGames', function() {
 	});
 
 	it('do not create achievement if not created if userId is not the current user on player won', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
@@ -82,7 +83,7 @@ describe('AchievementListener#ConsecutiveWonGames', function() {
 	});
 
 	it('do not create achievement if not created if userId is not the current user on player lost', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
@@ -92,7 +93,7 @@ describe('AchievementListener#ConsecutiveWonGames', function() {
 	});
 
 	it('increment achievement on player won for two consecutive games', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
@@ -111,7 +112,7 @@ describe('AchievementListener#ConsecutiveWonGames', function() {
 	});
 
 	it('achievement will be incremented only if win streaks are greater than previous win streaks after a loss', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());

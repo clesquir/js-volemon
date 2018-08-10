@@ -13,7 +13,7 @@ import {
 import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
 
 export default class PhaserEngine extends Engine {
-	start(worldConfiguration, preloadGame, createGame, updateGame, scope) {
+	start(worldConfiguration, preloadGame, createGame, updateGame, scope, debug = false) {
 		//Create loading mask
 		Session.set('gameLoadingMask', true);
 		this.bonusRadius = worldConfiguration.bonusRadius;
@@ -23,7 +23,7 @@ export default class PhaserEngine extends Engine {
 			height: worldConfiguration.height,
 			backgroundColor: worldConfiguration.backgroundColor,
 			renderer: Phaser.AUTO,
-			enableDebug: false,
+			enableDebug: debug,
 			parent: worldConfiguration.renderTo
 		});
 
@@ -298,6 +298,21 @@ export default class PhaserEngine extends Engine {
 		};
 	}
 
+	/**
+	 * @param sprite
+	 * @returns {{x: number, y: number, velocityX: number, velocityY: number, gravityScale: number, width: number, height: number}}
+	 */
+	fullPositionData(sprite) {
+		return Object.assign(
+			{
+				gravityScale: this.getGravity(sprite),
+				width: this.getWidth(sprite),
+				height: this.getWidth(sprite)
+			},
+			this.getPositionData(sprite)
+		);
+	}
+
 	initWorldContactMaterial() {
 		this.worldMaterial = this.createMaterial('world');
 
@@ -487,6 +502,10 @@ export default class PhaserEngine extends Engine {
 		sprite.body.fixedRotation = fixedRotation;
 	}
 
+	setWorldGravity(gravity) {
+		this.game.physics.p2.gravity.y = gravity;
+	}
+
 	getGravity(sprite) {
 		return sprite.body.data.gravityScale;
 	}
@@ -521,6 +540,10 @@ export default class PhaserEngine extends Engine {
 
 	getYPosition(sprite) {
 		return sprite.body.y;
+	}
+
+	getWidth(sprite) {
+		return sprite.width;
 	}
 
 	setWidth(sprite, width) {
@@ -572,20 +595,22 @@ export default class PhaserEngine extends Engine {
 	}
 
 	hasSurfaceTouchingPlayerBottom(player) {
-		for (let i = 0; i < this.game.physics.p2.world.narrowphase.contactEquations.length; i++) {
-			const contact = this.game.physics.p2.world.narrowphase.contactEquations[i];
-			if (
-				(contact.bodyA === player.body.data && this.canPlayerJumpOnBody(player, contact.bodyB)) ||
-				(contact.bodyB === player.body.data && this.canPlayerJumpOnBody(player, contact.bodyA))
-			) {
-				let dot = p2.vec2.dot(contact.normalA, p2.vec2.fromValues(0, 1));
+		if (this.game.physics && this.game.physics.p2) {
+			for (let i = 0; i < this.game.physics.p2.world.narrowphase.contactEquations.length; i++) {
+				const contact = this.game.physics.p2.world.narrowphase.contactEquations[i];
+				if (
+					(contact.bodyA === player.body.data && this.canPlayerJumpOnBody(player, contact.bodyB)) ||
+					(contact.bodyB === player.body.data && this.canPlayerJumpOnBody(player, contact.bodyA))
+				) {
+					let dot = p2.vec2.dot(contact.normalA, p2.vec2.fromValues(0, 1));
 
-				if (contact.bodyA === player.body.data) {
-					dot *= -1;
-				}
+					if (contact.bodyA === player.body.data) {
+						dot *= -1;
+					}
 
-				if (dot > 0.5) {
-					return true;
+					if (dot > 0.5) {
+						return true;
+					}
 				}
 			}
 		}
@@ -611,6 +636,10 @@ export default class PhaserEngine extends Engine {
 	animateSetOpacity(sprite, opacityTo, opacityFrom, duration) {
 		this.setOpacity(sprite, opacityFrom);
 		this.game.add.tween(sprite).to({alpha: opacityTo}, duration).start();
+	}
+
+	setTint(sprite, hex) {
+		sprite.tint = Phaser.Color.hexToRGB(hex);
 	}
 
 	/**
@@ -676,6 +705,36 @@ export default class PhaserEngine extends Engine {
 			.start();
 	}
 
+	kill(sprite) {
+		this.playDeathAnimation(sprite);
+		sprite.kill();
+	}
+
+	playDeathAnimation(sprite) {
+		const scale = 0.25;
+		const move = 20;
+		const duration = 750;
+
+		const spriteB = this.game.add.sprite(sprite.width, sprite.height, sprite.generateTexture());
+		spriteB.x = sprite.x;
+		spriteB.y = sprite.y;
+		this.setAnchor(spriteB, 0.5);
+		this.setOpacity(spriteB, this.getOpacity(sprite));
+
+		this.game.add.tween(spriteB.scale).to({x: scale, y: scale}, duration).start();
+		this.game.add.tween(spriteB)
+			.to({alpha: '-' + 0.25, x: '-' + move / 2, y: "-" + move}, duration / 4)
+			.to({alpha: '-' + 0.25, x: '+' + move, y: "-" + move}, duration / 4)
+			.to({alpha: '-' + 0.25, x: '-' + move, y: "-" + move}, duration / 4)
+			.to({alpha: '-' + 0.25, x: '+' + move, y: "-" + move}, duration / 4)
+			.start();
+		setTimeout(() => {
+			if (spriteB) {
+				spriteB.destroy();
+			}
+		}, duration);
+	}
+
 	activateAnimation(sprite) {
 		const duration = 250;
 		const scale = 4;
@@ -685,7 +744,9 @@ export default class PhaserEngine extends Engine {
 		this.game.add.tween(sprite.scale).to({x: scale, y: scale}, duration).start();
 		this.game.add.tween(sprite).to({alpha: 0}, duration).start();
 		setTimeout(() => {
-			sprite.destroy();
+			if (sprite) {
+				sprite.destroy();
+			}
 		}, duration);
 	}
 
@@ -818,5 +879,18 @@ export default class PhaserEngine extends Engine {
 		bonusSprite.addChild(sprite);
 
 		return bonusSprite;
+	}
+
+	drawBallPrediction(x, y, color) {
+		if (this.game.debug.geom) {
+			if (!this.ballPredictionIndicator) {
+				this.ballPredictionIndicator = new Phaser.Rectangle(0, 0, 10, 10);
+			}
+
+			this.ballPredictionIndicator.x = x - 5;
+			this.ballPredictionIndicator.y = y - 5;
+
+			this.game.debug.geom(this.ballPredictionIndicator, color);
+		}
 	}
 }

@@ -14,7 +14,7 @@ export default class NumberOfGamesPlayed {
 				numberOfLost += tournamentProfile.numberOfLost;
 			}
 		} else {
-			const profile = Profiles.findOne({userId: userId, tournamentId: tournamentId});
+			const profile = Profiles.findOne({userId: userId});
 
 			if (profile) {
 				numberOfWin += profile.numberOfWin;

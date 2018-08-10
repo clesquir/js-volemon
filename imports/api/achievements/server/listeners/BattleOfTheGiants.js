@@ -6,6 +6,10 @@ import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {BONUS_BIG_MONSTER} from '/imports/api/games/bonusConstants.js';
 
 export default class BattleOfTheGiants extends GameListener {
+	allowedFor2Vs2() {
+		return false;
+	}
+
 	addListeners() {
 		this.addListener(PointTaken.prototype.constructor.name, this.onPointTaken);
 		this.addListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
@@ -50,7 +54,7 @@ export default class BattleOfTheGiants extends GameListener {
 			event.gameId === this.gameId &&
 			this.userIsGamePlayer()
 		) {
-			if (this.currentPlayerIsBig && this.oppositePlayerIsBig && this.playerIsHost() === event.pointScoredByHost) {
+			if (this.currentPlayerIsBig && this.oppositePlayerIsBig && this.isPlayerHostSide() === event.pointScoredByHost) {
 				this.incrementNumber(ACHIEVEMENT_BATTLE_OF_THE_GIANTS);
 			}
 

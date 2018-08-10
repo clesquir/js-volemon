@@ -1,16 +1,21 @@
 import {Random} from 'meteor/random';
 import Classic from './Classic';
 
-const bonusRadius = 16;
-const gravity = 1500;
-
-export default class JupiterGravity extends Classic {
+export default class GravityOverride extends Classic {
 	overridesBonusRadius() {
 		return true;
 	}
 
 	bonusRadius() {
-		return bonusRadius;
+		return 14;
+	}
+
+	overridesNetHeight() {
+		return true;
+	}
+
+	netHeight() {
+		return 72;
 	}
 
 	overridesWorldGravity() {
@@ -18,6 +23,6 @@ export default class JupiterGravity extends Classic {
 	}
 
 	worldGravity() {
-		return gravity;
+		return 1500;
 	}
 }

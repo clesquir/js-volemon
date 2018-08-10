@@ -1,6 +1,14 @@
-import {CLIENT_POINTS_COLUMN, CLIENT_SIDE, HOST_POINTS_COLUMN, HOST_SIDE} from '/imports/api/games/constants.js';
+import {
+	CLIENT_POINTS_COLUMN,
+	CLIENT_SIDE,
+	HOST_POINTS_COLUMN,
+	HOST_SIDE,
+	ONE_VS_ONE_GAME_MODE,
+	TWO_VS_TWO_GAME_MODE
+} from '/imports/api/games/constants.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {Games} from '/imports/api/games/games.js';
+import {MatchMakers} from '/imports/api/games/matchMakers.js';
 import {Players} from '/imports/api/games/players.js';
 import GameInitiatorCollection from '/imports/api/games/server/GameInitiatorCollection.js';
 import {onPlayerQuit, replyRematch, startGame} from '/imports/api/games/server/gameSetup.js';
@@ -22,11 +30,11 @@ Meteor.methods({
 	 * @param gameId
 	 */
 	setPlayerIsReady: function(gameId) {
-		const user = Meteor.user();
+		const userId = Meteor.userId();
 		const game = Games.findOne(gameId);
 		let player;
 
-		if (!user) {
+		if (!userId) {
 			throw new Meteor.Error(401, 'You need to login to set player ready');
 		}
 
@@ -34,12 +42,26 @@ Meteor.methods({
 			throw new Meteor.Error(404, 'Game not found');
 		}
 
-		player = Players.findOne({gameId: gameId, userId: user._id});
+		player = Players.findOne({gameId: gameId, userId: userId});
 		if (!player) {
 			throw new Meteor.Error(404, 'Player not found');
 		}
 
 		Players.update({_id: player._id}, {$set: {isReady: true}});
+		const match = MatchMakers.findOne({'matched.users.id': userId});
+		if (match) {
+			for (let i = 0; i < match.matched.length; i++) {
+				const users = match.matched[i].users;
+				for (let j = 0; j < users.length; j++) {
+					if (users[j].id === userId) {
+						const update = {};
+						update[`matched.${i}.users.${j}.isReady`] = true;
+						MatchMakers.update({'matched.users.id': userId}, {$set: update});
+						break;
+					}
+				}
+			}
+		}
 
 		//Start game if all players are ready
 		const players = Players.find({gameId: gameId});
@@ -60,17 +82,9 @@ Meteor.methods({
 		}
 	},
 
-	/**
-	 * @param gameId
-	 */
-	leaveGame: function(gameId) {
-		const user = Meteor.user();
+	leaveGame: function(gameId, userId) {
 		const game = Games.findOne(gameId);
 		let player;
-
-		if (!user) {
-			throw new Meteor.Error(401, 'You need to login to leave a game');
-		}
 
 		if (!game) {
 			throw new Meteor.Error(404, 'Game not found');
@@ -80,7 +94,7 @@ Meteor.methods({
 			throw new Meteor.Error('not-allowed', 'Game already started');
 		}
 
-		player = Players.findOne({gameId: gameId, userId: user._id});
+		player = Players.findOne({gameId: gameId, userId: userId});
 
 		if (!player) {
 			throw new Meteor.Error(404, 'Player not found');
@@ -89,26 +103,20 @@ Meteor.methods({
 		Players.remove(player._id);
 
 		//if player is game creator, remove game and all players
-		if (game.createdBy === user._id) {
+		if (game.createdBy === userId) {
 			//Remove all players
 			Players.remove({gameId: gameId});
 			//Remove game
 			Games.remove(gameId);
 			//Stop streaming
 			GameInitiatorCollection.unset(gameId);
-		} else if (user._id !== game.hostId) {
-			Games.update(
-				{_id: gameId},
-				{$set: {
-					clientId: null,
-					clientName: null,
-					isReady: false
-				}}
-			);
+		} else {
+			Games.update({_id: gameId}, {$pull: {players: {id: userId}}});
+			Games.update({_id: gameId}, {$set: {isReady: false}});
 		}
 	},
 
-	addGameViewer: function(gameId) {
+	addGameViewer: function(gameId, userId) {
 		let game = Games.findOne(gameId);
 
 		if (!game) {
@@ -116,15 +124,18 @@ Meteor.methods({
 		}
 
 		for (let i = 0; i < game.viewers.length; i++) {
-			if (game.viewers[i].id === this.connection.id) {
+			if (
+				game.viewers[i].id === this.connection.id ||
+				game.viewers[i].userId === userId
+			) {
 				return;
 			}
 		}
 
 		let viewer = {id: this.connection.id, userId: null, name: 'Guest'};
-		if (Meteor.user()) {
-			viewer.userId = Meteor.user()._id;
-			const userConfiguration = UserConfigurations.findOne({userId: Meteor.user()._id});
+		if (userId) {
+			viewer.userId = userId;
+			const userConfiguration = UserConfigurations.findOne({userId: userId});
 			if (userConfiguration) {
 				viewer.name = userConfiguration.name;
 			}
@@ -136,7 +147,7 @@ Meteor.methods({
 		);
 	},
 
-	removeGameViewer: function(gameId) {
+	removeGameViewer: function(gameId, userId) {
 		let game = Games.findOne(gameId);
 
 		if (!game) {
@@ -147,17 +158,21 @@ Meteor.methods({
 			{_id: gameId},
 			{$pull: {'viewers': {id: this.connection.id}}}
 		);
+
+		Games.update(
+			{_id: gameId},
+			{$pull: {'viewers': {userId: userId}}}
+		);
 	},
 
-	quitGame: function(gameId) {
-		const user = Meteor.user();
+	quitGame: function(gameId, userId) {
 		const game = Games.findOne(gameId);
 
-		if (!user || !game) {
+		if (!game) {
 			return;
 		}
 
-		const player = Players.findOne({userId: user._id, gameId: gameId});
+		const player = Players.findOne({userId: userId, gameId: gameId});
 
 		if (!player) {
 			return;
@@ -165,7 +180,7 @@ Meteor.methods({
 
 		//If game has not started, leaveGame instead
 		if (game.status === GAME_STATUS_REGISTRATION) {
-			Meteor.call('leaveGame', gameId);
+			Meteor.call('leaveGame', gameId, userId);
 		} else {
 			Players.update({_id: player._id}, {$set: {hasQuit: getUTCTimeStamp()}});
 
@@ -290,20 +305,38 @@ Meteor.methods({
 		EventPublisher.publish(new PointTaken(game._id, pointDuration, pointScoredByHost, hostPoints, clientPoints));
 
 		if (isGameFinished) {
-			let winnerUserId;
-			let loserUserId;
+			const winnerUserIds = [];
+			const loserUserIds = [];
 			switch (columnName) {
 				case HOST_POINTS_COLUMN:
-					winnerUserId = game.hostId;
-					loserUserId = game.clientId;
+					winnerUserIds.push(game.players[0].id);
+
+					if (game.gameMode === ONE_VS_ONE_GAME_MODE) {
+						loserUserIds.push(game.players[1].id);
+					}
+
+					if (game.gameMode === TWO_VS_TWO_GAME_MODE) {
+						loserUserIds.push(game.players[1].id);
+						winnerUserIds.push(game.players[2].id);
+						loserUserIds.push(game.players[3].id);
+					}
 					break;
 				case CLIENT_POINTS_COLUMN:
-					winnerUserId = game.clientId;
-					loserUserId = game.hostId;
+					loserUserIds.push(game.players[0].id);
+
+					if (game.gameMode === ONE_VS_ONE_GAME_MODE) {
+						winnerUserIds.push(game.players[1].id);
+					}
+
+					if (game.gameMode === TWO_VS_TWO_GAME_MODE) {
+						winnerUserIds.push(game.players[1].id);
+						winnerUserIds.push(game.players[3].id);
+						loserUserIds.push(game.players[2].id);
+					}
 					break;
 			}
 
-			finishGame(game._id, winnerUserId, loserUserId);
+			finishGame(game._id, winnerUserIds, loserUserIds);
 		}
 	},
 

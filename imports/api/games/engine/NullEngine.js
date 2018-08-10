@@ -25,6 +25,10 @@ export default class NullEngine extends Engine {
 		return sprite.body.y;
 	}
 
+	getWidth(sprite) {
+		return sprite.width;
+	}
+
 	setWidth(sprite, width) {
 		sprite.width = width;
 	}
@@ -55,6 +59,9 @@ export default class NullEngine extends Engine {
 
 	getMass(sprite) {
 		return sprite.data.mass;
+	}
+
+	setWorldGravity(gravity) {
 	}
 
 	setGravity(sprite, gravity) {

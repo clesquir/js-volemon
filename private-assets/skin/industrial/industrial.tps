@@ -4,9 +4,7 @@
         <key>fileFormatVersion</key>
         <int>4</int>
         <key>texturePackerVersion</key>
-        <string>4.5.0</string>
-        <key>fileName</key>
-        <string>/Users/clesquir/src/js-volemon/private-assets/skin/juju-world/texture-atlas.tps</string>
+        <string>4.8.0</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -28,15 +26,15 @@
             </struct>
         </array>
         <key>allowRotation</key>
-        <false/>
+        <true/>
         <key>shapeDebug</key>
         <false/>
         <key>dpi</key>
         <uint>72</uint>
         <key>dataFormat</key>
-        <string>phaser-json-array</string>
+        <string>json-array</string>
         <key>textureFileName</key>
-        <filename></filename>
+        <filename>texture-atlas.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrCompressionQuality</key>
@@ -129,28 +127,12 @@
                 <uint>1</uint>
             </struct>
         </struct>
-        <key>andEngine</key>
-        <struct type="AndEngine">
-            <key>minFilter</key>
-            <enum type="AndEngine::MinFilter">Linear</enum>
-            <key>packageName</key>
-            <string>Texture</string>
-            <key>wrap</key>
-            <struct type="AndEngineWrap">
-                <key>s</key>
-                <enum type="AndEngineWrap::Wrap">Clamp</enum>
-                <key>t</key>
-                <enum type="AndEngineWrap::Wrap">Clamp</enum>
-            </struct>
-            <key>magFilter</key>
-            <enum type="AndEngine::MagFilter">MagLinear</enum>
-        </struct>
         <key>dataFileNames</key>
         <map type="GFileNameMap">
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../../../public/assets/skin/juju-world/texture-atlas.json</filename>
+                <filename>texture-atlas.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -167,9 +149,9 @@
             <string></string>
         </struct>
         <key>autoAliasEnabled</key>
-        <true/>
+        <false/>
         <key>trimSpriteNames</key>
-        <true/>
+        <false/>
         <key>prependSmartFolderName</key>
         <false/>
         <key>autodetectAnimations</key>
@@ -199,27 +181,7 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">components/background.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>210,140,420,280</rect>
-                <key>scale9Paddings</key>
-                <rect>210,140,420,280</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">components/ball-1.png</key>
-            <key type="filename">components/ball-2.png</key>
-            <key type="filename">components/ball-3.png</key>
-            <key type="filename">components/ball-4.png</key>
-            <key type="filename">components/ball-5.png</key>
-            <key type="filename">components/ball-6.png</key>
-            <key type="filename">components/ball-7.png</key>
-            <key type="filename">components/ball-8.png</key>
+            <key type="filename">ball.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -232,35 +194,7 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">components/confettis-chateau-beard.png</key>
-            <key type="filename">components/confettis-juju-nipple.png</key>
-            <key type="filename">components/confettis-kwak.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>3,3,5,5</rect>
-                <key>scale9Paddings</key>
-                <rect>3,3,5,5</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">components/confettis-chateau-nipple.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>26,26,53,53</rect>
-                <key>scale9Paddings</key>
-                <rect>26,26,53,53</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">components/ground.png</key>
+            <key type="filename">ground.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -273,7 +207,7 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">components/net.png</key>
+            <key type="filename">net.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -289,21 +223,9 @@
         </map>
         <key>fileList</key>
         <array>
-            <filename>components/background.png</filename>
-            <filename>components/ball-1.png</filename>
-            <filename>components/ball-2.png</filename>
-            <filename>components/ball-3.png</filename>
-            <filename>components/ball-4.png</filename>
-            <filename>components/ball-5.png</filename>
-            <filename>components/ball-6.png</filename>
-            <filename>components/ball-7.png</filename>
-            <filename>components/ball-8.png</filename>
-            <filename>components/confettis-chateau-beard.png</filename>
-            <filename>components/confettis-chateau-nipple.png</filename>
-            <filename>components/confettis-juju-nipple.png</filename>
-            <filename>components/confettis-kwak.png</filename>
-            <filename>components/ground.png</filename>
-            <filename>components/net.png</filename>
+            <filename>ball.png</filename>
+            <filename>ground.png</filename>
+            <filename>net.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

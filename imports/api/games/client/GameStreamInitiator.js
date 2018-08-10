@@ -28,6 +28,10 @@ export default class GameStreamInitiator {
 			);
 		});
 
+		this.stream.on('killPlayer-' + gameId, (data) => {
+			this.killPlayer(data.playerKey, data.killedAt);
+		});
+
 		this.stream.on('showBallHitPoint-' + gameId, (data) => {
 			this.showBallHitPoint(data.x, data.y, data.diameter);
 		});
@@ -39,9 +43,9 @@ export default class GameStreamInitiator {
 				bundledData.moveClientBall.timestamp = timestamp;
 				this.moveClientBall.call(this, bundledData.moveClientBall);
 			}
-			if (bundledData.moveOppositePlayer) {
-				bundledData.moveOppositePlayer.timestamp = timestamp;
-				this.moveOppositePlayer.call(this, bundledData.moveOppositePlayer);
+			if (bundledData.moveClientPlayer) {
+				bundledData.moveClientPlayer.timestamp = timestamp;
+				this.moveClientPlayer.call(this, bundledData.moveClientPlayer);
 			}
 			if (bundledData.createBonus) {
 				this.createBonus.call(this, bundledData.createBonus);
@@ -65,11 +69,11 @@ export default class GameStreamInitiator {
 		}
 	}
 
-	moveOppositePlayer(playerData) {
+	moveClientPlayer(playerData) {
 		let gameInitiator = this.gameInitiator;
 
 		if (gameInitiator.hasActiveGame()) {
-			gameInitiator.currentGame.moveOppositePlayer(playerData);
+			gameInitiator.currentGame.moveClientPlayer(playerData);
 		}
 	}
 
@@ -86,6 +90,14 @@ export default class GameStreamInitiator {
 
 		if (gameInitiator.hasActiveGame()) {
 			gameInitiator.currentGame.activateBonus(bonusIdentifier, playerKey, activatedAt, x, y, beforeActivationData);
+		}
+	}
+
+	killPlayer(playerKey, killedAt) {
+		let gameInitiator = this.gameInitiator;
+
+		if (gameInitiator.hasActiveGame()) {
+			gameInitiator.currentGame.killPlayer(playerKey, killedAt);
 		}
 	}
 
@@ -111,6 +123,7 @@ export default class GameStreamInitiator {
 
 		this.stream.off('play-' + gameId);
 		this.stream.off('activateBonus-' + gameId);
+		this.stream.off('killPlayer-' + gameId);
 		this.stream.off('sendBundledData-' + gameId);
 		this.stream.off('showBallHitPoint-' + gameId);
 	}

@@ -1,5 +1,6 @@
+import {ONE_VS_ONE_GAME_MODE, TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import {TournamentModes} from '/imports/api/tournaments/tournamentModes.js';
-import {TOURNAMENT_MODE_BONUS_OVERRIDE} from '/imports/api/tournaments/tournamentModesConstants.js';
+import {TOURNAMENT_MODE_CLASSIC} from '/imports/api/tournaments/tournamentModesConstants.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
@@ -7,22 +8,25 @@ import {Random} from 'meteor/random';
 Meteor.startup(function() {
 	const tournaments = [
 		{
-			identifier: "tournament_2018-02-19",
-			name: "Instant death bonus tournament",
-			description: "Bonuses spawning are only instant death",
-			mode: TOURNAMENT_MODE_BONUS_OVERRIDE,
-			startDate: "2018-02-19 -04:00",
-			endDate: "2018-02-26 -04:00",
-			isPublished: true
+			_id: Random.id(5),
+			identifier: "tournament_2018-08-06_1v1",
+			name: "1 VS 1: Classic",
+			description: "Introducing Invincible or Instant death bonus/malus",
+			mode: TOURNAMENT_MODE_CLASSIC,
+			gameMode: ONE_VS_ONE_GAME_MODE,
+			startDate: "2018-08-06 -04:00",
+			endDate: "2018-08-13 -04:00",
+			isPublished: false
 		},
 		{
 			_id: Random.id(5),
-			identifier: 'tournament_2018-04-30',
-			mode: TOURNAMENT_MODE_BONUS_OVERRIDE,
-			name: "Le parapluie!!!",
-			description: 'Repellent, instant death and invincible bonuses',
-			startDate: "2018-04-30 -04:00",
-			endDate: "2018-05-07 -04:00",
+			identifier: "tournament_2018-08-06_2v2",
+			name: "2 VS 2: Classic",
+			description: "Introducing Invincible or Instant death bonus/malus",
+			mode: TOURNAMENT_MODE_CLASSIC,
+			gameMode: TWO_VS_TWO_GAME_MODE,
+			startDate: "2018-08-06 -04:00",
+			endDate: "2018-08-13 -04:00",
 			isPublished: false
 		}
 	];
@@ -39,6 +43,9 @@ Meteor.startup(function() {
 			const updates = {};
 			if (!_.isEqual(actualTournament.mode, tournamentMode)) {
 				updates.mode = tournamentMode;
+			}
+			if (actualTournament.gameMode !== expectedTournament.gameMode) {
+				updates.gameMode = expectedTournament.gameMode;
 			}
 			if (actualTournament.name !== expectedTournament.name) {
 				updates.name = expectedTournament.name;

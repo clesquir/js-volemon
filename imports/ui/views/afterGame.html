@@ -2,15 +2,19 @@
 	<div id="afterGameContainer" class="after-game-container">
 		<div>
 			<div>
-				<div class="after-game-item after-game-title">{{getAfterGameTitle}}</div>
+				<div class="after-game-item after-game-title {{afterGameColorClass}}">{{getAfterGameTitle}}</div>
 
 				{{#if gameIsFinished}}
 					<div id="game-statistics-contents" class="after-game-item view-selector-contents {{#if isNotAPracticeGame}}after-game-elo-scores-shown{{else}}after-game-durations-shown{{/if}}">
 						<div class="view-selector swiper-selector">
 							{{#if isNotAPracticeGame}}
-								<i class="fa fa-arrow-circle-up view-elo-scores" data-action="view-elo-scores" data-tooltip="ELO"></i>
+								<div class="view-elo-scores" data-action="view-elo-scores">
+									<i class="fa fa-arrow-circle-up"></i><span>ELO</span>
+								</div>
 							{{/if}}
-							<i class="fa fa-clock-o view-game-durations" data-action="view-game-durations" data-tooltip="Durations"></i>
+							<div class="view-game-durations" data-action="view-game-durations">
+								<i class="fa fa-clock-o"></i><span>Durations</span>
+							</div>
 						</div>
 
 						<div class="swiper-container after-game-swiper-container">
@@ -18,7 +22,7 @@
 								{{#if isNotAPracticeGame}}
 									<div class="view-selector-content swiper-slide after-game-elo-scores" data-slide="after-game-elo-scores">
 										<div class="after-game-elo">
-											{{#each playersCollection}}
+											{{#each playersList playersCollection}}
 												<div>
 													<div class="player-name">{{name}}</div>
 													<div>{{getPlayerEloRating this ../eloScoresCollection}}</div>
@@ -41,20 +45,43 @@
 
 					{{#if isGamePlayer}}
 						{{#if showOpponentDeclinedRematch}}
-							<div class="rematch-declined">Your opponent declined a rematch...</div>
+							<div class="rematch-declined">
+								{{#if isTwoVersusTwo}}
+									A player declined a rematch...
+								{{else}}
+									Your opponent declined a rematch...
+								{{/if}}
+							</div>
 						{{/if}}
 						{{#if showPlayerLeftTheGame}}
-							<div class="rematch-declined">Your opponent left the game...</div>
+							<div class="rematch-declined">
+								{{#if isTwoVersusTwo}}
+									A player left the game...
+								{{else}}
+									Your opponent left the game...
+								{{/if}}
+							</div>
 						{{/if}}
 						{{#if showWaitingForReply}}
-							<div>Waiting for your opponent to accept...</div>
+							<div>
+								{{#if isTwoVersusTwo}}
+									Waiting for all players to accept...
+								{{else}}
+									Waiting for your opponent to accept...
+								{{/if}}
+							</div>
 						{{/if}}
 						{{#if showCreatingGame}}
 							<div>Creating game...</div>
 						{{/if}}
 						{{#if askForRematchReply}}
 							<div>
-								Your opponent is asking for a rematch. Do you accept?<br />
+								{{#if isTwoVersusTwo}}
+									A player is asking for a rematch.
+								{{else}}
+									Your opponent is asking for a rematch.
+								{{/if}}
+								Do you accept?<br />
 								<a href="#" class="button" data-action="game-rematch">Yes</a>
 								<a href="#" class="button" data-action="declined-game-rematch">No</a>
 							</div>
@@ -64,13 +91,13 @@
 					{{#if showActionAfterGame}}
 						<strong>What do you want to do next?</strong>
 						{{#if showAskForRematch}}
-							<div><a href="#" data-action="game-rematch">Ask for a rematch</a></div>
+							<div><a href="#" class="clickable-link" data-action="game-rematch">Ask for a rematch</a></div>
 						{{/if}}
-						<div><a href="{{pathFor 'home'}}">Go to the homepage</a></div>
+						<div><a href="{{pathFor 'home'}}" class="clickable-link">Go to the homepage</a></div>
 						{{#if isTournament}}
-							<div><a href="{{pathFor 'tournament' tournamentId=this.game.tournamentId}}">Go to the tournament page</a></div>
+							<div><a href="{{pathFor 'tournament' tournamentId=this.game.tournamentId}}" class="clickable-link">Go to the tournament page</a></div>
 						{{else}}
-							<div><a href="{{pathFor 'rank'}}">View rank</a></div>
+							<div><a href="{{pathFor 'rank'}}" class="clickable-link">View rank</a></div>
 						{{/if}}
 					{{/if}}
 

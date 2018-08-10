@@ -4,9 +4,9 @@ import StubCollections from 'meteor/hwillson:stub-collections';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {GAME_STATUS_STARTED, GAME_STATUS_FORFEITED, GAME_STATUS_FINISHED} from '/imports/api/games/statusConstants.js';
-import {forfeitPlayerName, getWinnerName, isMatchPoint, isDeucePoint} from '/imports/api/games/utils.js';
+import {forfeitSide, winnerSide, isMatchPoint, isDeucePoint} from '/imports/api/games/utils.js';
 
-describe('game/utils#forfeitPlayerName', function() {
+describe('game/utils#forfeitSide', function() {
 	const gameId = Random.id(5);
 	const hostUserId = Random.id(5);
 	const clientUserId = Random.id(5);
@@ -22,13 +22,17 @@ describe('game/utils#forfeitPlayerName', function() {
 			_id: gameId,
 			createdBy: hostUserId,
 			status: GAME_STATUS_FORFEITED,
+			players: [
+				{id: hostUserId, name: player1Name},
+				{id: clientUserId, name: player2Name}
+			],
 			hostPoints: 5,
 			clientPoints: 0
 		});
 		Players.insert({_id: Random.id(5), gameId: gameId, userId: hostUserId, name: player1Name});
 		Players.insert({_id: Random.id(5), gameId: gameId, userId: clientUserId, name: player2Name});
 
-		assert.equal(forfeitPlayerName(Games.findOne({_id: gameId})), nobodyName);
+		assert.equal(forfeitSide(Games.findOne({_id: gameId})), nobodyName);
 
 		StubCollections.restore();
 	});
@@ -41,18 +45,22 @@ describe('game/utils#forfeitPlayerName', function() {
 			_id: gameId,
 			createdBy: hostUserId,
 			status: GAME_STATUS_FINISHED,
+			players: [
+				{id: hostUserId, name: player1Name},
+				{id: clientUserId, name: player2Name}
+			],
 			hostPoints: 5,
 			clientPoints: 0
 		});
 		Players.insert({_id: Random.id(5), gameId: gameId, userId: hostUserId, name: player1Name, hasForfeited: true});
 		Players.insert({_id: Random.id(5), gameId: gameId, userId: clientUserId, name: player2Name, hasForfeited: true});
 
-		assert.equal(forfeitPlayerName(Games.findOne({_id: gameId})), nobodyName);
+		assert.equal(forfeitSide(Games.findOne({_id: gameId})), nobodyName);
 
 		StubCollections.restore();
 	});
 
-	it('returns Player 1 if host has forfeit', function() {
+	it('returns Red if host has forfeit', function() {
 		StubCollections.add([Games, Players]);
 		StubCollections.stub();
 
@@ -60,18 +68,22 @@ describe('game/utils#forfeitPlayerName', function() {
 			_id: gameId,
 			createdBy: hostUserId,
 			status: GAME_STATUS_FORFEITED,
+			players: [
+				{id: hostUserId, name: player1Name},
+				{id: clientUserId, name: player2Name}
+			],
 			hostPoints: 5,
 			clientPoints: 0
 		});
 		Players.insert({_id: Random.id(5), gameId: gameId, userId: hostUserId, name: player1Name, hasForfeited: true});
 		Players.insert({_id: Random.id(5), gameId: gameId, userId: clientUserId, name: player2Name});
 
-		assert.equal(forfeitPlayerName(Games.findOne({_id: gameId})), player1Name);
+		assert.equal(forfeitSide(Games.findOne({_id: gameId})), 'Red');
 
 		StubCollections.restore();
 	});
 
-	it('returns Player 2 if client has forfeit', function() {
+	it('returns Blue if client has forfeit', function() {
 		StubCollections.add([Games, Players]);
 		StubCollections.stub();
 
@@ -79,31 +91,45 @@ describe('game/utils#forfeitPlayerName', function() {
 			_id: gameId,
 			createdBy: hostUserId,
 			status: GAME_STATUS_FORFEITED,
+			players: [
+				{id: hostUserId, name: player1Name},
+				{id: clientUserId, name: player2Name}
+			],
 			hostPoints: 5,
 			clientPoints: 0
 		});
 		Players.insert({_id: Random.id(5), gameId: gameId, userId: hostUserId, name: player1Name});
 		Players.insert({_id: Random.id(5), gameId: gameId, userId: clientUserId, name: player2Name, hasForfeited: true});
 
-		assert.equal(forfeitPlayerName(Games.findOne({_id: gameId})), player2Name);
+		assert.equal(forfeitSide(Games.findOne({_id: gameId})), 'Blue');
 
 		StubCollections.restore();
 	});
 });
 
-describe('game/utils#getWinnerName', function() {
+describe('game/utils#winnerSide', function() {
+	const gameId = Random.id(5);
+	const hostUserId = Random.id(5);
+	const clientUserId = Random.id(5);
+	const nobodyName = 'Nobody';
+	const player1Name = 'Player 1';
+	const player2Name = 'Player 2';
+
 	it('returns Nobody if game is not finished', function() {
 		StubCollections.stub(Games, Players);
 
-		let gameId = Random.id(5);
 		Games.insert({
 			_id: gameId,
 			status: GAME_STATUS_STARTED,
+			players: [
+				{id: hostUserId, name: player1Name},
+				{id: clientUserId, name: player2Name}
+			],
 			hostPoints: 5,
 			clientPoints: 5
 		});
 
-		assert.equal(getWinnerName(Games.findOne({_id: gameId})), 'Nobody');
+		assert.equal(winnerSide(Games.findOne({_id: gameId})), nobodyName);
 
 		StubCollections.restore();
 	});
@@ -111,88 +137,62 @@ describe('game/utils#getWinnerName', function() {
 	it('returns Nobody if players have same points', function() {
 		StubCollections.stub(Games, Players);
 
-		let gameId = Random.id(5);
 		Games.insert({
 			_id: gameId,
 			status: GAME_STATUS_FINISHED,
+			players: [
+				{id: hostUserId, name: player1Name},
+				{id: clientUserId, name: player2Name}
+			],
 			hostPoints: 0,
 			clientPoints: 0
 		});
 
-		assert.equal(getWinnerName(Games.findOne({_id: gameId})), 'Nobody');
+		assert.equal(winnerSide(Games.findOne({_id: gameId})), nobodyName);
 
 		StubCollections.restore();
 	});
 
-	it('returns Player 1 if hostPoints are higher but there is no players anymore set for the host', function() {
-		StubCollections.stub(Games, Players);
-
-		let gameId = Random.id(5);
-		Games.insert({
-			_id: gameId,
-			status: GAME_STATUS_FINISHED,
-			hostPoints: 5,
-			clientPoints: 0
-		});
-
-		assert.equal(getWinnerName(Games.findOne({_id: gameId})), 'Player 1');
-
-		StubCollections.restore();
-	});
-
-	it('returns host player name if hostPoints are higher', function() {
+	it('returns Red if hostPoints are higher', function() {
 		StubCollections.add([Games, Players]);
 		StubCollections.stub();
 
-		let gameId = Random.id(5);
-		let createdByUserId = 1;
 		Games.insert({
 			_id: gameId,
-			createdBy: createdByUserId,
+			createdBy: hostUserId,
 			status: GAME_STATUS_FINISHED,
+			players: [
+				{id: hostUserId, name: player1Name},
+				{id: clientUserId, name: player2Name}
+			],
 			hostPoints: 5,
 			clientPoints: 0
 		});
-		let hostPlayerName = 'Host player name';
-		Players.insert({_id: Random.id(5), gameId: gameId, userId: createdByUserId, name: hostPlayerName});
+		Players.insert({_id: Random.id(5), gameId: gameId, userId: hostUserId, name: player1Name});
 
-		assert.equal(getWinnerName(Games.findOne({_id: gameId})), hostPlayerName);
-
-		StubCollections.restore();
-	});
-
-	it('returns Player 2 if clientPoints are higher but there is no players anymore set for the client', function() {
-		StubCollections.stub(Games, Players);
-
-		let gameId = Random.id(5);
-		Games.insert({
-			_id: gameId,
-			status: GAME_STATUS_FINISHED,
-			hostPoints: 0,
-			clientPoints: 5
-		});
-
-		assert.equal(getWinnerName(Games.findOne({_id: gameId})), 'Player 2');
+		assert.equal(winnerSide(Games.findOne({_id: gameId})), 'Red');
 
 		StubCollections.restore();
 	});
 
-	it('returns client player name if clientPoints are higher', function() {
+	it('returns Blue if clientPoints are higher', function() {
 		StubCollections.add([Games, Players]);
 		StubCollections.stub();
 
-		let gameId = Random.id(5);
 		Games.insert({
 			_id: gameId,
 			createdBy: 1,
 			status: GAME_STATUS_FINISHED,
+			players: [
+				{id: hostUserId, name: player1Name},
+				{id: clientUserId, name: player2Name}
+			],
 			hostPoints: 0,
 			clientPoints: 5
 		});
-		let clientPlayerName = 'Client player name';
-		Players.insert({_id: Random.id(5), gameId: gameId, userId: 2, name: clientPlayerName});
+		Players.insert({_id: Random.id(5), gameId: gameId, userId: clientUserId, name: player2Name});
 
-		assert.equal(getWinnerName(Games.findOne({_id: gameId})), clientPlayerName);
+		assert.equal(winnerSide(Games.findOne({_id: gameId})), 'Blue');
 
 		StubCollections.restore();
 	});

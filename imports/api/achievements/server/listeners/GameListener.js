@@ -4,6 +4,7 @@ import {Players} from '/imports/api/games/players.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
 import TournamentModeFactory from '/imports/api/tournaments/modes/TournamentModeFactory.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
+import {TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import Listener from './Listener';
 
 export default class GameListener extends Listener {
@@ -30,6 +31,9 @@ export default class GameListener extends Listener {
 		if (this.isPracticeGame() && !this.allowedForPracticeGame()) {
 			return false;
 		}
+		if (this.is2Vs2Game() && !this.allowedFor2Vs2()) {
+			return false;
+		}
 
 		return true;
 	}
@@ -40,6 +44,10 @@ export default class GameListener extends Listener {
 
 	allowedForPracticeGame() {
 		return false;
+	}
+
+	allowedFor2Vs2() {
+		return true;
 	}
 
 	getGame() {
@@ -107,10 +115,14 @@ export default class GameListener extends Listener {
 
 		let userPlayerKey = null;
 		if (game) {
-			if (game.createdBy === this.userId) {
+			if (game.players[0].id === this.userId) {
 				userPlayerKey = 'player1';
-			} else if (this.userIsGamePlayer()) {
+			} else if (game.players[1].id === this.userId) {
 				userPlayerKey = 'player2';
+			} else if (this.is2Vs2Game() && game.players[2].id === this.userId) {
+				userPlayerKey = 'player3';
+			} else if (this.is2Vs2Game() && game.players[3].id === this.userId) {
+				userPlayerKey = 'player4';
 			}
 		}
 
@@ -139,6 +151,12 @@ export default class GameListener extends Listener {
 		const game = this.getGame();
 
 		return game && !!game.isPracticeGame;
+	}
+
+	is2Vs2Game() {
+		const game = this.getGame();
+
+		return game && game.gameMode === TWO_VS_TWO_GAME_MODE;
 	}
 
 	gameMaximumPoints() {
@@ -179,6 +197,13 @@ export default class GameListener extends Listener {
 		return playerKey === this.userPlayerKey();
 	}
 
+	playerKeyIsTeammate(playerKey) {
+		return (
+			playerKey !== this.userPlayerKey() &&
+			this.isPlayerHostSide() === this.isPlayerKeyHostSide(playerKey)
+		);
+	}
+
 	/**
 	 * @param {string} playerKey
 	 * @returns {boolean}
@@ -189,17 +214,19 @@ export default class GameListener extends Listener {
 		return userPlayerKey !== null && playerKey !== userPlayerKey;
 	}
 
-	/**
-	 * @returns {boolean}
-	 */
-	playerIsHost() {
-		return 'player1' === this.userPlayerKey();
+	isPlayerHostSide() {
+		return this.isPlayerKeyHostSide(this.userPlayerKey());
 	}
 
-	/**
-	 * @returns {boolean}
-	 */
-	playerIsClient() {
-		return 'player2' === this.userPlayerKey();
+	isPlayerKeyHostSide(playerKey) {
+		return ('player1' === playerKey || 'player3' === playerKey);
+	}
+
+	isPlayerClientSide() {
+		return this.isPlayerKeyClientSide(this.userPlayerKey());
+	}
+
+	isPlayerKeyClientSide(playerKey) {
+		return ('player2' === playerKey || 'player4' === playerKey);
 	}
 }

@@ -1,3 +1,5 @@
+import {TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
+
 export default class LevelConfiguration {
 	width = 0;
 	height = 0;
@@ -33,6 +35,14 @@ export default class LevelConfiguration {
 		return this.width - this.player1InitialX();
 	}
 
+	player3InitialX() {
+		return this.player1InitialX() + this.playerWidth() * 2;
+	}
+
+	player4InitialX() {
+		return this.width - this.player3InitialX();
+	}
+
 	ballRadius() {
 		return 12;
 	}
@@ -60,6 +70,27 @@ export default class LevelConfiguration {
 			70,
 			8
 		);
+	}
+
+	/**
+	 * @returns {LevelConfiguration}
+	 */
+	static defaultTwoVersusTwoConfiguration() {
+		return new LevelConfiguration(
+			1020,
+			680,
+			70,
+			71,
+			8
+		);
+	}
+
+	static fromMode(mode) {
+		if (mode === TWO_VS_TWO_GAME_MODE) {
+			return LevelConfiguration.defaultTwoVersusTwoConfiguration();
+		}
+
+		return LevelConfiguration.defaultConfiguration();
 	}
 
 	/**

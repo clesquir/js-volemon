@@ -28,8 +28,8 @@ export default class Snoozer extends GameListener {
 		if (
 			event.gameId === this.gameId &&
 			(
-				(this.playerIsHost() && event.clientPoints === this.gameMaximumPoints() - 1 && event.hostPoints === 0) ||
-				(this.playerIsClient() && event.hostPoints === this.gameMaximumPoints() - 1 && event.clientPoints === 0)
+				(this.isPlayerHostSide() && event.clientPoints === this.gameMaximumPoints() - 1 && event.hostPoints === 0) ||
+				(this.isPlayerClientSide() && event.hostPoints === this.gameMaximumPoints() - 1 && event.clientPoints === 0)
 			)
 		) {
 			this.hasBeenMatchPointZero = true;

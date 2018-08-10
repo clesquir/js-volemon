@@ -1,15 +1,26 @@
 import GameNotifier from '/imports/api/games/client/GameNotifier.js';
 import MatchMakingGameConfiguration from '/imports/api/games/configuration/MatchMakingGameConfiguration.js';
+import {
+	ONE_VS_COMPUTER_GAME_MODE,
+	ONE_VS_ONE_GAME_MODE,
+	TOURNAMENT_GAME_SELECTION,
+	TWO_VS_TWO_GAME_MODE
+} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
 import {MatchMakers} from '/imports/api/games/matchMakers.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
+import {EventPublisher} from '/imports/lib/EventPublisher.js';
+import PageUnload from '/imports/lib/events/PageUnload.js';
 import ButtonEnabler from '/imports/ui/util/ButtonEnabler.js';
 import TipsUpdater from '/imports/ui/util/TipsUpdater.js';
+import {Tooltips} from 'meteor/lookback:tooltips';
 import {Meteor} from "meteor/meteor";
 import {Mongo} from "meteor/mongo";
 import {Session} from "meteor/session";
 import {Template} from "meteor/templating";
 import './matchMaking.html';
+
+const he = require('he');
 
 class PlayableTournamentsCollection extends Mongo.Collection {}
 const PlayableTournaments = new PlayableTournamentsCollection('playableTournaments');
@@ -35,26 +46,42 @@ const startMatchMaking = function() {
 
 	Meteor.call(
 		'startMatchMaking',
-		Session.get('matchMaking.modeSelection') || '1vs1',
+		Session.get('matchMaking.modeSelection') || ONE_VS_ONE_GAME_MODE,
 		Session.get('matchMaking.tournamentId'),
 		function(error) {}
 	);
+};
+
+const userPresentInArray = function(users, userId) {
+	for (let user of users) {
+		if (user.id === userId) {
+			return true;
+		}
+	}
+
+	return false;
 };
 
 const monitorWhenMatched = function() {
 	matchMakingTracker = MatchMakers.find().observeChanges({
 		changed: (id, fields) => {
 			if (fields.hasOwnProperty('matched')) {
-				const match = MatchMakers.findOne({'matched.users': Meteor.userId()});
+				const match = MatchMakers.findOne({'matched.users.id': Meteor.userId()});
 
 				if (match) {
 					for (let matched of match.matched) {
-						if (matched.users.indexOf(Meteor.userId()) !== -1) {
-							Session.set('matchMaking.gameId', matched.gameId);
-							monitorGameStart();
-							break;
+						if (userPresentInArray(matched.users, Meteor.userId())) {
+							if (!Session.get('matchMaking.gameId')) {
+								Session.set('matchMaking.gameId', matched.gameId);
+								monitorGameStart();
+							}
+							return;
 						}
 					}
+				}
+
+				if (Session.get('matchMaking.gameId')) {
+					Session.set('matchMaking.kickedOut', true);
 				}
 			}
 		}
@@ -90,6 +117,7 @@ const reinitSessionVariables = function() {
 	Session.set('matchMaking.tournamentId', null);
 	Session.set('matchMaking.gameId', null);
 	Session.set('matchMaking.playerIsReady', false);
+	Session.set('matchMaking.kickedOut', false);
 };
 
 const closeMatchMaking = function() {
@@ -105,6 +133,11 @@ const closeMatchMaking = function() {
 	Session.set('lightbox.closable', true);
 };
 
+const unbindOnPageLeft = function() {
+	closeMatchMaking();
+	Meteor.call('cancelMatchMaking', Meteor.userId());
+};
+
 const tipsUpdater = new TipsUpdater();
 const gameNotifier = new GameNotifier();
 let matchMakingTracker;
@@ -113,6 +146,9 @@ let gameStartTracker;
 Template.matchMaking.onCreated(function() {
 	tipsUpdater.start();
 	Session.set('matchMaking.isLoading', true);
+	Session.set('matchMaking.gameId', null);
+	Session.set('matchMaking.playerIsReady', false);
+	Session.set('matchMaking.kickedOut', false);
 
 	Promise.resolve()
 		.then(function() {
@@ -137,10 +173,22 @@ Template.matchMaking.onCreated(function() {
 			}
 		})
 		.catch(function() {});
+
+	EventPublisher.on(
+		PageUnload.prototype.constructor.name,
+		unbindOnPageLeft,
+		null
+	);
 });
 
 Template.matchMaking.destroyed = function() {
-	closeMatchMaking();
+	unbindOnPageLeft();
+
+	EventPublisher.off(
+		PageUnload.prototype.constructor.name,
+		unbindOnPageLeft,
+		null
+	);
 };
 
 Template.matchMaking.helpers({
@@ -153,7 +201,7 @@ Template.matchMaking.helpers({
 	},
 
 	showShare: function() {
-		return !!Session.get('matchMaking.modeSelection') && !Session.get('matchMaking.gameId');
+		return !!Session.get('matchMaking.modeSelection') && !Session.get('matchMaking.gameId') && !Session.get('matchMaking.kickedOut');
 	},
 
 	tournaments: function() {
@@ -180,6 +228,22 @@ Template.matchMaking.helpers({
 		const match = MatchMakers.findOne({modeSelection: modeSelection, tournamentId: tournamentId});
 
 		return match && match.usersToMatch && match.usersToMatch.length > 0;
+	},
+
+	playersWaiting: function(modeSelection, tournamentId) {
+		const match = MatchMakers.findOne({modeSelection: modeSelection, tournamentId: tournamentId});
+
+		if (match && match.usersToMatch) {
+			const players = [];
+
+			for (let userToMatch of match.usersToMatch) {
+				players.push(he.encode(userToMatch.name));
+			}
+
+			return players.join('<br />');
+		}
+
+		return '';
 	},
 
 	numberOfPlayersWaiting: function(modeSelection, tournamentId) {
@@ -235,14 +299,14 @@ Template.matchMaking.helpers({
 			return false;
 		}
 
-		const match = MatchMakers.findOne({'matched.users': Meteor.userId()});
+		const match = MatchMakers.findOne({'matched.users.id': Meteor.userId()});
 
 		if (!match) {
 			return false;
 		}
 
 		for (let matched of match.matched) {
-			if (matched.users.indexOf(Meteor.userId()) !== -1) {
+			if (userPresentInArray(matched.users, Meteor.userId())) {
 				return true;
 			}
 		}
@@ -259,18 +323,30 @@ Template.matchMaking.helpers({
 	},
 
 	showLoading: function() {
-		return Session.get('matchMaking.isLoading') || Session.get('matchMaking.modeSelection');
+		return (Session.get('matchMaking.isLoading') || Session.get('matchMaking.modeSelection')) && !Session.get('matchMaking.kickedOut');
+	},
+
+	showRetry: function() {
+		return Session.get('matchMaking.kickedOut');
 	},
 
 	showCancelMatchMaking: function() {
-		return !Session.get('matchMaking.isLoading') && !Session.get('matchMaking.gameId');
+		return !Session.get('matchMaking.isLoading') || Session.get('matchMaking.kickedOut');
+	},
+
+	waitingForPlayersReady: function() {
+		return Session.get('matchMaking.playerIsReady') && !Session.get('matchMaking.kickedOut');
 	},
 
 	selectedMode: function() {
 		switch (Session.get('matchMaking.modeSelection')) {
-			case '1vs1':
+			case ONE_VS_COMPUTER_GAME_MODE:
+				return '1 VS CPU';
+			case ONE_VS_ONE_GAME_MODE:
 				return '1 VS 1';
-			case 'tournament':
+			case TWO_VS_TWO_GAME_MODE:
+				return '2 VS 2';
+			case TOURNAMENT_GAME_SELECTION:
 				const tournament = PlayableTournaments.findOne({_id: Session.get('matchMaking.tournamentId')});
 
 				if (tournament) {
@@ -281,9 +357,13 @@ Template.matchMaking.helpers({
 		return '';
 	},
 
+	showCurrentWaitingForMode: function() {
+		return Session.get('matchMaking.modeSelection') !== ONE_VS_COMPUTER_GAME_MODE;
+	},
+
 	selectedTournamentDescription: function() {
 		switch (Session.get('matchMaking.modeSelection')) {
-			case 'tournament':
+			case TOURNAMENT_GAME_SELECTION:
 				const tournament = PlayableTournaments.findOne({_id: Session.get('matchMaking.tournamentId')});
 
 				if (tournament) {
@@ -311,10 +391,42 @@ Template.matchMaking.helpers({
 	},
 
 	matchMakingStatus: function() {
-		if (Session.get('matchMaking.gameId')) {
-			return "You've been matched! Ready?";
+		if (Session.get('matchMaking.kickedOut')) {
+			return "Your opponent has left...";
+		} else if (Session.get('matchMaking.gameId')) {
+			if (Session.get('matchMaking.modeSelection') === ONE_VS_COMPUTER_GAME_MODE) {
+				return "Ready when you are!";
+			} else {
+				return "You've been matched! Ready?";
+			}
 		} else if (Session.get('matchMaking.modeSelection')) {
 			return "Looking for players...";
+		}
+
+		return '';
+	},
+
+	showListOfMatched: function() {
+		return !!Session.get('matchMaking.gameId');
+	},
+
+	listOfMatched: function() {
+		const match = MatchMakers.findOne({'matched.users.id': Meteor.userId()});
+
+		if (match) {
+			for (let matched of match.matched) {
+				if (userPresentInArray(matched.users, Meteor.userId())) {
+					return matched.users;
+				}
+			}
+		}
+
+		return [];
+	},
+
+	matchMakingStatusClass: function() {
+		if (Session.get('matchMaking.kickedOut') || Session.get('matchMaking.gameId')) {
+			return 'matched-status';
 		}
 
 		return '';
@@ -326,19 +438,38 @@ Template.matchMaking.events({
 		Session.set('matchMaking.tournamentId', $(e.currentTarget).attr('data-tournament-id'));
 		Session.set('matchMaking.modeSelection', $(e.currentTarget).attr('data-mode-selection'));
 
+		Tooltips.hide();
 		startMatchMaking();
 	},
 
-	'click [data-action="start-game"]': function(e) {
+	'click [data-action=retry-match-making]:not([disabled])': function(e) {
+		ButtonEnabler.disableButton(e.target);
+
+		Session.set('matchMaking.gameId', null);
+		Session.set('matchMaking.playerIsReady', false);
+		Session.set('matchMaking.kickedOut', false);
+		if (matchMakingTracker) {
+			matchMakingTracker.stop();
+		}
+		if (gameStartTracker) {
+			gameStartTracker.stop();
+		}
+
+		startMatchMaking();
+
+		ButtonEnabler.enableButton(e.target);
+	},
+
+	'click [data-action="start-game"]:not([disabled])': function(e) {
 		ButtonEnabler.disableButton(e.target);
 		Meteor.call('setPlayerIsReady', Session.get('matchMaking.gameId'), function() {
 			Session.set('matchMaking.playerIsReady', true);
 		});
 	},
 
-	'click [data-action=cancel-match-making]': function(e) {
+	'click [data-action=cancel-match-making]:not([disabled])': function(e) {
 		ButtonEnabler.disableButton(e.target);
-		Meteor.call('cancelMatchMaking', function(error, cancelAllowed) {
+		Meteor.call('cancelMatchMaking', Meteor.userId(), function(error, cancelAllowed) {
 			ButtonEnabler.enableButton(e.target);
 			if (cancelAllowed) {
 				closeMatchMaking();

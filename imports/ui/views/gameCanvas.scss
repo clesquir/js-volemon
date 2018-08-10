@@ -10,11 +10,19 @@
 	z-index: 1;
 
 	.host-player {
-		color: $host-color;
+		color: $host-primary-color;
+	}
+
+	.host-second-player {
+		color: $host-second-color;
 	}
 
 	.client-player {
-		color: $client-color;
+		color: $client-primary-color;
+	}
+
+	.client-second-player {
+		color: $client-second-color;
 	}
 
 	& > div {
@@ -62,6 +70,10 @@
 	.point-timer {
 		font-size: 10px;
 	}
+}
+
+.players-names-container, .players-points-container, .timers-container {
+	text-shadow: 0 0 1px #c9c9c9, 0 0 1px #c9c9c9, 0 0 1px #c9c9c9, 0 0 15px #c9c9c9;
 }
 
 .viewers-container {

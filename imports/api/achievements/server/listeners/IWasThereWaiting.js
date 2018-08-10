@@ -6,6 +6,10 @@ import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {BONUS_FREEZE_MONSTER} from '/imports/api/games/bonusConstants.js';
 
 export default class IWasThereWaiting extends GameListener {
+	allowedFor2Vs2() {
+		return false;
+	}
+
 	addListeners() {
 		this.addListener(PointTaken.prototype.constructor.name, this.onPointTaken);
 		this.addListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
@@ -52,7 +56,7 @@ export default class IWasThereWaiting extends GameListener {
 			event.gameId === this.gameId &&
 			this.userIsGamePlayer()
 		) {
-			if (this.currentPlayerIsPaused && this.playerIsHost() === event.pointScoredByHost) {
+			if (this.currentPlayerIsPaused && this.isPlayerHostSide() === event.pointScoredByHost) {
 				this.incrementNumber(ACHIEVEMENT_I_WAS_THERE_WAITING);
 			}
 

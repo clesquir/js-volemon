@@ -1,13 +1,14 @@
 import MatchMakingGameConfiguration from '/imports/api/games/configuration/MatchMakingGameConfiguration.js';
+import {Players} from '/imports/api/games/players.js';
+import EloMatchMaker from '/imports/api/games/server/matchMaking/EloMatchMaker.js';
 import {PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 import {htmlEncode} from '/imports/lib/utils.js';
-import ImmediateMatchMaker from '/imports/api/games/server/matchMaking/ImmediateMatchMaker.js';
 import {Meteor} from "meteor/meteor";
 
 Meteor.methods({
-	updateMatchMakingShape: function(tournamentId, selectedShape) {
+	updateMatchMakingShape: function(gameId, tournamentId, selectedShape) {
 		const user = Meteor.user();
 
 		if (!user) {
@@ -31,6 +32,7 @@ Meteor.methods({
 			shape = Random.choice(listOfShapes);
 		}
 
+		Players.update({gameId: gameId, userId: user._id}, {$set: {selectedShape: selectedShape, shape: shape}});
 		UserConfigurations.update(
 			{userId: this.userId},
 			{
@@ -44,18 +46,24 @@ Meteor.methods({
 	},
 
 	startMatchMaking: function(modeSelection, tournamentId) {
-		const matchMaker = new ImmediateMatchMaker();
+		const matchMaker = new EloMatchMaker();
 
-		matchMaker.subscribe(Meteor.userId(), modeSelection, tournamentId);
+		const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
+		let userName = '';
+		if (userConfiguration) {
+			userName = userConfiguration.name;
+		}
+
+		matchMaker.subscribe(Meteor.userId(), userName, modeSelection, tournamentId);
 	},
 
-	cancelMatchMaking: function() {
-		const matchMaker = new ImmediateMatchMaker();
+	cancelMatchMaking: function(userId) {
+		const matchMaker = new EloMatchMaker();
 
-		if (!matchMaker.canUnsubscribe(Meteor.userId())) {
+		if (!matchMaker.canUnsubscribe(userId)) {
 			return false;
 		}
 
-		return matchMaker.unsubscribe(Meteor.userId());
+		return matchMaker.unsubscribe(userId);
 	}
 });

@@ -105,6 +105,14 @@
 	font-size: 1.5rem;
 }
 
+.game-won-red-color {
+	color: $host-color;
+}
+
+.game-won-blue-color {
+	color: $client-color;
+}
+
 .game-duration-winner-host {
 	color: $host-color;
 }

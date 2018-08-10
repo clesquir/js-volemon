@@ -1,4 +1,4 @@
-import {BONUS_INSTANT_DEATH, BONUS_REPELLENT} from '/imports/api/games/bonusConstants.js';
+import {BONUS_INSTANT_DEATH, BONUS_POISON, BONUS_RANDOM} from '/imports/api/games/bonusConstants.js';
 import Classic from './Classic';
 
 export default class BonusOverride extends Classic {
@@ -8,8 +8,20 @@ export default class BonusOverride extends Classic {
 
 	availableBonuses() {
 		return [
+			BONUS_POISON,
 			BONUS_INSTANT_DEATH,
-			BONUS_REPELLENT
+			BONUS_RANDOM,
+		];
+	}
+
+	overridesAvailableBonusesForRandom() {
+		return true;
+	}
+
+	availableBonusesForRandom() {
+		return [
+			BONUS_POISON,
+			BONUS_INSTANT_DEATH,
 		];
 	}
 }

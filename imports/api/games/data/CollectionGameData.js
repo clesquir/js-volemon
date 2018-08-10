@@ -1,3 +1,4 @@
+import {ONE_VS_COMPUTER_GAME_MODE, TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import GameData from '/imports/api/games/data/GameData.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
@@ -29,6 +30,7 @@ export default class CollectionGameData extends GameData {
 	init() {
 		let game = this.fetchGame();
 
+		this.gameMode = game.gameMode;
 		this.maximumPoints = game.maximumPoints;
 		this.hasBonuses = game.hasBonuses;
 		this.createdBy = game.createdBy;
@@ -42,7 +44,21 @@ export default class CollectionGameData extends GameData {
 		this.updateStatus(game.status);
 		this.updateActiveBonuses(game.activeBonuses);
 
-		this.initPlayers();
+		this.initPlayers(game);
+	}
+
+	playerFromKey(playerKey) {
+		if (playerKey === 'player1') {
+			return this.firstPlayer;
+		} else if (playerKey === 'player2') {
+			return this.secondPlayer;
+		} else if (playerKey === 'player3') {
+			return this.thirdPlayer;
+		} else if (playerKey === 'player4') {
+			return this.fourthPlayer;
+		}
+
+		return null;
 	}
 
 	/**
@@ -50,13 +66,7 @@ export default class CollectionGameData extends GameData {
 	 * @returns string Returns the player shape or PLAYER_DEFAULT_SHAPE if no game nor player is found
 	 */
 	getPlayerShapeFromKey(playerKey) {
-		let player;
-
-		if (playerKey === 'player1') {
-			player = this.hostPlayer;
-		} else {
-			player = this.clientPlayer;
-		}
+		let player = this.playerFromKey(playerKey);
 
 		if (!player) {
 			return PLAYER_DEFAULT_SHAPE;
@@ -70,13 +80,7 @@ export default class CollectionGameData extends GameData {
 	 * @returns string Returns the player shape or PLAYER_DEFAULT_SHAPE if no game nor player is found
 	 */
 	getPlayerPolygonFromKey(playerKey) {
-		let player;
-
-		if (playerKey === 'player1') {
-			player = this.hostPlayer;
-		} else {
-			player = this.clientPlayer;
-		}
+		let player = this.playerFromKey(playerKey);
 
 		if (!player) {
 			return PLAYER_DEFAULT_SHAPE;
@@ -85,11 +89,26 @@ export default class CollectionGameData extends GameData {
 		return player.shape;
 	}
 
+	getCurrentPlayerKey() {
+		return this.currentPlayerKey;
+	}
+
 	isCurrentPlayerKey(playerKey) {
-		return (
-			(playerKey === 'player1' && this.isUserHost()) ||
-			(playerKey === 'player2' && this.isUserClient())
-		);
+		let player = this.playerFromKey(playerKey);
+
+		return player && this.currentPlayer && player._id === this.currentPlayer._id;
+	}
+
+	isFirstPlayerComputer() {
+		return false;
+	}
+
+	isSecondPlayerComputer() {
+		return this.gameMode === ONE_VS_COMPUTER_GAME_MODE;
+	}
+
+	isTwoVersusTwo() {
+		return this.gameMode === TWO_VS_TWO_GAME_MODE;
 	}
 
 	isUserCreator() {
@@ -97,31 +116,19 @@ export default class CollectionGameData extends GameData {
 	}
 
 	isUserHost() {
-		return (this.isUserCreator() && !!this.currentPlayer);
+		return this.currentUserId && this.hostUserIds.indexOf(this.currentUserId) !== -1;
 	}
 
 	isUserClient() {
-		return (!this.isUserCreator() && !!this.currentPlayer);
+		return this.currentUserId && this.clientUserIds.indexOf(this.currentUserId) !== -1;
+	}
+
+	isUserPlayer() {
+		return this.isUserHost() || this.isUserClient();
 	}
 
 	isUserViewer() {
-		return (!this.isUserHost() && !this.isUserClient());
-	}
-
-	isUserHostTargetPlayer(playerKey) {
-		return this.isUserHost() && playerKey === 'player1';
-	}
-
-	isUserClientTargetPlayer(playerKey) {
-		return this.isUserClient() && playerKey === 'player2';
-	}
-
-	isUserHostNotTargetPlayer(playerKey) {
-		return this.isUserHost() && playerKey === 'player2';
-	}
-
-	isUserClientNotTargetPlayer(playerKey) {
-		return this.isUserClient() && playerKey === 'player1';
+		return !this.isUserPlayer();
 	}
 
 	isGameStatusOnGoing() {
@@ -159,22 +166,45 @@ export default class CollectionGameData extends GameData {
 		return this._activeBonuses;
 	}
 
-	initPlayers() {
+	initPlayers(game) {
 		let players = Players.find({gameId: this.gameId});
 
 		this.currentPlayer = null;
-		this.hostPlayer = null;
-		this.clientPlayer = null;
+		this.currentPlayerKey = null;
+		this.firstPlayer = null;
+		this.secondPlayer = null;
+		this.thirdPlayer = null;
+		this.fourthPlayer = null;
+		this.hostUserIds = [];
+		this.clientUserIds = [];
 
 		players.forEach((player) => {
 			if (player.userId === this.currentUserId) {
 				this.currentPlayer = player;
+
+				if (player.userId === game.players[0].id) {
+					this.currentPlayerKey = 'player1';
+				} else if (player.userId === game.players[1].id) {
+					this.currentPlayerKey = 'player2';
+				} else if (player.userId === game.players[2].id) {
+					this.currentPlayerKey = 'player3';
+				} else if (player.userId === game.players[3].id) {
+					this.currentPlayerKey = 'player4';
+				}
 			}
 
-			if (player.userId === this.createdBy) {
-				this.hostPlayer = player;
-			} else {
-				this.clientPlayer = player;
+			if (player.userId === game.players[0].id) {
+				this.firstPlayer = player;
+				this.hostUserIds.push(player.userId);
+			} else if (player.userId === game.players[1].id) {
+				this.secondPlayer = player;
+				this.clientUserIds.push(player.userId);
+			} else if (player.userId === game.players[2].id) {
+				this.thirdPlayer = player;
+				this.hostUserIds.push(player.userId);
+			} else if (player.userId === game.players[3].id) {
+				this.fourthPlayer = player;
+				this.clientUserIds.push(player.userId);
 			}
 		});
 	}

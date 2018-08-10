@@ -107,8 +107,6 @@ export default class GameInitiator {
 
 	stop() {
 		if (this.hasActiveGame()) {
-			Meteor.call('removeGameViewer', this.gameId);
-
 			this.currentGame.stop();
 			this.currentGame = null;
 		}
@@ -153,7 +151,7 @@ export default class GameInitiator {
 
 		let player = Players.findOne({gameId: this.gameId, userId: Meteor.userId()});
 		if (!player) {
-			Meteor.call('addGameViewer', this.gameId);
+			Meteor.call('addGameViewer', this.gameId, Meteor.userId());
 		}
 	}
 

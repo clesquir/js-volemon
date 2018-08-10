@@ -62,13 +62,13 @@ Meteor.publish('tournamentGames', function(tournamentId) {
 	return [
 		Games.find(
 			{
-				isPrivate: 0,
+				isPrivate: false,
 				tournamentId: tournamentId,
 				status: GAME_STATUS_STARTED
 			},
 			{
 				sort: [['createdAt', 'asc']],
-				fields: {tournamentId: 1, hostName: 1, clientName: 1, createdAt: 1, status: 1}
+				fields: {tournamentId: 1, gameMode: 1, players: 1, createdAt: 1, status: 1}
 			}
 		)
 	];

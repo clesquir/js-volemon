@@ -8,20 +8,38 @@ export default class UserMatch {
 	static match(modeSelection, tournamentId, matchedUsers) {
 		const gameId = GameCreator.fromMatchMaker(matchedUsers, modeSelection, tournamentId);
 
+		const userIds = [];
+		const matchedUsersWithInformation = [];
+		for (let i = 0; i < matchedUsers.length; i++) {
+			const user = matchedUsers[i];
+			userIds.push(user.id);
+			matchedUsersWithInformation.push(
+				{
+					id: user.id,
+					name: user.name,
+					position: i + 1,
+					isReady: false
+				}
+			);
+		}
+
 		//Remove from usersToMatch
 		MatchMakers.update(
 			{modeSelection: modeSelection, tournamentId: tournamentId},
-			{$pull: {usersToMatch: {$in: matchedUsers}}}
+			{$pull: {usersToMatch: {id: {$in: userIds}}}}
 		);
 
 		//Add to matched with gameId
-		let matchedItem = {
-			users: matchedUsers,
-			gameId: gameId
-		};
 		MatchMakers.update(
 			{modeSelection: modeSelection, tournamentId: tournamentId},
-			{$push: {matched: matchedItem}}
+			{
+				$push: {
+					matched: {
+						users: matchedUsersWithInformation,
+						gameId: gameId
+					}
+				}
+			}
 		);
 	}
 

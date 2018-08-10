@@ -7,11 +7,11 @@ export default class GameCreator {
 		const gameUsers = users.concat([]);
 		const creator = gameUsers.shift();
 
-		const gameId = createGame(creator, GameInitiatorCollection.get(), modeSelection, tournamentId);
+		const gameId = createGame(creator.id, GameInitiatorCollection.get(), modeSelection, tournamentId);
 
-		joinGame(creator, gameId);
+		joinGame(creator.id, gameId);
 		while (gameUsers.length) {
-			joinGame(gameUsers.shift(), gameId);
+			joinGame(gameUsers.shift().id, gameId);
 		}
 
 		return gameId;

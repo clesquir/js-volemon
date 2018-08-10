@@ -1,22 +1,50 @@
 import {
-	ACHIEVEMENT_ALL_BONUSES_IN_A_GAME, ACHIEVEMENT_BATTLE_OF_THE_GIANTS, ACHIEVEMENT_BLANK_SCREEN,
-	ACHIEVEMENT_BONUSES_IN_A_GAME, ACHIEVEMENT_BONUSES_IN_A_LIFETIME,
-	ACHIEVEMENT_BONUSES_IN_A_POINT, ACHIEVEMENT_CAREFULLY_RANDOMLY_PICKED,
-	ACHIEVEMENT_CONSECUTIVE_DAYS_PLAYED, ACHIEVEMENT_CONSECUTIVE_LOST_GAMES,
-	ACHIEVEMENT_CONSECUTIVE_WON_GAMES, ACHIEVEMENT_DAVID_VS_GOLIATH, ACHIEVEMENT_FULL_STOP,
-	ACHIEVEMENT_GAME_TIME, ACHIEVEMENT_GAMES_PLAYED, ACHIEVEMENT_GAMES_WON_UNDER_A_MINUTE,
-	ACHIEVEMENT_GAMES_WON_WITH_X_SHAPE, ACHIEVEMENT_HOW_TO_TIE_A_TIE, ACHIEVEMENT_I_WAS_THERE_WAITING,
+	ACHIEVEMENT_ALL_BONUSES_IN_A_GAME,
+	ACHIEVEMENT_BATTLE_OF_THE_GIANTS,
+	ACHIEVEMENT_BLANK_SCREEN,
+	ACHIEVEMENT_BONUSES_IN_A_GAME,
+	ACHIEVEMENT_BONUSES_IN_A_LIFETIME,
+	ACHIEVEMENT_BONUSES_IN_A_POINT,
+	ACHIEVEMENT_CAREFULLY_RANDOMLY_PICKED,
+	ACHIEVEMENT_CONSECUTIVE_DAYS_PLAYED,
+	ACHIEVEMENT_CONSECUTIVE_LOST_GAMES,
+	ACHIEVEMENT_CONSECUTIVE_WON_GAMES,
+	ACHIEVEMENT_DAVID_VS_GOLIATH,
+	ACHIEVEMENT_FULL_STOP,
+	ACHIEVEMENT_GAME_TIME,
+	ACHIEVEMENT_GAMES_PLAYED,
+	ACHIEVEMENT_GAMES_WON_UNDER_A_MINUTE,
+	ACHIEVEMENT_GAMES_WON_WITH_X_SHAPE,
+	ACHIEVEMENT_HOW_TO_TIE_A_TIE,
+	ACHIEVEMENT_I_WAS_THERE_WAITING,
 	ACHIEVEMENT_INVINCIBLE_IN_A_LIFETIME,
 	ACHIEVEMENT_INVISIBLE_IN_A_GAME,
-	ACHIEVEMENT_INVISIBLE_IN_A_LIFETIME, ACHIEVEMENT_INVISIBLE_IN_A_POINT, ACHIEVEMENT_NINJA,
+	ACHIEVEMENT_INVISIBLE_IN_A_LIFETIME,
+	ACHIEVEMENT_INVISIBLE_IN_A_POINT,
+	ACHIEVEMENT_LUDOMANIA,
+	ACHIEVEMENT_NINJA,
+	ACHIEVEMENT_ONE_OF_THE_THREE,
 	ACHIEVEMENT_PAUSE_IN_A_GAME,
 	ACHIEVEMENT_PAUSE_IN_A_LIFETIME,
 	ACHIEVEMENT_PAUSE_IN_A_POINT,
-	ACHIEVEMENT_POINT_TIME, ACHIEVEMENT_RAKSHASA, ACHIEVEMENT_RANDOM_IN_A_GAME,
-	ACHIEVEMENT_SHUTOUTS, ACHIEVEMENT_SIMULTANEOUS_ACTIVATED_BONUSES, ACHIEVEMENT_SNOOZER, ACHIEVEMENT_TEENY_TINY_WORLD,
+	ACHIEVEMENT_POINT_TIME,
+	ACHIEVEMENT_RAKSHASA,
+	ACHIEVEMENT_RANDOM_IN_A_GAME,
+	ACHIEVEMENT_SERIAL_WINNER,
+	ACHIEVEMENT_SHUTOUTS,
+	ACHIEVEMENT_SIMULTANEOUS_ACTIVATED_BONUSES,
+	ACHIEVEMENT_SNOOZER,
+	ACHIEVEMENT_TEENY_TINY_WORLD,
+	ACHIEVEMENT_THEY_ARE_ALL_OVER,
 	ACHIEVEMENT_TO_THE_SKY,
-	ACHIEVEMENT_TRIPLE_COLON, ACHIEVEMENT_UNDESIRABLE, ACHIEVEMENT_ONE_OF_THE_THREE, ACHIEVEMENT_SERIAL_WINNER,
-	ACHIEVEMENT_LUDOMANIA, TYPE_MS, TYPE_QUANTITY, TYPE_TIMES
+	ACHIEVEMENT_TRIPLE_COLON,
+	ACHIEVEMENT_UNDESIRABLE,
+	ACHIEVEMENT_SUICIDAL_TENDENCIES,
+	ACHIEVEMENT_INTOXICATED,
+	ACHIEVEMENT_GONE_BUT_NOT_FORGOTTEN,
+	TYPE_MS,
+	TYPE_QUANTITY,
+	TYPE_TIMES
 } from '/imports/api/achievements/constants.js';
 
 export const INITIAL_ACHIVEMENTS = [
@@ -223,6 +251,7 @@ export const INITIAL_ACHIVEMENTS = [
 		"description": "# of points scored when both players are big",
 		"type": TYPE_QUANTITY,
 		"displayOrder": 24,
+		"deniedForTwoVersusTwo": true,
 		"levels": [{"level": 1, "number": 1}, {"level": 2, "number": 2}, {"level": 3, "number": 3}]
 	},
 	{
@@ -242,6 +271,7 @@ export const INITIAL_ACHIVEMENTS = [
 		"description": "# of points scored when paused",
 		"type": TYPE_QUANTITY,
 		"displayOrder": 26,
+		"deniedForTwoVersusTwo": true,
 		"levels": [{"level": 1, "number": 1}, {"level": 2, "number": 10}, {"level": 3, "number": 20}]
 	},
 	{
@@ -260,6 +290,7 @@ export const INITIAL_ACHIVEMENTS = [
 		"description": "Bonuses combo: Invisible ball, both players either invisible or cloaked",
 		"type": TYPE_TIMES,
 		"displayOrder": 28,
+		"deniedForTwoVersusTwo": true,
 		"levels": [{"level": 1, "number": 1}, {"level": 2, "number": 2}, {"level": 3, "number": 3}]
 	},
 	{
@@ -269,6 +300,7 @@ export const INITIAL_ACHIVEMENTS = [
 		"description": "# of won games against opponent with ELO 150 points higher",
 		"type": TYPE_QUANTITY,
 		"displayOrder": 29,
+		"deniedForTwoVersusTwo": true,
 		"levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 20}]
 	},
 	{
@@ -316,6 +348,7 @@ export const INITIAL_ACHIVEMENTS = [
 		"type": TYPE_QUANTITY,
 		"displayOrder": 34,
 		"conditionalForTournamentGame": true,
+		"deniedForTwoVersusTwo": true,
 		"levels": [{"level": 1, "number": 1}, {"level": 2, "number": 5}, {"level": 3, "number": 10}]
 	},
 	{
@@ -334,6 +367,7 @@ export const INITIAL_ACHIVEMENTS = [
 		"description": "Bonuses combo: Small ball, both players are small",
 		"type": TYPE_TIMES,
 		"displayOrder": 36,
+		"deniedForTwoVersusTwo": true,
 		"levels": [{"level": 1, "number": 1}, {"level": 2, "number": 5}, {"level": 3, "number": 10}]
 	},
 	{
@@ -362,5 +396,41 @@ export const INITIAL_ACHIVEMENTS = [
 		"type": TYPE_TIMES,
 		"displayOrder": 39,
 		"levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 20}]
+	},
+	{
+		"_id": ACHIEVEMENT_THEY_ARE_ALL_OVER,
+		"isSecret": true,
+		"name": "They are all over",
+		"description": "# of bonuses on screen",
+		"type": TYPE_QUANTITY,
+		"displayOrder": 40,
+		"levels": [{"level": 1, "number": 10}, {"level": 2, "number": 20}, {"level": 3, "number": 30}]
+	},
+	{
+		"_id": ACHIEVEMENT_SUICIDAL_TENDENCIES,
+		"isSecret": true,
+		"name": "Suicidal tendencies",
+		"description": `# of random bonuses caught in an "Instant Death" tournament`,
+		"type": TYPE_QUANTITY,
+		"displayOrder": 41,
+		"levels": [{"level": 1, "number": 15}, {"level": 2, "number": 30}, {"level": 3, "number": 60}]
+	},
+	{
+		"_id": ACHIEVEMENT_INTOXICATED,
+		"isSecret": true,
+		"name": "Intoxicated",
+		"description": "# of poison bonuses caught in a lifetime",
+		"type": TYPE_QUANTITY,
+		"displayOrder": 42,
+		"levels": [{"level": 1, "number": 25}, {"level": 2, "number": 50}, {"level": 3, "number": 100}]
+	},
+	{
+		"_id": ACHIEVEMENT_GONE_BUT_NOT_FORGOTTEN,
+		"isSecret": true,
+		"name": "Gone but not forgotten",
+		"description": "# of points scored when killed",
+		"type": TYPE_QUANTITY,
+		"displayOrder": 43,
+		"levels": [{"level": 1, "number": 15}, {"level": 2, "number": 30}, {"level": 3, "number": 60}]
 	}
 ];

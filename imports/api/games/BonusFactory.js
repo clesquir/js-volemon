@@ -5,17 +5,22 @@ import BonusRepellentMonsterBonus from '/imports/api/games/bonus/BonusRepellentM
 import BounceMonsterBonus from '/imports/api/games/bonus/BounceMonsterBonus.js';
 import CloakedMonsterBonus from '/imports/api/games/bonus/CloakedMonsterBonus.js';
 import CloudBonus from '/imports/api/games/bonus/CloudBonus.js';
+import CureBonus from '/imports/api/games/bonus/CureBonus.js';
 import DrunkMonsterBonus from '/imports/api/games/bonus/DrunkMonsterBonus.js';
 import FastMonsterBonus from '/imports/api/games/bonus/FastMonsterBonus.js';
 import FreezeMonsterBonus from '/imports/api/games/bonus/FreezeMonsterBonus.js';
+import HighGravity from '/imports/api/games/bonus/HighGravity.js';
 import InstantDeathBonus from '/imports/api/games/bonus/InstantDeathBonus.js';
+import InvincibleInstantDeathBonus from '/imports/api/games/bonus/InvincibleInstantDeathBonus.js';
 import InvincibleMonsterBonus from '/imports/api/games/bonus/InvincibleMonsterBonus.js';
 import InvisibleBallBonus from '/imports/api/games/bonus/InvisibleBallBonus.js';
 import InvisibleMonsterBonus from '/imports/api/games/bonus/InvisibleMonsterBonus.js';
 import InvisibleOpponentMonsterBonus from '/imports/api/games/bonus/InvisibleOpponentMonsterBonus.js';
 import JunkFoodMonster from '/imports/api/games/bonus/JunkFoodMonsterBonus.js';
+import LowGravity from '/imports/api/games/bonus/LowGravity.js';
 import NoJumpMonsterBonus from '/imports/api/games/bonus/NoJumpMonsterBonus.js';
 import NothingBonus from '/imports/api/games/bonus/NothingBonus.js';
+import PoisonBonus from '/imports/api/games/bonus/PoisonBonus.js';
 import RandomBonus from '/imports/api/games/bonus/RandomBonus.js';
 import ReverseMoveMonsterBonus from '/imports/api/games/bonus/ReverseMoveMonsterBonus.js';
 import ShapeShiftMonsterBonus from '/imports/api/games/bonus/ShapeShiftMonsterBonus.js';
@@ -31,17 +36,22 @@ import {
 	BONUS_BOUNCE_MONSTER,
 	BONUS_CLOAKED_MONSTER,
 	BONUS_CLOUD,
+	BONUS_CURE,
 	BONUS_DRUNK_MONSTER,
 	BONUS_FAST_MONSTER,
 	BONUS_FREEZE_MONSTER,
+	BONUS_HIGH_GRAVITY,
 	BONUS_INSTANT_DEATH,
+	BONUS_INVINCIBLE_INSTANT_DEATH,
 	BONUS_INVINCIBLE_MONSTER,
 	BONUS_INVISIBLE_BALL,
 	BONUS_INVISIBLE_MONSTER,
 	BONUS_INVISIBLE_OPPONENT_MONSTER,
 	BONUS_JUNK_FOOD_MONSTER,
+	BONUS_LOW_GRAVITY,
 	BONUS_NO_JUMP_MONSTER,
 	BONUS_NOTHING,
+	BONUS_POISON,
 	BONUS_RANDOM,
 	BONUS_REPELLENT,
 	BONUS_REVERSE_MOVE_MONSTER,
@@ -61,42 +71,25 @@ export default class BonusFactory {
 	 * @returns {BaseBonus}
 	 */
 	static randomBonus(game, gameConfiguration) {
-		const bonus = this.fromClassName(this.randomBonusKey(gameConfiguration), game);
-
-		if (bonus instanceof RandomBonus) {
-			bonus.setRandomBonus(
-				this.fromClassName(
-					Random.choice(this.availableBonusesForRandom(gameConfiguration)),
-					game
-				)
-			);
-		}
-
-		return bonus;
-	}
-
-	/**
-	 * @param {GameConfiguration} gameConfiguration
-	 * @returns {string}
-	 */
-	static randomBonusKey(gameConfiguration) {
 		let availableBonuses = this.availableBonuses();
 
 		if (gameConfiguration.overridesAvailableBonuses()) {
 			availableBonuses = gameConfiguration.availableBonuses();
 		}
 
-		let randomBonusKeyList = availableBonuses.concat(
-			[
-				BONUS_RANDOM
-			]
-		);
+		const bonus = this.fromClassName(Random.choice(availableBonuses), game);
 
-		if (gameConfiguration.overridesRandomBonusKeyList()) {
-			randomBonusKeyList = gameConfiguration.randomBonusKeyList();
+		if (bonus instanceof RandomBonus) {
+			let availableBonusesForRandom = this.availableBonusesForRandom();
+
+			if (gameConfiguration.overridesAvailableBonusesForRandom()) {
+				availableBonusesForRandom = gameConfiguration.availableBonusesForRandom();
+			}
+
+			bonus.setRandomBonus(this.fromClassName(Random.choice(availableBonusesForRandom), game));
 		}
 
-		return Random.choice(randomBonusKeyList);
+		return bonus;
 	}
 
 	/**
@@ -107,6 +100,8 @@ export default class BonusFactory {
 			BONUS_SMALL_BALL,
 			BONUS_BIG_BALL,
 			BONUS_INVISIBLE_BALL,
+			BONUS_LOW_GRAVITY,
+			BONUS_HIGH_GRAVITY,
 			BONUS_SMALL_MONSTER,
 			BONUS_BIG_MONSTER,
 			BONUS_BIG_JUMP_MONSTER,
@@ -116,6 +111,8 @@ export default class BonusFactory {
 			BONUS_REVERSE_MOVE_MONSTER,
 			BONUS_INVISIBLE_MONSTER,
 			BONUS_INVISIBLE_OPPONENT_MONSTER,
+			BONUS_INVINCIBLE_INSTANT_DEATH,
+			BONUS_POISON,
 			BONUS_REPELLENT,
 			BONUS_CLOUD,
 			BONUS_NO_JUMP_MONSTER,
@@ -123,7 +120,8 @@ export default class BonusFactory {
 			BONUS_CLOAKED_MONSTER,
 			BONUS_SHAPE_SHIFT,
 			BONUS_SMOKE_BOMB,
-			BONUS_NOTHING
+			BONUS_NOTHING,
+			BONUS_RANDOM
 		];
 	}
 
@@ -132,17 +130,31 @@ export default class BonusFactory {
 	 * @returns {Array.<string>}
 	 */
 	static availableBonusesForRandom(gameConfiguration) {
-		let availableBonuses = this.availableBonuses();
-
-		if (gameConfiguration.overridesAvailableBonuses()) {
-			availableBonuses = gameConfiguration.availableBonuses();
-		}
-
-		return availableBonuses.concat(
-			[
-				BONUS_INVINCIBLE_MONSTER
-			]
-		);
+		return [
+			BONUS_SMALL_BALL,
+			BONUS_BIG_BALL,
+			BONUS_INVISIBLE_BALL,
+			BONUS_LOW_GRAVITY,
+			BONUS_HIGH_GRAVITY,
+			BONUS_SMALL_MONSTER,
+			BONUS_BIG_MONSTER,
+			BONUS_BIG_JUMP_MONSTER,
+			BONUS_SLOW_MONSTER,
+			BONUS_FAST_MONSTER,
+			BONUS_FREEZE_MONSTER,
+			BONUS_REVERSE_MOVE_MONSTER,
+			BONUS_INVISIBLE_MONSTER,
+			BONUS_INVISIBLE_OPPONENT_MONSTER,
+			BONUS_POISON,
+			BONUS_REPELLENT,
+			BONUS_CLOUD,
+			BONUS_NO_JUMP_MONSTER,
+			BONUS_BOUNCE_MONSTER,
+			BONUS_CLOAKED_MONSTER,
+			BONUS_SHAPE_SHIFT,
+			BONUS_SMOKE_BOMB,
+			BONUS_INVINCIBLE_MONSTER,
+		];
 	}
 
 	/**
@@ -198,8 +210,18 @@ export default class BonusFactory {
 				return new SmokeBombBonus(game, bonusClass);
 			case BONUS_INSTANT_DEATH:
 				return new InstantDeathBonus(game, bonusClass);
+			case BONUS_INVINCIBLE_INSTANT_DEATH:
+				return new InvincibleInstantDeathBonus(game, bonusClass);
 			case BONUS_DRUNK_MONSTER:
 				return new DrunkMonsterBonus(game, bonusClass);
+			case BONUS_LOW_GRAVITY:
+				return new LowGravity(game, bonusClass);
+			case BONUS_HIGH_GRAVITY:
+				return new HighGravity(game, bonusClass);
+			case BONUS_POISON:
+				return new PoisonBonus(game, bonusClass);
+			case BONUS_CURE:
+				return new CureBonus(game, bonusClass);
 			case BONUS_NOTHING:
 				return new NothingBonus(game, bonusClass);
 			case BONUS_RANDOM:
@@ -212,7 +234,7 @@ export default class BonusFactory {
 	static fromData(data, game) {
 		const bonus = this.fromClassName(data.bonusClass, game);
 
-		if (bonus instanceof RandomBonus) {
+		if (bonus.hasRandomBonus()) {
 			bonus.setRandomBonus(this.fromClassName(data.randomBonusClass, game));
 		}
 

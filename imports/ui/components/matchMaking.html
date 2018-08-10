@@ -4,11 +4,27 @@
 			<h1>Select a game mode</h1>
 
 			<div class="match-making-body match-selection-items">
+				<div class="match-selection" data-action="select-mode-selection" data-mode-selection="1vsCPU">
+					<div class="match-selection-item match-selection-title">
+						<div>1 VS CPU</div>
+					</div>
+				</div>
+
 				<div class="match-selection" data-action="select-mode-selection" data-mode-selection="1vs1">
 					<div class="match-selection-item match-selection-title">
 						<div>1 VS 1</div>
-						<div class="currently-waiting-match-making {{#if hasPlayersWaiting '1vs1' null}}has-players-waiting-match-making{{/if}}">
+						<div class="currently-waiting-match-making {{#if hasPlayersWaiting '1vs1' null}}has-players-waiting-match-making{{/if}}" data-tooltip="{{playersWaiting '1vs1' null}}">
 							<div class="currently-waiting-match-making-number">{{numberOfPlayersWaiting "1vs1" null}}</div>
+							<i class="currently-waiting-match-making-icon fa fa-user-circle"></i>
+						</div>
+					</div>
+				</div>
+
+				<div class="match-selection" data-action="select-mode-selection" data-mode-selection="2vs2">
+					<div class="match-selection-item match-selection-title">
+						<div>2 VS 2</div>
+						<div class="currently-waiting-match-making {{#if hasPlayersWaiting '2vs2' null}}has-players-waiting-match-making{{/if}}" data-tooltip="{{playersWaiting '2vs2' null}}">
+							<div class="currently-waiting-match-making-number">{{numberOfPlayersWaiting "2vs2" null}}</div>
 							<i class="currently-waiting-match-making-icon fa fa-user-circle"></i>
 						</div>
 					</div>
@@ -20,7 +36,7 @@
 							<div class="card-cell card-title card-cell-ellipsis">
 								<div>
 									<div>{{name}}</div>
-									<div class="currently-waiting-match-making {{#if hasPlayersWaiting 'tournament' this._id}}has-players-waiting-match-making{{/if}}">
+									<div class="currently-waiting-match-making {{#if hasPlayersWaiting 'tournament' this._id}}has-players-waiting-match-making{{/if}}" data-tooltip="{{playersWaiting 'tournament' this._id}}">
 										<div class="currently-waiting-match-making-number">{{numberOfPlayersWaiting "tournament" this._id}}</div>
 										<i class="currently-waiting-match-making-icon fa fa-user-circle"></i>
 									</div>
@@ -42,10 +58,12 @@
 		{{#if showSelectedModeTitle}}
 			<h1 class="tournament-name">
 				<div>{{selectedMode}}</div>
-				<div class="currently-waiting-match-making {{#if hasPlayersWaiting modeSelection tournamentId}}has-players-waiting-match-making{{/if}}">
-					<div class="currently-waiting-match-making-number">{{numberOfPlayersWaiting modeSelection tournamentId}}</div>
-					<i class="currently-waiting-match-making-icon fa fa-user-circle"></i>
-				</div>
+				{{#if showCurrentWaitingForMode}}
+					<div class="currently-waiting-match-making {{#if hasPlayersWaiting modeSelection tournamentId}}has-players-waiting-match-making{{/if}}" data-tooltip="{{playersWaiting modeSelection tournamentId}}" data-tooltip-direction="s">
+						<div class="currently-waiting-match-making-number">{{numberOfPlayersWaiting modeSelection tournamentId}}</div>
+						<i class="currently-waiting-match-making-icon fa fa-user-circle"></i>
+					</div>
+				{{/if}}
 			</h1>
 			<p class="tournament-description">{{selectedTournamentDescription}}</p>
 		{{/if}}
@@ -66,7 +84,16 @@
 		{{/if}}
 
 		{{#if matchMakingStatus}}
-			<div class="match-making-status">{{matchMakingStatus}}</div>
+			<div class="match-making-status {{matchMakingStatusClass}}">{{matchMakingStatus}}</div>
+		{{/if}}
+
+		{{#if showListOfMatched}}
+			{{#each listOfMatched}}
+				<div class="matched-user matched-user-position-{{position}}">
+					{{name}}
+					<i class="matched-user-is-ready {{#if isReady}}matched-user-ready{{/if}} fa fa-check"></i>
+				</div>
+			{{/each}}
 		{{/if}}
 
 		{{#if showShare}}
@@ -94,9 +121,16 @@
 			{{#if showStartGame}}
 				<a href="#" data-action="start-game" class="button" {{startGameDisabling}}>Play!</a>
 			{{/if}}
+			{{#if showRetry}}
+				<a href="#" data-action="retry-match-making" class="button">Retry</a>
+			{{/if}}
 			{{#if showCancelMatchMaking}}
 				<a href="#" data-action="cancel-match-making" class="button cancel-button">Cancel</a>
 			{{/if}}
 		</div>
+
+		{{#if waitingForPlayersReady}}
+			<p>Waiting for all players to be ready...</p>
+		{{/if}}
 	</div>
 </template>

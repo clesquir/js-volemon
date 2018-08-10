@@ -11,6 +11,7 @@ import {resetDatabase} from 'meteor/xolvio:cleaner';
 describe('AchievementListener#BonusesInALifetime', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
+	const opponentUserId = Random.id(5);
 	const listener = (new BonusesInALifetime()).forGame(gameId, userId);
 	const assertBonusesInALifetimeUserAchievementNumberEquals = function(number) {
 		const achievement = UserAchievements.findOne();
@@ -26,7 +27,7 @@ describe('AchievementListener#BonusesInALifetime', function() {
 	});
 
 	it('creates achievement with 1 if not created on bonus caught', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
@@ -37,7 +38,7 @@ describe('AchievementListener#BonusesInALifetime', function() {
 	});
 
 	it('do not create achievement if not created if not gameId on bonus caught', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
@@ -46,7 +47,7 @@ describe('AchievementListener#BonusesInALifetime', function() {
 	});
 
 	it('do not create achievement if not created if player key is not the current user on bonus caught', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
@@ -55,7 +56,7 @@ describe('AchievementListener#BonusesInALifetime', function() {
 	});
 
 	it('increment achievement on bonus caught', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_BONUSES_IN_A_LIFETIME, number: 1});
 
@@ -65,7 +66,7 @@ describe('AchievementListener#BonusesInALifetime', function() {
 	});
 
 	it('do not increment achievement if not gameId on bonus caught', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_BONUSES_IN_A_LIFETIME, number: 1});
 
@@ -75,7 +76,7 @@ describe('AchievementListener#BonusesInALifetime', function() {
 	});
 
 	it('do not increment achievement if player key is not the current user on bonus caught', function() {
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_BONUSES_IN_A_LIFETIME, number: 1});
 

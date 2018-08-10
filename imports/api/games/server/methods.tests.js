@@ -1,51 +1,44 @@
-import {Meteor} from 'meteor/meteor';
-import {Random} from 'meteor/random';
-import {resetDatabase} from 'meteor/xolvio:cleaner';
-import {assert} from 'chai';
-import sinon from 'sinon';
-import PointTaken from '/imports/api/games/events/PointTaken.js';
-import PlayerWon from '/imports/api/games/events/PlayerWon.js';
-import PlayerLost from '/imports/api/games/events/PlayerLost.js';
-import GameForfeited from '/imports/api/games/events/GameForfeited.js';
-import GameFinished from '/imports/api/games/events/GameFinished.js';
+import {HOST_POINTS_COLUMN, ONE_VS_ONE_GAME_MODE} from '/imports/api/games/constants.js';
 import {EloScores} from '/imports/api/games/eloscores.js';
+import GameFinished from '/imports/api/games/events/GameFinished.js';
+import GameForfeited from '/imports/api/games/events/GameForfeited.js';
+import PlayerLost from '/imports/api/games/events/PlayerLost.js';
+import PlayerWon from '/imports/api/games/events/PlayerWon.js';
+import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import {HOST_POINTS_COLUMN} from '/imports/api/games/constants.js';
+import '/imports/api/games/server/methods.js';
 import {
+	GAME_STATUS_FINISHED,
 	GAME_STATUS_REGISTRATION,
 	GAME_STATUS_STARTED,
-	GAME_STATUS_FINISHED,
 	GAME_STATUS_TIMEOUT
 } from '/imports/api/games/statusConstants.js';
-import '/imports/api/games/server/methods.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
 import {EventPublisher} from '/imports/lib/EventPublisher.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
+import {assert} from 'chai';
+import {Meteor} from 'meteor/meteor';
+import {Random} from 'meteor/random';
+import {resetDatabase} from 'meteor/xolvio:cleaner';
+import sinon from 'sinon';
 
 describe('games/methods#leaveGame', function() {
-	const sandbox = sinon.sandbox.create();
 	const userId = Random.id(4);
 
 	beforeEach(function() {
 		resetDatabase();
-		sandbox.stub(Meteor, 'user').callsFake(function() {
-			return {_id: userId};
-		});
-	});
-
-	afterEach(function() {
-		sandbox.restore();
 	});
 
 	it('throws 404 if game does not exist', function(done) {
-		Meteor.call('leaveGame', Random.id(5), function(error) {
+		Meteor.call('leaveGame', Random.id(5), userId, function(error) {
 			try {
 				assert.isObject(error);
 				assert.propertyVal(error, 'error', 404);
 				assert.propertyVal(error, 'reason', 'Game not found');
 			} catch (exception) {
 				done(exception);
+				return;
 			}
 			done();
 		});
@@ -55,13 +48,14 @@ describe('games/methods#leaveGame', function() {
 		const gameId = Random.id(5);
 		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED});
 
-		Meteor.call('leaveGame', gameId, function(error) {
+		Meteor.call('leaveGame', gameId, userId, function(error) {
 			try {
 				assert.isObject(error);
 				assert.propertyVal(error, 'error', 'not-allowed');
 				assert.propertyVal(error, 'reason', 'Game already started');
 			} catch(exception) {
 				done(exception);
+				return;
 			}
 			done();
 		});
@@ -71,13 +65,14 @@ describe('games/methods#leaveGame', function() {
 		const gameId = Random.id(5);
 		Games.insert({_id: gameId, status: GAME_STATUS_REGISTRATION});
 
-		Meteor.call('leaveGame', gameId, function(error) {
+		Meteor.call('leaveGame', gameId, userId, function(error) {
 			try {
 				assert.isObject(error);
 				assert.propertyVal(error, 'error', 404);
 				assert.propertyVal(error, 'reason', 'Player not found');
 			} catch (exception) {
 				done(exception);
+				return;
 			}
 			done();
 		});
@@ -85,17 +80,26 @@ describe('games/methods#leaveGame', function() {
 
 	it('removes player if player is not game creator', function(done) {
 		const gameId = Random.id(5);
-		const creatorPlayerId = '1';
+		const creatorPlayerId = Random.id(5);
+		const clientPlayerId = Random.id(5);
 
-		Games.insert({_id: gameId, status: GAME_STATUS_REGISTRATION, createdBy: creatorPlayerId});
-		Players.insert({_id: '2', gameId: gameId, userId: userId});
-		Players.insert({_id: creatorPlayerId, gameId: gameId, userId: 1});
+		Games.insert({
+			_id: gameId,
+			status: GAME_STATUS_REGISTRATION,
+			createdBy: creatorPlayerId,
+			players: [{id: creatorPlayerId, name: ''}, {id: clientPlayerId, name: ''}]
+		});
+		Players.insert({_id: clientPlayerId, gameId: gameId, userId: clientPlayerId});
+		Players.insert({_id: creatorPlayerId, gameId: gameId, userId: creatorPlayerId});
 
-		Meteor.call('leaveGame', gameId, function(error) {
+		Meteor.call('leaveGame', gameId, clientPlayerId, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 
-				assert.equal(Games.find().count(), 1);
+				const game = Games.findOne(gameId);
+				assert.isNotNull(game);
+				assert.deepEqual([{id: creatorPlayerId, name: ''}], game.players);
+
 				let players = Players.find();
 				assert.equal(players.count(), 1);
 
@@ -104,6 +108,7 @@ describe('games/methods#leaveGame', function() {
 				});
 			} catch(exception) {
 				done(exception);
+				return;
 			}
 			done();
 		});
@@ -124,7 +129,7 @@ describe('games/methods#leaveGame', function() {
 		Players.insert({_id: creatorPlayerId, gameId: notRelatedGameId, userId: userId});
 		Players.insert({_id: '4', gameId: notRelatedGameId, userId: 1});
 
-		Meteor.call('leaveGame', gameId, function(error) {
+		Meteor.call('leaveGame', gameId, userId, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 
@@ -148,18 +153,12 @@ describe('games/methods#leaveGame', function() {
 });
 
 describe('GameMethods#quitGame', function() {
-	const sandbox = sinon.sandbox.create();
+	const sandbox = sinon.createSandbox();
 	const gameId = Random.id(5);
 	const userId1 = Random.id(5);
 	const userId2 = Random.id(5);
 	const playerId1 = Random.id(5);
 	const playerId2 = Random.id(5);
-
-	const stubUser = function(userId) {
-		sandbox.stub(Meteor, 'user').callsFake(function() {
-			return {_id: userId};
-		});
-	};
 
 	beforeEach(function() {
 		resetDatabase();
@@ -170,8 +169,7 @@ describe('GameMethods#quitGame', function() {
 	});
 
 	it('does not throw exception if game does not exist', function(done) {
-		stubUser(userId1);
-		Meteor.call('quitGame', Random.id(5), function(error) {
+		Meteor.call('quitGame', Random.id(5), userId1, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 			} catch(exception) {
@@ -184,8 +182,7 @@ describe('GameMethods#quitGame', function() {
 	it('does not throw exception if player does not exist', function(done) {
 		Games.insert({_id: gameId, status: GAME_STATUS_TIMEOUT});
 
-		stubUser(userId1);
-		Meteor.call('quitGame', gameId, function(error) {
+		Meteor.call('quitGame', gameId, userId1, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 			} catch(exception) {
@@ -202,8 +199,7 @@ describe('GameMethods#quitGame', function() {
 		let meteorCallSpy = sandbox.spy(Meteor, 'call');
 		meteorCallSpy.withArgs('leaveGame');
 
-		stubUser(userId1);
-		Meteor.call('quitGame', gameId, function(error) {
+		Meteor.call('quitGame', gameId, userId1, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 				assert.isTrue(meteorCallSpy.withArgs('leaveGame').calledOnce);
@@ -218,8 +214,7 @@ describe('GameMethods#quitGame', function() {
 		Games.insert({_id: gameId, status: GAME_STATUS_FINISHED});
 		Players.insert({_id: playerId1, gameId: gameId, userId: userId1, hasQuit: false});
 
-		stubUser(userId1);
-		Meteor.call('quitGame', gameId, function(error) {
+		Meteor.call('quitGame', gameId, userId1, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 
@@ -242,8 +237,7 @@ describe('GameMethods#quitGame', function() {
 		Games.insert({_id: gameId, status: GAME_STATUS_TIMEOUT});
 		Players.insert({_id: playerId1, gameId: gameId, userId: userId1, hasQuit: false});
 
-		stubUser(userId1);
-		Meteor.call('quitGame', gameId, function(error) {
+		Meteor.call('quitGame', gameId, userId1, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 
@@ -266,8 +260,7 @@ describe('GameMethods#quitGame', function() {
 		Games.insert({_id: gameId, status: GAME_STATUS_STARTED});
 		Players.insert({_id: Random.id(5), gameId: gameId, userId: userId1, hasQuit: false});
 
-		stubUser(userId1);
-		Meteor.call('quitGame', gameId, function(error) {
+		Meteor.call('quitGame', gameId, userId1, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 
@@ -291,8 +284,8 @@ describe('GameMethods#quitGame', function() {
 		Games.insert({
 			_id: gameId,
 			createdBy: userId1,
-			hostId: userId1,
-			clientId: userId2,
+			gameMode: ONE_VS_ONE_GAME_MODE,
+			players: [{id: userId1}, {id: userId2}],
 			status: GAME_STATUS_STARTED,
 			hostPoints: 3,
 			clientPoints: 0,
@@ -306,8 +299,7 @@ describe('GameMethods#quitGame', function() {
 		Profiles.insert({userId: userId1, numberOfWin: 0, numberOfLost: 0});
 		Profiles.insert({userId: userId2, numberOfWin: 0, numberOfLost: 0});
 
-		stubUser(userId1);
-		Meteor.call('quitGame', gameId, function(error) {
+		Meteor.call('quitGame', gameId, userId1, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 
@@ -320,6 +312,7 @@ describe('GameMethods#quitGame', function() {
 				assert.equal(1, clientProfile.numberOfWin);
 			} catch(exception) {
 				done(exception);
+				return;
 			}
 			done();
 		});
@@ -329,8 +322,8 @@ describe('GameMethods#quitGame', function() {
 		Games.insert({
 			_id: gameId,
 			createdBy: userId1,
-			hostId: userId1,
-			clientId: userId2,
+			gameMode: ONE_VS_ONE_GAME_MODE,
+			players: [{id: userId1}, {id: userId2}],
 			status: GAME_STATUS_STARTED,
 			hostPoints: 0,
 			clientPoints: 3,
@@ -344,8 +337,7 @@ describe('GameMethods#quitGame', function() {
 		Profiles.insert({userId: userId1, numberOfWin: 0, numberOfLost: 0});
 		Profiles.insert({userId: userId2, numberOfWin: 0, numberOfLost: 0});
 
-		stubUser(userId1);
-		Meteor.call('quitGame', gameId, function(error) {
+		Meteor.call('quitGame', gameId, userId1, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 
@@ -358,6 +350,7 @@ describe('GameMethods#quitGame', function() {
 				assert.equal(1, clientProfile.numberOfWin);
 			} catch(exception) {
 				done(exception);
+				return;
 			}
 			done();
 		});
@@ -367,8 +360,8 @@ describe('GameMethods#quitGame', function() {
 		Games.insert({
 			_id: gameId,
 			createdBy: userId1,
-			hostId: userId1,
-			clientId: userId2,
+			gameMode: ONE_VS_ONE_GAME_MODE,
+			players: [{id: userId1}, {id: userId2}],
 			status: GAME_STATUS_STARTED,
 			hostPoints: 3,
 			clientPoints: 0,
@@ -382,8 +375,7 @@ describe('GameMethods#quitGame', function() {
 		Profiles.insert({userId: userId1, numberOfWin: 0, numberOfLost: 0});
 		Profiles.insert({userId: userId2, numberOfWin: 0, numberOfLost: 0});
 
-		stubUser(userId2);
-		Meteor.call('quitGame', gameId, function(error) {
+		Meteor.call('quitGame', gameId, userId2, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 
@@ -396,6 +388,7 @@ describe('GameMethods#quitGame', function() {
 				assert.equal(1, clientProfile.numberOfLost);
 			} catch(exception) {
 				done(exception);
+				return;
 			}
 			done();
 		});
@@ -405,8 +398,8 @@ describe('GameMethods#quitGame', function() {
 		Games.insert({
 			_id: gameId,
 			createdBy: userId1,
-			hostId: userId1,
-			clientId: userId2,
+			gameMode: ONE_VS_ONE_GAME_MODE,
+			players: [{id: userId1}, {id: userId2}],
 			status: GAME_STATUS_STARTED,
 			hostPoints: 0,
 			clientPoints: 3,
@@ -420,8 +413,7 @@ describe('GameMethods#quitGame', function() {
 		Profiles.insert({userId: userId1, numberOfWin: 0, numberOfLost: 0});
 		Profiles.insert({userId: userId2, numberOfWin: 0, numberOfLost: 0});
 
-		stubUser(userId2);
-		Meteor.call('quitGame', gameId, function(error) {
+		Meteor.call('quitGame', gameId, userId2, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 
@@ -434,6 +426,7 @@ describe('GameMethods#quitGame', function() {
 				assert.equal(1, clientProfile.numberOfLost);
 			} catch(exception) {
 				done(exception);
+				return;
 			}
 			done();
 		});
@@ -443,8 +436,8 @@ describe('GameMethods#quitGame', function() {
 		Games.insert({
 			_id: gameId,
 			createdBy: userId1,
-			hostId: userId1,
-			clientId: userId2,
+			gameMode: ONE_VS_ONE_GAME_MODE,
+			players: [{id: userId1}, {id: userId2}],
 			status: GAME_STATUS_STARTED,
 			hostPoints: 4,
 			clientPoints: 0,
@@ -458,8 +451,7 @@ describe('GameMethods#quitGame', function() {
 		Profiles.insert({userId: userId1, eloRating: 1000});
 		Profiles.insert({userId: userId2, eloRating: 1000});
 
-		stubUser(userId1);
-		Meteor.call('quitGame', gameId, function(error) {
+		Meteor.call('quitGame', gameId, userId1, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 
@@ -480,6 +472,7 @@ describe('GameMethods#quitGame', function() {
 				assert.equal(1, clientEloScores.count());
 			} catch(exception) {
 				done(exception);
+				return;
 			}
 			done();
 		});
@@ -489,8 +482,8 @@ describe('GameMethods#quitGame', function() {
 		Games.insert({
 			_id: gameId,
 			createdBy: userId1,
-			hostId: userId1,
-			clientId: userId2,
+			gameMode: ONE_VS_ONE_GAME_MODE,
+			players: [{id: userId1}, {id: userId2}],
 			status: GAME_STATUS_STARTED,
 			hostPoints: 4,
 			clientPoints: 0,
@@ -504,8 +497,7 @@ describe('GameMethods#quitGame', function() {
 		Profiles.insert({userId: userId1, eloRating: 1000});
 		Profiles.insert({userId: userId2, eloRating: 1000});
 
-		stubUser(userId2);
-		Meteor.call('quitGame', gameId, function(error) {
+		Meteor.call('quitGame', gameId, userId2, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 
@@ -526,6 +518,7 @@ describe('GameMethods#quitGame', function() {
 				assert.equal(1, clientEloScores.count());
 			} catch(exception) {
 				done(exception);
+				return;
 			}
 			done();
 		});
@@ -535,8 +528,8 @@ describe('GameMethods#quitGame', function() {
 		Games.insert({
 			_id: gameId,
 			createdBy: userId1,
-			hostId: userId1,
-			clientId: userId2,
+			gameMode: ONE_VS_ONE_GAME_MODE,
+			players: [{id: userId1}, {id: userId2}],
 			status: GAME_STATUS_STARTED,
 			hostPoints: 4,
 			clientPoints: 0,
@@ -559,8 +552,7 @@ describe('GameMethods#quitGame', function() {
 		EventPublisher.on(GameFinished.prototype.constructor.name, function() {gameFinishedCalled = true;}, this);
 		EventPublisher.on(GameForfeited.prototype.constructor.name, function() {gameForfeitedCalled = true;}, this);
 
-		stubUser(userId1);
-		Meteor.call('quitGame', gameId, function(error) {
+		Meteor.call('quitGame', gameId, userId1, function(error) {
 			try {
 				assert.isUndefined(error, error ? error.reason : null);
 
@@ -570,6 +562,7 @@ describe('GameMethods#quitGame', function() {
 				assert.isTrue(gameForfeitedCalled);
 			} catch(exception) {
 				done(exception);
+				return;
 			}
 			done();
 		});
@@ -601,6 +594,7 @@ describe('GameMethods#removeTimeoutPlayersAndGames', function() {
 				});
 			} catch(exception) {
 				done(exception);
+				return;
 			}
 			done();
 		});
@@ -626,6 +620,7 @@ describe('GameMethods#removeTimeoutPlayersAndGames', function() {
 				});
 			} catch(exception) {
 				done(exception);
+				return;
 			}
 			done();
 		});
@@ -659,6 +654,7 @@ describe('GameMethods#removeTimeoutPlayersAndGames', function() {
 				});
 			} catch(exception) {
 				done(exception);
+				return;
 			}
 			done();
 		});
@@ -680,8 +676,8 @@ describe('GameMethods#addGamePoints', function() {
 		Games.insert({
 			_id: gameId,
 			createdBy: userId1,
-			hostId: userId1,
-			clientId: userId2,
+			gameMode: ONE_VS_ONE_GAME_MODE,
+			players: [{id: userId1}, {id: userId2}],
 			status: GAME_STATUS_STARTED,
 			hostPoints: 4,
 			clientPoints: 0,
@@ -710,6 +706,7 @@ describe('GameMethods#addGamePoints', function() {
 				assert.equal(1, clientProfile.numberOfShutoutLosses);
 			} catch(exception) {
 				done(exception);
+				return;
 			}
 			done();
 		});
@@ -719,8 +716,8 @@ describe('GameMethods#addGamePoints', function() {
 		Games.insert({
 			_id: gameId,
 			createdBy: userId1,
-			hostId: userId1,
-			clientId: userId2,
+			gameMode: ONE_VS_ONE_GAME_MODE,
+			players: [{id: userId1}, {id: userId2}],
 			status: GAME_STATUS_STARTED,
 			hostPoints: 4,
 			clientPoints: 0,
@@ -755,6 +752,7 @@ describe('GameMethods#addGamePoints', function() {
 				assert.equal(1, clientEloScores.count());
 			} catch(exception) {
 				done(exception);
+				return;
 			}
 			done();
 		});
@@ -764,8 +762,8 @@ describe('GameMethods#addGamePoints', function() {
 		Games.insert({
 			_id: gameId,
 			createdBy: userId1,
-			hostId: userId1,
-			clientId: userId2,
+			gameMode: ONE_VS_ONE_GAME_MODE,
+			players: [{id: userId1}, {id: userId2}],
 			status: GAME_STATUS_STARTED,
 			hostPoints: 4,
 			clientPoints: 0,
@@ -798,6 +796,7 @@ describe('GameMethods#addGamePoints', function() {
 				assert.isTrue(gameFinishedCalled);
 			} catch(exception) {
 				done(exception);
+				return;
 			}
 			done();
 		});

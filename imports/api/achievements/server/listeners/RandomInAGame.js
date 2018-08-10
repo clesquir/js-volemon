@@ -7,7 +7,7 @@ export default class RandomInAGame extends GameListener {
 	allowedForTournamentGame() {
 		const tournamentMode = this.tournamentMode();
 
-		return !tournamentMode.overridesRandomBonusKeyList();
+		return !tournamentMode.overridesAvailableBonuses() || tournamentMode.availableBonuses().length > 1;
 	}
 
 	addListeners() {

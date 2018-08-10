@@ -16,17 +16,6 @@ export default class CatchMeIfYouCan extends Classic {
 		];
 	}
 
-	overridesRandomBonusKeyList() {
-		return true;
-	}
-
-	randomBonusKeyList() {
-		return [
-			BONUS_FREEZE_MONSTER,
-			BONUS_FAST_MONSTER
-		];
-	}
-
 	overridesBonusSpawnInitialMinimumFrequence() {
 		return true;
 	}

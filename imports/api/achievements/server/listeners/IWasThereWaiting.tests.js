@@ -30,7 +30,7 @@ describe('AchievementListener#IWasThereWaiting', function() {
 
 	it('increment if current player is paused, point is scored by user and user is host', function() {
 		const listener = (new IWasThereWaiting()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
@@ -45,7 +45,7 @@ describe('AchievementListener#IWasThereWaiting', function() {
 
 	it('increment if current player is paused, point is scored by user and user is client', function() {
 		const listener = (new IWasThereWaiting()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: opponentUserId});
+		Games.insert({_id: gameId, createdBy: opponentUserId, players: [{id: opponentUserId}, {id: userId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
@@ -60,7 +60,7 @@ describe('AchievementListener#IWasThereWaiting', function() {
 
 	it('do not increment if current player is paused, point is scored by opponent and user is host', function() {
 		const listener = (new IWasThereWaiting()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
@@ -73,7 +73,7 @@ describe('AchievementListener#IWasThereWaiting', function() {
 
 	it('do not increment if current player is paused, point is scored by opponent and user is client', function() {
 		const listener = (new IWasThereWaiting()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: opponentUserId});
+		Games.insert({_id: gameId, createdBy: opponentUserId, players: [{id: opponentUserId}, {id: userId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
@@ -86,7 +86,7 @@ describe('AchievementListener#IWasThereWaiting', function() {
 
 	it('do not increment if current player is not paused, point is scored by user and user is host', function() {
 		const listener = (new IWasThereWaiting()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
@@ -99,7 +99,7 @@ describe('AchievementListener#IWasThereWaiting', function() {
 
 	it('do not increment if current player is not paused, point is scored by user and user is client', function() {
 		const listener = (new IWasThereWaiting()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: opponentUserId});
+		Games.insert({_id: gameId, createdBy: opponentUserId, players: [{id: opponentUserId}, {id: userId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
@@ -112,7 +112,7 @@ describe('AchievementListener#IWasThereWaiting', function() {
 
 	it('do not increment if current player has caught paused in the point but is not anymore, point is scored by user and user is host', function() {
 		const listener = (new IWasThereWaiting()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
@@ -126,7 +126,7 @@ describe('AchievementListener#IWasThereWaiting', function() {
 
 	it('do not increment if current player has caught paused in the point but is not anymore, point is scored by user and user is client', function() {
 		const listener = (new IWasThereWaiting()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: opponentUserId});
+		Games.insert({_id: gameId, createdBy: opponentUserId, players: [{id: opponentUserId}, {id: userId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
@@ -140,7 +140,7 @@ describe('AchievementListener#IWasThereWaiting', function() {
 
 	it('do not increment if current player has caught paused but a point was taken since, point is scored by user and user is host', function() {
 		const listener = (new IWasThereWaiting()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 
@@ -159,7 +159,7 @@ describe('AchievementListener#IWasThereWaiting', function() {
 
 	it('do not increment if current player has caught paused but a point was taken since, point is scored by user and user is client', function() {
 		const listener = (new IWasThereWaiting()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: opponentUserId});
+		Games.insert({_id: gameId, createdBy: opponentUserId, players: [{id: opponentUserId}, {id: userId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 

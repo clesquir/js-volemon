@@ -14,7 +14,7 @@ export default class NumberOfShutouts {
 				numberOfShutoutLosses += tournamentProfile.numberOfShutoutLosses;
 			}
 		} else {
-			const profile = Profiles.findOne({userId: userId, tournamentId: tournamentId});
+			const profile = Profiles.findOne({userId: userId});
 
 			if (profile) {
 				numberOfShutouts += profile.numberOfShutouts;

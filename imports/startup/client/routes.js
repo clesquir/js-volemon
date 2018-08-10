@@ -1,11 +1,11 @@
 import {GameController} from '/imports/startup/client/controllers/GameController.js';
 import {GamesController} from '/imports/startup/client/controllers/GamesController.js';
 import {HomeController} from '/imports/startup/client/controllers/HomeController.js';
+import {MatchMakingController} from '/imports/startup/client/controllers/MatchMakingController.js';
 import {RankController} from '/imports/startup/client/controllers/RankController.js';
 import {TournamentController} from '/imports/startup/client/controllers/TournamentController.js';
 import {TournamentGameController} from '/imports/startup/client/controllers/TournamentGameController.js';
 import {TournamentsController} from '/imports/startup/client/controllers/TournamentsController.js';
-import {MatchMakingController} from '/imports/startup/client/controllers/MatchMakingController.js';
 import {TournamentUserProfileController} from '/imports/startup/client/controllers/TournamentUserProfileController.js';
 import {UserProfileController} from '/imports/startup/client/controllers/UserProfileController.js';
 import {UserSettingsController} from '/imports/startup/client/controllers/UserSettingsController.js';
@@ -13,13 +13,15 @@ import {UserSettingsController} from '/imports/startup/client/controllers/UserSe
 import '/imports/ui/components/lightbox.js';
 import '/imports/ui/components/loading.js';
 import '/imports/ui/components/matchMaking.js';
+import '/imports/ui/components/noInternetConnection.js';
 import '/imports/ui/components/shapeSelector.js';
 import '/imports/ui/components/switchButton.js';
-import '/imports/ui/components/noInternetConnection.js';
 
 import '/imports/ui/pages/app.js';
+import '/imports/ui/pages/dev/ai.js';
 import '/imports/ui/pages/dev/environment.js';
 import '/imports/ui/pages/dev/shape.js';
+import '/imports/ui/pages/dev/skin.js';
 import '/imports/ui/pages/game.js';
 import '/imports/ui/pages/games.js';
 import '/imports/ui/pages/help.js';
@@ -53,6 +55,7 @@ import '/imports/ui/views/recentGames.js';
 import '/imports/ui/views/statistics.js';
 import '/imports/ui/views/userProfileComponent.js';
 import {Router} from 'meteor/iron:router';
+import {Tooltips} from 'meteor/lookback:tooltips';
 import {Meteor} from 'meteor/meteor';
 
 Router.configure({
@@ -67,6 +70,10 @@ Router.configure({
 			Meteor.subscribe('userAchievements', Meteor.userId()),
 			Meteor.subscribe('skins')
 		];
+	},
+	onBeforeAction: function() {
+		Tooltips.hide();
+		this.next();
 	}
 });
 
@@ -83,11 +90,17 @@ Router.map(function() {
 
 	//This is use for various game environment tests
 	if (Meteor.isDevelopment) {
+		this.route('ai', {
+			path: '/dev/ai'
+		});
 		this.route('environment', {
 			path: '/dev/environment'
 		});
 		this.route('shape', {
 			path: '/dev/shape'
+		});
+		this.route('skin', {
+			path: '/dev/skin'
 		});
 	}
 

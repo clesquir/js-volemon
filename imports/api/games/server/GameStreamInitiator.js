@@ -1,4 +1,7 @@
 import {startKeepAlive} from '/imports/api/games/server/keepAlive.js';
+import PlayerKilled from '/imports/api/games/events/PlayerKilled.js';
+import {Meteor} from 'meteor/meteor';
+import {EventPublisher} from '/imports/lib/EventPublisher.js';
 
 export default class GameStreamInitiator {
 
@@ -15,9 +18,13 @@ export default class GameStreamInitiator {
 		this.stream.connect(this.gameId);
 		this.stream.broadcastOnEvent('showBallHitPoint-' + this.gameId);
 		this.stream.broadcastOnEvent('activateBonus-' + this.gameId);
+		this.stream.broadcastOnEvent('killPlayer-' + this.gameId);
 		this.stream.broadcastOnEvent('sendBundledData-' + this.gameId);
 		this.stream.broadcastOnEvent('reaction-' + this.gameId);
 		this.stream.broadcastOnEvent('cheer-' + this.gameId);
+		this.stream.on('killPlayer-' + this.gameId, (data) => {
+			EventPublisher.publish(new PlayerKilled(this.gameId, data.playerKey, data.killedAt));
+		});
 	}
 
 	start() {
@@ -30,6 +37,7 @@ export default class GameStreamInitiator {
 		this.stream.off('reaction-' + this.gameId);
 		this.stream.off('sendBundledData-' + this.gameId);
 		this.stream.off('activateBonus-' + this.gameId);
+		this.stream.off('killPlayer-' + this.gameId);
 		this.stream.off('showBallHitPoint-' + this.gameId);
 		this.stream.disconnect(this.gameId);
 	}

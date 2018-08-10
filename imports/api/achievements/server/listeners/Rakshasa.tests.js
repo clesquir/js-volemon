@@ -47,7 +47,7 @@ describe('AchievementListener#Rakshasa', function() {
 
 	it('add achievement if none on caught all shapes', function() {
 		const listener = (new Rakshasa()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId, shape: 'a'});
 		Players.insert({gameId: gameId, userId: opponentUserId, shape: 'a'});
 		stubListOfShapes(listener, ['a', 'b', 'c']);
@@ -63,7 +63,7 @@ describe('AchievementListener#Rakshasa', function() {
 
 	it('do not add achievement if different gameId', function() {
 		const listener = (new Rakshasa()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId, shape: 'a'});
 		Players.insert({gameId: gameId, userId: opponentUserId, shape: 'a'});
 		stubListOfShapes(listener, ['a', 'b']);
@@ -77,7 +77,7 @@ describe('AchievementListener#Rakshasa', function() {
 
 	it('do not add achievement if different player', function() {
 		const listener = (new Rakshasa()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId, shape: 'a'});
 		Players.insert({gameId: gameId, userId: opponentUserId, shape: 'a'});
 		stubListOfShapes(listener, ['a', 'b']);
@@ -91,7 +91,7 @@ describe('AchievementListener#Rakshasa', function() {
 
 	it('do not increment achievement if same shape shift twice but not all', function() {
 		const listener = (new Rakshasa()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId, shape: 'a'});
 		stubListOfShapes(listener, ['a', 'b']);
 

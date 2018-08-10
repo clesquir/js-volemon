@@ -27,4 +27,8 @@ $header-border-bottom-color: #89bdd3;
 $header-logo-color: #3b7a95;
 
 $host-color: #c94141;
+$host-primary-color: darken($host-color, 10%);
+$host-second-color: lighten($host-color, 10%);
 $client-color: #3363a1;
+$client-primary-color: darken($client-color, 10%);
+$client-second-color: lighten($client-color, 10%);

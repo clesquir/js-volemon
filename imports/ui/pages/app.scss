@@ -228,8 +228,14 @@ $small-logo-height: 25px;
 }
 
 .clickable-link {
-	text-decoration: underline;
+	$link-color: darken($header-logo-color, 5%);
+	color: $link-color;
 	cursor: pointer;
+	transition: all 100ms linear;
+
+	&:hover {
+		color: lighten($link-color, 10%);
+	}
 }
 
 .button + .button {

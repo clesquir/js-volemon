@@ -1,33 +1,10 @@
 {
-  "frames": {
-    "big-ball": {
+  "frames": [
+    {
+      "filename": "big-ball",
       "frame": {
         "x": 1,
         "y": 1,
-        "w": 32,
-        "h": 32
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 1,
-        "y": 1,
-        "w": 32,
-        "h": 32
-      },
-      "sourceSize": {
-        "w": 34,
-        "h": 34
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "big-jump-monster": {
-      "frame": {
-        "x": 1,
-        "y": 35,
         "w": 34,
         "h": 34
       },
@@ -48,10 +25,11 @@
         "y": 0.5
       }
     },
-    "big-monster": {
+    {
+      "filename": "big-jump-monster",
       "frame": {
         "x": 1,
-        "y": 71,
+        "y": 37,
         "w": 34,
         "h": 34
       },
@@ -72,7 +50,8 @@
         "y": 0.5
       }
     },
-    "bonus-repellent": {
+    {
+      "filename": "big-monster",
       "frame": {
         "x": 37,
         "y": 1,
@@ -96,10 +75,11 @@
         "y": 0.5
       }
     },
-    "bounce-monster": {
+    {
+      "filename": "bonus-repellent",
       "frame": {
         "x": 1,
-        "y": 107,
+        "y": 73,
         "w": 34,
         "h": 34
       },
@@ -120,7 +100,8 @@
         "y": 0.5
       }
     },
-    "cloaked-monster": {
+    {
+      "filename": "bounce-monster",
       "frame": {
         "x": 37,
         "y": 37,
@@ -144,34 +125,11 @@
         "y": 0.5
       }
     },
-    "cloud": {
+    {
+      "filename": "cloaked-monster",
       "frame": {
         "x": 73,
         "y": 1,
-        "w": 32,
-        "h": 32
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 1,
-        "y": 1,
-        "w": 32,
-        "h": 32
-      },
-      "sourceSize": {
-        "w": 34,
-        "h": 34
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "drunk-monster": {
-      "frame": {
-        "x": 1,
-        "y": 143,
         "w": 34,
         "h": 34
       },
@@ -192,7 +150,33 @@
         "y": 0.5
       }
     },
-    "fast-monster": {
+    {
+      "filename": "cloud",
+      "frame": {
+        "x": 1,
+        "y": 109,
+        "w": 34,
+        "h": 34
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 34
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "cure",
       "frame": {
         "x": 37,
         "y": 73,
@@ -216,10 +200,11 @@
         "y": 0.5
       }
     },
-    "freeze-monster": {
+    {
+      "filename": "drunk-monster",
       "frame": {
         "x": 73,
-        "y": 35,
+        "y": 37,
         "w": 34,
         "h": 34
       },
@@ -240,10 +225,36 @@
         "y": 0.5
       }
     },
-    "instant-death": {
+    {
+      "filename": "fast-monster",
+      "frame": {
+        "x": 109,
+        "y": 1,
+        "w": 34,
+        "h": 34
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 34
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "freeze-monster",
       "frame": {
         "x": 1,
-        "y": 179,
+        "y": 145,
         "w": 34,
         "h": 34
       },
@@ -264,7 +275,8 @@
         "y": 0.5
       }
     },
-    "invincible-monster": {
+    {
+      "filename": "high-gravity",
       "frame": {
         "x": 37,
         "y": 109,
@@ -288,20 +300,21 @@
         "y": 0.5
       }
     },
-    "invisible-ball": {
+    {
+      "filename": "instant-death",
       "frame": {
         "x": 73,
-        "y": 71,
-        "w": 32,
-        "h": 32
+        "y": 73,
+        "w": 34,
+        "h": 34
       },
       "rotated": false,
-      "trimmed": true,
+      "trimmed": false,
       "spriteSourceSize": {
-        "x": 1,
-        "y": 1,
-        "w": 32,
-        "h": 32
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 34
       },
       "sourceSize": {
         "w": 34,
@@ -312,9 +325,35 @@
         "y": 0.5
       }
     },
-    "invisible-monster": {
+    {
+      "filename": "invincible-instant-death",
       "frame": {
         "x": 109,
+        "y": 37,
+        "w": 34,
+        "h": 34
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 34
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "invincible-monster",
+      "frame": {
+        "x": 145,
         "y": 1,
         "w": 34,
         "h": 34
@@ -336,10 +375,11 @@
         "y": 0.5
       }
     },
-    "invisible-opponent-monster": {
+    {
+      "filename": "invisible-ball",
       "frame": {
         "x": 1,
-        "y": 215,
+        "y": 181,
         "w": 34,
         "h": 34
       },
@@ -360,7 +400,8 @@
         "y": 0.5
       }
     },
-    "junk-food-monster": {
+    {
+      "filename": "invisible-monster",
       "frame": {
         "x": 37,
         "y": 145,
@@ -384,10 +425,11 @@
         "y": 0.5
       }
     },
-    "no-jump-monster": {
+    {
+      "filename": "invisible-opponent-monster",
       "frame": {
         "x": 73,
-        "y": 105,
+        "y": 109,
         "w": 34,
         "h": 34
       },
@@ -408,58 +450,11 @@
         "y": 0.5
       }
     },
-    "nothing": {
+    {
+      "filename": "junk-food-monster",
       "frame": {
         "x": 109,
-        "y": 37,
-        "w": 32,
-        "h": 32
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 1,
-        "y": 1,
-        "w": 32,
-        "h": 32
-      },
-      "sourceSize": {
-        "w": 34,
-        "h": 34
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "random": {
-      "frame": {
-        "x": 145,
-        "y": 1,
-        "w": 32,
-        "h": 32
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 1,
-        "y": 1,
-        "w": 32,
-        "h": 32
-      },
-      "sourceSize": {
-        "w": 34,
-        "h": 34
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "reverse-move-monster": {
-      "frame": {
-        "x": 1,
-        "y": 251,
+        "y": 73,
         "w": 34,
         "h": 34
       },
@@ -480,7 +475,83 @@
         "y": 0.5
       }
     },
-    "shape-shift-monster": {
+    {
+      "filename": "low-gravity",
+      "frame": {
+        "x": 145,
+        "y": 37,
+        "w": 34,
+        "h": 34
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 34
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "no-jump-monster",
+      "frame": {
+        "x": 181,
+        "y": 1,
+        "w": 34,
+        "h": 34
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 34
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "nothing",
+      "frame": {
+        "x": 1,
+        "y": 217,
+        "w": 34,
+        "h": 34
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 34
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "poison",
       "frame": {
         "x": 37,
         "y": 181,
@@ -504,10 +575,11 @@
         "y": 0.5
       }
     },
-    "slow-monster": {
+    {
+      "filename": "random",
       "frame": {
         "x": 73,
-        "y": 141,
+        "y": 145,
         "w": 34,
         "h": 34
       },
@@ -528,20 +600,21 @@
         "y": 0.5
       }
     },
-    "small-ball": {
+    {
+      "filename": "reverse-move-monster",
       "frame": {
-        "x": 107,
-        "y": 71,
-        "w": 32,
-        "h": 32
+        "x": 109,
+        "y": 109,
+        "w": 34,
+        "h": 34
       },
       "rotated": false,
-      "trimmed": true,
+      "trimmed": false,
       "spriteSourceSize": {
-        "x": 1,
-        "y": 1,
-        "w": 32,
-        "h": 32
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 34
       },
       "sourceSize": {
         "w": 34,
@@ -552,9 +625,35 @@
         "y": 0.5
       }
     },
-    "small-monster": {
+    {
+      "filename": "shape-shift-monster",
       "frame": {
-        "x": 143,
+        "x": 145,
+        "y": 73,
+        "w": 34,
+        "h": 34
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 34
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "slow-monster",
+      "frame": {
+        "x": 181,
         "y": 37,
         "w": 34,
         "h": 34
@@ -576,20 +675,21 @@
         "y": 0.5
       }
     },
-    "smoke-bomb": {
+    {
+      "filename": "small-ball",
       "frame": {
-        "x": 179,
+        "x": 217,
         "y": 1,
-        "w": 32,
-        "h": 32
+        "w": 34,
+        "h": 34
       },
       "rotated": false,
-      "trimmed": true,
+      "trimmed": false,
       "spriteSourceSize": {
-        "x": 1,
-        "y": 1,
-        "w": 32,
-        "h": 32
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 34
       },
       "sourceSize": {
         "w": 34,
@@ -600,10 +700,61 @@
         "y": 0.5
       }
     },
-    "unfreeze-monster": {
+    {
+      "filename": "small-monster",
       "frame": {
         "x": 1,
-        "y": 287,
+        "y": 253,
+        "w": 34,
+        "h": 34
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 34
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "smoke-bomb",
+      "frame": {
+        "x": 37,
+        "y": 217,
+        "w": 34,
+        "h": 34
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 34
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "unfreeze-monster",
+      "frame": {
+        "x": 73,
+        "y": 181,
         "w": 34,
         "h": 34
       },
@@ -624,15 +775,15 @@
         "y": 0.5
       }
     }
-  },
+  ],
   "meta": {
     "app": "http://free-tex-packer.com/",
     "version": "0.3.0",
-    "image": "texture-atlas-icons.png",
+    "image": "texture-atlas.png",
     "format": "RGBA8888",
     "size": {
-      "w": 212,
-      "h": 322
+      "w": 252,
+      "h": 288
     },
     "scale": 1
   }

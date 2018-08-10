@@ -6,20 +6,19 @@ import {
 	TOURNAMENT_MODE_CATCH_ME_IF_YOU_CAN,
 	TOURNAMENT_MODE_CLASSIC,
 	TOURNAMENT_MODE_FOOTBALL_FIELD,
+	TOURNAMENT_MODE_GRAVITY_OVERRIDE,
 	TOURNAMENT_MODE_HARDCORE,
 	TOURNAMENT_MODE_HIDDEN_SHAPE,
-	TOURNAMENT_MODE_JUPITER_GRAVITY,
 	TOURNAMENT_MODE_MASSIVE_HARDCORE_BLIND_BULLETPROOF,
-	TOURNAMENT_MODE_MOON_GRAVITY,
 	TOURNAMENT_MODE_NO_BONUSES,
 	TOURNAMENT_MODE_NOT_ENOUGH_SPACE,
 	TOURNAMENT_MODE_NOTHING_BONUS,
 	TOURNAMENT_MODE_PAUSE_PLAY,
 	TOURNAMENT_MODE_PLAYER_VELOCITY,
 	TOURNAMENT_MODE_RANDOM_BONUSES,
+	TOURNAMENT_MODE_SHAPE_OVERRIDE,
 	TOURNAMENT_MODE_SHAPE_SHIFTER,
 	TOURNAMENT_MODE_SMOKE_BOMB,
-	TOURNAMENT_MODE_SPAGHETTI_ON_THE_CARPET,
 	TOURNAMENT_MODE_SUDDEN_DEATH,
 	TOURNAMENT_MODE_SUPER_BOUNCE_WALLS,
 	TOURNAMENT_MODE_TALL_NET,
@@ -33,20 +32,19 @@ import BonusOverride from './BonusOverride';
 import CatchMeIfYouCan from './CatchMeIfYouCan';
 import Classic from './Classic';
 import FootballField from './FootballField';
+import GravityOverride from './GravityOverride';
 import Hardcore from './Hardcore';
 import HiddenShape from './HiddenShape';
-import JupiterGravity from './JupiterGravity';
 import MassiveHardcoreBlindBulletproof from './MassiveHardcoreBlindBulletproof';
-import MoonGravity from './MoonGravity';
 import NoBonuses from './NoBonuses';
 import NotEnoughSpace from './NotEnoughSpace';
 import NothingBonus from './NothingBonus';
 import PausePlay from './PausePlay';
 import PlayerVelocity from './PlayerVelocity';
 import RandomBonuses from './RandomBonuses';
+import ShapeOverride from './ShapeOverride';
 import ShapeShifter from './ShapeShifter';
 import SmokeBomb from './SmokeBomb';
-import SpaghettiOnTheCarpet from './SpaghettiOnTheCarpet';
 import SuddenDeath from './SuddenDeath';
 import SuperBounceWalls from './SuperBounceWalls';
 import TallNet from './TallNet';
@@ -72,10 +70,6 @@ export default class TournamentModeFactory {
 				return new SuddenDeath();
 			case TOURNAMENT_MODE_SUPER_BOUNCE_WALLS:
 				return new SuperBounceWalls();
-			case TOURNAMENT_MODE_MOON_GRAVITY:
-				return new MoonGravity();
-			case TOURNAMENT_MODE_JUPITER_GRAVITY:
-				return new JupiterGravity();
 			case TOURNAMENT_MODE_NO_BONUSES:
 				return new NoBonuses();
 			case TOURNAMENT_MODE_MASSIVE_HARDCORE_BLIND_BULLETPROOF:
@@ -84,8 +78,6 @@ export default class TournamentModeFactory {
 				return new BigDrunk();
 			case TOURNAMENT_MODE_HIDDEN_SHAPE:
 				return new HiddenShape();
-			case TOURNAMENT_MODE_SPAGHETTI_ON_THE_CARPET:
-				return new SpaghettiOnTheCarpet();
 			case TOURNAMENT_MODE_NOTHING_BONUS:
 				return new NothingBonus();
 			case TOURNAMENT_MODE_SHAPE_SHIFTER:
@@ -110,6 +102,10 @@ export default class TournamentModeFactory {
 				return new BonusDuration();
 			case TOURNAMENT_MODE_BONUS_OVERRIDE:
 				return new BonusOverride();
+			case TOURNAMENT_MODE_GRAVITY_OVERRIDE:
+				return new GravityOverride();
+			case TOURNAMENT_MODE_SHAPE_OVERRIDE:
+				return new ShapeOverride();
 			case TOURNAMENT_MODE_PLAYER_VELOCITY:
 				return new PlayerVelocity();
 		}

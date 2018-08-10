@@ -28,7 +28,7 @@ describe('AchievementListener#DavidVsGoliath', function() {
 
 	it('creates achievement if not created on player won against opponent with elo >= 150', function() {
 		const listener = (new DavidVsGoliath()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 		Profiles.insert({userId: userId, eloRating: 1000});
@@ -43,7 +43,7 @@ describe('AchievementListener#DavidVsGoliath', function() {
 
 	it('do not create achievement if not created if opponent elo < 150 on player won', function() {
 		const listener = (new DavidVsGoliath()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 		Profiles.insert({userId: userId, eloRating: 1000});
@@ -56,7 +56,7 @@ describe('AchievementListener#DavidVsGoliath', function() {
 
 	it('do not create achievement if not created if not gameId on player won', function() {
 		const listener = (new DavidVsGoliath()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 		Profiles.insert({userId: userId, eloRating: 1000});
@@ -69,7 +69,7 @@ describe('AchievementListener#DavidVsGoliath', function() {
 
 	it('do not create achievement if not created if not userId on player won', function() {
 		const listener = (new DavidVsGoliath()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 		Profiles.insert({userId: userId, eloRating: 1000});
@@ -82,7 +82,7 @@ describe('AchievementListener#DavidVsGoliath', function() {
 
 	it('update achievement on player won against opponent with elo >= 150', function() {
 		const listener = (new DavidVsGoliath()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 		Profiles.insert({userId: userId, eloRating: 1000});
@@ -96,7 +96,7 @@ describe('AchievementListener#DavidVsGoliath', function() {
 
 	it('do not update achievement if opponent elo < 150 on player won', function() {
 		const listener = (new DavidVsGoliath()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 		Profiles.insert({userId: userId, eloRating: 1000});
@@ -110,7 +110,7 @@ describe('AchievementListener#DavidVsGoliath', function() {
 
 	it('do not update achievement if not gameId on player won', function() {
 		const listener = (new DavidVsGoliath()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 		Profiles.insert({userId: userId, eloRating: 1000});
@@ -124,7 +124,7 @@ describe('AchievementListener#DavidVsGoliath', function() {
 
 	it('do not update achievement if not userId on player won', function() {
 		const listener = (new DavidVsGoliath()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 		Players.insert({gameId: gameId, userId: userId});
 		Players.insert({gameId: gameId, userId: opponentUserId});
 		Profiles.insert({userId: userId, eloRating: 1000});

@@ -11,8 +11,9 @@ export default class Engine {
 	 * @param createGame
 	 * @param updateGame
 	 * @param scope
+	 * @param {boolean} debug
 	 */
-	start(worldConfiguration, preloadGame, createGame, updateGame, scope) {
+	start(worldConfiguration, preloadGame, createGame, updateGame, scope, debug = false) {
 	}
 
 	stop() {
@@ -117,6 +118,9 @@ export default class Engine {
 	getYPosition(sprite) {
 	}
 
+	getWidth(sprite) {
+	}
+
 	setWidth(sprite, width) {
 	}
 
@@ -153,6 +157,9 @@ export default class Engine {
 	getMass(sprite) {
 	}
 
+	setWorldGravity(gravity) {
+	}
+
 	setGravity(sprite, gravity) {
 	}
 
@@ -169,6 +176,9 @@ export default class Engine {
 	}
 
 	animateSetOpacity(sprite, opacityTo, opacityFrom, duration) {
+	}
+
+	setTint(sprite, hex) {
 	}
 
 	/**
@@ -189,6 +199,13 @@ export default class Engine {
 	 * @returns {{x: number, y: number, velocityX: number, velocityY: number}}
 	 */
 	getPositionData(sprite) {
+	}
+
+	/**
+	 * @param sprite
+	 * @returns {{x: number, y: number, velocityX: number, velocityY: number, gravityScale: number, width: number, height: number}}
+	 */
+	fullPositionData(sprite) {
 	}
 
 	interpolateMoveTo(sprite, serverNormalizedTimestamp, data, canMoveCallback, slideToLocation = false) {
@@ -228,5 +245,11 @@ export default class Engine {
 	}
 
 	shake(sprite, move, time) {
+	}
+
+	kill(sprite) {
+	}
+
+	drawBallPrediction(px, py, color) {
 	}
 }
