@@ -1,12 +1,11 @@
 language: node_js
 node_js:
   - "10"
-before_script:
-  # Install meteor
+before_install:
   - curl https://install.meteor.com | /bin/sh
-  # Add meteor to path (instead of asking for sudo in the Travis container)
-  # We can then use the faster container infrastructure - http://docs.travis-ci.com/user/workers/container-based-infrastructure/
-  - export PATH=$HOME/.meteor:$PATH
+  - export PATH="$HOME/.meteor:$PATH"
+before_script:
+  - meteor npm install
 cache:
   directories:
     - $HOME/.meteor
