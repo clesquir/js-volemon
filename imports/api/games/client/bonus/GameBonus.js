@@ -632,8 +632,8 @@ export default class GameBonus {
 	}
 
 	killAndRemovePlayer(playerKey) {
+		this.resetBonusesForPlayerKey(playerKey);
 		this.engine.kill(this.getPlayerFromKey(playerKey));
-		this.deactivateBonusesForPlayerKey(playerKey);
 	}
 
 	scaleGravity(scale) {
@@ -787,10 +787,12 @@ export default class GameBonus {
 		this.bonuses = bonuses;
 	}
 
-	deactivateBonusesForPlayerKey(playerKey) {
+	resetBonusesForPlayerKey(playerKey) {
 		for (let bonus of this.activeBonuses) {
 			if (bonus.getTargetPlayerKey() === playerKey) {
-				bonus.deactivate();
+				bonus.stop();
+
+				this.removeActiveBonusWithIdentifier(bonus.activationIdentifier());
 			}
 		}
 	}
