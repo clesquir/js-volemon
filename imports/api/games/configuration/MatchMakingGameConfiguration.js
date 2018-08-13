@@ -1,4 +1,4 @@
-import TournamentModeFactory from '/imports/api/tournaments/modes/TournamentModeFactory.js';
+import TournamentMode from '/imports/api/tournaments/TournamentMode.js';
 import GameConfiguration from './GameConfiguration.js';
 
 export default class MatchMakingGameConfiguration extends GameConfiguration {
@@ -33,7 +33,7 @@ export default class MatchMakingGameConfiguration extends GameConfiguration {
 	initTournament() {
 		const tournament = this.tournamentsCollection.findOne({_id: this.tournamentId});
 
-		/** @type Classic */
-		this.tournamentMode = TournamentModeFactory.fromId(tournament.mode._id);
+		/** @type TournamentMode */
+		this.tournamentMode = TournamentMode.fromTournament(tournament);
 	}
 }

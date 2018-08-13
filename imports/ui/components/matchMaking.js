@@ -213,7 +213,7 @@ Template.matchMaking.helpers({
 			return this.name;
 		}
 
-		return this.mode.name;
+		return '';
 	},
 
 	description: function() {
@@ -221,7 +221,7 @@ Template.matchMaking.helpers({
 			return this.description;
 		}
 
-		return this.mode.description;
+		return '';
 	},
 
 	hasPlayersWaiting: function(modeSelection, tournamentId) {
@@ -350,7 +350,7 @@ Template.matchMaking.helpers({
 				const tournament = PlayableTournaments.findOne({_id: Session.get('matchMaking.tournamentId')});
 
 				if (tournament) {
-					return tournament.name || tournament.mode.name;
+					return tournament.name;
 				}
 		}
 
@@ -367,7 +367,7 @@ Template.matchMaking.helpers({
 				const tournament = PlayableTournaments.findOne({_id: Session.get('matchMaking.tournamentId')});
 
 				if (tournament) {
-					return tournament.description || tournament.mode.description;
+					return tournament.description;
 				}
 		}
 

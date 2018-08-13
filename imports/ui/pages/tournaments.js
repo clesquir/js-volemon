@@ -1,3 +1,4 @@
+import {isTournamentAdministrator, isTournamentEditor} from '/imports/api/users/userConfigurations.js';
 import {timeDifference, timeElapsedSince} from '/imports/lib/utils.js';
 import {Router} from 'meteor/iron:router';
 import {Meteor} from 'meteor/meteor';
@@ -15,6 +16,9 @@ const ActiveTournaments = new ActiveTournamentsCollection('activeTournaments');
 
 class FutureTournamentsCollection extends Mongo.Collection {}
 const FutureTournaments = new FutureTournamentsCollection('futureTournaments');
+
+class DraftTournamentsCollection extends Mongo.Collection {}
+const DraftTournaments = new DraftTournamentsCollection('draftTournaments');
 
 const PAST_TOURNAMENTS_LIMIT = 5;
 const PAST_TOURNAMENTS_INCREMENT = 5;
@@ -48,12 +52,20 @@ Template.tournaments.helpers({
 		return PastTournaments.find({}, {sort: [['endDate', 'desc']]});
 	},
 
+	showDraftTournaments: function() {
+		return (isTournamentEditor() || isTournamentAdministrator()) && !!DraftTournaments.find().count();
+	},
+
+	draftTournaments: function() {
+		return DraftTournaments.find({}, {sort: [['startDate', 'asc']]});
+	},
+
 	name: function() {
 		if (this.name) {
 			return this.name;
 		}
 
-		return this.mode.name;
+		return '';
 	},
 
 	description: function() {
@@ -61,7 +73,7 @@ Template.tournaments.helpers({
 			return this.description;
 		}
 
-		return this.mode.description;
+		return '';
 	},
 
 	timeLeft: function() {
@@ -80,11 +92,76 @@ Template.tournaments.helpers({
 		Template.instance().uptime.get();
 		const date = Moment.moment(this.endDate, "YYYY-MM-DD ZZ");
 		return 'Ended: ' + timeElapsedSince(date.valueOf());
+	},
+
+	timeForDraft: function() {
+		if (!this.startDate) {
+			return 'Not set';
+		}
+
+		Template.instance().uptime.get();
+		const start = Moment.moment(this.startDate, "YYYY-MM-DD ZZ");
+		const end = Moment.moment(this.endDate, "YYYY-MM-DD ZZ");
+		return start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD');
+	},
+
+	canCreateTournament: function() {
+		return isTournamentEditor() || isTournamentAdministrator();
+	},
+
+	canEditTournament: function() {
+		return (
+			isTournamentEditor() &&
+			this.editor.id === Meteor.userId()
+		) ||
+		isTournamentAdministrator();
+	},
+
+	canRemoveTournament: function() {
+		return (
+			isTournamentEditor() &&
+			this.editor.id === Meteor.userId()
+		) ||
+		isTournamentAdministrator();
 	}
 });
 
 Template.tournaments.events({
-	'click [data-action="go-to-tournament"]': function(e) {
+	'click [data-action="create-tournament"]': function() {
+		Session.set('appLoadingMask', true);
+		Session.set('appLoadingMask.text', 'Creating draft tournament...');
+		Meteor.call(
+			'createTournament',
+			function(error, tournament) {
+				Session.set('appLoadingMask', false);
+				if (error !== undefined) {
+					alert(error);
+				} else {
+					Router.go(Router.routes['tournamentAdmin'].url({tournamentId: tournament}));
+				}
+			}
+		);
+	},
+
+	'click [data-action="edit-tournament"]': function(e) {
+		Router.go(Router.routes['tournamentAdmin'].url({tournamentId: $(e.currentTarget).attr('data-tournament-id')}));
+	},
+
+	'click [data-action="remove-tournament"]': function(e) {
+		const tournament = $(e.currentTarget).attr('data-tournament-id');
+
+		Meteor.call(
+			'removeTournament',
+			tournament,
+			function(error) {
+				if (error !== undefined) {
+					alert(error);
+				}
+			}
+		);
+	},
+
+	'click [data-action="go-to-tournament"]': function() {
 		Router.go(Router.routes['tournament'].url({tournamentId: this._id}));
 	},
 

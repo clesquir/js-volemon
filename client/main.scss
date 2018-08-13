@@ -101,6 +101,8 @@ $desktop-max-height: 70em;
 @import "{}/imports/ui/pages/rank.scss";
 @import "{}/imports/ui/pages/skins.scss";
 @import "{}/imports/ui/pages/tournament.scss";
+@import "{}/imports/ui/pages/tournamentAdmin.scss";
+@import "{}/imports/ui/pages/tournaments.scss";
 @import "{}/imports/ui/pages/userReactions.scss";
 @import "{}/imports/ui/pages/userSettings.scss";
 
@@ -156,6 +158,10 @@ h2 {
 .back-button {
 	position: absolute;
 	left: 0;
+}
+
+.action-button {
+	cursor: pointer;
 	transition: opacity 0.25s ease-in-out;
 	opacity: 0.25;
 

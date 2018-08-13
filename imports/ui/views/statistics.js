@@ -1,11 +1,11 @@
-import {Meteor} from 'meteor/meteor';
-import {Template} from 'meteor/templating';
-import * as Moment from 'meteor/momentjs:moment';
-import {Session} from 'meteor/session';
 import {INITIAL_ELO_RATING} from '/imports/api/profiles/constants.js';
-import TournamentModeFactory from '/imports/api/tournaments/modes/TournamentModeFactory.js';
+import TournamentMode from '/imports/api/tournaments/TournamentMode.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {getWinRateFromNumbers} from '/imports/lib/utils.js';
+import {Meteor} from 'meteor/meteor';
+import * as Moment from 'meteor/momentjs:moment';
+import {Session} from 'meteor/session';
+import {Template} from 'meteor/templating';
 
 import './statistics.html';
 
@@ -100,7 +100,7 @@ Template.statistics.helpers({
 			const tournament = Tournaments.findOne({_id: tournamentId});
 
 			if (tournament) {
-				const mode = TournamentModeFactory.fromId(tournament.mode._id);
+				const mode = TournamentMode.fromTournament(tournament);
 
 				return !mode.overridesMaximumPoints() || mode.maximumPoints() > 1;
 			}

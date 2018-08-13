@@ -1,0 +1,17 @@
+.tournaments-page {
+	.card {
+		position: relative;
+	}
+
+	.edit-tournament-button {
+		position: absolute;
+		right: 30px;
+		top: 10px;
+	}
+
+	.remove-tournament-button {
+		position: absolute;
+		right: 10px;
+		top: 10px;
+	}
+}

@@ -2,7 +2,12 @@ import {USERNAME_CHANGE_FREQUENCY} from '/imports/api/users/constants.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 import '/imports/ui/util/error-messages.js';
-import '/imports/ui/util/form.js';
+import {
+	addErrorToField,
+	disableButton,
+	removeErrorLabelContainer,
+	validateFieldsPresenceAndMarkInvalid
+} from '/imports/ui/util/form.js';
 import {Meteor} from 'meteor/meteor';
 import * as Moment from 'meteor/momentjs:moment';
 import {Session} from 'meteor/session';

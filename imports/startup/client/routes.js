@@ -4,6 +4,7 @@ import {HomeController} from '/imports/startup/client/controllers/HomeController
 import {MatchMakingController} from '/imports/startup/client/controllers/MatchMakingController.js';
 import {RankController} from '/imports/startup/client/controllers/RankController.js';
 import {TournamentController} from '/imports/startup/client/controllers/TournamentController.js';
+import {TournamentAdminController} from '/imports/startup/client/controllers/TournamentAdminController.js';
 import {TournamentGameController} from '/imports/startup/client/controllers/TournamentGameController.js';
 import {TournamentsController} from '/imports/startup/client/controllers/TournamentsController.js';
 import {TournamentUserProfileController} from '/imports/startup/client/controllers/TournamentUserProfileController.js';
@@ -32,6 +33,7 @@ import '/imports/ui/pages/passwordChange.js';
 import '/imports/ui/pages/rank.js';
 import '/imports/ui/pages/skins.js';
 import '/imports/ui/pages/tournament.js';
+import '/imports/ui/pages/tournamentAdmin.js';
 import '/imports/ui/pages/tournamentGame.js';
 import '/imports/ui/pages/tournaments.js';
 import '/imports/ui/pages/tournamentUserProfile.js';
@@ -122,6 +124,11 @@ Router.map(function() {
 	this.route('tournaments', {
 		path: '/tournaments',
 		controller: TournamentsController
+	});
+
+	this.route('tournamentAdmin', {
+		path: '/tournament-admin/:tournamentId',
+		controller: TournamentAdminController
 	});
 
 	this.route('tournament', {

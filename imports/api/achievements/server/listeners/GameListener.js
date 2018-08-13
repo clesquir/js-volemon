@@ -1,10 +1,9 @@
-import {GAME_MAXIMUM_POINTS} from '/imports/api/games/constants.js';
+import {GAME_MAXIMUM_POINTS, TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
-import TournamentModeFactory from '/imports/api/tournaments/modes/TournamentModeFactory.js';
+import TournamentMode from '/imports/api/tournaments/TournamentMode.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
-import {TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import Listener from './Listener';
 
 export default class GameListener extends Listener {
@@ -136,7 +135,7 @@ export default class GameListener extends Listener {
 	}
 
 	/**
-	 * @returns {Classic}
+	 * @returns {TournamentMode}
 	 */
 	tournamentMode() {
 		if (!this.isTournamentGame()) {
@@ -144,7 +143,7 @@ export default class GameListener extends Listener {
 		}
 
 		const tournament = this.getTournament();
-		return TournamentModeFactory.fromId(tournament.mode._id);
+		return TournamentMode.fromTournament(tournament);
 	}
 
 	isPracticeGame() {
