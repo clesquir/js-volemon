@@ -16,7 +16,7 @@ Meteor.methods({
 			throw new Meteor.Error(401, 'You need to login to create a tournament');
 		}
 
-		if (!isTournamentEditor && !isTournamentAdministrator()) {
+		if (!isTournamentEditor() && !isTournamentAdministrator()) {
 			throw new Meteor.Error('not-allowed', 'You cannot create a tournament');
 		}
 
@@ -55,10 +55,6 @@ Meteor.methods({
 
 		if (!tournament) {
 			throw new Meteor.Error(404, 'The tournament does not exist');
-		}
-
-		if (!isTournamentEditor && !isTournamentAdministrator()) {
-			throw new Meteor.Error('not-allowed', 'Only editors can create tournaments');
 		}
 
 		if (!isTournamentAdministrator() && (!isTournamentEditor() || tournament.editor.id !== userId)) {
