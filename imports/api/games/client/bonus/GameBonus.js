@@ -632,8 +632,12 @@ export default class GameBonus {
 	}
 
 	killAndRemovePlayer(playerKey) {
-		this.resetBonusesForPlayerKey(playerKey);
-		this.engine.kill(this.getPlayerFromKey(playerKey));
+		if (!this.killingPlayer) {
+			this.killingPlayer = true;
+			this.resetBonusesForPlayerKey(playerKey);
+			this.engine.kill(this.getPlayerFromKey(playerKey));
+			this.killingPlayer = false;
+		}
 	}
 
 	scaleGravity(scale) {
