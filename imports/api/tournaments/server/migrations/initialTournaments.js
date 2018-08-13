@@ -1,4 +1,29 @@
-import {BONUS_INSTANT_DEATH, BONUS_POISON, BONUS_RANDOM} from '/imports/api/games/bonusConstants.js';
+import {
+	BONUS_BIG_BALL,
+	BONUS_BIG_JUMP_MONSTER,
+	BONUS_BIG_MONSTER,
+	BONUS_BOUNCE_MONSTER,
+	BONUS_CLOAKED_MONSTER,
+	BONUS_CLOUD,
+	BONUS_FAST_MONSTER,
+	BONUS_FREEZE_MONSTER,
+	BONUS_HIGH_GRAVITY,
+	BONUS_INSTANT_DEATH,
+	BONUS_INVISIBLE_BALL,
+	BONUS_INVISIBLE_MONSTER,
+	BONUS_INVISIBLE_OPPONENT_MONSTER,
+	BONUS_LOW_GRAVITY,
+	BONUS_NO_JUMP_MONSTER,
+	BONUS_POISON,
+	BONUS_RANDOM,
+	BONUS_REPELLENT,
+	BONUS_REVERSE_MOVE_MONSTER,
+	BONUS_SHAPE_SHIFT,
+	BONUS_SLOW_MONSTER,
+	BONUS_SMALL_BALL,
+	BONUS_SMALL_MONSTER,
+	BONUS_SMOKE_BOMB
+} from '/imports/api/games/bonusConstants.js';
 import {ONE_VS_ONE_GAME_MODE, TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {Meteor} from 'meteor/meteor';
@@ -69,6 +94,80 @@ Meteor.startup(function() {
 			gameMode: TWO_VS_TWO_GAME_MODE,
 			startDate: "2018-08-06 -04:00",
 			endDate: "2018-08-13 -04:00",
+			isPublished: false
+		},
+		{
+			_id: Random.id(5),
+			identifier: "tournament_2018-08-13_1v1",
+			name: "1 VS 1: Random",
+			description: "Only random bonuses are spawning",
+			mode: {
+				overriddenAvailableBonuses: [BONUS_RANDOM],
+				overriddenAvailableBonusesForRandom: [
+					BONUS_SMALL_BALL,
+					BONUS_BIG_BALL,
+					BONUS_INVISIBLE_BALL,
+					BONUS_LOW_GRAVITY,
+					BONUS_HIGH_GRAVITY,
+					BONUS_SMALL_MONSTER,
+					BONUS_BIG_MONSTER,
+					BONUS_BIG_JUMP_MONSTER,
+					BONUS_SLOW_MONSTER,
+					BONUS_FAST_MONSTER,
+					BONUS_FREEZE_MONSTER,
+					BONUS_REVERSE_MOVE_MONSTER,
+					BONUS_INVISIBLE_MONSTER,
+					BONUS_INVISIBLE_OPPONENT_MONSTER,
+					BONUS_POISON,
+					BONUS_REPELLENT,
+					BONUS_CLOUD,
+					BONUS_NO_JUMP_MONSTER,
+					BONUS_BOUNCE_MONSTER,
+					BONUS_CLOAKED_MONSTER,
+					BONUS_SHAPE_SHIFT,
+					BONUS_SMOKE_BOMB
+				]
+			},
+			gameMode: ONE_VS_ONE_GAME_MODE,
+			startDate: "2018-08-13 -04:00",
+			endDate: "2018-08-20 -04:00",
+			isPublished: false
+		},
+		{
+			_id: Random.id(5),
+			identifier: "tournament_2018-08-13_2v2",
+			name: "2 VS 2: Random",
+			description: "Only random bonuses are spawning",
+			mode: {
+				overriddenAvailableBonuses: [BONUS_RANDOM],
+				overriddenAvailableBonusesForRandom: [
+					BONUS_SMALL_BALL,
+					BONUS_BIG_BALL,
+					BONUS_INVISIBLE_BALL,
+					BONUS_LOW_GRAVITY,
+					BONUS_HIGH_GRAVITY,
+					BONUS_SMALL_MONSTER,
+					BONUS_BIG_MONSTER,
+					BONUS_BIG_JUMP_MONSTER,
+					BONUS_SLOW_MONSTER,
+					BONUS_FAST_MONSTER,
+					BONUS_FREEZE_MONSTER,
+					BONUS_REVERSE_MOVE_MONSTER,
+					BONUS_INVISIBLE_MONSTER,
+					BONUS_INVISIBLE_OPPONENT_MONSTER,
+					BONUS_POISON,
+					BONUS_REPELLENT,
+					BONUS_CLOUD,
+					BONUS_NO_JUMP_MONSTER,
+					BONUS_BOUNCE_MONSTER,
+					BONUS_CLOAKED_MONSTER,
+					BONUS_SHAPE_SHIFT,
+					BONUS_SMOKE_BOMB
+				]
+			},
+			gameMode: TWO_VS_TWO_GAME_MODE,
+			startDate: "2018-08-13 -04:00",
+			endDate: "2018-08-20 -04:00",
 			isPublished: false
 		}
 	];
