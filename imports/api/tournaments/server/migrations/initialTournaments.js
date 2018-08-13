@@ -44,6 +44,7 @@ Meteor.startup(function() {
 			gameMode: ONE_VS_ONE_GAME_MODE,
 			startDate: "2017-11-27 -04:00",
 			endDate: "2017-12-02 -04:00",
+			status: {id: 'approved', name: 'Approved'},
 			isPublished: true
 		},
 		{
@@ -58,6 +59,7 @@ Meteor.startup(function() {
 			gameMode: ONE_VS_ONE_GAME_MODE,
 			startDate: "2018-07-30 -04:00",
 			endDate: "2018-08-06 -04:00",
+			status: {id: 'approved', name: 'Approved'},
 			isPublished: true
 		},
 		{
@@ -72,6 +74,7 @@ Meteor.startup(function() {
 			gameMode: TWO_VS_TWO_GAME_MODE,
 			startDate: "2018-07-30 -04:00",
 			endDate: "2018-08-06 -04:00",
+			status: {id: 'approved', name: 'Approved'},
 			isPublished: true
 		},
 		{
@@ -83,6 +86,7 @@ Meteor.startup(function() {
 			gameMode: ONE_VS_ONE_GAME_MODE,
 			startDate: "2018-08-06 -04:00",
 			endDate: "2018-08-13 -04:00",
+			status: {id: 'approved', name: 'Approved'},
 			isPublished: false
 		},
 		{
@@ -94,6 +98,7 @@ Meteor.startup(function() {
 			gameMode: TWO_VS_TWO_GAME_MODE,
 			startDate: "2018-08-06 -04:00",
 			endDate: "2018-08-13 -04:00",
+			status: {id: 'approved', name: 'Approved'},
 			isPublished: false
 		},
 		{
@@ -131,6 +136,7 @@ Meteor.startup(function() {
 			gameMode: ONE_VS_ONE_GAME_MODE,
 			startDate: "2018-08-13 -04:00",
 			endDate: "2018-08-20 -04:00",
+			status: {id: 'approved', name: 'Approved'},
 			isPublished: false
 		},
 		{
@@ -168,6 +174,7 @@ Meteor.startup(function() {
 			gameMode: TWO_VS_TWO_GAME_MODE,
 			startDate: "2018-08-13 -04:00",
 			endDate: "2018-08-20 -04:00",
+			status: {id: 'approved', name: 'Approved'},
 			isPublished: false
 		}
 	];
