@@ -1,6 +1,7 @@
 import {Games} from '/imports/api/games/games.js';
 import {MatchMakers} from '/imports/api/games/matchMakers.js';
 import {Players} from '/imports/api/games/players.js';
+import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {USERNAME_CHANGE_FREQUENCY} from '/imports/api/users/constants.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 import {UserKeymaps} from '/imports/api/users/userKeymaps.js';
@@ -37,6 +38,7 @@ Meteor.methods({
 			Players.update({userId: this.userId}, {$set: {name: name}}, {multi: true});
 			Games.update({'players.id': this.userId}, {$set: {'players.$.name': name}}, {multi: true});
 			MatchMakers.update({'usersToMatch.id': this.userId}, {$set: {'usersToMatch.$.name': name}}, {multi: true});
+			Tournaments.update({'editor.id': this.userId}, {$set: {'editor.name': name}}, {multi: true});
 		}
 	},
 

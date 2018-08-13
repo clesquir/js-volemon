@@ -1,5 +1,12 @@
 import '/imports/ui/util/error-messages.js';
-import '/imports/ui/util/form.js';
+import {
+	addErrorToField,
+	disableButton,
+	removeErrorLabelContainer,
+	removeFieldInvalidMark,
+	removeFieldsInvalidMarkAndSwitchForm,
+	validateFieldsPresenceAndMarkInvalid
+} from '/imports/ui/util/form.js';
 import {Accounts} from 'meteor/accounts-base';
 import {Meteor} from 'meteor/meteor';
 import {Session} from 'meteor/session';

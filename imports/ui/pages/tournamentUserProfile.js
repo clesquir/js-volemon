@@ -8,7 +8,7 @@ Template.tournamentUserProfile.helpers({
 			return this.tournament.name;
 		}
 
-		return this.tournament.mode.name;
+		return '';
 	},
 
 	tournamentDescription: function() {
@@ -16,6 +16,6 @@ Template.tournamentUserProfile.helpers({
 			return this.tournament.description;
 		}
 
-		return this.tournament.mode.description;
+		return '';
 	}
 });

@@ -1,0 +1,91 @@
+<template name="tournamentAdmin">
+
+	<div class="app-section app-section-top tournaments-page">
+
+		<div class="app-section-inner maximum-responsive-width">
+
+			<h1 class="app-section-title">
+				<a class="back-button action-button" href="{{pathFor 'tournaments'}}">
+					<i class="fa fa-arrow-circle-left"></i>
+				</a>
+				Tournament #{{tournament._id}}
+			</h1>
+			<h2>By: {{tournament.editor.name}}</h2>
+
+			<form name="tournament-admin">
+
+				<div class="form-section">
+					<label for="tournament-name-field">Name</label>
+					<input id="tournament-name-field" type="text" required="required" disabled="{{#unless canEditTournament tournament}}disabled{{/unless}}" autofocus="autofocus" autocomplete="off" name="name" maxlength="100" value="{{tournament.name}}" />
+				</div>
+
+				<div class="form-section">
+					<label for="tournament-description-field">Description</label>
+					<input id="tournament-description-field" type="text" required="required" disabled="{{#unless canEditTournament tournament}}disabled{{/unless}}" autofocus="autofocus" autocomplete="off" name="description" maxlength="250" value="{{tournament.description}}" />
+				</div>
+
+				<div class="form-section">
+					<label for="tournament-game-mode-field">Game mode</label>
+					<span class="styled-input {{#unless canEditTournament tournament}}style-disabled-input{{/unless}}">
+						<select id="tournament-game-mode-field" name="gameMode" required="required" disabled="{{#unless canEditTournament tournament}}disabled{{/unless}}">
+							{{#each gameModes tournament}}
+								<option value="{{id}}" selected="{{isSelected}}">{{name}}</option>
+							{{/each}}
+						</select>
+					</span>
+				</div>
+
+				<div class="form-section tournament-dates">
+					<div class="tournament-date">
+						<label for="tournament-start-field">Start date</label>
+						<input id="tournament-start-field" type="date" required="required" disabled="{{#unless canEditTournament tournament}}disabled{{/unless}}" autofocus="autofocus" autocomplete="off" name="start_date" value="{{tournamentDate tournament.startDate}}" />
+					</div>
+					<div class="tournament-date">
+						<label for="tournament-end-field">End date</label>
+						<input id="tournament-end-field" type="date" required="required" disabled="{{#unless canEditTournament tournament}}disabled{{/unless}}" autofocus="autofocus" autocomplete="off" name="end_date" value="{{tournamentDate tournament.endDate}}" />
+					</div>
+				</div>
+
+				<h2>Bonus overrides</h2>
+				<div>overridesHasBonuses</div>
+				<div>overridesAvailableBonuses</div>
+				<div>overridesAvailableBonusesForRandom</div>
+				<div>overridesBonusDuration</div>
+				<div>overridesBonusSpawnInitialMinimumFrequence</div>
+				<div>overridesBonusSpawnInitialMaximumFrequence</div>
+
+				<h2>Shape overrides</h2>
+				<div>overridesListOfShapes</div>
+				<div>overridesAllowedListOfShapes</div>
+				<div>overridesCurrentPlayerShape</div>
+
+				<h2>Points overrides</h2>
+				<div>overridesForfeitMinimumPoints</div>
+				<div>overridesMaximumPoints</div>
+
+				<h2>Level overrides</h2>
+				<div>overridesNetHeight</div>
+				<div>overridesLevelSize</div>
+
+				<h2>Physic overrides</h2>
+				<div>overridesWorldGravity</div>
+				<div>overridesWorldRestitution</div>
+				<div>overridesPlayerXVelocity</div>
+				<div>overridesPlayerYVelocity</div>
+
+				<p class="error-label-container"></p>
+
+				{{#if canEditTournament tournament}}
+					<input type="submit" class="button" value="Save" />
+				{{/if}}
+				{{#if canApproveTournament}}
+					<input type="button" class="button" data-action="approve-draft-tournament" value="Approve" />
+				{{/if}}
+
+			</form>
+
+		</div>
+
+	</div>
+
+</template>

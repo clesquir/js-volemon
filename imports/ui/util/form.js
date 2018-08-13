@@ -1,6 +1,6 @@
 import ButtonEnabler from '/imports/ui/util/ButtonEnabler.js';
 
-disableButton = function(e, disabled) {
+export const disableButton = function(e, disabled) {
 	if (disabled) {
 		ButtonEnabler.disableButton(e.target);
 	} else {
@@ -8,21 +8,20 @@ disableButton = function(e, disabled) {
 	}
 };
 
-removeFieldInvalidMark = function(field) {
+export const removeFieldInvalidMark = function(field) {
 	field.parent().children('.inline-form-error').remove();
 	field.removeClass('field-in-error');
 };
 
-removeErrorLabelContainer = function(errorLabelContainer) {
-	errorLabelContainer.hide();
-	errorLabelContainer.html();
+export const removeErrorLabelContainer = function(errorLabelContainer) {
+	errorLabelContainer.html('');
 };
 
 /**
  * @param formToShow
  * @param {Array} formsToHide
  */
-removeFieldsInvalidMarkAndSwitchForm = function(formToShow, formsToHide) {
+export const removeFieldsInvalidMarkAndSwitchForm = function(formToShow, formsToHide) {
 	const fieldsInError = $(formToShow).find('input.field-in-error');
 	const errorLabelContainer = $(formToShow).find('.error-label-container');
 
@@ -40,7 +39,7 @@ removeFieldsInvalidMarkAndSwitchForm = function(formToShow, formsToHide) {
 	$(formToShow).find('input[name=email]').focus();
 };
 
-validateFieldsPresenceAndMarkInvalid = function(form, fields) {
+export const validateFieldsPresenceAndMarkInvalid = function(form, fields) {
 	let hasRequiredErrors = false;
 
 	for (let field of fields) {
@@ -57,7 +56,7 @@ validateFieldsPresenceAndMarkInvalid = function(form, fields) {
 	return hasRequiredErrors;
 };
 
-addErrorToField = function(field, errorMessage) {
+export const addErrorToField = function(field, errorMessage) {
 	$('<div class="inline-form-error">' + errorMessage + '</div>').insertBefore(field);
 	field.addClass('field-in-error');
 };

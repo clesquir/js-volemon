@@ -5,6 +5,8 @@ import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
 
 Meteor.startup(function() {
+	Tournaments.update({status: {$exists: false}}, {$set: {status: {id: 'approved', name: 'Approved'}}}, {multi: true});
+
 	const tournaments = [
 		{
 			_id: Random.id(5),

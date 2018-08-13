@@ -10,7 +10,7 @@ import {Meteor} from 'meteor/meteor';
 import * as Moment from 'meteor/momentjs:moment';
 
 Meteor.publish('playableTournaments', function(userId) {
-	Tournaments.find().forEach((tournament) => {
+	Tournaments.find({'status.id': 'approved'}).forEach((tournament) => {
 		if (
 			Moment.moment(tournament.startDate, "YYYY-MM-DD ZZ").diff(new Date()) <= 0 &&
 			Moment.moment(tournament.endDate, "YYYY-MM-DD ZZ").diff(new Date()) >= 0 &&
@@ -24,7 +24,7 @@ Meteor.publish('playableTournaments', function(userId) {
 });
 
 Meteor.publish('activeTournaments', function() {
-	Tournaments.find().forEach((tournament) => {
+	Tournaments.find({'status.id': 'approved'}).forEach((tournament) => {
 		if (
 			Moment.moment(tournament.startDate, "YYYY-MM-DD ZZ").diff(new Date()) <= 0 &&
 			Moment.moment(tournament.endDate, "YYYY-MM-DD ZZ").diff(new Date()) >= 0
@@ -37,13 +37,37 @@ Meteor.publish('activeTournaments', function() {
 });
 
 Meteor.publish('futureTournaments', function() {
-	Tournaments.find().forEach((tournament) => {
+	Tournaments.find({'status.id': 'approved'}).forEach((tournament) => {
 		if (Moment.moment(tournament.startDate, "YYYY-MM-DD ZZ").diff(new Date()) > 0) {
 			this.added('futureTournaments', tournament._id, tournament);
 		}
 	});
 
 	this.ready();
+});
+
+Meteor.publish('draftTournaments', function() {
+	Tournaments.find({'status.id': 'draft'}).forEach((tournament) => {
+		this.added('draftTournaments', tournament._id, tournament);
+	});
+
+	this.draftTournamentsTracker = Tournaments.find({'status.id': 'draft'}).observe({
+		added: (tournament) => {
+			this.added('draftTournaments', tournament._id, tournament);
+		},
+		changed: (tournament) => {
+			this.changed('draftTournaments', tournament._id, tournament);
+		},
+		removed: (tournament) => {
+			this.removed('draftTournaments', tournament._id, tournament);
+		}
+	});
+
+	this.ready();
+
+	this.onStop(() => {
+		this.draftTournamentsTracker.stop();
+	});
 });
 
 Meteor.publish('tournament', function(tournamentId) {

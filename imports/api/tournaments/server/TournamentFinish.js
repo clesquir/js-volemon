@@ -21,7 +21,7 @@ export default class TournamentFinish {
 	}
 
 	checkForFinishedTournaments() {
-		const tournaments = Tournaments.find({isPublished: false});
+		const tournaments = Tournaments.find({'status.id': 'approved', isPublished: false});
 
 		tournaments.forEach((tournament) => {
 			if (Moment.moment(tournament.endDate, "YYYY-MM-DD ZZ").diff(new Date()) < 0) {

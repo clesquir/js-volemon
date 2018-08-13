@@ -16,7 +16,7 @@ Template.tournamentGame.helpers({
 			return tournament.name;
 		}
 
-		return tournament.mode.name;
+		return '';
 	},
 
 	tournamentDescription: function() {
@@ -26,6 +26,6 @@ Template.tournamentGame.helpers({
 			return tournament.description;
 		}
 
-		return tournament.mode.description;
+		return '';
 	}
 });

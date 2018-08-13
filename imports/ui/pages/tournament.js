@@ -54,7 +54,7 @@ Template.tournament.helpers({
 			return this.tournament.name;
 		}
 
-		return this.tournament.mode.name;
+		return '';
 	},
 
 	tournamentDescription: function() {
@@ -62,7 +62,7 @@ Template.tournament.helpers({
 			return this.tournament.description;
 		}
 
-		return this.tournament.mode.description;
+		return '';
 	},
 
 	isTournamentActive: function() {

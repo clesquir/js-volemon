@@ -1,7 +1,7 @@
 $form-background-color: $header-background-color;
 $input-border-color: darken($background-color, 50%);
 
-input[type=text], input[type=password], input[type=email] {
+input[type=text], input[type=password], input[type=email], textarea, input[type=date], .styled-input > select {
 	background-color: $form-background-color;
 	border: 0;
 	outline: 0;
@@ -11,6 +11,53 @@ input[type=text], input[type=password], input[type=email] {
 	padding: 15px;
 	border-radius: 3px;
 	letter-spacing: inherit;
+
+	&[disabled=disabled] {
+		color: lighten($text-color, 10%);
+		background-color: transparent;
+		box-shadow: 0 0 0 $input-border-width lighten($input-border-color, 10%);
+	}
+}
+
+textarea {
+	resize: vertical;
+}
+
+.styled-input {
+	position: relative;
+	display: inline;
+
+	&:not(.style-disabled-input):after {
+		content: "";
+		width: 0;
+		height: 0;
+		position: absolute;
+		pointer-events: none;
+		border-left: 5px solid transparent;
+		border-right: 5px solid transparent;
+		top: 20px;
+		right: 20px;
+		border-top: 9px solid $text-color;
+	}
+
+	& > select {
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+		width: 100%;
+
+		::-ms-expand {
+			display: none;
+		}
+	}
+}
+
+::-webkit-inner-spin-button {
+	display: none;
+}
+
+::-webkit-clear-button {
+	display: none;
 }
 
 input:disabled {

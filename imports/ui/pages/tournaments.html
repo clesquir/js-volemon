@@ -1,10 +1,17 @@
 <template name="tournaments">
 
-	<div class="app-section app-section-top">
+	<div class="app-section app-section-top tournaments-page">
 
 		<div class="app-section-inner maximum-responsive-width">
 
-			<h1>Tournaments</h1>
+			<h1>
+				Tournaments
+				{{#if canCreateTournament}}
+					<a class="create-tournament-button action-button" data-action="create-tournament">
+						<i class="fa fa-plus-circle"></i>
+					</a>
+				{{/if}}
+			</h1>
 
 			{{#if hasActiveTournaments}}
 				<h2>Current</h2>
@@ -75,6 +82,37 @@
 					</div>
 				{{/if}}
 			</div>
+
+			{{#if showDraftTournaments}}
+				<h2>Draft</h2>
+
+				<div class="cards-list constrained-width">
+					{{#each draftTournaments}}
+						<div class="card">
+							<div class="card-row card-row-top">
+								<div class="card-cell card-title card-cell-ellipsis">{{name}}</div>
+							</div>
+							<div class="card-row">
+								<div class="card-cell card-cell-ellipsis">{{description}}</div>
+							</div>
+							<div class="card-row card-row-bottom">
+								<div class="card-cell card-left">{{timeForDraft}}</div>
+								<div class="card-cell card-right">By: {{editor.name}}</div>
+							</div>
+							{{#if canEditTournament}}
+								<a class="edit-tournament-button action-button" data-action="edit-tournament" data-tournament-id="{{_id}}">
+									<i class="fa fa-pencil"></i>
+								</a>
+							{{/if}}
+							{{#if canRemoveTournament}}
+								<a class="remove-tournament-button action-button" data-action="remove-tournament" data-tournament-id="{{_id}}">
+									<i class="fa fa-trash"></i>
+								</a>
+							{{/if}}
+						</div>
+					{{/each}}
+				</div>
+			{{/if}}
 
 		</div>
 
