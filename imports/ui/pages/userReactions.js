@@ -1,5 +1,10 @@
 import {UserReactions} from '/imports/api/users/userReactions.js';
 import CustomReactions from '/imports/lib/reactions/CustomReactions.js';
+import {
+	addErrorToField,
+	disableButton,
+	validateFieldsPresenceAndMarkInvalid
+} from '/imports/ui/util/form.js';
 import {Meteor} from 'meteor/meteor';
 import {Session} from 'meteor/session';
 import {Template} from 'meteor/templating';
