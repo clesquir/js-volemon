@@ -1,0 +1,16 @@
+<template name="multipleSelectSwitch">
+	<div class="multiple-select-switch">
+		<h3>
+			<input type="checkbox" id="check-{{id}}" data-checkbox-action="enable-multiple-select-switch">
+			<label for="check-{{id}}"> {{label}}</label>
+		</h3>
+
+		<div class="styled-multiple-select">
+			<select id="{{id}}" multiple="">
+				{{#each option in options}}
+					<option value="{{option.id}}" selected="{{isSelected isOn option.id values}}">{{option.name}}</option>
+				{{/each}}
+			</select>
+		</div>
+	</div>
+</template>

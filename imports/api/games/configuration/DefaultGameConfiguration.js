@@ -50,9 +50,10 @@ export default class DefaultGameConfiguration extends GameConfiguration {
 	 */
 	initLevelConfiguration() {
 		if (this.hasTournament() && this.tournamentMode.overridesLevelSize()) {
+			this.levelConfiguration = LevelConfiguration.defaultConfiguration();
 			this.levelConfiguration = LevelConfiguration.definedSize(
-				this.tournamentMode.levelSize().width,
-				this.tournamentMode.levelSize().height
+				this.tournamentMode.overridesLevelWidth() ? this.tournamentMode.levelWidth() : this.levelConfiguration.width,
+				this.tournamentMode.overridesLevelHeight() ? this.tournamentMode.levelHeight() : this.levelConfiguration.height
 			);
 		} else {
 			let game = Games.findOne({_id: this.gameId});

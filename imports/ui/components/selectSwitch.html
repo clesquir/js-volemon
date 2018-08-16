@@ -1,0 +1,16 @@
+<template name="selectSwitch">
+	<div class="select-switch">
+		<h3>
+			<input type="checkbox" id="check-{{id}}" data-checkbox-action="enable-select-switch">
+			<label for="check-{{id}}"> {{label}}</label>
+		</h3>
+
+		<span class="styled-single-select">
+			<select id="{{id}}">
+				{{#each option in options}}
+					<option value="{{option.id}}" selected="{{isSelected isOn option.id value}}">{{option.name}}</option>
+				{{/each}}
+			</select>
+		</span>
+	</div>
+</template>

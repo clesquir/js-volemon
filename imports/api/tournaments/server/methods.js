@@ -43,7 +43,9 @@ Meteor.methods({
 		description,
 		gameMode,
 		startDate,
-		endDate
+		endDate,
+		numberOfLostAllowed,
+		mode
 	) {
 		const userId = Meteor.userId();
 
@@ -69,7 +71,9 @@ Meteor.methods({
 					description: description,
 					gameMode: gameMode,
 					startDate: startDate + ' -04:00',
-					endDate: endDate + ' -04:00'
+					endDate: endDate + ' -04:00',
+					numberOfLostAllowed: numberOfLostAllowed,
+					mode: mode
 				}
 			}
 		);

@@ -1,8 +1,87 @@
-.tournament-dates {
-	flex-direction: row;
-	justify-content: space-around;
+.tournament-admin-page {
+	.tournament-admin-form {
+		position: relative;
+		margin-bottom: 75px;
+	}
 
 	.tournament-date {
 		position: relative;
+	}
+
+	.splitted-configuration {
+		display: flex;
+		flex-direction: row;
+
+		& > * {
+			flex: 1;
+		}
+	}
+
+	.tournament-mode-configuration h2 {
+		border-top: 1px solid #999;
+		margin-top: 30px;
+		padding-top: 20px;
+	}
+
+	.tournament-admin-buttons {
+		box-shadow: 0 0 20px -5px rgba(0,0,0,0.5);
+		background: $background-color;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		padding-bottom: 20px;
+		transition: opacity 0.25s ease-in-out;
+		opacity: 0.5;
+
+		&:hover {
+			opacity: 1;
+		}
+	}
+
+	@keyframes activatedcheckmark {
+		0% {
+			opacity: 0;
+		}
+		10% {
+			opacity: 1;
+		}
+		75% {
+			opacity: 1;
+		}
+		100% {
+			opacity: 0;
+		}
+	}
+
+	.checkmark {
+		position: absolute;
+		display: inline-block;
+		width: 25px;
+		height: 25px;
+		transform: rotate(45deg);
+		opacity: 0;
+
+		&.activated-checkmark {
+			animation: activatedcheckmark 5s linear;
+		}
+
+		.checkmark_stem {
+			position: absolute;
+			width: 5px;
+			height: 20px;
+			background-color: $positive;
+			left: 20px;
+			top: 1px;
+		}
+
+		.checkmark_kick {
+			position: absolute;
+			width: 10px;
+			height: 5px;
+			background-color: $positive;
+			left: 15px;
+			top: 16px;
+		}
 	}
 }

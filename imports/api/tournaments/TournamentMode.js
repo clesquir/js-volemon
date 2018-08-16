@@ -13,7 +13,8 @@ export default class TournamentMode {
 	overriddenAllowedListOfShapes;
 	overriddenCurrentPlayerShape;
 	overriddenNetHeight;
-	overriddenLevelSize;
+	overriddenLevelWidth;
+	overriddenLevelHeight;
 	overriddenPlayerXVelocity;
 	overriddenPlayerYVelocity;
 
@@ -133,14 +134,29 @@ export default class TournamentMode {
 	}
 
 	overridesLevelSize() {
-		return this.overriddenLevelSize !== undefined;
+		return this.overridesLevelWidth() || this.overridesLevelHeight();
+	}
+
+	overridesLevelWidth() {
+		return this.overriddenLevelWidth !== undefined;
+	}
+
+	overridesLevelHeight() {
+		return this.overriddenLevelHeight !== undefined;
 	}
 
 	/**
-	 * @returns {{width: int, height: int}}
+	 * @returns {int}
 	 */
-	levelSize() {
-		return this.overriddenLevelSize;
+	levelWidth() {
+		return this.overriddenLevelWidth;
+	}
+
+	/**
+	 * @returns {int}
+	 */
+	levelHeight() {
+		return this.overriddenLevelHeight;
 	}
 
 	overridesPlayerXVelocity() {
@@ -177,7 +193,8 @@ export default class TournamentMode {
 		tournamentMode.overriddenAllowedListOfShapes = mode.overriddenAllowedListOfShapes;
 		tournamentMode.overriddenCurrentPlayerShape = mode.overriddenCurrentPlayerShape;
 		tournamentMode.overriddenNetHeight = mode.overriddenNetHeight;
-		tournamentMode.overriddenLevelSize = mode.overriddenLevelSize;
+		tournamentMode.overriddenLevelWidth = mode.overriddenLevelWidth;
+		tournamentMode.overriddenLevelHeight = mode.overriddenLevelHeight;
 		tournamentMode.overriddenPlayerXVelocity = mode.overriddenPlayerXVelocity;
 		tournamentMode.overriddenPlayerYVelocity = mode.overriddenPlayerYVelocity;
 
