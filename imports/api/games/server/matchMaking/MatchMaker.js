@@ -1,3 +1,4 @@
+import {ONE_VS_COMPUTER_GAME_MODE} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
 import {MatchMakers} from '/imports/api/games/matchMakers.js';
 import UserMatch from '/imports/api/games/server/matchMaking/UserMatch.js';
@@ -20,7 +21,7 @@ export default class MatchMaker {
 		match = MatchMakers.findOne({modeSelection: modeSelection, tournamentId: tournamentId});
 		const matchedUsers = this.matchedUsers(match);
 		if (matchedUsers.length > 0) {
-			UserMatch.match(modeSelection, tournamentId, matchedUsers);
+			UserMatch.match(modeSelection, modeSelection === ONE_VS_COMPUTER_GAME_MODE, tournamentId, matchedUsers);
 		}
 	}
 

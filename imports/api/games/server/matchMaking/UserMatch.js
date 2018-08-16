@@ -5,8 +5,8 @@ import {Meteor} from "meteor/meteor";
 import {Random} from 'meteor/random';
 
 export default class UserMatch {
-	static match(modeSelection, tournamentId, matchedUsers) {
-		const gameId = GameCreator.fromMatchMaker(matchedUsers, modeSelection, tournamentId);
+	static match(modeSelection, isPracticeGame, tournamentId, matchedUsers) {
+		const gameId = GameCreator.fromMatchMaker(matchedUsers, modeSelection, isPracticeGame, tournamentId);
 
 		const userIds = [];
 		const matchedUsersWithInformation = [];

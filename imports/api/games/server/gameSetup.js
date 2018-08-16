@@ -26,10 +26,11 @@ import {Random} from 'meteor/random';
  * @param {string} userId
  * @param {GameInitiator[]} gameInitiators
  * @param modeSelection
+ * @param {bool} isPracticeGame
  * @param tournamentId
  * @returns {string}
  */
-export const createGame = function(userId, gameInitiators, modeSelection, tournamentId = null) {
+export const createGame = function(userId, gameInitiators, modeSelection, isPracticeGame, tournamentId = null) {
 	let id = null;
 
 	if (!playersCanPlayTournament(tournamentId, [{userId: userId}])) {
@@ -40,7 +41,9 @@ export const createGame = function(userId, gameInitiators, modeSelection, tourna
 	if (tournamentId) {
 		const tournament = Tournaments.findOne(tournamentId);
 
-		if (tournament && tournament.gameMode) {
+		if (tournament && tournament.status.id === 'draft') {
+			gameMode = ONE_VS_COMPUTER_GAME_MODE;
+		} else if (tournament && tournament.gameMode) {
 			gameMode = tournament.gameMode;
 		} else {
 			gameMode = ONE_VS_ONE_GAME_MODE;
@@ -58,7 +61,7 @@ export const createGame = function(userId, gameInitiators, modeSelection, tourna
 				createdAt: getUTCTimeStamp(),
 				createdBy: userId,
 				players: [],
-				isPracticeGame: gameMode === ONE_VS_COMPUTER_GAME_MODE,
+				isPracticeGame: isPracticeGame,
 				isPrivate: false,
 				hostPoints: 0,
 				clientPoints: 0,
@@ -220,7 +223,13 @@ export const replyRematch = function(userId, gameId, accepted, gameInitiators) {
 			rematchGameCreator = game.players[3].id;
 		}
 
-		const gameRematchId = createGame(rematchGameCreator, gameInitiators, game.modeSelection, game.tournamentId);
+		const gameRematchId = createGame(
+			rematchGameCreator,
+			gameInitiators,
+			game.modeSelection,
+			false,
+			game.tournamentId
+		);
 
 		Games.update(
 			{_id: gameRematchId},

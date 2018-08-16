@@ -2,6 +2,7 @@ import {ALL_BONUSES, ALL_BONUSES_FOR_RANDOM} from '/imports/api/games/bonusConst
 import {ONE_VS_ONE_GAME_MODE, TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import {PLAYER_ALLOWED_LIST_OF_SHAPES, PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
 import {isTournamentAdministrator, isTournamentEditor} from '/imports/api/users/userConfigurations.js';
+import ButtonEnabler from '/imports/ui/util/ButtonEnabler.js';
 import '/imports/ui/util/error-messages.js';
 import {disableButton, removeErrorLabelContainer, validateFieldsPresenceAndMarkInvalid} from '/imports/ui/util/form.js';
 import {Router} from 'meteor/iron:router';
@@ -11,9 +12,9 @@ import {Mongo} from "meteor/mongo";
 import {Session} from 'meteor/session';
 import {Template} from 'meteor/templating';
 
-import './tournamentAdmin.html';
+import './tournamentAdministration.html';
 
-Template.tournamentAdmin.helpers({
+Template.tournamentAdministration.helpers({
 	gameModes: function(tournament) {
 		return [
 			{id: ONE_VS_ONE_GAME_MODE, name: '1 VS 1', isSelected: tournament.gameMode === ONE_VS_ONE_GAME_MODE},
@@ -98,84 +99,50 @@ Template.tournamentAdmin.helpers({
 	}
 });
 
-Template.tournamentAdmin.events({
-	'submit form[name=tournament-admin]': function(e) {
+Template.tournamentAdministration.events({
+	'submit form[name=tournament-administration]': function(e) {
 		e.preventDefault();
 
-		const nameField = $(e.target).find('#tournament-name-field');
-		const descriptionField = $(e.target).find('#tournament-description-field');
-		const gameModeField = $(e.target).find('#tournament-game-mode-field');
-		const startField = $(e.target).find('#tournament-start-field');
-		const endField = $(e.target).find('#tournament-end-field');
-		const errorLabelContainer = $(e.target).find('.error-label-container');
+		saveDraftTournament();
+	},
 
-		removeErrorLabelContainer(errorLabelContainer);
-		$('#save-checkmark').removeClass('activated-checkmark');
-
-		Promise.resolve()
-			.then(
-				function() {
-					if (
-						validateFieldsPresenceAndMarkInvalid(
-							$(e.target),
-							[
-								nameField,
-								descriptionField,
-								startField,
-								endField,
-							]
-						)
-					) {
-						return Promise.reject();
-					} else {
-						return Promise.resolve();
-					}
-				}
-			)
-			.then(function() {
+	'click [data-action="try-draft-tournament"]': function(e) {
+		saveDraftTournament(
+			function() {
 				disableButton(e, true);
 				Meteor.call(
-					'updateTournament',
+					'createDraftTournamentGame',
 					Session.get('tournament'),
-					nameField.val(),
-					descriptionField.val(),
-					gameModeField.val(),
-					startField.val(),
-					endField.val(),
-					modeValueOrUndefined('number-of-lost-allowed'),
-					modeOptions(),
+					function(error, gameId) {
+						Session.set('appLoadingMask', true);
+						Session.set('appLoadingMask.text', 'Creating game...');
+
+						Meteor.call('setPlayerIsReady', gameId, function() {
+							Router.go('tournamentGame', {tournamentId: Session.get('tournament'), gameId: gameId});
+						});
+					}
+				);
+			}
+		);
+	},
+
+	'click [data-action="approve-draft-tournament"]': function(e) {
+		saveDraftTournament(
+			function() {
+				disableButton(e, true);
+				Meteor.call(
+					'approveDraftTournament',
+					Session.get('tournament'),
 					function(error) {
 						disableButton(e, false);
 						if (error !== undefined) {
 							errorLabelContainer.show();
 							errorLabelContainer.html(error.reason);
 						} else {
-							$('#save-checkmark').removeClass('activated-checkmark');
-							$('#save-checkmark').addClass('activated-checkmark');
+							Router.go('tournaments');
 						}
 					}
 				);
-			})
-			.catch(function() {});
-	},
-
-	'click [data-action="approve-draft-tournament"]': function(e) {
-		const errorLabelContainer = $(e.target).find('.error-label-container');
-
-		removeErrorLabelContainer(errorLabelContainer);
-
-		disableButton(e, true);
-		Meteor.call(
-			'approveDraftTournament',
-			Session.get('tournament'),
-			function(error) {
-				disableButton(e, false);
-				if (error !== undefined) {
-					errorLabelContainer.show();
-					errorLabelContainer.html(error.reason);
-				} else {
-					Router.go('tournaments');
-				}
 			}
 		);
 	}
@@ -220,4 +187,67 @@ const modeValueOrUndefined = function(id) {
 	}
 
 	return undefined;
+};
+
+const saveDraftTournament = function(callback) {
+	const form = $('#tournament-administration-form');
+	const nameField = $('#tournament-name-field');
+	const descriptionField = $('#tournament-description-field');
+	const gameModeField = $('#tournament-game-mode-field');
+	const startField = $('#tournament-start-field');
+	const endField = $('#tournament-end-field');
+	const errorLabelContainer = $('.error-label-container');
+
+	removeErrorLabelContainer(errorLabelContainer);
+	$('#save-checkmark').removeClass('activated-checkmark');
+
+	Promise.resolve()
+		.then(
+			function() {
+				if (
+					validateFieldsPresenceAndMarkInvalid(
+						form,
+						[
+							nameField,
+							descriptionField,
+							startField,
+							endField,
+						]
+					)
+				) {
+					return Promise.reject();
+				} else {
+					return Promise.resolve();
+				}
+			}
+		)
+		.then(function() {
+			ButtonEnabler.disableButton(form);
+			Meteor.call(
+				'updateTournament',
+				Session.get('tournament'),
+				nameField.val(),
+				descriptionField.val(),
+				gameModeField.val(),
+				startField.val(),
+				endField.val(),
+				modeValueOrUndefined('number-of-lost-allowed'),
+				modeOptions(),
+				function(error) {
+					ButtonEnabler.enableButton(form);
+					if (error !== undefined) {
+						errorLabelContainer.show();
+						errorLabelContainer.html(error.reason);
+					} else {
+						$('#save-checkmark').removeClass('activated-checkmark');
+						$('#save-checkmark').addClass('activated-checkmark');
+
+						if (callback) {
+							callback();
+						}
+					}
+				}
+			);
+		})
+		.catch(function() {});
 };

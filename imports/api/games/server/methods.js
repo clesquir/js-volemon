@@ -10,6 +10,7 @@ import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {Games} from '/imports/api/games/games.js';
 import {MatchMakers} from '/imports/api/games/matchMakers.js';
 import {Players} from '/imports/api/games/players.js';
+import GameCreator from '/imports/api/games/server/GameCreator.js';
 import GameInitiatorCollection from '/imports/api/games/server/GameInitiatorCollection.js';
 import {onPlayerQuit, replyRematch, startGame} from '/imports/api/games/server/gameSetup.js';
 import UserMatch from '/imports/api/games/server/matchMaking/UserMatch.js';
@@ -26,6 +27,10 @@ import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
 
 Meteor.methods({
+	createDraftTournamentGame: function(tournamentId) {
+		return GameCreator.fromDraftTournament(tournamentId);
+	},
+
 	/**
 	 * @param gameId
 	 */

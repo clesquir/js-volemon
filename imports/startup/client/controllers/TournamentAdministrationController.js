@@ -5,7 +5,7 @@ import {Meteor} from 'meteor/meteor';
 import {Session} from 'meteor/session';
 import {Template} from 'meteor/templating';
 
-export const TournamentAdminController = RouteController.extend({
+export const TournamentAdministrationController = RouteController.extend({
 	waitOn: function() {
 		return [
 			Meteor.subscribe('tournament', this.params.tournamentId)

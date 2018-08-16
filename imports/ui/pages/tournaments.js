@@ -137,14 +137,14 @@ Template.tournaments.events({
 				if (error !== undefined) {
 					alert(error);
 				} else {
-					Router.go(Router.routes['tournamentAdmin'].url({tournamentId: tournament}));
+					Router.go(Router.routes['tournamentAdministration'].url({tournamentId: tournament}));
 				}
 			}
 		);
 	},
 
 	'click [data-action="edit-tournament"]': function(e) {
-		Router.go(Router.routes['tournamentAdmin'].url({tournamentId: $(e.currentTarget).attr('data-tournament-id')}));
+		Router.go(Router.routes['tournamentAdministration'].url({tournamentId: $(e.currentTarget).attr('data-tournament-id')}));
 	},
 
 	'click [data-action="remove-tournament"]': function(e) {

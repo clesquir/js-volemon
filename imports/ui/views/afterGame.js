@@ -18,6 +18,7 @@ import {
 	isGameStatusTimeout,
 	winnerSide
 } from '/imports/api/games/utils.js';
+import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {playersCanPlayTournament} from '/imports/api/tournaments/utils.js';
 import CardSwitcher from '/imports/lib/client/CardSwitcher.js';
 import ButtonEnabler from '/imports/ui/util/ButtonEnabler.js';
@@ -66,6 +67,12 @@ Template.afterGame.helpers({
 
 	isTournament: function() {
 		return !!this.game.tournamentId;
+	},
+
+	isDraftTournament: function() {
+		const tournament = Tournaments.findOne(this.game.tournamentId);
+
+		return tournament && tournament.status.id === 'draft';
 	},
 
 	isTwoVersusTwo: function() {
