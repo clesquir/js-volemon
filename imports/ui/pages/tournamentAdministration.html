@@ -16,18 +16,18 @@
 
 				<div class="form-section">
 					<label for="tournament-name-field">Name</label>
-					<input id="tournament-name-field" type="text" required="required" disabled="{{#unless canEditTournament tournament}}disabled{{/unless}}" autofocus="autofocus" autocomplete="off" name="name" maxlength="100" value="{{tournament.name}}" />
+					<input id="tournament-name-field" type="text" required="required" disabled="{{#if canOnlyViewTournament tournament}}disabled{{/if}}" autofocus="autofocus" autocomplete="off" name="name" maxlength="100" value="{{tournament.name}}" />
 				</div>
 
 				<div class="form-section">
 					<label for="tournament-description-field">Description</label>
-					<input id="tournament-description-field" type="text" required="required" disabled="{{#unless canEditTournament tournament}}disabled{{/unless}}" autofocus="autofocus" autocomplete="off" name="description" maxlength="250" value="{{tournament.description}}" />
+					<input id="tournament-description-field" type="text" required="required" disabled="{{#if canOnlyViewTournament tournament}}disabled{{/if}}" autofocus="autofocus" autocomplete="off" name="description" maxlength="250" value="{{tournament.description}}" />
 				</div>
 
 				<div class="form-section">
 					<label for="tournament-game-mode-field">Game mode</label>
-					<span class="styled-single-select {{#unless canEditTournament tournament}}style-disabled-input{{/unless}}">
-						<select id="tournament-game-mode-field" name="gameMode" required="required" disabled="{{#unless canEditTournament tournament}}disabled{{/unless}}">
+					<span class="styled-single-select {{#if canOnlyViewTournament tournament}}style-disabled-input{{/if}}">
+						<select id="tournament-game-mode-field" name="gameMode" required="required" disabled="{{#if canOnlyViewTournament tournament}}disabled{{/if}}">
 							{{#each gameModes tournament}}
 								<option value="{{id}}" selected="{{isSelected}}">{{name}}</option>
 							{{/each}}
@@ -38,11 +38,11 @@
 				<div class="form-section splitted-configuration">
 					<div class="tournament-date">
 						<label for="tournament-start-field">Start date</label>
-						<input id="tournament-start-field" type="date" required="required" disabled="{{#unless canEditTournament tournament}}disabled{{/unless}}" autofocus="autofocus" autocomplete="off" name="start_date" value="{{tournamentDate tournament.startDate}}" />
+						<input id="tournament-start-field" type="date" required="required" disabled="{{#if canOnlyViewTournament tournament}}disabled{{/if}}" autofocus="autofocus" autocomplete="off" name="start_date" value="{{tournamentDate tournament.startDate}}" />
 					</div>
 					<div class="tournament-date">
 						<label for="tournament-end-field">End date</label>
-						<input id="tournament-end-field" type="date" required="required" disabled="{{#unless canEditTournament tournament}}disabled{{/unless}}" autofocus="autofocus" autocomplete="off" name="end_date" value="{{tournamentDate tournament.endDate}}" />
+						<input id="tournament-end-field" type="date" required="required" disabled="{{#if canOnlyViewTournament tournament}}disabled{{/if}}" autofocus="autofocus" autocomplete="off" name="end_date" value="{{tournamentDate tournament.endDate}}" />
 					</div>
 				</div>
 
@@ -50,62 +50,62 @@
 
 					<h2>Bonus overrides</h2>
 
-					{{> multipleSelectSwitch id="available-bonuses" label="Available bonuses" isOn=(modeOverridden "overriddenAvailableBonuses") options=availableBonuses values=(modeOverriddenValue "overriddenAvailableBonuses")}}
+					{{> multipleSelectSwitch id="available-bonuses" label="Available bonuses" isOn=(modeOverridden "overriddenAvailableBonuses") options=availableBonuses values=(modeOverriddenValue "overriddenAvailableBonuses") isReadOnly=(canOnlyViewTournament tournament)}}
 
-					{{> multipleSelectSwitch id="available-bonuses-for-random" label="Available bonuses for random" isOn=(modeOverridden "overriddenAvailableBonusesForRandom") options=availableBonusesForRandom values=(modeOverriddenValue "overriddenAvailableBonusesForRandom")}}
+					{{> multipleSelectSwitch id="available-bonuses-for-random" label="Available bonuses for random" isOn=(modeOverridden "overriddenAvailableBonusesForRandom") options=availableBonusesForRandom values=(modeOverriddenValue "overriddenAvailableBonusesForRandom") isReadOnly=(canOnlyViewTournament tournament)}}
 
 					<div class="splitted-configuration">
-						{{> selectSwitch id="has-bonuses" label="Has bonuses" isOn=(modeOverridden "overriddenHasBonuses") options=hasBonuses value=(modeOverriddenValue "overriddenHasBonuses")}}
+						{{> selectSwitch id="has-bonuses" label="Has bonuses" isOn=(modeOverridden "overriddenHasBonuses") options=hasBonuses value=(modeOverriddenValue "overriddenHasBonuses") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="bonus-duration" label="Bonus duration (ms) - default 10,000" isOn=(modeOverridden "overriddenBonusDuration") value=(modeOverriddenValue "overriddenBonusDuration")}}
+						{{> numberSwitch id="bonus-duration" label="Bonus duration (ms) - default 10,000" isOn=(modeOverridden "overriddenBonusDuration") value=(modeOverriddenValue "overriddenBonusDuration") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<div class="splitted-configuration">
-						{{> numberSwitch id="bonus-spawn-initial-minimum-frequence" label="Bonus spawn initial minimum frequence (ms) - default 10,000" isOn=(modeOverridden "overriddenBonusSpawnInitialMinimumFrequence") value=(modeOverriddenValue "overriddenBonusSpawnInitialMinimumFrequence")}}
+						{{> numberSwitch id="bonus-spawn-initial-minimum-frequence" label="Bonus spawn initial minimum frequence (ms) - default 10,000" isOn=(modeOverridden "overriddenBonusSpawnInitialMinimumFrequence") value=(modeOverriddenValue "overriddenBonusSpawnInitialMinimumFrequence") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="bonus-spawn-initial-maximum-frequence" label="Bonus spawn initial maximum frequence (ms) - default 15,000" isOn=(modeOverridden "overriddenBonusSpawnInitialMaximumFrequence") value=(modeOverriddenValue "overriddenBonusSpawnInitialMaximumFrequence")}}
+						{{> numberSwitch id="bonus-spawn-initial-maximum-frequence" label="Bonus spawn initial maximum frequence (ms) - default 15,000" isOn=(modeOverridden "overriddenBonusSpawnInitialMaximumFrequence") value=(modeOverriddenValue "overriddenBonusSpawnInitialMaximumFrequence") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<h2>Shape overrides</h2>
 
-					{{> multipleSelectSwitch id="allowed-list-of-shapes" label="Available shapes" isOn=(modeOverridden "overriddenAllowedListOfShapes") options=allowedListOfShapes values=(modeOverriddenValue "overriddenAllowedListOfShapes")}}
+					{{> multipleSelectSwitch id="allowed-list-of-shapes" label="Available shapes" isOn=(modeOverridden "overriddenAllowedListOfShapes") options=allowedListOfShapes values=(modeOverriddenValue "overriddenAllowedListOfShapes") isReadOnly=(canOnlyViewTournament tournament)}}
 
-					{{> multipleSelectSwitch id="list-of-shapes" label="Available shapes for random" isOn=(modeOverridden "overriddenListOfShapes") options=listOfShapes values=(modeOverriddenValue "overriddenListOfShapes")}}
+					{{> multipleSelectSwitch id="list-of-shapes" label="Available shapes for random" isOn=(modeOverridden "overriddenListOfShapes") options=listOfShapes values=(modeOverriddenValue "overriddenListOfShapes") isReadOnly=(canOnlyViewTournament tournament)}}
 
-					{{> textSwitch id="current-player-shape" label="Visual player shape" isOn=(modeOverridden "overriddenCurrentPlayerShape") value=(modeOverriddenValue "overriddenCurrentPlayerShape")}}
+					{{> textSwitch id="current-player-shape" label="Visual player shape" isOn=(modeOverridden "overriddenCurrentPlayerShape") value=(modeOverriddenValue "overriddenCurrentPlayerShape") isReadOnly=(canOnlyViewTournament tournament)}}
 
 					<h2>Points overrides</h2>
 
-					{{> numberSwitch id="number-of-lost-allowed" label="Number of lost allowed" isOn=overridesNumberOfLostAllowed value=numberOfLostAllowed}}
+					{{> numberSwitch id="number-of-lost-allowed" label="Number of lost allowed" isOn=overridesNumberOfLostAllowed value=numberOfLostAllowed isReadOnly=(canOnlyViewTournament tournament)}}
 
 					<div class="splitted-configuration">
-						{{> numberSwitch id="forfeit-minimum-points" label="Forfeit minimum points - default 3" isOn=(modeOverridden "overriddenForfeitMinimumPoints") value=(modeOverriddenValue "overriddenForfeitMinimumPoints")}}
+						{{> numberSwitch id="forfeit-minimum-points" label="Forfeit minimum points - default 3" isOn=(modeOverridden "overriddenForfeitMinimumPoints") value=(modeOverriddenValue "overriddenForfeitMinimumPoints") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="maximum-points" label="Maximum points - default 5" isOn=(modeOverridden "overriddenMaximumPoints") value=(modeOverriddenValue "overriddenMaximumPoints")}}
+						{{> numberSwitch id="maximum-points" label="Maximum points - default 5" isOn=(modeOverridden "overriddenMaximumPoints") value=(modeOverriddenValue "overriddenMaximumPoints") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<h2>Level overrides</h2>
 
-					{{> numberSwitch id="net-height" label="Net height - default 70" isOn=(modeOverridden "overriddenNetHeight") value=(modeOverriddenValue "overriddenNetHeight")}}
+					{{> numberSwitch id="net-height" label="Net height - default 70" isOn=(modeOverridden "overriddenNetHeight") value=(modeOverriddenValue "overriddenNetHeight") isReadOnly=(canOnlyViewTournament tournament)}}
 
 					<div class="splitted-configuration">
-						{{> numberSwitch id="level-width" label="Level width" isOn=(modeOverridden "overriddenLevelWidth") value=(modeOverriddenValue "overriddenLevelWidth")}}
+						{{> numberSwitch id="level-width" label="Level width" isOn=(modeOverridden "overriddenLevelWidth") value=(modeOverriddenValue "overriddenLevelWidth") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="level-height" label="Level height" isOn=(modeOverridden "overriddenLevelHeight") value=(modeOverriddenValue "overriddenLevelHeight")}}
+						{{> numberSwitch id="level-height" label="Level height" isOn=(modeOverridden "overriddenLevelHeight") value=(modeOverriddenValue "overriddenLevelHeight") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<h2>Physic overrides</h2>
 
 					<div class="splitted-configuration">
-						{{> numberSwitch id="world-gravity" label="World gravity - default 770" isOn=(modeOverridden "overriddenWorldGravity") value=(modeOverriddenValue "overriddenWorldGravity")}}
+						{{> numberSwitch id="world-gravity" label="World gravity - default 770" isOn=(modeOverridden "overriddenWorldGravity") value=(modeOverriddenValue "overriddenWorldGravity") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="world-restitution" label="World restitution - default 1" isOn=(modeOverridden "overriddenWorldRestitution") value=(modeOverriddenValue "overriddenWorldRestitution")}}
+						{{> numberSwitch id="world-restitution" label="World restitution - default 1" isOn=(modeOverridden "overriddenWorldRestitution") value=(modeOverriddenValue "overriddenWorldRestitution") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<div class="splitted-configuration">
-						{{> numberSwitch id="player-x-velocity" label="Player X velocity - default 280" isOn=(modeOverridden "overriddenPlayerXVelocity") value=(modeOverriddenValue "overriddenPlayerXVelocity")}}
+						{{> numberSwitch id="player-x-velocity" label="Player X velocity - default 280" isOn=(modeOverridden "overriddenPlayerXVelocity") value=(modeOverriddenValue "overriddenPlayerXVelocity") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="player-y-velocity" label="Player Y velocity - default 420" isOn=(modeOverridden "overriddenPlayerYVelocity") value=(modeOverriddenValue "overriddenPlayerYVelocity")}}
+						{{> numberSwitch id="player-y-velocity" label="Player Y velocity - default 420" isOn=(modeOverridden "overriddenPlayerYVelocity") value=(modeOverriddenValue "overriddenPlayerYVelocity") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 				</div>

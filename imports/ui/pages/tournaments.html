@@ -99,16 +99,23 @@
 								<div class="card-cell card-left">{{timeForDraft}}</div>
 								<div class="card-cell card-right">By: {{editor.name}}</div>
 							</div>
-							{{#if canEditTournament}}
-								<a class="edit-tournament-button action-button" data-action="edit-tournament" data-tournament-id="{{_id}}">
-									<i class="fa fa-pencil"></i>
-								</a>
-							{{/if}}
-							{{#if canRemoveTournament}}
-								<a class="remove-tournament-button action-button" data-action="remove-tournament" data-tournament-id="{{_id}}">
-									<i class="fa fa-trash"></i>
-								</a>
-							{{/if}}
+							<div class="draft-tournaments-buttons">
+								{{#if canOnlyViewTournament}}
+									<a class="view-tournament-button action-button" data-action="view-tournament" data-tournament-id="{{_id}}">
+										<i class="fa fa-eye"></i>
+									</a>
+								{{/if}}
+								{{#if canEditTournament}}
+									<a class="edit-tournament-button action-button" data-action="edit-tournament" data-tournament-id="{{_id}}">
+										<i class="fa fa-pencil"></i>
+									</a>
+								{{/if}}
+								{{#if canRemoveTournament}}
+									<a class="remove-tournament-button action-button" data-action="remove-tournament" data-tournament-id="{{_id}}">
+										<i class="fa fa-trash"></i>
+									</a>
+								{{/if}}
+							</div>
 						</div>
 					{{/each}}
 				</div>

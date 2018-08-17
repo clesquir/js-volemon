@@ -1,7 +1,7 @@
 <template name="textSwitch">
 	<div class="text-switch">
 		<h3>
-			<input type="checkbox" id="check-{{id}}" data-checkbox-action="enable-text-switch">
+			<input type="checkbox" id="check-{{id}}" data-checkbox-action="enable-text-switch" disabled="{{#if isReadOnly}}disabled{{/if}}">
 			<label for="check-{{id}}"> {{label}}</label>
 		</h3>
 

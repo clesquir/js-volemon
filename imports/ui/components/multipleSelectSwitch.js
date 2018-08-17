@@ -10,6 +10,10 @@ Template.multipleSelectSwitch.onRendered(function() {
 		field.prop('disabled', true);
 		field.val('');
 	}
+
+	if (this.data.isReadOnly) {
+		field.prop('disabled', true);
+	}
 });
 
 Template.multipleSelectSwitch.helpers({
@@ -20,6 +24,10 @@ Template.multipleSelectSwitch.helpers({
 
 Template.multipleSelectSwitch.events({
 	'click [data-checkbox-action=enable-multiple-select-switch]': function(e) {
+		if (this.isReadOnly) {
+			return;
+		}
+
 		const checkbox = $(e.currentTarget);
 		const field = $(`#${this.id}`);
 

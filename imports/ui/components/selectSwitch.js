@@ -10,6 +10,10 @@ Template.selectSwitch.onRendered(function() {
 		field.prop('disabled', true);
 		field.val('');
 	}
+
+	if (this.data.isReadOnly) {
+		field.prop('disabled', true);
+	}
 });
 
 Template.selectSwitch.helpers({
@@ -20,6 +24,10 @@ Template.selectSwitch.helpers({
 
 Template.selectSwitch.events({
 	'click [data-checkbox-action=enable-select-switch]': function(e) {
+		if (this.isReadOnly) {
+			return;
+		}
+
 		const checkbox = $(e.currentTarget);
 		const field = $(`#${this.id}`);
 

@@ -19,7 +19,7 @@ export const TournamentAdministrationController = RouteController.extend({
 	onBeforeAction: function() {
 		const tournament = Tournaments.findOne(this.params.tournamentId);
 
-		if (tournament && (isTournamentEditor() || isTournamentAdministrator())) {
+		if (tournament) {
 			Session.set('tournament', this.params.tournamentId);
 		} else {
 			Session.set('tournament', null);

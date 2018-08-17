@@ -3,15 +3,13 @@
 		position: relative;
 	}
 
-	.edit-tournament-button {
-		position: absolute;
-		right: 30px;
-		top: 10px;
-	}
-
-	.remove-tournament-button {
+	.draft-tournaments-buttons {
 		position: absolute;
 		right: 10px;
 		top: 10px;
+
+		a + a {
+			margin-left: 2px;
+		}
 	}
 }

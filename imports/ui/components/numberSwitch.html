@@ -1,7 +1,7 @@
 <template name="numberSwitch">
 	<div class="number-switch">
 		<h3>
-			<input type="checkbox" id="check-{{id}}" data-checkbox-action="enable-number-switch">
+			<input type="checkbox" id="check-{{id}}" data-checkbox-action="enable-number-switch" disabled="{{#if isReadOnly}}disabled{{/if}}">
 			<label for="check-{{id}}"> {{label}}</label>
 		</h3>
 

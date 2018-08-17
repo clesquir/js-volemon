@@ -9,10 +9,18 @@ Template.textSwitch.onRendered(function() {
 	} else {
 		field.prop('disabled', true);
 	}
+
+	if (this.data.isReadOnly) {
+		field.prop('disabled', true);
+	}
 });
 
 Template.textSwitch.events({
 	'click [data-checkbox-action=enable-text-switch]': function(e) {
+		if (this.isReadOnly) {
+			return;
+		}
+
 		const checkbox = $(e.currentTarget);
 		const field = $(`#${this.id}`);
 

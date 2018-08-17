@@ -1,7 +1,7 @@
 <template name="multipleSelectSwitch">
 	<div class="multiple-select-switch">
 		<h3>
-			<input type="checkbox" id="check-{{id}}" data-checkbox-action="enable-multiple-select-switch">
+			<input type="checkbox" id="check-{{id}}" data-checkbox-action="enable-multiple-select-switch" disabled="{{#if isReadOnly}}disabled{{/if}}">
 			<label for="check-{{id}}"> {{label}}</label>
 		</h3>
 

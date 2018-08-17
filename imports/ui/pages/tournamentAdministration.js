@@ -26,6 +26,16 @@ Template.tournamentAdministration.helpers({
 		return Moment.moment(date, "YYYY-MM-DD ZZ").format('YYYY-MM-DD');
 	},
 
+	canOnlyViewTournament: function(tournament) {
+		return (
+			(!isTournamentEditor() && !isTournamentAdministrator()) ||
+			(
+				isTournamentEditor() &&
+				tournament.editor.id !== Meteor.userId()
+			)
+		);
+	},
+
 	canEditTournament: function(tournament) {
 		return (
 			isTournamentEditor() &&
@@ -107,23 +117,33 @@ Template.tournamentAdministration.events({
 	},
 
 	'click [data-action="try-draft-tournament"]': function(e) {
-		saveDraftTournament(
-			function() {
-				disableButton(e, true);
-				Meteor.call(
-					'createDraftTournamentGame',
-					Session.get('tournament'),
-					function(error, gameId) {
-						Session.set('appLoadingMask', true);
-						Session.set('appLoadingMask.text', 'Creating game...');
+		const tryTournament = function() {
+			disableButton(e, true);
+			Meteor.call(
+				'createDraftTournamentGame',
+				Session.get('tournament'),
+				function(error, gameId) {
+					Session.set('appLoadingMask', true);
+					Session.set('appLoadingMask.text', 'Creating game...');
 
-						Meteor.call('setPlayerIsReady', gameId, function() {
-							Router.go('tournamentGame', {tournamentId: Session.get('tournament'), gameId: gameId});
-						});
-					}
-				);
-			}
-		);
+					Meteor.call('setPlayerIsReady', gameId, function() {
+						Router.go('tournamentGame', {tournamentId: Session.get('tournament'), gameId: gameId});
+					});
+				}
+			);
+		};
+
+		if (
+			(
+				isTournamentEditor() &&
+				this.tournament.editor.id === Meteor.userId()
+			) ||
+			isTournamentAdministrator()
+		) {
+			saveDraftTournament(tryTournament);
+		} else {
+			tryTournament();
+		}
 	},
 
 	'click [data-action="approve-draft-tournament"]': function(e) {
@@ -136,6 +156,7 @@ Template.tournamentAdministration.events({
 					function(error) {
 						disableButton(e, false);
 						if (error !== undefined) {
+							const errorLabelContainer = $('.error-label-container');
 							errorLabelContainer.show();
 							errorLabelContainer.html(error.reason);
 						} else {

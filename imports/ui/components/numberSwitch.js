@@ -9,10 +9,18 @@ Template.numberSwitch.onRendered(function() {
 	} else {
 		field.prop('disabled', true);
 	}
+
+	if (this.data.isReadOnly) {
+		field.prop('disabled', true);
+	}
 });
 
 Template.numberSwitch.events({
 	'click [data-checkbox-action=enable-number-switch]': function(e) {
+		if (this.isReadOnly) {
+			return;
+		}
+
 		const checkbox = $(e.currentTarget);
 		const field = $(`#${this.id}`);
 
