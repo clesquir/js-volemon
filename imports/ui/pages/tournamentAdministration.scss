@@ -4,6 +4,14 @@
 		margin-bottom: 75px;
 	}
 
+	.tournament-header {
+		margin: 15px 0;
+
+		h1, h2 {
+			margin: 0;
+		}
+	}
+
 	.tournament-date {
 		position: relative;
 
@@ -41,6 +49,10 @@
 
 		&:hover {
 			opacity: 1;
+		}
+
+		.error-label-container {
+			margin: 15px 0;
 		}
 	}
 

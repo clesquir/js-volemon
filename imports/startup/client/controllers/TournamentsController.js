@@ -6,6 +6,7 @@ export const TournamentsController = RouteController.extend({
 			Meteor.subscribe('profileData', Meteor.userId()),
 			Meteor.subscribe('activeTournaments'),
 			Meteor.subscribe('futureTournaments'),
+			Meteor.subscribe('submittedTournaments'),
 			Meteor.subscribe('draftTournaments')
 		];
 	}

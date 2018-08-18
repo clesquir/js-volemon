@@ -69,10 +69,10 @@ Template.afterGame.helpers({
 		return !!this.game.tournamentId;
 	},
 
-	isDraftTournament: function() {
+	isTournamentPractice: function() {
 		const tournament = Tournaments.findOne(this.game.tournamentId);
 
-		return tournament && tournament.status.id === 'draft';
+		return tournament && tournament.status.id !== 'approved';
 	},
 
 	isTwoVersusTwo: function() {

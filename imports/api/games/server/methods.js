@@ -27,8 +27,8 @@ import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
 
 Meteor.methods({
-	createDraftTournamentGame: function(tournamentId) {
-		return GameCreator.fromDraftTournament(tournamentId);
+	createTournamentPracticeGame: function(tournamentId) {
+		return GameCreator.fromTournamentPractice(tournamentId);
 	},
 
 	/**

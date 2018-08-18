@@ -32,20 +32,52 @@ Template.tournamentAdministration.helpers({
 			(
 				isTournamentEditor() &&
 				tournament.editor.id !== Meteor.userId()
+			) ||
+			tournament.status.id !== 'draft'
+		);
+	},
+
+	canSaveTournament: function(tournament) {
+		return (
+			tournament.status.id === 'draft' &&
+			(
+				(
+					isTournamentEditor() &&
+					tournament.editor.id === Meteor.userId()
+				) ||
+				isTournamentAdministrator()
 			)
 		);
 	},
 
-	canEditTournament: function(tournament) {
+	canSubmitTournament: function(tournament) {
 		return (
-			isTournamentEditor() &&
-			tournament.editor.id === Meteor.userId()
-		) ||
-		isTournamentAdministrator();
+			tournament.status.id === 'draft' &&
+			(
+				(
+					isTournamentEditor() &&
+					tournament.editor.id === Meteor.userId()
+				) ||
+				isTournamentAdministrator()
+			)
+		);
 	},
 
-	canApproveTournament: function() {
-		return isTournamentAdministrator();
+	canReturnToDraftTournament: function(tournament) {
+		return (
+			tournament.status.id === 'submitted' &&
+			(
+				(
+					isTournamentEditor() &&
+					tournament.editor.id === Meteor.userId()
+				) ||
+				isTournamentAdministrator()
+			)
+		);
+	},
+
+	canApproveTournament: function(tournament) {
+		return tournament.status.id === 'submitted' && isTournamentAdministrator();
 	},
 
 	hasBonuses: function() {
@@ -116,11 +148,11 @@ Template.tournamentAdministration.events({
 		saveDraftTournament();
 	},
 
-	'click [data-action="try-draft-tournament"]': function(e) {
+	'click [data-action="try-tournament"]': function(e) {
 		const tryTournament = function() {
 			disableButton(e, true);
 			Meteor.call(
-				'createDraftTournamentGame',
+				'createTournamentPracticeGame',
 				Session.get('tournament'),
 				function(error, gameId) {
 					Session.set('appLoadingMask', true);
@@ -134,11 +166,14 @@ Template.tournamentAdministration.events({
 		};
 
 		if (
+			this.tournament.status.id === 'draft' &&
 			(
-				isTournamentEditor() &&
-				this.tournament.editor.id === Meteor.userId()
-			) ||
-			isTournamentAdministrator()
+				(
+					isTournamentEditor() &&
+					this.tournament.editor.id === Meteor.userId()
+				) ||
+				isTournamentAdministrator()
+			)
 		) {
 			saveDraftTournament(tryTournament);
 		} else {
@@ -146,12 +181,12 @@ Template.tournamentAdministration.events({
 		}
 	},
 
-	'click [data-action="approve-draft-tournament"]': function(e) {
+	'click [data-action="submit-tournament"]': function(e) {
 		saveDraftTournament(
 			function() {
 				disableButton(e, true);
 				Meteor.call(
-					'approveDraftTournament',
+					'submitTournament',
 					Session.get('tournament'),
 					function(error) {
 						disableButton(e, false);
@@ -160,10 +195,48 @@ Template.tournamentAdministration.events({
 							errorLabelContainer.show();
 							errorLabelContainer.html(error.reason);
 						} else {
-							Router.go('tournaments');
+							$('#save-checkmark').removeClass('activated-checkmark');
+							$('#save-checkmark').addClass('activated-checkmark');
 						}
 					}
 				);
+			}
+		);
+	},
+
+	'click [data-action="return-to-draft-tournament"]': function(e) {
+		disableButton(e, true);
+		Meteor.call(
+			'draftTournament',
+			Session.get('tournament'),
+			function(error) {
+				disableButton(e, false);
+				if (error !== undefined) {
+					const errorLabelContainer = $('.error-label-container');
+					errorLabelContainer.show();
+					errorLabelContainer.html(error.reason);
+				} else {
+					$('#save-checkmark').removeClass('activated-checkmark');
+					$('#save-checkmark').addClass('activated-checkmark');
+				}
+			}
+		);
+	},
+
+	'click [data-action="approve-tournament"]': function(e) {
+		disableButton(e, true);
+		Meteor.call(
+			'approveTournament',
+			Session.get('tournament'),
+			function(error) {
+				disableButton(e, false);
+				if (error !== undefined) {
+					const errorLabelContainer = $('.error-label-container');
+					errorLabelContainer.show();
+					errorLabelContainer.html(error.reason);
+				} else {
+					Router.go('tournaments');
+				}
 			}
 		);
 	}

@@ -46,12 +46,41 @@ Meteor.publish('futureTournaments', function() {
 	this.ready();
 });
 
+Meteor.publish('submittedTournaments', function() {
+	const tournaments = Tournaments.find({'status.id': 'submitted'});
+
+	tournaments.forEach((tournament) => {
+		this.added('submittedTournaments', tournament._id, tournament);
+	});
+
+	this.submittedTournamentsTracker = tournaments.observe({
+		added: (tournament) => {
+			this.added('submittedTournaments', tournament._id, tournament);
+		},
+		changed: (tournament) => {
+			this.changed('submittedTournaments', tournament._id, tournament);
+		},
+		removed: (tournament) => {
+			this.removed('submittedTournaments', tournament._id, tournament);
+		}
+	});
+
+	this.ready();
+
+	this.onStop(() => {
+		this.submittedTournamentsTracker.stop();
+	});
+});
+
 Meteor.publish('draftTournaments', function() {
-	Tournaments.find({'status.id': 'draft'}).forEach((tournament) => {
+	const userId = Meteor.userId();
+	const tournaments = Tournaments.find({'status.id': 'draft', 'editor.id': userId});
+
+	tournaments.forEach((tournament) => {
 		this.added('draftTournaments', tournament._id, tournament);
 	});
 
-	this.draftTournamentsTracker = Tournaments.find({'status.id': 'draft'}).observe({
+	this.draftTournamentsTracker = tournaments.observe({
 		added: (tournament) => {
 			this.added('draftTournaments', tournament._id, tournament);
 		},

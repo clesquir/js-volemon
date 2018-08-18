@@ -21,7 +21,7 @@ export const canPlayTournament = function(tournamentId, userId) {
 	const tournament = Tournaments.findOne({_id: tournamentId});
 	const tournamentProfile = TournamentProfiles.findOne({tournamentId: tournamentId, userId: userId});
 
-	if (tournament && tournament.status.id === 'draft') {
+	if (tournament && tournament.status.id !== 'approved') {
 		return true;
 	}
 

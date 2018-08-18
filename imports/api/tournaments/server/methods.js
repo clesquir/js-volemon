@@ -63,6 +63,10 @@ Meteor.methods({
 			throw new Meteor.Error('not-allowed', 'You can only update tournaments you have created');
 		}
 
+		if (tournament.status.id !== 'draft') {
+			throw new Meteor.Error('not-allowed', 'The tournament has to be draft');
+		}
+
 		Tournaments.update(
 			{_id: id},
 			{$set:
@@ -99,7 +103,69 @@ Meteor.methods({
 		Tournaments.remove({_id: id});
 	},
 
-	approveDraftTournament: function(id) {
+	submitTournament: function(id) {
+		const userId = Meteor.userId();
+
+		if (!userId) {
+			throw new Meteor.Error(401, 'You need to login to update a tournament');
+		}
+
+		const tournament = Tournaments.findOne({_id: id});
+
+		if (!tournament) {
+			throw new Meteor.Error(404, 'The tournament does not exist');
+		}
+
+		if (!isTournamentAdministrator() && (!isTournamentEditor() || tournament.editor.id !== userId)) {
+			throw new Meteor.Error('not-allowed', 'You can only submit tournaments you have created');
+		}
+
+		if (tournament.status.id !== 'draft') {
+			throw new Meteor.Error('not-allowed', 'The tournament has to be draft');
+		}
+
+		Tournaments.update(
+			{_id: id},
+			{$set:
+				{
+					status: {id: 'submitted', name: 'Submitted'}
+				}
+			}
+		);
+	},
+
+	draftTournament: function(id) {
+		const userId = Meteor.userId();
+
+		if (!userId) {
+			throw new Meteor.Error(401, 'You need to login to update a tournament');
+		}
+
+		const tournament = Tournaments.findOne({_id: id});
+
+		if (!tournament) {
+			throw new Meteor.Error(404, 'The tournament does not exist');
+		}
+
+		if (!isTournamentAdministrator() && (!isTournamentEditor() || tournament.editor.id !== userId)) {
+			throw new Meteor.Error('not-allowed', 'You can only return to draft tournaments you have created');
+		}
+
+		if (tournament.status.id !== 'submitted') {
+			throw new Meteor.Error('not-allowed', 'The tournament has to be submitted');
+		}
+
+		Tournaments.update(
+			{_id: id},
+			{$set:
+				{
+					status: {id: 'draft', name: 'Draft'}
+				}
+			}
+		);
+	},
+
+	approveTournament: function(id) {
 		const userId = Meteor.userId();
 
 		if (!userId) {
@@ -107,13 +173,17 @@ Meteor.methods({
 		}
 
 		if (!isTournamentAdministrator()) {
-			throw new Meteor.Error('not-allowed', 'You cannot approve a draft tournament');
+			throw new Meteor.Error('not-allowed', 'You cannot approve a tournament');
 		}
 
 		const tournament = Tournaments.findOne({_id: id});
 
 		if (!tournament) {
 			throw new Meteor.Error(404, 'The tournament does not exist');
+		}
+
+		if (tournament.status.id !== 'submitted') {
+			throw new Meteor.Error('not-allowed', 'The tournament has to be submitted');
 		}
 
 		Tournaments.update(

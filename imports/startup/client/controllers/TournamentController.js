@@ -27,7 +27,7 @@ export const TournamentController = RouteController.extend({
 		const tournament = Tournaments.findOne(this.params.tournamentId);
 
 		Session.set('tournament', null);
-		if (!tournament || tournament.status.id === 'draft') {
+		if (!tournament || tournament.status.id !== 'approved') {
 			Router.go('tournaments');
 		} else {
 			Session.set('tournament', this.params.tournamentId);

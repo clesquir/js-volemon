@@ -41,7 +41,7 @@ export const createGame = function(userId, gameInitiators, modeSelection, isPrac
 	if (tournamentId) {
 		const tournament = Tournaments.findOne(tournamentId);
 
-		if (tournament && tournament.status.id === 'draft') {
+		if (tournament && tournament.status.id !== 'approved') {
 			gameMode = ONE_VS_COMPUTER_GAME_MODE;
 		} else if (tournament && tournament.gameMode) {
 			gameMode = tournament.gameMode;

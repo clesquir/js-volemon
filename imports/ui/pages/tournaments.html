@@ -83,6 +83,37 @@
 				{{/if}}
 			</div>
 
+			{{#if showSubmittedTournaments}}
+				<h2>Submitted</h2>
+
+				<div class="cards-list constrained-width">
+					{{#each submittedTournaments}}
+						<div class="card">
+							<div class="card-row card-row-top">
+								<div class="card-cell card-title card-cell-ellipsis">{{name}}</div>
+							</div>
+							<div class="card-row">
+								<div class="card-cell card-cell-ellipsis">{{description}}</div>
+							</div>
+							<div class="card-row card-row-bottom">
+								<div class="card-cell card-left">{{timeForProposedTournament}}</div>
+								<div class="card-cell card-right">By: {{editor.name}}</div>
+							</div>
+							<div class="draft-tournaments-buttons">
+								<a class="view-tournament-button action-button" data-action="view-tournament" data-tournament-id="{{_id}}">
+									<i class="fa fa-eye"></i>
+								</a>
+								{{#if canRemoveTournament}}
+									<a class="remove-tournament-button action-button" data-action="remove-tournament" data-tournament-id="{{_id}}">
+										<i class="fa fa-trash"></i>
+									</a>
+								{{/if}}
+							</div>
+						</div>
+					{{/each}}
+				</div>
+			{{/if}}
+
 			{{#if showDraftTournaments}}
 				<h2>Draft</h2>
 
@@ -96,7 +127,7 @@
 								<div class="card-cell card-cell-ellipsis">{{description}}</div>
 							</div>
 							<div class="card-row card-row-bottom">
-								<div class="card-cell card-left">{{timeForDraft}}</div>
+								<div class="card-cell card-left">{{timeForProposedTournament}}</div>
 								<div class="card-cell card-right">By: {{editor.name}}</div>
 							</div>
 							<div class="draft-tournaments-buttons">

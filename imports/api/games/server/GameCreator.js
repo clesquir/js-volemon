@@ -9,7 +9,7 @@ export default class GameCreator {
 		return GameCreator.createGame(users, modeSelection, isPracticeGame, tournamentId);
 	}
 
-	static fromDraftTournament(tournamentId) {
+	static fromTournamentPractice(tournamentId) {
 		const tournament = Tournaments.findOne({_id: tournamentId});
 		const userId = Meteor.userId();
 		const userConfiguration = UserConfigurations.findOne({userId: userId});

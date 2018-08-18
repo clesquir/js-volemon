@@ -17,6 +17,9 @@ const ActiveTournaments = new ActiveTournamentsCollection('activeTournaments');
 class FutureTournamentsCollection extends Mongo.Collection {}
 const FutureTournaments = new FutureTournamentsCollection('futureTournaments');
 
+class SubmittedTournamentsCollection extends Mongo.Collection {}
+const SubmittedTournaments = new SubmittedTournamentsCollection('submittedTournaments');
+
 class DraftTournamentsCollection extends Mongo.Collection {}
 const DraftTournaments = new DraftTournamentsCollection('draftTournaments');
 
@@ -50,6 +53,14 @@ Template.tournaments.helpers({
 
 	pastTournaments: function() {
 		return PastTournaments.find({}, {sort: [['endDate', 'desc']]});
+	},
+
+	showSubmittedTournaments: function() {
+		return !!SubmittedTournaments.find().count();
+	},
+
+	submittedTournaments: function() {
+		return SubmittedTournaments.find({}, {sort: [['startDate', 'asc']]});
 	},
 
 	showDraftTournaments: function() {
@@ -94,7 +105,7 @@ Template.tournaments.helpers({
 		return 'Ended: ' + timeElapsedSince(date.valueOf());
 	},
 
-	timeForDraft: function() {
+	timeForProposedTournament: function() {
 		if (!this.startDate) {
 			return 'Not set';
 		}

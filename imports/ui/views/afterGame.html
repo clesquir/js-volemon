@@ -95,7 +95,7 @@
 						{{/if}}
 						<div><a href="{{pathFor 'home'}}" class="clickable-link">Go to the homepage</a></div>
 						{{#if isTournament}}
-							{{#if isDraftTournament}}
+							{{#if isTournamentPractice}}
 								<div><a href="{{pathFor 'tournamentAdministration' tournamentId=this.game.tournamentId}}" class="clickable-link">Go to the tournament administration page</a></div>
 							{{else}}
 								<div><a href="{{pathFor 'tournament' tournamentId=this.game.tournamentId}}" class="clickable-link">Go to the tournament page</a></div>
