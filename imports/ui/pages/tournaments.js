@@ -105,17 +105,6 @@ Template.tournaments.helpers({
 		return 'Ended: ' + timeElapsedSince(date.valueOf());
 	},
 
-	timeForProposedTournament: function() {
-		if (!this.startDate) {
-			return 'Not set';
-		}
-
-		Template.instance().uptime.get();
-		const start = Moment.moment(this.startDate, "YYYY-MM-DD ZZ");
-		const end = Moment.moment(this.endDate, "YYYY-MM-DD ZZ");
-		return start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD');
-	},
-
 	canCreateTournament: function() {
 		return isTournamentEditor() || isTournamentAdministrator();
 	},
@@ -144,6 +133,58 @@ Template.tournaments.helpers({
 			this.editor.id === Meteor.userId()
 		) ||
 		isTournamentAdministrator();
+	},
+
+	cannotVote: function() {
+		return !Meteor.userId();
+	},
+
+	hasVotedUp: function() {
+		const userId = Meteor.userId();
+
+		if (this.votes) {
+			for (let vote of this.votes) {
+				if (vote.userId === userId && vote.vote === 'up') {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	},
+
+	hasVotedDown: function() {
+		const userId = Meteor.userId();
+
+		if (!userId) {
+			return false;
+		}
+
+		if (this.votes) {
+			for (let vote of this.votes) {
+				if (vote.userId === userId && vote.vote === 'down') {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	},
+
+	tournamentVoteScore: function() {
+		let score = 0;
+
+		if (this.votes) {
+			for (let vote of this.votes) {
+				if (vote.vote === 'up') {
+					score++;
+				} else {
+					score--;
+				}
+			}
+		}
+
+		return score;
 	}
 });
 
@@ -159,6 +200,44 @@ Template.tournaments.events({
 					alert(error);
 				} else {
 					Router.go(Router.routes['tournamentAdministration'].url({tournamentId: tournament}));
+				}
+			}
+		);
+	},
+
+	'click [data-action="vote-up-tournament"]': function(e) {
+		if (!Meteor.userId()) {
+			return false;
+		}
+
+		const tournament = $(e.currentTarget).attr('data-tournament-id');
+
+		Meteor.call(
+			'voteTournament',
+			tournament,
+			'up',
+			function(error) {
+				if (error !== undefined) {
+					alert(error);
+				}
+			}
+		);
+	},
+
+	'click [data-action="vote-down-tournament"]': function(e) {
+		if (!Meteor.userId()) {
+			return false;
+		}
+
+		const tournament = $(e.currentTarget).attr('data-tournament-id');
+
+		Meteor.call(
+			'voteTournament',
+			tournament,
+			'down',
+			function(error) {
+				if (error !== undefined) {
+					alert(error);
 				}
 			}
 		);

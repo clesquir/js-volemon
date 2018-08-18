@@ -3,13 +3,58 @@
 		position: relative;
 	}
 
-	.draft-tournaments-buttons {
+	.proposed-tournaments-action-buttons {
 		position: absolute;
 		right: 10px;
 		top: 10px;
 
 		a + a {
 			margin-left: 2px;
+		}
+	}
+
+	.proposed-tournaments-vote-buttons {
+		position: absolute;
+		left: 10px;
+		top: 10px;
+		display: flex;
+		flex-direction: column;
+		width: 30px;
+
+		&.disabled-vote-tournament-button .vote-tournament-button {
+			cursor: default;
+		}
+
+		.vote-tournament-button {
+			cursor: pointer;
+			font-size: 30px;
+			height: 15px;
+			position: relative;
+			overflow: hidden;
+			opacity: 0.25;
+
+			&.has-voted-tournament-button {
+				color: $table-header-color;
+				opacity: 1;
+			}
+
+			.fa {
+				top: -10px;
+				position: absolute;
+				right: 0;
+				left: 0;
+			}
+		}
+
+		.vote-tournament-score {
+			font-size: 17px;
+			margin: 0 0 3px;
+			transition: opacity 0.25s ease-in-out;
+			opacity: 0.5;
+		}
+
+		&:hover .vote-tournament-score {
+			opacity: 1;
 		}
 	}
 }

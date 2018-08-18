@@ -96,10 +96,9 @@
 								<div class="card-cell card-cell-ellipsis">{{description}}</div>
 							</div>
 							<div class="card-row card-row-bottom">
-								<div class="card-cell card-left">{{timeForProposedTournament}}</div>
 								<div class="card-cell card-right">By: {{editor.name}}</div>
 							</div>
-							<div class="draft-tournaments-buttons">
+							<div class="proposed-tournaments-action-buttons">
 								<a class="view-tournament-button action-button" data-action="view-tournament" data-tournament-id="{{_id}}">
 									<i class="fa fa-eye"></i>
 								</a>
@@ -108,6 +107,15 @@
 										<i class="fa fa-trash"></i>
 									</a>
 								{{/if}}
+							</div>
+							<div class="proposed-tournaments-vote-buttons {{#if cannotVote}}disabled-vote-tournament-button{{/if}}">
+								<a class="vote-tournament-button {{#if hasVotedUp}}has-voted-tournament-button{{/if}}" data-action="vote-up-tournament" data-tournament-id="{{_id}}">
+									<i class="fa fa-caret-up"></i>
+								</a>
+								<span class="vote-tournament-score">{{tournamentVoteScore}}</span>
+								<a class="vote-tournament-button {{#if hasVotedDown}}has-voted-tournament-button{{/if}}" data-action="vote-down-tournament" data-tournament-id="{{_id}}">
+									<i class="fa fa-caret-down"></i>
+								</a>
 							</div>
 						</div>
 					{{/each}}
@@ -127,10 +135,9 @@
 								<div class="card-cell card-cell-ellipsis">{{description}}</div>
 							</div>
 							<div class="card-row card-row-bottom">
-								<div class="card-cell card-left">{{timeForProposedTournament}}</div>
 								<div class="card-cell card-right">By: {{editor.name}}</div>
 							</div>
-							<div class="draft-tournaments-buttons">
+							<div class="proposed-tournaments-action-buttons">
 								{{#if canOnlyViewTournament}}
 									<a class="view-tournament-button action-button" data-action="view-tournament" data-tournament-id="{{_id}}">
 										<i class="fa fa-eye"></i>

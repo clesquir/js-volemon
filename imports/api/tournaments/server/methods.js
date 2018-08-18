@@ -30,11 +30,58 @@ Meteor.methods({
 				status: {id: 'draft', name: 'Draft'},
 				editor: {id: userId, name: userConfiguration.name},
 				mode: {},
+				votes: [],
 				isPublished: false
 			}
 		);
 
 		return id;
+	},
+
+	voteTournament: function(id, voteValue) {
+		const userId = Meteor.userId();
+
+		if (!userId) {
+			throw new Meteor.Error(401, 'You need to login to vote for a tournament');
+		}
+
+		const tournament = Tournaments.findOne({_id: id});
+
+		if (!tournament) {
+			throw new Meteor.Error(404, 'The tournament does not exist');
+		}
+
+		if (tournament.status.id !== 'submitted') {
+			throw new Meteor.Error('not-allowed', 'The tournament has to be submitted');
+		}
+
+		let currentVote = null;
+		for (let vote of tournament.votes) {
+			if (vote.userId === userId) {
+				currentVote = vote.vote;
+				break;
+			}
+		}
+
+		if (currentVote === null) {
+			//Add vote
+			Tournaments.update(
+				{_id: id},
+				{$push: {votes: {'userId': userId, vote: voteValue}}}
+			);
+		} else if (currentVote === voteValue) {
+			//Remove vote
+			Tournaments.update(
+				{_id: id},
+				{$pull: {votes: {'userId': userId}}}
+			);
+		} else {
+			//Replace value
+			Tournaments.update(
+				{_id: id, 'votes.userId': userId},
+				{$set: {'votes.$.vote': voteValue}}
+			);
+		}
 	},
 
 	updateTournament: function(
@@ -155,11 +202,13 @@ Meteor.methods({
 			throw new Meteor.Error('not-allowed', 'The tournament has to be submitted');
 		}
 
+		//Reset votes when returning to draft
 		Tournaments.update(
 			{_id: id},
 			{$set:
 				{
-					status: {id: 'draft', name: 'Draft'}
+					status: {id: 'draft', name: 'Draft'},
+					votes: []
 				}
 			}
 		);
