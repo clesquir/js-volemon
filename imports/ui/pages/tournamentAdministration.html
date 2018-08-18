@@ -38,11 +38,15 @@
 				<div class="form-section splitted-configuration">
 					<div class="tournament-date">
 						<label for="tournament-start-field">Start date</label>
-						<input id="tournament-start-field" type="date" required="required" disabled="{{#if canOnlyViewTournament tournament}}disabled{{/if}}" autofocus="autofocus" autocomplete="off" name="start_date" value="{{tournamentDate tournament.startDate}}" />
+						<div>
+							<input id="tournament-start-field" type="date" required="required" disabled="{{#if canOnlyViewTournament tournament}}disabled{{/if}}" autofocus="autofocus" autocomplete="off" name="start_date" value="{{tournamentDate tournament.startDate}}" />
+						</div>
 					</div>
 					<div class="tournament-date">
 						<label for="tournament-end-field">End date</label>
-						<input id="tournament-end-field" type="date" required="required" disabled="{{#if canOnlyViewTournament tournament}}disabled{{/if}}" autofocus="autofocus" autocomplete="off" name="end_date" value="{{tournamentDate tournament.endDate}}" />
+						<div>
+							<input id="tournament-end-field" type="date" required="required" disabled="{{#if canOnlyViewTournament tournament}}disabled{{/if}}" autofocus="autofocus" autocomplete="off" name="end_date" value="{{tournamentDate tournament.endDate}}" />
+						</div>
 					</div>
 				</div>
 

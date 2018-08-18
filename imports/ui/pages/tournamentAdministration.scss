@@ -6,6 +6,11 @@
 
 	.tournament-date {
 		position: relative;
+
+		& > div {
+			display: inline-block;
+			position: relative;
+		}
 	}
 
 	.splitted-configuration {
@@ -32,7 +37,7 @@
 		right: 0;
 		padding-bottom: 20px;
 		transition: opacity 0.25s ease-in-out;
-		opacity: 0.5;
+		opacity: 0.75;
 
 		&:hover {
 			opacity: 1;
