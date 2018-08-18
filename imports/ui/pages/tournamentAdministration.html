@@ -114,24 +114,26 @@
 
 				</div>
 
-				<div class="tournament-administration-buttons">
-					<p class="error-label-container"></p>
+				{{#if currentUser}}
+					<div class="tournament-administration-buttons">
+						<p class="error-label-container"></p>
 
-					<span class="tournament-administration-buttons-container">
-						{{#if canEditTournament tournament}}
-							<input type="submit" class="button" value="Save" />
-						{{/if}}
-						<input type="button" class="button" data-action="try-draft-tournament" value="Try it!" />
-						{{#if canApproveTournament}}
-							<input type="button" class="button" data-action="approve-draft-tournament" value="Approve" />
-						{{/if}}
+						<span class="tournament-administration-buttons-container">
+							{{#if canEditTournament tournament}}
+								<input type="submit" class="button" value="Save" />
+							{{/if}}
+							<input type="button" class="button" data-action="try-draft-tournament" value="Try it!" />
+							{{#if canApproveTournament}}
+								<input type="button" class="button" data-action="approve-draft-tournament" value="Approve" />
+							{{/if}}
 
-						<span id="save-checkmark" class="checkmark">
-							<div class="checkmark_stem"></div>
-							<div class="checkmark_kick"></div>
+							<span id="save-checkmark" class="checkmark">
+								<div class="checkmark_stem"></div>
+								<div class="checkmark_kick"></div>
+							</span>
 						</span>
-					</span>
-				</div>
+					</div>
+				{{/if}}
 
 			</form>
 
