@@ -110,29 +110,15 @@ Template.tournaments.helpers({
 	},
 
 	canOnlyViewTournament: function() {
-		return (
-			(!isTournamentEditor() && !isTournamentAdministrator()) ||
-			(
-				isTournamentEditor() &&
-				this.editor.id !== Meteor.userId()
-			)
-		);
+		return !canSaveTournament(this);
 	},
 
 	canEditTournament: function() {
-		return (
-			isTournamentEditor() &&
-			this.editor.id === Meteor.userId()
-		) ||
-		isTournamentAdministrator();
+		return canSaveTournament(this);
 	},
 
 	canRemoveTournament: function() {
-		return (
-			isTournamentEditor() &&
-			this.editor.id === Meteor.userId()
-		) ||
-		isTournamentAdministrator();
+		return canEditDraftTournament(this);
 	},
 
 	cannotVote: function() {
@@ -316,5 +302,19 @@ export const updatePastTournaments = function() {
 				}
 			}
 		}
+	);
+};
+
+const canEditDraftTournament = function(tournament) {
+	return (
+		(isTournamentEditor() && tournament.editor.id === Meteor.userId()) ||
+		(isTournamentAdministrator())
+	);
+};
+
+const canSaveTournament = function(tournament) {
+	return (
+		(isTournamentEditor() && tournament.status.id === 'draft' && canEditDraftTournament(tournament)) ||
+		(isTournamentAdministrator() && tournament.status.id !== 'approved')
 	);
 };

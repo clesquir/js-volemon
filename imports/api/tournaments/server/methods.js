@@ -7,6 +7,7 @@ import {
 } from '/imports/api/users/userConfigurations.js';
 import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
+import * as Moment from 'meteor/momentjs:moment';
 
 Meteor.methods({
 	createTournament: function() {
@@ -22,13 +23,18 @@ Meteor.methods({
 
 		const userConfiguration = UserConfigurations.findOne({userId: userId});
 		const id = Random.id(5);
+		const today = Moment.moment(new Date());
 
 		Tournaments.insert(
 			{
 				_id: id,
+				name: id,
+				description: '',
 				gameMode: ONE_VS_ONE_GAME_MODE,
 				status: {id: 'draft', name: 'Draft'},
 				editor: {id: userId, name: userConfiguration.name},
+				startDate: today.format('YYYY-MM-DD') + ' -04:00',
+				endDate: today.add(Moment.moment.duration({'days': 1})).format('YYYY-MM-DD') + ' -04:00',
 				mode: {},
 				votes: [],
 				isPublished: false
@@ -110,8 +116,12 @@ Meteor.methods({
 			throw new Meteor.Error('not-allowed', 'You can only update tournaments you have created');
 		}
 
-		if (tournament.status.id !== 'draft') {
+		if (isTournamentEditor() && tournament.status.id !== 'draft') {
 			throw new Meteor.Error('not-allowed', 'The tournament has to be draft');
+		}
+
+		if (isTournamentAdministrator() && tournament.status.id === 'approved') {
+			throw new Meteor.Error('not-allowed', 'The tournament has to be not-approved');
 		}
 
 		Tournaments.update(
