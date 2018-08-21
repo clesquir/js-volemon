@@ -130,7 +130,7 @@ export default class TournamentMode {
 	}
 
 	netHeight() {
-		return this.overriddenNetHeight;
+		return parseInt(this.overriddenNetHeight);
 	}
 
 	overridesLevelSize() {
@@ -149,14 +149,14 @@ export default class TournamentMode {
 	 * @returns {int}
 	 */
 	levelWidth() {
-		return this.overriddenLevelWidth;
+		return parseInt(this.overriddenLevelWidth);
 	}
 
 	/**
 	 * @returns {int}
 	 */
 	levelHeight() {
-		return this.overriddenLevelHeight;
+		return parseInt(this.overriddenLevelHeight);
 	}
 
 	overridesPlayerXVelocity() {
@@ -164,7 +164,7 @@ export default class TournamentMode {
 	}
 
 	playerXVelocity() {
-		return this.overriddenPlayerXVelocity;
+		return parseInt(this.overriddenPlayerXVelocity);
 	}
 
 	overridesPlayerYVelocity() {
@@ -172,7 +172,7 @@ export default class TournamentMode {
 	}
 
 	playerYVelocity() {
-		return this.overriddenPlayerYVelocity;
+		return parseInt(this.overriddenPlayerYVelocity);
 	}
 
 	static fromTournament(tournament) {
