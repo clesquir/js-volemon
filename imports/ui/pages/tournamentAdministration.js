@@ -47,7 +47,7 @@ Template.tournamentAdministration.helpers({
 	},
 
 	hasBonuses: function() {
-		return [{id: 1, name: 'Yes'}, {id: 0, name: 'No'}];
+		return [{id: "1", name: 'Yes'}, {id: "0", name: 'No'}];
 	},
 
 	availableBonuses: function() {
@@ -244,6 +244,8 @@ const modeOptions = function() {
 	addToMode(mode, 'available-bonuses-for-random', 'overriddenAvailableBonusesForRandom');
 	addToMode(mode, 'has-bonuses', 'overriddenHasBonuses');
 	addToMode(mode, 'bonus-duration', 'overriddenBonusDuration');
+	addToMode(mode, 'maximum-bonuses-on-screen', 'overriddenMaximumBonusesOnScreen');
+	addToMode(mode, 'bonus-spawn-minimum-frequence', 'overriddenBonusSpawnMinimumFrequence');
 	addToMode(mode, 'bonus-spawn-initial-minimum-frequence', 'overriddenBonusSpawnInitialMinimumFrequence');
 	addToMode(mode, 'bonus-spawn-initial-maximum-frequence', 'overriddenBonusSpawnInitialMaximumFrequence');
 	addToMode(mode, 'allowed-list-of-shapes', 'overriddenAllowedListOfShapes');

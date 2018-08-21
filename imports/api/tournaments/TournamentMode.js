@@ -1,6 +1,8 @@
 export default class TournamentMode {
 	overriddenWorldGravity;
 	overriddenWorldRestitution;
+	overriddenMaximumBonusesOnScreen;
+	overriddenBonusSpawnMinimumFrequence;
 	overriddenBonusSpawnInitialMinimumFrequence;
 	overriddenBonusSpawnInitialMaximumFrequence;
 	overriddenAvailableBonuses;
@@ -35,6 +37,22 @@ export default class TournamentMode {
 
 	worldRestitution() {
 		return this.overriddenWorldRestitution;
+	}
+
+	overridesMaximumBonusesOnScreen() {
+		return this.overriddenMaximumBonusesOnScreen !== undefined;
+	}
+
+	maximumBonusesOnScreen() {
+		return this.overriddenMaximumBonusesOnScreen;
+	}
+
+	overridesBonusSpawnMinimumFrequence() {
+		return this.overriddenBonusSpawnMinimumFrequence !== undefined;
+	}
+
+	bonusSpawnMinimumFrequence() {
+		return this.overriddenBonusSpawnMinimumFrequence;
 	}
 
 	overridesBonusSpawnInitialMinimumFrequence() {
@@ -73,7 +91,7 @@ export default class TournamentMode {
 		return this.overriddenBonusDuration !== undefined;
 	}
 
-	bonusDuration(bonusDuration) {
+	bonusDuration() {
 		return this.overriddenBonusDuration;
 	}
 
@@ -98,7 +116,7 @@ export default class TournamentMode {
 	}
 
 	hasBonuses() {
-		return this.overriddenHasBonuses;
+		return parseInt(this.overriddenHasBonuses) === 1;
 	}
 
 	overridesListOfShapes() {
@@ -181,6 +199,8 @@ export default class TournamentMode {
 
 		tournamentMode.overriddenWorldGravity = mode.overriddenWorldGravity;
 		tournamentMode.overriddenWorldRestitution = mode.overriddenWorldRestitution;
+		tournamentMode.overriddenMaximumBonusesOnScreen = mode.overriddenMaximumBonusesOnScreen;
+		tournamentMode.overriddenBonusSpawnMinimumFrequence = mode.overriddenBonusSpawnMinimumFrequence;
 		tournamentMode.overriddenBonusSpawnInitialMinimumFrequence = mode.overriddenBonusSpawnInitialMinimumFrequence;
 		tournamentMode.overriddenBonusSpawnInitialMaximumFrequence = mode.overriddenBonusSpawnInitialMaximumFrequence;
 		tournamentMode.overriddenAvailableBonuses = mode.overriddenAvailableBonuses;

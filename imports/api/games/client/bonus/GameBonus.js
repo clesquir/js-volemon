@@ -663,7 +663,10 @@ export default class GameBonus {
 			frequenceTime = this.gameConfiguration.bonusSpawnMinimumFrequence();
 		}
 
-		if (Date.now() - this.lastBonusCreated >= frequenceTime && this.bonuses.length < 30) {
+		if (
+			Date.now() - this.lastBonusCreated >= frequenceTime &&
+			this.bonuses.length < this.gameConfiguration.maximumBonusesOnScreen()
+		) {
 			this.createRandomBonus();
 		}
 	}

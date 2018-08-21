@@ -8,6 +8,7 @@ import {
 	WORLD_RESTITUTION
 } from '/imports/api/games/constants.js';
 import {
+	BONUS_MAXIMUM_ON_SCREEN,
 	BONUS_SPAWN_INITIAL_MAXIMUM_FREQUENCE,
 	BONUS_SPAWN_INITIAL_MINIMUM_FREQUENCE,
 	BONUS_SPAWN_MINIMUM_FREQUENCE
@@ -100,7 +101,19 @@ export default class GameConfiguration {
 		return WORLD_RESTITUTION;
 	}
 
+	maximumBonusesOnScreen() {
+		if (this.hasTournament() && this.tournamentMode.overridesMaximumBonusesOnScreen()) {
+			return this.tournamentMode.maximumBonusesOnScreen();
+		}
+
+		return BONUS_MAXIMUM_ON_SCREEN;
+	}
+
 	bonusSpawnMinimumFrequence() {
+		if (this.hasTournament() && this.tournamentMode.overridesBonusSpawnMinimumFrequence()) {
+			return this.tournamentMode.bonusSpawnMinimumFrequence();
+		}
+
 		return BONUS_SPAWN_MINIMUM_FREQUENCE;
 	}
 
