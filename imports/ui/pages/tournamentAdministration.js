@@ -118,9 +118,10 @@ Template.tournamentAdministration.events({
 		saveDraftTournament();
 	},
 
-	'click [data-action="try-tournament"]': function(e) {
+	'click [data-action="try-tournament"]': function() {
 		const tryTournament = function() {
-			disableButton(e, true);
+			const form = $('#tournament-administration-form');
+			ButtonEnabler.disableButton(form);
 			Meteor.call(
 				'createTournamentPracticeGame',
 				Session.get('tournament'),
@@ -142,15 +143,16 @@ Template.tournamentAdministration.events({
 		}
 	},
 
-	'click [data-action="submit-tournament"]': function(e) {
+	'click [data-action="submit-tournament"]': function() {
 		saveDraftTournament(
 			function() {
-				disableButton(e, true);
+				const form = $('#tournament-administration-form');
+				ButtonEnabler.disableButton(form);
 				Meteor.call(
 					'submitTournament',
 					Session.get('tournament'),
 					function(error) {
-						disableButton(e, false);
+						ButtonEnabler.enableButton(form);
 						if (error !== undefined) {
 							const errorLabelContainer = $('.error-label-container');
 							errorLabelContainer.show();
@@ -165,14 +167,15 @@ Template.tournamentAdministration.events({
 		);
 	},
 
-	'click [data-action="return-to-draft-tournament"]': function(e) {
+	'click [data-action="return-to-draft-tournament"]': function() {
 		const returnToDraftTournament = function() {
-			disableButton(e, true);
+			const form = $('#tournament-administration-form');
+			ButtonEnabler.disableButton(form);
 			Meteor.call(
 				'draftTournament',
 				Session.get('tournament'),
 				function(error) {
-					disableButton(e, false);
+					ButtonEnabler.enableButton(form);
 					if (error !== undefined) {
 						const errorLabelContainer = $('.error-label-container');
 						errorLabelContainer.show();
@@ -194,13 +197,14 @@ Template.tournamentAdministration.events({
 
 	'click [data-action="approve-tournament"]': function(e) {
 		const approvedTournament = function() {
-			disableButton(e, true);
+			const form = $('#tournament-administration-form');
+			ButtonEnabler.disableButton(form);
 			Meteor.call(
 				'approveTournament',
 				Session.get('tournament'),
 				function(error) {
-					disableButton(e, false);
 					if (error !== undefined) {
+						ButtonEnabler.enableButton(form);
 						const errorLabelContainer = $('.error-label-container');
 						errorLabelContainer.show();
 						errorLabelContainer.html(error.reason);
