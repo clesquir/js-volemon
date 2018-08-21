@@ -28,6 +28,7 @@ Meteor.methods({
 		Tournaments.insert(
 			{
 				_id: id,
+				createdAt: today.valueOf(),
 				name: id,
 				description: '',
 				gameMode: ONE_VS_ONE_GAME_MODE,
@@ -185,6 +186,7 @@ Meteor.methods({
 			{_id: id},
 			{$set:
 				{
+					submittedAt: Moment.moment(new Date()).valueOf(),
 					status: {id: 'submitted', name: 'Submitted'}
 				}
 			}

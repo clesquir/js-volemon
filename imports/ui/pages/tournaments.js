@@ -60,7 +60,7 @@ Template.tournaments.helpers({
 	},
 
 	submittedTournaments: function() {
-		return SubmittedTournaments.find({}, {sort: [['startDate', 'asc']]});
+		return SubmittedTournaments.find({}, {sort: [['submittedAt', 'desc']]});
 	},
 
 	showDraftTournaments: function() {
@@ -68,7 +68,7 @@ Template.tournaments.helpers({
 	},
 
 	draftTournaments: function() {
-		return DraftTournaments.find({}, {sort: [['startDate', 'asc']]});
+		return DraftTournaments.find({}, {sort: [['createdAt', 'desc']]});
 	},
 
 	name: function() {
