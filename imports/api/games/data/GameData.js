@@ -28,6 +28,12 @@ export default class GameData {
 	isSecondPlayerComputer() {
 	}
 
+	isFirstPlayerComputerMachineLearning() {
+	}
+
+	isSecondPlayerComputerMachineLearning() {
+	}
+
 	isTwoVersusTwo() {
 	}
 

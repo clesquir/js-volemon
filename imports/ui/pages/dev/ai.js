@@ -16,3 +16,22 @@ Template.ai.destroyed = function() {
 		ai.stop();
 	}
 };
+
+Template.ai.events({
+	'click [data-action="get-host-genomes"]': function() {
+		const genomes = $('#ai-genomes');
+		genomes.val(ai.getHostGenomes());
+	},
+	'click [data-action="load-host-genomes"]': function() {
+		const genomes = $('#ai-genomes');
+		ai.loadHostGenomes(genomes.val());
+	},
+	'click [data-action="get-client-genomes"]': function() {
+		const genomes = $('#ai-genomes');
+		genomes.val(ai.getClientGenomes());
+	},
+	'click [data-action="load-client-genomes"]': function() {
+		const genomes = $('#ai-genomes');
+		ai.loadClientGenomes(genomes.val());
+	}
+});

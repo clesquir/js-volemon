@@ -1,3 +1,4 @@
+import ArtificialIntelligence from '/imports/api/games/artificialIntelligence/ArtificialIntelligence.js';
 import GameBonus from '/imports/api/games/client/bonus/GameBonus.js';
 import Collisions from '/imports/api/games/collisions/Collisions.js';
 import {
@@ -13,7 +14,6 @@ import {
 } from '/imports/api/games/constants.js';
 import {BALL_INTERVAL, PLAYER_INTERVAL} from '/imports/api/games/emissionConstants.js';
 import LevelComponents from '/imports/api/games/levelComponents/LevelComponents.js';
-import {ArtificialIntelligence} from '/imports/api/games/artificialIntelligence/ArtificialIntelligence.js';
 import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
 import {Session} from 'meteor/session';
@@ -78,6 +78,19 @@ export default class Game {
 			this.gameConfiguration
 		);
 		this.artificialIntelligence = new ArtificialIntelligence();
+
+		if (this.gameData.isFirstPlayerComputer()) {
+			this.artificialIntelligence.addComputerWithKey(
+				'player1',
+				this.gameData.isFirstPlayerComputerMachineLearning()
+			);
+		}
+		if (this.gameData.isSecondPlayerComputer()) {
+			this.artificialIntelligence.addComputerWithKey(
+				'player2',
+				this.gameData.isSecondPlayerComputerMachineLearning()
+			);
+		}
 	}
 
 	getCurrentPlayer() {
@@ -206,6 +219,7 @@ export default class Game {
 
 		this.gameInitiated = true;
 
+		this.artificialIntelligence.startGame();
 		this.resumeOnTimerEnd();
 	}
 
@@ -460,6 +474,7 @@ export default class Game {
 		if (this.gameData.hasGameStatusEndedWithAWinner()) {
 			this.onGameEnd();
 		} else if (this.gameIsOnGoing()) {
+			this.artificialIntelligence.startPoint();
 			this.gameBonus.resumeGame();
 			this.startCountdownTimer();
 		}
@@ -771,6 +786,8 @@ export default class Game {
 			);
 
 			this.addGamePoint(pointSide);
+
+			this.artificialIntelligence.stopPoint(pointSide);
 		}
 	}
 
@@ -799,7 +816,10 @@ export default class Game {
 	}
 
 	moveComputer(player) {
+		const key = player.data.key;
+
 		this.artificialIntelligence.computeMovement(
+			key,
 			player.data,
 			this.engine.fullPositionData(player),
 			this.engine.fullPositionData(this.ball),
@@ -810,10 +830,10 @@ export default class Game {
 
 		this.movePlayer(
 			player,
-			this.artificialIntelligence.movesLeft(),
-			this.artificialIntelligence.movesRight(),
-			this.artificialIntelligence.jumps(),
-			this.artificialIntelligence.dropshots()
+			this.artificialIntelligence.movesLeft(key),
+			this.artificialIntelligence.movesRight(key),
+			this.artificialIntelligence.jumps(key),
+			this.artificialIntelligence.dropshots(key)
 		);
 	}
 

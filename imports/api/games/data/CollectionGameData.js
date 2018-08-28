@@ -107,6 +107,14 @@ export default class CollectionGameData extends GameData {
 		return this.gameMode === ONE_VS_COMPUTER_GAME_MODE;
 	}
 
+	isFirstPlayerComputerMachineLearning() {
+		return false;
+	}
+
+	isSecondPlayerComputerMachineLearning() {
+		return false;
+	}
+
 	isTwoVersusTwo() {
 		return this.gameMode === TWO_VS_TWO_GAME_MODE;
 	}

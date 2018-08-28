@@ -141,13 +141,13 @@ export default class Dev {
 		this.gameData.getPlayerPolygonFromKey = () => {return PLAYER_DEFAULT_SHAPE;};
 		this.gameData.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
 		this.gameStreamBundler.emitStream = () => {};
-		this.game.hitGround = () => {
-			this.hitGround();
+		this.game.hitGround = (ball) => {
+			this.hitGround(ball);
 		};
 		this.gameBonus.createBonusIfTimeHasElapsed = () => {};
 	}
 
-	hitGround() {
+	hitGround(ball) {
 		if (this.game.gameResumed === true) {
 			this.game.gameResumed = false;
 

@@ -1,10 +1,96 @@
-export class ArtificialIntelligence {
-	left = false;
-	right = false;
-	jump = false;
-	dropshot = false;
+import Learner from '/imports/api/games/artificialIntelligence/Learner.js';
+import {CLIENT_POINTS_COLUMN, HOST_POINTS_COLUMN} from '/imports/api/games/constants.js';
+
+export default class ArtificialIntelligence {
+	computers = {};
+
+	addComputerWithKey(key, learningMachine = false) {
+		this.computers[key] = {
+			left: false,
+			right: false,
+			jump: false,
+			dropshot: false
+		};
+
+		if (learningMachine) {
+			this.computers[key].learner = new Learner(6, 2, 12, 4, 0.2);
+			this.computers[key].learner.init();
+		}
+	}
+
+	getGenomes(key) {
+		if (this.computers[key] && this.computers[key].learner) {
+			return this.computers[key].learner.getGenomes();
+		} else {
+			return '';
+		}
+	}
+
+	loadGenomes(key, genomes) {
+		if (this.computers[key] && this.computers[key].learner) {
+			this.computers[key].learner.loadGenomes(genomes, true);
+		}
+	}
+
+	startGame() {
+		for (let key in this.computers) {
+			if (this.computers.hasOwnProperty(key) && this.computers[key].learner) {
+				this.computers[key].learner.startLearning();
+			}
+		}
+	}
+
+	startPoint() {
+		this.pointStartTime = (new Date()).getTime();
+
+		for (let key in this.computers) {
+			if (this.computers.hasOwnProperty(key) && this.computers[key].learner) {
+				this.computers[key].learner.startPoint();
+			}
+		}
+	}
+
+	stopPoint(pointSide) {
+		for (let key in this.computers) {
+			if (this.computers.hasOwnProperty(key) && this.computers[key].learner) {
+				const pointTime = ((new Date()).getTime() - this.pointStartTime);
+				let points = 1 / pointTime * 10000000;
+
+				//When it has the point, the shortest the point, the better
+				//When it doesn't, the longest the point, the better. Negative value
+				if (!(key === 'player1' ? pointSide === HOST_POINTS_COLUMN : pointSide === CLIENT_POINTS_COLUMN)) {
+					points = -1 * points;
+				}
+
+				this.computers[key].learner.stopPoint(points);
+			}
+		}
+	}
+
+	applyLearnerOutput(key, outputs) {
+		if (this.computers.hasOwnProperty(key) && outputs.length === 2) {
+			this.computers[key].left = false;
+			this.computers[key].right = false;
+
+			if (outputs[0] < 0.45) {
+				this.computers[key].left = true;
+			} else if (outputs[0] > 0.55) {
+				this.computers[key].right = true;
+			}
+
+			this.computers[key].jump = false;
+			this.computers[key].dropshot = false;
+
+			if (outputs[1] < 0.45) {
+				this.computers[key].jump = true;
+			} else if (outputs[1] > 0.55) {
+				this.computers[key].dropshot = true;
+			}
+		}
+	}
 
 	/**
+	 * @param {string} key
 	 * @param {{key: string, isMoveReversed: boolean, horizontalMoveModifier: Function, verticalMoveModifier: Function, alwaysJump: boolean, canJump: boolean, velocityXOnMove: number, velocityYOnJump: number}} modifiers
 	 * @param {{x: number, y: number, velocityX: number, velocityY: number, gravityScale: number, width: number, height: number}} computerPosition
 	 * @param {{x: number, y: number, velocityX: number, velocityY: number, gravityScale: number, width: number, height: number}} ballPosition
@@ -12,11 +98,29 @@ export class ArtificialIntelligence {
 	 * @param {GameConfiguration} gameConfiguration
 	 * @param {Engine} engine
 	 */
-	computeMovement(modifiers, computerPosition, ballPosition, bonusesPosition, gameConfiguration, engine) {
-		this.left = false;
-		this.right = false;
-		this.jump = false;
-		this.dropshot = false;
+	computeMovement(key, modifiers, computerPosition, ballPosition, bonusesPosition, gameConfiguration, engine) {
+		if (this.computers[key].learner) {
+			this.applyLearnerOutput(
+				key,
+				this.computers[key].learner.emitData(
+					[
+						computerPosition.x,
+						computerPosition.y,
+						ballPosition.x,
+						ballPosition.y,
+						ballPosition.velocityX,
+						ballPosition.velocityY
+					]
+				)
+			);
+
+			return;
+		}
+
+		this.computers[key].left = false;
+		this.computers[key].right = false;
+		this.computers[key].jump = false;
+		this.computers[key].dropshot = false;
 
 		const width = gameConfiguration.width();
 		const height = gameConfiguration.height();
@@ -47,10 +151,10 @@ export class ArtificialIntelligence {
 				//move to ball position
 				if (xAtGround > computerPosition.x + computerPosition.width / 4) {
 					//ball is in front
-					this.right = true;
+					this.computers[key].right = true;
 				} else if (xAtGround < computerPosition.x + computerPosition.width / 6) {
 					//ball is behind
-					this.left = true;
+					this.computers[key].left = true;
 				}
 			} else {
 				//Avoid maluses or grab bonuses or move to center
@@ -61,10 +165,10 @@ export class ArtificialIntelligence {
 				//move to ball position
 				if (xAtGround < computerPosition.x - computerPosition.width / 4) {
 					//ball is in front
-					this.left = true;
+					this.computers[key].left = true;
 				} else if (xAtGround > computerPosition.x - computerPosition.width / 6) {
 					//ball is behind
-					this.right = true;
+					this.computers[key].right = true;
 				}
 			} else {
 				//Avoid maluses or grab bonuses or move to center
@@ -73,27 +177,43 @@ export class ArtificialIntelligence {
 		}
 
 		if (modifiers.isMoveReversed) {
-			const left = this.right;
-			const right = this.left;
-			this.left = left;
-			this.right = right;
+			const left = this.computers[key].right;
+			const right = this.computers[key].left;
+			this.computers[key].left = left;
+			this.computers[key].right = right;
 		}
 	}
 
-	movesLeft() {
-		return this.left;
+	movesLeft(key) {
+		if (this.computers.hasOwnProperty(key)) {
+			return this.computers[key].left;
+		}
+
+		return false;
 	}
 
-	movesRight() {
-		return this.right;
+	movesRight(key) {
+		if (this.computers.hasOwnProperty(key)) {
+			return this.computers[key].right;
+		}
+
+		return false;
 	}
 
-	jumps() {
-		return this.jump;
+	jumps(key) {
+		if (this.computers.hasOwnProperty(key)) {
+			return this.computers[key].jump;
+		}
+
+		return false;
 	}
 
-	dropshots() {
-		return this.dropshot;
+	dropshots(key) {
+		if (this.computers.hasOwnProperty(key)) {
+			return this.computers[key].dropshot;
+		}
+
+		return false;
 	}
 
 	/**
@@ -106,9 +226,9 @@ export class ArtificialIntelligence {
 		const halfSpace = (this.isLeftPlayer(key) ? width * 1 / 4 : width * 3 / 4);
 
 		if (computerPosition.x + computerPosition.width / 4 < halfSpace) {
-			this.right = true;
+			this.computers[key].right = true;
 		} else if (computerPosition.x - computerPosition.width / 4 > halfSpace) {
-			this.left = true;
+			this.computers[key].left = true;
 		}
 	}
 
