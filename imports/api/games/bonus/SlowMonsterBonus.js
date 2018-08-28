@@ -8,6 +8,6 @@ export default class SlowMonsterBonus extends MovementMonsterBonus {
 	}
 
 	start() {
-		this.game.changePlayerProperty.call(this.game, this.activatorPlayerKey, 'moveModifier', () => {return 0.4;});
+		this.game.changePlayerProperty.call(this.game, this.activatorPlayerKey, 'horizontalMoveModifier', () => {return 0.4;});
 	}
 };

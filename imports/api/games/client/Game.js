@@ -355,7 +355,8 @@ export default class Game {
 		player.data.doingDropShot = false;
 		player.data.playerCollisionGroup = playerCollisionGroup;
 		//Bonus
-		player.data.moveModifier = () => {return 1;};
+		player.data.horizontalMoveModifier = () => {return 1;};
+		player.data.verticalMoveModifier = () => {return 1;};
 		player.data.isMoveReversed = false;
 		player.data.isFrozen = false;
 		player.data.canJump = true;
@@ -823,19 +824,22 @@ export default class Game {
 			this.engine.setHorizontalSpeed(player, 0);
 			this.engine.setVerticalSpeed(player, 0);
 		} else {
-			const moveModifier = player.data.moveModifier();
+			const horizontalMoveModifier = player.data.horizontalMoveModifier();
 			const moveReversal = (player.data.isMoveReversed ? -1 : 1);
+
 			if (movesLeft) {
-				this.engine.setHorizontalSpeed(player, moveModifier * moveReversal * -player.data.velocityXOnMove);
+				this.engine.setHorizontalSpeed(player, horizontalMoveModifier * moveReversal * -player.data.velocityXOnMove);
 			} else if (movesRight) {
-				this.engine.setHorizontalSpeed(player, moveModifier * moveReversal * player.data.velocityXOnMove);
+				this.engine.setHorizontalSpeed(player, horizontalMoveModifier * moveReversal * player.data.velocityXOnMove);
 			} else {
 				this.engine.setHorizontalSpeed(player, 0);
 			}
 
 			if (this.engine.hasSurfaceTouchingPlayerBottom(player)) {
 				if (player.data.alwaysJump || (jumps && player.data.canJump)) {
-					this.engine.setVerticalSpeed(player, -player.data.velocityYOnJump);
+					const verticalMoveModifier = player.data.verticalMoveModifier();
+
+					this.engine.setVerticalSpeed(player, verticalMoveModifier * -player.data.velocityYOnJump);
 				} else {
 					this.engine.setVerticalSpeed(player, 0);
 				}

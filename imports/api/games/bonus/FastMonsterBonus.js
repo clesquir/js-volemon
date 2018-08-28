@@ -8,6 +8,6 @@ export default class FastMonsterBonus extends MovementMonsterBonus {
 	}
 
 	start() {
-		this.game.changePlayerProperty.call(this.game, this.activatorPlayerKey, 'moveModifier', () => {return 2;});
+		this.game.changePlayerProperty.call(this.game, this.activatorPlayerKey, 'horizontalMoveModifier', () => {return 2;});
 	}
 };

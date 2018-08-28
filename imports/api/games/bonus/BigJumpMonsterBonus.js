@@ -1,4 +1,3 @@
-import {PLAYER_VELOCITY_Y_ON_JUMP} from '/imports/api/games/constants.js';
 import MonsterBonus from '/imports/api/games/bonus/MonsterBonus.js';
 
 export default class BigJumpMonsterBonus extends MonsterBonus {
@@ -13,11 +12,11 @@ export default class BigJumpMonsterBonus extends MonsterBonus {
 	}
 
 	start() {
-		this.game.changePlayerProperty.call(this.game, this.activatorPlayerKey, 'velocityYOnJump', PLAYER_VELOCITY_Y_ON_JUMP * 1.35);
+		this.game.changePlayerProperty.call(this.game, this.activatorPlayerKey, 'verticalMoveModifier', () => {return 1.35;});
 	}
 
 	stop() {
-		this.game.changePlayerProperty.call(this.game, this.activatorPlayerKey, 'velocityYOnJump', PLAYER_VELOCITY_Y_ON_JUMP);
+		this.game.changePlayerProperty.call(this.game, this.activatorPlayerKey, 'verticalMoveModifier', () => {return 1;});
 
 		this.deactivate();
 	}

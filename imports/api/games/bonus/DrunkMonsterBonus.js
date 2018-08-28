@@ -17,7 +17,7 @@ export default class DrunkMonsterBonus extends MonsterBonus {
 		game.changePlayerProperty.call(
 			game,
 			this.activatorPlayerKey,
-			'moveModifier',
+			'horizontalMoveModifier',
 			() => {
 				if (Date.now() - (game.lastDrunkMonsterModifier || 0) > 500) {
 					game.lastDrunkMonsterModifier = Date.now();
@@ -31,7 +31,7 @@ export default class DrunkMonsterBonus extends MonsterBonus {
 	}
 
 	stop() {
-		this.game.changePlayerProperty.call(this.game, this.activatorPlayerKey, 'moveModifier', () => {return 1;});
+		this.game.changePlayerProperty.call(this.game, this.activatorPlayerKey, 'horizontalMoveModifier', () => {return 1;});
 
 		this.deactivate();
 	}
