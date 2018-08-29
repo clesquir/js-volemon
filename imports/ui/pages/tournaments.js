@@ -1,3 +1,4 @@
+import {tournamentName} from "/imports/api/tournaments/utils.js";
 import {isTournamentAdministrator, isTournamentEditor} from '/imports/api/users/userConfigurations.js';
 import {timeDifference, timeElapsedSince} from '/imports/lib/utils.js';
 import {Router} from 'meteor/iron:router';
@@ -72,11 +73,7 @@ Template.tournaments.helpers({
 	},
 
 	name: function() {
-		if (this.name) {
-			return this.name;
-		}
-
-		return '';
+		return tournamentName(this);
 	},
 
 	description: function() {

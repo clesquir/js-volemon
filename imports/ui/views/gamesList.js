@@ -1,11 +1,13 @@
 import {ONE_VS_COMPUTER_GAME_MODE, TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import {GAME_STATUS_REGISTRATION, GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
+import {tournamentName} from "/imports/api/tournaments/utils.js";
 import {timeElapsedSince} from '/imports/lib/utils.js';
 import {Router} from 'meteor/iron:router';
 import {Meteor} from 'meteor/meteor';
 import {ReactiveVar} from 'meteor/reactive-var';
 import {Template} from 'meteor/templating';
+
 import './gamesList.html';
 
 const he = require('he');
@@ -14,7 +16,7 @@ Template.gamesList.helpers({
 	tournamentName: function() {
 		const tournament = Tournaments.findOne({_id: this.tournamentId});
 
-		return tournament && tournament.name;
+		return tournament && tournamentName(tournament);
 	},
 
 	hostNames: function() {

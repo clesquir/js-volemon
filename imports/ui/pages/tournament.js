@@ -1,6 +1,6 @@
 import RankChart from '/imports/api/ranks/client/RankChart.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
-import {canPlayTournament, isTournamentActive} from '/imports/api/tournaments/utils.js';
+import {canPlayTournament, isTournamentActive, tournamentName} from '/imports/api/tournaments/utils.js';
 import CardSwitcher from '/imports/lib/client/CardSwitcher.js';
 import {timeElapsedSince} from '/imports/lib/utils.js';
 import {loadStatistics} from '/imports/ui/views/statistics.js';
@@ -50,11 +50,7 @@ Template.tournament.destroyed = function() {
 
 Template.tournament.helpers({
 	tournamentName: function() {
-		if (this.tournament.name) {
-			return this.tournament.name;
-		}
-
-		return '';
+		return tournamentName(this.tournament);
 	},
 
 	tournamentDescription: function() {

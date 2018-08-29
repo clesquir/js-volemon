@@ -1,6 +1,7 @@
 import {Template} from 'meteor/templating';
 import {isGameStatusOnGoing} from '/imports/api/games/utils.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
+import {tournamentName} from "/imports/api/tournaments/utils.js";
 
 import './tournamentGame.html';
 
@@ -12,11 +13,7 @@ Template.tournamentGame.helpers({
 	tournamentName: function() {
 		const tournament = Tournaments.findOne({_id: this.game.tournamentId});
 
-		if (tournament.name) {
-			return tournament.name;
-		}
-
-		return '';
+		return tournament && tournamentName(tournament);
 	},
 
 	tournamentDescription: function() {

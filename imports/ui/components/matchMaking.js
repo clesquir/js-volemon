@@ -8,6 +8,7 @@ import {
 } from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
 import {MatchMakers} from '/imports/api/games/matchMakers.js';
+import {tournamentName} from "/imports/api/tournaments/utils.js";
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 import {EventPublisher} from '/imports/lib/EventPublisher.js';
 import PageUnload from '/imports/lib/events/PageUnload.js';
@@ -18,6 +19,7 @@ import {Meteor} from "meteor/meteor";
 import {Mongo} from "meteor/mongo";
 import {Session} from "meteor/session";
 import {Template} from "meteor/templating";
+
 import './matchMaking.html';
 
 const he = require('he');
@@ -209,11 +211,7 @@ Template.matchMaking.helpers({
 	},
 
 	name: function() {
-		if (this.name) {
-			return this.name;
-		}
-
-		return '';
+		return tournamentName(this);
 	},
 
 	description: function() {
@@ -349,9 +347,7 @@ Template.matchMaking.helpers({
 			case TOURNAMENT_GAME_SELECTION:
 				const tournament = PlayableTournaments.findOne({_id: Session.get('matchMaking.tournamentId')});
 
-				if (tournament) {
-					return tournament.name;
-				}
+				return tournament && tournamentName(tournament);
 		}
 
 		return '';

@@ -1,14 +1,11 @@
+import {tournamentName} from "/imports/api/tournaments/utils.js";
 import {Template} from 'meteor/templating';
 
 import './tournamentUserProfile.html';
 
 Template.tournamentUserProfile.helpers({
 	tournamentName: function() {
-		if (this.tournament.name) {
-			return this.tournament.name;
-		}
-
-		return '';
+		return tournamentName(this.tournament);
 	},
 
 	tournamentDescription: function() {

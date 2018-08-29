@@ -1,4 +1,5 @@
 import * as Moment from 'meteor/momentjs:moment';
+import {ONE_VS_COMPUTER_GAME_MODE, ONE_VS_ONE_GAME_MODE, TWO_VS_TWO_GAME_MODE} from "/imports/api/games/constants.js";
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {TournamentProfiles} from '/imports/api/tournaments/tournamentProfiles';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
@@ -49,4 +50,17 @@ export const isTournamentActive = function(tournament) {
 		now >= Moment.moment(tournament.startDate, "YYYY-MM-DD ZZ").valueOf() &&
 		now <= Moment.moment(tournament.endDate, "YYYY-MM-DD ZZ").valueOf()
 	);
+};
+
+export const tournamentName = function(tournament) {
+	switch (tournament.gameMode) {
+		case ONE_VS_COMPUTER_GAME_MODE:
+			return '1 VS CPU: ' + tournament.name;
+		case ONE_VS_ONE_GAME_MODE:
+			return '1 VS 1: ' + tournament.name;
+		case TWO_VS_TWO_GAME_MODE:
+			return '2 VS 2: ' + tournament.name;
+	}
+
+	return tournament.name;
 };
