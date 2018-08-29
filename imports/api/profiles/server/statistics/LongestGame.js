@@ -4,14 +4,11 @@ import {GAME_STATUS_FINISHED} from '/imports/api/games/statusConstants.js';
 
 export default class LongestGame {
 	static get(userId, tournamentId) {
-		const players = Players.find({userId: userId});
-		const gamesIds = [];
-
-		players.forEach((player) => {
-			gamesIds.push(player.gameId);
-		});
-
-		const query = {_id: {$in: gamesIds}, status: GAME_STATUS_FINISHED, gameDuration: {$exists: true}};
+		const query = {
+			'players.id': userId,
+			status: GAME_STATUS_FINISHED,
+			gameDuration: {$exists: true}
+		};
 
 		if (tournamentId) {
 			query.tournamentId = tournamentId;

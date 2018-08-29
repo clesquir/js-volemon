@@ -36,16 +36,9 @@ export default class FavouriteShapes {
 	 * @param tournamentId
 	 */
 	static players(userId, tournamentId) {
-		const players = Players.find({userId: userId});
-		const playerGameIds = [];
-
-		players.forEach((player) => {
-			playerGameIds.push(player.gameId);
-		});
-
 		const games = Games.find(
 			{
-				_id: {$in: playerGameIds},
+				'players.id': userId,
 				tournamentId: tournamentId,
 				status: {$in: [GAME_STATUS_FINISHED, GAME_STATUS_FORFEITED]}
 			}

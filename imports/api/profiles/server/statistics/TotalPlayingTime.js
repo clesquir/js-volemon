@@ -1,18 +1,10 @@
-import {Players} from '/imports/api/games/players.js';
 import {Games} from '/imports/api/games/games.js';
 import {GAME_STATUS_FINISHED} from '/imports/api/games/statusConstants.js';
 
 export default class TotalPlayingTime {
 	static get(userId, tournamentId) {
-		const players = Players.find({userId: userId});
-		const gamesIds = [];
-
-		players.forEach((player) => {
-			gamesIds.push(player.gameId);
-		});
-
 		const query = {
-			_id: {$in: gamesIds},
+			'players.id': userId,
 			status: GAME_STATUS_FINISHED,
 			gameDuration: {$exists: true}
 		};
