@@ -198,6 +198,8 @@ export const startGame = function(gameId, gameInitiators) {
 	}
 };
 
+const gameRematchInCreation = {};
+
 /**
  * @param {string} userId
  * @param {string} gameId
@@ -223,8 +225,8 @@ export const replyRematch = function(userId, gameId, accepted, gameInitiators) {
 	Players.update({_id: player._id}, {$set: {askedForRematch: accepted}});
 
 	const notAskingForRematch = Players.find({gameId: gameId, askedForRematch: {$ne: true}});
-	if (notAskingForRematch.count() === 0 && !game.rematchInCreation) {
-		Games.update({_id: game._id}, {$set: {rematchInCreation: true}});
+	if (notAskingForRematch.count() === 0 && gameRematchInCreation[gameId] === undefined) {
+		gameRematchInCreation[gameId] = true;
 
 		let rematchGameCreator = game.players[1].id;
 		if (game.gameMode === TWO_VS_TWO_GAME_MODE) {
@@ -259,6 +261,7 @@ export const replyRematch = function(userId, gameId, accepted, gameInitiators) {
 
 		Meteor.setTimeout(() => {
 			startGame(gameRematchId, gameInitiators);
+			delete gameRematchInCreation[gameId];
 		}, 5000);
 	}
 };
