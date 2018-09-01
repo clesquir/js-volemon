@@ -46,7 +46,7 @@ Template.tournamentAdministration.helpers({
 		return tournament.status.id === 'submitted' && isTournamentAdministrator();
 	},
 
-	hasBonuses: function() {
+	booleanOptions: function() {
 		return [{id: "1", name: 'Yes'}, {id: "0", name: 'No'}];
 	},
 
@@ -251,6 +251,8 @@ const modeOptions = function() {
 	addToMode(mode, 'allowed-list-of-shapes', 'overriddenAllowedListOfShapes');
 	addToMode(mode, 'list-of-shapes', 'overriddenListOfShapes');
 	addToMode(mode, 'current-player-shape', 'overriddenCurrentPlayerShape');
+	addToMode(mode, 'is-hidden-to-himself', 'overriddenIsHiddenToHimself');
+	addToMode(mode, 'is-hidden-to-opponent', 'overriddenIsHiddenToOpponent');
 	addToMode(mode, 'forfeit-minimum-points', 'overriddenForfeitMinimumPoints');
 	addToMode(mode, 'maximum-points', 'overriddenMaximumPoints');
 	addToMode(mode, 'net-height', 'overriddenNetHeight');

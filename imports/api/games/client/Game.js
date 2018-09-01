@@ -378,10 +378,21 @@ export default class Game {
 		player.data.canJumpOnBodies = [];
 		player.data.isInvincible = false;
 		player.data.canActivateBonuses = true;
+		player.data.initialIsHiddenToHimself = this.gameConfiguration.isHiddenToHimself();
+		player.data.isHiddenToHimself = this.gameConfiguration.isHiddenToHimself();
+		player.data.initialIsHiddenToOpponent = this.gameConfiguration.isHiddenToOpponent();
+		player.data.isHiddenToOpponent = this.gameConfiguration.isHiddenToOpponent();
 
 		this.initPlayerTexture(player);
 		this.initPlayerPolygon(player);
 		this.applyPlayerPolygon(player);
+
+		if (player.data.isHiddenToHimself) {
+			this.gameBonus.hidePlayingPlayer(player.data.key);
+		}
+		if (player.data.isHiddenToOpponent) {
+			this.gameBonus.hideFromOpponent(player.data.key);
+		}
 	}
 
 	reinitPlayer(player) {

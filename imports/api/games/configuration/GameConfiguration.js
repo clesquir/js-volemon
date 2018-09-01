@@ -73,6 +73,22 @@ export default class GameConfiguration {
 		return this.tournamentMode.currentPlayerShape();
 	}
 
+	isHiddenToHimself() {
+		if (this.hasTournament() && this.tournamentMode.overridesIsHiddenToHimself()) {
+			return this.tournamentMode.isHiddenToHimself();
+		}
+
+		return false;
+	}
+
+	isHiddenToOpponent() {
+		if (this.hasTournament() && this.tournamentMode.overridesIsHiddenToOpponent()) {
+			return this.tournamentMode.isHiddenToOpponent();
+		}
+
+		return false;
+	}
+
 	hasBonuses() {
 		if (this.hasTournament() && this.tournamentMode.overridesHasBonuses()) {
 			return this.tournamentMode.hasBonuses();

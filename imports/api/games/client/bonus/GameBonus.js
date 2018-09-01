@@ -404,7 +404,7 @@ export default class GameBonus {
 			return;
 		}
 
-		player.isHiddenToHimself = true;
+		player.data.isHiddenToHimself = true;
 
 		if (!this.gameData.isUserViewer()) {
 			if (this.gameData.isCurrentPlayerKey(playerKey)) {
@@ -412,7 +412,7 @@ export default class GameBonus {
 				this.engine.setOpacity(player, 0);
 			} else {
 				//Opponent see transparent if he can see
-				if (!player.isHiddenToOpponent) {
+				if (!player.data.isHiddenToOpponent) {
 					this.engine.setOpacity(player, 0.5);
 				}
 			}
@@ -429,9 +429,13 @@ export default class GameBonus {
 			return;
 		}
 
-		player.isHiddenToHimself = false;
+		player.data.isHiddenToHimself = player.data.initialIsHiddenToHimself;
 
-		if (player.isHiddenToOpponent) {
+		if (player.data.isHiddenToHimself) {
+			return;
+		}
+
+		if (player.data.isHiddenToOpponent) {
 			if (
 				this.gameData.isCurrentPlayerKey(playerKey) ||
 				this.gameData.isUserViewer()
@@ -450,7 +454,7 @@ export default class GameBonus {
 			return;
 		}
 
-		player.isHiddenToOpponent = true;
+		player.data.isHiddenToOpponent = true;
 
 		if (!this.gameData.isUserViewer()) {
 			if (!this.gameData.isCurrentPlayerKey(playerKey)) {
@@ -458,7 +462,7 @@ export default class GameBonus {
 				this.engine.setOpacity(player, 0);
 			} else {
 				//Bonus player see himself transparent if not hidden to himself
-				if (!player.isHiddenToHimself) {
+				if (!player.data.isHiddenToHimself) {
 					this.engine.setOpacity(player, 0.5);
 				}
 			}
@@ -475,9 +479,13 @@ export default class GameBonus {
 			return;
 		}
 
-		player.isHiddenToOpponent = false;
+		player.data.isHiddenToOpponent = player.data.initialIsHiddenToOpponent;
 
-		if (player.isHiddenToHimself) {
+		if (player.data.isHiddenToOpponent) {
+			return;
+		}
+
+		if (player.data.isHiddenToHimself) {
 			if (!this.gameData.isCurrentPlayerKey(playerKey)) {
 				this.engine.setOpacity(player, 0.5);
 			}
