@@ -38,7 +38,7 @@ export default class Environment extends Dev {
 		this.game.groundHitEnabled = true;
 	}
 
-	hitGround() {
+	hitGround(ball) {
 		if (this.game.groundHitEnabled && this.game.gameResumed === true) {
 			this.game.gameResumed = false;
 

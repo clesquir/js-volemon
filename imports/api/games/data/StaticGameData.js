@@ -4,6 +4,8 @@ import {PLAYER_DEFAULT_SHAPE} from '/imports/api/games/shapeConstants.js';
 export default class StaticGameData extends GameData {
 	firstPlayerComputer = false;
 	secondPlayerComputer = false;
+	firstPlayerComputerMachineLearning = false;
+	secondPlayerComputerMachineLearning = false;
 
 	init() {
 		this.maximumPoints = 1;
@@ -42,6 +44,14 @@ export default class StaticGameData extends GameData {
 
 	isSecondPlayerComputer() {
 		return this.secondPlayerComputer;
+	}
+
+	isFirstPlayerComputerMachineLearning() {
+		return this.firstPlayerComputerMachineLearning;
+	}
+
+	isSecondPlayerComputerMachineLearning() {
+		return this.secondPlayerComputerMachineLearning;
 	}
 
 	isTwoVersusTwo() {

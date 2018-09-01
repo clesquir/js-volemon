@@ -1,6 +1,18 @@
 <template name="ai">
 
 	<style>
+		#devAi .ai-options .button {
+			margin-top: 10px;
+			font-size: 10px;
+		}
+
+		#devAi .ai-options textarea {
+			margin-top: 10px;
+			font-size: 10px;
+			width: 300px;
+			padding: 5px;
+		}
+
 		#devAi canvas {
 			margin: 10px auto;
 			position: relative;
@@ -12,6 +24,21 @@
 	<div id="devAi" class="app-section app-section-center">
 
 		<div class="app-section-inner">
+
+			<div class="ai-options">
+				<div>
+					<a href="#" class="button" data-action="speed-up-game">
+						{{#if fullSpeedEnabled}}Full speed{{else}}Normal speed{{/if}}
+					</a>
+					<a href="#" class="button" data-action="allow-ai-to-jump">
+						{{#if jumpEnabled}}Can jump{{else}}Do not jump{{/if}}
+					</a>
+					<a href="#" class="button" data-action="get-host-genomes">Get host genomes</a>
+					<a href="#" class="button" data-action="get-client-genomes">Get client genomes</a>
+				</div>
+
+				<textarea id="ai-genomes"></textarea>
+			</div>
 
 			<div class="game-container">
 				<div id="devGameContainer" class="page game"></div>

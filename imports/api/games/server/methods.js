@@ -27,6 +27,15 @@ import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
 
 Meteor.methods({
+	saveAi: function(generation, genomes1, genomes2) {
+		console.log(generation);
+		console.log('========');
+		console.log(genomes1);
+		console.log('========');
+		console.log(genomes2);
+		console.log('========');
+	},
+
 	createTournamentPracticeGame: function(tournamentId) {
 		return GameCreator.fromTournamentPractice(tournamentId);
 	},
