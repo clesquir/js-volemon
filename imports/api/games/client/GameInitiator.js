@@ -10,6 +10,8 @@ import {moment} from 'meteor/momentjs:moment';
 import {Session} from 'meteor/session';
 
 export default class GameInitiator {
+	gameCreated = false;
+
 	/**
 	 * @param {string} gameId
 	 * @param {DeviceController} deviceController
@@ -127,7 +129,10 @@ export default class GameInitiator {
 		//Wait for gameContainer creation before starting game
 		let loopUntilGameContainerIsCreated = () => {
 			if (document.getElementById('gameContainer')) {
-				me.createNewGame();
+				if (this.gameCreated === false) {
+					this.gameCreated = true;
+					me.createNewGame();
+				}
 			} else {
 				window.setTimeout(loopUntilGameContainerIsCreated, 1);
 			}
