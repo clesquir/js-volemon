@@ -50,7 +50,7 @@ export default class Game {
 		this.lastBallPositionData = {};
 		this.lastPlayerPositionData = {};
 		this.lastBallUpdate = 0;
-		this.lastPlayerUpdate = 0;
+		this.lastPlayerUpdate = {};
 		this.lastPointAt = 0;
 		this.gameResumed = false;
 		this.gameInitiated = false;
@@ -641,18 +641,19 @@ export default class Game {
 		let playerPositionData = this.engine.getPositionData(player);
 		let playerInterval = PLAYER_INTERVAL;
 
-		playerPositionData.key = player.data.key;
+		const key = player.data.key;
+		playerPositionData.key = key;
 		playerPositionData.doingDropShot = player.data.doingDropShot;
 
-		if (JSON.stringify(this.lastPlayerPositionData) === JSON.stringify(playerPositionData)) {
+		if (JSON.stringify(this.lastPlayerPositionData[key]) === JSON.stringify(playerPositionData)) {
 			playerInterval *= 2;
 		}
-		this.lastPlayerPositionData = Object.assign({}, playerPositionData);
+		this.lastPlayerPositionData[key] = Object.assign({}, playerPositionData);
 
-		this.lastPlayerUpdate = this.gameStreamBundler.addToBundledStreamsAtFrequence(
-			this.lastPlayerUpdate,
+		this.lastPlayerUpdate[key] = this.gameStreamBundler.addToBundledStreamsAtFrequence(
+			this.lastPlayerUpdate[key] || 0,
 			playerInterval,
-			'moveClientPlayer',
+			'moveClientPlayer-' + key,
 			playerPositionData
 		);
 	}
@@ -817,6 +818,11 @@ export default class Game {
 
 	moveComputer(player) {
 		const key = player.data.key;
+
+		//Creator user controls CPU
+		if (!this.gameData.isUserCreator()) {
+			return;
+		}
 
 		this.artificialIntelligence.computeMovement(
 			key,

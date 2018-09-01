@@ -43,9 +43,21 @@ export default class GameStreamInitiator {
 				bundledData.moveClientBall.timestamp = timestamp;
 				this.moveClientBall.call(this, bundledData.moveClientBall);
 			}
-			if (bundledData.moveClientPlayer) {
-				bundledData.moveClientPlayer.timestamp = timestamp;
-				this.moveClientPlayer.call(this, bundledData.moveClientPlayer);
+			if (bundledData['moveClientPlayer-player1']) {
+				bundledData['moveClientPlayer-player1'].timestamp = timestamp;
+				this.moveClientPlayer.call(this, bundledData['moveClientPlayer-player1']);
+			}
+			if (bundledData['moveClientPlayer-player2']) {
+				bundledData['moveClientPlayer-player2'].timestamp = timestamp;
+				this.moveClientPlayer.call(this, bundledData['moveClientPlayer-player2']);
+			}
+			if (bundledData['moveClientPlayer-player3']) {
+				bundledData['moveClientPlayer-player3'].timestamp = timestamp;
+				this.moveClientPlayer.call(this, bundledData['moveClientPlayer-player3']);
+			}
+			if (bundledData['moveClientPlayer-player4']) {
+				bundledData['moveClientPlayer-player4'].timestamp = timestamp;
+				this.moveClientPlayer.call(this, bundledData['moveClientPlayer-player4']);
 			}
 			if (bundledData.createBonus) {
 				this.createBonus.call(this, bundledData.createBonus);
