@@ -8,7 +8,7 @@ export default class ArtificialIntelligence {
 	numberPointsToCalculateGenomes = 5;
 	canJump = false;
 
-	addComputerWithKey(key, learningMachine = false) {
+	addComputerWithKey(key, machineLearning = false) {
 		this.computers[key] = {
 			left: false,
 			right: false,
@@ -17,7 +17,7 @@ export default class ArtificialIntelligence {
 			cumulatedPoints: 0
 		};
 
-		if (learningMachine) {
+		if (machineLearning) {
 			this.computers[key].learner = new Learner(4, 2, 12, 4, 0.2);
 			this.computers[key].learner.init();
 		}

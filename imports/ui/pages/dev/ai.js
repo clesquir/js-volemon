@@ -5,6 +5,8 @@ import './ai.html';
 
 /** @type {Ai}|null */
 let ai = null;
+const firstPlayerHumanEnabled = new ReactiveVar(false);
+const secondPlayerMachineLearningEnabled = new ReactiveVar(true);
 const fullSpeedEnabled = new ReactiveVar(false);
 const jumpEnabled = new ReactiveVar(false);
 
@@ -20,6 +22,12 @@ Template.ai.destroyed = function() {
 };
 
 Template.ai.helpers({
+	firstPlayerHumanEnabled: function() {
+		return firstPlayerHumanEnabled.get();
+	},
+	secondPlayerMachineLearningEnabled: function() {
+		return secondPlayerMachineLearningEnabled.get();
+	},
 	fullSpeedEnabled: function() {
 		return fullSpeedEnabled.get();
 	},
@@ -29,6 +37,16 @@ Template.ai.helpers({
 });
 
 Template.ai.events({
+	'click [data-action="enable-first-player-human"]': function() {
+		ai.enableFirstPlayerHuman(!firstPlayerHumanEnabled.get());
+
+		firstPlayerHumanEnabled.set(!firstPlayerHumanEnabled.get());
+	},
+	'click [data-action="enable-second-player-machine-learning"]': function() {
+		ai.enableSecondPlayerMachineLearning(!secondPlayerMachineLearningEnabled.get());
+
+		secondPlayerMachineLearningEnabled.set(!secondPlayerMachineLearningEnabled.get());
+	},
 	'click [data-action="speed-up-game"]': function() {
 		if (fullSpeedEnabled.get()) {
 			ai.normalGameSpeed();
@@ -39,11 +57,7 @@ Template.ai.events({
 		fullSpeedEnabled.set(!fullSpeedEnabled.get());
 	},
 	'click [data-action="allow-ai-to-jump"]': function() {
-		if (jumpEnabled.get()) {
-			ai.allowAiToJump(false);
-		} else {
-			ai.allowAiToJump(true);
-		}
+		ai.enableAiToJump(!jumpEnabled.get());
 
 		jumpEnabled.set(!jumpEnabled.get());
 	},

@@ -88,6 +88,21 @@ export default class Ai extends Dev {
 		}
 	}
 
+	enableFirstPlayerHuman(isHuman) {
+		this.gameData.firstPlayerComputer = !isHuman;
+	}
+
+	enableSecondPlayerMachineLearning(isMachineLearning) {
+		this.gameData.secondPlayerComputerMachineLearning = isMachineLearning;
+		this.game.artificialIntelligence.addComputerWithKey('player2', isMachineLearning);
+
+		if (isMachineLearning) {
+			this.game.artificialIntelligence.loadGenomes('player2', JSON.stringify(genomes));
+		}
+
+		this.game.artificialIntelligence.startGame();
+	}
+
 	speedUpGame() {
 		this.engine.game.time.slowMotion = 0.00001;
 	}
@@ -96,7 +111,7 @@ export default class Ai extends Dev {
 		this.engine.game.time.slowMotion = 1;
 	}
 
-	allowAiToJump(canJump) {
+	enableAiToJump(canJump) {
 		this.game.artificialIntelligence.canJump = canJump;
 	}
 
