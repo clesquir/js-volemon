@@ -3,17 +3,22 @@ import {CLIENT_POINTS_COLUMN, HOST_POINTS_COLUMN} from '/imports/api/games/const
 
 export default class ArtificialIntelligence {
 	computers = {};
+	pointStartTime = 0;
+	numberPointsForCurrentGenomes = 0;
+	numberPointsToCalculateGenomes = 5;
+	canJump = false;
 
 	addComputerWithKey(key, learningMachine = false) {
 		this.computers[key] = {
 			left: false,
 			right: false,
 			jump: false,
-			dropshot: false
+			dropshot: false,
+			cumulatedPoints: 0
 		};
 
 		if (learningMachine) {
-			this.computers[key].learner = new Learner(6, 2, 12, 4, 0.2);
+			this.computers[key].learner = new Learner(4, 2, 12, 4, 0.2);
 			this.computers[key].learner.init();
 		}
 	}
@@ -42,12 +47,6 @@ export default class ArtificialIntelligence {
 
 	startPoint() {
 		this.pointStartTime = (new Date()).getTime();
-
-		for (let key in this.computers) {
-			if (this.computers.hasOwnProperty(key) && this.computers[key].learner) {
-				this.computers[key].learner.startPoint();
-			}
-		}
 	}
 
 	stopPoint(pointSide) {
@@ -62,7 +61,16 @@ export default class ArtificialIntelligence {
 					points = -1 * points;
 				}
 
-				this.computers[key].learner.stopPoint(points);
+				this.computers[key].cumulatedPoints += points;
+				this.numberPointsForCurrentGenomes++;
+
+				if (this.numberPointsForCurrentGenomes >= this.numberPointsToCalculateGenomes) {
+					this.computers[key].learner.computeGenomesPoint(this.computers[key].cumulatedPoints);
+
+					//Reset
+					this.numberPointsForCurrentGenomes = 0;
+					this.computers[key].cumulatedPoints = 0;
+				}
 			}
 		}
 	}
@@ -104,12 +112,10 @@ export default class ArtificialIntelligence {
 				key,
 				this.computers[key].learner.emitData(
 					[
-						computerPosition.x,
-						computerPosition.y,
-						ballPosition.x,
-						ballPosition.y,
-						ballPosition.velocityX,
-						ballPosition.velocityY
+						Math.round(computerPosition.x - ballPosition.x), //distance player/ball and side
+						Math.round(computerPosition.y - ballPosition.y), //distance player/ball and side
+						Math.round(ballPosition.velocityX),
+						Math.round(ballPosition.velocityY)
 					]
 				)
 			);
@@ -155,6 +161,8 @@ export default class ArtificialIntelligence {
 				} else if (xAtGround < computerPosition.x + computerPosition.width / 6) {
 					//ball is behind
 					this.computers[key].left = true;
+				} else if (this.canJump) {
+					this.computers[key].jump = true;
 				}
 			} else {
 				//Avoid maluses or grab bonuses or move to center
@@ -169,6 +177,8 @@ export default class ArtificialIntelligence {
 				} else if (xAtGround > computerPosition.x - computerPosition.width / 6) {
 					//ball is behind
 					this.computers[key].right = true;
+				} else if (this.canJump) {
+					this.computers[key].jump = true;
 				}
 			} else {
 				//Avoid maluses or grab bonuses or move to center

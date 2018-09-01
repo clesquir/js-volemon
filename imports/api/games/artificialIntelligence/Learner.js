@@ -41,10 +41,7 @@ export default class Learner {
 		return [];
 	}
 
-	startPoint() {
-	}
-
-	stopPoint(points) {
+	computeGenomesPoint(points) {
 		if (this.onGameEnd) {
 			this.onGameEnd(points);
 		}
@@ -201,6 +198,7 @@ export default class Learner {
 		this.onGameEnd = (points) => {
 			//Save Genome fitness
 			genome.fitness = points;
+			console.log('fitness = ' + points);
 
 			//Go to next genome
 			next();

@@ -27,10 +27,14 @@
 
 			<div class="ai-options">
 				<div>
+					<a href="#" class="button" data-action="speed-up-game">
+						{{#if fullSpeedEnabled}}Full speed{{else}}Normal speed{{/if}}
+					</a>
+					<a href="#" class="button" data-action="allow-ai-to-jump">
+						{{#if jumpEnabled}}Can jump{{else}}Do not jump{{/if}}
+					</a>
 					<a href="#" class="button" data-action="get-host-genomes">Get host genomes</a>
-					<a href="#" class="button" data-action="load-host-genomes">Load host genomes</a>
 					<a href="#" class="button" data-action="get-client-genomes">Get client genomes</a>
-					<a href="#" class="button" data-action="load-client-genomes">Load client genomes</a>
 				</div>
 
 				<textarea id="ai-genomes"></textarea>

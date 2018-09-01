@@ -16,8 +16,8 @@ export default class Ai extends Dev {
 		this.overrideGame();
 
 		this.engine.game.forceSingleUpdate = false;
-		this.engine.game.time.slowMotion = 0.00001;
-
+		this.engine.game.time.advancedTiming = true;
+		this.engine.game.time.slowMotion = 1;
 		this.createComponents();
 		this.gameBonus.createComponents();
 
@@ -51,17 +51,24 @@ export default class Ai extends Dev {
 	updateGame() {
 		this.game.updateGame();
 
-		//If game is really long, it means the ball is probably stuck - move it a bit
+		//If the ball is stuck - move it a bit
 		const pointTime = ((new Date()).getTime() - this.pointStartTime);
-		if (pointTime % 10000 === 0) {
+		if (pointTime % 1000 < 50 && Math.round(this.engine.getHorizontalSpeed(this.game.ball)) === 0) {
 			this.engine.setHorizontalSpeed(this.game.ball, 50);
 		}
 
 		//Output the genomes backend in case the computer crashes
-		const generation = this.game.artificialIntelligence.computers['player2'].learner.generation;
-		if (generation % 25 === 0 && this.lastGenerationSaved !== generation) {
-			this.lastGenerationSaved = generation;
-			Meteor.call('saveAi', generation, this.game.artificialIntelligence.getGenomes('player1'), this.game.artificialIntelligence.getGenomes('player2'));
+		if (this.game.artificialIntelligence.computers['player2'].learner) {
+			const generation = this.game.artificialIntelligence.computers['player2'].learner.generation;
+			if (this.lastGenerationSaved !== generation && generation % 5 === 0) {
+				this.lastGenerationSaved = generation;
+				Meteor.call(
+					'saveAi',
+					generation,
+					this.game.artificialIntelligence.getGenomes('player1'),
+					this.game.artificialIntelligence.getGenomes('player2')
+				);
+			}
 		}
 	}
 
@@ -81,19 +88,23 @@ export default class Ai extends Dev {
 		}
 	}
 
+	speedUpGame() {
+		this.engine.game.time.slowMotion = 0.00001;
+	}
+
+	normalGameSpeed() {
+		this.engine.game.time.slowMotion = 1;
+	}
+
+	allowAiToJump(canJump) {
+		this.game.artificialIntelligence.canJump = canJump;
+	}
+
 	getHostGenomes() {
 		return this.game.artificialIntelligence.getGenomes('player1');
 	}
 
-	loadHostGenomes(genomes) {
-		this.game.artificialIntelligence.loadGenomes('player1', genomes);
-	}
-
 	getClientGenomes() {
 		return this.game.artificialIntelligence.getGenomes('player2');
-	}
-
-	loadClientGenomes(genomes) {
-		this.game.artificialIntelligence.loadGenomes('player2', genomes);
 	}
 }
