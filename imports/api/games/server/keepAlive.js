@@ -12,34 +12,27 @@ export const startKeepAlive = function(gameId, stream) {
 	let game = Games.findOne(gameId);
 
 	stream.on('sendBundledData-' + gameId, Meteor.bindEnvironment((bundledData) => {
-		const moveClientPlayer = bundledData.moveClientPlayer;
-		if (moveClientPlayer) {
-			let movedPlayer = null;
-			if (moveClientPlayer.key === 'player1') {
-				movedPlayer = game.players[0];
-			} else if (moveClientPlayer.key === 'player2') {
-				movedPlayer = game.players[1];
-			} else if (moveClientPlayer.key === 'player3') {
-				movedPlayer = game.players[3];
-			} else if (moveClientPlayer.key === 'player4') {
-				movedPlayer = game.players[4];
-			}
-
-			if (movedPlayer) {
-				if (!lastKeepAliveUpdateByPlayerIds[movedPlayer.id]) {
-					lastKeepAliveUpdateByPlayerIds[movedPlayer.id] = 0;
-				}
-
-				lastKeepAliveUpdateByPlayerIds[movedPlayer.id] = callAtFrequence(
-					lastKeepAliveUpdateByPlayerIds[movedPlayer.id],
-					KEEP_ALIVE_INTERVAL,
-					() => {
-						Players.update({userId: movedPlayer.id}, {$set: {lastKeepAlive: getUTCTimeStamp()}});
-					}
-				);
-			}
-		}
+		updateKeepAlive(bundledData['moveClientPlayer-player1'] && game.players[0], gameId);
+		updateKeepAlive(bundledData['moveClientPlayer-player2'] && game.players[1], gameId);
+		updateKeepAlive(bundledData['moveClientPlayer-player3'] && game.players[2], gameId);
+		updateKeepAlive(bundledData['moveClientPlayer-player4'] && game.players[3], gameId);
 	}));
+};
+
+const updateKeepAlive = function(movedPlayer, gameId) {
+	if (movedPlayer) {
+		if (!lastKeepAliveUpdateByPlayerIds[movedPlayer.id]) {
+			lastKeepAliveUpdateByPlayerIds[movedPlayer.id] = 0;
+		}
+
+		lastKeepAliveUpdateByPlayerIds[movedPlayer.id] = callAtFrequence(
+			lastKeepAliveUpdateByPlayerIds[movedPlayer.id],
+			KEEP_ALIVE_INTERVAL,
+			() => {
+				Players.update({gameId: gameId, userId: movedPlayer.id}, {$set: {lastKeepAlive: getUTCTimeStamp()}});
+			}
+		);
+	}
 };
 
 Meteor.setInterval(function() {
