@@ -1,4 +1,5 @@
 import Game from '/imports/api/games/client/Game.js';
+import GameStreamBundler from '/imports/api/games/client/streamBundler/GameStreamBundler.js';
 import NullStreamBundler from '/imports/api/games/client/streamBundler/NullStreamBundler.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
 import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
@@ -58,7 +59,7 @@ describe('GameBonus#createBonusIfTimeHasElapsed', function() {
 	const gameId = Random.id(5);
 	const gameData = new StaticGameData();
 	const gameConfiguration = new StaticGameConfiguration();
-	const streamBundler = new NullStreamBundler();
+	const streamBundler = new GameStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 	const deviceController = new NullDeviceController();
 	const engine = new NullEngine();

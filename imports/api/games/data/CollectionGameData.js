@@ -234,7 +234,7 @@ export default class CollectionGameData extends GameData {
 	}
 
 	isTournamentPractice() {
-		return this.hasTournament() && this.tournament.status !== 'approved';
+		return this.hasTournament() && this.tournament.status.id !== 'approved';
 	}
 
 	updateStartedAt(startedAt) {
