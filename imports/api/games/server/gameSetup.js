@@ -27,10 +27,18 @@ import {Random} from 'meteor/random';
  * @param {GameInitiator[]} gameInitiators
  * @param modeSelection
  * @param {bool} isPracticeGame
+ * @param {bool} isPrivate
  * @param tournamentId
  * @returns {string}
  */
-export const createGame = function(userId, gameInitiators, modeSelection, isPracticeGame, tournamentId = null) {
+export const createGame = function(
+	userId,
+	gameInitiators,
+	modeSelection,
+	isPracticeGame,
+	isPrivate,
+	tournamentId = null
+) {
 	let id = null;
 
 	if (!playersCanPlayTournament(tournamentId, [{userId: userId}])) {
@@ -62,7 +70,7 @@ export const createGame = function(userId, gameInitiators, modeSelection, isPrac
 				createdBy: userId,
 				players: [],
 				isPracticeGame: isPracticeGame,
-				isPrivate: false,
+				isPrivate: isPrivate,
 				hostPoints: 0,
 				clientPoints: 0,
 				lastPointTaken: null,
@@ -227,6 +235,7 @@ export const replyRematch = function(userId, gameId, accepted, gameInitiators) {
 			rematchGameCreator,
 			gameInitiators,
 			game.modeSelection,
+			false,
 			false,
 			game.tournamentId
 		);

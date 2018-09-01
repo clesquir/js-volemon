@@ -117,6 +117,10 @@ export default class StaticGameData extends GameData {
 		return false;
 	}
 
+	isTournamentPractice() {
+		return false;
+	}
+
 	updateHostPoints(hostPoints) {
 	}
 

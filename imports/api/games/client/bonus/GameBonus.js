@@ -21,7 +21,7 @@ export default class GameBonus {
 	 * @param {Engine} engine
 	 * @param {GameData} gameData
 	 * @param {GameConfiguration} gameConfiguration
-	 * @param {GameStreamBundler} gameStreamBundler
+	 * @param {StreamBundler} streamBundler
 	 * @param {ServerNormalizedTime} serverNormalizedTime
 	 */
 	constructor(
@@ -29,14 +29,14 @@ export default class GameBonus {
 		engine,
 		gameData,
 		gameConfiguration,
-		gameStreamBundler,
+		streamBundler,
 		serverNormalizedTime
 	) {
 		this.game = game;
 		this.engine = engine;
 		this.gameData = gameData;
 		this.gameConfiguration = gameConfiguration;
-		this.gameStreamBundler = gameStreamBundler;
+		this.streamBundler = streamBundler;
 		this.serverNormalizedTime = serverNormalizedTime;
 		this.lastBonusUpdate = 0;
 		this.lastBonusCreated = 0;
@@ -230,7 +230,7 @@ export default class GameBonus {
 		}
 
 		if (bonusesData.length) {
-			this.lastBonusUpdate = this.gameStreamBundler.addToBundledStreamsAtFrequence(
+			this.lastBonusUpdate = this.streamBundler.addToBundledStreamsAtFrequence(
 				this.lastBonusUpdate,
 				BONUS_INTERVAL,
 				'moveClientBonuses',
@@ -620,7 +620,7 @@ export default class GameBonus {
 
 			//Send to client
 			const serverTimestamp = this.serverNormalizedTime.getServerTimestamp();
-			this.gameStreamBundler.emitStream(
+			this.streamBundler.emitStream(
 				'killPlayer-' + this.game.gameId,
 				{
 					playerKey: playerKey,
@@ -680,7 +680,7 @@ export default class GameBonus {
 		this.createBonus(data);
 		this.regenerateLastBonusCreatedAndFrequenceTime();
 		//Add to bundled stream to send to client
-		this.gameStreamBundler.addStreamToBundle('createBonus', data);
+		this.streamBundler.addStreamToBundle('createBonus', data);
 
 		Meteor.call(
 			'createBonus',
@@ -725,7 +725,7 @@ export default class GameBonus {
 			payload.beforeActivationData = bonusSprite.data.bonus.beforeActivationData();
 
 			//Send to client
-			this.gameStreamBundler.emitStream(
+			this.streamBundler.emitStream(
 				'activateBonus-' + this.game.gameId,
 				payload,
 				this.serverNormalizedTime.getServerTimestamp()

@@ -1,5 +1,5 @@
 import Game from '/imports/api/games/client/Game.js';
-import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
+import NullStreamBundler from '/imports/api/games/client/streamBundler/NullStreamBundler.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
 import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
 import StaticGameConfiguration from '/imports/api/games/configuration/StaticGameConfiguration.js';
@@ -24,7 +24,7 @@ export default class Dev {
 		this.gameData = new StaticGameData();
 		this.gameData.init();
 		this.gameConfiguration = new StaticGameConfiguration();
-		this.gameStreamBundler = new GameStreamBundler(null);
+		this.streamBundler = new NullStreamBundler();
 		this.deviceController = new DesktopController(CustomKeymaps.defaultKeymaps());
 		this.deviceController.init();
 		this.engine = new PhaserEngine();
@@ -40,7 +40,7 @@ export default class Dev {
 			this.gameData,
 			this.gameConfiguration,
 			this.gameSkin,
-			this.gameStreamBundler,
+			this.streamBundler,
 			this.serverNormalizedTime
 		);
 		this.gameBonus = this.game.gameBonus;
@@ -140,7 +140,7 @@ export default class Dev {
 		this.gameData.getPlayerShapeFromKey = () => {return PLAYER_DEFAULT_SHAPE;};
 		this.gameData.getPlayerPolygonFromKey = () => {return PLAYER_DEFAULT_SHAPE;};
 		this.gameData.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
-		this.gameStreamBundler.emitStream = () => {};
+		this.streamBundler.emitStream = () => {};
 		this.game.hitGround = (ball) => {
 			this.hitGround(ball);
 		};

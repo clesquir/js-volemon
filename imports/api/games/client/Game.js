@@ -26,7 +26,7 @@ export default class Game {
 	 * @param {GameData} gameData
 	 * @param {GameConfiguration} gameConfiguration
 	 * @param {GameSkin} gameSkin
-	 * @param {GameStreamBundler} gameStreamBundler
+	 * @param {StreamBundler} streamBundler
 	 * @param {ServerNormalizedTime} serverNormalizedTime
 	 */
 	constructor(
@@ -36,7 +36,7 @@ export default class Game {
 		gameData,
 		gameConfiguration,
 		gameSkin,
-		gameStreamBundler,
+		streamBundler,
 		serverNormalizedTime
 	) {
 		this.gameId = gameId;
@@ -45,7 +45,7 @@ export default class Game {
 		this.gameData = gameData;
 		this.gameConfiguration = gameConfiguration;
 		this.gameSkin = gameSkin;
-		this.gameStreamBundler = gameStreamBundler;
+		this.streamBundler = streamBundler;
 		this.serverNormalizedTime = serverNormalizedTime;
 		this.lastBallPositionData = {};
 		this.lastPlayerPositionData = {};
@@ -54,14 +54,14 @@ export default class Game {
 		this.lastPointAt = 0;
 		this.gameResumed = false;
 		this.gameInitiated = false;
-		this.gameStreamBundler.resetBundledStreams();
+		this.streamBundler.resetBundledStreams();
 
 		this.gameBonus = new GameBonus(
 			this,
 			this.engine,
 			this.gameData,
 			this.gameConfiguration,
-			this.gameStreamBundler,
+			this.streamBundler,
 			this.serverNormalizedTime
 		);
 		this.collisions = new Collisions(
@@ -547,7 +547,7 @@ export default class Game {
 	}
 
 	updateGame() {
-		this.gameStreamBundler.resetBundledStreams();
+		this.streamBundler.resetBundledStreams();
 
 		this.engine.updatePlayerEye(this.player1, this.ball);
 		this.engine.updatePlayerEye(this.player2, this.ball);
@@ -588,7 +588,7 @@ export default class Game {
 			this.onGameEnd();
 		}
 
-		this.gameStreamBundler.emitBundledStream(
+		this.streamBundler.emitBundledStream(
 			'sendBundledData-' + this.gameId,
 			this.serverNormalizedTime.getServerTimestamp()
 		);
@@ -629,7 +629,7 @@ export default class Game {
 		}
 		this.lastBallPositionData = Object.assign({}, ballPositionData);
 
-		this.lastBallUpdate = this.gameStreamBundler.addToBundledStreamsAtFrequence(
+		this.lastBallUpdate = this.streamBundler.addToBundledStreamsAtFrequence(
 			this.lastBallUpdate,
 			ballInterval,
 			'moveClientBall',
@@ -650,7 +650,7 @@ export default class Game {
 		}
 		this.lastPlayerPositionData[key] = Object.assign({}, playerPositionData);
 
-		this.lastPlayerUpdate[key] = this.gameStreamBundler.addToBundledStreamsAtFrequence(
+		this.lastPlayerUpdate[key] = this.streamBundler.addToBundledStreamsAtFrequence(
 			this.lastPlayerUpdate[key] || 0,
 			playerInterval,
 			'moveClientPlayer-' + key,
@@ -771,7 +771,7 @@ export default class Game {
 
 		if (this.canAddGamePoint() && this.canAddPointOnSide(pointSide)) {
 			//Send to client
-			this.gameStreamBundler.emitStream(
+			this.streamBundler.emitStream(
 				'showBallHitPoint-' + this.gameId,
 				{
 					x: this.engine.getXPosition(this.ball),

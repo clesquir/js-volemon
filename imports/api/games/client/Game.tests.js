@@ -1,13 +1,12 @@
-import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
 import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
+import NullStreamBundler from '/imports/api/games/client/streamBundler/NullStreamBundler.js';
 import StaticGameConfiguration from '/imports/api/games/configuration/StaticGameConfiguration.js';
 import {BALL_VERTICAL_SPEED_ON_PLAYER_HIT} from '/imports/api/games/constants.js';
 import StaticGameData from '/imports/api/games/data/StaticGameData.js';
 import NullDeviceController from '/imports/api/games/deviceController/NullDeviceController.js';
 import NullEngine from '/imports/api/games/engine/NullEngine.js';
 import DefaultSkin from '/imports/api/skins/skins/DefaultSkin.js';
-import NullStream from '/imports/lib/stream/NullStream.js';
 import {assert} from 'chai';
 import {Random} from 'meteor/random';
 import sinon from 'sinon';
@@ -18,7 +17,7 @@ describe('Game#isPlayerJumpingForward', function() {
 	const gameConfiguration = new StaticGameConfiguration();
 	const deviceController = new NullDeviceController();
 	const gameSkin = new GameSkin(new DefaultSkin());
-	const streamBundler = new GameStreamBundler(new NullStream());
+	const streamBundler = new NullStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 
 	it('returns false if vertical speed is 0', function() {
@@ -125,7 +124,7 @@ describe('Game#isBallInFrontOfPlayer', function() {
 	const gameData = new StaticGameData();
 	const gameConfiguration = new StaticGameConfiguration();
 	const gameSkin = new GameSkin(new DefaultSkin());
-	const streamBundler = new GameStreamBundler();
+	const streamBundler = new NullStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 	const deviceController = new NullDeviceController();
 	const engine = new NullEngine();
@@ -255,7 +254,7 @@ describe('Game#isBallBelowPlayer', function() {
 	const gameData = new StaticGameData();
 	const gameConfiguration = new StaticGameConfiguration();
 	const gameSkin = new GameSkin(new DefaultSkin());
-	const streamBundler = new GameStreamBundler();
+	const streamBundler = new NullStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 	const deviceController = new NullDeviceController();
 	const engine = new NullEngine();
@@ -327,7 +326,7 @@ describe('Game#isPlayerDoingDropShot', function() {
 	const gameConfiguration = new StaticGameConfiguration();
 	const gameSkin = new GameSkin(new DefaultSkin());
 	const deviceController = new NullDeviceController();
-	const streamBundler = new GameStreamBundler();
+	const streamBundler = new NullStreamBundler();
 
 	const serverNormalizedTime = new ServerNormalizedTime();
 	it('returns true', function() {
@@ -407,7 +406,7 @@ describe('Game#dropShotBallOnPlayerHit', function() {
 	const gameData = new StaticGameData();
 	const gameConfiguration = new StaticGameConfiguration();
 	const gameSkin = new GameSkin(new DefaultSkin());
-	const streamBundler = new GameStreamBundler();
+	const streamBundler = new NullStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 	const deviceController = new NullDeviceController();
 	const engine = new NullEngine();
@@ -437,7 +436,7 @@ describe('Game#reboundBallOnPlayerHit', function() {
 	const gameData = new StaticGameData();
 	const gameConfiguration = new StaticGameConfiguration();
 	const gameSkin = new GameSkin(new DefaultSkin());
-	const streamBundler = new GameStreamBundler();
+	const streamBundler = new NullStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 	const deviceController = new NullDeviceController();
 	const engine = new NullEngine();
@@ -469,7 +468,7 @@ describe('Game#onBallHitPlayer', function() {
 	const gameConfiguration = new StaticGameConfiguration();
 	const gameSkin = new GameSkin(new DefaultSkin());
 	const deviceController = new NullDeviceController();
-	const streamBundler = new GameStreamBundler();
+	const streamBundler = new NullStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 
 	it('reboundBallOnPlayerHit is called', function() {
@@ -579,7 +578,7 @@ describe('Game#smashBallOnPlayerHit', function() {
 	const gameData = new StaticGameData();
 	const gameConfiguration = new StaticGameConfiguration();
 	const gameSkin = new GameSkin(new DefaultSkin());
-	const streamBundler = new GameStreamBundler();
+	const streamBundler = new NullStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 	const deviceController = new NullDeviceController();
 	const engine = new NullEngine();
@@ -682,7 +681,7 @@ describe('Game#inputs', function() {
 	const gameConfiguration = new StaticGameConfiguration();
 	const gameSkin = new GameSkin(new DefaultSkin());
 	const deviceController = new NullDeviceController();
-	const streamBundler = new GameStreamBundler();
+	const streamBundler = new NullStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 
 	it('returns false if there is no currentPlayer', function() {

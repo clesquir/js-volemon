@@ -1,6 +1,5 @@
 import Game from '/imports/api/games/client/Game.js';
 import GameNotifier from '/imports/api/games/client/GameNotifier.js';
-import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
 import GameStreamInitiator from '/imports/api/games/client/GameStreamInitiator.js';
 import {CLIENT_POINTS_COLUMN, HOST_POINTS_COLUMN} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
@@ -19,6 +18,7 @@ export default class GameInitiator {
 	 * @param {GameConfiguration} gameConfiguration
 	 * @param {GameSkin} gameSkin
 	 * @param {Stream} stream
+	 * @param {StreamBundler} streamBundler
 	 * @param {ServerNormalizedTime} serverNormalizedTime
 	 * @param {GameNotifier} gameNotifier
 	 */
@@ -30,6 +30,7 @@ export default class GameInitiator {
 		gameConfiguration,
 		gameSkin,
 		stream,
+		streamBundler,
 		serverNormalizedTime,
 		gameNotifier
 	) {
@@ -40,13 +41,13 @@ export default class GameInitiator {
 		this.gameConfiguration = gameConfiguration;
 		this.gameSkin = gameSkin;
 		this.stream = stream;
+		this.streamBundler = streamBundler;
 		this.serverNormalizedTime = serverNormalizedTime;
 		this.gameNotifier = gameNotifier;
 
 		this.currentGame = null;
 		this.timerUpdater = null;
 
-		this.gameStreamBundler = new GameStreamBundler(this.stream);
 		this.gameStreamInitiator = new GameStreamInitiator(this, this.stream);
 	}
 
@@ -144,7 +145,7 @@ export default class GameInitiator {
 			this.gameData,
 			this.gameConfiguration,
 			this.gameSkin,
-			this.gameStreamBundler,
+			this.streamBundler,
 			this.serverNormalizedTime
 		);
 		this.currentGame.start();

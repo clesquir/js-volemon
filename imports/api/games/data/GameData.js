@@ -82,6 +82,9 @@ export default class GameData {
 	hasTournament() {
 	}
 
+	isTournamentPractice() {
+	}
+
 	updateHostPoints(hostPoints) {
 	}
 

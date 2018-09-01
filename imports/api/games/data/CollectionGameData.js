@@ -11,8 +11,11 @@ import {
 	isGameStatusStarted,
 	isMatchPoint
 } from '/imports/api/games/utils.js';
+import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 
 export default class CollectionGameData extends GameData {
+	tournament = null;
+
 	/**
 	 * @param {string} gameId
 	 * @param {string} currentUserId
@@ -45,6 +48,7 @@ export default class CollectionGameData extends GameData {
 		this.updateActiveBonuses(game.activeBonuses);
 
 		this.initPlayers(game);
+		this.initTournament();
 	}
 
 	playerFromKey(playerKey) {
@@ -221,8 +225,16 @@ export default class CollectionGameData extends GameData {
 		return Games.findOne({_id: this.gameId});
 	}
 
+	initTournament() {
+		this.tournament = Tournaments.findOne({_id: this.tournamentId});
+	}
+
 	hasTournament() {
 		return !!this.tournamentId;
+	}
+
+	isTournamentPractice() {
+		return this.hasTournament() && this.tournament.status !== 'approved';
 	}
 
 	updateStartedAt(startedAt) {

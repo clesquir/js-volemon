@@ -6,7 +6,7 @@ import {Meteor} from "meteor/meteor";
 
 export default class GameCreator {
 	static fromMatchMaker(users, modeSelection, isPracticeGame, tournamentId) {
-		return GameCreator.createGame(users, modeSelection, isPracticeGame, tournamentId);
+		return GameCreator.createGame(users, modeSelection, isPracticeGame, false, tournamentId);
 	}
 
 	static fromTournamentPractice(tournamentId) {
@@ -19,7 +19,7 @@ export default class GameCreator {
 		}
 		const user = {id: userId, name: userName};
 
-		return GameCreator.createGame([user], tournament.gameMode, true, tournamentId);
+		return GameCreator.createGame([user], tournament.gameMode, true, true, tournamentId);
 	}
 
 	/**
@@ -27,10 +27,11 @@ export default class GameCreator {
 	 * @param users
 	 * @param modeSelection
 	 * @param isPracticeGame
+	 * @param isPrivate
 	 * @param tournamentId
 	 * @returns {string}
 	 */
-	static createGame(users, modeSelection, isPracticeGame, tournamentId) {
+	static createGame(users, modeSelection, isPracticeGame, isPrivate, tournamentId) {
 		const gameUsers = users.concat([]);
 		const creator = gameUsers.shift();
 
@@ -39,6 +40,7 @@ export default class GameCreator {
 			GameInitiatorCollection.get(),
 			modeSelection,
 			isPracticeGame,
+			isPrivate,
 			tournamentId
 		);
 

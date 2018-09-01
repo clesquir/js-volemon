@@ -1,15 +1,14 @@
 import ShapeShiftMonsterBonus from '/imports/api/games/bonus/ShapeShiftMonsterBonus.js';
 import {BONUS_SHAPE_SHIFT} from '/imports/api/games/bonusConstants.js';
 import Game from '/imports/api/games/client/Game.js';
-import GameStreamBundler from '/imports/api/games/client/GameStreamBundler.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
 import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
+import NullStreamBundler from '/imports/api/games/client/streamBundler/NullStreamBundler.js';
 import StaticShapesGameConfiguration from '/imports/api/games/configuration/StaticShapesGameConfiguration.js';
 import StaticGameData from '/imports/api/games/data/StaticGameData.js';
 import NullDeviceController from '/imports/api/games/deviceController/NullDeviceController.js';
 import NullEngine from '/imports/api/games/engine/NullEngine.js';
 import DefaultSkin from '/imports/api/skins/skins/DefaultSkin.js';
-import NullStream from '/imports/lib/stream/NullStream.js';
 import {assert} from 'chai';
 import {Random} from 'meteor/random';
 
@@ -18,7 +17,7 @@ describe('ShapeShiftMonsterBonus', function() {
 	const engine = new NullEngine();
 	const gameData = new StaticGameData();
 	const gameSkin = new GameSkin(new DefaultSkin());
-	const streamBundler = new GameStreamBundler(new NullStream());
+	const streamBundler = new NullStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 
 	it('activates a shape different that the initial one', function() {

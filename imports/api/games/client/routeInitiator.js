@@ -6,6 +6,8 @@ import GameReaction from '/imports/api/games/client/GameReaction.js';
 import GameRematch from '/imports/api/games/client/GameRematch.js';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
 import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
+import GameStreamBundler from '/imports/api/games/client/streamBundler/GameStreamBundler.js';
+import NullStreamBundler from '/imports/api/games/client/streamBundler/NullStreamBundler.js';
 import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGameConfiguration.js';
 import CollectionGameData from '/imports/api/games/data/CollectionGameData.js';
 import GameData from '/imports/api/games/data/GameData.js';
@@ -105,6 +107,11 @@ const initGame = function(gameId) {
 	gameData.init();
 	const gameConfiguration = new DefaultGameConfiguration(gameId);
 
+	let streamBundler = new GameStreamBundler(stream);
+	if (gameData.isTournamentPractice()) {
+		streamBundler = new NullStreamBundler();
+	}
+
 	if (onMobileAndTablet()) {
 		deviceController = new MobileController('.game-canvas-container', 'mobile-controller');
 	} else {
@@ -131,6 +138,7 @@ const initGame = function(gameId) {
 		gameConfiguration,
 		gameSkin,
 		stream,
+		streamBundler,
 		serverNormalizedTime,
 		new GameNotifier()
 	);
