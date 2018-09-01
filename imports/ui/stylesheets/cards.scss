@@ -44,6 +44,13 @@ $card-radius: 3px;
 	text-shadow: 1px 1px 0 lighten($table-header-color, 15%);
 }
 
+.card-with-options {
+	.card-row:not(.card-row-bottom) {
+		margin-left: 50px;
+		margin-right: 50px;
+	}
+}
+
 .card-row {
 	display: flex;
 	flex: 1;
