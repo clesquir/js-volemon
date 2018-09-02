@@ -34,7 +34,7 @@ describe('lib/client/gameSetup#joinGame', function() {
 		let exception;
 
 		try {
-			Games.insert({_id: gameId});
+			Games.insert({_id: gameId, players: [{id: userId}]});
 			Players.insert({userId: userId, gameId: gameId});
 			joinGame(userId, gameId);
 		} catch(e) {
@@ -49,9 +49,11 @@ describe('lib/client/gameSetup#joinGame', function() {
 		let exception;
 
 		try {
-			Games.insert({_id: gameId, gameMode: ONE_VS_ONE_GAME_MODE});
-			Players.insert({userId: Random.id(5), gameId: gameId});
-			Players.insert({userId: Random.id(5), gameId: gameId});
+			const user1 = Random.id(5);
+			const user2 = Random.id(5);
+			Games.insert({_id: gameId, gameMode: ONE_VS_ONE_GAME_MODE, players: [{id: user1}, {id: user2}]});
+			Players.insert({userId: user1, gameId: gameId});
+			Players.insert({userId: user2, gameId: gameId});
 			joinGame(userId, gameId);
 		} catch(e) {
 			exception = e;

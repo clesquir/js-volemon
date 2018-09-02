@@ -116,10 +116,9 @@ export const joinGame = function(userId, gameId, isReady = false) {
 		throw new Meteor.Error('not-allowed', 'Already joined');
 	}
 
-	const players = Players.find({gameId: gameId});
-	if (game.gameMode === ONE_VS_ONE_GAME_MODE && players.count() >= 2) {
+	if (game.gameMode === ONE_VS_ONE_GAME_MODE && game.players.length >= 2) {
 		throw new Meteor.Error('not-allowed', 'Maximum players reached');
-	} else if (game.gameMode === TWO_VS_TWO_GAME_MODE && players.count() >= 4) {
+	} else if (game.gameMode === TWO_VS_TWO_GAME_MODE && game.players.length >= 4) {
 		throw new Meteor.Error('not-allowed', 'Maximum players reached');
 	}
 
