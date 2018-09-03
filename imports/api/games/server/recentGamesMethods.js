@@ -38,27 +38,7 @@ Meteor.methods({
 		const gamesById = {};
 		games.forEach(function(game) {
 			gamesById[game._id] = game;
-			gamesById[game._id].shapes = [];
 		});
-
-		const players = Players.find({gameId: {$in: Object.keys(gamesById)}});
-		for (let gameId in gamesById) {
-			if (gamesById.hasOwnProperty(gameId)) {
-				players.forEach(function(player) {
-					if (gameId === player.gameId) {
-						if (gamesById[gameId].players[0].id === player.userId) {
-							gamesById[gameId].shapes[0] = player.shape;
-						} else if (gamesById[gameId].players[1].id === player.userId) {
-							gamesById[gameId].shapes[1] = player.shape;
-						} else if (gamesById[gameId].players[2].id === player.userId) {
-							gamesById[gameId].shapes[2] = player.shape;
-						} else if (gamesById[gameId].players[3].id === player.userId) {
-							gamesById[gameId].shapes[3] = player.shape;
-						}
-					}
-				});
-			}
-		}
 
 		let eloScores = [];
 		if (tournamentId) {

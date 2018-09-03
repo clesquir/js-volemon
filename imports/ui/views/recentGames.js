@@ -96,7 +96,11 @@ Template.recentGames.helpers({
 			return PLAYER_DEFAULT_SHAPE;
 		}
 
-		return this.shapes[index];
+		if (this.players[index]) {
+			return this.players[index].shape;
+		}
+
+		return undefined;
 	},
 
 	hasMoreGames: function() {

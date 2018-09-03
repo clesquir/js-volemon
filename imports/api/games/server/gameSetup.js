@@ -136,11 +136,6 @@ export const joinGame = function(userId, gameId, isReady = false) {
 		}
 	}
 
-	Games.update(
-		{_id: gameId},
-		{$push: {players: {id: userId, name: username}}}
-	);
-
 	const allowedListOfShapes = game.allowedListOfShapes || [];
 	const listOfShapes = game.listOfShapes || [];
 
@@ -153,6 +148,11 @@ export const joinGame = function(userId, gameId, isReady = false) {
 		shape = Random.choice(listOfShapes);
 	}
 
+	Games.update(
+		{_id: gameId},
+		{$push: {players: {id: userId, name: username, selectedShape: selectedShape, shape: shape}}}
+	);
+
 	return Players.insert({
 		userId: userId,
 		name: username,
@@ -160,9 +160,7 @@ export const joinGame = function(userId, gameId, isReady = false) {
 		joinedAt: getUTCTimeStamp(),
 		isReady: isReady,
 		askedForRematch: undefined,
-		hasQuit: false,
-		selectedShape: selectedShape,
-		shape: shape
+		hasQuit: false
 	});
 };
 

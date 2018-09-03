@@ -1,5 +1,5 @@
 import MatchMakingGameConfiguration from '/imports/api/games/configuration/MatchMakingGameConfiguration.js';
-import {Players} from '/imports/api/games/players.js';
+import {Games} from '/imports/api/games/games.js';
 import EloMatchMaker from '/imports/api/games/server/matchMaking/EloMatchMaker.js';
 import {PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
@@ -32,7 +32,7 @@ Meteor.methods({
 			shape = Random.choice(listOfShapes);
 		}
 
-		Players.update({gameId: gameId, userId: user._id}, {$set: {selectedShape: selectedShape, shape: shape}});
+		Games.update({_id: gameId, 'players.id': user._id}, {$set: {'players.$.selectedShape': selectedShape, 'players.$.shape': shape}});
 		UserConfigurations.update(
 			{userId: this.userId},
 			{

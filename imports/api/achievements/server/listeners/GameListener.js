@@ -66,6 +66,16 @@ export default class GameListener extends Listener {
 		return this.tournament;
 	}
 
+	getCurrentGamePlayer() {
+		for (let player of this.getGame().players) {
+			if (player.id === this.userId) {
+				return player;
+			}
+		}
+
+		return null;
+	}
+
 	getCurrentPlayer() {
 		if (!this.currentPlayer) {
 			this.currentPlayer = Players.findOne({gameId: this.gameId, userId: this.userId});
@@ -80,6 +90,16 @@ export default class GameListener extends Listener {
 		}
 
 		return this.currentPlayerProfile;
+	}
+
+	getOppositeGamePlayer() {
+		for (let player of this.getGame().players) {
+			if (player.id !== this.userId) {
+				return player;
+			}
+		}
+
+		return null;
 	}
 
 	getOppositePlayer() {
@@ -169,7 +189,7 @@ export default class GameListener extends Listener {
 	}
 
 	currentPlayerShape() {
-		const player = this.getCurrentPlayer();
+		const player = this.getCurrentGamePlayer();
 
 		if (player) {
 			return player.shape;
@@ -179,7 +199,7 @@ export default class GameListener extends Listener {
 	}
 
 	oppositePlayerShape() {
-		const player = this.getOppositePlayer();
+		const player = this.getOppositeGamePlayer();
 
 		if (player) {
 			return player.shape;

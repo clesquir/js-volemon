@@ -20,7 +20,7 @@ export default class CarefullyRandomlyPicked extends GameListener {
 			event.gameId === this.gameId &&
 			event.userId === this.userId
 		) {
-			const player = this.getCurrentPlayer();
+			const player = this.getCurrentGamePlayer();
 
 			if (player.selectedShape === PLAYER_SHAPE_RANDOM) {
 				this.updateShapesWon(player.shape);

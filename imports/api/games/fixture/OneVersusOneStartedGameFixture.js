@@ -30,7 +30,10 @@ export default class OneVersusOneStartedGameFixture {
 			status: GAME_STATUS_STARTED,
 			createdAt: getUTCTimeStamp(),
 			createdBy: fixture.creatorUserId,
-			players: [{id: fixture.creatorUserId, name: creatorName}, {id: fixture.opponentUserId, name: opponentName}],
+			players: [
+				{id: fixture.creatorUserId, name: creatorName, selectedShape: PLAYER_DEFAULT_SHAPE, shape: PLAYER_DEFAULT_SHAPE},
+				{id: fixture.opponentUserId, name: opponentName, selectedShape: PLAYER_DEFAULT_SHAPE, shape: PLAYER_DEFAULT_SHAPE}
+			],
 			isPracticeGame: false,
 			isPrivate: false,
 			hostPoints: 0,
@@ -51,9 +54,7 @@ export default class OneVersusOneStartedGameFixture {
 			joinedAt: getUTCTimeStamp(),
 			isReady: true,
 			askedForRematch: undefined,
-			hasQuit: false,
-			selectedShape: PLAYER_DEFAULT_SHAPE,
-			shape: PLAYER_DEFAULT_SHAPE
+			hasQuit: false
 		});
 		Players.insert({
 			userId: fixture.opponentUserId,
@@ -62,9 +63,7 @@ export default class OneVersusOneStartedGameFixture {
 			joinedAt: getUTCTimeStamp(),
 			isReady: true,
 			askedForRematch: undefined,
-			hasQuit: false,
-			selectedShape: PLAYER_DEFAULT_SHAPE,
-			shape: PLAYER_DEFAULT_SHAPE
+			hasQuit: false
 		});
 		Players.insert({gameId: fixture.gameId, userId: fixture.opponentUserId});
 

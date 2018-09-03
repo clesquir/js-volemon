@@ -51,6 +51,20 @@ export default class CollectionGameData extends GameData {
 		this.initTournament();
 	}
 
+	gamePlayerFromKey(playerKey) {
+		if (playerKey === 'player1') {
+			return this.firstGamePlayer;
+		} else if (playerKey === 'player2') {
+			return this.secondGamePlayer;
+		} else if (playerKey === 'player3') {
+			return this.thirdGamePlayer;
+		} else if (playerKey === 'player4') {
+			return this.fourthGamePlayer;
+		}
+
+		return null;
+	}
+
 	playerFromKey(playerKey) {
 		if (playerKey === 'player1') {
 			return this.firstPlayer;
@@ -70,7 +84,7 @@ export default class CollectionGameData extends GameData {
 	 * @returns string Returns the player shape or PLAYER_DEFAULT_SHAPE if no game nor player is found
 	 */
 	getPlayerShapeFromKey(playerKey) {
-		let player = this.playerFromKey(playerKey);
+		let player = this.gamePlayerFromKey(playerKey);
 
 		if (!player) {
 			return PLAYER_DEFAULT_SHAPE;
@@ -84,7 +98,7 @@ export default class CollectionGameData extends GameData {
 	 * @returns string Returns the player shape or PLAYER_DEFAULT_SHAPE if no game nor player is found
 	 */
 	getPlayerPolygonFromKey(playerKey) {
-		let player = this.playerFromKey(playerKey);
+		let player = this.gamePlayerFromKey(playerKey);
 
 		if (!player) {
 			return PLAYER_DEFAULT_SHAPE;
@@ -180,6 +194,19 @@ export default class CollectionGameData extends GameData {
 
 	initPlayers(game) {
 		let players = Players.find({gameId: this.gameId});
+
+		this.currentGamePlayer = null;
+		this.firstGamePlayer = game.players[0];
+		this.secondGamePlayer = game.players[1];
+		this.thirdGamePlayer = game.players[2];
+		this.fourthGamePlayer = game.players[3];
+
+		for (let player of game.players) {
+			if (player.id === this.currentUserId) {
+				this.currentGamePlayer = player;
+				break;
+			}
+		}
 
 		this.currentPlayer = null;
 		this.currentPlayerKey = null;

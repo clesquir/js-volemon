@@ -78,6 +78,10 @@ describe('lib/client/gameSetup#joinGame', function() {
 
 		const player = Players.findOne({userId: userId});
 		assert.isNotNull(player);
+
+		const game = Games.findOne({_id: gameId});
+		assert.equal(1, game.players.length);
+		assert.equal(userId, game.players[0].id);
 	});
 	it('join player with last used shape', function() {
 		Games.insert({_id: gameId, allowedListOfShapes: [PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_CROWN]});
@@ -85,38 +89,34 @@ describe('lib/client/gameSetup#joinGame', function() {
 		UserConfigurations.insert({userId: userId, name: username, lastShapeUsed: lastShapeUsed});
 		joinGame(userId, gameId);
 
-		const player = Players.findOne({userId: userId});
-		assert.isNotNull(player);
-		assert.equal(lastShapeUsed, player.selectedShape);
-		assert.equal(lastShapeUsed, player.shape);
+		const game = Games.findOne({_id: gameId});
+		assert.equal(lastShapeUsed, game.players[0].selectedShape);
+		assert.equal(lastShapeUsed, game.players[0].shape);
 	});
 	it('join player with first allowed shape if last used shape is not allowed', function() {
 		Games.insert({_id: gameId, allowedListOfShapes: [PLAYER_SHAPE_OBELISK, PLAYER_DEFAULT_SHAPE]});
 		UserConfigurations.insert({userId: userId, name: username, lastShapeUsed: PLAYER_SHAPE_CROWN});
 		joinGame(userId, gameId);
 
-		const player = Players.findOne({userId: userId});
-		assert.isNotNull(player);
-		assert.equal(PLAYER_SHAPE_OBELISK, player.selectedShape);
-		assert.equal(PLAYER_SHAPE_OBELISK, player.shape);
+		const game = Games.findOne({_id: gameId});
+		assert.equal(PLAYER_SHAPE_OBELISK, game.players[0].selectedShape);
+		assert.equal(PLAYER_SHAPE_OBELISK, game.players[0].shape);
 	});
 	it('join player with default shape if no profile', function() {
 		Games.insert({_id: gameId, allowedListOfShapes: [PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_CROWN]});
 		joinGame(userId, gameId);
 
-		const player = Players.findOne({userId: userId});
-		assert.isNotNull(player);
-		assert.equal(PLAYER_DEFAULT_SHAPE, player.selectedShape);
-		assert.equal(PLAYER_DEFAULT_SHAPE, player.shape);
+		const game = Games.findOne({_id: gameId});
+		assert.equal(PLAYER_DEFAULT_SHAPE, game.players[0].selectedShape);
+		assert.equal(PLAYER_DEFAULT_SHAPE, game.players[0].shape);
 	});
 	it('join player with default shape if last used is not defined', function() {
 		Games.insert({_id: gameId, allowedListOfShapes: [PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_CROWN]});
 		UserConfigurations.insert({userId: userId, name: username});
 		joinGame(userId, gameId);
 
-		const player = Players.findOne({userId: userId});
-		assert.isNotNull(player);
-		assert.equal(PLAYER_DEFAULT_SHAPE, player.selectedShape);
-		assert.equal(PLAYER_DEFAULT_SHAPE, player.shape);
+		const game = Games.findOne({_id: gameId});
+		assert.equal(PLAYER_DEFAULT_SHAPE, game.players[0].selectedShape);
+		assert.equal(PLAYER_DEFAULT_SHAPE, game.players[0].shape);
 	});
 });

@@ -8,7 +8,7 @@ export default class FavouriteShapes {
 		const players = FavouriteShapes.players(userId, tournamentId);
 		const shapes = {};
 
-		players.forEach((player) => {
+		for (let player of players) {
 			//Before selectedShape was implemented
 			let shape = player.shape;
 
@@ -25,7 +25,7 @@ export default class FavouriteShapes {
 				shapes[shape] = 0;
 			}
 			shapes[shape]++;
-		});
+		}
 
 		return shapes;
 	}
@@ -43,12 +43,16 @@ export default class FavouriteShapes {
 				status: {$in: [GAME_STATUS_FINISHED, GAME_STATUS_FORFEITED]}
 			}
 		);
-		const finishedGameIds = [];
+		const players = [];
 
 		games.forEach((game) => {
-			finishedGameIds.push(game._id);
+			for (let player of game.players) {
+				if (player.id === userId) {
+					players.push(player);
+				}
+			}
 		});
 
-		return Players.find({userId: userId, gameId: {$in: finishedGameIds}});
+		return players;
 	}
 }

@@ -1,6 +1,6 @@
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import {PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_RECTANGLE} from '/imports/api/games/shapeConstants.js';
+import {PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_CROWN, PLAYER_SHAPE_RECTANGLE} from '/imports/api/games/shapeConstants.js';
 import {assert} from 'chai';
 import StubCollections from 'meteor/hwillson:stub-collections';
 import {Random} from 'meteor/random';
@@ -41,12 +41,11 @@ describe('CollectionGameData#getPlayerShapeFromKey', function() {
 
 		const gameId = Random.id(5);
 		const createdByUserId = 1;
-		Games.insert({_id: gameId, createdBy: createdByUserId, players: [{id: createdByUserId}]});
+		Games.insert({_id: gameId, createdBy: createdByUserId, players: [{id: createdByUserId, shape: PLAYER_SHAPE_RECTANGLE}]});
 		Players.insert({
 			_id: Random.id(5),
 			gameId: gameId,
-			userId: createdByUserId,
-			shape: PLAYER_SHAPE_RECTANGLE
+			userId: createdByUserId
 		});
 
 		const gameData = new CollectionGameData(gameId, Random.id(5));
@@ -61,8 +60,8 @@ describe('CollectionGameData#getPlayerShapeFromKey', function() {
 		StubCollections.stub();
 
 		const gameId = Random.id(5);
-		Games.insert({_id: gameId, createdBy: 1, players: [{id: 1}, {id: 2}]});
-		Players.insert({_id: Random.id(5), gameId: gameId, userId: 2, shape: PLAYER_SHAPE_RECTANGLE});
+		Games.insert({_id: gameId, createdBy: 1, players: [{id: 1, shape: PLAYER_SHAPE_CROWN}, {id: 2, shape: PLAYER_SHAPE_RECTANGLE}]});
+		Players.insert({_id: Random.id(5), gameId: gameId, userId: 2});
 
 		const gameData = new CollectionGameData(gameId, Random.id(5));
 		gameData.init();
