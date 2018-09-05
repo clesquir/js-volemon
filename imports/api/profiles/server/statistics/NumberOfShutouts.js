@@ -7,21 +7,30 @@ export default class NumberOfShutouts {
 		let numberOfShutoutLosses = 0;
 
 		if (tournamentId) {
-			const tournamentProfile = TournamentProfiles.findOne({userId: userId, tournamentId: tournamentId});
+			const tournamentProfile = TournamentProfiles.findOne(
+				{userId: userId, tournamentId: tournamentId},
+				{fields: {numberOfShutouts: 1, numberOfShutoutLosses: 1}}
+			);
 
 			if (tournamentProfile) {
 				numberOfShutouts += tournamentProfile.numberOfShutouts;
 				numberOfShutoutLosses += tournamentProfile.numberOfShutoutLosses;
 			}
 		} else {
-			const profile = Profiles.findOne({userId: userId});
+			const profile = Profiles.findOne(
+				{userId: userId},
+				{fields: {numberOfShutouts: 1, numberOfShutoutLosses: 1}}
+			);
 
 			if (profile) {
 				numberOfShutouts += profile.numberOfShutouts;
 				numberOfShutoutLosses += profile.numberOfShutoutLosses;
 			}
 
-			const tournamentProfiles = TournamentProfiles.find({userId: userId});
+			const tournamentProfiles = TournamentProfiles.find(
+				{userId: userId},
+				{fields: {numberOfShutouts: 1, numberOfShutoutLosses: 1}}
+			);
 
 			tournamentProfiles.forEach(function(tournamentProfile) {
 				numberOfShutouts += tournamentProfile.numberOfShutouts;

@@ -14,7 +14,10 @@ export default class LongestPoint {
 			query.tournamentId = tournamentId;
 		}
 
-		const games = Games.find(query);
+		const games = Games.find(
+			query,
+			{fields: {_id: 1, pointsDuration: 1, startedAt: 1}}
+		);
 
 		let data = {};
 		games.forEach((game) => {

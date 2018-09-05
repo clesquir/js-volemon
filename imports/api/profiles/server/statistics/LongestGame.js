@@ -14,7 +14,14 @@ export default class LongestGame {
 			query.tournamentId = tournamentId;
 		}
 
-		const games = Games.find(query, {sort: [['gameDuration', 'desc']], limit: 1});
+		const games = Games.find(
+			query,
+			{
+				sort: [['gameDuration', 'desc']],
+				limit: 1,
+				fields: {_id: 1, startedAt: 1, gameDuration: 1}
+			}
+		);
 
 		let data = {};
 		games.forEach((game) => {

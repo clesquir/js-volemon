@@ -1,5 +1,4 @@
 import {Games} from '/imports/api/games/games.js';
-import {Players} from '/imports/api/games/players.js';
 import {PLAYER_SHAPE_HALF_CIRCLE} from '/imports/api/games/shapeConstants.js';
 import {GAME_STATUS_FINISHED, GAME_STATUS_FORFEITED} from '/imports/api/games/statusConstants.js';
 
@@ -41,6 +40,9 @@ export default class FavouriteShapes {
 				'players.id': userId,
 				tournamentId: tournamentId,
 				status: {$in: [GAME_STATUS_FINISHED, GAME_STATUS_FORFEITED]}
+			},
+			{
+				fields: {'players.id': 1, 'players.shape': 1, 'players.selectedShape': 1}
 			}
 		);
 		const players = [];
@@ -48,7 +50,13 @@ export default class FavouriteShapes {
 		games.forEach((game) => {
 			for (let player of game.players) {
 				if (player.id === userId) {
-					players.push(player);
+					players.push(
+						{
+							shape: player.shape,
+							selectedShape: player.selectedShape,
+						}
+					);
+					break;
 				}
 			}
 		});

@@ -16,7 +16,8 @@ export default class TotalPlayingTime {
 		const games = Games.find(
 			query,
 			{
-				sort: [['createdAt', 'asc']]
+				sort: [['createdAt', 'asc']],
+				fields: {createdAt: 1, gameDuration: 1}
 			}
 		);
 
