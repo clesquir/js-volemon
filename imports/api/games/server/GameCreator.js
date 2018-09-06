@@ -19,7 +19,7 @@ export default class GameCreator {
 		}
 		const user = {id: userId, name: userName};
 
-		return GameCreator.createGame([user], tournament.gameMode, true, true, tournamentId);
+		return GameCreator.createGame([user, {id: 'CPU', name: 'CPU'}], tournament.gameMode, true, true, tournamentId);
 	}
 
 	/**
@@ -46,7 +46,8 @@ export default class GameCreator {
 
 		joinGame(creator.id, gameId);
 		while (gameUsers.length) {
-			joinGame(gameUsers.shift().id, gameId);
+			let userId = gameUsers.shift().id;
+			joinGame(userId, gameId, userId === 'CPU');
 		}
 
 		return gameId;

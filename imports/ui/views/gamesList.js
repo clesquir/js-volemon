@@ -30,8 +30,6 @@ Template.gamesList.helpers({
 	clientNames: function() {
 		if (this.gameMode === TWO_VS_TWO_GAME_MODE) {
 			return he.encode(this.players[3].name) + '<br />' + he.encode(this.players[1].name);
-		} else if (this.gameMode === ONE_VS_COMPUTER_GAME_MODE) {
-			return 'CPU';
 		} else {
 			return he.encode(this.players[1].name);
 		}
