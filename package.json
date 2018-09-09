@@ -35,7 +35,8 @@
     "socketcluster-client": "^14.0.0",
     "swiper": "^4.3.5",
     "synaptic": "^1.1.4",
-    "utf-8-validate": "^4.0.2"
+    "utf-8-validate": "^4.0.2",
+    "write": "^1.0.3"
   },
   "devDependencies": {
     "phantomjs-prebuilt": "^2.1.16"

@@ -60,7 +60,7 @@ export default class Ai extends Dev {
 		//Output the genomes backend in case the computer crashes
 		if (this.game.artificialIntelligence.computers['player2'].learner) {
 			const generation = this.game.artificialIntelligence.computers['player2'].learner.generation;
-			if (this.lastGenerationSaved !== generation && generation % 5 === 0) {
+			if (this.lastGenerationSaved !== generation) {
 				this.lastGenerationSaved = generation;
 				Meteor.call(
 					'saveAi',

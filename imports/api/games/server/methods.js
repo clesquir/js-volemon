@@ -25,15 +25,24 @@ import {EventPublisher} from '/imports/lib/EventPublisher.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
+const writeFile = require('write');
 
 Meteor.methods({
-	saveAi: function(generation, genomes1, genomes2) {
-		console.log(generation);
-		console.log('========');
-		console.log(genomes1);
-		console.log('========');
-		console.log(genomes2);
-		console.log('========');
+	saveAi: function(generation, hostGenomes, clientGenomes) {
+		writeFile(
+			'host_' + String(generation).padStart(4, '0') + '_' + (new Date()).getTime() + '.json',
+			hostGenomes,
+			function(err) {
+				if (err) console.log(err);
+			}
+		);
+		writeFile(
+			'client_' + String(generation).padStart(4, '0') + '_' + (new Date()).getTime() + '.json',
+			clientGenomes,
+			function(err) {
+				if (err) console.log(err);
+			}
+		);
 	},
 
 	createTournamentPracticeGame: function(tournamentId) {

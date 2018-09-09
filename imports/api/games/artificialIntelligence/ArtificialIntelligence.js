@@ -161,7 +161,7 @@ export default class ArtificialIntelligence {
 				} else if (xAtGround < computerPosition.x + computerPosition.width / 6) {
 					//ball is behind
 					this.computers[key].left = true;
-				} else if (this.canJump) {
+				} else if (this.canJump && ballPosition.x < halfWidth) {
 					this.computers[key].jump = true;
 				}
 			} else {
@@ -177,7 +177,7 @@ export default class ArtificialIntelligence {
 				} else if (xAtGround > computerPosition.x - computerPosition.width / 6) {
 					//ball is behind
 					this.computers[key].right = true;
-				} else if (this.canJump) {
+				} else if (this.canJump && ballPosition.x > halfWidth) {
 					this.computers[key].jump = true;
 				}
 			} else {
