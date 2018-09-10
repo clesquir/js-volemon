@@ -18,7 +18,7 @@ export default class UserMatch {
 					id: user.id,
 					name: user.name,
 					position: i + 1,
-					isReady: false
+					isReady: user.id === 'CPU'
 				}
 			);
 		}

@@ -122,7 +122,7 @@ export default class CollectionGameData extends GameData {
 	}
 
 	isSecondPlayerComputer() {
-		return this.gameMode === ONE_VS_COMPUTER_GAME_MODE;
+		return this.secondGamePlayer.id === 'CPU';
 	}
 
 	isFirstPlayerComputerMachineLearning() {
