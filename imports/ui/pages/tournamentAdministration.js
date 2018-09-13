@@ -1,10 +1,16 @@
 import {ALL_BONUSES, ALL_BONUSES_FOR_RANDOM} from '/imports/api/games/bonusConstants.js';
-import {ONE_VS_ONE_GAME_MODE, TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
+import {
+	BIG_SCALE_PHYSICS_DATA,
+	NORMAL_SCALE_PHYSICS_DATA,
+	ONE_VS_ONE_GAME_MODE,
+	SMALL_SCALE_PHYSICS_DATA,
+	TWO_VS_TWO_GAME_MODE
+} from '/imports/api/games/constants.js';
 import {PLAYER_ALLOWED_LIST_OF_SHAPES, PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
 import {isTournamentAdministrator, isTournamentEditor} from '/imports/api/users/userConfigurations.js';
 import ButtonEnabler from '/imports/ui/util/ButtonEnabler.js';
 import '/imports/ui/util/error-messages.js';
-import {disableButton, removeErrorLabelContainer, validateFieldsPresenceAndMarkInvalid} from '/imports/ui/util/form.js';
+import {removeErrorLabelContainer, validateFieldsPresenceAndMarkInvalid} from '/imports/ui/util/form.js';
 import {Router} from 'meteor/iron:router';
 import {Meteor} from 'meteor/meteor';
 import * as Moment from 'meteor/momentjs:moment';
@@ -68,6 +74,14 @@ Template.tournamentAdministration.helpers({
 		}
 
 		return options;
+	},
+
+	initialPolygonKeys: function() {
+		return [
+			{id: NORMAL_SCALE_PHYSICS_DATA, name: 'Normal'},
+			{id: SMALL_SCALE_PHYSICS_DATA, name: 'Small'},
+			{id: BIG_SCALE_PHYSICS_DATA, name: 'Big'},
+		];
 	},
 
 	listOfShapes: function() {
@@ -248,6 +262,8 @@ const modeOptions = function() {
 	addToMode(mode, 'bonus-spawn-minimum-frequence', 'overriddenBonusSpawnMinimumFrequence');
 	addToMode(mode, 'bonus-spawn-initial-minimum-frequence', 'overriddenBonusSpawnInitialMinimumFrequence');
 	addToMode(mode, 'bonus-spawn-initial-maximum-frequence', 'overriddenBonusSpawnInitialMaximumFrequence');
+	addToMode(mode, 'initial-player-polygon-key', 'overriddenInitialPlayerPolygonKey');
+	addToMode(mode, 'initial-ball-polygon-key', 'overriddenInitialBallPolygonKey');
 	addToMode(mode, 'allowed-list-of-shapes', 'overriddenAllowedListOfShapes');
 	addToMode(mode, 'list-of-shapes', 'overriddenListOfShapes');
 	addToMode(mode, 'current-player-shape', 'overriddenCurrentPlayerShape');

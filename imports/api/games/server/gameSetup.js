@@ -126,13 +126,18 @@ export const joinGame = function(userId, gameId, isReady = false) {
 		throw new Meteor.Error('not-allowed', 'Cannot join this tournament');
 	}
 
-	const userConfiguration = UserConfigurations.findOne({userId: userId});
 	let username = '';
 	let selectedShape = PLAYER_DEFAULT_SHAPE;
-	if (userConfiguration) {
-		username = userConfiguration.name;
-		if (userConfiguration.lastShapeUsed) {
-			selectedShape = userConfiguration.lastShapeUsed;
+
+	if (userId === 'CPU') {
+		username = 'CPU';
+	} else {
+		const userConfiguration = UserConfigurations.findOne({userId: userId});
+		if (userConfiguration) {
+			username = userConfiguration.name;
+			if (userConfiguration.lastShapeUsed) {
+				selectedShape = userConfiguration.lastShapeUsed;
+			}
 		}
 	}
 

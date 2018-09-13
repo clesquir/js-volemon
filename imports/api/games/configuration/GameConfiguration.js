@@ -1,9 +1,22 @@
 import {
+	BALL_BIG_GRAVITY_SCALE,
+	BALL_GRAVITY_SCALE,
+	BALL_SMALL_GRAVITY_SCALE,
+	BIG_SCALE_BONUS,
+	BIG_SCALE_PHYSICS_DATA,
 	BONUS_RADIUS,
 	GAME_FORFEIT_MINIMUM_POINTS,
 	GAME_MAXIMUM_POINTS,
+	NORMAL_SCALE_BONUS,
+	NORMAL_SCALE_PHYSICS_DATA,
+	PLAYER_BIG_GRAVITY_SCALE,
+	PLAYER_GRAVITY_SCALE,
+	PLAYER_SMALL_GRAVITY_SCALE,
 	PLAYER_VELOCITY_X_ON_MOVE,
 	PLAYER_VELOCITY_Y_ON_JUMP,
+	SMALL_SCALE_BALL_BONUS,
+	SMALL_SCALE_PHYSICS_DATA,
+	SMALL_SCALE_PLAYER_BONUS,
 	WORLD_GRAVITY,
 	WORLD_RESTITUTION
 } from '/imports/api/games/constants.js';
@@ -71,6 +84,74 @@ export default class GameConfiguration {
 		}
 
 		return this.tournamentMode.currentPlayerShape();
+	}
+
+	initialPlayerPolygonKey() {
+		if (this.hasTournament() && this.tournamentMode.overridesInitialPlayerPolygonKey()) {
+			return this.tournamentMode.initialPlayerPolygonKey();
+		}
+
+		return NORMAL_SCALE_PHYSICS_DATA;
+	}
+
+	initialPlayerGravityScale() {
+		if (this.hasTournament() && this.tournamentMode.overridesInitialPlayerPolygonKey()) {
+			switch (this.tournamentMode.initialPlayerPolygonKey()) {
+				case SMALL_SCALE_PHYSICS_DATA:
+					return PLAYER_SMALL_GRAVITY_SCALE;
+				case BIG_SCALE_PHYSICS_DATA:
+					return PLAYER_BIG_GRAVITY_SCALE;
+			}
+		}
+
+		return PLAYER_GRAVITY_SCALE;
+	}
+
+	initialPlayerScale() {
+		if (this.hasTournament() && this.tournamentMode.overridesInitialPlayerPolygonKey()) {
+			switch (this.tournamentMode.initialPlayerPolygonKey()) {
+				case SMALL_SCALE_PHYSICS_DATA:
+					return SMALL_SCALE_PLAYER_BONUS;
+				case BIG_SCALE_PHYSICS_DATA:
+					return BIG_SCALE_BONUS;
+			}
+		}
+
+		return NORMAL_SCALE_BONUS;
+	}
+
+	initialBallPolygonKey() {
+		if (this.hasTournament() && this.tournamentMode.overridesInitialBallPolygonKey()) {
+			return this.tournamentMode.initialBallPolygonKey();
+		}
+
+		return NORMAL_SCALE_PHYSICS_DATA;
+	}
+
+	initialBallGravityScale() {
+		if (this.hasTournament() && this.tournamentMode.overridesInitialBallPolygonKey()) {
+			switch (this.tournamentMode.initialBallPolygonKey()) {
+				case SMALL_SCALE_PHYSICS_DATA:
+					return BALL_SMALL_GRAVITY_SCALE;
+				case BIG_SCALE_PHYSICS_DATA:
+					return BALL_BIG_GRAVITY_SCALE;
+			}
+		}
+
+		return BALL_GRAVITY_SCALE;
+	}
+
+	initialBallScale() {
+		if (this.hasTournament() && this.tournamentMode.overridesInitialBallPolygonKey()) {
+			switch (this.tournamentMode.initialBallPolygonKey()) {
+				case SMALL_SCALE_PHYSICS_DATA:
+					return SMALL_SCALE_BALL_BONUS;
+				case BIG_SCALE_PHYSICS_DATA:
+					return BIG_SCALE_BONUS;
+			}
+		}
+
+		return NORMAL_SCALE_BONUS;
 	}
 
 	isHiddenToHimself() {

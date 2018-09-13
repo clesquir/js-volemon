@@ -292,7 +292,7 @@ export default class GameBonus {
 			return;
 		}
 
-		this.scalePlayer(playerKey, NORMAL_SCALE_BONUS);
+		this.scalePlayer(playerKey, player.data.initialScale);
 	}
 
 	shiftPlayerShape(playerKey, playerShape) {
@@ -362,7 +362,7 @@ export default class GameBonus {
 	}
 
 	resetBallScale() {
-		this.scaleBall(NORMAL_SCALE_BONUS);
+		this.scaleBall(this.game.ball.data.initialScale);
 	}
 
 	setBallGravity(gravity) {

@@ -2,14 +2,11 @@ import ArtificialIntelligence from '/imports/api/games/artificialIntelligence/Ar
 import GameBonus from '/imports/api/games/client/bonus/GameBonus.js';
 import Collisions from '/imports/api/games/collisions/Collisions.js';
 import {
-	BALL_GRAVITY_SCALE,
 	BALL_VERTICAL_SPEED_ON_PLAYER_HIT,
 	CLIENT_POINTS_COLUMN,
 	CLIENT_SIDE,
 	HOST_POINTS_COLUMN,
 	HOST_SIDE,
-	NORMAL_SCALE_PHYSICS_DATA,
-	PLAYER_GRAVITY_SCALE,
 	PLAYER_MASS
 } from '/imports/api/games/constants.js';
 import {BALL_INTERVAL, PLAYER_INTERVAL} from '/imports/api/games/emissionConstants.js';
@@ -362,7 +359,7 @@ export default class Game {
 		player.data.initialYLocation = initialYLocation;
 		player.data.initialMass = PLAYER_MASS;
 		player.data.currentMass = player.data.initialMass;
-		player.data.initialGravity = PLAYER_GRAVITY_SCALE;
+		player.data.initialGravity = this.gameConfiguration.initialPlayerGravityScale();
 		player.data.currentGravity = player.data.initialGravity;
 		player.data.velocityXOnMove = this.gameConfiguration.playerXVelocity();
 		player.data.velocityYOnJump = this.gameConfiguration.playerYVelocity();
@@ -409,8 +406,10 @@ export default class Game {
 	initPlayerPolygon(player) {
 		player.data.initialPolygonObject = 'player-' + this.gameData.getPlayerPolygonFromKey(player.data.key);
 		player.data.currentPolygonObject = player.data.initialPolygonObject;
-		player.data.initialPolygonKey = NORMAL_SCALE_PHYSICS_DATA;
+		player.data.initialPolygonKey = this.gameConfiguration.initialPlayerPolygonKey();
 		player.data.currentPolygonKey = player.data.initialPolygonKey;
+		player.data.initialScale = this.gameConfiguration.initialPlayerScale();
+		this.engine.scale(player, player.data.initialScale, player.data.initialScale);
 	}
 
 	updatePlayerPolygon(player) {
@@ -451,14 +450,16 @@ export default class Game {
 	createBall(initialXLocation, initialYLocation) {
 		this.ball = this.gameSkin.createBallComponent(this.engine, initialXLocation, initialYLocation);
 
-		this.ball.data.initialGravity = BALL_GRAVITY_SCALE;
+		this.ball.data.initialGravity = this.gameConfiguration.initialBallGravityScale();
 		this.ball.data.currentGravity = this.ball.data.initialGravity;
 		this.ball.data.isFrozen = false;
 
 		this.ball.data.initialPolygonObject = 'ball';
 		this.ball.data.currentPolygonObject = this.ball.data.initialPolygonObject;
-		this.ball.data.initialPolygonKey = NORMAL_SCALE_PHYSICS_DATA;
+		this.ball.data.initialPolygonKey = this.gameConfiguration.initialBallPolygonKey();
 		this.ball.data.currentPolygonKey = this.ball.data.initialPolygonKey;
+		this.ball.data.initialScale = this.gameConfiguration.initialBallScale();
+		this.engine.scale(this.ball, this.ball.data.initialScale, this.ball.data.initialScale);
 		this.engine.loadPolygon(this.ball, this.ball.data.currentPolygonKey, this.ball.data.currentPolygonObject);
 
 		this.setupBallBody();

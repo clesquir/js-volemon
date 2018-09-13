@@ -11,6 +11,8 @@ export default class TournamentMode {
 	overriddenForfeitMinimumPoints;
 	overriddenMaximumPoints;
 	overriddenHasBonuses;
+	overriddenInitialPlayerPolygonKey;
+	overriddenInitialBallPolygonKey;
 	overriddenListOfShapes;
 	overriddenAllowedListOfShapes;
 	overriddenCurrentPlayerShape;
@@ -121,6 +123,22 @@ export default class TournamentMode {
 		return parseInt(this.overriddenHasBonuses) === 1;
 	}
 
+	overridesInitialPlayerPolygonKey() {
+		return this.overriddenInitialPlayerPolygonKey !== undefined;
+	}
+
+	initialPlayerPolygonKey() {
+		return this.overriddenInitialPlayerPolygonKey;
+	}
+
+	overridesInitialBallPolygonKey() {
+		return this.overriddenInitialBallPolygonKey !== undefined;
+	}
+
+	initialBallPolygonKey() {
+		return this.overriddenInitialBallPolygonKey;
+	}
+
 	overridesListOfShapes() {
 		return this.overriddenListOfShapes !== undefined;
 	}
@@ -227,6 +245,8 @@ export default class TournamentMode {
 		tournamentMode.overriddenForfeitMinimumPoints = mode.overriddenForfeitMinimumPoints;
 		tournamentMode.overriddenMaximumPoints = mode.overriddenMaximumPoints;
 		tournamentMode.overriddenHasBonuses = mode.overriddenHasBonuses;
+		tournamentMode.overriddenInitialPlayerPolygonKey = mode.overriddenInitialPlayerPolygonKey;
+		tournamentMode.overriddenInitialBallPolygonKey = mode.overriddenInitialBallPolygonKey;
 		tournamentMode.overriddenListOfShapes = mode.overriddenListOfShapes;
 		tournamentMode.overriddenAllowedListOfShapes = mode.overriddenAllowedListOfShapes;
 		tournamentMode.overriddenCurrentPlayerShape = mode.overriddenCurrentPlayerShape;
