@@ -2,6 +2,7 @@ import GameData from '/imports/api/games/data/GameData.js';
 import {PLAYER_DEFAULT_SHAPE} from '/imports/api/games/shapeConstants.js';
 
 export default class StaticGameData extends GameData {
+	currentPlayerKey = 'player1';
 	firstPlayerComputer = false;
 	secondPlayerComputer = false;
 	firstPlayerComputerMachineLearning = false;
@@ -31,7 +32,7 @@ export default class StaticGameData extends GameData {
 	}
 
 	getCurrentPlayerKey() {
-		return 'player1';
+		return this.currentPlayerKey;
 	}
 
 	isCurrentPlayerKey(playerKey) {

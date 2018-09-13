@@ -4,7 +4,6 @@ import {CLIENT_POINTS_COLUMN, HOST_POINTS_COLUMN} from '/imports/api/games/const
 export default class ArtificialIntelligence {
 	computers = {};
 	pointStartTime = 0;
-	numberPointsForCurrentGenomes = 0;
 	numberPointsToCalculateGenomes = 5;
 	canJump = false;
 
@@ -14,13 +13,22 @@ export default class ArtificialIntelligence {
 			right: false,
 			jump: false,
 			dropshot: false,
-			cumulatedPoints: 0
+			numberPointsForCurrentGenome: 0,
+			cumulatedFitness: 0
 		};
 
 		if (machineLearning) {
 			this.computers[key].learner = new Learner(4, 2, 12, 4, 0.2);
 			this.computers[key].learner.init();
 		}
+	}
+
+	currentGeneration(key) {
+		if (this.computers.hasOwnProperty(key) && this.computers[key].learner) {
+			return this.computers[key].learner.generation;
+		}
+
+		return 1;
 	}
 
 	getGenomes(key) {
@@ -53,23 +61,23 @@ export default class ArtificialIntelligence {
 		for (let key in this.computers) {
 			if (this.computers.hasOwnProperty(key) && this.computers[key].learner) {
 				const pointTime = ((new Date()).getTime() - this.pointStartTime);
-				let points = 1 / pointTime * 10000000;
+				let fitness = 1 / pointTime * 10000000;
 
 				//When it has the point, the shortest the point, the better
 				//When it doesn't, the longest the point, the better. Negative value
 				if (!(key === 'player1' ? pointSide === HOST_POINTS_COLUMN : pointSide === CLIENT_POINTS_COLUMN)) {
-					points = -1 * points;
+					fitness = -1 * fitness;
 				}
 
-				this.computers[key].cumulatedPoints += points;
-				this.numberPointsForCurrentGenomes++;
+				this.computers[key].cumulatedFitness += fitness;
+				this.computers[key].numberPointsForCurrentGenome++;
 
-				if (this.numberPointsForCurrentGenomes >= this.numberPointsToCalculateGenomes) {
-					this.computers[key].learner.computeGenomesPoint(this.computers[key].cumulatedPoints);
+				if (this.computers[key].numberPointsForCurrentGenome >= this.numberPointsToCalculateGenomes) {
+					this.computers[key].learner.applyGenomeFitness(this.computers[key].cumulatedFitness);
 
 					//Reset
-					this.numberPointsForCurrentGenomes = 0;
-					this.computers[key].cumulatedPoints = 0;
+					this.computers[key].numberPointsForCurrentGenome = 0;
+					this.computers[key].cumulatedFitness = 0;
 				}
 			}
 		}
@@ -107,7 +115,19 @@ export default class ArtificialIntelligence {
 	 * @param {Engine} engine
 	 */
 	computeMovement(key, modifiers, computerPosition, ballPosition, bonusesPosition, gameConfiguration, engine) {
+		const isLeft = this.isLeftPlayer(modifiers.key);
+		const width = gameConfiguration.width();
+		const halfWidth = (width / 2);
+
 		if (this.computers[key].learner) {
+			//Reduce fitness if ball is not horizontally moving
+			if (
+				Math.round(ballPosition.velocityX) === 0 &&
+				isLeft === (ballPosition.x < width)
+			) {
+				this.computers[key].cumulatedFitness--;
+			}
+
 			this.applyLearnerOutput(
 				key,
 				this.computers[key].learner.emitData(
@@ -128,11 +148,8 @@ export default class ArtificialIntelligence {
 		this.computers[key].jump = false;
 		this.computers[key].dropshot = false;
 
-		const width = gameConfiguration.width();
 		const height = gameConfiguration.height();
 		const gravity = Math.abs(gameConfiguration.worldGravity() * ballPosition.gravityScale);
-		const halfWidth = (width / 2);
-		const isLeft = this.isLeftPlayer(modifiers.key);
 		const groundY = height - gameConfiguration.groundHeight();
 
 		let timeToGround = this.timeToReachY(ballPosition.velocityY, gravity, Math.abs(ballPosition.y - groundY + computerPosition.height / 2));

@@ -27,22 +27,28 @@ import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
 const writeFile = require('write');
 
+const saveMachineLearning = function(generation, genomes, filename) {
+	const path = '../../../../../../genomes/';
+	const generationTimestamp = (new Date()).getTime() + '_' + String(generation).padStart(4, '0');
+
+	writeFile(
+		path + filename + '.' + generationTimestamp + '.json',
+		genomes,
+		function(err) {
+			if (err) {
+				console.log(err);
+			}
+		}
+	);
+};
+
 Meteor.methods({
-	saveAi: function(generation, hostGenomes, clientGenomes) {
-		writeFile(
-			'host_' + String(generation).padStart(4, '0') + '_' + (new Date()).getTime() + '.json',
-			hostGenomes,
-			function(err) {
-				if (err) console.log(err);
-			}
-		);
-		writeFile(
-			'client_' + String(generation).padStart(4, '0') + '_' + (new Date()).getTime() + '.json',
-			clientGenomes,
-			function(err) {
-				if (err) console.log(err);
-			}
-		);
+	saveHostMachineLearning: function(generation, genomes) {
+		saveMachineLearning(generation, genomes, 'host_genomes');
+	},
+
+	saveClientMachineLearning: function(generation, genomes) {
+		saveMachineLearning(generation, genomes, 'client_genomes');
 	},
 
 	createTournamentPracticeGame: function(tournamentId) {

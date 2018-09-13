@@ -30,8 +30,14 @@
 					<a href="#" class="button" data-action="enable-first-player-human">
 						{{#if firstPlayerHumanEnabled}}You are first player{{else}}First player CPU{{/if}}
 					</a>
+					<a href="#" class="button" data-action="enable-first-player-machine-learning">
+						{{#if firstPlayerMachineLearningEnabled}}First player ML{{else}}First player not ML{{/if}}
+					</a>
+					<a href="#" class="button" data-action="enable-second-player-human">
+						{{#if secondPlayerHumanEnabled}}You are second player{{else}}Second player CPU{{/if}}
+					</a>
 					<a href="#" class="button" data-action="enable-second-player-machine-learning">
-						{{#if secondPlayerMachineLearningEnabled}}Second player ML{{else}}Second player CPU{{/if}}
+						{{#if secondPlayerMachineLearningEnabled}}Second player ML{{else}}Second player not ML{{/if}}
 					</a>
 					<a href="#" class="button" data-action="speed-up-game">
 						{{#if fullSpeedEnabled}}Full speed{{else}}Normal speed{{/if}}
@@ -39,11 +45,7 @@
 					<a href="#" class="button" data-action="allow-ai-to-jump">
 						{{#if jumpEnabled}}CPU can jump{{else}}CPU do not jump{{/if}}
 					</a>
-					<a href="#" class="button" data-action="get-host-genomes">Get host genomes</a>
-					<a href="#" class="button" data-action="get-client-genomes">Get client genomes</a>
 				</div>
-
-				<textarea id="ai-genomes"></textarea>
 			</div>
 
 			<div class="game-container">

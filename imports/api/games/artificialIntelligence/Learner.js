@@ -41,9 +41,9 @@ export default class Learner {
 		return [];
 	}
 
-	computeGenomesPoint(points) {
+	applyGenomeFitness(fitness) {
 		if (this.onGameEnd) {
-			this.onGameEnd(points);
+			this.onGameEnd(fitness);
 		}
 	}
 
@@ -195,10 +195,10 @@ export default class Learner {
 		};
 
 		//Wait game end, and compute fitness
-		this.onGameEnd = (points) => {
+		this.onGameEnd = (fitness) => {
 			//Save Genome fitness
-			genome.fitness = points;
-			console.log('fitness = ' + points);
+			genome.fitness = fitness;
+			console.log('fitness = ' + fitness);
 
 			//Go to next genome
 			next();

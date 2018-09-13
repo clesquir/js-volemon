@@ -575,10 +575,10 @@ export default class Game {
 		}
 
 		if (this.gameIsOnGoing()) {
+			this.inputs();
+
 			if (this.gameData.isFirstPlayerComputer()) {
 				this.moveComputer(this.player1);
-			} else {
-				this.inputs();
 			}
 			if (this.gameData.isSecondPlayerComputer()) {
 				this.moveComputer(this.player2);
