@@ -67,6 +67,17 @@ export default class Ai extends Dev {
 			this.lastBallHorizontalSpeedCheck = currentBallHorizontalSpeed;
 		}
 
+		//If the point takes more than 2 minutes, stop it
+		if (pointTime > 2 * 60 * 1000) {
+			this.game.gameResumed = false;
+
+			this.gameData.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
+
+			this.game.artificialIntelligence.stopPoint(null);
+
+			this.resumeOnTimerEnd();
+		}
+
 		//Output the genomes backend in case the computer crashes
 		if (this.gameData.firstPlayerComputerMachineLearning) {
 			const generation = this.game.artificialIntelligence.currentGeneration('player1') - 1;

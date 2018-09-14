@@ -61,12 +61,22 @@ export default class ArtificialIntelligence {
 		for (let key in this.computers) {
 			if (this.computers.hasOwnProperty(key) && this.computers[key].learner) {
 				const pointTime = ((new Date()).getTime() - this.pointStartTime);
-				let fitness = 1 / pointTime * 10000000;
+				let fitness = 0;
 
 				//When it has the point, the shortest the point, the better
 				//When it doesn't, the longest the point, the better. Negative value
-				if (!(key === 'player1' ? pointSide === HOST_POINTS_COLUMN : pointSide === CLIENT_POINTS_COLUMN)) {
-					fitness = -1 * fitness;
+				if (pointSide === HOST_POINTS_COLUMN) {
+					fitness = 1 / pointTime * 10000000;
+
+					if (key === 'player2') {
+						fitness = -1 * fitness;
+					}
+				} else if (pointSide === CLIENT_POINTS_COLUMN) {
+					fitness = 1 / pointTime * 10000000;
+
+					if (key === 'player1') {
+						fitness = -1 * fitness;
+					}
 				}
 
 				this.computers[key].cumulatedFitness += fitness;
