@@ -278,6 +278,11 @@ const modeOptions = function() {
 	addToMode(mode, 'world-restitution', 'overriddenWorldRestitution');
 	addToMode(mode, 'player-x-velocity', 'overriddenPlayerXVelocity');
 	addToMode(mode, 'player-y-velocity', 'overriddenPlayerYVelocity');
+	addToMode(mode, 'player-dropshot-enabled', 'overriddenPlayerDropshotEnabled');
+	addToMode(mode, 'player-smash-enabled', 'overriddenPlayerSmashEnabled');
+	addToMode(mode, 'ball-rebound-on-player-enabled', 'overriddenBallReboundOnPlayerEnabled');
+	addToMode(mode, 'ball-velocity-on-rebound-on-player', 'overriddenBallVelocityOnReboundOnPlayer');
+	addToMode(mode, 'maximum-ball-hit', 'overriddenMaximumBallHit');
 
 	return mode;
 };

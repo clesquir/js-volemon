@@ -163,8 +163,8 @@ export default class Dev {
 	}
 
 	respawnSprites() {
-		this.game.spawnPlayer(this.game.player1);
-		this.game.spawnPlayer(this.game.player2);
+		this.game.resetPlayer(this.game.player1);
+		this.game.resetPlayer(this.game.player2);
 		this.game.spawnBall();
 	}
 

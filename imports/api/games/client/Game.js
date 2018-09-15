@@ -2,7 +2,6 @@ import ArtificialIntelligence from '/imports/api/games/artificialIntelligence/Ar
 import GameBonus from '/imports/api/games/client/bonus/GameBonus.js';
 import Collisions from '/imports/api/games/collisions/Collisions.js';
 import {
-	BALL_VERTICAL_SPEED_ON_PLAYER_HIT,
 	CLIENT_POINTS_COLUMN,
 	CLIENT_SIDE,
 	HOST_POINTS_COLUMN,
@@ -365,6 +364,8 @@ export default class Game {
 		player.data.velocityYOnJump = this.gameConfiguration.playerYVelocity();
 		player.data.doingDropShot = false;
 		player.data.playerCollisionGroup = playerCollisionGroup;
+		player.data.lastBallHit = 0;
+		player.data.numberBallHits = 0;
 		//Bonus
 		player.data.horizontalMoveModifier = () => {return 1;};
 		player.data.verticalMoveModifier = () => {return 1;};
@@ -481,7 +482,7 @@ export default class Game {
 	resumeOnTimerEnd() {
 		this.gameBonus.reset();
 		this.pauseGame();
-		this.respawnSprites();
+		this.resetPlayersAndBall();
 
 		if (this.gameData.hasGameStatusEndedWithAWinner()) {
 			this.onGameEnd();
@@ -518,17 +519,18 @@ export default class Game {
 		}
 	}
 
-	respawnSprites() {
-		this.spawnPlayer(this.player1);
-		this.spawnPlayer(this.player2);
+	resetPlayersAndBall() {
+		this.resetPlayer(this.player1);
+		this.resetPlayer(this.player2);
 		if (this.gameData.isTwoVersusTwo()) {
-			this.spawnPlayer(this.player3);
-			this.spawnPlayer(this.player4);
+			this.resetPlayer(this.player3);
+			this.resetPlayer(this.player4);
 		}
 		this.spawnBall();
 	}
 
-	spawnPlayer(player) {
+	resetPlayer(player) {
+		player.data.numberBallHits = 0;
 		this.engine.spawn(player, player.data.initialXLocation, player.data.initialYLocation);
 	}
 
@@ -671,26 +673,90 @@ export default class Game {
 	}
 
 	hitBall(ball, player) {
-		this.onBallHitPlayer(ball.sprite, player.sprite, this.engine.getKey(player));
+		this.onBallHitPlayer(ball.sprite, player.sprite);
 	}
 
-	onBallHitPlayer(ball, player, playerKey) {
-		if (this.isPlayerDoingDropShot(ball, player, playerKey)) {
+	resetBallHitsForOpponents(playerKey) {
+		if (
+			playerKey === 'player1' ||
+			playerKey === 'player3'
+		) {
+			let opponent = this.getPlayerFromKey('player2');
+
+			if (opponent) {
+				opponent.data.numberBallHits = 0;
+			}
+
+			opponent = this.getPlayerFromKey('player4');
+
+			if (opponent) {
+				opponent.data.numberBallHits = 0;
+			}
+		} else if (
+			playerKey === 'player2' ||
+			playerKey === 'player4'
+		) {
+			let opponent = this.getPlayerFromKey('player1');
+
+			if (opponent) {
+				opponent.data.numberBallHits = 0;
+			}
+
+			opponent = this.getPlayerFromKey('player3');
+
+			if (opponent) {
+				opponent.data.numberBallHits = 0;
+			}
+		}
+	}
+
+	onBallHitPlayer(ball, player) {
+		if (
+			this.gameConfiguration.playerDropshotEnabled() &&
+			this.isPlayerDoingDropShot(ball, player)
+		) {
 			this.dropShotBallOnPlayerHit(ball);
 		} else {
-			if (this.isPlayerJumpingForward(player, playerKey) && this.isBallInFrontOfPlayer(ball, player, playerKey)) {
-				this.smashBallOnPlayerHit(ball, playerKey);
-			} else {
-				if (!this.isBallBelowPlayer(ball, player)) {
-					this.reboundBallOnPlayerHit(ball);
-				}
+			if (
+				this.gameConfiguration.playerSmashEnabled() &&
+				this.isPlayerSmashing(player, ball)
+			) {
+				this.smashBallOnPlayerHit(ball, player);
+			} else if (
+				this.gameConfiguration.ballReboundOnPlayerEnabled() &&
+				!this.isBallBelowPlayer(ball, player)
+			) {
+				this.reboundBallOnPlayerHit(ball);
 			}
 		}
 
 		this.engine.constrainVelocity(ball, 1000);
+
+		if ((new Date()).getTime() - player.data.lastBallHit > 500) {
+			player.data.numberBallHits++;
+			player.data.lastBallHit = (new Date()).getTime();
+
+			this.resetBallHitsForOpponents(player.data.key);
+
+			if (
+				this.gameConfiguration.overridesMaximumBallHit() &&
+				player.data.numberBallHits > this.gameConfiguration.maximumBallHit()
+			) {
+				this.gameBonus.killPlayer(player.data.key);
+			}
+		}
 	}
 
-	isPlayerJumpingForward(player, playerKey) {
+	isPlayerSmashing(player, ball) {
+		return (
+			this.isPlayerJumpingForward(player) &&
+			this.isBallInFrontOfPlayer(ball, player)
+		);
+	}
+
+	isPlayerJumpingForward(player) {
+		const playerKey = player.data.key;
+
 		return (
 			Math.round(this.engine.getVerticalSpeed(player)) < 0 &&
 			!this.engine.hasSurfaceTouchingPlayerBottom(player) &&
@@ -701,7 +767,9 @@ export default class Game {
 		);
 	}
 
-	isBallInFrontOfPlayer(ball, player, playerKey) {
+	isBallInFrontOfPlayer(ball, player) {
+		const playerKey = player.data.key;
+
 		return (
 			(this.isPlayerKeyHostSide(playerKey) && this.engine.getXPosition(player) < this.engine.getXPosition(ball)) ||
 			(this.isPlayerKeyClientSide(playerKey) && this.engine.getXPosition(ball) < this.engine.getXPosition(player))
@@ -724,7 +792,9 @@ export default class Game {
 		//Do not modify or add any velocity to the ball
 	}
 
-	smashBallOnPlayerHit(ball, playerKey) {
+	smashBallOnPlayerHit(ball, player) {
+		const playerKey = player.data.key;
+
 		//Ball direction should change if smashed the opposite way
 		if (this.ballMovingTowardsPlayer(ball, playerKey)) {
 			this.engine.setHorizontalSpeed(ball, -this.engine.getHorizontalSpeed(ball));
@@ -748,7 +818,7 @@ export default class Game {
 	}
 
 	reboundBallOnPlayerHit(ball) {
-		this.engine.setVerticalSpeed(ball, BALL_VERTICAL_SPEED_ON_PLAYER_HIT);
+		this.engine.setVerticalSpeed(ball, this.gameConfiguration.ballVelocityOnReboundOnPlayer());
 	}
 
 	canAddGamePoint() {

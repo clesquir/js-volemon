@@ -28,7 +28,7 @@ describe('Game#isPlayerJumpingForward', function() {
 		sinon.stub(engine, 'getVerticalSpeed').callsFake(function() {return 0;});
 		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
 
-		assert.isFalse(game.isPlayerJumpingForward({}, 'player1'));
+		assert.isFalse(game.isPlayerJumpingForward({data: {key: 'player1'}}));
 	});
 
 	it('returns false if vertical speed is positive', function() {
@@ -39,7 +39,7 @@ describe('Game#isPlayerJumpingForward', function() {
 		sinon.stub(engine, 'getVerticalSpeed').callsFake(function() {return 25;});
 		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
 
-		assert.isFalse(game.isPlayerJumpingForward({}, 'player1'));
+		assert.isFalse(game.isPlayerJumpingForward({data: {key: 'player1'}}));
 	});
 
 	it('returns false if vertical speed is negative but player is at ground level', function() {
@@ -50,7 +50,7 @@ describe('Game#isPlayerJumpingForward', function() {
 		sinon.stub(engine, 'getVerticalSpeed').callsFake(function() {return -25;});
 		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return true;});
 
-		assert.isFalse(game.isPlayerJumpingForward({}, 'player1'));
+		assert.isFalse(game.isPlayerJumpingForward({data: {key: 'player1'}}));
 	});
 
 	it('returns false if player1 vertical speed is negative but horizontal speed is 0', function() {
@@ -61,7 +61,7 @@ describe('Game#isPlayerJumpingForward', function() {
 		sinon.stub(engine, 'getVerticalSpeed').callsFake(function() {return -25;});
 		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
 
-		assert.isFalse(game.isPlayerJumpingForward({}, 'player1'));
+		assert.isFalse(game.isPlayerJumpingForward({data: {key: 'player1'}}));
 	});
 
 	it('returns false if player1 vertical speed is negative but horizontal speed is negative', function() {
@@ -72,7 +72,7 @@ describe('Game#isPlayerJumpingForward', function() {
 		sinon.stub(engine, 'getVerticalSpeed').callsFake(function() {return -25;});
 		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
 
-		assert.isFalse(game.isPlayerJumpingForward({}, 'player1'));
+		assert.isFalse(game.isPlayerJumpingForward({data: {key: 'player1'}}));
 	});
 
 	it('returns true if player1 vertical speed is negative but horizontal speed is positive', function() {
@@ -83,7 +83,7 @@ describe('Game#isPlayerJumpingForward', function() {
 		sinon.stub(engine, 'getVerticalSpeed').callsFake(function() {return -25;});
 		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
 
-		assert.isTrue(game.isPlayerJumpingForward({}, 'player1'));
+		assert.isTrue(game.isPlayerJumpingForward({data: {key: 'player1'}}));
 	});
 
 	it('returns false if player2 vertical speed is negative but horizontal speed is 0', function() {
@@ -94,7 +94,7 @@ describe('Game#isPlayerJumpingForward', function() {
 		sinon.stub(engine, 'getVerticalSpeed').callsFake(function() {return -25;});
 		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
 
-		assert.isFalse(game.isPlayerJumpingForward({}, 'player2'));
+		assert.isFalse(game.isPlayerJumpingForward({data: {key: 'player2'}}));
 	});
 
 	it('returns false if player2 vertical speed is negative but horizontal speed is positive', function() {
@@ -105,7 +105,7 @@ describe('Game#isPlayerJumpingForward', function() {
 		sinon.stub(engine, 'getVerticalSpeed').callsFake(function() {return -25;});
 		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
 
-		assert.isFalse(game.isPlayerJumpingForward({}, 'player2'));
+		assert.isFalse(game.isPlayerJumpingForward({data: {key: 'player2'}}));
 	});
 
 	it('returns true if player2 vertical speed is negative and horizontal speed is negative', function() {
@@ -116,7 +116,7 @@ describe('Game#isPlayerJumpingForward', function() {
 		sinon.stub(engine, 'getVerticalSpeed').callsFake(function() {return -25;});
 		sinon.stub(engine, 'hasSurfaceTouchingPlayerBottom').callsFake(function() {return false;});
 
-		assert.isTrue(game.isPlayerJumpingForward({}, 'player2'));
+		assert.isTrue(game.isPlayerJumpingForward({data: {key: 'player2'}}));
 	});
 });
 
@@ -140,12 +140,12 @@ describe('Game#isBallInFrontOfPlayer', function() {
 				}
 			},
 			{
+				data: {key: 'player1'},
 				body: {
 					x: 200,
 					y: 400
 				}
-			},
-			'player1'
+			}
 		));
 	});
 
@@ -160,12 +160,12 @@ describe('Game#isBallInFrontOfPlayer', function() {
 				}
 			},
 			{
+				data: {key: 'player1'},
 				body: {
 					x: 200,
 					y: 400
 				}
-			},
-			'player1'
+			}
 		));
 	});
 
@@ -180,12 +180,12 @@ describe('Game#isBallInFrontOfPlayer', function() {
 				}
 			},
 			{
+				data: {key: 'player1'},
 				body: {
 					x: 200,
 					y: 400
 				}
-			},
-			'player1'
+			}
 		));
 	});
 
@@ -200,12 +200,12 @@ describe('Game#isBallInFrontOfPlayer', function() {
 				}
 			},
 			{
+				data: {key: 'player1'},
 				body: {
 					x: 200,
 					y: 400
 				}
-			},
-			'player2'
+			}
 		));
 	});
 
@@ -220,12 +220,12 @@ describe('Game#isBallInFrontOfPlayer', function() {
 				}
 			},
 			{
+				data: {key: 'player2'},
 				body: {
 					x: 200,
 					y: 400
 				}
-			},
-			'player2'
+			}
 		));
 	});
 
@@ -240,12 +240,12 @@ describe('Game#isBallInFrontOfPlayer', function() {
 				}
 			},
 			{
+				data: {key: 'player2'},
 				body: {
 					x: 200,
 					y: 400
 				}
-			},
-			'player2'
+			}
 		));
 	});
 });
@@ -342,8 +342,7 @@ describe('Game#isPlayerDoingDropShot', function() {
 				data: {
 					doingDropShot: true
 				}
-			},
-			'player1'
+			}
 		));
 	});
 
@@ -360,8 +359,7 @@ describe('Game#isPlayerDoingDropShot', function() {
 				data: {
 					doingDropShot: false
 				}
-			},
-			'player1'
+			}
 		));
 	});
 
@@ -378,8 +376,7 @@ describe('Game#isPlayerDoingDropShot', function() {
 				data: {
 					doingDropShot: true
 				}
-			},
-			'player1'
+			}
 		));
 	});
 
@@ -396,8 +393,7 @@ describe('Game#isPlayerDoingDropShot', function() {
 				data: {
 					doingDropShot: true
 				}
-			},
-			'player1'
+			}
 		));
 	});
 });
@@ -599,7 +595,7 @@ describe('Game#smashBallOnPlayerHit', function() {
 
 		game.smashBallOnPlayerHit(
 			ball,
-			'player1'
+			{data: {key: 'player1'}}
 		);
 
 		assert.equal(horizontalSpeed * 2, ball.body.velocity.x);
@@ -622,7 +618,7 @@ describe('Game#smashBallOnPlayerHit', function() {
 
 		game.smashBallOnPlayerHit(
 			ball,
-			'player1'
+			{data: {key: 'player1'}}
 		);
 
 		assert.equal(horizontalSpeed * 2, ball.body.velocity.x);
@@ -645,7 +641,7 @@ describe('Game#smashBallOnPlayerHit', function() {
 
 		game.smashBallOnPlayerHit(
 			ball,
-			'player1'
+			{data: {key: 'player1'}}
 		);
 
 		assert.equal(-horizontalSpeed * 2, ball.body.velocity.x);
@@ -668,7 +664,7 @@ describe('Game#smashBallOnPlayerHit', function() {
 
 		game.smashBallOnPlayerHit(
 			ball,
-			'player2'
+			{data: {key: 'player2'}}
 		);
 
 		assert.equal(-horizontalSpeed * 2, ball.body.velocity.x);

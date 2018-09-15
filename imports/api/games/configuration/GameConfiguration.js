@@ -2,6 +2,7 @@ import {
 	BALL_BIG_GRAVITY_SCALE,
 	BALL_GRAVITY_SCALE,
 	BALL_SMALL_GRAVITY_SCALE,
+	BALL_VERTICAL_SPEED_ON_PLAYER_HIT,
 	BIG_SCALE_BONUS,
 	BIG_SCALE_PHYSICS_DATA,
 	BONUS_RADIUS,
@@ -258,12 +259,24 @@ export default class GameConfiguration {
 		return (this.hasTournament() && this.tournamentMode.overridesBonusDuration());
 	}
 
-	bonusDuration(bonusDuration) {
+	bonusDuration() {
 		if (!this.overridesBonusDuration()) {
 			throw 'The bonus duration is not overridden';
 		}
 
-		return this.tournamentMode.bonusDuration(bonusDuration);
+		return this.tournamentMode.bonusDuration();
+	}
+
+	overridesMaximumBallHit() {
+		return (this.hasTournament() && this.tournamentMode.overridesMaximumBallHit());
+	}
+
+	maximumBallHit() {
+		if (!this.overridesMaximumBallHit()) {
+			throw 'The maximumBallHit is not overridden';
+		}
+
+		return this.tournamentMode.maximumBallHit();
 	}
 
 	width() {
@@ -340,5 +353,37 @@ export default class GameConfiguration {
 		}
 
 		return PLAYER_VELOCITY_Y_ON_JUMP;
+	}
+
+	playerDropshotEnabled() {
+		if (this.hasTournament() && this.tournamentMode.overridesPlayerDropshotEnabled()) {
+			return this.tournamentMode.playerDropshotEnabled();
+		}
+
+		return true;
+	}
+
+	playerSmashEnabled() {
+		if (this.hasTournament() && this.tournamentMode.overridesPlayerSmashEnabled()) {
+			return this.tournamentMode.playerSmashEnabled();
+		}
+
+		return true;
+	}
+
+	ballReboundOnPlayerEnabled() {
+		if (this.hasTournament() && this.tournamentMode.overridesBallReboundOnPlayerEnabled()) {
+			return this.tournamentMode.ballReboundOnPlayerEnabled();
+		}
+
+		return true;
+	}
+
+	ballVelocityOnReboundOnPlayer() {
+		if (this.hasTournament() && this.tournamentMode.overridesBallVelocityOnReboundOnPlayer()) {
+			return this.tournamentMode.ballVelocityOnReboundOnPlayer();
+		}
+
+		return BALL_VERTICAL_SPEED_ON_PLAYER_HIT;
 	}
 }

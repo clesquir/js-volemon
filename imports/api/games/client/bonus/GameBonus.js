@@ -761,7 +761,7 @@ export default class GameBonus {
 		let bonusToActivate = bonus.bonusToActivate();
 
 		if (this.gameConfiguration.overridesBonusDuration()) {
-			bonusToActivate.durationMilliseconds = this.gameConfiguration.bonusDuration(bonusToActivate.durationMilliseconds);
+			bonusToActivate.durationMilliseconds = this.gameConfiguration.bonusDuration();
 		}
 
 		bonusToActivate.reassignBeforeActivationData(beforeActivationData);

@@ -23,6 +23,11 @@ export default class TournamentMode {
 	overriddenLevelHeight;
 	overriddenPlayerXVelocity;
 	overriddenPlayerYVelocity;
+	overriddenPlayerDropshotEnabled;
+	overriddenPlayerSmashEnabled;
+	overriddenBallReboundOnPlayerEnabled;
+	overriddenBallVelocityOnReboundOnPlayer;
+	overriddenMaximumBallHit;
 
 	constructor() {
 	}
@@ -229,6 +234,46 @@ export default class TournamentMode {
 		return parseInt(this.overriddenPlayerYVelocity);
 	}
 
+	overridesPlayerDropshotEnabled() {
+		return this.overriddenPlayerDropshotEnabled !== undefined;
+	}
+
+	playerDropshotEnabled() {
+		return parseInt(this.overriddenPlayerDropshotEnabled) === 1;
+	}
+
+	overridesPlayerSmashEnabled() {
+		return this.overriddenPlayerSmashEnabled !== undefined;
+	}
+
+	playerSmashEnabled() {
+		return parseInt(this.overriddenPlayerSmashEnabled) === 1;
+	}
+
+	overridesBallReboundOnPlayerEnabled() {
+		return this.overriddenBallReboundOnPlayerEnabled !== undefined;
+	}
+
+	ballReboundOnPlayerEnabled() {
+		return parseInt(this.overriddenBallReboundOnPlayerEnabled) === 1;
+	}
+
+	overridesBallVelocityOnReboundOnPlayer() {
+		return this.overriddenBallVelocityOnReboundOnPlayer !== undefined;
+	}
+
+	ballVelocityOnReboundOnPlayer() {
+		return parseInt(this.overriddenBallVelocityOnReboundOnPlayer);
+	}
+
+	overridesMaximumBallHit() {
+		return this.overriddenMaximumBallHit !== undefined;
+	}
+
+	maximumBallHit() {
+		return parseInt(this.overriddenMaximumBallHit);
+	}
+
 	static fromTournament(tournament) {
 		const tournamentMode = new TournamentMode();
 		const mode = tournament.mode;
@@ -257,6 +302,11 @@ export default class TournamentMode {
 		tournamentMode.overriddenLevelHeight = mode.overriddenLevelHeight;
 		tournamentMode.overriddenPlayerXVelocity = mode.overriddenPlayerXVelocity;
 		tournamentMode.overriddenPlayerYVelocity = mode.overriddenPlayerYVelocity;
+		tournamentMode.overriddenPlayerDropshotEnabled = mode.overriddenPlayerDropshotEnabled;
+		tournamentMode.overriddenPlayerSmashEnabled = mode.overriddenPlayerSmashEnabled;
+		tournamentMode.overriddenBallReboundOnPlayerEnabled = mode.overriddenBallReboundOnPlayerEnabled;
+		tournamentMode.overriddenBallVelocityOnReboundOnPlayer = mode.overriddenBallVelocityOnReboundOnPlayer;
+		tournamentMode.overriddenMaximumBallHit = mode.overriddenMaximumBallHit;
 
 		return tournamentMode;
 	}

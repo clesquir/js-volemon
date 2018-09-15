@@ -109,6 +109,8 @@
 						{{> numberSwitch id="maximum-points" label="Maximum points - default 5" isOn=(modeOverridden "overriddenMaximumPoints") value=(modeOverriddenValue "overriddenMaximumPoints") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
+					{{> numberSwitch id="maximum-ball-hit" label="Maximum ball hits per player" isOn=(modeOverridden "overriddenMaximumBallHit") value=(modeOverriddenValue "overriddenMaximumBallHit") isReadOnly=(canOnlyViewTournament tournament)}}
+
 					<h2>Level overrides</h2>
 
 					{{> numberSwitch id="net-height" label="Net height - default 70" isOn=(modeOverridden "overriddenNetHeight") value=(modeOverriddenValue "overriddenNetHeight") isReadOnly=(canOnlyViewTournament tournament)}}
@@ -131,6 +133,18 @@
 						{{> numberSwitch id="player-x-velocity" label="Player X velocity - default 280" isOn=(modeOverridden "overriddenPlayerXVelocity") value=(modeOverriddenValue "overriddenPlayerXVelocity") isReadOnly=(canOnlyViewTournament tournament)}}
 
 						{{> numberSwitch id="player-y-velocity" label="Player Y velocity - default 420" isOn=(modeOverridden "overriddenPlayerYVelocity") value=(modeOverriddenValue "overriddenPlayerYVelocity") isReadOnly=(canOnlyViewTournament tournament)}}
+					</div>
+
+					<div class="splitted-configuration">
+						{{> selectSwitch id="player-dropshot-enabled" label="Player can dropshot" isOn=(modeOverridden "overriddenPlayerDropshotEnabled") options=booleanOptions value=(modeOverriddenValue "overriddenPlayerDropshotEnabled") isReadOnly=(canOnlyViewTournament tournament)}}
+
+						{{> selectSwitch id="player-smash-enabled" label="Player can smash" isOn=(modeOverridden "overriddenPlayerSmashEnabled") options=booleanOptions value=(modeOverriddenValue "overriddenPlayerSmashEnabled") isReadOnly=(canOnlyViewTournament tournament)}}
+					</div>
+
+					<div class="splitted-configuration">
+						{{> selectSwitch id="ball-rebound-on-player-enabled" label="Ball rebounds on player" isOn=(modeOverridden "overriddenBallReboundOnPlayerEnabled") options=booleanOptions value=(modeOverriddenValue "overriddenBallReboundOnPlayerEnabled") isReadOnly=(canOnlyViewTournament tournament)}}
+
+						{{> numberSwitch id="ball-velocity-on-rebound-on-player" label="Ball velocity on rebound on player - default -280" isOn=(modeOverridden "overriddenBallVelocityOnReboundOnPlayer") value=(modeOverriddenValue "overriddenBallVelocityOnReboundOnPlayer") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 				</div>

@@ -46,7 +46,7 @@ export default class Shape extends Dev {
 	respawnSprites() {
 		for (let i = 0; i < PLAYER_LIST_OF_SHAPES.length; i++) {
 			let playerIndex = i + 1;
-			this.game.spawnPlayer(this.game['player' + playerIndex]);
+			this.game.resetPlayer(this.game['player' + playerIndex]);
 		}
 		this.game.spawnBall();
 	}
