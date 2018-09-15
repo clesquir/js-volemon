@@ -478,7 +478,7 @@ describe('Game#onBallHitPlayer', function() {
 
 		let reboundBallOnPlayerHit = sinon.stub(game, 'reboundBallOnPlayerHit');
 
-		game.onBallHitPlayer({}, {}, 'player1');
+		game.onBallHitPlayer({}, {data: {key: 'player1'}});
 
 		assert.isTrue(reboundBallOnPlayerHit.called);
 	});
@@ -496,7 +496,7 @@ describe('Game#onBallHitPlayer', function() {
 		let dropShotBallOnPlayerHit = sinon.stub(game, 'dropShotBallOnPlayerHit');
 		let reboundBallOnPlayerHit = sinon.stub(game, 'reboundBallOnPlayerHit');
 
-		game.onBallHitPlayer({}, {}, 'player1');
+		game.onBallHitPlayer({}, {data: {key: 'player1'}});
 
 		assert.isFalse(reboundBallOnPlayerHit.called);
 		assert.isTrue(dropShotBallOnPlayerHit.called);
@@ -513,7 +513,7 @@ describe('Game#onBallHitPlayer', function() {
 
 		let reboundBallOnPlayerHit = sinon.stub(game, 'reboundBallOnPlayerHit');
 
-		game.onBallHitPlayer({}, {}, 'player1');
+		game.onBallHitPlayer({}, {data: {key: 'player1'}});
 
 		assert.isFalse(reboundBallOnPlayerHit.called);
 	});
@@ -530,7 +530,7 @@ describe('Game#onBallHitPlayer', function() {
 
 		let reboundBallOnPlayerHit = sinon.stub(game, 'reboundBallOnPlayerHit');
 
-		game.onBallHitPlayer({}, {}, 'player1');
+		game.onBallHitPlayer({}, {data: {key: 'player1'}});
 
 		assert.isTrue(reboundBallOnPlayerHit.called);
 	});
@@ -546,7 +546,7 @@ describe('Game#onBallHitPlayer', function() {
 
 		let smashBallOnPlayerHit = sinon.stub(game, 'smashBallOnPlayerHit');
 
-		game.onBallHitPlayer({}, {}, 'player1');
+		game.onBallHitPlayer({}, {data: {key: 'player1'}});
 
 		assert.isTrue(smashBallOnPlayerHit.called);
 	});
@@ -563,7 +563,7 @@ describe('Game#onBallHitPlayer', function() {
 		let dropShotBallOnPlayerHit = sinon.stub(game, 'dropShotBallOnPlayerHit');
 		let smashBallOnPlayerHit = sinon.stub(game, 'smashBallOnPlayerHit');
 
-		game.onBallHitPlayer({}, {}, 'player1');
+		game.onBallHitPlayer({}, {data: {key: 'player1'}});
 
 		assert.isFalse(smashBallOnPlayerHit.called);
 		assert.isTrue(dropShotBallOnPlayerHit.called);
