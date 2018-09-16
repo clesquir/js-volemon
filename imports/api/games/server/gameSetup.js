@@ -1,5 +1,5 @@
 import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGameConfiguration.js';
-import {ONE_VS_COMPUTER_GAME_MODE, ONE_VS_ONE_GAME_MODE, TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
+import {ONE_VS_ONE_GAME_MODE, TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import GameForfeited from '/imports/api/games/events/GameForfeited.js';
 import GameTimedOut from '/imports/api/games/events/GameTimedOut.js';
 import {Games} from '/imports/api/games/games.js';
@@ -26,8 +26,8 @@ import {Random} from 'meteor/random';
  * @param {string} userId
  * @param {GameInitiator[]} gameInitiators
  * @param modeSelection
- * @param {bool} isPracticeGame
- * @param {bool} isPrivate
+ * @param {boolean} isPracticeGame
+ * @param {boolean} isPrivate
  * @param tournamentId
  * @returns {string}
  */
@@ -45,16 +45,12 @@ export const createGame = function(
 		throw new Meteor.Error('not-allowed', 'Cannot join this tournament');
 	}
 
-	let gameMode = modeSelection;
+	let gameMode = ONE_VS_ONE_GAME_MODE;
 	if (tournamentId) {
 		const tournament = Tournaments.findOne(tournamentId);
 
-		if (tournament && tournament.status.id !== 'approved') {
-			gameMode = ONE_VS_COMPUTER_GAME_MODE;
-		} else if (tournament && tournament.gameMode) {
+		if (tournament && tournament.gameMode) {
 			gameMode = tournament.gameMode;
-		} else {
-			gameMode = ONE_VS_ONE_GAME_MODE;
 		}
 	}
 
@@ -99,19 +95,19 @@ export const createGame = function(
 };
 
 /**
- * @param {string} userId
+ * @param {{id: {string}, isMachineLearning: {boolean}, name: {string}}} user
  * @param {string} gameId
  * @param {boolean} isReady
  * @returns {*}
  */
-export const joinGame = function(userId, gameId, isReady = false) {
+export const joinGame = function(user, gameId, isReady = false) {
 	const game = Games.findOne(gameId);
 
 	if (!game) {
 		throw new Meteor.Error(404, 'Game not found');
 	}
 
-	const player = Players.findOne({gameId: gameId, userId: userId});
+	const player = Players.findOne({gameId: gameId, userId: user.id});
 	if (player) {
 		throw new Meteor.Error('not-allowed', 'Already joined');
 	}
@@ -122,22 +118,18 @@ export const joinGame = function(userId, gameId, isReady = false) {
 		throw new Meteor.Error('not-allowed', 'Maximum players reached');
 	}
 
-	if (!playersCanPlayTournament(game.tournamentId, [{userId: userId}])) {
+	if (!playersCanPlayTournament(game.tournamentId, [{userId: user.id}])) {
 		throw new Meteor.Error('not-allowed', 'Cannot join this tournament');
 	}
 
-	let username = '';
 	let selectedShape = PLAYER_DEFAULT_SHAPE;
 
-	if (userId === 'CPU') {
-		username = 'CPU';
+	if (user.id === 'CPU') {
+		isReady = true;
 	} else {
-		const userConfiguration = UserConfigurations.findOne({userId: userId});
-		if (userConfiguration) {
-			username = userConfiguration.name;
-			if (userConfiguration.lastShapeUsed) {
-				selectedShape = userConfiguration.lastShapeUsed;
-			}
+		const userConfiguration = UserConfigurations.findOne({userId: user.id});
+		if (userConfiguration && userConfiguration.lastShapeUsed) {
+			selectedShape = userConfiguration.lastShapeUsed;
 		}
 	}
 
@@ -155,12 +147,22 @@ export const joinGame = function(userId, gameId, isReady = false) {
 
 	Games.update(
 		{_id: gameId},
-		{$push: {players: {id: userId, name: username, selectedShape: selectedShape, shape: shape}}}
+		{
+			$push: {
+				players: {
+					id: user.id,
+					isMachineLearning: user.isMachineLearning,
+					name: user.name,
+					selectedShape: selectedShape,
+					shape: shape
+				}
+			}
+		}
 	);
 
 	return Players.insert({
-		userId: userId,
-		name: username,
+		userId: user.id,
+		name: user.name,
 		gameId: gameId,
 		joinedAt: getUTCTimeStamp(),
 		isReady: isReady,
@@ -225,14 +227,25 @@ export const replyRematch = function(userId, gameId, accepted, gameInitiators) {
 	}
 
 	Players.update({_id: player._id}, {$set: {askedForRematch: accepted}});
+	Players.update(
+		{gameId: gameId, userId: 'CPU'},
+		{$set: {askedForRematch: accepted}},
+		{multi: true}
+	);
 
 	const notAskingForRematch = Players.find({gameId: gameId, askedForRematch: {$ne: true}});
 	if (notAskingForRematch.count() === 0 && gameRematchInCreation[gameId] === undefined) {
 		gameRematchInCreation[gameId] = true;
 
-		let rematchGameCreator = game.players[1].id;
-		if (game.gameMode === TWO_VS_TWO_GAME_MODE) {
+		let rematchGameCreator = game.players[0].id;
+
+		//Creator should switch to opponent if not CPU
+		if (game.players[3] && game.players[3].id !== 'CPU') {
 			rematchGameCreator = game.players[3].id;
+		} else if (game.players[1] && game.players[1].id !== 'CPU') {
+			rematchGameCreator = game.players[1].id;
+		} else if (game.players[2] && game.players[2].id !== 'CPU') {
+			rematchGameCreator = game.players[2].id;
 		}
 
 		const gameRematchId = createGame(
@@ -250,13 +263,13 @@ export const replyRematch = function(userId, gameId, accepted, gameInitiators) {
 		);
 
 		if (game.gameMode === TWO_VS_TWO_GAME_MODE) {
-			joinGame(game.players[3].id, gameRematchId, true);
-			joinGame(game.players[2].id, gameRematchId, true);
-			joinGame(game.players[1].id, gameRematchId, true);
-			joinGame(game.players[0].id, gameRematchId, true);
+			joinGame(game.players[3], gameRematchId, true);
+			joinGame(game.players[2], gameRematchId, true);
+			joinGame(game.players[1], gameRematchId, true);
+			joinGame(game.players[0], gameRematchId, true);
 		} else {
-			joinGame(game.players[1].id, gameRematchId, true);
-			joinGame(game.players[0].id, gameRematchId, true);
+			joinGame(game.players[1], gameRematchId, true);
+			joinGame(game.players[0], gameRematchId, true);
 		}
 
 		Games.update({_id: game._id}, {$set: {rematchGameId: gameRematchId}});
@@ -272,8 +285,6 @@ export const onPlayerQuit = function(player) {
 	const game = Games.findOne(player.gameId);
 
 	if (game.status !== GAME_STATUS_REGISTRATION) {
-		//@todo 2vs2 do not timeout/forfeit if it is not creator on 2vs2 games
-
 		if (isForfeiting(game)) {
 			Players.update({_id: player._id}, {$set: {hasForfeited: true}});
 			Games.update({_id: game._id}, {$set: {status: GAME_STATUS_FORFEITED}});

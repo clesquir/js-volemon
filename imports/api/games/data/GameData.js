@@ -28,10 +28,22 @@ export default class GameData {
 	isSecondPlayerComputer() {
 	}
 
+	isThirdPlayerComputer() {
+	}
+
+	isFourthPlayerComputer() {
+	}
+
 	isFirstPlayerComputerMachineLearning() {
 	}
 
 	isSecondPlayerComputerMachineLearning() {
+	}
+
+	isThirdPlayerComputerMachineLearning() {
+	}
+
+	isFourthPlayerComputerMachineLearning() {
 	}
 
 	isTwoVersusTwo() {

@@ -10,10 +10,9 @@ import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import BonusRemoved from '/imports/api/games/events/BonusRemoved.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {Games} from '/imports/api/games/games.js';
-import {Players} from '/imports/api/games/players.js';
 import {assert} from 'chai';
+import StubCollections from 'meteor/hwillson:stub-collections';
 import {Random} from 'meteor/random';
-import {resetDatabase} from 'meteor/xolvio:cleaner';
 
 describe('AchievementListener#BlankScreen', function() {
 	const gameId = Random.id(5);
@@ -28,15 +27,21 @@ describe('AchievementListener#BlankScreen', function() {
 		assert.strictEqual(number, achievement.number);
 	};
 
+	before(function() {
+		StubCollections.add([Games, UserAchievements]);
+	});
+
 	beforeEach(function() {
-		resetDatabase();
+		StubCollections.stub();
+	});
+
+	afterEach(function() {
+		StubCollections.restore();
 	});
 
 	it('increment if ball is invisible, user is invisible, opponent is invisible and user is host', function() {
 		const listener = (new BlankScreen()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 
 		assert.equal(0, UserAchievements.find().count());
 
@@ -54,8 +59,6 @@ describe('AchievementListener#BlankScreen', function() {
 	it('increment if ball is invisible, user is cloaked, opponent is invisible and user is host', function() {
 		const listener = (new BlankScreen()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 
 		assert.equal(0, UserAchievements.find().count());
 
@@ -73,8 +76,6 @@ describe('AchievementListener#BlankScreen', function() {
 	it('increment if ball is invisible, user is invisible, opponent is cloaked and user is host', function() {
 		const listener = (new BlankScreen()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 
 		assert.equal(0, UserAchievements.find().count());
 
@@ -92,8 +93,6 @@ describe('AchievementListener#BlankScreen', function() {
 	it('increment if ball is invisible, user is cloaked, opponent is cloaked and user is host', function() {
 		const listener = (new BlankScreen()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 
 		assert.equal(0, UserAchievements.find().count());
 
@@ -111,8 +110,6 @@ describe('AchievementListener#BlankScreen', function() {
 	it('increment if ball is invisible, user is invisible, opponent is invisible and user is client', function() {
 		const listener = (new BlankScreen()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: opponentUserId, players: [{id: opponentUserId}, {id: userId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 
 		assert.equal(0, UserAchievements.find().count());
 
@@ -130,8 +127,6 @@ describe('AchievementListener#BlankScreen', function() {
 	it('increment if ball is invisible, user is cloaked, opponent is invisible and user is client', function() {
 		const listener = (new BlankScreen()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: opponentUserId, players: [{id: opponentUserId}, {id: userId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 
 		assert.equal(0, UserAchievements.find().count());
 
@@ -149,8 +144,6 @@ describe('AchievementListener#BlankScreen', function() {
 	it('increment if ball is invisible, user is invisible, opponent is cloaked and user is client', function() {
 		const listener = (new BlankScreen()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: opponentUserId, players: [{id: opponentUserId}, {id: userId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 
 		assert.equal(0, UserAchievements.find().count());
 
@@ -168,8 +161,6 @@ describe('AchievementListener#BlankScreen', function() {
 	it('increment if ball is invisible, user is cloaked, opponent is cloaked and user is client', function() {
 		const listener = (new BlankScreen()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: opponentUserId, players: [{id: opponentUserId}, {id: userId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 
 		assert.equal(0, UserAchievements.find().count());
 
@@ -187,8 +178,6 @@ describe('AchievementListener#BlankScreen', function() {
 	it('do not increment if ball is not invisible', function() {
 		const listener = (new BlankScreen()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 
 		assert.equal(0, UserAchievements.find().count());
 
@@ -208,8 +197,6 @@ describe('AchievementListener#BlankScreen', function() {
 	it('do not increment if user is neither cloaked nor invisible', function() {
 		const listener = (new BlankScreen()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 
 		assert.equal(0, UserAchievements.find().count());
 
@@ -226,8 +213,6 @@ describe('AchievementListener#BlankScreen', function() {
 	it('do not increment if opponent is neither cloaked nor invisible', function() {
 		const listener = (new BlankScreen()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 
 		assert.equal(0, UserAchievements.find().count());
 
@@ -244,8 +229,6 @@ describe('AchievementListener#BlankScreen', function() {
 	it('do not increment if invisible ball has been deactivated', function() {
 		const listener = (new BlankScreen()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 
 		assert.equal(0, UserAchievements.find().count());
 
@@ -269,8 +252,6 @@ describe('AchievementListener#BlankScreen', function() {
 	it('do not increment if cloaked user has been deactivated', function() {
 		const listener = (new BlankScreen()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 
 		assert.equal(0, UserAchievements.find().count());
 
@@ -291,8 +272,6 @@ describe('AchievementListener#BlankScreen', function() {
 	it('do not increment if invisible user has been deactivated', function() {
 		const listener = (new BlankScreen()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 
 		assert.equal(0, UserAchievements.find().count());
 
@@ -313,8 +292,6 @@ describe('AchievementListener#BlankScreen', function() {
 	it('do not increment if cloaked opponent has been deactivated', function() {
 		const listener = (new BlankScreen()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 
 		assert.equal(0, UserAchievements.find().count());
 
@@ -335,8 +312,6 @@ describe('AchievementListener#BlankScreen', function() {
 	it('do not increment if invisible opponent has been deactivated', function() {
 		const listener = (new BlankScreen()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 
 		assert.equal(0, UserAchievements.find().count());
 
@@ -357,8 +332,6 @@ describe('AchievementListener#BlankScreen', function() {
 	it('do not increment if point has been taken', function() {
 		const listener = (new BlankScreen()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 
 		assert.equal(0, UserAchievements.find().count());
 

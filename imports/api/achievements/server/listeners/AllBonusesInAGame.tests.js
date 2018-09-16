@@ -4,16 +4,24 @@ import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import {Games} from '/imports/api/games/games.js';
 import {assert} from 'chai';
+import StubCollections from 'meteor/hwillson:stub-collections';
 import {Random} from 'meteor/random';
-import {resetDatabase} from 'meteor/xolvio:cleaner';
 import sinon from 'sinon';
 
 describe('AchievementListener#AllBonusesInAGame', function() {
 	const gameId = Random.id(5);
 	const userId = Random.id(5);
 
+	before(function() {
+		StubCollections.add([Games, UserAchievements]);
+	});
+
 	beforeEach(function() {
-		resetDatabase();
+		StubCollections.stub();
+	});
+
+	afterEach(function() {
+		StubCollections.restore();
 	});
 
 	it('add achievement if none is there and all bonuses are caught', function() {

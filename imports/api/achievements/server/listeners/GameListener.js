@@ -1,6 +1,5 @@
 import {GAME_MAXIMUM_POINTS, TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
-import {Players} from '/imports/api/games/players.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
 import TournamentMode from '/imports/api/tournaments/TournamentMode.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
@@ -76,14 +75,6 @@ export default class GameListener extends Listener {
 		return null;
 	}
 
-	getCurrentPlayer() {
-		if (!this.currentPlayer) {
-			this.currentPlayer = Players.findOne({gameId: this.gameId, userId: this.userId});
-		}
-
-		return this.currentPlayer;
-	}
-
 	getCurrentPlayerProfile() {
 		if (!this.currentPlayerProfile) {
 			this.currentPlayerProfile = Profiles.findOne({userId: this.userId});
@@ -102,18 +93,10 @@ export default class GameListener extends Listener {
 		return null;
 	}
 
-	getOppositePlayer() {
-		if (!this.oppositePlayer) {
-			this.oppositePlayer = Players.findOne({gameId: this.gameId, userId: {$ne: this.userId}});
-		}
-
-		return this.oppositePlayer;
-	}
-
 	getOppositePlayerProfile() {
 		if (!this.oppositePlayerProfile) {
-			const opponentPlayer = this.getOppositePlayer();
-			this.oppositePlayerProfile = Profiles.findOne({userId: opponentPlayer.userId});
+			const opponentPlayer = this.getOppositeGamePlayer();
+			this.oppositePlayerProfile = Profiles.findOne({userId: opponentPlayer.id});
 		}
 
 		return this.oppositePlayerProfile;
@@ -123,7 +106,7 @@ export default class GameListener extends Listener {
 	 * @returns {boolean}
 	 */
 	userIsGamePlayer() {
-		return !!this.getCurrentPlayer();
+		return !!this.getCurrentGamePlayer();
 	}
 
 	/**

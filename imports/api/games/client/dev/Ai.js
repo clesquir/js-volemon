@@ -1,7 +1,5 @@
 import Dev from '/imports/api/games/client/dev/Dev.js';
 import {CLIENT_POINTS_COLUMN, CLIENT_SIDE, HOST_POINTS_COLUMN} from '/imports/api/games/constants.js';
-import hostGenomes from '/public/assets/artificial-intelligence/host_genomes.json';
-import clientGenomes from '/public/assets/artificial-intelligence/client_genomes.json';
 import {Random} from 'meteor/random';
 
 export default class Ai extends Dev {
@@ -31,8 +29,7 @@ export default class Ai extends Dev {
 
 		this.game.gameInitiated = true;
 
-		this.game.artificialIntelligence.loadGenomes('player1', JSON.stringify(hostGenomes));
-		this.game.artificialIntelligence.loadGenomes('player2', JSON.stringify(clientGenomes));
+		this.game.artificialIntelligence.isLearning = true;
 		this.game.artificialIntelligence.startGame();
 
 		this.game.startCountdownTimer = function() {
@@ -137,22 +134,12 @@ export default class Ai extends Dev {
 	enableFirstPlayerMachineLearning(isMachineLearning) {
 		this.gameData.firstPlayerComputerMachineLearning = isMachineLearning;
 		this.game.artificialIntelligence.addComputerWithKey('player1', isMachineLearning);
-
-		if (isMachineLearning) {
-			this.game.artificialIntelligence.loadGenomes('player1', JSON.stringify(hostGenomes));
-		}
-
 		this.game.artificialIntelligence.startGame();
 	}
 
 	enableSecondPlayerMachineLearning(isMachineLearning) {
 		this.gameData.secondPlayerComputerMachineLearning = isMachineLearning;
 		this.game.artificialIntelligence.addComputerWithKey('player2', isMachineLearning);
-
-		if (isMachineLearning) {
-			this.game.artificialIntelligence.loadGenomes('player2', JSON.stringify(clientGenomes));
-		}
-
 		this.game.artificialIntelligence.startGame();
 	}
 

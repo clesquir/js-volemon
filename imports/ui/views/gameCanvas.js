@@ -33,10 +33,8 @@ Template.gameCanvas.helpers({
 		if (this.game.gameMode === TWO_VS_TWO_GAME_MODE) {
 			return '<span class="client-second-player">' + he.encode(this.game.players[3].name) + '</span>' + ' / ' +
 				'<span class="client-player">' + he.encode(this.game.players[1].name) + '</span>';
-		} else if (this.game.gameMode === ONE_VS_ONE_GAME_MODE) {
-			return '<span class="client-player">' + he.encode(this.game.players[1].name) + '</span>';
 		} else {
-			return '<span class="client-player">CPU</span>';
+			return '<span class="client-player">' + he.encode(this.game.players[1].name) + '</span>';
 		}
 	},
 

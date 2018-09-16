@@ -1,10 +1,11 @@
 import {TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import {MatchMakers} from '/imports/api/games/matchMakers.js';
 import EloMatchMaker from '/imports/api/games/server/matchMaking/EloMatchMaker.js';
-import {Profiles} from '/imports/api/profiles/profiles.js';
+import {TournamentProfiles} from '/imports/api/tournaments/tournamentProfiles.js';
+import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {assert} from 'chai';
+import StubCollections from 'meteor/hwillson:stub-collections';
 import {Random} from 'meteor/random';
-import {resetDatabase} from 'meteor/xolvio:cleaner';
 
 describe('EloMatchMaker', function() {
 	const tests = [
@@ -80,22 +81,42 @@ describe('EloMatchMaker', function() {
 		},
 	];
 
+	const tournamentId = Random.id(5);
+
+	before(function() {
+		StubCollections.add([Tournaments, TournamentProfiles, MatchMakers]);
+	});
+
+	beforeEach(function() {
+		StubCollections.stub();
+		Tournaments.insert({
+			_id: tournamentId,
+			gameMode : TWO_VS_TWO_GAME_MODE,
+			mode: {},
+			status: {id: 'approved', name: 'Approved'},
+			startDate: '2000-01-01 -04:00',
+			endDate: '2900-12-31 -04:00',
+		});
+	});
+
+	afterEach(function() {
+		StubCollections.restore();
+	});
+
 	for (let test of tests) {
 		it('match 2v2 users depending on their elo scores - ' + test.name, function() {
-			resetDatabase();
-
 			const matchMaker = new EloMatchMaker();
 
-			Profiles.insert({userId: test.users[0].id, eloRating: test.users[0].eloRating});
-			matchMaker.subscribe(test.users[0].id, test.users[0].name, TWO_VS_TWO_GAME_MODE, null);
-			Profiles.insert({userId: test.users[1].id, eloRating: test.users[1].eloRating});
-			matchMaker.subscribe(test.users[1].id, test.users[1].name, TWO_VS_TWO_GAME_MODE, null);
-			Profiles.insert({userId: test.users[2].id, eloRating: test.users[2].eloRating});
-			matchMaker.subscribe(test.users[2].id, test.users[2].name, TWO_VS_TWO_GAME_MODE, null);
-			Profiles.insert({userId: test.users[3].id, eloRating: test.users[3].eloRating});
-			matchMaker.subscribe(test.users[3].id, test.users[3].name, TWO_VS_TWO_GAME_MODE, null);
+			TournamentProfiles.insert({tournamentId: tournamentId, userId: test.users[0].id, eloRating: test.users[0].eloRating});
+			matchMaker.subscribe(test.users[0].id, test.users[0].name, TWO_VS_TWO_GAME_MODE, tournamentId);
+			TournamentProfiles.insert({tournamentId: tournamentId, userId: test.users[1].id, eloRating: test.users[1].eloRating});
+			matchMaker.subscribe(test.users[1].id, test.users[1].name, TWO_VS_TWO_GAME_MODE, tournamentId);
+			TournamentProfiles.insert({tournamentId: tournamentId, userId: test.users[2].id, eloRating: test.users[2].eloRating});
+			matchMaker.subscribe(test.users[2].id, test.users[2].name, TWO_VS_TWO_GAME_MODE, tournamentId);
+			TournamentProfiles.insert({tournamentId: tournamentId, userId: test.users[3].id, eloRating: test.users[3].eloRating});
+			matchMaker.subscribe(test.users[3].id, test.users[3].name, TWO_VS_TWO_GAME_MODE, tournamentId);
 
-			const match = MatchMakers.findOne({modeSelection: TWO_VS_TWO_GAME_MODE, tournamentId: null});
+			const match = MatchMakers.findOne({modeSelection: TWO_VS_TWO_GAME_MODE, tournamentId: tournamentId});
 
 			assert.isNotNull(match);
 			assert.isNotNull(match.matched);

@@ -33,6 +33,7 @@ export const SMALL_SCALE_BALL_BONUS = 0.75;
 export const BIG_SCALE_BONUS = 1.5;
 
 export const ONE_VS_COMPUTER_GAME_MODE = '1vsCPU';
+export const ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE = '1vsMLCPU';
 export const ONE_VS_ONE_GAME_MODE = '1vs1';
 export const TWO_VS_TWO_GAME_MODE = '2vs2';
 export const TOURNAMENT_GAME_SELECTION = 'tournament';

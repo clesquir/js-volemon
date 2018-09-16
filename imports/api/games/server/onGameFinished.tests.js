@@ -1,15 +1,27 @@
-import {assert, expect} from 'chai'
-import {Random} from 'meteor/random';
-import {resetDatabase} from 'meteor/xolvio:cleaner';
-import {Games} from '/imports/api/games/games.js';
 import {EloScores} from '/imports/api/games/eloscores.js';
+import {Games} from '/imports/api/games/games.js';
 import {finishGame} from '/imports/api/games/server/onGameFinished.js';
-import {GAME_STATUS_STARTED, GAME_STATUS_FINISHED} from '/imports/api/games/statusConstants.js';
+import {GAME_STATUS_FINISHED, GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
 import {Profiles} from '/imports/api/profiles/profiles';
 import {TournamentEloScores} from '/imports/api/tournaments/tournamentEloScores.js';
 import {TournamentProfiles} from '/imports/api/tournaments/tournamentProfiles.js';
+import {assert, expect} from 'chai'
+import {Random} from 'meteor/random';
+import StubCollections from 'meteor/hwillson:stub-collections';
 
 describe('finishGame', function() {
+	before(function() {
+		StubCollections.add([Meteor.users, Games, Profiles, EloScores, TournamentProfiles, TournamentEloScores]);
+	});
+
+	beforeEach(function() {
+		StubCollections.stub();
+	});
+
+	afterEach(function() {
+		StubCollections.restore();
+	});
+
 	it('throws 404 if game does not exist', function() {
 		expect(() => {
 			finishGame(Random.id(5));
@@ -17,8 +29,6 @@ describe('finishGame', function() {
 	});
 
 	it('throws not-allowed if game has not finished with a winner', function() {
-		resetDatabase();
-
 		const winnerUserId = Random.id(5);
 		Meteor.users.insert({_id: winnerUserId});
 		const loserUserId = Random.id(5);
@@ -32,8 +42,6 @@ describe('finishGame', function() {
 	});
 
 	it('throws not-allowed if game has no winner user', function() {
-		resetDatabase();
-
 		const winnerUserId = Random.id(5);
 		const loserUserId = Random.id(5);
 		Meteor.users.insert({_id: loserUserId});
@@ -46,8 +54,6 @@ describe('finishGame', function() {
 	});
 
 	it('throws not-allowed if game has no loser user', function() {
-		resetDatabase();
-
 		const winnerUserId = Random.id(5);
 		Meteor.users.insert({_id: winnerUserId});
 		const loserUserId = Random.id(5);
@@ -60,8 +66,6 @@ describe('finishGame', function() {
 	});
 
 	it('updates profiles and eloscores on regular game', function() {
-		resetDatabase();
-
 		const gameId = Random.id(5);
 		const winnerUserId = Random.id(5);
 		Meteor.users.insert({_id: winnerUserId});
@@ -96,8 +100,6 @@ describe('finishGame', function() {
 	});
 
 	it('updates tournamentProfiles and tournamentEloScores on tournament game', function() {
-		resetDatabase();
-
 		const gameId = Random.id(5);
 		const tournamentId = Random.id(5);
 		const winnerUserId = Random.id(5);

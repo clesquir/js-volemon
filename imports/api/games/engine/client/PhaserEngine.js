@@ -389,8 +389,6 @@ export default class PhaserEngine extends Engine {
 		this.interpolateFromTimestamp(serverNormalizedTimestamp + maxTime, sprite, interpolatedData);
 
 		const moveToInterpolatedPosition = () => {
-			//@todo Restrict horizontally
-			//@todo Restrict vertically
 			if (sprite && sprite.body && canMoveCallback.call()) {
 				this.move(sprite, interpolatedData);
 			}

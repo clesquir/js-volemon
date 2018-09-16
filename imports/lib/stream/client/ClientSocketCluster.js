@@ -18,7 +18,7 @@ export default class ClientSocketCluster extends Stream {
 			port: port
 		});
 		if (this.supportsP2P()) {
-			//@todo implement
+			//p2p needs to be implemented
 		}
 
 		this.socketAdapter.on('connect', () => {

@@ -3,11 +3,10 @@ import DavidVsGoliath from '/imports/api/achievements/server/listeners/DavidVsGo
 import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
 import PlayerWon from '/imports/api/games/events/PlayerWon.js';
 import {Games} from '/imports/api/games/games.js';
-import {Players} from '/imports/api/games/players.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
 import {assert} from 'chai';
+import StubCollections from 'meteor/hwillson:stub-collections';
 import {Random} from 'meteor/random';
-import {resetDatabase} from 'meteor/xolvio:cleaner';
 
 describe('AchievementListener#DavidVsGoliath', function() {
 	const gameId = Random.id(5);
@@ -22,15 +21,21 @@ describe('AchievementListener#DavidVsGoliath', function() {
 		assert.strictEqual(number, achievement.number);
 	};
 
+	before(function() {
+		StubCollections.add([Games, UserAchievements, Profiles]);
+	});
+
 	beforeEach(function() {
-		resetDatabase();
+		StubCollections.stub();
+	});
+
+	afterEach(function() {
+		StubCollections.restore();
 	});
 
 	it('creates achievement if not created on player won against opponent with elo >= 150', function() {
 		const listener = (new DavidVsGoliath()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 		Profiles.insert({userId: userId, eloRating: 1000});
 		Profiles.insert({userId: opponentUserId, eloRating: 1150});
 
@@ -44,8 +49,6 @@ describe('AchievementListener#DavidVsGoliath', function() {
 	it('do not create achievement if not created if opponent elo < 150 on player won', function() {
 		const listener = (new DavidVsGoliath()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 		Profiles.insert({userId: userId, eloRating: 1000});
 		Profiles.insert({userId: opponentUserId, eloRating: 1149});
 
@@ -57,8 +60,6 @@ describe('AchievementListener#DavidVsGoliath', function() {
 	it('do not create achievement if not created if not gameId on player won', function() {
 		const listener = (new DavidVsGoliath()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 		Profiles.insert({userId: userId, eloRating: 1000});
 		Profiles.insert({userId: opponentUserId, eloRating: 1150});
 
@@ -70,8 +71,6 @@ describe('AchievementListener#DavidVsGoliath', function() {
 	it('do not create achievement if not created if not userId on player won', function() {
 		const listener = (new DavidVsGoliath()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 		Profiles.insert({userId: userId, eloRating: 1000});
 		Profiles.insert({userId: opponentUserId, eloRating: 1150});
 
@@ -83,8 +82,6 @@ describe('AchievementListener#DavidVsGoliath', function() {
 	it('update achievement on player won against opponent with elo >= 150', function() {
 		const listener = (new DavidVsGoliath()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 		Profiles.insert({userId: userId, eloRating: 1000});
 		Profiles.insert({userId: opponentUserId, eloRating: 1150});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_DAVID_VS_GOLIATH, number: 1});
@@ -97,8 +94,6 @@ describe('AchievementListener#DavidVsGoliath', function() {
 	it('do not update achievement if opponent elo < 150 on player won', function() {
 		const listener = (new DavidVsGoliath()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 		Profiles.insert({userId: userId, eloRating: 1000});
 		Profiles.insert({userId: opponentUserId, eloRating: 1149});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_DAVID_VS_GOLIATH, number: 1});
@@ -111,8 +106,6 @@ describe('AchievementListener#DavidVsGoliath', function() {
 	it('do not update achievement if not gameId on player won', function() {
 		const listener = (new DavidVsGoliath()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 		Profiles.insert({userId: userId, eloRating: 1000});
 		Profiles.insert({userId: opponentUserId, eloRating: 1150});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_DAVID_VS_GOLIATH, number: 1});
@@ -125,8 +118,6 @@ describe('AchievementListener#DavidVsGoliath', function() {
 	it('do not update achievement if not userId on player won', function() {
 		const listener = (new DavidVsGoliath()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 		Profiles.insert({userId: userId, eloRating: 1000});
 		Profiles.insert({userId: opponentUserId, eloRating: 1150});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_DAVID_VS_GOLIATH, number: 1});

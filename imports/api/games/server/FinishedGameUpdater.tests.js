@@ -5,12 +5,24 @@ import {GAME_STATUS_FINISHED} from '/imports/api/games/statusConstants.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
 import ProfileUpdater from '/imports/api/profiles/server/ProfileUpdater.js';
 import {assert} from 'chai'
+import StubCollections from 'meteor/hwillson:stub-collections';
 import {Random} from 'meteor/random';
-import {resetDatabase} from 'meteor/xolvio:cleaner';
 import FinishedGameUpdater from './FinishedGameUpdater.js';
 
 describe('FinishedGameUpdater', function() {
 	const finishedGameUpdater = new FinishedGameUpdater(new ProfileUpdater(), new EloScoreCreator());
+
+	before(function() {
+		StubCollections.add([Profiles, EloScores, Games]);
+	});
+
+	beforeEach(function() {
+		StubCollections.stub();
+	});
+
+	afterEach(function() {
+		StubCollections.restore();
+	});
 
 	it('updates elo ratings', function() {
 		const gameId = Random.id(5);
@@ -18,8 +30,6 @@ describe('FinishedGameUpdater', function() {
 		const hostUserId = 1;
 		const clientProfileId = Random.id(5);
 		const clientUserId = 2;
-
-		resetDatabase();
 
 		Profiles.insert({
 			_id: hostProfileId,
@@ -59,8 +69,6 @@ describe('FinishedGameUpdater', function() {
 		const clientProfileId = Random.id(5);
 		const clientUserId = 2;
 
-		resetDatabase();
-
 		Profiles.insert({
 			_id: hostProfileId,
 			userId: hostUserId,
@@ -96,8 +104,6 @@ describe('FinishedGameUpdater', function() {
 		const hostUserId = 1;
 		const clientProfileId = Random.id(5);
 		const clientUserId = 2;
-
-		resetDatabase();
 
 		Profiles.insert({
 			_id: hostProfileId,
@@ -155,8 +161,6 @@ describe('FinishedGameUpdater', function() {
 		const hostUserId = 1;
 		const clientProfileId = Random.id(5);
 		const clientUserId = 2;
-
-		resetDatabase();
 
 		Profiles.insert({
 			_id: hostProfileId,

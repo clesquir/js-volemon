@@ -3,10 +3,9 @@ import BonusesInALifetime from '/imports/api/achievements/server/listeners/Bonus
 import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import {Games} from '/imports/api/games/games.js';
-import {Players} from '/imports/api/games/players.js';
 import {assert} from 'chai';
+import StubCollections from 'meteor/hwillson:stub-collections';
 import {Random} from 'meteor/random';
-import {resetDatabase} from 'meteor/xolvio:cleaner';
 
 describe('AchievementListener#BonusesInALifetime', function() {
 	const gameId = Random.id(5);
@@ -22,13 +21,20 @@ describe('AchievementListener#BonusesInALifetime', function() {
 		assert.strictEqual(number, achievement.number);
 	};
 
+	before(function() {
+		StubCollections.add([Games, UserAchievements]);
+	});
+
 	beforeEach(function() {
-		resetDatabase();
+		StubCollections.stub();
+	});
+
+	afterEach(function() {
+		StubCollections.restore();
 	});
 
 	it('creates achievement with 1 if not created on bonus caught', function() {
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: 'a', targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
@@ -39,7 +45,6 @@ describe('AchievementListener#BonusesInALifetime', function() {
 
 	it('do not create achievement if not created if not gameId on bonus caught', function() {
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onBonusCaught(new BonusCaught(Random.id(5), 'a', {activatedBonusClass: 'a', targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
@@ -48,7 +53,6 @@ describe('AchievementListener#BonusesInALifetime', function() {
 
 	it('do not create achievement if not created if player key is not the current user on bonus caught', function() {
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: 'a', targetPlayerKey: 'player2', bonusClass: 'a', activatorPlayerKey: 'player2'}));
@@ -57,7 +61,6 @@ describe('AchievementListener#BonusesInALifetime', function() {
 
 	it('increment achievement on bonus caught', function() {
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_BONUSES_IN_A_LIFETIME, number: 1});
 
 		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: 'a', targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
@@ -67,7 +70,6 @@ describe('AchievementListener#BonusesInALifetime', function() {
 
 	it('do not increment achievement if not gameId on bonus caught', function() {
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_BONUSES_IN_A_LIFETIME, number: 1});
 
 		listener.onBonusCaught(new BonusCaught(Random.id(5), 'a', {activatedBonusClass: 'a', targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
@@ -77,7 +79,6 @@ describe('AchievementListener#BonusesInALifetime', function() {
 
 	it('do not increment achievement if player key is not the current user on bonus caught', function() {
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_BONUSES_IN_A_LIFETIME, number: 1});
 
 		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: 'a', targetPlayerKey: 'player2', bonusClass: 'a', activatorPlayerKey: 'player2'}));
