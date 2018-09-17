@@ -1,5 +1,5 @@
 import Dev from '/imports/api/games/client/dev/Dev.js';
-import {CLIENT_POINTS_COLUMN, CLIENT_SIDE, HOST_POINTS_COLUMN} from '/imports/api/games/constants.js';
+import {CLIENT_POINTS_COLUMN, CLIENT_SIDE, HOST_POINTS_COLUMN, HOST_SIDE} from '/imports/api/games/constants.js';
 import {Random} from 'meteor/random';
 
 export default class Ai extends Dev {
@@ -12,7 +12,6 @@ export default class Ai extends Dev {
 		this.lastHostGenerationSaved = 0;
 		this.lastClientGenerationSaved = 0;
 		this.pointStartTime = (new Date()).getTime();
-		this.lastBallHorizontalSpeedCheck = undefined;
 	}
 
 	createGame() {
@@ -53,18 +52,8 @@ export default class Ai extends Dev {
 	updateGame() {
 		this.game.updateGame();
 
-		//If the ball has been horizontally stabilized for a while now, move it a bit
-		const pointTime = ((new Date()).getTime() - this.pointStartTime);
-		if (pointTime % 2500 < 25) {
-			const currentBallHorizontalSpeed = Math.round(this.engine.getHorizontalSpeed(this.game.ball));
-			if (currentBallHorizontalSpeed === 0 && this.lastBallHorizontalSpeedCheck === 0) {
-				this.engine.setHorizontalSpeed(this.game.ball, 50);
-				console.log('move the ball');
-			}
-			this.lastBallHorizontalSpeedCheck = currentBallHorizontalSpeed;
-		}
-
 		//If the point takes more than 2 minutes, stop it
+		const pointTime = ((new Date()).getTime() - this.pointStartTime);
 		if (pointTime > 2 * 60 * 1000) {
 			this.game.gameResumed = false;
 
@@ -72,6 +61,11 @@ export default class Ai extends Dev {
 
 			this.game.artificialIntelligence.stopPoint(null);
 
+			if (this.game.artificialIntelligence.computers['player1'].cumulatedFitness > this.game.artificialIntelligence.computers['player2'].cumulatedFitness) {
+				this.gameData.lastPointTaken = CLIENT_SIDE;
+			} else {
+				this.gameData.lastPointTaken = HOST_SIDE;
+			}
 			this.resumeOnTimerEnd();
 		}
 
@@ -113,6 +107,7 @@ export default class Ai extends Dev {
 			}
 			this.game.artificialIntelligence.stopPoint(pointSide);
 
+			this.gameData.lastPointTaken = pointSide === HOST_POINTS_COLUMN ? HOST_SIDE : CLIENT_SIDE;
 			this.resumeOnTimerEnd();
 		}
 	}
