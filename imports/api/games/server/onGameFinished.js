@@ -21,13 +21,13 @@ export const finishGame = function(gameId, winnerUserIds, loserUserIds) {
 	}
 
 	for (let userId of winnerUserIds) {
-		if (!Meteor.users.findOne({_id: userId})) {
+		if (userId !== 'CPU' && !Meteor.users.findOne({_id: userId})) {
 			throw new Meteor.Error('not-allowed', 'Winner does not exist');
 		}
 	}
 
 	for (let userId of loserUserIds) {
-		if (!Meteor.users.findOne({_id: userId})) {
+		if (userId !== 'CPU' && !Meteor.users.findOne({_id: userId})) {
 			throw new Meteor.Error('not-allowed', 'Loser does not exist');
 		}
 	}

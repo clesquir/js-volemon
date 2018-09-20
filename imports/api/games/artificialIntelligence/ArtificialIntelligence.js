@@ -6,7 +6,7 @@ import hostGenomes from '/public/assets/artificial-intelligence/host_genomes.jso
 export default class ArtificialIntelligence {
 	computers = {};
 	pointStartTime = 0;
-	numberPointsToCalculateGenomes = 5;
+	numberPointsToCalculateGenomes = 10;
 	canJump = false;
 	isLearning = false;
 
@@ -21,7 +21,7 @@ export default class ArtificialIntelligence {
 		};
 
 		if (machineLearning) {
-			this.computers[key].learner = new Learner(4, 2, 12, 4, 0.2);
+			this.computers[key].learner = new Learner(6, 2, 12, 4, 0.2);
 			this.computers[key].learner.init();
 			this.loadGenomes(key, JSON.stringify(key === 'player1' || key === 'player3' ? hostGenomes : clientGenomes));
 		}
@@ -63,35 +63,41 @@ export default class ArtificialIntelligence {
 
 	stopPoint(pointSide) {
 		for (let key in this.computers) {
-			if (this.computers.hasOwnProperty(key) && this.computers[key].learner && this.isLearning) {
-				const pointTime = ((new Date()).getTime() - this.pointStartTime);
-				let fitness = 0;
+			if (this.computers.hasOwnProperty(key) && this.computers[key].learner) {
+				if (this.isLearning) {
+					const pointTime = ((new Date()).getTime() - this.pointStartTime);
+					let fitness = 0;
 
-				//When it has the point, the shortest the point, the better
-				//When it doesn't, the longest the point, the better. Negative value
-				if (pointSide === HOST_POINTS_COLUMN) {
-					fitness = 1 / pointTime * 10000000;
+					//When it has the point, the shortest the point, the better
+					//When it doesn't, the longest the point, the better. Negative value
+					if (pointSide === HOST_POINTS_COLUMN) {
+						fitness = 1 / pointTime * 10000000;
 
-					if (key === 'player2') {
-						fitness = -1 * fitness;
+						if (key === 'player2') {
+							fitness = -1 * fitness;
+						}
+					} else if (pointSide === CLIENT_POINTS_COLUMN) {
+						fitness = 1 / pointTime * 10000000;
+
+						if (key === 'player1') {
+							fitness = -1 * fitness;
+						}
 					}
-				} else if (pointSide === CLIENT_POINTS_COLUMN) {
-					fitness = 1 / pointTime * 10000000;
 
-					if (key === 'player1') {
-						fitness = -1 * fitness;
+					this.computers[key].cumulatedFitness += fitness;
+					this.computers[key].numberPointsForCurrentGenome++;
+
+					console.log(pointSide + ' ' + key + ': ' + this.computers[key].cumulatedFitness);
+
+					if (this.computers[key].numberPointsForCurrentGenome >= this.numberPointsToCalculateGenomes) {
+						this.computers[key].learner.applyGenomeFitness(this.computers[key].cumulatedFitness);
+
+						//Reset
+						this.computers[key].numberPointsForCurrentGenome = 0;
+						this.computers[key].cumulatedFitness = 0;
 					}
-				}
-
-				this.computers[key].cumulatedFitness += fitness;
-				this.computers[key].numberPointsForCurrentGenome++;
-
-				if (this.computers[key].numberPointsForCurrentGenome >= this.numberPointsToCalculateGenomes) {
-					this.computers[key].learner.applyGenomeFitness(this.computers[key].cumulatedFitness);
-
-					//Reset
-					this.computers[key].numberPointsForCurrentGenome = 0;
-					this.computers[key].cumulatedFitness = 0;
+				} else {
+					this.computers[key].learner.applyGenomeFitness(0);
 				}
 			}
 		}
@@ -144,9 +150,9 @@ export default class ArtificialIntelligence {
 			//Reduce fitness if ball is not horizontally moving
 			if (
 				Math.round(ballPosition.velocityX) === 0 &&
-				isLeft === (ballPosition.x < width)
+				isLeft === (ballPosition.x < halfWidth)
 			) {
-				this.computers[key].cumulatedFitness--;
+				this.computers[key].cumulatedFitness -= 10;
 			}
 
 			this.applyLearnerOutput(
@@ -154,8 +160,10 @@ export default class ArtificialIntelligence {
 				modifiers,
 				this.computers[key].learner.emitData(
 					[
-						Math.round(computerPosition.x - ballPosition.x), //distance player/ball and side
-						Math.round(computerPosition.y - ballPosition.y), //distance player/ball and side
+						Math.round(computerPosition.x),
+						Math.round(computerPosition.y),
+						Math.round(ballPosition.x),
+						Math.round(ballPosition.y),
 						Math.round(ballPosition.velocityX),
 						Math.round(ballPosition.velocityY)
 					]
