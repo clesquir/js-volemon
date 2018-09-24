@@ -74,7 +74,7 @@ export default class MatchMaker {
 	 */
 	userPresentInArray(users, userId) {
 		for (let user of users) {
-			if (user.id === userId) {
+			if (user.id === userId && userId !== 'CPU') {
 				return true;
 			}
 		}

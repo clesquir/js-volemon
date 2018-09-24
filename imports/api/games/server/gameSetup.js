@@ -107,9 +107,11 @@ export const joinGame = function(user, gameId, isReady = false) {
 		throw new Meteor.Error(404, 'Game not found');
 	}
 
-	const player = Players.findOne({gameId: gameId, userId: user.id});
-	if (player) {
-		throw new Meteor.Error('not-allowed', 'Already joined');
+	if (user.id !== 'CPU') {
+		const player = Players.findOne({gameId: gameId, userId: user.id});
+		if (player) {
+			throw new Meteor.Error('not-allowed', 'Already joined');
+		}
 	}
 
 	if (game.gameMode === ONE_VS_ONE_GAME_MODE && game.players.length >= 2) {

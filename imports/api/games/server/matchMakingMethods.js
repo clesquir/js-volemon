@@ -45,6 +45,12 @@ Meteor.methods({
 		);
 	},
 
+	addComputerToMatch: function(modeSelection, tournamentId) {
+		const matchMaker = new EloMatchMaker();
+
+		matchMaker.subscribe('CPU', 'CPU', modeSelection, tournamentId);
+	},
+
 	startMatchMaking: function(modeSelection, tournamentId) {
 		const matchMaker = new EloMatchMaker();
 
