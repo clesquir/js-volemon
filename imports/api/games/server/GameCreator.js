@@ -1,3 +1,4 @@
+import {TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import GameInitiatorCollection from '/imports/api/games/server/GameInitiatorCollection.js';
 import {createGame, joinGame} from '/imports/api/games/server/gameSetup.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
@@ -17,9 +18,14 @@ export default class GameCreator {
 		if (userConfiguration) {
 			userName = userConfiguration.name;
 		}
-		const user = {id: userId, name: userName};
+		const users = [{id: userId, name: userName}, {id: 'CPU', name: 'CPU'}];
 
-		return GameCreator.createGame([user, {id: 'CPU', name: 'CPU'}], tournament.gameMode, true, tournamentId);
+		if (tournament.gameMode === TWO_VS_TWO_GAME_MODE) {
+			users.push({id: 'CPU', name: 'CPU'});
+			users.push({id: 'CPU', name: 'CPU'});
+		}
+
+		return GameCreator.createGame(users, tournament.gameMode, true, tournamentId);
 	}
 
 	/**
