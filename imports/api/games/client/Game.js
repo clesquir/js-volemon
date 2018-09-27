@@ -741,17 +741,23 @@ export default class Game {
 			) {
 				//Kill the team
 				if (this.isPlayerKeyHostSide(player.data.key)) {
-					this.gameBonus.killPlayer('player1');
-					this.gameBonus.killPlayer('player3');
+					setTimeout(() => {
+						this.gameBonus.killPlayer('player1');
+						this.gameBonus.killPlayer('player3');
+					}, 100);
 				} else if (this.isPlayerKeyClientSide(player.data.key)) {
-					this.gameBonus.killPlayer('player2');
-					this.gameBonus.killPlayer('player4');
+					setTimeout(() => {
+						this.gameBonus.killPlayer('player2');
+						this.gameBonus.killPlayer('player4');
+					}, 100);
 				}
 			} else if (
 				this.gameConfiguration.overridesPlayerMaximumBallHit() &&
 				playerNumberBallHits > this.gameConfiguration.playerMaximumBallHit()
 			) {
-				this.gameBonus.killPlayer(player.data.key);
+				setTimeout(() => {
+					this.gameBonus.killPlayer(player.data.key);
+				}, 100);
 			}
 		}
 	}
