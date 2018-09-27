@@ -317,7 +317,7 @@ export default class PhaserEngine extends Engine {
 			{
 				gravityScale: this.getGravity(sprite),
 				width: this.getWidth(sprite),
-				height: this.getWidth(sprite)
+				height: this.getHeight(sprite)
 			},
 			this.getPositionData(sprite)
 		);

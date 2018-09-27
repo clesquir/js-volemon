@@ -5,7 +5,7 @@ import {Random} from 'meteor/random';
 export default class Ai extends Dev {
 	beforeStart() {
 		this.gameData.firstPlayerComputer = true;
-		this.gameData.firstPlayerComputerMachineLearning = true;
+		this.gameData.firstPlayerComputerMachineLearning = false;
 		this.gameData.secondPlayerComputer = true;
 		this.gameData.secondPlayerComputerMachineLearning = true;
 		this.gameData.lastPointTaken = CLIENT_SIDE;
@@ -29,6 +29,7 @@ export default class Ai extends Dev {
 		this.game.gameInitiated = true;
 
 		this.game.artificialIntelligence.isLearning = true;
+		this.game.artificialIntelligence.canJump = true;
 		this.game.artificialIntelligence.startGame();
 
 		this.game.startCountdownTimer = function() {

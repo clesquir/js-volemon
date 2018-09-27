@@ -87,8 +87,6 @@ export default class ArtificialIntelligence {
 					this.computers[key].cumulatedFitness += fitness;
 					this.computers[key].numberPointsForCurrentGenome++;
 
-					console.log(pointSide + ' ' + key + ': ' + this.computers[key].cumulatedFitness);
-
 					if (this.computers[key].numberPointsForCurrentGenome >= this.numberPointsToCalculateGenomes) {
 						this.computers[key].learner.applyGenomeFitness(this.computers[key].cumulatedFitness);
 
@@ -208,7 +206,9 @@ export default class ArtificialIntelligence {
 				} else if (xAtGround < computerPosition.x + computerPosition.width / 6) {
 					//ball is behind
 					this.computers[key].left = true;
-				} else if (this.canJump && ballPosition.x < halfWidth) {
+				}
+
+				if (this.shouldJump(ballPosition, computerPosition, xAtGround)) {
 					this.computers[key].jump = true;
 				}
 			} else {
@@ -224,7 +224,9 @@ export default class ArtificialIntelligence {
 				} else if (xAtGround > computerPosition.x - computerPosition.width / 6) {
 					//ball is behind
 					this.computers[key].right = true;
-				} else if (this.canJump && ballPosition.x > halfWidth) {
+				}
+
+				if (this.shouldJump(ballPosition, computerPosition, xAtGround)) {
 					this.computers[key].jump = true;
 				}
 			} else {
@@ -266,6 +268,18 @@ export default class ArtificialIntelligence {
 		}
 
 		return false;
+	}
+
+	shouldJump(ballPosition, computerPosition, xAtGround) {
+		return (
+			this.canJump &&
+			ballPosition.x > computerPosition.x - computerPosition.width / 2 &&
+			ballPosition.x < computerPosition.x + computerPosition.width / 2 &&
+			xAtGround > computerPosition.x - computerPosition.width / 2 &&
+			xAtGround < computerPosition.x + computerPosition.width / 2 &&
+			ballPosition.y > computerPosition.y - computerPosition.height * 4 &&
+			ballPosition.y < computerPosition.y - computerPosition.height * 1.5
+		);
 	}
 
 	/**

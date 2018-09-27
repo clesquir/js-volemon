@@ -6,11 +6,11 @@ import './ai.html';
 /** @type {Ai}|null */
 let ai = null;
 const firstPlayerHumanEnabled = new ReactiveVar(false);
-const firstPlayerMachineLearningEnabled = new ReactiveVar(true);
+const firstPlayerMachineLearningEnabled = new ReactiveVar(false);
 const secondPlayerHumanEnabled = new ReactiveVar(false);
 const secondPlayerMachineLearningEnabled = new ReactiveVar(true);
 const fullSpeedEnabled = new ReactiveVar(false);
-const jumpEnabled = new ReactiveVar(false);
+const jumpEnabled = new ReactiveVar(true);
 
 Template.ai.rendered = function() {
 	ai = new Ai();
