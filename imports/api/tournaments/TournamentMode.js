@@ -27,7 +27,8 @@ export default class TournamentMode {
 	overriddenPlayerSmashEnabled;
 	overriddenBallReboundOnPlayerEnabled;
 	overriddenBallVelocityOnReboundOnPlayer;
-	overriddenMaximumBallHit;
+	overriddenPlayerMaximumBallHit;
+	overriddenTeamMaximumBallHit;
 
 	constructor() {
 	}
@@ -266,12 +267,20 @@ export default class TournamentMode {
 		return parseInt(this.overriddenBallVelocityOnReboundOnPlayer);
 	}
 
-	overridesMaximumBallHit() {
-		return this.overriddenMaximumBallHit !== undefined;
+	overridesPlayerMaximumBallHit() {
+		return this.overriddenPlayerMaximumBallHit !== undefined;
 	}
 
-	maximumBallHit() {
-		return parseInt(this.overriddenMaximumBallHit);
+	playerMaximumBallHit() {
+		return parseInt(this.overriddenPlayerMaximumBallHit);
+	}
+
+	overridesTeamMaximumBallHit() {
+		return this.overriddenTeamMaximumBallHit !== undefined;
+	}
+
+	teamMaximumBallHit() {
+		return parseInt(this.overriddenTeamMaximumBallHit);
 	}
 
 	static fromTournament(tournament) {
@@ -306,7 +315,8 @@ export default class TournamentMode {
 		tournamentMode.overriddenPlayerSmashEnabled = mode.overriddenPlayerSmashEnabled;
 		tournamentMode.overriddenBallReboundOnPlayerEnabled = mode.overriddenBallReboundOnPlayerEnabled;
 		tournamentMode.overriddenBallVelocityOnReboundOnPlayer = mode.overriddenBallVelocityOnReboundOnPlayer;
-		tournamentMode.overriddenMaximumBallHit = mode.overriddenMaximumBallHit;
+		tournamentMode.overriddenPlayerMaximumBallHit = mode.overriddenPlayerMaximumBallHit;
+		tournamentMode.overriddenTeamMaximumBallHit = mode.overriddenTeamMaximumBallHit;
 
 		return tournamentMode;
 	}

@@ -109,7 +109,11 @@
 						{{> numberSwitch id="maximum-points" label="Maximum points - default 5" isOn=(modeOverridden "overriddenMaximumPoints") value=(modeOverriddenValue "overriddenMaximumPoints") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
-					{{> numberSwitch id="maximum-ball-hit" label="Maximum ball hits per side" isOn=(modeOverridden "overriddenMaximumBallHit") value=(modeOverriddenValue "overriddenMaximumBallHit") isReadOnly=(canOnlyViewTournament tournament)}}
+					<div class="splitted-configuration">
+						{{> numberSwitch id="player-maximum-ball-hit" label="Maximum ball hits per player" isOn=(modeOverridden "overriddenPlayerMaximumBallHit") value=(modeOverriddenValue "overriddenPlayerMaximumBallHit") isReadOnly=(canOnlyViewTournament tournament)}}
+
+						{{> numberSwitch id="team-maximum-ball-hit" label="Maximum ball hits per team" isOn=(modeOverridden "overriddenTeamMaximumBallHit") value=(modeOverriddenValue "overriddenTeamMaximumBallHit") isReadOnly=(canOnlyViewTournament tournament)}}
+					</div>
 
 					<h2>Level overrides</h2>
 

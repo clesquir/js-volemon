@@ -282,7 +282,8 @@ const modeOptions = function() {
 	addToMode(mode, 'player-smash-enabled', 'overriddenPlayerSmashEnabled');
 	addToMode(mode, 'ball-rebound-on-player-enabled', 'overriddenBallReboundOnPlayerEnabled');
 	addToMode(mode, 'ball-velocity-on-rebound-on-player', 'overriddenBallVelocityOnReboundOnPlayer');
-	addToMode(mode, 'maximum-ball-hit', 'overriddenMaximumBallHit');
+	addToMode(mode, 'player-maximum-ball-hit', 'overriddenPlayerMaximumBallHit');
+	addToMode(mode, 'team-maximum-ball-hit', 'overriddenTeamMaximumBallHit');
 
 	return mode;
 };
