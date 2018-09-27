@@ -377,6 +377,7 @@ export default class Game {
 		player.data.doingDropShot = false;
 		player.data.playerCollisionGroup = playerCollisionGroup;
 		player.data.lastBallHit = 0;
+		player.data.numberBallHits = 0;
 		//Bonus
 		player.data.horizontalMoveModifier = () => {return 1;};
 		player.data.verticalMoveModifier = () => {return 1;};
@@ -547,7 +548,14 @@ export default class Game {
 	}
 
 	resetPlayer(player) {
+		this.resetPlayerBallHits(player);
 		this.engine.spawn(player, player.data.initialXLocation, player.data.initialYLocation);
+	}
+
+	resetPlayerBallHits(player) {
+		if (player) {
+			player.data.numberBallHits = 0;
+		}
 	}
 
 	spawnBall() {
@@ -728,32 +736,72 @@ export default class Game {
 		if ((new Date()).getTime() - player.data.lastBallHit > 500) {
 			player.data.lastBallHit = (new Date()).getTime();
 
-			let numberBallHits = 0;
+			let playerNumberBallHits = ++player.data.numberBallHits;
+			let teamNumberBallHits = 0;
 			if (this.isPlayerKeyHostSide(player.data.key)) {
 				//Increment hit
-				numberBallHits = ++this.hostNumberBallHits;
+				teamNumberBallHits = ++this.hostNumberBallHits;
 				//Reset opponent
 				this.clientNumberBallHits = 0;
 			} else if (this.isPlayerKeyClientSide(player.data.key)) {
 				//Increment hit
-				numberBallHits = ++this.clientNumberBallHits;
+				teamNumberBallHits = ++this.clientNumberBallHits;
 				//Reset opponent
 				this.hostNumberBallHits = 0;
 			}
 
+			//Reset other players
+			this.resetPlayerNumberBallHitsForOthers(player.data.key);
+
 			if (
-				this.gameConfiguration.overridesMaximumBallHit() &&
-				numberBallHits > this.gameConfiguration.maximumBallHit()
+				this.gameConfiguration.overridesTeamMaximumBallHit() &&
+				teamNumberBallHits > this.gameConfiguration.teamMaximumBallHit()
 			) {
 				//Kill the team
 				if (this.isPlayerKeyHostSide(player.data.key)) {
-					this.gameBonus.killPlayer('player1');
-					this.gameBonus.killPlayer('player3');
+					setTimeout(() => {
+						this.gameBonus.killPlayer('player1');
+						this.gameBonus.killPlayer('player3');
+					}, 100);
 				} else if (this.isPlayerKeyClientSide(player.data.key)) {
-					this.gameBonus.killPlayer('player2');
-					this.gameBonus.killPlayer('player4');
+					setTimeout(() => {
+						this.gameBonus.killPlayer('player2');
+						this.gameBonus.killPlayer('player4');
+					}, 100);
 				}
+			} else if (
+				this.gameConfiguration.overridesPlayerMaximumBallHit() &&
+				playerNumberBallHits > this.gameConfiguration.playerMaximumBallHit()
+			) {
+				setTimeout(() => {
+					this.gameBonus.killPlayer(player.data.key);
+				}, 100);
 			}
+		}
+	}
+
+	resetPlayerNumberBallHitsForOthers(playerKey) {
+		switch (playerKey) {
+			case 'player1':
+				this.resetPlayerBallHits(this.getPlayerFromKey('player2'));
+				this.resetPlayerBallHits(this.getPlayerFromKey('player3'));
+				this.resetPlayerBallHits(this.getPlayerFromKey('player4'));
+				break;
+			case 'player2':
+				this.resetPlayerBallHits(this.getPlayerFromKey('player1'));
+				this.resetPlayerBallHits(this.getPlayerFromKey('player3'));
+				this.resetPlayerBallHits(this.getPlayerFromKey('player4'));
+				break;
+			case 'player3':
+				this.resetPlayerBallHits(this.getPlayerFromKey('player1'));
+				this.resetPlayerBallHits(this.getPlayerFromKey('player2'));
+				this.resetPlayerBallHits(this.getPlayerFromKey('player4'));
+				break;
+			case 'player4':
+				this.resetPlayerBallHits(this.getPlayerFromKey('player1'));
+				this.resetPlayerBallHits(this.getPlayerFromKey('player2'));
+				this.resetPlayerBallHits(this.getPlayerFromKey('player3'));
+				break;
 		}
 	}
 

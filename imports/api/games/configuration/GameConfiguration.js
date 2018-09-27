@@ -267,16 +267,28 @@ export default class GameConfiguration {
 		return this.tournamentMode.bonusDuration();
 	}
 
-	overridesMaximumBallHit() {
-		return (this.hasTournament() && this.tournamentMode.overridesMaximumBallHit());
+	overridesPlayerMaximumBallHit() {
+		return (this.hasTournament() && this.tournamentMode.overridesPlayerMaximumBallHit());
 	}
 
-	maximumBallHit() {
-		if (!this.overridesMaximumBallHit()) {
-			throw 'The maximumBallHit is not overridden';
+	playerMaximumBallHit() {
+		if (!this.overridesPlayerMaximumBallHit()) {
+			throw 'The playerMaximumBallHit is not overridden';
 		}
 
-		return this.tournamentMode.maximumBallHit();
+		return this.tournamentMode.playerMaximumBallHit();
+	}
+
+	overridesTeamMaximumBallHit() {
+		return (this.hasTournament() && this.tournamentMode.overridesTeamMaximumBallHit());
+	}
+
+	teamMaximumBallHit() {
+		if (!this.overridesTeamMaximumBallHit()) {
+			throw 'The teamMaximumBallHit is not overridden';
+		}
+
+		return this.tournamentMode.teamMaximumBallHit();
 	}
 
 	width() {
