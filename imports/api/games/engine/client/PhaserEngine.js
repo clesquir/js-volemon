@@ -13,15 +13,17 @@ import {
 import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
 
 export default class PhaserEngine extends Engine {
-	start(worldConfiguration, preloadGame, createGame, updateGame, scope, debug = false) {
+	start(worldConfiguration, preloadGame, createGame, updateGame, scope, config = {}) {
 		//Create loading mask
 		Session.set('gameLoadingMask', true);
 		this.bonusRadius = worldConfiguration.bonusRadius;
+		const renderer = config.renderer || Phaser.AUTO;
+		const debug = config.debug || false;
 
 		this.game = new Phaser.Game({
 			width: worldConfiguration.width,
 			height: worldConfiguration.height,
-			renderer: Phaser.AUTO,
+			renderer: renderer,
 			enableDebug: debug,
 			parent: worldConfiguration.renderTo
 		});

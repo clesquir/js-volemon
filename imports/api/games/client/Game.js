@@ -168,7 +168,7 @@ export default class Game {
 				bonusRadius: this.gameConfiguration.bonusRadius(),
 				renderTo: 'gameContainer'
 			},
-			this.preloadGame, this.createGame, this.updateGame, this, false
+			this.preloadGame, this.createGame, this.updateGame, this
 		);
 	}
 

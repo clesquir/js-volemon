@@ -10,9 +10,9 @@ export default class Engine {
 	 * @param createGame
 	 * @param updateGame
 	 * @param scope
-	 * @param {boolean} debug
+	 * @param config
 	 */
-	start(worldConfiguration, preloadGame, createGame, updateGame, scope, debug = false) {
+	start(worldConfiguration, preloadGame, createGame, updateGame, scope, config = {}) {
 	}
 
 	stop() {
