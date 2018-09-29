@@ -12,7 +12,6 @@ export default class Ai extends Dev {
 		this.lastHostGenerationSaved = 0;
 		this.lastClientGenerationSaved = 0;
 		this.pointStartTime = (new Date()).getTime();
-		this.renderer = 3;
 	}
 
 	createGame() {

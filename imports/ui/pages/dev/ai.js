@@ -9,11 +9,14 @@ const firstPlayerHumanEnabled = new ReactiveVar(false);
 const firstPlayerMachineLearningEnabled = new ReactiveVar(false);
 const secondPlayerHumanEnabled = new ReactiveVar(false);
 const secondPlayerMachineLearningEnabled = new ReactiveVar(true);
+const rendererEnabled = new ReactiveVar(false);
 const fullSpeedEnabled = new ReactiveVar(false);
 const jumpEnabled = new ReactiveVar(true);
 
 Template.ai.rendered = function() {
+	Session.set('dev.ai.renderer', 3);
 	ai = new Ai();
+	ai.renderer = Session.get('dev.ai.renderer');
 	ai.start();
 };
 
@@ -35,6 +38,9 @@ Template.ai.helpers({
 	},
 	secondPlayerMachineLearningEnabled: function() {
 		return secondPlayerMachineLearningEnabled.get();
+	},
+	rendererEnabled: function() {
+		return rendererEnabled.get();
 	},
 	fullSpeedEnabled: function() {
 		return fullSpeedEnabled.get();
@@ -74,6 +80,19 @@ Template.ai.events({
 		ai.enableSecondPlayerMachineLearning(!secondPlayerMachineLearningEnabled.get());
 
 		secondPlayerMachineLearningEnabled.set(!secondPlayerMachineLearningEnabled.get());
+	},
+	'click [data-action="enable-renderer"]': function() {
+		if (!rendererEnabled.get()) {
+			Session.set('dev.ai.renderer', 0);
+		} else {
+			Session.set('dev.ai.renderer', 3);
+		}
+
+		ai.stop();
+		ai.renderer = Session.get('dev.ai.renderer');
+		ai.start();
+
+		rendererEnabled.set(!rendererEnabled.get());
 	},
 	'click [data-action="speed-up-game"]': function() {
 		if (fullSpeedEnabled.get()) {
