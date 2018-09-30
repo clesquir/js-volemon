@@ -208,7 +208,7 @@ export default class ArtificialIntelligence {
 					this.computers[key].left = true;
 				}
 
-				if (this.shouldJump(ballPosition, computerPosition, xAtGround)) {
+				if (this.shouldJump(modifiers.key, ballPosition, computerPosition, xAtGround)) {
 					this.computers[key].jump = true;
 				}
 			} else {
@@ -226,7 +226,7 @@ export default class ArtificialIntelligence {
 					this.computers[key].right = true;
 				}
 
-				if (this.shouldJump(ballPosition, computerPosition, xAtGround)) {
+				if (this.shouldJump(modifiers.key, ballPosition, computerPosition, xAtGround)) {
 					this.computers[key].jump = true;
 				}
 			} else {
@@ -270,20 +270,21 @@ export default class ArtificialIntelligence {
 		return false;
 	}
 
-	shouldJump(ballPosition, computerPosition, xAtGround) {
+	shouldJump(key, ballPosition, computerPosition, xAtGround) {
+		let isLeftPlayer = this.isLeftPlayer(key);
 		let halfWidth = computerPosition.width / 2;
-		let leftPlayerLimit = computerPosition.x - halfWidth;
-		let rightPlayerLimit = computerPosition.x + halfWidth;
+		let playerLeftLimit = computerPosition.x - halfWidth - (isLeftPlayer ? halfWidth : 0);
+		let playerRightLimit = computerPosition.x + halfWidth + (isLeftPlayer ? halfWidth : 0);
 		let maximumHeight = computerPosition.y - computerPosition.height * 4;
 		let minimumHeight = computerPosition.y - computerPosition.height * 1.5;
 
 		return (
 			this.canJump &&
-			ballPosition.x > leftPlayerLimit && xAtGround > leftPlayerLimit &&
-			ballPosition.x < rightPlayerLimit && xAtGround < rightPlayerLimit &&
+			ballPosition.x > playerLeftLimit && xAtGround > playerLeftLimit &&
+			ballPosition.x < playerRightLimit && xAtGround < playerRightLimit &&
 			ballPosition.y > maximumHeight &&
 			ballPosition.y < minimumHeight &&
-			Math.abs(ballPosition.velocityX) < 400
+			Math.abs(ballPosition.velocityX) < 350
 		);
 	}
 
