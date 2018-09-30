@@ -716,9 +716,19 @@ export default class PhaserEngine extends Engine {
 		sprite.kill();
 	}
 
+	playCountAnimation(countText) {
+		const duration = 750;
+
+		this.playDisappearAnimation(countText, duration);
+
+		setTimeout(() => {
+			if (countText) {
+				countText.destroy();
+			}
+		}, duration);
+	}
+
 	playDeathAnimation(sprite) {
-		const scale = 0.25;
-		const move = 20;
 		const duration = 750;
 
 		const spriteB = this.game.add.sprite(sprite.width, sprite.height, sprite.generateTexture());
@@ -727,18 +737,31 @@ export default class PhaserEngine extends Engine {
 		this.setAnchor(spriteB, 0.5);
 		this.setOpacity(spriteB, this.getOpacity(sprite));
 
-		this.game.add.tween(spriteB.scale).to({x: scale, y: scale}, duration).start();
-		this.game.add.tween(spriteB)
-			.to({alpha: '-' + 0.25, x: '-' + move / 2, y: "-" + move}, duration / 4)
-			.to({alpha: '-' + 0.25, x: '+' + move, y: "-" + move}, duration / 4)
-			.to({alpha: '-' + 0.25, x: '-' + move, y: "-" + move}, duration / 4)
-			.to({alpha: '-' + 0.25, x: '+' + move, y: "-" + move}, duration / 4)
-			.start();
+		this.playDisappearAnimation(spriteB, duration);
+
 		setTimeout(() => {
 			if (spriteB) {
 				spriteB.destroy();
 			}
 		}, duration);
+	}
+
+	/**
+	 * @private
+	 * @param sprite
+	 * @param duration
+	 */
+	playDisappearAnimation(sprite, duration) {
+		const scale = 0.25;
+		const move = 20;
+
+		this.game.add.tween(sprite.scale).to({x: scale, y: scale}, duration).start();
+		this.game.add.tween(sprite)
+			.to({alpha: '-' + 0.25, x: '-' + move / 2, y: "-" + move}, duration / 4)
+			.to({alpha: '-' + 0.25, x: '+' + move, y: "-" + move}, duration / 4)
+			.to({alpha: '-' + 0.25, x: '-' + move, y: "-" + move}, duration / 4)
+			.to({alpha: '-' + 0.25, x: '+' + move, y: "-" + move}, duration / 4)
+			.start();
 	}
 
 	activateAnimation(sprite) {

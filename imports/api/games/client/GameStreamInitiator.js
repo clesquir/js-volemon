@@ -1,5 +1,4 @@
 export default class GameStreamInitiator {
-
 	/**
 	 * @param {GameInitiator} gameInitiator
 	 * @param {Stream} stream
@@ -34,6 +33,10 @@ export default class GameStreamInitiator {
 
 		this.stream.on('showBallHitPoint-' + gameId, (data) => {
 			this.showBallHitPoint(data.x, data.y, data.diameter);
+		});
+
+		this.stream.on('showBallHitCount-' + gameId, (data) => {
+			this.showBallHitCount(data.x, data.y, data.ballHitCount, data.fontSize, data.color);
 		});
 
 		this.stream.on('sendBundledData-' + gameId, (bundledData) => {
@@ -121,6 +124,14 @@ export default class GameStreamInitiator {
 		}
 	}
 
+	showBallHitCount(x, y, ballHitCount, fontSize, color) {
+		let gameInitiator = this.gameInitiator;
+
+		if (gameInitiator.hasActiveGame()) {
+			gameInitiator.currentGame.showBallHitCount(x, y, ballHitCount, fontSize, color);
+		}
+	}
+
 	moveClientBonus(bonusIdentifier, bonusData) {
 		let gameInitiator = this.gameInitiator;
 
@@ -138,6 +149,6 @@ export default class GameStreamInitiator {
 		this.stream.off('killPlayer-' + gameId);
 		this.stream.off('sendBundledData-' + gameId);
 		this.stream.off('showBallHitPoint-' + gameId);
+		this.stream.off('showBallHitCount-' + gameId);
 	}
-
 }

@@ -710,12 +710,12 @@ export default class Game {
 
 		this.engine.constrainVelocity(ball, 1000);
 
-		this.incrementBallHitsOnBallHitPlayer(player);
+		this.incrementBallHitsOnBallHitPlayer(ball, player);
 	}
 
-	incrementBallHitsOnBallHitPlayer(player) {
+	incrementBallHitsOnBallHitPlayer(ball, player) {
 		//Threshold to avoid several calculations for the same "touch"
-		if ((new Date()).getTime() - player.data.lastBallHit > 500) {
+		if ((new Date()).getTime() - player.data.lastBallHit > 500 && this.gameData.isUserCreator()) {
 			player.data.lastBallHit = (new Date()).getTime();
 
 			let playerNumberBallHits = ++player.data.numberBallHits;
@@ -735,30 +735,61 @@ export default class Game {
 			//Reset other players
 			this.resetPlayerNumberBallHitsForOthers(player.data.key);
 
-			if (
-				this.gameConfiguration.overridesTeamMaximumBallHit() &&
-				teamNumberBallHits > this.gameConfiguration.teamMaximumBallHit()
-			) {
-				//Kill the team
-				if (this.isPlayerKeyHostSide(player.data.key)) {
-					setTimeout(() => {
-						this.gameBonus.killPlayer('player1');
-						this.gameBonus.killPlayer('player3');
-					}, 100);
-				} else if (this.isPlayerKeyClientSide(player.data.key)) {
-					setTimeout(() => {
-						this.gameBonus.killPlayer('player2');
-						this.gameBonus.killPlayer('player4');
-					}, 100);
-				}
-			} else if (
-				this.gameConfiguration.overridesPlayerMaximumBallHit() &&
-				playerNumberBallHits > this.gameConfiguration.playerMaximumBallHit()
-			) {
+			this.killPlayerOnBallHit(player, teamNumberBallHits, playerNumberBallHits);
+
+			this.showTeamBallHitCount(ball, player, teamNumberBallHits);
+		}
+	}
+
+	killPlayerOnBallHit(player, teamNumberBallHits, playerNumberBallHits) {
+		if (
+			this.gameConfiguration.overridesTeamMaximumBallHit() &&
+			teamNumberBallHits > this.gameConfiguration.teamMaximumBallHit()
+		) {
+			//Kill the team
+			if (this.isPlayerKeyHostSide(player.data.key)) {
 				setTimeout(() => {
-					this.gameBonus.killPlayer(player.data.key);
+					this.gameBonus.killPlayer('player1');
+					this.gameBonus.killPlayer('player3');
+				}, 100);
+			} else if (this.isPlayerKeyClientSide(player.data.key)) {
+				setTimeout(() => {
+					this.gameBonus.killPlayer('player2');
+					this.gameBonus.killPlayer('player4');
 				}, 100);
 			}
+		} else if (
+			this.gameConfiguration.overridesPlayerMaximumBallHit() &&
+			playerNumberBallHits > this.gameConfiguration.playerMaximumBallHit()
+		) {
+			setTimeout(() => {
+				this.gameBonus.killPlayer(player.data.key);
+			}, 100);
+		}
+	}
+
+	showTeamBallHitCount(ball, player, teamNumberBallHits) {
+		if (this.gameConfiguration.overridesTeamMaximumBallHit()) {
+			const x = this.engine.getXPosition(ball);
+			const y = this.engine.getYPosition(ball);
+			const fontSize = '35px';
+			let color = this.isPlayerKeyHostSide(player.data.key) ? '#c94141' : '#3363a1';
+
+			this.showBallHitCount(x, y, teamNumberBallHits, fontSize, color);
+
+			//Send to client
+			const serverTimestamp = this.serverNormalizedTime.getServerTimestamp();
+			this.streamBundler.emitStream(
+				'showBallHitCount-' + this.gameId,
+				{
+					x: x,
+					y: y,
+					ballHitCount: teamNumberBallHits,
+					fontSize: fontSize,
+					color: color
+				},
+				serverTimestamp
+			);
 		}
 	}
 
@@ -1103,6 +1134,21 @@ export default class Game {
 
 	showBallHitPoint(x, y, diameter) {
 		this.engine.showBallHitPoint(x, y, diameter);
+	}
+
+	showBallHitCount(x, y, ballHitCount, fontSize, color) {
+		this.engine.playCountAnimation(
+			this.engine.addText(
+				x,
+				y,
+				ballHitCount,
+				{
+					font: fontSize + " 'Oxygen Mono', sans-serif",
+					fill: color,
+					align: 'center'
+				}
+			)
+		);
 	}
 
 	killPlayer(playerKey, killedAt) {

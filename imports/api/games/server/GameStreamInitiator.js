@@ -4,7 +4,6 @@ import {Meteor} from 'meteor/meteor';
 import {EventPublisher} from '/imports/lib/EventPublisher.js';
 
 export default class GameStreamInitiator {
-
 	/**
 	 * @param {string} gameId
 	 * @param {Stream} stream
@@ -17,6 +16,7 @@ export default class GameStreamInitiator {
 	init() {
 		this.stream.connect(this.gameId);
 		this.stream.broadcastOnEvent('showBallHitPoint-' + this.gameId);
+		this.stream.broadcastOnEvent('showBallHitCount-' + this.gameId);
 		this.stream.broadcastOnEvent('activateBonus-' + this.gameId);
 		this.stream.broadcastOnEvent('killPlayer-' + this.gameId);
 		this.stream.broadcastOnEvent('sendBundledData-' + this.gameId);
@@ -38,8 +38,8 @@ export default class GameStreamInitiator {
 		this.stream.off('sendBundledData-' + this.gameId);
 		this.stream.off('activateBonus-' + this.gameId);
 		this.stream.off('killPlayer-' + this.gameId);
+		this.stream.off('showBallHitCount-' + this.gameId);
 		this.stream.off('showBallHitPoint-' + this.gameId);
 		this.stream.disconnect(this.gameId);
 	}
-
 }
