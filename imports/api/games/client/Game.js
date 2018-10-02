@@ -715,7 +715,11 @@ export default class Game {
 
 	incrementBallHitsOnBallHitPlayer(ball, player) {
 		//Threshold to avoid several calculations for the same "touch"
-		if ((new Date()).getTime() - player.data.lastBallHit > 500 && this.gameData.isUserCreator()) {
+		if (
+			(new Date()).getTime() - player.data.lastBallHit > 500 &&
+			this.gameResumed === true &&
+			this.gameData.isUserCreator()
+		) {
 			player.data.lastBallHit = (new Date()).getTime();
 
 			let playerNumberBallHits = ++player.data.numberBallHits;
