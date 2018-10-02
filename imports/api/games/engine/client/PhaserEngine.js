@@ -493,7 +493,13 @@ export default class PhaserEngine extends Engine {
 		const x = (r < max) ? dx : dx * max / r;
 		const y = (r < max) ? dy : dy * max / r;
 
-		eye.pupil.position.setTo(x * -1, y * -1);
+		this.setEyePupilPosition(player, x * -1, y * -1);
+	}
+
+	setEyePupilPosition(player, x, y) {
+		const eye = player.data.eye;
+
+		eye.pupil.position.setTo(x, y);
 	}
 
 	getMass(sprite) {
@@ -730,6 +736,8 @@ export default class PhaserEngine extends Engine {
 
 	playDeathAnimation(sprite) {
 		const duration = 750;
+
+		this.setEyePupilPosition(sprite, 0, 0);
 
 		const spriteB = this.game.add.sprite(sprite.width, sprite.height, sprite.generateTexture());
 		spriteB.x = sprite.x;
