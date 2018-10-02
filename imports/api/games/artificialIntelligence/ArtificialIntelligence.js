@@ -273,8 +273,9 @@ export default class ArtificialIntelligence {
 	shouldJump(key, ballPosition, computerPosition, xAtGround) {
 		let isLeftPlayer = this.isLeftPlayer(key);
 		let halfWidth = computerPosition.width / 2;
-		let playerLeftLimit = computerPosition.x - halfWidth - (isLeftPlayer ? halfWidth : 0);
-		let playerRightLimit = computerPosition.x + halfWidth + (isLeftPlayer ? halfWidth : 0);
+		let fourthWidth = computerPosition.width / 4;
+		let playerLeftLimit = computerPosition.x - (isLeftPlayer ? fourthWidth : halfWidth);
+		let playerRightLimit = computerPosition.x + (isLeftPlayer ? halfWidth : fourthWidth);
 		let maximumHeight = computerPosition.y - computerPosition.height * 4;
 		let minimumHeight = computerPosition.y - computerPosition.height * 1.5;
 
