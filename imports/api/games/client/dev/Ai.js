@@ -140,7 +140,7 @@ export default class Ai extends Dev {
 	}
 
 	speedUpGame() {
-		this.engine.game.time.slowMotion = 0.00001;
+		this.engine.game.time.slowMotion = 0.000001;
 	}
 
 	normalGameSpeed() {
