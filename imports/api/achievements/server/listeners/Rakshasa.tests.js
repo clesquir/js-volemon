@@ -4,10 +4,9 @@ import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
 import {BONUS_SHAPE_SHIFT} from '/imports/api/games/bonusConstants.js'
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import {Games} from '/imports/api/games/games.js';
-import {Players} from '/imports/api/games/players.js';
 import {assert} from 'chai';
+import StubCollections from 'meteor/hwillson:stub-collections';
 import {Random} from 'meteor/random';
-import {resetDatabase} from 'meteor/xolvio:cleaner';
 import sinon from 'sinon';
 
 describe('AchievementListener#Rakshasa', function() {
@@ -41,15 +40,21 @@ describe('AchievementListener#Rakshasa', function() {
 		assert.strictEqual(number, achievement.number);
 	};
 
+	before(function() {
+		StubCollections.add([Games, UserAchievements]);
+	});
+
 	beforeEach(function() {
-		resetDatabase();
+		StubCollections.stub();
+	});
+
+	afterEach(function() {
+		StubCollections.restore();
 	});
 
 	it('add achievement if none on caught all shapes', function() {
 		const listener = (new Rakshasa()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId, shape: 'a'}, {id: opponentUserId, shape: 'a'}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 		stubListOfShapes(listener, ['a', 'b', 'c']);
 
 		assert.equal(0, UserAchievements.find().count());
@@ -64,8 +69,6 @@ describe('AchievementListener#Rakshasa', function() {
 	it('do not add achievement if different gameId', function() {
 		const listener = (new Rakshasa()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId, shape: 'a'}, {id: opponentUserId, shape: 'a'}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 		stubListOfShapes(listener, ['a', 'b']);
 
 		assert.equal(0, UserAchievements.find().count());
@@ -78,8 +81,6 @@ describe('AchievementListener#Rakshasa', function() {
 	it('do not add achievement if different player', function() {
 		const listener = (new Rakshasa()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId, shape: 'a'}, {id: opponentUserId, shape: 'a'}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 		stubListOfShapes(listener, ['a', 'b']);
 
 		assert.equal(0, UserAchievements.find().count());
@@ -92,7 +93,6 @@ describe('AchievementListener#Rakshasa', function() {
 	it('do not increment achievement if same shape shift twice but not all', function() {
 		const listener = (new Rakshasa()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId, shape: 'a'}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
 		stubListOfShapes(listener, ['a', 'b']);
 
 		assert.equal(0, UserAchievements.find().count());

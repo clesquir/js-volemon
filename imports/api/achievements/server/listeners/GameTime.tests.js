@@ -3,10 +3,9 @@ import GameTime from '/imports/api/achievements/server/listeners/GameTime.js';
 import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
 import GameFinished from '/imports/api/games/events/GameFinished.js';
 import {Games} from '/imports/api/games/games.js';
-import {Players} from '/imports/api/games/players.js';
 import {assert} from 'chai';
+import StubCollections from 'meteor/hwillson:stub-collections';
 import {Random} from 'meteor/random';
-import {resetDatabase} from 'meteor/xolvio:cleaner';
 
 describe('AchievementListener#GameTime', function() {
 	const gameId = Random.id(5);
@@ -21,13 +20,20 @@ describe('AchievementListener#GameTime', function() {
 		assert.strictEqual(number, achievement.number);
 	};
 
+	before(function() {
+		StubCollections.add([Games, UserAchievements]);
+	});
+
 	beforeEach(function() {
-		resetDatabase();
+		StubCollections.stub();
+	});
+
+	afterEach(function() {
+		StubCollections.restore();
 	});
 
 	it('creates achievement if not created on game finished', function() {
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
 		const listener = (new GameTime()).forGame(gameId, userId);
@@ -39,7 +45,6 @@ describe('AchievementListener#GameTime', function() {
 
 	it('do not create achievement if not created if not gameId on game finished', function() {
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
 		const listener = (new GameTime()).forGame(gameId, userId);
@@ -48,7 +53,7 @@ describe('AchievementListener#GameTime', function() {
 	});
 
 	it('do not create achievement if not created if current user is not game player on game finished', function() {
-		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: Random.id(5)}, {id: opponentUserId}]});
 
 		assert.equal(0, UserAchievements.find().count());
 		const listener = (new GameTime()).forGame(gameId, userId);
@@ -58,7 +63,6 @@ describe('AchievementListener#GameTime', function() {
 
 	it('update achievement if higher on game finished', function() {
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_GAME_TIME, number: 2000});
 
 		const listener = (new GameTime()).forGame(gameId, userId);
@@ -69,7 +73,6 @@ describe('AchievementListener#GameTime', function() {
 
 	it('do not update achievement if not higher on game finished', function() {
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_GAME_TIME, number: 2000});
 
 		const listener = (new GameTime()).forGame(gameId, userId);
@@ -80,7 +83,6 @@ describe('AchievementListener#GameTime', function() {
 
 	it('do not update achievement if not gameId on game finished', function() {
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_GAME_TIME, number: 2000});
 
 		const listener = (new GameTime()).forGame(gameId, userId);
@@ -90,7 +92,7 @@ describe('AchievementListener#GameTime', function() {
 	});
 
 	it('do not update achievement if current user is not game player on game finished', function() {
-		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: Random.id(5)}, {id: opponentUserId}]});
 		UserAchievements.insert({userId: userId, achievementId: ACHIEVEMENT_GAME_TIME, number: 2000});
 
 		const listener = (new GameTime()).forGame(gameId, userId);

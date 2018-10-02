@@ -1,3 +1,4 @@
+import {TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import GameInitiatorCollection from '/imports/api/games/server/GameInitiatorCollection.js';
 import {createGame, joinGame} from '/imports/api/games/server/gameSetup.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
@@ -5,8 +6,8 @@ import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 import {Meteor} from "meteor/meteor";
 
 export default class GameCreator {
-	static fromMatchMaker(users, modeSelection, isPracticeGame, tournamentId) {
-		return GameCreator.createGame(users, modeSelection, isPracticeGame, false, tournamentId);
+	static fromMatchMaker(users, modeSelection, tournamentId) {
+		return GameCreator.createGame(users, modeSelection, false, tournamentId);
 	}
 
 	static fromTournamentPractice(tournamentId) {
@@ -17,23 +18,36 @@ export default class GameCreator {
 		if (userConfiguration) {
 			userName = userConfiguration.name;
 		}
-		const user = {id: userId, name: userName};
+		const users = [{id: userId, name: userName}, {id: 'CPU', name: 'CPU'}];
 
-		return GameCreator.createGame([user, {id: 'CPU', name: 'CPU'}], tournament.gameMode, true, true, tournamentId);
+		if (tournament.gameMode === TWO_VS_TWO_GAME_MODE) {
+			users.push({id: 'CPU', name: 'CPU'});
+			users.push({id: 'CPU', name: 'CPU'});
+		}
+
+		return GameCreator.createGame(users, tournament.gameMode, true, tournamentId);
 	}
 
 	/**
 	 * @private
 	 * @param users
 	 * @param modeSelection
-	 * @param isPracticeGame
 	 * @param isPrivate
 	 * @param tournamentId
 	 * @returns {string}
 	 */
-	static createGame(users, modeSelection, isPracticeGame, isPrivate, tournamentId) {
+	static createGame(users, modeSelection, isPrivate, tournamentId) {
 		const gameUsers = users.concat([]);
 		const creator = gameUsers.shift();
+
+		//The game is a practice if there is a CPU in players
+		let isPracticeGame = false;
+		for (let user of gameUsers) {
+			if (user.id === 'CPU') {
+				isPracticeGame = true;
+				break;
+			}
+		}
 
 		const gameId = createGame(
 			creator.id,
@@ -44,10 +58,10 @@ export default class GameCreator {
 			tournamentId
 		);
 
-		joinGame(creator.id, gameId);
+		joinGame(creator, gameId);
 		while (gameUsers.length) {
-			let userId = gameUsers.shift().id;
-			joinGame(userId, gameId, userId === 'CPU');
+			let user = gameUsers.shift();
+			joinGame(user, gameId);
 		}
 
 		return gameId;

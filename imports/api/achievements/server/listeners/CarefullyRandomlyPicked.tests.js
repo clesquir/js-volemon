@@ -3,11 +3,10 @@ import CarefullyRandomlyPicked from '/imports/api/achievements/server/listeners/
 import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
 import PlayerWon from '/imports/api/games/events/PlayerWon.js';
 import {Games} from '/imports/api/games/games.js';
-import {Players} from '/imports/api/games/players.js';
 import {PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
 import {assert} from 'chai';
+import StubCollections from 'meteor/hwillson:stub-collections';
 import {Random} from 'meteor/random';
-import {resetDatabase} from 'meteor/xolvio:cleaner';
 import sinon from 'sinon';
 
 describe('AchievementListener#CarefullyRandomlyPicked', function() {
@@ -29,8 +28,16 @@ describe('AchievementListener#CarefullyRandomlyPicked', function() {
 		assert.strictEqual(number, achievement.number);
 	};
 
+	before(function() {
+		StubCollections.add([Games, UserAchievements]);
+	});
+
 	beforeEach(function() {
-		resetDatabase();
+		StubCollections.stub();
+	});
+
+	afterEach(function() {
+		StubCollections.restore();
 	});
 
 	it('creates achievement if not created on player won', function() {
@@ -40,7 +47,6 @@ describe('AchievementListener#CarefullyRandomlyPicked', function() {
 		const listener = (new CarefullyRandomlyPicked()).forGame(gameId, userId);
 		stubListOfShapes(listener);
 		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000, players: [{id: userId, selectedShape: PLAYER_SHAPE_RANDOM, shape: 'a'}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
 
 		assert.equal(0, UserAchievements.find().count());
 		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
@@ -56,7 +62,6 @@ describe('AchievementListener#CarefullyRandomlyPicked', function() {
 		const listener = (new CarefullyRandomlyPicked()).forGame(gameId, userId);
 		stubListOfShapes(listener);
 		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000, players: [{id: userId, selectedShape: PLAYER_SHAPE_RANDOM, shape: 'b'}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({
 			userId: userId,
 			achievementId: ACHIEVEMENT_CAREFULLY_RANDOMLY_PICKED,
@@ -76,7 +81,6 @@ describe('AchievementListener#CarefullyRandomlyPicked', function() {
 		let listener = (new CarefullyRandomlyPicked()).forGame(gameId, userId);
 		stubListOfShapes(listener);
 		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000, players: [{id: userId, selectedShape: PLAYER_SHAPE_RANDOM, shape: 'b'}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({
 			userId: userId,
 			achievementId: ACHIEVEMENT_CAREFULLY_RANDOMLY_PICKED,
@@ -144,7 +148,6 @@ describe('AchievementListener#CarefullyRandomlyPicked', function() {
 		const listener = (new CarefullyRandomlyPicked()).forGame(gameId, userId);
 		stubListOfShapes(listener);
 		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000, players: [{id: userId, selectedShape: PLAYER_SHAPE_RANDOM, shape: 'a'}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({
 			userId: userId,
 			achievementId: ACHIEVEMENT_CAREFULLY_RANDOMLY_PICKED,
@@ -164,7 +167,6 @@ describe('AchievementListener#CarefullyRandomlyPicked', function() {
 		const listener = (new CarefullyRandomlyPicked()).forGame(gameId, userId);
 		stubListOfShapes(listener);
 		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000, players: [{id: userId, selectedShape: PLAYER_SHAPE_RANDOM, shape: 'a'}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({
 			userId: userId,
 			achievementId: ACHIEVEMENT_CAREFULLY_RANDOMLY_PICKED,
@@ -184,7 +186,6 @@ describe('AchievementListener#CarefullyRandomlyPicked', function() {
 		const listener = (new CarefullyRandomlyPicked()).forGame(gameId, userId);
 		stubListOfShapes(listener);
 		Games.insert({_id: gameId, createdBy: userId, gameDuration: 59000, players: [{id: userId, selectedShape: PLAYER_SHAPE_RANDOM, shape: 'a'}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
 		UserAchievements.insert({
 			userId: userId,
 			achievementId: ACHIEVEMENT_CAREFULLY_RANDOMLY_PICKED,

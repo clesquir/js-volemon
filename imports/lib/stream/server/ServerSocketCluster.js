@@ -40,7 +40,7 @@ export default class ServerSocketCluster extends Stream {
 			}
 		});
 
-		//@todo implement p2p
+		//p2p needs to be implemented
 	}
 
 	/**

@@ -87,6 +87,18 @@ export default class Game {
 				this.gameData.isSecondPlayerComputerMachineLearning()
 			);
 		}
+		if (this.gameData.isThirdPlayerComputer()) {
+			this.artificialIntelligence.addComputerWithKey(
+				'player3',
+				this.gameData.isThirdPlayerComputerMachineLearning()
+			);
+		}
+		if (this.gameData.isFourthPlayerComputer()) {
+			this.artificialIntelligence.addComputerWithKey(
+				'player4',
+				this.gameData.isFourthPlayerComputerMachineLearning()
+			);
+		}
 	}
 
 	getCurrentPlayer() {
@@ -156,7 +168,7 @@ export default class Game {
 				bonusRadius: this.gameConfiguration.bonusRadius(),
 				renderTo: 'gameContainer'
 			},
-			this.preloadGame, this.createGame, this.updateGame, this, false
+			this.preloadGame, this.createGame, this.updateGame, this
 		);
 	}
 
@@ -596,6 +608,12 @@ export default class Game {
 			}
 			if (this.gameData.isSecondPlayerComputer()) {
 				this.moveComputer(this.player2);
+			}
+			if (this.gameData.isThirdPlayerComputer()) {
+				this.moveComputer(this.player3);
+			}
+			if (this.gameData.isFourthPlayerComputer()) {
+				this.moveComputer(this.player4);
 			}
 
 			this.engine.constrainVelocity(this.ball, 1000);

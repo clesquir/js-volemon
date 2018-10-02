@@ -6,10 +6,9 @@ import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import BonusRemoved from '/imports/api/games/events/BonusRemoved.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {Games} from '/imports/api/games/games.js';
-import {Players} from '/imports/api/games/players.js';
 import {assert} from 'chai';
+import StubCollections from 'meteor/hwillson:stub-collections';
 import {Random} from 'meteor/random';
-import {resetDatabase} from 'meteor/xolvio:cleaner';
 
 describe('AchievementListener#IWasThereWaiting', function() {
 	const gameId = Random.id(5);
@@ -24,15 +23,21 @@ describe('AchievementListener#IWasThereWaiting', function() {
 		assert.strictEqual(number, achievement.number);
 	};
 
+	before(function() {
+		StubCollections.add([Games, UserAchievements]);
+	});
+
 	beforeEach(function() {
-		resetDatabase();
+		StubCollections.stub();
+	});
+
+	afterEach(function() {
+		StubCollections.restore();
 	});
 
 	it('increment if current player is paused, point is scored by user and user is host', function() {
 		const listener = (new IWasThereWaiting()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 
 		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, {activatedBonusClass: BONUS_FREEZE_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_FREEZE_MONSTER, activatorPlayerKey: 'player1'}));
 
@@ -46,8 +51,6 @@ describe('AchievementListener#IWasThereWaiting', function() {
 	it('increment if current player is paused, point is scored by user and user is client', function() {
 		const listener = (new IWasThereWaiting()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: opponentUserId, players: [{id: opponentUserId}, {id: userId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 
 		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, {activatedBonusClass: BONUS_FREEZE_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_FREEZE_MONSTER, activatorPlayerKey: 'player2'}));
 
@@ -61,8 +64,6 @@ describe('AchievementListener#IWasThereWaiting', function() {
 	it('do not increment if current player is paused, point is scored by opponent and user is host', function() {
 		const listener = (new IWasThereWaiting()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 
 		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, {activatedBonusClass: BONUS_FREEZE_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_FREEZE_MONSTER, activatorPlayerKey: 'player1'}));
 
@@ -74,8 +75,6 @@ describe('AchievementListener#IWasThereWaiting', function() {
 	it('do not increment if current player is paused, point is scored by opponent and user is client', function() {
 		const listener = (new IWasThereWaiting()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: opponentUserId, players: [{id: opponentUserId}, {id: userId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 
 		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, {activatedBonusClass: BONUS_FREEZE_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_FREEZE_MONSTER, activatorPlayerKey: 'player2'}));
 
@@ -87,8 +86,6 @@ describe('AchievementListener#IWasThereWaiting', function() {
 	it('do not increment if current player is not paused, point is scored by user and user is host', function() {
 		const listener = (new IWasThereWaiting()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 
 		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, {activatedBonusClass: BONUS_FREEZE_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_FREEZE_MONSTER, activatorPlayerKey: 'player2'}));
 
@@ -100,8 +97,6 @@ describe('AchievementListener#IWasThereWaiting', function() {
 	it('do not increment if current player is not paused, point is scored by user and user is client', function() {
 		const listener = (new IWasThereWaiting()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: opponentUserId, players: [{id: opponentUserId}, {id: userId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 
 		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, {activatedBonusClass: BONUS_FREEZE_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_FREEZE_MONSTER, activatorPlayerKey: 'player1'}));
 
@@ -113,8 +108,6 @@ describe('AchievementListener#IWasThereWaiting', function() {
 	it('do not increment if current player has caught paused in the point but is not anymore, point is scored by user and user is host', function() {
 		const listener = (new IWasThereWaiting()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 
 		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, {activatedBonusClass: BONUS_FREEZE_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_FREEZE_MONSTER, activatorPlayerKey: 'player1'}));
 		listener.onBonusRemoved(new BonusRemoved(gameId, BONUS_FREEZE_MONSTER, 'player1', BONUS_FREEZE_MONSTER, 'player1', BONUS_FREEZE_MONSTER));
@@ -127,8 +120,6 @@ describe('AchievementListener#IWasThereWaiting', function() {
 	it('do not increment if current player has caught paused in the point but is not anymore, point is scored by user and user is client', function() {
 		const listener = (new IWasThereWaiting()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: opponentUserId, players: [{id: opponentUserId}, {id: userId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 
 		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, {activatedBonusClass: BONUS_FREEZE_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_FREEZE_MONSTER, activatorPlayerKey: 'player2'}));
 		listener.onBonusRemoved(new BonusRemoved(gameId, BONUS_FREEZE_MONSTER, 'player2', BONUS_FREEZE_MONSTER, 'player2', BONUS_FREEZE_MONSTER));
@@ -141,8 +132,6 @@ describe('AchievementListener#IWasThereWaiting', function() {
 	it('do not increment if current player has caught paused but a point was taken since, point is scored by user and user is host', function() {
 		const listener = (new IWasThereWaiting()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 
 		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, {activatedBonusClass: BONUS_FREEZE_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_FREEZE_MONSTER, activatorPlayerKey: 'player1'}));
 
@@ -160,8 +149,6 @@ describe('AchievementListener#IWasThereWaiting', function() {
 	it('do not increment if current player has caught paused but a point was taken since, point is scored by user and user is client', function() {
 		const listener = (new IWasThereWaiting()).forGame(gameId, userId);
 		Games.insert({_id: gameId, createdBy: opponentUserId, players: [{id: opponentUserId}, {id: userId}]});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
 
 		listener.onBonusCaught(new BonusCaught(gameId, BONUS_FREEZE_MONSTER, {activatedBonusClass: BONUS_FREEZE_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_FREEZE_MONSTER, activatorPlayerKey: 'player2'}));
 

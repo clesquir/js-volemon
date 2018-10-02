@@ -3,10 +3,10 @@ import Snoozer from '/imports/api/achievements/server/listeners/Snoozer.js';
 import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
 import PlayerWon from '/imports/api/games/events/PlayerWon.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
-import OneVersusOneStartedGameFixture from '/imports/api/games/fixture/OneVersusOneStartedGameFixture.js';
+import {Games} from '/imports/api/games/games.js';
 import {assert} from 'chai';
+import StubCollections from 'meteor/hwillson:stub-collections';
 import {Random} from 'meteor/random';
-import {resetDatabase} from 'meteor/xolvio:cleaner';
 
 describe('AchievementListener#Snoozer', function() {
 	const assertSnoozerUserAchievementNumberEquals = function(userId, number) {
@@ -18,141 +18,185 @@ describe('AchievementListener#Snoozer', function() {
 		assert.strictEqual(number, achievement.number);
 	};
 
+	before(function() {
+		StubCollections.add([Games, UserAchievements]);
+	});
+
 	beforeEach(function() {
-		resetDatabase();
+		StubCollections.stub();
+	});
+
+	afterEach(function() {
+		StubCollections.restore();
 	});
 
 	it('creates achievement if not created on player won if has been match point zero if user is host', function() {
-		const gameFixture = OneVersusOneStartedGameFixture.create();
-		const listener = (new Snoozer()).forGame(gameFixture.gameId, gameFixture.creatorUserId);
+		const gameId = Random.id(5);
+		const creatorUserId = Random.id(5);
+		const opponentUserId = Random.id(5);
+		Games.insert({_id: gameId, createdBy: creatorUserId, forfeitMinimumPoints: 3, maximumPoints: 5, players: [{id: creatorUserId}, {id: opponentUserId}]});
+		const listener = (new Snoozer()).forGame(gameId, creatorUserId);
 
-		listener.onPointTaken(new PointTaken(gameFixture.gameId, 0, false, 0, 4));
+		listener.onPointTaken(new PointTaken(gameId, 0, false, 0, 4));
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onPlayerWon(new PlayerWon(gameFixture.gameId, gameFixture.creatorUserId, 5, 4));
+		listener.onPlayerWon(new PlayerWon(gameId, creatorUserId, 5, 4));
 
 		assert.equal(1, UserAchievements.find().count());
-		assertSnoozerUserAchievementNumberEquals(gameFixture.creatorUserId, 1);
+		assertSnoozerUserAchievementNumberEquals(creatorUserId, 1);
 	});
 
 	it('do not create achievement if not created if has not been match point zero on player won if user is host', function() {
-		const gameFixture = OneVersusOneStartedGameFixture.create();
-		const listener = (new Snoozer()).forGame(gameFixture.gameId, gameFixture.creatorUserId);
+		const gameId = Random.id(5);
+		const creatorUserId = Random.id(5);
+		const opponentUserId = Random.id(5);
+		Games.insert({_id: gameId, createdBy: creatorUserId, forfeitMinimumPoints: 3, maximumPoints: 5, players: [{id: creatorUserId}, {id: opponentUserId}]});
+		const listener = (new Snoozer()).forGame(gameId, creatorUserId);
 
-		listener.onPointTaken(new PointTaken(gameFixture.gameId, 0, false, 0, 1));
+		listener.onPointTaken(new PointTaken(gameId, 0, false, 0, 1));
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onPlayerWon(new PlayerWon(gameFixture.gameId, gameFixture.creatorUserId, 5, 4));
+		listener.onPlayerWon(new PlayerWon(gameId, creatorUserId, 5, 4));
 		assert.equal(0, UserAchievements.find().count());
 	});
 
 	it('creates achievement if not created on player won if has been match point zero if user is client', function() {
-		const gameFixture = OneVersusOneStartedGameFixture.create();
-		const listener = (new Snoozer()).forGame(gameFixture.gameId, gameFixture.opponentUserId);
+		const gameId = Random.id(5);
+		const creatorUserId = Random.id(5);
+		const opponentUserId = Random.id(5);
+		Games.insert({_id: gameId, createdBy: creatorUserId, forfeitMinimumPoints: 3, maximumPoints: 5, players: [{id: creatorUserId}, {id: opponentUserId}]});
+		const listener = (new Snoozer()).forGame(gameId, opponentUserId);
 
-		listener.onPointTaken(new PointTaken(gameFixture.gameId, 0, false, 4, 0));
+		listener.onPointTaken(new PointTaken(gameId, 0, false, 4, 0));
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onPlayerWon(new PlayerWon(gameFixture.gameId, gameFixture.opponentUserId, 5, 4));
+		listener.onPlayerWon(new PlayerWon(gameId, opponentUserId, 5, 4));
 
 		assert.equal(1, UserAchievements.find().count());
-		assertSnoozerUserAchievementNumberEquals(gameFixture.opponentUserId, 1);
+		assertSnoozerUserAchievementNumberEquals(opponentUserId, 1);
 	});
 
 	it('do not create achievement if not created if has not been match point zero on player won if user is client', function() {
-		const gameFixture = OneVersusOneStartedGameFixture.create();
-		const listener = (new Snoozer()).forGame(gameFixture.gameId, gameFixture.opponentUserId);
+		const gameId = Random.id(5);
+		const creatorUserId = Random.id(5);
+		const opponentUserId = Random.id(5);
+		Games.insert({_id: gameId, createdBy: creatorUserId, forfeitMinimumPoints: 3, maximumPoints: 5, players: [{id: creatorUserId}, {id: opponentUserId}]});
+		const listener = (new Snoozer()).forGame(gameId, opponentUserId);
 
-		listener.onPointTaken(new PointTaken(gameFixture.gameId, 0, false, 1, 0));
+		listener.onPointTaken(new PointTaken(gameId, 0, false, 1, 0));
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onPlayerWon(new PlayerWon(gameFixture.gameId, gameFixture.opponentUserId, 5, 4));
+		listener.onPlayerWon(new PlayerWon(gameId, opponentUserId, 5, 4));
 		assert.equal(0, UserAchievements.find().count());
 	});
 
 	it('do not create achievement if not created if not gameId on player won', function() {
-		const gameFixture = OneVersusOneStartedGameFixture.create();
-		const listener = (new Snoozer()).forGame(gameFixture.gameId, gameFixture.creatorUserId);
+		const gameId = Random.id(5);
+		const creatorUserId = Random.id(5);
+		const opponentUserId = Random.id(5);
+		Games.insert({_id: gameId, createdBy: creatorUserId, forfeitMinimumPoints: 3, maximumPoints: 5, players: [{id: creatorUserId}, {id: opponentUserId}]});
+		const listener = (new Snoozer()).forGame(gameId, creatorUserId);
 
-		listener.onPointTaken(new PointTaken(gameFixture.gameId, 0, false, 0, 4));
+		listener.onPointTaken(new PointTaken(gameId, 0, false, 0, 4));
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onPlayerWon(new PlayerWon(Random.id(5), gameFixture.creatorUserId, 5, 4));
+		listener.onPlayerWon(new PlayerWon(Random.id(5), creatorUserId, 5, 4));
 		assert.equal(0, UserAchievements.find().count());
 	});
 
 	it('do not create achievement if not created if not userId on player won', function() {
-		const gameFixture = OneVersusOneStartedGameFixture.create();
-		const listener = (new Snoozer()).forGame(gameFixture.gameId, gameFixture.creatorUserId);
+		const gameId = Random.id(5);
+		const creatorUserId = Random.id(5);
+		const opponentUserId = Random.id(5);
+		Games.insert({_id: gameId, createdBy: creatorUserId, forfeitMinimumPoints: 3, maximumPoints: 5, players: [{id: creatorUserId}, {id: opponentUserId}]});
+		const listener = (new Snoozer()).forGame(gameId, creatorUserId);
 
 		assert.equal(0, UserAchievements.find().count());
-		listener.onPlayerWon(new PlayerWon(gameFixture.gameId, Random.id(5), 5, 4));
+		listener.onPlayerWon(new PlayerWon(gameId, Random.id(5), 5, 4));
 		assert.equal(0, UserAchievements.find().count());
 	});
 
 	it('update achievement on player won if has been match point zero if user is host', function() {
-		const gameFixture = OneVersusOneStartedGameFixture.create();
-		const listener = (new Snoozer()).forGame(gameFixture.gameId, gameFixture.creatorUserId);
-		UserAchievements.insert({userId: gameFixture.creatorUserId, achievementId: ACHIEVEMENT_SNOOZER, number: 1});
+		const gameId = Random.id(5);
+		const creatorUserId = Random.id(5);
+		const opponentUserId = Random.id(5);
+		Games.insert({_id: gameId, createdBy: creatorUserId, forfeitMinimumPoints: 3, maximumPoints: 5, players: [{id: creatorUserId}, {id: opponentUserId}]});
+		const listener = (new Snoozer()).forGame(gameId, creatorUserId);
+		UserAchievements.insert({userId: creatorUserId, achievementId: ACHIEVEMENT_SNOOZER, number: 1});
 
-		listener.onPointTaken(new PointTaken(gameFixture.gameId, 0, false, 0, 4));
-		listener.onPlayerWon(new PlayerWon(gameFixture.gameId, gameFixture.creatorUserId, 5, 4));
+		listener.onPointTaken(new PointTaken(gameId, 0, false, 0, 4));
+		listener.onPlayerWon(new PlayerWon(gameId, creatorUserId, 5, 4));
 
-		assertSnoozerUserAchievementNumberEquals(gameFixture.creatorUserId, 2);
+		assertSnoozerUserAchievementNumberEquals(creatorUserId, 2);
 	});
 
 	it('do not update achievement if has not been match point zero on player won if user is host', function() {
-		const gameFixture = OneVersusOneStartedGameFixture.create();
-		const listener = (new Snoozer()).forGame(gameFixture.gameId, gameFixture.creatorUserId);
-		UserAchievements.insert({userId: gameFixture.creatorUserId, achievementId: ACHIEVEMENT_SNOOZER, number: 1});
+		const gameId = Random.id(5);
+		const creatorUserId = Random.id(5);
+		const opponentUserId = Random.id(5);
+		Games.insert({_id: gameId, createdBy: creatorUserId, forfeitMinimumPoints: 3, maximumPoints: 5, players: [{id: creatorUserId}, {id: opponentUserId}]});
+		const listener = (new Snoozer()).forGame(gameId, creatorUserId);
+		UserAchievements.insert({userId: creatorUserId, achievementId: ACHIEVEMENT_SNOOZER, number: 1});
 
-		listener.onPointTaken(new PointTaken(gameFixture.gameId, 0, false, 0, 1));
-		listener.onPlayerWon(new PlayerWon(gameFixture.gameId, gameFixture.creatorUserId, 5, 4));
+		listener.onPointTaken(new PointTaken(gameId, 0, false, 0, 1));
+		listener.onPlayerWon(new PlayerWon(gameId, creatorUserId, 5, 4));
 
-		assertSnoozerUserAchievementNumberEquals(gameFixture.creatorUserId, 1);
+		assertSnoozerUserAchievementNumberEquals(creatorUserId, 1);
 	});
 
 	it('update achievement on player won if has been match point zero if user is client', function() {
-		const gameFixture = OneVersusOneStartedGameFixture.create();
-		const listener = (new Snoozer()).forGame(gameFixture.gameId, gameFixture.opponentUserId);
-		UserAchievements.insert({userId: gameFixture.opponentUserId, achievementId: ACHIEVEMENT_SNOOZER, number: 1});
+		const gameId = Random.id(5);
+		const creatorUserId = Random.id(5);
+		const opponentUserId = Random.id(5);
+		Games.insert({_id: gameId, createdBy: creatorUserId, forfeitMinimumPoints: 3, maximumPoints: 5, players: [{id: creatorUserId}, {id: opponentUserId}]});
+		const listener = (new Snoozer()).forGame(gameId, opponentUserId);
+		UserAchievements.insert({userId: opponentUserId, achievementId: ACHIEVEMENT_SNOOZER, number: 1});
 
-		listener.onPointTaken(new PointTaken(gameFixture.gameId, 0, false, 4, 0));
-		listener.onPlayerWon(new PlayerWon(gameFixture.gameId, gameFixture.opponentUserId, 5, 4));
+		listener.onPointTaken(new PointTaken(gameId, 0, false, 4, 0));
+		listener.onPlayerWon(new PlayerWon(gameId, opponentUserId, 5, 4));
 
-		assertSnoozerUserAchievementNumberEquals(gameFixture.opponentUserId, 2);
+		assertSnoozerUserAchievementNumberEquals(opponentUserId, 2);
 	});
 
 	it('do not update achievement if has not been match point zero on player won if user is client', function() {
-		const gameFixture = OneVersusOneStartedGameFixture.create();
-		const listener = (new Snoozer()).forGame(gameFixture.gameId, gameFixture.opponentUserId);
-		UserAchievements.insert({userId: gameFixture.opponentUserId, achievementId: ACHIEVEMENT_SNOOZER, number: 1});
+		const gameId = Random.id(5);
+		const creatorUserId = Random.id(5);
+		const opponentUserId = Random.id(5);
+		Games.insert({_id: gameId, createdBy: creatorUserId, forfeitMinimumPoints: 3, maximumPoints: 5, players: [{id: creatorUserId}, {id: opponentUserId}]});
+		const listener = (new Snoozer()).forGame(gameId, opponentUserId);
+		UserAchievements.insert({userId: opponentUserId, achievementId: ACHIEVEMENT_SNOOZER, number: 1});
 
-		listener.onPointTaken(new PointTaken(gameFixture.gameId, 0, false, 1, 0));
-		listener.onPlayerWon(new PlayerWon(gameFixture.gameId, gameFixture.opponentUserId, 5, 4));
+		listener.onPointTaken(new PointTaken(gameId, 0, false, 1, 0));
+		listener.onPlayerWon(new PlayerWon(gameId, opponentUserId, 5, 4));
 
-		assertSnoozerUserAchievementNumberEquals(gameFixture.opponentUserId, 1);
+		assertSnoozerUserAchievementNumberEquals(opponentUserId, 1);
 	});
 
 	it('do not update achievement if not gameId on player won', function() {
-		const gameFixture = OneVersusOneStartedGameFixture.create();
-		const listener = (new Snoozer()).forGame(gameFixture.gameId, gameFixture.creatorUserId);
-		UserAchievements.insert({userId: gameFixture.creatorUserId, achievementId: ACHIEVEMENT_SNOOZER, number: 1});
+		const gameId = Random.id(5);
+		const creatorUserId = Random.id(5);
+		const opponentUserId = Random.id(5);
+		Games.insert({_id: gameId, createdBy: creatorUserId, forfeitMinimumPoints: 3, maximumPoints: 5, players: [{id: creatorUserId}, {id: opponentUserId}]});
+		const listener = (new Snoozer()).forGame(gameId, creatorUserId);
+		UserAchievements.insert({userId: creatorUserId, achievementId: ACHIEVEMENT_SNOOZER, number: 1});
 
-		listener.onPointTaken(new PointTaken(gameFixture.gameId, 0, false, 0, 4));
-		listener.onPlayerWon(new PlayerWon(Random.id(5), gameFixture.creatorUserId, 5, 4));
+		listener.onPointTaken(new PointTaken(gameId, 0, false, 0, 4));
+		listener.onPlayerWon(new PlayerWon(Random.id(5), creatorUserId, 5, 4));
 
-		assertSnoozerUserAchievementNumberEquals(gameFixture.creatorUserId, 1);
+		assertSnoozerUserAchievementNumberEquals(creatorUserId, 1);
 	});
 
 	it('do not update achievement if not userId on player won', function() {
-		const gameFixture = OneVersusOneStartedGameFixture.create();
-		const listener = (new Snoozer()).forGame(gameFixture.gameId, gameFixture.creatorUserId);
-		UserAchievements.insert({userId: gameFixture.creatorUserId, achievementId: ACHIEVEMENT_SNOOZER, number: 1});
+		const gameId = Random.id(5);
+		const creatorUserId = Random.id(5);
+		const opponentUserId = Random.id(5);
+		Games.insert({_id: gameId, createdBy: creatorUserId, forfeitMinimumPoints: 3, maximumPoints: 5, players: [{id: creatorUserId}, {id: opponentUserId}]});
+		const listener = (new Snoozer()).forGame(gameId, creatorUserId);
+		UserAchievements.insert({userId: creatorUserId, achievementId: ACHIEVEMENT_SNOOZER, number: 1});
 
-		listener.onPointTaken(new PointTaken(gameFixture.gameId, 0, false, 0, 4));
-		listener.onPlayerWon(new PlayerWon(gameFixture.gameId, Random.id(5), 5, 4));
+		listener.onPointTaken(new PointTaken(gameId, 0, false, 0, 4));
+		listener.onPlayerWon(new PlayerWon(gameId, Random.id(5), 5, 4));
 
-		assertSnoozerUserAchievementNumberEquals(gameFixture.creatorUserId, 1);
+		assertSnoozerUserAchievementNumberEquals(creatorUserId, 1);
 	});
 });

@@ -1,4 +1,4 @@
-import {ONE_VS_COMPUTER_GAME_MODE, TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
+import {TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import GameData from '/imports/api/games/data/GameData.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
@@ -118,19 +118,35 @@ export default class CollectionGameData extends GameData {
 	}
 
 	isFirstPlayerComputer() {
-		return false;
+		return this.firstGamePlayer && this.firstGamePlayer.id === 'CPU';
 	}
 
 	isSecondPlayerComputer() {
-		return this.secondGamePlayer.id === 'CPU';
+		return this.secondGamePlayer && this.secondGamePlayer.id === 'CPU';
+	}
+
+	isThirdPlayerComputer() {
+		return this.thirdGamePlayer && this.thirdGamePlayer.id === 'CPU';
+	}
+
+	isFourthPlayerComputer() {
+		return this.fourthGamePlayer && this.fourthGamePlayer.id === 'CPU';
 	}
 
 	isFirstPlayerComputerMachineLearning() {
-		return false;
+		return this.firstGamePlayer && this.firstGamePlayer.isMachineLearning === true;
 	}
 
 	isSecondPlayerComputerMachineLearning() {
-		return false;
+		return this.secondGamePlayer && this.secondGamePlayer.isMachineLearning === true;
+	}
+
+	isThirdPlayerComputerMachineLearning() {
+		return this.thirdGamePlayer && this.thirdGamePlayer.isMachineLearning === true;
+	}
+
+	isFourthPlayerComputerMachineLearning() {
+		return this.fourthGamePlayer && this.fourthGamePlayer.isMachineLearning === true;
 	}
 
 	isTwoVersusTwo() {

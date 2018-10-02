@@ -13,9 +13,6 @@ export default class Learner {
 	//(Genomes will be added the key `fitness`)
 	genomes = [];
 
-	//Current state of learning [STOP, LEARNING]
-	state = 'STOP';
-
 	//Current genome/generation tryout
 	genome = 0;
 	generation = 0;
@@ -49,8 +46,6 @@ export default class Learner {
 
 	//Build genomes before calling executeGeneration.
 	startLearning() {
-		this.state = 'LEARNING';
-
 		//Build genomes if needed
 		while (this.genomes.length < this.genomeUnits) {
 			this.genomes.push(this.buildGenome(this.numberOfInputs, this.numberOfOutputs));
@@ -96,13 +91,7 @@ export default class Learner {
 	 * 4) Execute generation (recursively)
 	 */
 	executeGeneration() {
-		if (this.state === 'STOP') {
-			return;
-		}
-
 		this.generation++;
-		console.log('Executing generation ' + this.generation);
-
 		this.genome = 0;
 
 		async.mapSeries(
@@ -182,10 +171,6 @@ export default class Learner {
 	 * 3) When the game has ended, computes the fitness
 	 */
 	executeGenome(genome, next) {
-		if (this.state === 'STOP') {
-			return;
-		}
-
 		this.genome = this.genomes.indexOf(genome) + 1;
 
 		//Reads sensor data, and apply network

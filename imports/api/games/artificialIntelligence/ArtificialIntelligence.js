@@ -1,11 +1,14 @@
 import Learner from '/imports/api/games/artificialIntelligence/Learner.js';
 import {CLIENT_POINTS_COLUMN, HOST_POINTS_COLUMN} from '/imports/api/games/constants.js';
+import clientGenomes from '/public/assets/artificial-intelligence/client_genomes.json';
+import hostGenomes from '/public/assets/artificial-intelligence/host_genomes.json';
 
 export default class ArtificialIntelligence {
 	computers = {};
 	pointStartTime = 0;
-	numberPointsToCalculateGenomes = 5;
+	numberPointsToCalculateGenomes = 10;
 	canJump = false;
+	isLearning = false;
 
 	addComputerWithKey(key, machineLearning = false) {
 		this.computers[key] = {
@@ -18,8 +21,9 @@ export default class ArtificialIntelligence {
 		};
 
 		if (machineLearning) {
-			this.computers[key].learner = new Learner(4, 2, 12, 4, 0.2);
+			this.computers[key].learner = new Learner(6, 2, 12, 4, 0.2);
 			this.computers[key].learner.init();
+			this.loadGenomes(key, JSON.stringify(key === 'player1' || key === 'player3' ? hostGenomes : clientGenomes));
 		}
 	}
 
@@ -60,40 +64,49 @@ export default class ArtificialIntelligence {
 	stopPoint(pointSide) {
 		for (let key in this.computers) {
 			if (this.computers.hasOwnProperty(key) && this.computers[key].learner) {
-				const pointTime = ((new Date()).getTime() - this.pointStartTime);
-				let fitness = 0;
+				if (this.isLearning) {
+					const pointTime = ((new Date()).getTime() - this.pointStartTime);
+					let fitness = 0;
 
-				//When it has the point, the shortest the point, the better
-				//When it doesn't, the longest the point, the better. Negative value
-				if (pointSide === HOST_POINTS_COLUMN) {
-					fitness = 1 / pointTime * 10000000;
+					//When it has the point, the shortest the point, the better
+					//When it doesn't, the longest the point, the better. Negative value
+					if (pointSide === HOST_POINTS_COLUMN) {
+						fitness = 1 / pointTime * 10000000;
 
-					if (key === 'player2') {
-						fitness = -1 * fitness;
+						if (key === 'player2') {
+							fitness = -1 * fitness;
+						}
+					} else if (pointSide === CLIENT_POINTS_COLUMN) {
+						fitness = 1 / pointTime * 10000000;
+
+						if (key === 'player1') {
+							fitness = -1 * fitness;
+						}
 					}
-				} else if (pointSide === CLIENT_POINTS_COLUMN) {
-					fitness = 1 / pointTime * 10000000;
 
-					if (key === 'player1') {
-						fitness = -1 * fitness;
+					this.computers[key].cumulatedFitness += fitness;
+					this.computers[key].numberPointsForCurrentGenome++;
+
+					if (this.computers[key].numberPointsForCurrentGenome >= this.numberPointsToCalculateGenomes) {
+						this.computers[key].learner.applyGenomeFitness(this.computers[key].cumulatedFitness);
+
+						//Reset
+						this.computers[key].numberPointsForCurrentGenome = 0;
+						this.computers[key].cumulatedFitness = 0;
 					}
-				}
-
-				this.computers[key].cumulatedFitness += fitness;
-				this.computers[key].numberPointsForCurrentGenome++;
-
-				if (this.computers[key].numberPointsForCurrentGenome >= this.numberPointsToCalculateGenomes) {
-					this.computers[key].learner.applyGenomeFitness(this.computers[key].cumulatedFitness);
-
-					//Reset
-					this.computers[key].numberPointsForCurrentGenome = 0;
-					this.computers[key].cumulatedFitness = 0;
+				} else {
+					this.computers[key].learner.applyGenomeFitness(0);
 				}
 			}
 		}
 	}
 
-	applyLearnerOutput(key, outputs) {
+	/**
+	 * @param key
+	 * @param {{key: string, isMoveReversed: boolean, horizontalMoveModifier: Function, verticalMoveModifier: Function, alwaysJump: boolean, canJump: boolean, velocityXOnMove: number, velocityYOnJump: number}} modifiers
+	 * @param outputs
+	 */
+	applyLearnerOutput(key, modifiers, outputs) {
 		if (this.computers.hasOwnProperty(key) && outputs.length === 2) {
 			this.computers[key].left = false;
 			this.computers[key].right = false;
@@ -112,6 +125,8 @@ export default class ArtificialIntelligence {
 			} else if (outputs[1] > 0.55) {
 				this.computers[key].dropshot = true;
 			}
+
+			this.applyModifiers(key, modifiers);
 		}
 	}
 
@@ -133,17 +148,20 @@ export default class ArtificialIntelligence {
 			//Reduce fitness if ball is not horizontally moving
 			if (
 				Math.round(ballPosition.velocityX) === 0 &&
-				isLeft === (ballPosition.x < width)
+				isLeft === (ballPosition.x < halfWidth)
 			) {
-				this.computers[key].cumulatedFitness--;
+				this.computers[key].cumulatedFitness -= 10;
 			}
 
 			this.applyLearnerOutput(
 				key,
+				modifiers,
 				this.computers[key].learner.emitData(
 					[
-						Math.round(computerPosition.x - ballPosition.x), //distance player/ball and side
-						Math.round(computerPosition.y - ballPosition.y), //distance player/ball and side
+						Math.round(computerPosition.x),
+						Math.round(computerPosition.y),
+						Math.round(ballPosition.x),
+						Math.round(ballPosition.y),
 						Math.round(ballPosition.velocityX),
 						Math.round(ballPosition.velocityY)
 					]
@@ -188,7 +206,9 @@ export default class ArtificialIntelligence {
 				} else if (xAtGround < computerPosition.x + computerPosition.width / 6) {
 					//ball is behind
 					this.computers[key].left = true;
-				} else if (this.canJump && ballPosition.x < halfWidth) {
+				}
+
+				if (this.shouldJump(modifiers.key, ballPosition, computerPosition, xAtGround)) {
 					this.computers[key].jump = true;
 				}
 			} else {
@@ -204,7 +224,9 @@ export default class ArtificialIntelligence {
 				} else if (xAtGround > computerPosition.x - computerPosition.width / 6) {
 					//ball is behind
 					this.computers[key].right = true;
-				} else if (this.canJump && ballPosition.x > halfWidth) {
+				}
+
+				if (this.shouldJump(modifiers.key, ballPosition, computerPosition, xAtGround)) {
 					this.computers[key].jump = true;
 				}
 			} else {
@@ -213,12 +235,7 @@ export default class ArtificialIntelligence {
 			}
 		}
 
-		if (modifiers.isMoveReversed) {
-			const left = this.computers[key].right;
-			const right = this.computers[key].left;
-			this.computers[key].left = left;
-			this.computers[key].right = right;
-		}
+		this.applyModifiers(key, modifiers);
 	}
 
 	movesLeft(key) {
@@ -251,6 +268,24 @@ export default class ArtificialIntelligence {
 		}
 
 		return false;
+	}
+
+	shouldJump(key, ballPosition, computerPosition, xAtGround) {
+		let isLeftPlayer = this.isLeftPlayer(key);
+		let halfWidth = computerPosition.width / 2;
+		let playerLeftLimit = computerPosition.x - halfWidth - (isLeftPlayer ? halfWidth : 0);
+		let playerRightLimit = computerPosition.x + halfWidth + (isLeftPlayer ? halfWidth : 0);
+		let maximumHeight = computerPosition.y - computerPosition.height * 4;
+		let minimumHeight = computerPosition.y - computerPosition.height * 1.5;
+
+		return (
+			this.canJump &&
+			ballPosition.x > playerLeftLimit && xAtGround > playerLeftLimit &&
+			ballPosition.x < playerRightLimit && xAtGround < playerRightLimit &&
+			ballPosition.y > maximumHeight &&
+			ballPosition.y < minimumHeight &&
+			Math.abs(ballPosition.velocityX) < 350
+		);
 	}
 
 	/**
@@ -372,5 +407,19 @@ export default class ArtificialIntelligence {
 	 */
 	isLeftPlayer(key) {
 		return key === 'player1' || key === 'player3';
+	}
+
+	/**
+	 * @private
+	 * @param key
+	 * @param {{key: string, isMoveReversed: boolean, horizontalMoveModifier: Function, verticalMoveModifier: Function, alwaysJump: boolean, canJump: boolean, velocityXOnMove: number, velocityYOnJump: number}} modifiers
+	 */
+	applyModifiers(key, modifiers) {
+		if (modifiers.isMoveReversed !== modifiers.velocityXOnMove < 0) {
+			const left = this.computers[key].right;
+			const right = this.computers[key].left;
+			this.computers[key].left = left;
+			this.computers[key].right = right;
+		}
 	}
 }

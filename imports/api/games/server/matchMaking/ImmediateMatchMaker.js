@@ -1,5 +1,6 @@
 import {
 	ONE_VS_COMPUTER_GAME_MODE,
+	ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE,
 	ONE_VS_ONE_GAME_MODE,
 	TOURNAMENT_GAME_SELECTION,
 	TWO_VS_TWO_GAME_MODE
@@ -30,6 +31,8 @@ export default class ImmediateMatchMaker extends MatchMaker {
 		switch (gameMode) {
 			case ONE_VS_COMPUTER_GAME_MODE:
 				return [match.usersToMatch[0], {id: 'CPU', name: 'CPU'}];
+			case ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE:
+				return [match.usersToMatch[0], {id: 'CPU', isMachineLearning: true, name: 'CPU'}];
 			case ONE_VS_ONE_GAME_MODE:
 				if (match.usersToMatch.length === 2) {
 					return match.usersToMatch;

@@ -14,6 +14,7 @@ import {Random} from 'meteor/random';
 export default class Dev {
 	constructor() {
 		this.game = null;
+		this.renderer = null;
 	}
 
 	beforeStart() {
@@ -52,7 +53,11 @@ export default class Dev {
 				bonusRadius: this.gameConfiguration.bonusRadius(),
 				renderTo: 'devGameContainer'
 			},
-			this.preloadGame, this.createGame, this.updateGame, this, true
+			this.preloadGame, this.createGame, this.updateGame, this,
+			{
+				debug: true,
+				renderer: this.renderer
+			}
 		);
 	}
 

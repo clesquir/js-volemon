@@ -1,4 +1,4 @@
-import {ONE_VS_COMPUTER_GAME_MODE, TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
+import {TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import {GAME_STATUS_REGISTRATION, GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {tournamentName} from "/imports/api/tournaments/utils.js";

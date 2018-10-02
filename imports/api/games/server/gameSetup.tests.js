@@ -16,12 +16,13 @@ describe('lib/client/gameSetup#joinGame', function() {
 	const userId = Random.id(5);
 	const username = Random.id(5);
 	const gameId = Random.id(5);
+	const user = {id: userId, isMachineLearning: false, name: username};
 
 	it('does not allow to join if game does not exist', function() {
 		let exception;
 
 		try {
-			joinGame(userId, Random.id(5));
+			joinGame(user, Random.id(5));
 		} catch(e) {
 			exception = e;
 		}
@@ -36,7 +37,7 @@ describe('lib/client/gameSetup#joinGame', function() {
 		try {
 			Games.insert({_id: gameId, players: [{id: userId}]});
 			Players.insert({userId: userId, gameId: gameId});
-			joinGame(userId, gameId);
+			joinGame(user, gameId);
 		} catch(e) {
 			exception = e;
 		}
@@ -54,7 +55,7 @@ describe('lib/client/gameSetup#joinGame', function() {
 			Games.insert({_id: gameId, gameMode: ONE_VS_ONE_GAME_MODE, players: [{id: user1}, {id: user2}]});
 			Players.insert({userId: user1, gameId: gameId});
 			Players.insert({userId: user2, gameId: gameId});
-			joinGame(userId, gameId);
+			joinGame(user, gameId);
 		} catch(e) {
 			exception = e;
 		}
@@ -66,15 +67,15 @@ describe('lib/client/gameSetup#joinGame', function() {
 	it('updates game player names', function() {
 		Games.insert({_id: gameId});
 		UserConfigurations.insert({userId: userId, name: username});
-		joinGame(userId, gameId);
+		joinGame(user, gameId);
 
 		const game = Games.findOne({_id: gameId});
 
-		assert.deepEqual([{id: userId, name: username}], game.players);
+		assert.deepEqual([{id: userId, isMachineLearning: false, name: username}], game.players);
 	});
 	it('join player', function() {
 		Games.insert({_id: gameId});
-		joinGame(userId, gameId);
+		joinGame(user, gameId);
 
 		const player = Players.findOne({userId: userId});
 		assert.isNotNull(player);
@@ -87,7 +88,7 @@ describe('lib/client/gameSetup#joinGame', function() {
 		Games.insert({_id: gameId, allowedListOfShapes: [PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_CROWN]});
 		const lastShapeUsed = PLAYER_SHAPE_CROWN;
 		UserConfigurations.insert({userId: userId, name: username, lastShapeUsed: lastShapeUsed});
-		joinGame(userId, gameId);
+		joinGame(user, gameId);
 
 		const game = Games.findOne({_id: gameId});
 		assert.equal(lastShapeUsed, game.players[0].selectedShape);
@@ -96,7 +97,7 @@ describe('lib/client/gameSetup#joinGame', function() {
 	it('join player with first allowed shape if last used shape is not allowed', function() {
 		Games.insert({_id: gameId, allowedListOfShapes: [PLAYER_SHAPE_OBELISK, PLAYER_DEFAULT_SHAPE]});
 		UserConfigurations.insert({userId: userId, name: username, lastShapeUsed: PLAYER_SHAPE_CROWN});
-		joinGame(userId, gameId);
+		joinGame(user, gameId);
 
 		const game = Games.findOne({_id: gameId});
 		assert.equal(PLAYER_SHAPE_OBELISK, game.players[0].selectedShape);
@@ -104,7 +105,7 @@ describe('lib/client/gameSetup#joinGame', function() {
 	});
 	it('join player with default shape if no profile', function() {
 		Games.insert({_id: gameId, allowedListOfShapes: [PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_CROWN]});
-		joinGame(userId, gameId);
+		joinGame(user, gameId);
 
 		const game = Games.findOne({_id: gameId});
 		assert.equal(PLAYER_DEFAULT_SHAPE, game.players[0].selectedShape);
@@ -113,7 +114,7 @@ describe('lib/client/gameSetup#joinGame', function() {
 	it('join player with default shape if last used is not defined', function() {
 		Games.insert({_id: gameId, allowedListOfShapes: [PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_CROWN]});
 		UserConfigurations.insert({userId: userId, name: username});
-		joinGame(userId, gameId);
+		joinGame(user, gameId);
 
 		const game = Games.findOne({_id: gameId});
 		assert.equal(PLAYER_DEFAULT_SHAPE, game.players[0].selectedShape);

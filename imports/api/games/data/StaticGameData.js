@@ -5,8 +5,12 @@ export default class StaticGameData extends GameData {
 	currentPlayerKey = 'player1';
 	firstPlayerComputer = false;
 	secondPlayerComputer = false;
+	thirdPlayerComputer = false;
+	fourthPlayerComputer = false;
 	firstPlayerComputerMachineLearning = false;
 	secondPlayerComputerMachineLearning = false;
+	thirdPlayerComputerMachineLearning = false;
+	fourthPlayerComputerMachineLearning = false;
 
 	init() {
 		this.maximumPoints = 1;
@@ -47,12 +51,28 @@ export default class StaticGameData extends GameData {
 		return this.secondPlayerComputer;
 	}
 
+	isThirdPlayerComputer() {
+		return this.thirdPlayerComputer;
+	}
+
+	isFourthPlayerComputer() {
+		return this.fourthPlayerComputer;
+	}
+
 	isFirstPlayerComputerMachineLearning() {
 		return this.firstPlayerComputerMachineLearning;
 	}
 
 	isSecondPlayerComputerMachineLearning() {
 		return this.secondPlayerComputerMachineLearning;
+	}
+
+	isThirdPlayerComputerMachineLearning() {
+		return this.thirdPlayerComputerMachineLearning;
+	}
+
+	isFourthPlayerComputerMachineLearning() {
+		return this.fourthPlayerComputerMachineLearning;
 	}
 
 	isTwoVersusTwo() {

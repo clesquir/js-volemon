@@ -1,20 +1,17 @@
 import Dev from '/imports/api/games/client/dev/Dev.js';
-import {CLIENT_POINTS_COLUMN, CLIENT_SIDE, HOST_POINTS_COLUMN} from '/imports/api/games/constants.js';
-import hostGenomes from '/public/assets/artificial-intelligence/host_genomes.json';
-import clientGenomes from '/public/assets/artificial-intelligence/client_genomes.json';
+import {CLIENT_POINTS_COLUMN, CLIENT_SIDE, HOST_POINTS_COLUMN, HOST_SIDE} from '/imports/api/games/constants.js';
 import {Random} from 'meteor/random';
 
 export default class Ai extends Dev {
 	beforeStart() {
 		this.gameData.firstPlayerComputer = true;
-		this.gameData.firstPlayerComputerMachineLearning = true;
+		this.gameData.firstPlayerComputerMachineLearning = false;
 		this.gameData.secondPlayerComputer = true;
 		this.gameData.secondPlayerComputerMachineLearning = true;
 		this.gameData.lastPointTaken = CLIENT_SIDE;
 		this.lastHostGenerationSaved = 0;
 		this.lastClientGenerationSaved = 0;
 		this.pointStartTime = (new Date()).getTime();
-		this.lastBallHorizontalSpeedCheck = undefined;
 	}
 
 	createGame() {
@@ -31,8 +28,8 @@ export default class Ai extends Dev {
 
 		this.game.gameInitiated = true;
 
-		this.game.artificialIntelligence.loadGenomes('player1', JSON.stringify(hostGenomes));
-		this.game.artificialIntelligence.loadGenomes('player2', JSON.stringify(clientGenomes));
+		this.game.artificialIntelligence.isLearning = true;
+		this.game.artificialIntelligence.canJump = true;
 		this.game.artificialIntelligence.startGame();
 
 		this.game.startCountdownTimer = function() {
@@ -56,18 +53,8 @@ export default class Ai extends Dev {
 	updateGame() {
 		this.game.updateGame();
 
-		//If the ball has been horizontally stabilized for a while now, move it a bit
-		const pointTime = ((new Date()).getTime() - this.pointStartTime);
-		if (pointTime % 2500 < 25) {
-			const currentBallHorizontalSpeed = Math.round(this.engine.getHorizontalSpeed(this.game.ball));
-			if (currentBallHorizontalSpeed === 0 && this.lastBallHorizontalSpeedCheck === 0) {
-				this.engine.setHorizontalSpeed(this.game.ball, 50);
-				console.log('move the ball');
-			}
-			this.lastBallHorizontalSpeedCheck = currentBallHorizontalSpeed;
-		}
-
 		//If the point takes more than 2 minutes, stop it
+		const pointTime = ((new Date()).getTime() - this.pointStartTime);
 		if (pointTime > 2 * 60 * 1000) {
 			this.game.gameResumed = false;
 
@@ -75,6 +62,11 @@ export default class Ai extends Dev {
 
 			this.game.artificialIntelligence.stopPoint(null);
 
+			if (this.game.artificialIntelligence.computers['player1'].cumulatedFitness > this.game.artificialIntelligence.computers['player2'].cumulatedFitness) {
+				this.gameData.lastPointTaken = CLIENT_SIDE;
+			} else {
+				this.gameData.lastPointTaken = HOST_SIDE;
+			}
 			this.resumeOnTimerEnd();
 		}
 
@@ -116,6 +108,7 @@ export default class Ai extends Dev {
 			}
 			this.game.artificialIntelligence.stopPoint(pointSide);
 
+			this.gameData.lastPointTaken = pointSide === HOST_POINTS_COLUMN ? HOST_SIDE : CLIENT_SIDE;
 			this.resumeOnTimerEnd();
 		}
 	}
@@ -137,27 +130,17 @@ export default class Ai extends Dev {
 	enableFirstPlayerMachineLearning(isMachineLearning) {
 		this.gameData.firstPlayerComputerMachineLearning = isMachineLearning;
 		this.game.artificialIntelligence.addComputerWithKey('player1', isMachineLearning);
-
-		if (isMachineLearning) {
-			this.game.artificialIntelligence.loadGenomes('player1', JSON.stringify(hostGenomes));
-		}
-
 		this.game.artificialIntelligence.startGame();
 	}
 
 	enableSecondPlayerMachineLearning(isMachineLearning) {
 		this.gameData.secondPlayerComputerMachineLearning = isMachineLearning;
 		this.game.artificialIntelligence.addComputerWithKey('player2', isMachineLearning);
-
-		if (isMachineLearning) {
-			this.game.artificialIntelligence.loadGenomes('player2', JSON.stringify(clientGenomes));
-		}
-
 		this.game.artificialIntelligence.startGame();
 	}
 
 	speedUpGame() {
-		this.engine.game.time.slowMotion = 0.00001;
+		this.engine.game.time.slowMotion = 0.000001;
 	}
 
 	normalGameSpeed() {

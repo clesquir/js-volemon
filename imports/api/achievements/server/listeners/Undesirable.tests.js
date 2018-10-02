@@ -5,10 +5,9 @@ import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import BonusCreated from '/imports/api/games/events/BonusCreated.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {Games} from '/imports/api/games/games.js';
-import {Players} from '/imports/api/games/players.js';
 import {assert} from 'chai';
+import StubCollections from 'meteor/hwillson:stub-collections';
 import {Random} from 'meteor/random';
-import {resetDatabase} from 'meteor/xolvio:cleaner';
 
 describe('AchievementListener#Undesirable', function() {
 	const gameId = Random.id(5);
@@ -23,15 +22,21 @@ describe('AchievementListener#Undesirable', function() {
 		assert.strictEqual(number, achievement.number);
 	};
 
+	before(function() {
+		StubCollections.add([Games, UserAchievements]);
+	});
+
 	beforeEach(function() {
-		resetDatabase();
+		StubCollections.stub();
+	});
+
+	afterEach(function() {
+		StubCollections.restore();
 	});
 
 	it('increment achievement when bonus is caught', function() {
 		const listener = (new Undesirable()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 
 		assert.equal(0, UserAchievements.find().count());
 
@@ -44,9 +49,7 @@ describe('AchievementListener#Undesirable', function() {
 
 	it('increment achievement when point is taken', function() {
 		const listener = (new Undesirable()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 
 		assert.equal(0, UserAchievements.find().count());
 
@@ -59,9 +62,7 @@ describe('AchievementListener#Undesirable', function() {
 
 	it('increment achievement when point is taken with multiple bonuses', function() {
 		const listener = (new Undesirable()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 
 		assert.equal(0, UserAchievements.find().count());
 
@@ -77,9 +78,7 @@ describe('AchievementListener#Undesirable', function() {
 
 	it('do not increment achievement if not game on caught', function() {
 		const listener = (new Undesirable()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 
 		assert.equal(0, UserAchievements.find().count());
 
@@ -92,9 +91,7 @@ describe('AchievementListener#Undesirable', function() {
 
 	it('do not increment achievement if not game on point taken', function() {
 		const listener = (new Undesirable()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 
 		assert.equal(0, UserAchievements.find().count());
 
@@ -107,9 +104,7 @@ describe('AchievementListener#Undesirable', function() {
 
 	it('do not increment achievement if no bonuses on point taken', function() {
 		const listener = (new Undesirable()).forGame(gameId, userId);
-		Games.insert({_id: gameId, createdBy: userId});
-		Players.insert({gameId: gameId, userId: userId});
-		Players.insert({gameId: gameId, userId: opponentUserId});
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 
 		assert.equal(0, UserAchievements.find().count());
 

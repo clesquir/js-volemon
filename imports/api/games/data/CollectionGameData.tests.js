@@ -7,38 +7,37 @@ import {Random} from 'meteor/random';
 import CollectionGameData from './CollectionGameData.js';
 
 describe('CollectionGameData#getPlayerShapeFromKey', function() {
-	it('returns default shape when player 1 does not exist', function() {
-		StubCollections.add([Games]);
-		StubCollections.stub();
+	before(function() {
+		StubCollections.add([Games, Players]);
+	});
 
+	beforeEach(function() {
+		StubCollections.stub();
+	});
+
+	afterEach(function() {
+		StubCollections.restore();
+	});
+
+	it('returns default shape when player 1 does not exist', function() {
 		const gameId = Random.id(5);
 		Games.insert({_id: gameId, players: []});
 
 		const gameData = new CollectionGameData(gameId, Random.id(5));
 		gameData.init();
 		assert.strictEqual(PLAYER_DEFAULT_SHAPE, gameData.getPlayerShapeFromKey('player1'));
-
-		StubCollections.restore();
 	});
 
 	it('returns default shape when player 2 does not exist', function() {
-		StubCollections.add([Games]);
-		StubCollections.stub();
-
 		const gameId = Random.id(5);
 		Games.insert({_id: gameId, players: []});
 
 		const gameData = new CollectionGameData(gameId, Random.id(5));
 		gameData.init();
 		assert.strictEqual(PLAYER_DEFAULT_SHAPE, gameData.getPlayerShapeFromKey('player2'));
-
-		StubCollections.restore();
 	});
 
 	it('returns player1 shape', function() {
-		StubCollections.add([Games, Players]);
-		StubCollections.stub();
-
 		const gameId = Random.id(5);
 		const createdByUserId = 1;
 		Games.insert({_id: gameId, createdBy: createdByUserId, players: [{id: createdByUserId, shape: PLAYER_SHAPE_RECTANGLE}]});
@@ -51,14 +50,9 @@ describe('CollectionGameData#getPlayerShapeFromKey', function() {
 		const gameData = new CollectionGameData(gameId, Random.id(5));
 		gameData.init();
 		assert.strictEqual(PLAYER_SHAPE_RECTANGLE, gameData.getPlayerShapeFromKey('player1'));
-
-		StubCollections.restore();
 	});
 
 	it('returns player2 shape', function() {
-		StubCollections.add([Games, Players]);
-		StubCollections.stub();
-
 		const gameId = Random.id(5);
 		Games.insert({_id: gameId, createdBy: 1, players: [{id: 1, shape: PLAYER_SHAPE_CROWN}, {id: 2, shape: PLAYER_SHAPE_RECTANGLE}]});
 		Players.insert({_id: Random.id(5), gameId: gameId, userId: 2});
@@ -66,7 +60,5 @@ describe('CollectionGameData#getPlayerShapeFromKey', function() {
 		const gameData = new CollectionGameData(gameId, Random.id(5));
 		gameData.init();
 		assert.strictEqual(PLAYER_SHAPE_RECTANGLE, gameData.getPlayerShapeFromKey('player2'));
-
-		StubCollections.restore();
 	});
 });
