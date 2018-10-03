@@ -158,12 +158,12 @@ export default class ArtificialIntelligence {
 				modifiers,
 				this.computers[key].learner.emitData(
 					[
-						Math.round(computerPosition.x),
-						Math.round(computerPosition.y),
-						Math.round(ballPosition.x),
-						Math.round(ballPosition.y),
-						Math.round(ballPosition.velocityX),
-						Math.round(ballPosition.velocityY)
+						this.round5(computerPosition.x),
+						this.round5(computerPosition.y),
+						this.round5(ballPosition.x),
+						this.round5(ballPosition.y),
+						this.round5(ballPosition.velocityX),
+						this.round5(ballPosition.velocityY)
 					]
 				)
 			);
@@ -272,20 +272,20 @@ export default class ArtificialIntelligence {
 
 	shouldJump(key, ballPosition, computerPosition, xAtGround) {
 		let isLeftPlayer = this.isLeftPlayer(key);
-		let halfWidth = computerPosition.width / 2;
-		let fourthWidth = computerPosition.width / 4;
-		let playerLeftLimit = computerPosition.x - (isLeftPlayer ? fourthWidth : halfWidth);
-		let playerRightLimit = computerPosition.x + (isLeftPlayer ? halfWidth : fourthWidth);
+		let width = computerPosition.width;
+		let playerLeftLimit = computerPosition.x - (isLeftPlayer ? 0 : width);
+		let playerRightLimit = computerPosition.x + (isLeftPlayer ? width : 0);
 		let maximumHeight = computerPosition.y - computerPosition.height * 4;
 		let minimumHeight = computerPosition.y - computerPosition.height * 1.5;
 
 		return (
 			this.canJump &&
-			ballPosition.x > playerLeftLimit && xAtGround > playerLeftLimit &&
-			ballPosition.x < playerRightLimit && xAtGround < playerRightLimit &&
+			ballPosition.x > playerLeftLimit &&
+			ballPosition.x < playerRightLimit &&
 			ballPosition.y > maximumHeight &&
 			ballPosition.y < minimumHeight &&
-			Math.abs(ballPosition.velocityX) < 350
+			Math.abs(ballPosition.velocityX) < 350 &&
+			(isLeftPlayer ? ballPosition.velocityX >= 0 : ballPosition.velocityX <= 0)
 		);
 	}
 
@@ -422,5 +422,14 @@ export default class ArtificialIntelligence {
 			this.computers[key].left = left;
 			this.computers[key].right = right;
 		}
+	}
+
+	/**
+	 * @private
+	 * @param {number} value
+	 * @returns {number}
+	 */
+	round5(value) {
+		return Math.ceil(value / 5) * 5;
 	}
 }
