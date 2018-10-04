@@ -718,8 +718,10 @@ export default class PhaserEngine extends Engine {
 	}
 
 	kill(sprite) {
-		this.playDeathAnimation(sprite);
-		sprite.kill();
+		if (sprite.alive) {
+			this.playDeathAnimation(sprite);
+			sprite.kill();
+		}
 	}
 
 	playCountAnimation(countText) {
@@ -749,7 +751,7 @@ export default class PhaserEngine extends Engine {
 
 		setTimeout(() => {
 			if (spriteB) {
-				spriteB.destroy();
+				spriteB.destroy(true, true);
 			}
 		}, duration);
 	}
