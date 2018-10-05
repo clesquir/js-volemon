@@ -75,12 +75,16 @@ export default class ArtificialIntelligence {
 
 						if (key === 'player2') {
 							fitness = -1 * fitness;
+						} else {
+							console.log('SCORED!');
 						}
 					} else if (pointSide === CLIENT_POINTS_COLUMN) {
 						fitness = 1 / pointTime * 10000000;
 
 						if (key === 'player1') {
 							fitness = -1 * fitness;
+						} else {
+							console.log('SCORED!');
 						}
 					}
 

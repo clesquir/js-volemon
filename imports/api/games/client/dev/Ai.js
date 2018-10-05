@@ -19,7 +19,7 @@ export default class Ai extends Dev {
 
 		this.engine.game.forceSingleUpdate = false;
 		this.engine.game.time.advancedTiming = true;
-		this.engine.game.time.slowMotion = 1;
+		this.engine.game.time.slowMotion = 0.000001;
 		this.createComponents();
 		this.gameBonus.createComponents();
 
@@ -60,6 +60,7 @@ export default class Ai extends Dev {
 
 			this.gameData.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
 
+			console.log('point takes too much time!');
 			this.game.artificialIntelligence.stopPoint(null);
 
 			if (this.game.artificialIntelligence.computers['player1'].cumulatedFitness > this.game.artificialIntelligence.computers['player2'].cumulatedFitness) {
@@ -102,9 +103,11 @@ export default class Ai extends Dev {
 
 			this.gameData.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
 
-			let pointSide = HOST_POINTS_COLUMN;
-			if (ball.x < this.gameConfiguration.width() / 2) {
+			let pointSide = null;
+			if (ball.x < this.gameConfiguration.width() / 2 - this.gameConfiguration.netWidth()) {
 				pointSide = CLIENT_POINTS_COLUMN;
+			} else if (ball.x > this.gameConfiguration.width() / 2 + this.gameConfiguration.netWidth()) {
+				pointSide = HOST_POINTS_COLUMN;
 			}
 			this.game.artificialIntelligence.stopPoint(pointSide);
 
