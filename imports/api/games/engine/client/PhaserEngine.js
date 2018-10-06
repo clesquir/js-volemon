@@ -155,11 +155,12 @@ export default class PhaserEngine extends Engine {
 		return group;
 	}
 
-	addBound(x, y, w, h, material, collisionGroup, colliders, debug) {
+	addBound(x, y, w, h, material, collisionGroup, colliders, name, debug) {
 		const bound = new Phaser.Physics.P2.Body(this.game, {}, x, y, 0);
 		bound.setRectangleFromSprite({width: w, height: h, rotation: 0});
 		this.game.physics.p2.addBody(bound);
 		bound.debug = !!debug;
+		bound.data.name = name;
 
 		bound.static = true;
 		bound.setCollisionGroup(collisionGroup);
@@ -604,6 +605,25 @@ export default class PhaserEngine extends Engine {
 			body.velocity.x = vx;
 			body.velocity.y = vy;
 		}
+	}
+
+	limitBallThroughNet(ball) {
+		ball.body.onBeginContact.add(
+			(body, bodyB, shapeA, shapeB, equation) => {
+				if (
+					body && bodyB.name === 'netLimit' &&
+					bodyB.parent &&
+					equation[0] && equation[0].bodyB && equation[0].bodyB.parent && equation[0].bodyB.parent.sprite
+				) {
+					if (equation[0].bodyB.parent.x < bodyB.parent.x && equation[0].bodyB.parent.velocity.x > 0) {
+						equation[0].bodyB.parent.x = bodyB.parent.x - equation[0].bodyB.parent.sprite.width / 2;
+					} else if (equation[0].bodyB.parent.x > bodyB.parent.x && equation[0].bodyB.parent.velocity.x < 0) {
+						equation[0].bodyB.parent.x = bodyB.parent.x + equation[0].bodyB.parent.sprite.width / 2;
+					}
+				}
+			},
+			this
+		);
 	}
 
 	hasSurfaceTouchingPlayerBottom(player) {
