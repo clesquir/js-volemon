@@ -9,13 +9,13 @@ export default class Ai extends Dev {
 		this.isStarted = false;
 		this.slowMotion = 0.000001;
 		this.canJump = true;
-	}
-
-	beforeStart() {
 		this.gameData.firstPlayerComputer = true;
 		this.gameData.firstPlayerComputerMachineLearning = false;
 		this.gameData.secondPlayerComputer = true;
 		this.gameData.secondPlayerComputerMachineLearning = true;
+	}
+
+	beforeStart() {
 		this.gameData.lastPointTaken = CLIENT_SIDE;
 		this.lastHostGenerationSaved = 0;
 		this.lastClientGenerationSaved = 0;
