@@ -88,6 +88,8 @@ export default class ArtificialIntelligence {
 						}
 					}
 
+					console.log('Cumulated fitness: ' + this.computers[key].cumulatedFitness);
+					console.log('Fitness for loss/win: ' + fitness);
 					this.computers[key].cumulatedFitness += fitness;
 					this.computers[key].numberPointsForCurrentGenome++;
 
@@ -158,7 +160,7 @@ export default class ArtificialIntelligence {
 			}
 			//Increase fitness if ball is not on player's side
 			if (isLeft === (ballPosition.x > halfWidth)) {
-				this.computers[key].cumulatedFitness += 1;
+				this.computers[key].cumulatedFitness += 0.01;
 			}
 
 			this.applyLearnerOutput(

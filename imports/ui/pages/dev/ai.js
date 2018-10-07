@@ -5,6 +5,7 @@ import './ai.html';
 
 /** @type {Ai}|null */
 let ai = null;
+let started = new ReactiveVar(false);
 const firstPlayerHumanEnabled = new ReactiveVar(false);
 const firstPlayerMachineLearningEnabled = new ReactiveVar(false);
 const secondPlayerHumanEnabled = new ReactiveVar(false);
@@ -17,16 +18,19 @@ Template.ai.rendered = function() {
 	Session.set('dev.ai.renderer', 3);
 	ai = new Ai();
 	ai.renderer = Session.get('dev.ai.renderer');
-	ai.start();
 };
 
 Template.ai.destroyed = function() {
 	if (ai) {
 		ai.stop();
 	}
+	started.set(false);
 };
 
 Template.ai.helpers({
+	started: function() {
+		return started.get();
+	},
 	firstPlayerHumanEnabled: function() {
 		return firstPlayerHumanEnabled.get();
 	},
@@ -51,6 +55,10 @@ Template.ai.helpers({
 });
 
 Template.ai.events({
+	'click [data-action="start-game"]': function() {
+		ai.start();
+		started.set(true);
+	},
 	'click [data-action="enable-first-player-human"]': function() {
 		ai.enableFirstPlayerHuman(!firstPlayerHumanEnabled.get());
 
@@ -88,9 +96,12 @@ Template.ai.events({
 			Session.set('dev.ai.renderer', 3);
 		}
 
-		ai.stop();
 		ai.renderer = Session.get('dev.ai.renderer');
-		ai.start();
+
+		if (started.get()) {
+			ai.stop();
+			ai.start();
+		}
 
 		rendererEnabled.set(!rendererEnabled.get());
 	},

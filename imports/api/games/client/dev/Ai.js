@@ -3,6 +3,14 @@ import {CLIENT_POINTS_COLUMN, CLIENT_SIDE, HOST_POINTS_COLUMN, HOST_SIDE} from '
 import {Random} from 'meteor/random';
 
 export default class Ai extends Dev {
+	constructor() {
+		super();
+
+		this.isStarted = false;
+		this.slowMotion = 0.000001;
+		this.canJump = true;
+	}
+
 	beforeStart() {
 		this.gameData.firstPlayerComputer = true;
 		this.gameData.firstPlayerComputerMachineLearning = false;
@@ -12,6 +20,7 @@ export default class Ai extends Dev {
 		this.lastHostGenerationSaved = 0;
 		this.lastClientGenerationSaved = 0;
 		this.pointStartTime = (new Date()).getTime();
+		this.isStarted = true;
 	}
 
 	createGame() {
@@ -19,7 +28,7 @@ export default class Ai extends Dev {
 
 		this.engine.game.forceSingleUpdate = false;
 		this.engine.game.time.advancedTiming = true;
-		this.engine.game.time.slowMotion = 0.000001;
+		this.engine.game.time.slowMotion = this.slowMotion;
 		this.createComponents();
 		this.gameBonus.createComponents();
 
@@ -29,7 +38,7 @@ export default class Ai extends Dev {
 		this.game.gameInitiated = true;
 
 		this.game.artificialIntelligence.isLearning = true;
-		this.game.artificialIntelligence.canJump = true;
+		this.game.artificialIntelligence.canJump = this.canJump;
 		this.game.artificialIntelligence.startGame();
 
 		this.game.startCountdownTimer = function() {
@@ -132,25 +141,43 @@ export default class Ai extends Dev {
 
 	enableFirstPlayerMachineLearning(isMachineLearning) {
 		this.gameData.firstPlayerComputerMachineLearning = isMachineLearning;
-		this.game.artificialIntelligence.addComputerWithKey('player1', isMachineLearning);
-		this.game.artificialIntelligence.startGame();
+
+		if (this.isStarted) {
+			this.game.artificialIntelligence.addComputerWithKey('player1', isMachineLearning);
+			this.game.artificialIntelligence.startGame();
+		}
 	}
 
 	enableSecondPlayerMachineLearning(isMachineLearning) {
 		this.gameData.secondPlayerComputerMachineLearning = isMachineLearning;
-		this.game.artificialIntelligence.addComputerWithKey('player2', isMachineLearning);
-		this.game.artificialIntelligence.startGame();
+
+		if (this.isStarted) {
+			this.game.artificialIntelligence.addComputerWithKey('player2', isMachineLearning);
+			this.game.artificialIntelligence.startGame();
+		}
 	}
 
 	speedUpGame() {
-		this.engine.game.time.slowMotion = 0.000001;
+		this.slowMotion = 0.000001;
+
+		if (this.isStarted) {
+			this.engine.game.time.slowMotion = this.slowMotion;
+		}
 	}
 
 	normalGameSpeed() {
-		this.engine.game.time.slowMotion = 1;
+		this.slowMotion = 1;
+
+		if (this.isStarted) {
+			this.engine.game.time.slowMotion = this.slowMotion;
+		}
 	}
 
 	enableAiToJump(canJump) {
-		this.game.artificialIntelligence.canJump = canJump;
+		this.canJump = canJump;
+
+		if (this.isStarted) {
+			this.game.artificialIntelligence.canJump = this.canJump;
+		}
 	}
 }
