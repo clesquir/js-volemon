@@ -1,23 +1,33 @@
 <template name="shape">
 
 	<style>
-		#devShape canvas {
-			margin: 10px auto;
+		#devShape {
 			position: relative;
-			width: 100% !important;
-			height: 100% !important;
+			height: 100%;
+			width: 100%;
 		}
 
-		#devShape canvas:before {
-			padding-top: 150%;
+		#devGameContainer {
+			width: 100%;
+			height: 100%;
+			display: flex;
+			justify-content: center;
 		}
 	</style>
 
-	<div id="devShape" class="app-section app-section-center">
+	<div class="app-section app-section-min-width game-canvas-container">
 
 		<div class="app-section-inner">
 
-			<div id="devGameContainer" class="page game"></div>
+			<div id="devShape" class="app-section">
+
+				<div class="app-section-inner">
+
+					<div id="devGameContainer" class="page game"></div>
+
+				</div>
+
+			</div>
 
 		</div>
 

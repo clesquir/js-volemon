@@ -88,11 +88,7 @@ export default class PhaserEngine extends Engine {
 	}
 
 	setupScaling() {
-		this.game.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
-		this.game.scale.setUserScale(
-			$(this.game.scale.parentNode).width() / this.game.width,
-			$(this.game.scale.parentNode).height() / this.game.height
-		);
+		this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		this.game.scale.setResizeCallback(() => {
 			const hScale = $(this.game.scale.parentNode).width() / this.game.width;
 			const vScale = $(this.game.scale.parentNode).height() / this.game.height;
