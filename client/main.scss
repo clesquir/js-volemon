@@ -32,16 +32,6 @@ $desktop-max-height: 70em;
 	}
 }
 
-@mixin aspect-ratio($width, $height) {
-	position: relative;
-	width: 100% !important;
-	height: 100% !important;
-
-	&:before {
-		padding-top: ($height / $width) * 100%;
-	}
-}
-
 //Components
 @import "{}/imports/ui/stylesheets/variables.scss";
 @import "{}/imports/ui/stylesheets/animations.scss";
@@ -368,6 +358,21 @@ $loading-time: 3s;
 
 		&.active {
 			font-weight: bold;
+		}
+	}
+}
+
+.game-canvas-container {
+	display: flex;
+	flex: 1;
+
+	.app-section-inner {
+		display: flex;
+		flex-direction: column;
+		padding: 10px 0 35px 0;
+
+		.table-list {
+			width: 100%;
 		}
 	}
 }

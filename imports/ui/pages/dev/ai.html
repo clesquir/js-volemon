@@ -1,27 +1,34 @@
 <template name="ai">
 
 	<style>
+		#devAi {
+			position: relative;
+			height: 100%;
+			width: 100%;
+		}
+
+		#devAi .app-section-inner {
+			flex-direction: column;
+		}
+
+		#devAi .ai-options {
+			margin-bottom: 10px;
+		}
+
 		#devAi .ai-options .button {
 			margin-top: 10px;
 			font-size: 10px;
 		}
 
-		#devAi .ai-options textarea {
-			margin-top: 10px;
-			font-size: 10px;
-			width: 300px;
-			padding: 5px;
-		}
-
-		#devAi canvas {
-			margin: 10px auto;
-			position: relative;
-			width: 100% !important;
-			height: 100% !important;
+		#devGameContainer {
+			width: 100%;
+			height: 100%;
+			display: flex;
+			justify-content: center;
 		}
 	</style>
 
-	<div id="devAi" class="app-section app-section-center">
+	<div id="devAi" class="app-section app-section-min-width game-canvas-container">
 
 		<div class="app-section-inner">
 
