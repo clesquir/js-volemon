@@ -94,6 +94,7 @@ const monitorWhenMatched = function() {
 const monitorGameStart = function() {
 	Meteor.subscribe('game', Session.get('matchMaking.gameId'));
 	gameNotifier.onMatched();
+	Tooltips.hide();
 
 	gameStartTracker = Games.find(Session.get('matchMaking.gameId')).observeChanges({
 		changed: (id, fields) => {
@@ -263,15 +264,55 @@ Template.matchMaking.helpers({
 		return !showModeSelection() && !showTournamentNotAvailable() && showShapeSelection();
 	},
 
+	canIncludeComputer: function() {
+		if (!Session.get('matchMaking.modeSelection') || Session.get('matchMaking.gameId')) {
+			return false;
+		}
+
+		const configuration = new MatchMakingGameConfiguration(
+			Session.get('matchMaking.modeSelection'),
+			PlayableTournaments,
+			Session.get('matchMaking.tournamentId')
+		);
+
+		return configuration.canIncludeComputer();
+	},
+
+	includeComputerTooltip: function() {
+		if (!Session.get('matchMaking.modeSelection') || Session.get('matchMaking.gameId')) {
+			return false;
+		}
+
+		const configuration = new MatchMakingGameConfiguration(
+			Session.get('matchMaking.modeSelection'),
+			PlayableTournaments,
+			Session.get('matchMaking.tournamentId')
+		);
+
+		if (configuration.forcePracticeWithComputer()) {
+			return 'The ELO scores are not calculated when adding a CPU';
+		} else {
+			return '';
+		}
+	},
+
 	shapeEditionAllowed: function() {
-		const configuration = new MatchMakingGameConfiguration(PlayableTournaments, Session.get('matchMaking.tournamentId'));
+		const configuration = new MatchMakingGameConfiguration(
+			Session.get('matchMaking.modeSelection'),
+			PlayableTournaments,
+			Session.get('matchMaking.tournamentId')
+		);
 		const allowedListOfShapes = configuration.allowedListOfShapes() || [];
 
 		return allowedListOfShapes.length > 1;
 	},
 
 	selectedShape: function() {
-		const configuration = new MatchMakingGameConfiguration(PlayableTournaments, Session.get('matchMaking.tournamentId'));
+		const configuration = new MatchMakingGameConfiguration(
+			Session.get('matchMaking.modeSelection'),
+			PlayableTournaments,
+			Session.get('matchMaking.tournamentId')
+		);
 		const allowedListOfShapes = configuration.allowedListOfShapes() || [];
 		const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
 		let selectedShape = null;
@@ -288,7 +329,11 @@ Template.matchMaking.helpers({
 	},
 
 	allowedListOfShapes: function() {
-		const configuration = new MatchMakingGameConfiguration(PlayableTournaments, Session.get('matchMaking.tournamentId'));
+		const configuration = new MatchMakingGameConfiguration(
+			Session.get('matchMaking.modeSelection'),
+			PlayableTournaments,
+			Session.get('matchMaking.tournamentId')
+		);
 
 		return configuration.allowedListOfShapes() || [];
 	},
@@ -456,6 +501,18 @@ Template.matchMaking.events({
 		startMatchMaking();
 
 		ButtonEnabler.enableButton(e.target);
+	},
+
+	'click [data-action=include-computer]:not([disabled])': function(e) {
+		ButtonEnabler.disableButton(e.target);
+		Meteor.call(
+			'addMachineLearningComputerToMatch',
+			Session.get('matchMaking.modeSelection') || ONE_VS_ONE_GAME_MODE,
+			Session.get('matchMaking.tournamentId'),
+			function() {
+				ButtonEnabler.enableButton(e.target);
+			}
+		);
 	},
 
 	'click [data-action="start-game"]:not([disabled])': function(e) {

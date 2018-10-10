@@ -8,11 +8,13 @@ export default class TournamentEloScoreCreator extends EloScoreCreator {
 	}
 
 	insert(data) {
-		TournamentEloScores.insert(
-			Object.assign(
-				{tournamentId: this.tournamentId},
-				data
-			)
-		);
+		if (data.userId !== 'CPU') {
+			TournamentEloScores.insert(
+				Object.assign(
+					{tournamentId: this.tournamentId},
+					data
+				)
+			);
+		}
 	}
 }

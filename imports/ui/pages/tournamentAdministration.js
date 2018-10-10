@@ -269,6 +269,7 @@ const modeOptions = function() {
 	addToMode(mode, 'current-player-shape', 'overriddenCurrentPlayerShape');
 	addToMode(mode, 'is-hidden-to-himself', 'overriddenIsHiddenToHimself');
 	addToMode(mode, 'is-hidden-to-opponent', 'overriddenIsHiddenToOpponent');
+	addToMode(mode, 'force-practice-with-computer', 'overriddenForcePracticeWithComputer');
 	addToMode(mode, 'forfeit-minimum-points', 'overriddenForfeitMinimumPoints');
 	addToMode(mode, 'maximum-points', 'overriddenMaximumPoints');
 	addToMode(mode, 'net-height', 'overriddenNetHeight');

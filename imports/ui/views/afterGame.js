@@ -84,13 +84,13 @@ Template.afterGame.helpers({
 			const players = {};
 
 			playersCollection.forEach((player) => {
-				if (this.game.players[0].id === player.userId) {
+				if (!players[0] && this.game.players[0].id === player.userId) {
 					players[0] = player;
-				} else if (this.game.players[1].id === player.userId) {
+				} else if (!players[1] && this.game.players[1].id === player.userId) {
 					players[1] = player;
-				} else if (this.game.players[2].id === player.userId) {
+				} else if (!players[2] && this.game.players[2].id === player.userId) {
 					players[2] = player;
-				} else if (this.game.players[3].id === player.userId) {
+				} else if (!players[3] && this.game.players[3].id === player.userId) {
 					players[3] = player;
 				}
 			});

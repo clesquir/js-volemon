@@ -7,15 +7,17 @@ import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 import {htmlEncode} from '/imports/lib/utils.js';
 import {Meteor} from "meteor/meteor";
 
+const computerAdded = {};
+
 Meteor.methods({
-	updateMatchMakingShape: function(gameId, tournamentId, selectedShape) {
+	updateMatchMakingShape: function(modeSelection, tournamentId, gameId, selectedShape) {
 		const user = Meteor.user();
 
 		if (!user) {
 			throw new Meteor.Error(401, 'You need to login to update your shape');
 		}
 
-		const configuration = new MatchMakingGameConfiguration(Tournaments, tournamentId);
+		const configuration = new MatchMakingGameConfiguration(modeSelection, Tournaments, tournamentId);
 
 		const allowedListOfShapes = configuration.allowedListOfShapes() || [];
 		const listOfShapes = configuration.listOfShapes() || [];
@@ -46,9 +48,31 @@ Meteor.methods({
 	},
 
 	addComputerToMatch: function(modeSelection, tournamentId) {
-		const matchMaker = new EloMatchMaker();
+		//Allow 1s before adding another CPU
+		if (computerAdded[modeSelection + '_' + tournamentId] === undefined) {
+			const matchMaker = new EloMatchMaker();
 
-		matchMaker.subscribe('CPU', 'CPU', modeSelection, tournamentId);
+			matchMaker.subscribe({id: 'CPU', name: 'CPU'}, modeSelection, tournamentId);
+
+			computerAdded[modeSelection + '_' + tournamentId] = true;
+			Meteor.setTimeout(() => {
+				delete computerAdded[modeSelection + '_' + tournamentId];
+			}, 1000);
+		}
+	},
+
+	addMachineLearningComputerToMatch: function(modeSelection, tournamentId) {
+		//Allow 1s before adding another CPU
+		if (computerAdded[modeSelection + '_' + tournamentId] === undefined) {
+			const matchMaker = new EloMatchMaker();
+
+			matchMaker.subscribe({id: 'CPU', isMachineLearning: true, name: 'CPU'}, modeSelection, tournamentId);
+
+			computerAdded[modeSelection + '_' + tournamentId] = true;
+			Meteor.setTimeout(() => {
+				delete computerAdded[modeSelection + '_' + tournamentId];
+			}, 1000);
+		}
 	},
 
 	startMatchMaking: function(modeSelection, tournamentId) {
@@ -60,7 +84,7 @@ Meteor.methods({
 			userName = userConfiguration.name;
 		}
 
-		matchMaker.subscribe(Meteor.userId(), userName, modeSelection, tournamentId);
+		matchMaker.subscribe({id: Meteor.userId(), name: userName}, modeSelection, tournamentId);
 	},
 
 	cancelMatchMaking: function(userId) {

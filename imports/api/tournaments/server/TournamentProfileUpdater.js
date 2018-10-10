@@ -11,21 +11,17 @@ export default class TournamentProfileUpdater extends ProfileUpdater {
 	}
 
 	findOrCreate(userId) {
+		if (userId === 'CPU') {
+			return this.defaultProfileData(userId);
+		}
+
 		let profile = TournamentProfiles.findOne({
 			userId: userId,
 			tournamentId: this.tournamentId
 		});
 
 		if (!profile) {
-			TournamentProfiles.insert(
-				Object.assign(
-					{
-						userId: userId,
-						tournamentId: this.tournamentId
-					},
-					DEFAULT_PROFILE_DATA
-				)
-			);
+			TournamentProfiles.insert(this.defaultProfileData(userId));
 
 			profile = TournamentProfiles.findOne({
 				userId: userId,
@@ -46,6 +42,23 @@ export default class TournamentProfileUpdater extends ProfileUpdater {
 	update(userId, data) {
 		const profile = this.findOrCreate(userId);
 
-		TournamentProfiles.update({_id: profile._id}, {$set: data});
+		if (data.userId !== 'CPU') {
+			TournamentProfiles.update({_id: profile._id}, {$set: data});
+		}
+	}
+
+	/**
+	 * @private
+	 * @param userId
+	 * @returns mixed
+	 */
+	defaultProfileData(userId) {
+		return Object.assign(
+			{
+				userId: userId,
+				tournamentId: this.tournamentId
+			},
+			DEFAULT_PROFILE_DATA
+		);
 	}
 }

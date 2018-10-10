@@ -57,8 +57,9 @@ const createShapeDropdownList = function(e, allowedListOfShapes) {
 			}
 			Meteor.call(
 				'updateMatchMakingShape',
-				Session.get('matchMaking.gameId'),
+				Session.get('matchMaking.modeSelection'),
 				Session.get('matchMaking.tournamentId'),
+				Session.get('matchMaking.gameId'),
 				selectedShape
 			);
 		});

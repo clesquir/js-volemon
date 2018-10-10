@@ -5,15 +5,15 @@ import {Meteor} from "meteor/meteor";
 import {Random} from 'meteor/random';
 
 export default class MatchMaker {
-	subscribe(userId, userName, modeSelection, tournamentId) {
+	subscribe(user, modeSelection, tournamentId) {
 		let match = MatchMakers.findOne({modeSelection: modeSelection, tournamentId: tournamentId});
 
 		if (match) {
-			if (!this.userPresentInArray(match.usersToMatch, userId)) {
-				this.addToUserToMatch(userId, userName, modeSelection, tournamentId);
+			if (!this.userPresentInArray(match.usersToMatch, user.id)) {
+				this.addToUserToMatch(user, modeSelection, tournamentId);
 			}
 		} else {
-			this.initMatchMaker(userId, userName, modeSelection, tournamentId);
+			this.initMatchMaker(user, modeSelection, tournamentId);
 		}
 
 		//Complete match
@@ -53,6 +53,26 @@ export default class MatchMaker {
 				{_id: match._id},
 				{$pull: {usersToMatch: {id: userId}}}
 			);
+
+			//Remove all computers left alone
+			let hasHumans = false;
+			let hasCpu = false;
+			for (let userToMatch of match.usersToMatch) {
+				if (userToMatch.id !== userId) {
+					if (userToMatch.id === 'CPU') {
+						hasCpu = true;
+					} else {
+						hasHumans = true;
+					}
+				}
+			}
+
+			if (!hasHumans && hasCpu) {
+				MatchMakers.update(
+					{_id: match._id},
+					{$pull: {usersToMatch: {id: 'CPU'}}}
+				);
+			}
 		}
 
 		match = MatchMakers.findOne({'matched.users.id': userId});
@@ -82,13 +102,13 @@ export default class MatchMaker {
 		return false;
 	}
 
-	initMatchMaker(userId, userName, modeSelection, tournamentId) {
+	initMatchMaker(user, modeSelection, tournamentId) {
 		MatchMakers.insert(
 			{
 				_id: Random.id(5),
 				modeSelection: modeSelection,
 				tournamentId: tournamentId,
-				usersToMatch: [{id: userId, name: userName}],
+				usersToMatch: [user],
 				matched: []
 			}
 		);
@@ -96,16 +116,15 @@ export default class MatchMaker {
 
 	/**
 	 * @protected
-	 * @param userId
-	 * @param userName
+	 * @param user
 	 * @param modeSelection
 	 * @param tournamentId
 	 */
-	addToUserToMatch(userId, userName, modeSelection, tournamentId) {
+	addToUserToMatch(user, modeSelection, tournamentId) {
 		//Add to the usersToMatch
 		MatchMakers.update(
 			{modeSelection: modeSelection, tournamentId: tournamentId},
-			{$push: {usersToMatch: {id: userId, name: userName}}}
+			{$push: {usersToMatch: user}}
 		);
 	}
 
