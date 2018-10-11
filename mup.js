@@ -40,7 +40,7 @@ module.exports = {
 	// },
 
 	mongo: {
-		version: '3.6.5',
+		version: '4.0.2',
 		oplog: true,
 		port: 27017,
 		servers: {
