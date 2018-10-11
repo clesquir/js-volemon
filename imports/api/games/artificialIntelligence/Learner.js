@@ -156,7 +156,7 @@ export default class Learner {
 			selected.pop();
 		}
 
-		console.log('Fitness: ' + _.map(selected, 'fitness').join(','));
+		console.log('Fitness (' + this.generation + '): ' + _.map(selected, 'fitness').join(','));
 
 		return selected;
 	}
