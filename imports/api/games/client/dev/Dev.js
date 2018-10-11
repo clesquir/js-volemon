@@ -15,13 +15,8 @@ export default class Dev {
 	constructor() {
 		this.game = null;
 		this.renderer = null;
-	}
 
-	beforeStart() {
-	}
-
-	start() {
-		const gameId = Random.id(5);
+		this.gameId = Random.id(5);
 		this.gameData = new StaticGameData();
 		this.gameData.init();
 		this.gameConfiguration = new StaticGameConfiguration();
@@ -31,11 +26,16 @@ export default class Dev {
 		this.engine = new PhaserEngine();
 		this.serverNormalizedTime = new ServerNormalizedTime();
 		this.gameSkin = new GameSkin(new DefaultSkin(), []);
+	}
 
+	beforeStart() {
+	}
+
+	start() {
 		this.beforeStart();
 
 		this.game = new Game(
-			gameId,
+			this.gameId,
 			this.deviceController,
 			this.engine,
 			this.gameData,

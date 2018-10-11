@@ -66,7 +66,8 @@ export default class LevelComponents {
 			this.gameConfiguration.height(),
 			this.collisions.playerDelimiterMaterial,
 			this.collisions.hostPlayerDelimiterCollisionGroup,
-			[this.collisions.hostPlayerCollisionGroup]
+			[this.collisions.hostPlayerCollisionGroup],
+			'hostLimit'
 		);
 
 		//Client limits
@@ -77,7 +78,8 @@ export default class LevelComponents {
 			this.gameConfiguration.height(),
 			this.collisions.playerDelimiterMaterial,
 			this.collisions.clientPlayerDelimiterCollisionGroup,
-			[this.collisions.clientPlayerCollisionGroup]
+			[this.collisions.clientPlayerCollisionGroup],
+			'clientLimit'
 		);
 
 		//Ground limits
@@ -94,7 +96,8 @@ export default class LevelComponents {
 			[
 				this.collisions.ballCollisionGroup,
 				this.collisions.bonusCollisionGroup
-			]
+			],
+			'netLimit'
 		);
 	}
 
@@ -111,7 +114,8 @@ export default class LevelComponents {
 				this.collisions.clientPlayerCollisionGroup,
 				this.collisions.ballCollisionGroup,
 				this.collisions.bonusCollisionGroup
-			]
+			],
+			'groundLimit'
 		);
 	}
 

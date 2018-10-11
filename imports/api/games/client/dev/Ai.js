@@ -3,15 +3,24 @@ import {CLIENT_POINTS_COLUMN, CLIENT_SIDE, HOST_POINTS_COLUMN, HOST_SIDE} from '
 import {Random} from 'meteor/random';
 
 export default class Ai extends Dev {
-	beforeStart() {
+	constructor() {
+		super();
+
+		this.isStarted = false;
+		this.slowMotion = 0.000001;
+		this.canJump = true;
 		this.gameData.firstPlayerComputer = true;
 		this.gameData.firstPlayerComputerMachineLearning = false;
 		this.gameData.secondPlayerComputer = true;
 		this.gameData.secondPlayerComputerMachineLearning = true;
+	}
+
+	beforeStart() {
 		this.gameData.lastPointTaken = CLIENT_SIDE;
 		this.lastHostGenerationSaved = 0;
 		this.lastClientGenerationSaved = 0;
 		this.pointStartTime = (new Date()).getTime();
+		this.isStarted = true;
 	}
 
 	createGame() {
@@ -19,7 +28,7 @@ export default class Ai extends Dev {
 
 		this.engine.game.forceSingleUpdate = false;
 		this.engine.game.time.advancedTiming = true;
-		this.engine.game.time.slowMotion = 1;
+		this.engine.game.time.slowMotion = this.slowMotion;
 		this.createComponents();
 		this.gameBonus.createComponents();
 
@@ -29,7 +38,7 @@ export default class Ai extends Dev {
 		this.game.gameInitiated = true;
 
 		this.game.artificialIntelligence.isLearning = true;
-		this.game.artificialIntelligence.canJump = true;
+		this.game.artificialIntelligence.canJump = this.canJump;
 		this.game.artificialIntelligence.startGame();
 
 		this.game.startCountdownTimer = function() {
@@ -60,6 +69,7 @@ export default class Ai extends Dev {
 
 			this.gameData.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
 
+			console.log('point takes too much time!');
 			this.game.artificialIntelligence.stopPoint(null);
 
 			if (this.game.artificialIntelligence.computers['player1'].cumulatedFitness > this.game.artificialIntelligence.computers['player2'].cumulatedFitness) {
@@ -102,9 +112,11 @@ export default class Ai extends Dev {
 
 			this.gameData.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
 
-			let pointSide = HOST_POINTS_COLUMN;
-			if (ball.x < this.gameConfiguration.width() / 2) {
+			let pointSide = null;
+			if (ball.x < this.gameConfiguration.width() / 2 - this.gameConfiguration.netWidth()) {
 				pointSide = CLIENT_POINTS_COLUMN;
+			} else if (ball.x > this.gameConfiguration.width() / 2 + this.gameConfiguration.netWidth()) {
+				pointSide = HOST_POINTS_COLUMN;
 			}
 			this.game.artificialIntelligence.stopPoint(pointSide);
 
@@ -129,25 +141,43 @@ export default class Ai extends Dev {
 
 	enableFirstPlayerMachineLearning(isMachineLearning) {
 		this.gameData.firstPlayerComputerMachineLearning = isMachineLearning;
-		this.game.artificialIntelligence.addComputerWithKey('player1', isMachineLearning);
-		this.game.artificialIntelligence.startGame();
+
+		if (this.isStarted) {
+			this.game.artificialIntelligence.addComputerWithKey('player1', isMachineLearning);
+			this.game.artificialIntelligence.startGame();
+		}
 	}
 
 	enableSecondPlayerMachineLearning(isMachineLearning) {
 		this.gameData.secondPlayerComputerMachineLearning = isMachineLearning;
-		this.game.artificialIntelligence.addComputerWithKey('player2', isMachineLearning);
-		this.game.artificialIntelligence.startGame();
+
+		if (this.isStarted) {
+			this.game.artificialIntelligence.addComputerWithKey('player2', isMachineLearning);
+			this.game.artificialIntelligence.startGame();
+		}
 	}
 
 	speedUpGame() {
-		this.engine.game.time.slowMotion = 0.000001;
+		this.slowMotion = 0.000001;
+
+		if (this.isStarted) {
+			this.engine.game.time.slowMotion = this.slowMotion;
+		}
 	}
 
 	normalGameSpeed() {
-		this.engine.game.time.slowMotion = 1;
+		this.slowMotion = 1;
+
+		if (this.isStarted) {
+			this.engine.game.time.slowMotion = this.slowMotion;
+		}
 	}
 
 	enableAiToJump(canJump) {
-		this.game.artificialIntelligence.canJump = canJump;
+		this.canJump = canJump;
+
+		if (this.isStarted) {
+			this.game.artificialIntelligence.canJump = this.canJump;
+		}
 	}
 }

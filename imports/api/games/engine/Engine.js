@@ -54,7 +54,7 @@ export default class Engine {
 	updateText(textComponent, text) {
 	}
 
-	addBound(x, y, w, h, material, collisionGroup, colliders, debug) {
+	addBound(x, y, w, h, material, collisionGroup, colliders, name, debug) {
 	}
 
 	addImage(x, y, key, frame, group) {
@@ -88,6 +88,9 @@ export default class Engine {
 	}
 
 	constrainVelocity(sprite, maxVelocity) {
+	}
+
+	limitBallThroughNet(ball) {
 	}
 
 	spawn(sprite, x, y) {

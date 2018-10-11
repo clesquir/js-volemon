@@ -476,6 +476,8 @@ export default class Game {
 		this.engine.loadPolygon(this.ball, this.ball.data.currentPolygonKey, this.ball.data.currentPolygonObject);
 
 		this.setupBallBody();
+
+		this.engine.limitBallThroughNet(this.ball);
 	}
 
 	setupBallBody() {
