@@ -26,8 +26,9 @@ import {Random} from 'meteor/random';
  * @param {string} userId
  * @param {GameInitiator[]} gameInitiators
  * @param modeSelection
- * @param {boolean} isPracticeGame
  * @param {boolean} isPrivate
+ * @param {boolean} isPractice
+ * @param {boolean} hasComputer
  * @param tournamentId
  * @returns {string}
  */
@@ -35,8 +36,9 @@ export const createGame = function(
 	userId,
 	gameInitiators,
 	modeSelection,
-	isPracticeGame,
 	isPrivate,
+	isPractice,
+	hasComputer,
 	tournamentId = null
 ) {
 	let id = null;
@@ -65,8 +67,8 @@ export const createGame = function(
 				createdAt: getUTCTimeStamp(),
 				createdBy: userId,
 				players: [],
-				isPracticeGame: isPracticeGame,
 				isPrivate: isPrivate,
+				isPracticeGame: isPractice,
 				hostPoints: 0,
 				clientPoints: 0,
 				lastPointTaken: null,
@@ -87,6 +89,10 @@ export const createGame = function(
 	Games.update({_id: id}, {$set: {hasBonuses: configuration.hasBonuses()}});
 	Games.update({_id: id}, {$set: {listOfShapes: configuration.listOfShapes()}});
 	Games.update({_id: id}, {$set: {allowedListOfShapes: configuration.allowedListOfShapes()}});
+
+	if (hasComputer && configuration.forcePracticeWithComputer()) {
+		Games.update({_id: id}, {$set: {isPracticeGame: true}});
+	}
 
 	gameInitiators[id] = new GameInitiator(id);
 	gameInitiators[id].init();
@@ -250,18 +256,22 @@ export const replyRematch = function(userId, gameId, accepted, gameInitiators) {
 			rematchGameCreator = game.players[2].id;
 		}
 
+		let hasComputer = false;
+		for (let user of game.players) {
+			if (user.id === 'CPU') {
+				hasComputer = true;
+				break;
+			}
+		}
+
 		const gameRematchId = createGame(
 			rematchGameCreator,
 			gameInitiators,
 			game.modeSelection,
-			false,
-			false,
+			game.isPrivate,
+			game.isPracticeGame,
+			hasComputer,
 			game.tournamentId
-		);
-
-		Games.update(
-			{_id: gameRematchId},
-			{$set: {isPracticeGame: game.isPracticeGame, isPrivate: game.isPrivate}}
 		);
 
 		if (game.gameMode === TWO_VS_TWO_GAME_MODE) {
