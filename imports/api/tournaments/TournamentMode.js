@@ -29,6 +29,7 @@ export default class TournamentMode {
 	overriddenBallVelocityOnReboundOnPlayer;
 	overriddenPlayerMaximumBallHit;
 	overriddenTeamMaximumBallHit;
+	overriddenForcePracticeWithComputer;
 
 	constructor() {
 	}
@@ -283,6 +284,14 @@ export default class TournamentMode {
 		return parseInt(this.overriddenTeamMaximumBallHit);
 	}
 
+	overridesForcePracticeWithComputer() {
+		return this.overriddenForcePracticeWithComputer !== undefined;
+	}
+
+	forcePracticeWithComputer() {
+		return parseInt(this.overriddenForcePracticeWithComputer) === 1;
+	}
+
 	static fromTournament(tournament) {
 		const tournamentMode = new TournamentMode();
 		const mode = tournament.mode;
@@ -317,6 +326,7 @@ export default class TournamentMode {
 		tournamentMode.overriddenBallVelocityOnReboundOnPlayer = mode.overriddenBallVelocityOnReboundOnPlayer;
 		tournamentMode.overriddenPlayerMaximumBallHit = mode.overriddenPlayerMaximumBallHit;
 		tournamentMode.overriddenTeamMaximumBallHit = mode.overriddenTeamMaximumBallHit;
+		tournamentMode.overriddenForcePracticeWithComputer = mode.overriddenForcePracticeWithComputer;
 
 		return tournamentMode;
 	}

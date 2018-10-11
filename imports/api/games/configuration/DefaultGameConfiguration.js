@@ -26,6 +26,7 @@ export default class DefaultGameConfiguration extends GameConfiguration {
 			return;
 		}
 
+		this.gameMode = game.gameMode;
 		this.tournamentId = game.tournamentId;
 
 		if (this.hasTournament()) {
@@ -56,9 +57,7 @@ export default class DefaultGameConfiguration extends GameConfiguration {
 				this.tournamentMode.overridesLevelHeight() ? this.tournamentMode.levelHeight() : this.levelConfiguration.height
 			);
 		} else {
-			let game = Games.findOne({_id: this.gameId});
-
-			if (game && game.gameMode === TWO_VS_TWO_GAME_MODE) {
+			if (this.gameMode === TWO_VS_TWO_GAME_MODE) {
 				this.levelConfiguration = LevelConfiguration.defaultTwoVersusTwoConfiguration();
 			} else {
 				this.levelConfiguration = LevelConfiguration.defaultConfiguration();

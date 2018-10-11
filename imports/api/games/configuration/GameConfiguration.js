@@ -18,6 +18,7 @@ import {
 	SMALL_SCALE_BALL_BONUS,
 	SMALL_SCALE_PHYSICS_DATA,
 	SMALL_SCALE_PLAYER_BONUS,
+	TWO_VS_TWO_GAME_MODE,
 	WORLD_GRAVITY,
 	WORLD_RESTITUTION
 } from '/imports/api/games/constants.js';
@@ -30,6 +31,9 @@ import {
 import {PLAYER_ALLOWED_LIST_OF_SHAPES, PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
 
 export default class GameConfiguration {
+	/** @type {string|null} */
+	gameMode = null;
+	/** @type {string|null} */
 	tournamentId = null;
 	/** @type {TournamentMode} */
 	tournamentMode = null;
@@ -397,5 +401,21 @@ export default class GameConfiguration {
 		}
 
 		return BALL_VERTICAL_SPEED_ON_PLAYER_HIT;
+	}
+
+	forcePracticeWithComputer() {
+		if (this.hasTournament() && this.tournamentMode.overridesForcePracticeWithComputer()) {
+			return this.tournamentMode.forcePracticeWithComputer();
+		}
+
+		return true;
+	}
+
+	canIncludeComputer() {
+		if (this.hasTournament()) {
+			return true;
+		} else {
+			return this.gameMode === TWO_VS_TWO_GAME_MODE;
+		}
 	}
 }

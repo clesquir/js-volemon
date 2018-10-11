@@ -124,6 +124,11 @@
 		{{/if}}
 
 		<div class="buttons">
+			{{#if canIncludeComputer}}
+				<a href="#" data-action="include-computer" class="button" data-tooltip="{{includeComputerTooltip}}">
+					Add a CPU
+				</a>
+			{{/if}}
 			{{#if showStartGame}}
 				<a href="#" data-action="start-game" class="button" {{startGameDisabling}}>Play!</a>
 			{{/if}}

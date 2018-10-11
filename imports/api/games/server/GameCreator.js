@@ -1,4 +1,5 @@
 import {TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
+import {Games} from '/imports/api/games/games.js';
 import GameInitiatorCollection from '/imports/api/games/server/GameInitiatorCollection.js';
 import {createGame, joinGame} from '/imports/api/games/server/gameSetup.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
@@ -7,7 +8,7 @@ import {Meteor} from "meteor/meteor";
 
 export default class GameCreator {
 	static fromMatchMaker(users, modeSelection, tournamentId) {
-		return GameCreator.createGame(users, modeSelection, false, tournamentId);
+		return GameCreator.createGame(users, modeSelection, false, false, tournamentId);
 	}
 
 	static fromTournamentPractice(tournamentId) {
@@ -25,7 +26,7 @@ export default class GameCreator {
 			users.push({id: 'CPU', name: 'CPU'});
 		}
 
-		return GameCreator.createGame(users, tournament.gameMode, true, tournamentId);
+		return GameCreator.createGame(users, tournament.gameMode, true, true, tournamentId);
 	}
 
 	/**
@@ -33,35 +34,50 @@ export default class GameCreator {
 	 * @param users
 	 * @param modeSelection
 	 * @param isPrivate
+	 * @param isPractice
 	 * @param tournamentId
 	 * @returns {string}
 	 */
-	static createGame(users, modeSelection, isPrivate, tournamentId) {
-		const gameUsers = users.concat([]);
-		const creator = gameUsers.shift();
+	static createGame(users, modeSelection, isPrivate, isPractice, tournamentId) {
+		let creator;
 
-		//The game is a practice if there is a CPU in players
-		let isPracticeGame = false;
-		for (let user of gameUsers) {
+		if (users[0] && users[0].id !== 'CPU') {
+			creator = users[0].id;
+		} else if (users[2] && users[2].id !== 'CPU') {
+			creator = users[2].id;
+		} else if (users[1] && users[1].id !== 'CPU') {
+			creator = users[1].id;
+		} else if (users[3] && users[3].id !== 'CPU') {
+			creator = users[3].id;
+		}
+
+		let hasComputer = false;
+		for (let user of users) {
 			if (user.id === 'CPU') {
-				isPracticeGame = true;
+				hasComputer = true;
 				break;
 			}
 		}
 
 		const gameId = createGame(
-			creator.id,
+			creator,
 			GameInitiatorCollection.get(),
 			modeSelection,
-			isPracticeGame,
 			isPrivate,
+			isPractice,
+			hasComputer,
 			tournamentId
 		);
 
-		joinGame(creator, gameId);
-		while (gameUsers.length) {
-			let user = gameUsers.shift();
-			joinGame(user, gameId);
+		const game = Games.findOne({_id: gameId});
+		if (game.gameMode === TWO_VS_TWO_GAME_MODE) {
+			joinGame(users[0], gameId);
+			joinGame(users[1], gameId);
+			joinGame(users[2], gameId);
+			joinGame(users[3], gameId);
+		} else {
+			joinGame(users[0], gameId);
+			joinGame(users[1], gameId);
 		}
 
 		return gameId;

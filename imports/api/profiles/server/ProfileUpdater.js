@@ -5,10 +5,14 @@ import {getUTCTimeStamp} from '/imports/lib/utils.js';
 
 export default class ProfileUpdater {
 	findOrCreate(userId) {
+		if (userId === 'CPU') {
+			return this.defaultProfileData(userId);
+		}
+
 		let profile = Profiles.findOne({userId: userId});
 
 		if (!profile) {
-			Profiles.insert(Object.assign({userId: userId}, DEFAULT_PROFILE_DATA));
+			Profiles.insert(this.defaultProfileData(userId));
 			profile = Profiles.findOne({userId: userId});
 
 			EloScores.insert({
@@ -24,6 +28,22 @@ export default class ProfileUpdater {
 	update(userId, data) {
 		const profile = this.findOrCreate(userId);
 
-		Profiles.update({_id: profile._id}, {$set: data});
+		if (userId !== 'CPU') {
+			Profiles.update({_id: profile._id}, {$set: data});
+		}
+	}
+
+	/**
+	 * @private
+	 * @param userId
+	 * @returns mixed
+	 */
+	defaultProfileData(userId) {
+		return Object.assign(
+			{
+				userId: userId
+			},
+			DEFAULT_PROFILE_DATA
+		);
 	}
 }
