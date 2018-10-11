@@ -63,43 +63,39 @@ export default class ArtificialIntelligence {
 
 	stopPoint(pointSide) {
 		for (let key in this.computers) {
-			if (this.computers.hasOwnProperty(key) && this.computers[key].learner) {
-				if (this.isLearning) {
-					const pointTime = ((new Date()).getTime() - this.pointStartTime);
-					let fitness = 0;
+			if (this.computers.hasOwnProperty(key) && this.computers[key].learner && this.isLearning) {
+				const pointTime = ((new Date()).getTime() - this.pointStartTime);
+				let fitness = 0;
 
-					//When it has the point, the shortest the point, the better
-					//When it doesn't, the longest the point, the better. Negative value
-					if (pointSide === HOST_POINTS_COLUMN) {
-						fitness = 1 / pointTime * 10000000;
+				//When it has the point, the shortest the point, the better
+				//When it doesn't, the longest the point, the better. Negative value
+				if (pointSide === HOST_POINTS_COLUMN) {
+					fitness = 1 / pointTime * 10000000;
 
-						if (key === 'player2') {
-							fitness = -1 * fitness;
-						} else {
-							console.log('SCORED!');
-						}
-					} else if (pointSide === CLIENT_POINTS_COLUMN) {
-						fitness = 1 / pointTime * 10000000;
-
-						if (key === 'player1') {
-							fitness = -1 * fitness;
-						} else {
-							console.log('SCORED!');
-						}
+					if (key === 'player2') {
+						fitness = -1 * fitness;
+					} else {
+						console.log('SCORED!');
 					}
+				} else if (pointSide === CLIENT_POINTS_COLUMN) {
+					fitness = 1 / pointTime * 10000000;
 
-					this.computers[key].cumulatedFitness += fitness;
-					this.computers[key].numberPointsForCurrentGenome++;
-
-					if (this.computers[key].numberPointsForCurrentGenome >= this.numberPointsToCalculateGenomes) {
-						this.computers[key].learner.applyGenomeFitness(this.computers[key].cumulatedFitness);
-
-						//Reset
-						this.computers[key].numberPointsForCurrentGenome = 0;
-						this.computers[key].cumulatedFitness = 0;
+					if (key === 'player1') {
+						fitness = -1 * fitness;
+					} else {
+						console.log('SCORED!');
 					}
-				} else {
-					this.computers[key].learner.applyGenomeFitness(0);
+				}
+
+				this.computers[key].cumulatedFitness += fitness;
+				this.computers[key].numberPointsForCurrentGenome++;
+
+				if (this.computers[key].numberPointsForCurrentGenome >= this.numberPointsToCalculateGenomes) {
+					this.computers[key].learner.applyGenomeFitness(this.computers[key].cumulatedFitness);
+
+					//Reset
+					this.computers[key].numberPointsForCurrentGenome = 0;
+					this.computers[key].cumulatedFitness = 0;
 				}
 			}
 		}
@@ -216,7 +212,7 @@ export default class ArtificialIntelligence {
 					this.computers[key].left = true;
 				}
 
-				if (this.shouldJump(modifiers.key, ballPosition, computerPosition, xAtGround)) {
+				if (this.shouldJump(modifiers.key, ballPosition, computerPosition)) {
 					this.computers[key].jump = true;
 				}
 			} else {
@@ -234,7 +230,7 @@ export default class ArtificialIntelligence {
 					this.computers[key].right = true;
 				}
 
-				if (this.shouldJump(modifiers.key, ballPosition, computerPosition, xAtGround)) {
+				if (this.shouldJump(modifiers.key, ballPosition, computerPosition)) {
 					this.computers[key].jump = true;
 				}
 			} else {
@@ -278,7 +274,7 @@ export default class ArtificialIntelligence {
 		return false;
 	}
 
-	shouldJump(key, ballPosition, computerPosition, xAtGround) {
+	shouldJump(key, ballPosition, computerPosition) {
 		let isLeftPlayer = this.isLeftPlayer(key);
 		let width = computerPosition.width;
 		let playerLeftLimit = computerPosition.x - (isLeftPlayer ? 0 : width);
