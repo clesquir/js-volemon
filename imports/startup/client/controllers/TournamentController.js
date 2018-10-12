@@ -13,7 +13,8 @@ export const TournamentController = RouteController.extend({
 			Meteor.subscribe('tournament', this.params.tournamentId),
 			Meteor.subscribe('tournamentProfile', this.params.tournamentId, Meteor.userId()),
 			Meteor.subscribe('tournamentGames', this.params.tournamentId),
-			Meteor.subscribe('tournamentRanks', this.params.tournamentId)
+			Meteor.subscribe('tournamentRanks', this.params.tournamentId),
+			Meteor.subscribe('matchMakings')
 		];
 	},
 	data: function() {

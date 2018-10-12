@@ -1,3 +1,4 @@
+import {MatchMakers} from '/imports/api/games/matchMakers.js';
 import RankChart from '/imports/api/ranks/client/RankChart.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {canPlayTournament, isTournamentActive, tournamentName} from '/imports/api/tournaments/utils.js';
@@ -10,8 +11,9 @@ import * as Moment from 'meteor/momentjs:moment';
 import {Mongo} from "meteor/mongo";
 import {Session} from 'meteor/session';
 import {Template} from 'meteor/templating';
-
 import './tournament.html';
+
+const he = require('he');
 
 class TournamentRankingsCollection extends Mongo.Collection {}
 const TournamentRankings = new TournamentRankingsCollection('tournamentrankings');
@@ -51,6 +53,38 @@ Template.tournament.destroyed = function() {
 Template.tournament.helpers({
 	tournamentName: function() {
 		return tournamentName(this.tournament);
+	},
+
+	hasPlayersWaiting: function() {
+		const match = MatchMakers.findOne({modeSelection: 'tournament', tournamentId: this.tournament._id});
+
+		return match && match.usersToMatch && match.usersToMatch.length > 0;
+	},
+
+	playersWaiting: function() {
+		const match = MatchMakers.findOne({modeSelection: 'tournament', tournamentId: this.tournament._id});
+
+		if (match && match.usersToMatch) {
+			const players = [];
+
+			for (let userToMatch of match.usersToMatch) {
+				players.push(he.encode(userToMatch.name));
+			}
+
+			return players.join('<br />');
+		}
+
+		return '';
+	},
+
+	numberOfPlayersWaiting: function() {
+		const match = MatchMakers.findOne({modeSelection: 'tournament', tournamentId: this.tournament._id});
+
+		if (match && match.usersToMatch) {
+			return match.usersToMatch.length;
+		}
+
+		return 0;
 	},
 
 	tournamentDescription: function() {

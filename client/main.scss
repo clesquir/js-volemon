@@ -376,3 +376,33 @@ $loading-time: 3s;
 		}
 	}
 }
+
+h1.tournament-name .currently-waiting-match-making {
+	top: 5px;
+	right: -30px;
+	font-weight: normal;
+	color: lighten($text-color, 40%);
+	transition: all 0.25s linear;
+
+	&.has-players-waiting-match-making {
+		color: lighten($text-color, 20%);
+	}
+
+	.currently-waiting-match-making-number {
+		font-size: 11px;
+		line-height: 11px;
+	}
+
+	.currently-waiting-match-making-icon {
+		font-size: 11px;
+	}
+}
+
+.currently-waiting-match-making {
+	position: absolute;
+	display: flex;
+
+	.currently-waiting-match-making-number {
+		margin-right: 2px;
+	}
+}

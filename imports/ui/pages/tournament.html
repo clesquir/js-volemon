@@ -8,7 +8,15 @@
 				<a class="back-button action-button" href="{{pathFor 'tournaments'}}">
 					<i class="fa fa-arrow-circle-left"></i>
 				</a>
-				{{tournamentName}}
+				<div class="tournament-name-container">
+					<div>{{tournamentName}}</div>
+					{{#if isTournamentActive}}
+						<div class="currently-waiting-match-making {{#if hasPlayersWaiting}}has-players-waiting-match-making{{/if}}" data-tooltip="{{playersWaiting}}" data-tooltip-direction="s">
+							<div class="currently-waiting-match-making-number">{{numberOfPlayersWaiting}}</div>
+							<i class="currently-waiting-match-making-icon fa fa-user-circle"></i>
+						</div>
+					{{/if}}
+				</div>
 			</h1>
 			<p class="tournament-description">{{tournamentDescription}}</p>
 
