@@ -187,13 +187,6 @@ export default class Game {
 
 	onGameEnd() {
 		if (!this.gameHasEnded) {
-			this.reinitPlayer(this.player1);
-			this.reinitPlayer(this.player2);
-			if (this.gameData.isTwoVersusTwo()) {
-				this.reinitPlayer(this.player3);
-				this.reinitPlayer(this.player4);
-			}
-
 			this.deviceController.stopMonitoring();
 			Session.set('userCurrentlyPlaying', false);
 			this.gameHasEnded = true;
@@ -405,12 +398,6 @@ export default class Game {
 		}
 	}
 
-	reinitPlayer(player) {
-		this.initPlayerTexture(player);
-		this.initPlayerPolygon(player);
-		this.setupPlayerBody(player);
-	}
-
 	initPlayerTexture(player) {
 		player.data.initialTextureKey = 'shape-' + this.playerShapeFromKey(player.data.key);
 		player.data.currentTextureKey = player.data.initialTextureKey;
@@ -494,13 +481,14 @@ export default class Game {
 	}
 
 	resumeOnTimerEnd() {
-		this.gameBonus.reset();
 		this.pauseGame();
-		this.resetPlayersAndBall();
 
 		if (this.gameData.hasGameStatusEndedWithAWinner()) {
 			this.onGameEnd();
 		} else if (this.gameIsOnGoing()) {
+			this.gameBonus.reset();
+			this.resetPlayersAndBall();
+
 			this.artificialIntelligence.startPoint();
 			this.gameBonus.resumeGame();
 			this.startCountdownTimer();
@@ -629,7 +617,7 @@ export default class Game {
 			if (this.gameData.isUserCreator()) {
 				this.sendBallPosition();
 			}
-		} else if (this.gameData.hasGameAborted()) {
+		} else {
 			this.stopGame();
 			this.onGameEnd();
 		}
