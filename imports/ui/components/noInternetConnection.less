@@ -1,0 +1,55 @@
+.no-internet-connection-mask {
+	bottom: 0;
+	top: 0;
+	left: 0;
+	right: 0;
+	width: 100px;
+	height: 60px;
+	display: flex;
+	z-index: 2000;
+	position: fixed;
+	margin: auto;
+
+	@no-internet-connection-signal-color: darken(@negative, 0%);
+	@no-internet-connection-signal-color-flash: darken(@negative, 15%);
+
+	@keyframes colorflash {
+		0% {
+			color: @no-internet-connection-signal-color;
+		}
+		10% {
+			color: @no-internet-connection-signal-color-flash;
+		}
+		20% {
+			color: @no-internet-connection-signal-color;
+		}
+		100% {
+			color: @no-internet-connection-signal-color;
+		}
+	}
+
+	.no-internet-connection-icon {
+		margin: auto;
+		font-size: 4em;
+		text-shadow: 0 0 1px #000, 0 0 1px #000, 0 0 1px #000, 0 0 1px #000;
+
+		.no-internet-connection-icon-item {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			text-align: center;
+		}
+
+		.no-internet-connection-icon-wifi {
+			color: @no-internet-connection-signal-color;
+			animation: colorflash 2s infinite ease-in-out;
+		}
+
+		.no-internet-connection-icon-exclamation {
+			font-size: 0.9em;
+			color: lighten(@negative, 5%);
+		}
+	}
+}

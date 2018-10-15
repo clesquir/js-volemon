@@ -1,0 +1,195 @@
+.chat-button {
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	z-index: 2;
+	font-size: 20px;
+	cursor: pointer;
+	opacity: 0.65;
+
+	&:hover {
+		opacity: 1;
+	}
+
+	&:active {
+		transform: translateY(1px) translateX(1px);
+	}
+
+	& > div {
+		display: block;
+		-webkit-transition: -webkit-transform 0.75s ease-in-out;
+		transition: transform 0.75s ease-in-out;
+
+		&:before {
+			content: "\f27b";
+		}
+	}
+
+	&.reaction-selector-opened > div {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+
+		&:before {
+			content: "\f00d";
+		}
+	}
+}
+
+.received-reaction-container {
+	position: absolute;
+	width: 100%;
+	display: flex;
+	z-index: 1;
+
+	.mixin-horizontal-breakpoint-tablet({
+		top: 0;
+	});
+
+	.received-reaction {
+		position: absolute;
+		width: 50%;
+		bottom: -20px;
+		display: flex;
+		justify-content: center;
+
+		&.received-reaction-2vs2 {
+			width: 25%;
+		}
+
+		.mixin-horizontal-breakpoint-tablet({
+			top: 0;
+		});
+
+		.received-reaction-item {
+			transition: transform 0.2s ease-in-out;
+			transform: scale(0);
+
+			&.reaction-shown {
+				transform: scale(1);
+
+				.mixin-horizontal-breakpoint-tablet({
+					transform: scale(0.5);
+				});
+			}
+
+			.reaction-list-item {
+				&:before {
+					content: "";
+					position: absolute;
+					top: 10px;
+					left: -20px;
+					border-right: 20px solid @text-color;
+					border-top: 2px solid transparent;
+					border-bottom: 10px solid transparent;
+				}
+
+				.reaction-icon {
+					animation: wobble 1.5s linear infinite;
+				}
+			}
+		}
+	}
+
+	#reaction-from-player1 {
+		left: 0;
+	}
+
+	#reaction-from-player2 {
+		right: 0;
+	}
+
+	#reaction-from-player3 {
+		left: 25%;
+	}
+
+	#reaction-from-player4 {
+		right: 25%;
+	}
+}
+
+.reaction-selector {
+	width: 100%;
+	height: 100%;
+	top: 0;
+	position: absolute;
+	display: none;
+	z-index: 2;
+
+	.reaction-list-items {
+		opacity: 0.25;
+		transition: all 0.2s ease-in-out;
+
+		&:hover {
+			opacity: 1;
+		}
+
+		.reaction-list-item {
+			cursor: pointer;
+
+			& > div {
+				transition: all 0.2s ease-in-out;
+			}
+
+			&:hover {
+				.reaction-icon {
+					transform: scale(1.15);
+				}
+
+				.reaction-text {
+					font-size: 16px;
+				}
+			}
+		}
+	}
+}
+
+.finished-game-status .reaction-selector .reaction-list-items {
+	opacity: 1;
+}
+
+.cheer-icon {
+	background-image: url("/assets/reaction/cheer.png");
+	width: 50px;
+	height: 50px;
+	filter: drop-shadow(0 0 2px @background-color) drop-shadow(0 0 2px @background-color);
+}
+
+.cheer-item {
+	position: absolute;
+	top: 10%;
+	z-index: 1;
+	transition: all 0.5s ease-in-out;
+	transform: scale(0.75);
+
+	&.cheer-no-viewers {
+		transform: scale(0);
+	}
+
+	&.cheer-for-viewer {
+		cursor: pointer;
+
+		&.cheer-disabled {
+			transform: scale(0);
+		}
+	}
+}
+
+.cheer-host {
+	left: -25px;
+
+	& > div {
+		transform: rotate(35deg);
+	}
+}
+
+.cheer-client {
+	right: -25px;
+
+	& > div {
+		transform: scaleX(-1) rotate(35deg);
+	}
+}
+
+.cheer-activated {
+	animation: boom 1000ms linear both;
+}

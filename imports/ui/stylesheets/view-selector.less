@@ -1,0 +1,72 @@
+.view-selector {
+	display: flex;
+	justify-content: center;
+	align-items: baseline;
+
+	div {
+		cursor: pointer;
+		transition: opacity 0.25s ease-in-out;
+		opacity: 0.25;
+		display: flex;
+		align-items: center;
+		margin: 3px;
+
+		&:hover {
+			opacity: 1;
+		}
+
+		.fa {
+			font-size: 22px;
+		}
+
+		.icomoon {
+			font-size: 22px;
+			margin-top: -4px;
+		}
+
+		span {
+			font-size: 10px;
+			margin-left: 5px;
+
+			.mixin-horizontal-breakpoint-tablet({
+				display: none;
+			});
+		}
+	}
+}
+
+.mixin-view-selector-shown(@shown-class, @menu-class, @content-class) {
+	.view-selector-contents {
+
+		@selector-shown-class: ~'.@{shown-class}';
+		&@{selector-shown-class} {
+			visibility: visible;
+
+			@selector-menu-class: ~'.@{menu-class}';
+			& @{selector-menu-class} {
+				opacity: 1;
+			}
+
+			@selector-content-class: ~'.@{content-class}:not(.swiper-slide)';
+			& @{selector-content-class} {
+				display: block;
+			}
+		}
+	}
+}
+
+.view-selector-contents {
+	margin-bottom: 10px;
+
+	.view-selector-content:not(.swiper-slide) {
+		display: none;
+	}
+}
+
+.swiper-slide {
+	min-height: 250px;
+
+	&:not(.swiper-slide-active) {
+		max-height: 250px;
+	}
+}

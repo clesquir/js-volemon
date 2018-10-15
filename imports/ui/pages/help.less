@@ -1,0 +1,69 @@
+.mixin-view-selector-shown(help-controls-shown, view-help-controls, help-controls);
+.mixin-view-selector-shown(help-bonuses-shown, view-help-bonuses, help-bonuses);
+.mixin-view-selector-shown(help-reactions-shown, view-help-reactions, help-reactions);
+
+@bonus-size: 34px;
+@bonus-background-size: @bonus-size - 3;
+
+.help-section {
+	.mixin-horizontal-breakpoint-mobile({
+		max-width: 375px;
+	});
+	.mixin-horizontal-breakpoint-mobile-portrait({
+		max-width: 275px;
+	});
+
+	img {
+		@help-shadow-color: darken(@background-color, 50%);
+		box-shadow: 0 1px 1px 0 rgba(red(@help-shadow-color), green(@help-shadow-color), blue(@help-shadow-color), .08), 0 1px 3px 1px rgba(red(@help-shadow-color), green(@help-shadow-color), blue(@help-shadow-color), .16);
+		border-radius: 3px;
+		width: 285px;
+		height: 200px;
+
+		.mixin-horizontal-breakpoint-mobile-portrait({
+			width: 250px;
+			height: 175px;
+		});
+	}
+}
+
+.help-bonus {
+	display: flex;
+	align-items: center;
+	margin-bottom: 5px;
+
+	.help-bonus-icon-container {
+		position: relative;
+		width: @bonus-size;
+		height: @bonus-size;
+		background-image: url("/assets/bonus/texture-atlas.png");
+	}
+
+	.help-bonus-description {
+		flex: 1;
+		margin-left: 10px;
+		text-align: left;
+	}
+}
+
+.help-reactions {
+	.reaction-list {
+		margin: 36px 0 16px;
+		.mixin-horizontal-breakpoint-mobile({
+			margin: 16px 0 16px;
+		});
+		.mixin-horizontal-breakpoint-mobile-portrait({
+			margin: 0;
+		});
+
+		.reaction-list-items {
+			transform: scale(0.9);
+			.mixin-horizontal-breakpoint-mobile({
+				transform: scale(0.7);
+			});
+			.mixin-horizontal-breakpoint-mobile-portrait({
+				transform: scale(0.5);
+			});
+		}
+	}
+}

@@ -1,0 +1,96 @@
+.button {
+	background: @border-color;
+	color: @text-color;
+	display: inline-block;
+	border: 0;
+	cursor: pointer;
+	letter-spacing: inherit;
+	outline: none;
+	font-family: inherit;
+	font-size: 15px;
+	font-weight: 600;
+	padding: 10px 15px;
+	border-radius: 3px;
+	transition: transform 100ms linear;
+
+	&:not([disabled]):active {
+		transform: translateY(1px) translateX(1px);
+	}
+
+	&:hover {
+		background: @border-color-light;
+	}
+
+	&.show-more {
+		font-size: 12px;
+		padding: 5px 0;
+		margin: 0 auto 20px;
+		width: 100%;
+	}
+}
+
+.button[disabled] {
+	color: darken(@border-color-light, 7%);
+	background: lighten(@border-color-light, 7%);
+}
+
+@switch-button-width: 30px;
+@switch-button-height: 16px;
+
+.switch-button {
+	position: relative;
+	display: inline-block;
+	vertical-align: bottom;
+	margin-left: 5px;
+	width: @switch-button-width;
+	height: @switch-button-height + 2;
+	line-height: @switch-button-height + 2;
+	border-radius: 11px;
+	box-shadow: 0 0 1px rgba(0, 0, 0, 0.2) inset;
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	transition: all 0.25s linear;
+	outline: 0;
+
+	&.off-value {
+		background-color: @background-color-dark;
+
+		span {
+			right: @switch-button-width - @switch-button-height - 1;
+		}
+	}
+
+	&.on-value {
+		background-color: @positive;
+
+		span {
+			right: 1px;
+		}
+	}
+
+	span {
+		position: absolute;
+		background: @header-background-color;
+		border-radius: 9px;
+		height: @switch-button-height;
+		width: @switch-button-height;
+		top: 1px;
+		box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+		transition: all 0.25s linear;
+	}
+}
+
+.switch-label, .switch-button {
+	cursor: pointer;
+}
+
+.not-editable {
+	.switch-label, .switch-button {
+		cursor: default;
+	}
+}
+
+p:not(.not-editable) .switch-button:focus {
+	border-color: rgba(red(@header-border-bottom-color), green(@header-border-bottom-color), blue(@header-border-bottom-color), 0.6);
+	outline: 0;
+	box-shadow: 0 0 10px rgba(red(@table-header-color), green(@table-header-color), blue(@table-header-color), 0.75);
+}

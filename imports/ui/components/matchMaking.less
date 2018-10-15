@@ -1,0 +1,197 @@
+@loading-logo-size: 75px;
+
+.match-making {
+	.match-making-body {
+		position: relative;
+		margin: 25px auto 15px;
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+
+		.loading-logo {
+			width: @loading-logo-size;
+			height: @loading-logo-size;
+
+			& > div {
+				width: @loading-logo-size;
+				height: @loading-logo-size;
+			}
+
+			.loading-diagonals {
+				background-image: url("/assets/loading/big-diagonals.png");
+				background-size: @loading-logo-size;
+			}
+
+			.loading-v {
+				background-image: url("/assets/loading/big-v.png");
+				background-size: @loading-logo-size;
+			}
+		}
+
+		.match-making-tips {
+			margin-top: 30px;
+			font-size: 0.75em;
+			color: lighten(@text-color, 30%);
+		}
+	}
+
+	.match-selection-items {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.match-selection {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		cursor: pointer;
+		color: lighten(@text-color, 30%);
+		transform: scale(1);
+		transition: all 0.25s linear;
+		padding: 10px;
+
+		.match-selection-item {
+			flex: 1;
+			text-align: center;
+			text-overflow: ellipsis;
+		}
+
+		.match-selection-title {
+			font-size: 18px;
+			position: relative;
+
+			.currently-waiting-match-making {
+				top: 2px;
+				right: -25px;
+				color: lighten(@text-color, 40%);
+				transition: all 0.25s linear;
+
+				&.has-players-waiting-match-making {
+					color: lighten(@text-color, 20%);
+				}
+
+				.currently-waiting-match-making-number {
+					font-size: 8px;
+				}
+
+				.currently-waiting-match-making-icon {
+					font-size: 9px;
+				}
+			}
+		}
+
+		.match-selection-description {
+			font-size: 10px;
+		}
+
+		&:hover {
+			color: @text-color;
+			transform: scale(1.15);
+		}
+	}
+
+	h1.tournament-name {
+		margin-bottom: 5px;
+		display: inline-block;
+	}
+
+	.share-match-making {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		.share-title {
+			opacity: 0.5;
+		}
+
+		.copyable-url-input {
+			font-size: 0.85em;
+			position: relative;
+			display: flex;
+			width: 300px;
+			margin-top: 5px;
+			padding-bottom: 2px;
+			opacity: 0.5;
+			transition: opacity 0.25s ease-in-out;
+
+			&:hover {
+				opacity: 0.75;
+			}
+
+			input {
+				flex: 1 1 auto;
+				background-color: transparent;
+				box-shadow: none;
+				cursor: pointer;
+				padding: 0 15px 0 0;
+				text-overflow: ellipsis;
+				font-size: 0.8em;
+			}
+
+			.clipboard-copy {
+				top: 0;
+				right: 0;
+				cursor: pointer;
+				position: absolute;
+
+				&:active {
+					color: @header-text-color;
+				}
+			}
+		}
+	}
+
+	.shape-match-making {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		margin-top: 15px;
+		margin-bottom: 15px;
+
+		.shape-title {
+			margin-right: 10px;
+			font-size: 0.8em;
+		}
+	}
+
+	.match-making-status {
+		font-size: 0.9em;
+		margin-top: 30px;
+		margin-bottom: 10px;
+		transition: all 0.25s linear;
+
+		&.matched-status {
+			font-size: 1.5em;
+		}
+	}
+
+	.matched-user-position-1 {
+		color: @host-primary-color;
+	}
+
+	.matched-user-position-2 {
+		color: @client-primary-color;
+	}
+
+	.matched-user-position-3 {
+		color: @host-second-color;
+	}
+
+	.matched-user-position-4 {
+		color: @client-second-color;
+	}
+
+	.matched-user-is-ready {
+		opacity: 0.25;
+		transition: opacity 0.25s ease-in-out;
+
+		&.matched-user-ready {
+			opacity: 1;
+		}
+	}
+
+	.cancel-button {
+		width: 60px;
+		box-shadow: inset @negative 0 0 0 2px;
+	}
+}

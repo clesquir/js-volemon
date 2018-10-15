@@ -1,0 +1,35 @@
+.profile-information-container {
+	padding-bottom: 5px;
+	display: flex;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	min-width: 580px;
+
+	.mixin-horizontal-breakpoint-mobile({
+		min-width: unset;
+		flex-direction: column;
+	});
+}
+
+.shutouts-positive {
+	color: @positive;
+}
+
+.shutouts-negative {
+	color: @negative;
+}
+
+.favourite-shapes-list-item {
+	display: flex;
+	margin-top: 5px;
+	margin-bottom: 5px;
+
+	& + & {
+		margin-top: 0;
+	}
+
+	& .favourite-shape-number {
+		margin-left: 10px;
+		text-align: left;
+	}
+}

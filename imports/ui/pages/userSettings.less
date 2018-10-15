@@ -1,0 +1,48 @@
+.user-settings-page {
+	text-align: left;
+
+	h1 {
+		text-align: center;
+	}
+
+	.user-settings-option-group {
+		margin-top: 20px;
+
+		.user-settings-option-group-title {
+			font-size: 1.2em;
+			color: lighten(@text-color, 15%);
+			padding-bottom: 15px;
+		}
+	}
+
+	.user-settings-option-row {
+		display: flex;
+
+		.user-settings-option-icon {
+			padding: 0 10px;
+			width: 20px;
+		}
+
+		.user-settings-option-label {
+			display: flex;
+			flex-direction: column;
+			flex: 1 1 auto;
+
+			.user-settings-option-title {
+				cursor: pointer;
+				align-self: left;
+			}
+
+			.user-settings-option-description {
+				font-size: 0.75em;
+				color: lighten(@text-color, 20%);
+			}
+		}
+	}
+
+	.user-settings-option-row + .user-settings-option-row {
+		margin-top: 10px;
+		padding-top: 10px;
+		border-top: 1px solid @border-color;
+	}
+}
