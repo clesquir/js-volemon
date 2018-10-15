@@ -28,7 +28,7 @@ export default class LevelConfiguration {
 	}
 
 	player1InitialX() {
-		return 140;
+		return Math.round(this.width / 6);
 	}
 
 	player2InitialX() {
@@ -48,7 +48,7 @@ export default class LevelConfiguration {
 	}
 
 	ballInitialY() {
-		return this.height - this.groundHeight - 300;
+		return Math.round(0.3875 * (this.height - this.groundHeight));
 	}
 
 	ballInitialHostX() {
