@@ -204,10 +204,16 @@ export default class ArtificialIntelligence {
 		if (isLeft) {
 			if (xAtGround < halfWidth) {
 				//move to ball position
-				if (xAtGround > computerPosition.x + computerPosition.width / 4) {
+				if (
+					xAtGround > computerPosition.x + computerPosition.width / 4 &&
+					computerPosition.x < halfWidth - computerPosition.width / 2
+				) {
 					//ball is in front
 					this.computers[key].right = true;
-				} else if (xAtGround < computerPosition.x + computerPosition.width / 6) {
+				} else if (
+					xAtGround < computerPosition.x + computerPosition.width / 6 &&
+					computerPosition.x > computerPosition.width / 2
+				) {
 					//ball is behind
 					this.computers[key].left = true;
 				}
@@ -222,10 +228,16 @@ export default class ArtificialIntelligence {
 		} else {
 			if (xAtGround > halfWidth) {
 				//move to ball position
-				if (xAtGround < computerPosition.x - computerPosition.width / 4) {
+				if (
+					xAtGround < computerPosition.x - computerPosition.width / 4 &&
+					computerPosition.x > halfWidth + computerPosition.width / 2
+				) {
 					//ball is in front
 					this.computers[key].left = true;
-				} else if (xAtGround > computerPosition.x - computerPosition.width / 6) {
+				} else if (
+					xAtGround > computerPosition.x - computerPosition.width / 6 &&
+					computerPosition.x < width - computerPosition.width / 2
+				) {
 					//ball is behind
 					this.computers[key].right = true;
 				}
