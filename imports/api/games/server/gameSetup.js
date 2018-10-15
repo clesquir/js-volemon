@@ -54,6 +54,8 @@ export const createGame = function(
 		if (tournament && tournament.gameMode) {
 			gameMode = tournament.gameMode;
 		}
+	} else {
+		gameMode = modeSelection;
 	}
 
 	do {
