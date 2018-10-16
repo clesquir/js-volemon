@@ -46,9 +46,26 @@ export default class EloMatchMaker extends MatchMaker {
 				break;
 			case TWO_VS_TWO_GAME_MODE:
 				if (match.usersToMatch.length === 4) {
-					const matchedUsers = this.sortByEloRating(match.usersToMatch, match.tournamentId);
+					let matchedUsers = [];
 
-					//Match lowest 0 with highest 3 and both middle together
+					if (this.numberOfMatchedComputers(match.usersToMatch) === 2) {
+						const matchedComputers = this.getMatchedComputers(match.usersToMatch);
+						const matchedHumans = this.sortByEloRating(
+							this.getMatchedHumans(match.usersToMatch),
+							match.tournamentId
+						);
+
+						matchedUsers = [
+							matchedComputers[0],
+							matchedHumans[0],
+							matchedComputers[1],
+							matchedHumans[1],
+						];
+					} else {
+						matchedUsers = this.sortByEloRating(match.usersToMatch, match.tournamentId);
+					}
+
+					//Match highest 3 with lowest 0 and both middle together
 					//Highest will be the host
 					return [matchedUsers[3], matchedUsers[1], matchedUsers[0], matchedUsers[2]];
 				}
@@ -108,5 +125,56 @@ export default class EloMatchMaker extends MatchMaker {
 		} else {
 			return INITIAL_ELO_RATING;
 		}
+	}
+
+	/**
+	 * @private
+	 * @param usersToMatch
+	 * @returns {number}
+	 */
+	numberOfMatchedComputers(usersToMatch) {
+		let count = 0;
+
+		for (let user of usersToMatch) {
+			if (user.id === 'CPU') {
+				count++;
+			}
+		}
+
+		return count;
+	}
+
+	/**
+	 * @private
+	 * @param usersToMatch
+	 * @returns {Array}
+	 */
+	getMatchedComputers(usersToMatch) {
+		let computers = [];
+
+		for (let user of usersToMatch) {
+			if (user.id === 'CPU') {
+				computers.push(user);
+			}
+		}
+
+		return computers;
+	}
+
+	/**
+	 * @private
+	 * @param usersToMatch
+	 * @returns {Array}
+	 */
+	getMatchedHumans(usersToMatch) {
+		let humans = [];
+
+		for (let user of usersToMatch) {
+			if (user.id !== 'CPU') {
+				humans.push(user);
+			}
+		}
+
+		return humans;
 	}
 }
