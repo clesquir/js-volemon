@@ -125,18 +125,19 @@
 
 		<div class="buttons">
 			{{#if canIncludeComputer}}
-				<a href="#" data-action="include-computer" class="button" data-tooltip="{{includeComputerTooltip}}">
-					Add a CPU
-				</a>
+				<input type="button" data-action="include-computer" class="button" data-tooltip="{{includeComputerTooltip}}" value="Add a CPU" />
+			{{/if}}
+			{{#if canIncludeComputer}}
+				<input type="button" data-action="include-ml-computer" class="button" data-tooltip="{{includeComputerTooltip}}" value="Add a ML CPU" />
 			{{/if}}
 			{{#if showStartGame}}
-				<a href="#" data-action="start-game" class="button" {{startGameDisabling}}>Play!</a>
+				<input type="button" data-action="start-game" class="button" {{startGameDisabling}} value="Play!" />
 			{{/if}}
 			{{#if showRetry}}
-				<a href="#" data-action="retry-match-making" class="button">Retry</a>
+				<input type="button" data-action="retry-match-making" class="button" value="Retry">
 			{{/if}}
 			{{#if showCancelMatchMaking}}
-				<a href="#" data-action="cancel-match-making" class="button cancel-button">Cancel</a>
+				<input type="button" data-action="cancel-match-making" class="button cancel-button" value="Cancel">
 			{{/if}}
 		</div>
 

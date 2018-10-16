@@ -1,11 +1,21 @@
 export default class ButtonEnabler {
 	static disableButton(target) {
-		const button = $(target).find('.button');
+		let button = $(target).find('.button');
+
+		if ($(target).is('.button')) {
+			button = $(target);
+		}
+
 		button.prop('disabled', true);
 	}
 
 	static enableButton(target) {
-		const button = $(target).find('.button');
+		let button = $(target).find('.button');
+
+		if ($(target).is('.button')) {
+			button = $(target);
+		}
+
 		button.prop('disabled', false);
 	}
 }

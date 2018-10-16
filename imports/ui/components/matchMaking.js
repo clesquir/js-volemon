@@ -95,6 +95,7 @@ const monitorGameStart = function() {
 	Meteor.subscribe('game', Session.get('matchMaking.gameId'));
 	gameNotifier.onMatched();
 	Tooltips.hide();
+	ButtonEnabler.enableButton($('.buttons'));
 
 	gameStartTracker = Games.find(Session.get('matchMaking.gameId')).observeChanges({
 		changed: (id, fields) => {
@@ -486,7 +487,7 @@ Template.matchMaking.events({
 	},
 
 	'click [data-action=retry-match-making]:not([disabled])': function(e) {
-		ButtonEnabler.disableButton(e.target);
+		ButtonEnabler.disableButton(e.target.parentNode);
 
 		Session.set('matchMaking.gameId', null);
 		Session.set('matchMaking.playerIsReady', false);
@@ -500,32 +501,54 @@ Template.matchMaking.events({
 
 		startMatchMaking();
 
-		ButtonEnabler.enableButton(e.target);
+		ButtonEnabler.enableButton(e.target.parentNode);
 	},
 
 	'click [data-action=include-computer]:not([disabled])': function(e) {
-		ButtonEnabler.disableButton(e.target);
+		ButtonEnabler.disableButton(e.target.parentNode);
+		Meteor.call(
+			'addComputerToMatch',
+			Session.get('matchMaking.modeSelection') || ONE_VS_ONE_GAME_MODE,
+			Session.get('matchMaking.tournamentId'),
+			function() {
+				setTimeout(
+					() => {
+						ButtonEnabler.enableButton(e.target.parentNode);
+					},
+					1000
+				);
+			}
+		);
+	},
+
+	'click [data-action=include-ml-computer]:not([disabled])': function(e) {
+		ButtonEnabler.disableButton(e.target.parentNode);
 		Meteor.call(
 			'addMachineLearningComputerToMatch',
 			Session.get('matchMaking.modeSelection') || ONE_VS_ONE_GAME_MODE,
 			Session.get('matchMaking.tournamentId'),
 			function() {
-				ButtonEnabler.enableButton(e.target);
+				setTimeout(
+					() => {
+						ButtonEnabler.enableButton(e.target.parentNode);
+					},
+					1000
+				);
 			}
 		);
 	},
 
 	'click [data-action="start-game"]:not([disabled])': function(e) {
-		ButtonEnabler.disableButton(e.target);
+		ButtonEnabler.disableButton(e.target.parentNode);
 		Meteor.call('setPlayerIsReady', Session.get('matchMaking.gameId'), function() {
 			Session.set('matchMaking.playerIsReady', true);
 		});
 	},
 
 	'click [data-action=cancel-match-making]:not([disabled])': function(e) {
-		ButtonEnabler.disableButton(e.target);
+		ButtonEnabler.disableButton(e.target.parentNode);
 		Meteor.call('cancelMatchMaking', Meteor.userId(), function(error, cancelAllowed) {
-			ButtonEnabler.enableButton(e.target);
+			ButtonEnabler.enableButton(e.target.parentNode);
 			if (cancelAllowed) {
 				closeMatchMaking();
 			}
