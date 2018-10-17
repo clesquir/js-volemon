@@ -542,6 +542,7 @@ Template.matchMaking.events({
 		ButtonEnabler.disableButton(e.target.parentNode);
 		Meteor.call('setPlayerIsReady', Session.get('matchMaking.gameId'), function() {
 			Session.set('matchMaking.playerIsReady', true);
+			ButtonEnabler.enableButton(e.target.parentNode);
 		});
 	},
 

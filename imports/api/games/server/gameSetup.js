@@ -1,5 +1,5 @@
 import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGameConfiguration.js';
-import {ONE_VS_ONE_GAME_MODE, TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
+import {isTwoVersusTwoGameMode, ONE_VS_ONE_GAME_MODE} from '/imports/api/games/constants.js';
 import GameForfeited from '/imports/api/games/events/GameForfeited.js';
 import GameTimedOut from '/imports/api/games/events/GameTimedOut.js';
 import {Games} from '/imports/api/games/games.js';
@@ -124,7 +124,7 @@ export const joinGame = function(user, gameId, isReady = false) {
 
 	if (game.gameMode === ONE_VS_ONE_GAME_MODE && game.players.length >= 2) {
 		throw new Meteor.Error('not-allowed', 'Maximum players reached');
-	} else if (game.gameMode === TWO_VS_TWO_GAME_MODE && game.players.length >= 4) {
+	} else if (isTwoVersusTwoGameMode(game.gameMode) && game.players.length >= 4) {
 		throw new Meteor.Error('not-allowed', 'Maximum players reached');
 	}
 
@@ -276,7 +276,7 @@ export const replyRematch = function(userId, gameId, accepted, gameInitiators) {
 			game.tournamentId
 		);
 
-		if (game.gameMode === TWO_VS_TWO_GAME_MODE) {
+		if (isTwoVersusTwoGameMode(game.gameMode)) {
 			joinGame(game.players[3], gameRematchId, true);
 			joinGame(game.players[2], gameRematchId, true);
 			joinGame(game.players[1], gameRematchId, true);
@@ -305,7 +305,7 @@ export const onPlayerQuit = function(player) {
 
 			const winnerUserIds = [];
 			const loserUserIds = [];
-			if (game.gameMode === TWO_VS_TWO_GAME_MODE) {
+			if (isTwoVersusTwoGameMode(game.gameMode)) {
 				if (player.userId === game.players[0].id || player.userId === game.players[2].id) {
 					winnerUserIds.push(game.players[1].id);
 					winnerUserIds.push(game.players[3].id);

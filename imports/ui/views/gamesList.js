@@ -1,4 +1,4 @@
-import {TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
+import {isTwoVersusTwoGameMode} from '/imports/api/games/constants.js';
 import {GAME_STATUS_REGISTRATION, GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {tournamentName} from "/imports/api/tournaments/utils.js";
@@ -20,7 +20,7 @@ Template.gamesList.helpers({
 	},
 
 	hostNames: function() {
-		if (this.gameMode === TWO_VS_TWO_GAME_MODE) {
+		if (isTwoVersusTwoGameMode(this.gameMode)) {
 			return he.encode(this.players[0].name) + '<br />' + he.encode(this.players[2].name);
 		} else {
 			return he.encode(this.players[0].name);
@@ -28,7 +28,7 @@ Template.gamesList.helpers({
 	},
 
 	clientNames: function() {
-		if (this.gameMode === TWO_VS_TWO_GAME_MODE) {
+		if (isTwoVersusTwoGameMode(this.gameMode)) {
 			return he.encode(this.players[3].name) + '<br />' + he.encode(this.players[1].name);
 		} else {
 			return he.encode(this.players[1].name);

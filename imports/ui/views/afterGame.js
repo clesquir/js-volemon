@@ -6,7 +6,7 @@ import {
 	playerHasNotRepliedRematch,
 	playerLeftGame
 } from '/imports/api/games/client/gameSetup.js';
-import {TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
+import {isTwoVersusTwoGameMode} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {
@@ -76,11 +76,11 @@ Template.afterGame.helpers({
 	},
 
 	isTwoVersusTwo: function() {
-		return this.game.gameMode === TWO_VS_TWO_GAME_MODE;
+		return isTwoVersusTwoGameMode(this.game.gameMode);
 	},
 
 	playersList: function(playersCollection) {
-		if (this.game.gameMode === TWO_VS_TWO_GAME_MODE) {
+		if (isTwoVersusTwoGameMode(this.game.gameMode)) {
 			const players = {};
 
 			playersCollection.forEach((player) => {
@@ -133,7 +133,7 @@ Template.afterGame.helpers({
 
 	afterGameColorClass: function() {
 		if (isGameStatusFinished(this.game.status)) {
-			switch(winnerSide(this.game)) {
+			switch (winnerSide(this.game)) {
 				case 'Red':
 					return 'game-won-red-color';
 				case 'Blue':

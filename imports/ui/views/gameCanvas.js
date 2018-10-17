@@ -1,5 +1,5 @@
 import {gameData, serverNormalizedTime} from '/imports/api/games/client/routeInitiator.js';
-import {ONE_VS_ONE_GAME_MODE, TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
+import {isTwoVersusTwoGameMode} from '/imports/api/games/constants.js';
 import {Players} from '/imports/api/games/players.js';
 import {isGamePlayer, isGameStatusStarted} from '/imports/api/games/utils.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
@@ -17,7 +17,7 @@ Template.gameCanvas.helpers({
 	},
 
 	hostNames: function() {
-		if (this.game.gameMode === TWO_VS_TWO_GAME_MODE) {
+		if (isTwoVersusTwoGameMode(this.game.gameMode)) {
 			return '<span class="host-player">' + he.encode(this.game.players[0].name) + '</span>' + ' / ' +
 				'<span class="host-second-player">' + he.encode(this.game.players[2].name) + '</span>';
 		} else {
@@ -30,7 +30,7 @@ Template.gameCanvas.helpers({
 	},
 
 	clientNames: function() {
-		if (this.game.gameMode === TWO_VS_TWO_GAME_MODE) {
+		if (isTwoVersusTwoGameMode(this.game.gameMode)) {
 			return '<span class="client-second-player">' + he.encode(this.game.players[3].name) + '</span>' + ' / ' +
 				'<span class="client-player">' + he.encode(this.game.players[1].name) + '</span>';
 		} else {

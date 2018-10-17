@@ -1,4 +1,4 @@
-import {GAME_MAXIMUM_POINTS, TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
+import {GAME_MAXIMUM_POINTS, isTwoVersusTwoGameMode} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
 import TournamentMode from '/imports/api/tournaments/TournamentMode.js';
@@ -158,7 +158,7 @@ export default class GameListener extends Listener {
 	is2Vs2Game() {
 		const game = this.getGame();
 
-		return game && game.gameMode === TWO_VS_TWO_GAME_MODE;
+		return (game && isTwoVersusTwoGameMode(game.gameMode));
 	}
 
 	gameMaximumPoints() {

@@ -4,7 +4,8 @@ import {
 	NORMAL_SCALE_PHYSICS_DATA,
 	ONE_VS_ONE_GAME_MODE,
 	SMALL_SCALE_PHYSICS_DATA,
-	TWO_VS_TWO_GAME_MODE
+	TWO_VS_TWO_GAME_MODE,
+	TWO_VS_TWO_HUMAN_CPU_GAME_MODE
 } from '/imports/api/games/constants.js';
 import {PLAYER_ALLOWED_LIST_OF_SHAPES, PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
 import {isTournamentAdministrator, isTournamentEditor} from '/imports/api/users/userConfigurations.js';
@@ -25,6 +26,7 @@ Template.tournamentAdministration.helpers({
 		return [
 			{id: ONE_VS_ONE_GAME_MODE, name: '1 VS 1', isSelected: tournament.gameMode === ONE_VS_ONE_GAME_MODE},
 			{id: TWO_VS_TWO_GAME_MODE, name: '2 VS 2', isSelected: tournament.gameMode === TWO_VS_TWO_GAME_MODE},
+			{id: TWO_VS_TWO_HUMAN_CPU_GAME_MODE, name: 'human+CPU VS human+CPU', isSelected: tournament.gameMode === TWO_VS_TWO_HUMAN_CPU_GAME_MODE},
 		];
 	},
 

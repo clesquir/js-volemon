@@ -1,4 +1,4 @@
-import {TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
+import {isTwoVersusTwoGameMode} from '/imports/api/games/constants.js';
 
 export default class LevelConfiguration {
 	width = 0;
@@ -86,7 +86,7 @@ export default class LevelConfiguration {
 	}
 
 	static fromMode(mode) {
-		if (mode === TWO_VS_TWO_GAME_MODE) {
+		if (isTwoVersusTwoGameMode(mode)) {
 			return LevelConfiguration.defaultTwoVersusTwoConfiguration();
 		}
 

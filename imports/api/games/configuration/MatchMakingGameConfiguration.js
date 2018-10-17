@@ -33,9 +33,9 @@ export default class MatchMakingGameConfiguration extends GameConfiguration {
 	 * @private
 	 */
 	initTournament() {
-		const tournament = this.tournamentsCollection.findOne({_id: this.tournamentId});
+		this.tournament = this.tournamentsCollection.findOne({_id: this.tournamentId});
 
 		/** @type TournamentMode */
-		this.tournamentMode = TournamentMode.fromTournament(tournament);
+		this.tournamentMode = TournamentMode.fromTournament(this.tournament);
 	}
 }

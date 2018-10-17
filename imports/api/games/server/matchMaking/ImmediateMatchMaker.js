@@ -3,7 +3,8 @@ import {
 	ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE,
 	ONE_VS_ONE_GAME_MODE,
 	TOURNAMENT_GAME_SELECTION,
-	TWO_VS_TWO_GAME_MODE
+	TWO_VS_TWO_GAME_MODE,
+	TWO_VS_TWO_HUMAN_CPU_GAME_MODE
 } from '/imports/api/games/constants.js';
 import MatchMaker from '/imports/api/games/server/matchMaking/MatchMaker.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
@@ -39,6 +40,7 @@ export default class ImmediateMatchMaker extends MatchMaker {
 				}
 				break;
 			case TWO_VS_TWO_GAME_MODE:
+			case TWO_VS_TWO_HUMAN_CPU_GAME_MODE:
 				if (match.usersToMatch.length === 4) {
 					return match.usersToMatch;
 				}

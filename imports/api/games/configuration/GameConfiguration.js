@@ -19,6 +19,7 @@ import {
 	SMALL_SCALE_PHYSICS_DATA,
 	SMALL_SCALE_PLAYER_BONUS,
 	TWO_VS_TWO_GAME_MODE,
+	TWO_VS_TWO_HUMAN_CPU_GAME_MODE,
 	WORLD_GRAVITY,
 	WORLD_RESTITUTION
 } from '/imports/api/games/constants.js';
@@ -35,6 +36,8 @@ export default class GameConfiguration {
 	gameMode = null;
 	/** @type {string|null} */
 	tournamentId = null;
+	/** @type {object} */
+	tournament = null;
 	/** @type {TournamentMode} */
 	tournamentMode = null;
 	/** @type {LevelConfiguration} */
@@ -413,7 +416,7 @@ export default class GameConfiguration {
 
 	canIncludeComputer() {
 		if (this.hasTournament()) {
-			return true;
+			return this.tournament.gameMode !== TWO_VS_TWO_HUMAN_CPU_GAME_MODE;
 		} else {
 			return this.gameMode === TWO_VS_TWO_GAME_MODE;
 		}

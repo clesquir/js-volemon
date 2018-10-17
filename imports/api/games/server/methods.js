@@ -3,8 +3,8 @@ import {
 	CLIENT_SIDE,
 	HOST_POINTS_COLUMN,
 	HOST_SIDE,
-	ONE_VS_ONE_GAME_MODE,
-	TWO_VS_TWO_GAME_MODE
+	isTwoVersusTwoGameMode,
+	ONE_VS_ONE_GAME_MODE
 } from '/imports/api/games/constants.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {Games} from '/imports/api/games/games.js';
@@ -25,6 +25,7 @@ import {EventPublisher} from '/imports/lib/EventPublisher.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
+
 const writeFile = require('write');
 
 const saveMachineLearning = function(generation, genomes, filename) {
@@ -344,7 +345,7 @@ Meteor.methods({
 						loserUserIds.push(game.players[1].id);
 					}
 
-					if (game.gameMode === TWO_VS_TWO_GAME_MODE) {
+					if (isTwoVersusTwoGameMode(game.gameMode)) {
 						loserUserIds.push(game.players[1].id);
 						winnerUserIds.push(game.players[2].id);
 						loserUserIds.push(game.players[3].id);
@@ -357,7 +358,7 @@ Meteor.methods({
 						winnerUserIds.push(game.players[1].id);
 					}
 
-					if (game.gameMode === TWO_VS_TWO_GAME_MODE) {
+					if (isTwoVersusTwoGameMode(game.gameMode)) {
 						winnerUserIds.push(game.players[1].id);
 						winnerUserIds.push(game.players[3].id);
 						loserUserIds.push(game.players[2].id);

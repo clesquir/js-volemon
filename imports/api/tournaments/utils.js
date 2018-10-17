@@ -1,4 +1,4 @@
-import {ONE_VS_ONE_GAME_MODE, TWO_VS_TWO_GAME_MODE} from "/imports/api/games/constants.js";
+import {ONE_VS_ONE_GAME_MODE, TWO_VS_TWO_GAME_MODE, TWO_VS_TWO_HUMAN_CPU_GAME_MODE} from "/imports/api/games/constants.js";
 import {TournamentProfiles} from '/imports/api/tournaments/tournamentProfiles';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
@@ -57,6 +57,7 @@ export const tournamentName = function(tournament) {
 		case ONE_VS_ONE_GAME_MODE:
 			return '1 VS 1: ' + tournament.name;
 		case TWO_VS_TWO_GAME_MODE:
+		case TWO_VS_TWO_HUMAN_CPU_GAME_MODE:
 			return '2 VS 2: ' + tournament.name;
 	}
 

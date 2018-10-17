@@ -1,4 +1,4 @@
-import {TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
+import {isTwoVersusTwoGameMode} from '/imports/api/games/constants.js';
 import {padNumber, timeElapsedSince} from '/imports/lib/utils.js';
 import {Meteor} from 'meteor/meteor';
 import * as Moment from 'meteor/momentjs:moment';
@@ -73,7 +73,7 @@ Template.recentGames.helpers({
 	},
 
 	hostNames: function() {
-		if (this.gameMode === TWO_VS_TWO_GAME_MODE) {
+		if (isTwoVersusTwoGameMode(this.gameMode)) {
 			return he.encode(this.players[0].name) + '<br />' + he.encode(this.players[2].name);
 		} else {
 			return he.encode(this.players[0].name);
@@ -81,7 +81,7 @@ Template.recentGames.helpers({
 	},
 
 	clientNames: function() {
-		if (this.gameMode === TWO_VS_TWO_GAME_MODE) {
+		if (isTwoVersusTwoGameMode(this.gameMode)) {
 			return he.encode(this.players[3].name) + '<br />' + he.encode(this.players[1].name);
 		} else {
 			return he.encode(this.players[1].name);

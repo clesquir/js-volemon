@@ -1,4 +1,4 @@
-import {TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
+import {isTwoVersusTwoGameMode} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
 import LevelConfiguration from '/imports/api/games/levelConfiguration/LevelConfiguration.js';
 import TournamentMode from '/imports/api/tournaments/TournamentMode.js';
@@ -40,10 +40,10 @@ export default class DefaultGameConfiguration extends GameConfiguration {
 	 * @private
 	 */
 	initTournament() {
-		const tournament = Tournaments.findOne({_id: this.tournamentId});
+		this.tournament = Tournaments.findOne({_id: this.tournamentId});
 
 		/** @type TournamentMode */
-		this.tournamentMode = TournamentMode.fromTournament(tournament);
+		this.tournamentMode = TournamentMode.fromTournament(this.tournament);
 	}
 
 	/**
@@ -57,7 +57,7 @@ export default class DefaultGameConfiguration extends GameConfiguration {
 				this.tournamentMode.overridesLevelHeight() ? this.tournamentMode.levelHeight() : this.levelConfiguration.height
 			);
 		} else {
-			if (this.gameMode === TWO_VS_TWO_GAME_MODE) {
+			if (isTwoVersusTwoGameMode(this.gameMode)) {
 				this.levelConfiguration = LevelConfiguration.defaultTwoVersusTwoConfiguration();
 			} else {
 				this.levelConfiguration = LevelConfiguration.defaultConfiguration();

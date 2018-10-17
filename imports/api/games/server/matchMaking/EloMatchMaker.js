@@ -3,7 +3,8 @@ import {
 	ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE,
 	ONE_VS_ONE_GAME_MODE,
 	TOURNAMENT_GAME_SELECTION,
-	TWO_VS_TWO_GAME_MODE
+	TWO_VS_TWO_GAME_MODE,
+	TWO_VS_TWO_HUMAN_CPU_GAME_MODE
 } from '/imports/api/games/constants.js';
 import MatchMaker from '/imports/api/games/server/matchMaking/MatchMaker.js';
 import {INITIAL_ELO_RATING} from '/imports/api/profiles/constants.js';
@@ -70,6 +71,17 @@ export default class EloMatchMaker extends MatchMaker {
 					return [matchedUsers[3], matchedUsers[1], matchedUsers[0], matchedUsers[2]];
 				}
 				break;
+			case TWO_VS_TWO_HUMAN_CPU_GAME_MODE:
+				if (match.usersToMatch.length === 2) {
+					const matchedUsers = this.sortByEloRating(match.usersToMatch, match.tournamentId);
+
+					return [
+						matchedUsers[1],
+						matchedUsers[0],
+						{id: 'CPU', isMachineLearning: true, name: 'CPU'},
+						{id: 'CPU', isMachineLearning: true, name: 'CPU'}
+					];
+				}
 		}
 
 		return [];

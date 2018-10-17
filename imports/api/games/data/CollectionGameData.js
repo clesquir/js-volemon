@@ -1,4 +1,4 @@
-import {TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
+import {isTwoVersusTwoGameMode} from '/imports/api/games/constants.js';
 import GameData from '/imports/api/games/data/GameData.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
@@ -150,7 +150,7 @@ export default class CollectionGameData extends GameData {
 	}
 
 	isTwoVersusTwo() {
-		return this.gameMode === TWO_VS_TWO_GAME_MODE;
+		return isTwoVersusTwoGameMode(this.gameMode);
 	}
 
 	isUserCreator() {
