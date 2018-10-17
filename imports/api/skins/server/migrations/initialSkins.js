@@ -1,6 +1,7 @@
 import {
 	SKIN_DEFAULT,
 	SKIN_DEVALTO,
+	SKIN_HALLOWEEN,
 	SKIN_INDUSTRIAL,
 	SKIN_JUJU_WORLD,
 	SKIN_MARIO_BROS,
@@ -40,6 +41,11 @@ Meteor.startup(function() {
 			_id: SKIN_SPACE,
 			name: "Space",
 			displayOrder: 6
+		},
+		{
+			_id: SKIN_HALLOWEEN,
+			name: "Halloween",
+			displayOrder: 7
 		}
 	];
 
