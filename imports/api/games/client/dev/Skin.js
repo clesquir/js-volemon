@@ -8,6 +8,13 @@ import {Random} from 'meteor/random';
 import {Session} from 'meteor/session';
 
 export default class Skin extends Dev {
+	constructor() {
+		super();
+
+		this.gameData.firstPlayerComputer = true;
+		this.gameData.secondPlayerComputer = true;
+	}
+
 	beforeStart() {
 		this.gameConfiguration.levelConfiguration = LevelConfiguration.fromMode(Session.get('dev.skin.currentMode'));
 		this.gameSkin = new GameSkin(SkinFactory.fromId(Session.get('dev.skin.currentSkin')), []);

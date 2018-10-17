@@ -1,5 +1,6 @@
 import {
 	SKIN_DEVALTO,
+	SKIN_HALLOWEEN,
 	SKIN_INDUSTRIAL,
 	SKIN_JUJU_WORLD,
 	SKIN_MARIO_BROS,
@@ -7,6 +8,7 @@ import {
 } from '/imports/api/skins/skinConstants.js';
 import DefaultSkin from '/imports/api/skins/skins/DefaultSkin.js';
 import DevaltoSkin from '/imports/api/skins/skins/DevaltoSkin.js';
+import HalloweenSkin from '/imports/api/skins/skins/HalloweenSkin.js';
 import IndustrialSkin from '/imports/api/skins/skins/IndustrialSkin.js';
 import JujuWorldSkin from '/imports/api/skins/skins/JujuWorldSkin.js';
 import MarioBrosSkin from '/imports/api/skins/skins/MarioBrosSkin.js';
@@ -29,6 +31,8 @@ export default class SkinFactory {
 				return new IndustrialSkin();
 			case SKIN_SPACE:
 				return new SpaceSkin();
+			case SKIN_HALLOWEEN:
+				return new HalloweenSkin();
 		}
 
 		return new DefaultSkin();
