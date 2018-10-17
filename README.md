@@ -6,6 +6,8 @@ HTML5 multiplayer version of the Volemon (or Slime Volley) game implemented with
  * Meteor (www.meteor.com)
  * Phaser (www.phaser.io)
  * Socket.io (https://socket.io/)
+ * WebRTC (https://github.com/feross/simple-peer)
+ * Machine Learning (https://github.com/cazala/synaptic)
  * Chart.js (www.chartjs.org)
  * Yahoo Weather API (https://developer.yahoo.com/weather/)
 
@@ -37,3 +39,12 @@ meteor npm run meteor-dev
 Open a browser with your ip address at port 3000 (e.g.: 192.168.200.23:3000).
 
 Have fun!
+
+## To develop
+
+Several dev pages have been developed to better test:
+
+ * AI - Machine Learning: http://localhost:3000/dev/ai
+ * Skins: http://localhost:3000/dev/skin
+ * Shapes: http://localhost:3000/dev/shape
+ * Environment: http://localhost:3000/dev/environment
