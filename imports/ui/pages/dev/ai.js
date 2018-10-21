@@ -6,6 +6,7 @@ import './ai.html';
 /** @type {Ai}|null */
 let ai = null;
 let started = new ReactiveVar(false);
+const genomesFromExisting = new ReactiveVar(true);
 const firstPlayerHumanEnabled = new ReactiveVar(false);
 const firstPlayerMachineLearningEnabled = new ReactiveVar(false);
 const secondPlayerHumanEnabled = new ReactiveVar(false);
@@ -30,6 +31,9 @@ Template.ai.destroyed = function() {
 Template.ai.helpers({
 	started: function() {
 		return started.get();
+	},
+	genomesFromExisting: function() {
+		return genomesFromExisting.get();
 	},
 	firstPlayerHumanEnabled: function() {
 		return firstPlayerHumanEnabled.get();
@@ -58,6 +62,11 @@ Template.ai.events({
 	'click [data-action="start-game"]': function() {
 		ai.start();
 		started.set(true);
+	},
+	'click [data-action="start-genomes-from-existing"]': function() {
+		ai.enableGenomesFromExisting(!genomesFromExisting.get());
+
+		genomesFromExisting.set(!genomesFromExisting.get());
 	},
 	'click [data-action="enable-first-player-human"]': function() {
 		ai.enableFirstPlayerHuman(!firstPlayerHumanEnabled.get());

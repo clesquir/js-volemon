@@ -9,6 +9,7 @@ export default class ArtificialIntelligence {
 	numberPointsToCalculateGenomes = 10;
 	canJump = false;
 	isLearning = false;
+	genomesFromExisting = true;
 
 	addComputerWithKey(key, machineLearning = false) {
 		this.computers[key] = {
@@ -21,9 +22,15 @@ export default class ArtificialIntelligence {
 		};
 
 		if (machineLearning) {
-			this.computers[key].learner = new Learner(6, 2, 12, 4, 0.2);
+			this.computers[key].learner = new Learner(4, 2, 12, 4, 0.2);
 			this.computers[key].learner.init();
-			this.loadGenomes(key, JSON.stringify(key === 'player1' || key === 'player3' ? hostGenomes : clientGenomes));
+
+			if (this.genomesFromExisting) {
+				this.loadGenomes(
+					key,
+					JSON.stringify(key === 'player1' || key === 'player3' ? hostGenomes : clientGenomes)
+				);
+			}
 		}
 	}
 
@@ -145,16 +152,19 @@ export default class ArtificialIntelligence {
 		const halfWidth = (width / 2);
 
 		if (this.computers[key].learner) {
-			//Reduce fitness if ball is not horizontally moving
 			if (
 				Math.round(ballPosition.velocityX) === 0 &&
 				isLeft === (ballPosition.x < halfWidth)
 			) {
+				//Reduce fitness if ball stalled horizontally on player's side
 				this.computers[key].cumulatedFitness -= 10;
 			}
-			//Increase fitness if ball is not on player's side
 			if (isLeft === (ballPosition.x > halfWidth)) {
+				//Increase fitness if ball is not on player's side
 				this.computers[key].cumulatedFitness += 0.1;
+			} else {
+				//Reduce fitness if ball is on player's side
+				this.computers[key].cumulatedFitness -= 0.1;
 			}
 
 			this.applyLearnerOutput(
@@ -162,12 +172,10 @@ export default class ArtificialIntelligence {
 				modifiers,
 				this.computers[key].learner.emitData(
 					[
-						this.round5(computerPosition.x),
-						this.round5(computerPosition.y),
-						this.round5(ballPosition.x),
-						this.round5(ballPosition.y),
-						this.round5(ballPosition.velocityX),
-						this.round5(ballPosition.velocityY)
+						Math.round(computerPosition.x - ballPosition.x),
+						Math.round(computerPosition.y - ballPosition.y),
+						Math.round(ballPosition.velocityX),
+						Math.round(ballPosition.velocityY)
 					]
 				)
 			);
@@ -438,14 +446,5 @@ export default class ArtificialIntelligence {
 			this.computers[key].left = left;
 			this.computers[key].right = right;
 		}
-	}
-
-	/**
-	 * @private
-	 * @param {number} value
-	 * @returns {number}
-	 */
-	round5(value) {
-		return Math.ceil(value / 5) * 5;
 	}
 }

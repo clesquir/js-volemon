@@ -74,31 +74,6 @@ export default class Game {
 			this.gameConfiguration
 		);
 		this.artificialIntelligence = new ArtificialIntelligence();
-
-		if (this.gameData.isFirstPlayerComputer()) {
-			this.artificialIntelligence.addComputerWithKey(
-				'player1',
-				this.gameData.isFirstPlayerComputerMachineLearning()
-			);
-		}
-		if (this.gameData.isSecondPlayerComputer()) {
-			this.artificialIntelligence.addComputerWithKey(
-				'player2',
-				this.gameData.isSecondPlayerComputerMachineLearning()
-			);
-		}
-		if (this.gameData.isThirdPlayerComputer()) {
-			this.artificialIntelligence.addComputerWithKey(
-				'player3',
-				this.gameData.isThirdPlayerComputerMachineLearning()
-			);
-		}
-		if (this.gameData.isFourthPlayerComputer()) {
-			this.artificialIntelligence.addComputerWithKey(
-				'player4',
-				this.gameData.isFourthPlayerComputerMachineLearning()
-			);
-		}
 	}
 
 	getCurrentPlayer() {
@@ -127,16 +102,6 @@ export default class Game {
 
 	isPlayerKeyClientSide(playerKey) {
 		return (playerKey === 'player2' || playerKey === 'player4');
-	}
-
-	playerPointSide(playerKey) {
-		if (this.isPlayerKeyHostSide(playerKey)) {
-			return CLIENT_POINTS_COLUMN;
-		} else if (this.isPlayerKeyClientSide(playerKey)) {
-			return HOST_POINTS_COLUMN;
-		}
-
-		return null;
 	}
 
 	playerInitialPolygonFromKey(playerKey) {
@@ -228,8 +193,37 @@ export default class Game {
 		this.resumeOnTimerEnd();
 	}
 
+	createArtificialIntelligence() {
+		if (this.gameData.isFirstPlayerComputer()) {
+			this.artificialIntelligence.addComputerWithKey(
+				'player1',
+				this.gameData.isFirstPlayerComputerMachineLearning()
+			);
+		}
+		if (this.gameData.isSecondPlayerComputer()) {
+			this.artificialIntelligence.addComputerWithKey(
+				'player2',
+				this.gameData.isSecondPlayerComputerMachineLearning()
+			);
+		}
+		if (this.gameData.isThirdPlayerComputer()) {
+			this.artificialIntelligence.addComputerWithKey(
+				'player3',
+				this.gameData.isThirdPlayerComputerMachineLearning()
+			);
+		}
+		if (this.gameData.isFourthPlayerComputer()) {
+			this.artificialIntelligence.addComputerWithKey(
+				'player4',
+				this.gameData.isFourthPlayerComputerMachineLearning()
+			);
+		}
+	}
+
 	createComponents() {
 		this.collisions.init();
+
+		this.createArtificialIntelligence();
 
 		/**
 		 * Player 1
