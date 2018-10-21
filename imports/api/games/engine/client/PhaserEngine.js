@@ -5,10 +5,7 @@ import Engine from '/imports/api/games/engine/Engine.js';
 import {
 	NORMAL_SCALE_PHYSICS_DATA,
 	SMALL_SCALE_PHYSICS_DATA,
-	BIG_SCALE_PHYSICS_DATA,
-	SMALL_SCALE_PLAYER_BONUS,
-	SMALL_SCALE_BALL_BONUS,
-	BIG_SCALE_BONUS
+	BIG_SCALE_PHYSICS_DATA
 } from '/imports/api/games/constants.js';
 import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
 
@@ -58,11 +55,32 @@ export default class PhaserEngine extends Engine {
 		this.game.state.add('play', {
 			preload: () => {
 				for (let shape of PLAYER_LIST_OF_SHAPES) {
-					this.loadScaledPhysics(NORMAL_SCALE_PHYSICS_DATA, SMALL_SCALE_PHYSICS_DATA, 'player-' + shape, SMALL_SCALE_PLAYER_BONUS);
-					this.loadScaledPhysics(NORMAL_SCALE_PHYSICS_DATA, BIG_SCALE_PHYSICS_DATA, 'player-' + shape, BIG_SCALE_BONUS);
+					this.loadScaledPhysics(
+						NORMAL_SCALE_PHYSICS_DATA,
+						SMALL_SCALE_PHYSICS_DATA,
+						'player-' + shape,
+						worldConfiguration.smallPlayerScale
+					);
+					this.loadScaledPhysics(
+						NORMAL_SCALE_PHYSICS_DATA,
+						BIG_SCALE_PHYSICS_DATA,
+						'player-' + shape,
+						worldConfiguration.bigPlayerScale
+					);
 				}
-				this.loadScaledPhysics(NORMAL_SCALE_PHYSICS_DATA, SMALL_SCALE_PHYSICS_DATA, 'ball', SMALL_SCALE_BALL_BONUS);
-				this.loadScaledPhysics(NORMAL_SCALE_PHYSICS_DATA, BIG_SCALE_PHYSICS_DATA, 'ball', BIG_SCALE_BONUS);
+
+				this.loadScaledPhysics(
+					NORMAL_SCALE_PHYSICS_DATA,
+					SMALL_SCALE_PHYSICS_DATA,
+					'ball',
+					worldConfiguration.smallBallScale
+				);
+				this.loadScaledPhysics(
+					NORMAL_SCALE_PHYSICS_DATA,
+					BIG_SCALE_PHYSICS_DATA,
+					'ball',
+					worldConfiguration.bigBallScale
+				);
 			},
 			create: createGame.bind(scope),
 			update: updateGame.bind(scope)

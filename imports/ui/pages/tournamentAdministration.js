@@ -264,16 +264,25 @@ const modeOptions = function() {
 	addToMode(mode, 'bonus-spawn-minimum-frequence', 'overriddenBonusSpawnMinimumFrequence');
 	addToMode(mode, 'bonus-spawn-initial-minimum-frequence', 'overriddenBonusSpawnInitialMinimumFrequence');
 	addToMode(mode, 'bonus-spawn-initial-maximum-frequence', 'overriddenBonusSpawnInitialMaximumFrequence');
-	addToMode(mode, 'initial-player-polygon-key', 'overriddenInitialPlayerPolygonKey');
-	addToMode(mode, 'initial-ball-polygon-key', 'overriddenInitialBallPolygonKey');
+
 	addToMode(mode, 'allowed-list-of-shapes', 'overriddenAllowedListOfShapes');
 	addToMode(mode, 'list-of-shapes', 'overriddenListOfShapes');
 	addToMode(mode, 'current-player-shape', 'overriddenCurrentPlayerShape');
 	addToMode(mode, 'is-hidden-to-himself', 'overriddenIsHiddenToHimself');
 	addToMode(mode, 'is-hidden-to-opponent', 'overriddenIsHiddenToOpponent');
+	addToMode(mode, 'initial-player-polygon-key', 'overriddenInitialPlayerPolygonKey');
+	addToMode(mode, 'initial-ball-polygon-key', 'overriddenInitialBallPolygonKey');
+	addToMode(mode, 'small-player-scale', 'overriddenSmallPlayerScale');
+	addToMode(mode, 'big-player-scale', 'overriddenBigPlayerScale');
+	addToMode(mode, 'small-ball-scale', 'overriddenSmallBallScale');
+	addToMode(mode, 'big-ball-scale', 'overriddenBigBallScale');
 	addToMode(mode, 'force-practice-with-computer', 'overriddenForcePracticeWithComputer');
+
 	addToMode(mode, 'forfeit-minimum-points', 'overriddenForfeitMinimumPoints');
 	addToMode(mode, 'maximum-points', 'overriddenMaximumPoints');
+	addToMode(mode, 'player-maximum-ball-hit', 'overriddenPlayerMaximumBallHit');
+	addToMode(mode, 'team-maximum-ball-hit', 'overriddenTeamMaximumBallHit');
+
 	addToMode(mode, 'net-height', 'overriddenNetHeight');
 	addToMode(mode, 'level-width', 'overriddenLevelWidth');
 	addToMode(mode, 'level-height', 'overriddenLevelHeight');
@@ -285,8 +294,6 @@ const modeOptions = function() {
 	addToMode(mode, 'player-smash-enabled', 'overriddenPlayerSmashEnabled');
 	addToMode(mode, 'ball-rebound-on-player-enabled', 'overriddenBallReboundOnPlayerEnabled');
 	addToMode(mode, 'ball-velocity-on-rebound-on-player', 'overriddenBallVelocityOnReboundOnPlayer');
-	addToMode(mode, 'player-maximum-ball-hit', 'overriddenPlayerMaximumBallHit');
-	addToMode(mode, 'team-maximum-ball-hit', 'overriddenTeamMaximumBallHit');
 
 	return mode;
 };

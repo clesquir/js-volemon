@@ -13,6 +13,10 @@ export default class TournamentMode {
 	overriddenHasBonuses;
 	overriddenInitialPlayerPolygonKey;
 	overriddenInitialBallPolygonKey;
+	overriddenSmallPlayerScale;
+	overriddenBigPlayerScale;
+	overriddenSmallBallScale;
+	overriddenBigBallScale;
 	overriddenListOfShapes;
 	overriddenAllowedListOfShapes;
 	overriddenCurrentPlayerShape;
@@ -144,6 +148,38 @@ export default class TournamentMode {
 
 	initialBallPolygonKey() {
 		return this.overriddenInitialBallPolygonKey;
+	}
+
+	overridesSmallPlayerScale() {
+		return this.overriddenSmallPlayerScale !== undefined;
+	}
+
+	smallPlayerScale() {
+		return this.overriddenSmallPlayerScale;
+	}
+
+	overridesBigPlayerScale() {
+		return this.overriddenBigPlayerScale !== undefined;
+	}
+
+	bigPlayerScale() {
+		return this.overriddenBigPlayerScale;
+	}
+
+	overridesSmallBallScale() {
+		return this.overriddenSmallBallScale !== undefined;
+	}
+
+	smallBallScale() {
+		return this.overriddenSmallBallScale;
+	}
+
+	overridesBigBallScale() {
+		return this.overriddenBigBallScale !== undefined;
+	}
+
+	bigBallScale() {
+		return this.overriddenBigBallScale;
 	}
 
 	overridesListOfShapes() {
@@ -310,6 +346,10 @@ export default class TournamentMode {
 		tournamentMode.overriddenHasBonuses = mode.overriddenHasBonuses;
 		tournamentMode.overriddenInitialPlayerPolygonKey = mode.overriddenInitialPlayerPolygonKey;
 		tournamentMode.overriddenInitialBallPolygonKey = mode.overriddenInitialBallPolygonKey;
+		tournamentMode.overriddenSmallPlayerScale = mode.overriddenSmallPlayerScale;
+		tournamentMode.overriddenBigPlayerScale = mode.overriddenBigPlayerScale;
+		tournamentMode.overriddenSmallBallScale = mode.overriddenSmallBallScale;
+		tournamentMode.overriddenBigBallScale = mode.overriddenBigBallScale;
 		tournamentMode.overriddenListOfShapes = mode.overriddenListOfShapes;
 		tournamentMode.overriddenAllowedListOfShapes = mode.overriddenAllowedListOfShapes;
 		tournamentMode.overriddenCurrentPlayerShape = mode.overriddenCurrentPlayerShape;

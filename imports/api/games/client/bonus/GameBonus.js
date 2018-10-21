@@ -1,14 +1,11 @@
 import BonusFactory from '/imports/api/games/BonusFactory.js';
 import {
-	BIG_SCALE_BONUS,
 	BIG_SCALE_PHYSICS_DATA,
 	BONUS_GRAVITY_SCALE,
 	NORMAL_SCALE_BONUS,
 	NORMAL_SCALE_PHYSICS_DATA,
 	PLAYER_FROZEN_MASS,
-	SMALL_SCALE_BALL_BONUS,
-	SMALL_SCALE_PHYSICS_DATA,
-	SMALL_SCALE_PLAYER_BONUS
+	SMALL_SCALE_PHYSICS_DATA
 } from '/imports/api/games/constants.js';
 import {BONUS_INTERVAL} from '/imports/api/games/emissionConstants.js';
 import {getRandomInt} from '/imports/lib/utils.js';
@@ -67,11 +64,12 @@ export default class GameBonus {
 			case NORMAL_SCALE_BONUS:
 				polygonKey = NORMAL_SCALE_PHYSICS_DATA;
 				break;
-			case SMALL_SCALE_PLAYER_BONUS:
-			case SMALL_SCALE_BALL_BONUS:
+			case this.gameConfiguration.smallPlayerScale():
+			case this.gameConfiguration.smallBallScale():
 				polygonKey = SMALL_SCALE_PHYSICS_DATA;
 				break;
-			case BIG_SCALE_BONUS:
+			case this.gameConfiguration.bigPlayerScale():
+			case this.gameConfiguration.bigBallScale():
 				polygonKey = BIG_SCALE_PHYSICS_DATA;
 				break;
 		}
@@ -270,6 +268,14 @@ export default class GameBonus {
 		}
 	}
 
+	scaleSmallPlayer(playerKey) {
+		this.scalePlayer(playerKey, this.gameConfiguration.smallPlayerScale());
+	}
+
+	scaleBigPlayer(playerKey) {
+		this.scalePlayer(playerKey, this.gameConfiguration.bigPlayerScale());
+	}
+
 	scalePlayer(playerKey, scale) {
 		const player = this.game.getPlayerFromKey(playerKey);
 		const polygonKey = this.getPolygonKeyFromScale(scale);
@@ -345,6 +351,14 @@ export default class GameBonus {
 
 		player.data.currentGravity = player.data.initialGravity;
 		this.game.setupPlayerBody(player);
+	}
+
+	scaleSmallBall() {
+		this.scaleBall(this.gameConfiguration.smallBallScale());
+	}
+
+	scaleBigBall() {
+		this.scaleBall(this.gameConfiguration.bigBallScale());
 	}
 
 	scaleBall(scale) {

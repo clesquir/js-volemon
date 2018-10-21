@@ -1,5 +1,5 @@
 import MonsterScaleBonus from '/imports/api/games/bonus/MonsterScaleBonus.js';
-import {BIG_SCALE_BONUS, PLAYER_BIG_GRAVITY_SCALE} from '/imports/api/games/constants.js';
+import {PLAYER_BIG_GRAVITY_SCALE} from '/imports/api/games/constants.js';
 
 export default class BigMonsterBonus extends MonsterScaleBonus {
 	constructor(...args) {
@@ -9,7 +9,7 @@ export default class BigMonsterBonus extends MonsterScaleBonus {
 	}
 
 	start() {
-		this.game.scalePlayer.call(this.game, this.activatorPlayerKey, BIG_SCALE_BONUS);
+		this.game.scaleBigPlayer.call(this.game, this.activatorPlayerKey);
 		this.game.setPlayerGravity.call(this.game, this.activatorPlayerKey, PLAYER_BIG_GRAVITY_SCALE);
 	}
 };

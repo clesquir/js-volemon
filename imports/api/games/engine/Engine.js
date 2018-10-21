@@ -4,6 +4,10 @@ export default class Engine {
 	 * @param worldConfiguration.width
 	 * @param worldConfiguration.height
 	 * @param worldConfiguration.gravity
+	 * @param worldConfiguration.smallPlayerScale
+	 * @param worldConfiguration.bigPlayerScale
+	 * @param worldConfiguration.smallBallScale
+	 * @param worldConfiguration.bigBallScale
 	 * @param worldConfiguration.bonusRadius
 	 * @param worldConfiguration.renderTo
 	 * @param preloadGame

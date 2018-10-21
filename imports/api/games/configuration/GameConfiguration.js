@@ -3,8 +3,9 @@ import {
 	BALL_GRAVITY_SCALE,
 	BALL_SMALL_GRAVITY_SCALE,
 	BALL_VERTICAL_SPEED_ON_PLAYER_HIT,
-	BIG_SCALE_BONUS,
+	BIG_SCALE_BALL_BONUS,
 	BIG_SCALE_PHYSICS_DATA,
+	BIG_SCALE_PLAYER_BONUS,
 	BONUS_RADIUS,
 	GAME_FORFEIT_MINIMUM_POINTS,
 	GAME_MAXIMUM_POINTS,
@@ -119,9 +120,9 @@ export default class GameConfiguration {
 		if (this.hasTournament() && this.tournamentMode.overridesInitialPlayerPolygonKey()) {
 			switch (this.tournamentMode.initialPlayerPolygonKey()) {
 				case SMALL_SCALE_PHYSICS_DATA:
-					return SMALL_SCALE_PLAYER_BONUS;
+					return this.smallPlayerScale();
 				case BIG_SCALE_PHYSICS_DATA:
-					return BIG_SCALE_BONUS;
+					return this.bigPlayerScale();
 			}
 		}
 
@@ -153,13 +154,45 @@ export default class GameConfiguration {
 		if (this.hasTournament() && this.tournamentMode.overridesInitialBallPolygonKey()) {
 			switch (this.tournamentMode.initialBallPolygonKey()) {
 				case SMALL_SCALE_PHYSICS_DATA:
-					return SMALL_SCALE_BALL_BONUS;
+					return this.smallBallScale();
 				case BIG_SCALE_PHYSICS_DATA:
-					return BIG_SCALE_BONUS;
+					return this.bigBallScale();
 			}
 		}
 
 		return NORMAL_SCALE_BONUS;
+	}
+
+	smallPlayerScale() {
+		if (this.hasTournament() && this.tournamentMode.overridesSmallPlayerScale()) {
+			return this.tournamentMode.smallPlayerScale();
+		}
+
+		return SMALL_SCALE_PLAYER_BONUS;
+	}
+
+	bigPlayerScale() {
+		if (this.hasTournament() && this.tournamentMode.overridesBigPlayerScale()) {
+			return this.tournamentMode.bigPlayerScale();
+		}
+
+		return BIG_SCALE_PLAYER_BONUS;
+	}
+
+	smallBallScale() {
+		if (this.hasTournament() && this.tournamentMode.overridesSmallBallScale()) {
+			return this.tournamentMode.smallBallScale();
+		}
+
+		return SMALL_SCALE_BALL_BONUS;
+	}
+
+	bigBallScale() {
+		if (this.hasTournament() && this.tournamentMode.overridesBigBallScale()) {
+			return this.tournamentMode.bigBallScale();
+		}
+
+		return BIG_SCALE_BALL_BONUS;
 	}
 
 	isHiddenToHimself() {

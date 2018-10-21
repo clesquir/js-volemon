@@ -1,5 +1,5 @@
 import BallScaleBonus from '/imports/api/games/bonus/BallScaleBonus.js';
-import {BIG_SCALE_BONUS, BALL_BIG_GRAVITY_SCALE} from '/imports/api/games/constants.js';
+import {BALL_BIG_GRAVITY_SCALE} from '/imports/api/games/constants.js';
 
 export default class BigBallBonus extends BallScaleBonus {
 	constructor(...args) {
@@ -9,7 +9,7 @@ export default class BigBallBonus extends BallScaleBonus {
 	}
 
 	start() {
-		this.game.scaleBall.call(this.game, BIG_SCALE_BONUS);
+		this.game.scaleBigBall.call(this.game);
 		this.game.setBallGravity.call(this.game, BALL_BIG_GRAVITY_SCALE);
 	}
 };

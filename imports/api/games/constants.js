@@ -29,8 +29,9 @@ export const SMALL_SCALE_PHYSICS_DATA = 'physicsDataSmall';
 export const BIG_SCALE_PHYSICS_DATA = 'physicsDataBig';
 export const NORMAL_SCALE_BONUS = 1;
 export const SMALL_SCALE_PLAYER_BONUS = 0.5;
+export const BIG_SCALE_PLAYER_BONUS = 1.5;
 export const SMALL_SCALE_BALL_BONUS = 0.75;
-export const BIG_SCALE_BONUS = 1.5;
+export const BIG_SCALE_BALL_BONUS = 1.5;
 
 export const ONE_VS_COMPUTER_GAME_MODE = '1vsCPU';
 export const ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE = '1vsMLCPU';

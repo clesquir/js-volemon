@@ -50,6 +50,10 @@ export default class Dev {
 				width: this.gameConfiguration.width(),
 				height: this.gameConfiguration.height(),
 				gravity: this.gameConfiguration.worldGravity(),
+				smallPlayerScale: this.gameConfiguration.smallPlayerScale(),
+				bigPlayerScale: this.gameConfiguration.bigPlayerScale(),
+				smallBallScale: this.gameConfiguration.smallBallScale(),
+				bigBallScale: this.gameConfiguration.bigBallScale(),
 				bonusRadius: this.gameConfiguration.bonusRadius(),
 				renderTo: 'devGameContainer'
 			},

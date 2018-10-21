@@ -166,6 +166,10 @@ export default class Game {
 				height: this.gameConfiguration.height(),
 				gravity: this.gameConfiguration.worldGravity(),
 				bonusRadius: this.gameConfiguration.bonusRadius(),
+				smallPlayerScale: this.gameConfiguration.smallPlayerScale(),
+				bigPlayerScale: this.gameConfiguration.bigPlayerScale(),
+				smallBallScale: this.gameConfiguration.smallBallScale(),
+				bigBallScale: this.gameConfiguration.bigBallScale(),
 				renderTo: 'gameContainer'
 			},
 			this.preloadGame, this.createGame, this.updateGame, this
