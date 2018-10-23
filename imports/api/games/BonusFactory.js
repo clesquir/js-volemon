@@ -23,6 +23,7 @@ import NothingBonus from '/imports/api/games/bonus/NothingBonus.js';
 import PoisonBonus from '/imports/api/games/bonus/PoisonBonus.js';
 import RandomBonus from '/imports/api/games/bonus/RandomBonus.js';
 import ReverseMoveMonsterBonus from '/imports/api/games/bonus/ReverseMoveMonsterBonus.js';
+import ReviveBonus from '/imports/api/games/bonus/ReviveBonus.js';
 import ShapeShiftMonsterBonus from '/imports/api/games/bonus/ShapeShiftMonsterBonus.js';
 import SlowMonsterBonus from '/imports/api/games/bonus/SlowMonsterBonus.js';
 import SmallBallBonus from '/imports/api/games/bonus/SmallBallBonus.js';
@@ -55,6 +56,7 @@ import {
 	BONUS_RANDOM,
 	BONUS_REPELLENT,
 	BONUS_REVERSE_MOVE_MONSTER,
+	BONUS_REVIVE,
 	BONUS_SHAPE_SHIFT,
 	BONUS_SLOW_MONSTER,
 	BONUS_SMALL_BALL,
@@ -210,6 +212,8 @@ export default class BonusFactory {
 				return new SmokeBombBonus(game, bonusClass);
 			case BONUS_INSTANT_DEATH:
 				return new InstantDeathBonus(game, bonusClass);
+			case BONUS_REVIVE:
+				return new ReviveBonus(game, bonusClass);
 			case BONUS_INVINCIBLE_INSTANT_DEATH:
 				return new InvincibleInstantDeathBonus(game, bonusClass);
 			case BONUS_DRUNK_MONSTER:

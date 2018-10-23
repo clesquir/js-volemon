@@ -10,6 +10,7 @@ import FastMonsterBonus from '/imports/api/games/bonus/FastMonsterBonus.js';
 import FreezeMonsterBonus from '/imports/api/games/bonus/FreezeMonsterBonus.js';
 import HighGravity from '/imports/api/games/bonus/HighGravity.js';
 import InstantDeathBonus from '/imports/api/games/bonus/InstantDeathBonus.js';
+import InvincibleInstantDeathBonus from '/imports/api/games/bonus/InvincibleInstantDeathBonus.js';
 import InvincibleMonsterBonus from '/imports/api/games/bonus/InvincibleMonsterBonus.js';
 import InvisibleBallBonus from '/imports/api/games/bonus/InvisibleBallBonus.js';
 import InvisibleMonsterBonus from '/imports/api/games/bonus/InvisibleMonsterBonus.js';
@@ -19,8 +20,8 @@ import NoJumpMonsterBonus from '/imports/api/games/bonus/NoJumpMonsterBonus.js';
 import NothingBonus from '/imports/api/games/bonus/NothingBonus.js';
 import PoisonBonus from '/imports/api/games/bonus/PoisonBonus.js';
 import RandomBonus from '/imports/api/games/bonus/RandomBonus.js';
-import InvincibleInstantDeathBonus from '/imports/api/games/bonus/InvincibleInstantDeathBonus.js';
 import ReverseMoveMonsterBonus from '/imports/api/games/bonus/ReverseMoveMonsterBonus.js';
+import ReviveBonus from '/imports/api/games/bonus/ReviveBonus.js';
 import ShapeShiftMonsterBonus from '/imports/api/games/bonus/ShapeShiftMonsterBonus.js';
 import SlowMonsterBonus from '/imports/api/games/bonus/SlowMonsterBonus.js';
 import SmallBallBonus from '/imports/api/games/bonus/SmallBallBonus.js';
@@ -84,6 +85,7 @@ Template.help.helpers({
 			new BonusRepellentMonsterBonus(),
 			new InvincibleMonsterBonus(),
 			new InstantDeathBonus(),
+			new ReviveBonus(),
 			new InvincibleInstantDeathBonus(),
 			new PoisonBonus(),
 			new CureBonus(),
