@@ -626,7 +626,7 @@
       }
     },
     {
-      "filename": "shape-shift-monster",
+      "filename": "revive",
       "frame": {
         "x": 145,
         "y": 73,
@@ -651,7 +651,7 @@
       }
     },
     {
-      "filename": "slow-monster",
+      "filename": "shape-shift-monster",
       "frame": {
         "x": 181,
         "y": 37,
@@ -676,7 +676,7 @@
       }
     },
     {
-      "filename": "small-ball",
+      "filename": "slow-monster",
       "frame": {
         "x": 217,
         "y": 1,
@@ -701,7 +701,7 @@
       }
     },
     {
-      "filename": "small-monster",
+      "filename": "small-ball",
       "frame": {
         "x": 1,
         "y": 253,
@@ -726,7 +726,7 @@
       }
     },
     {
-      "filename": "smoke-bomb",
+      "filename": "small-monster",
       "frame": {
         "x": 37,
         "y": 217,
@@ -751,10 +751,35 @@
       }
     },
     {
-      "filename": "unfreeze-monster",
+      "filename": "smoke-bomb",
       "frame": {
         "x": 73,
         "y": 181,
+        "w": 34,
+        "h": 34
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 34,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 34,
+        "h": 34
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "unfreeze-monster",
+      "frame": {
+        "x": 109,
+        "y": 145,
         "w": 34,
         "h": 34
       },
@@ -778,7 +803,7 @@
   ],
   "meta": {
     "app": "http://free-tex-packer.com/",
-    "version": "0.3.0",
+    "version": "0.3.3",
     "image": "texture-atlas.png",
     "format": "RGBA8888",
     "size": {

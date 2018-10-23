@@ -259,7 +259,13 @@ export default class Engine {
 	shake(sprite, move, time) {
 	}
 
+	isAlive(sprite) {
+	}
+
 	kill(sprite) {
+	}
+
+	revive(sprite) {
 	}
 
 	drawBallPrediction(px, py, color) {

@@ -49,6 +49,14 @@ export default class GameBonus {
 		return this.game.getPlayerFromKey(playerKey);
 	}
 
+	getTeammatePlayerFromKey(playerKey) {
+		return this.game.getTeammatePlayerFromKey(playerKey);
+	}
+
+	getPlayerInitialXFromKey(playerKey) {
+		return this.game.getPlayerInitialXFromKey(playerKey);
+	}
+
 	playerInitialPolygonFromKey(playerKey) {
 		return this.game.playerInitialPolygonFromKey(playerKey);
 	}
@@ -659,6 +667,18 @@ export default class GameBonus {
 			this.resetBonusesForPlayerKey(playerKey);
 			this.engine.kill(this.getPlayerFromKey(playerKey));
 			this.killingPlayer = false;
+		}
+	}
+
+	revivePlayer(playerKey) {
+		const teammatePlayer = this.getTeammatePlayerFromKey(playerKey);
+
+		if (teammatePlayer && !this.engine.isAlive(teammatePlayer)) {
+			this.engine.revive(
+				teammatePlayer,
+				this.getPlayerInitialXFromKey(teammatePlayer.data.key),
+				this.gameConfiguration.playerInitialY()
+			);
 		}
 	}
 

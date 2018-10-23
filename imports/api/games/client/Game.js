@@ -108,17 +108,48 @@ export default class Game {
 	}
 
 	getPlayerFromKey(playerKey) {
-		if (playerKey === 'player1') {
-			return this.player1;
-		} else if (playerKey === 'player2') {
-			return this.player2;
-		} else if (playerKey === 'player3') {
-			return this.player3;
-		} else if (playerKey === 'player4') {
-			return this.player4;
+		switch (playerKey) {
+			case 'player1':
+				return this.player1;
+			case 'player2':
+				return this.player2;
+			case 'player3':
+				return this.player3;
+			case 'player4':
+				return this.player4;
 		}
 
 		return null;
+	}
+
+	getTeammatePlayerFromKey(playerKey) {
+		switch (playerKey) {
+			case 'player1':
+				return this.player3;
+			case 'player2':
+				return this.player4;
+			case 'player3':
+				return this.player1;
+			case 'player4':
+				return this.player2;
+		}
+
+		return null;
+	}
+
+	getPlayerInitialXFromKey(playerKey) {
+		switch (playerKey) {
+			case 'player1':
+				return this.gameConfiguration.player1InitialX();
+			case 'player2':
+				return this.gameConfiguration.player2InitialX();
+			case 'player3':
+				return this.gameConfiguration.player3InitialX();
+			case 'player4':
+				return this.gameConfiguration.player4InitialX();
+		}
+
+		return this.gameConfiguration.player1InitialX();
 	}
 
 	isPlayerKeyHostSide(playerKey) {
@@ -127,16 +158,6 @@ export default class Game {
 
 	isPlayerKeyClientSide(playerKey) {
 		return (playerKey === 'player2' || playerKey === 'player4');
-	}
-
-	playerPointSide(playerKey) {
-		if (this.isPlayerKeyHostSide(playerKey)) {
-			return CLIENT_POINTS_COLUMN;
-		} else if (this.isPlayerKeyClientSide(playerKey)) {
-			return HOST_POINTS_COLUMN;
-		}
-
-		return null;
 	}
 
 	playerInitialPolygonFromKey(playerKey) {
@@ -236,7 +257,7 @@ export default class Game {
 		 */
 		const player1Key = 'player1';
 		this.player1 = this.engine.addSprite(
-			this.gameConfiguration.player1InitialX(),
+			this.getPlayerInitialXFromKey(player1Key),
 			this.gameConfiguration.playerInitialY(),
 			'shape-' + this.playerShapeFromKey(player1Key)
 		);
@@ -244,7 +265,7 @@ export default class Game {
 		this.player1.data.key = player1Key;
 		this.initPlayer(
 			this.player1,
-			this.gameConfiguration.player1InitialX(),
+			this.getPlayerInitialXFromKey(player1Key),
 			this.gameConfiguration.playerInitialY(),
 			this.collisions.hostPlayerCollisionGroup
 		);
@@ -254,7 +275,7 @@ export default class Game {
 		 */
 		const player2Key = 'player2';
 		this.player2 = this.engine.addSprite(
-			this.gameConfiguration.player2InitialX(),
+			this.getPlayerInitialXFromKey(player2Key),
 			this.gameConfiguration.playerInitialY(),
 			'shape-' + this.playerShapeFromKey(player2Key)
 		);
@@ -262,7 +283,7 @@ export default class Game {
 		this.player2.data.key = player2Key;
 		this.initPlayer(
 			this.player2,
-			this.gameConfiguration.player2InitialX(),
+			this.getPlayerInitialXFromKey(player2Key),
 			this.gameConfiguration.playerInitialY(),
 			this.collisions.clientPlayerCollisionGroup
 		);
@@ -273,7 +294,7 @@ export default class Game {
 			 */
 			const player3Key = 'player3';
 			this.player3 = this.engine.addSprite(
-				this.gameConfiguration.player3InitialX(),
+				this.getPlayerInitialXFromKey(player3Key),
 				this.gameConfiguration.playerInitialY(),
 				'shape-' + this.playerShapeFromKey(player3Key)
 			);
@@ -281,7 +302,7 @@ export default class Game {
 			this.player3.data.key = player3Key;
 			this.initPlayer(
 				this.player3,
-				this.gameConfiguration.player3InitialX(),
+				this.getPlayerInitialXFromKey(player3Key),
 				this.gameConfiguration.playerInitialY(),
 				this.collisions.hostPlayerCollisionGroup
 			);
@@ -293,7 +314,7 @@ export default class Game {
 			 */
 			const player4Key = 'player4';
 			this.player4 = this.engine.addSprite(
-				this.gameConfiguration.player4InitialX(),
+				this.getPlayerInitialXFromKey(player4Key),
 				this.gameConfiguration.playerInitialY(),
 				'shape-' + this.playerShapeFromKey(player4Key)
 			);
@@ -301,7 +322,7 @@ export default class Game {
 			this.player4.data.key = player4Key;
 			this.initPlayer(
 				this.player4,
-				this.gameConfiguration.player4InitialX(),
+				this.getPlayerInitialXFromKey(player4Key),
 				this.gameConfiguration.playerInitialY(),
 				this.collisions.clientPlayerCollisionGroup
 			);

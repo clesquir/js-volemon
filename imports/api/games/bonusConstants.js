@@ -21,6 +21,7 @@ export const BONUS_RANDOM = 'RandomBonus';
 export const BONUS_SHAPE_SHIFT = 'ShapeShiftMonsterBonus';
 export const BONUS_SMOKE_BOMB = 'SmokeBomb';
 export const BONUS_INSTANT_DEATH = 'InstantDeath';
+export const BONUS_REVIVE = 'ReviveBonus';
 export const BONUS_INVINCIBLE_INSTANT_DEATH = 'InvincibleInstantDeathBonus';
 export const BONUS_DRUNK_MONSTER = 'DrunkMonsterBonus';
 export const BONUS_NOTHING = 'NothingBonus';
@@ -57,6 +58,7 @@ export const ALL_BONUSES = [
 	BONUS_REPELLENT,
 	BONUS_INVINCIBLE_MONSTER,
 	BONUS_INSTANT_DEATH,
+	BONUS_REVIVE,
 	BONUS_INVINCIBLE_INSTANT_DEATH,
 	BONUS_POISON,
 	BONUS_CURE,
@@ -88,6 +90,7 @@ export const ALL_BONUSES_FOR_RANDOM = [
 	BONUS_REPELLENT,
 	BONUS_INVINCIBLE_MONSTER,
 	BONUS_INSTANT_DEATH,
+	BONUS_REVIVE,
 	BONUS_INVINCIBLE_INSTANT_DEATH,
 	BONUS_POISON,
 	BONUS_CURE,
