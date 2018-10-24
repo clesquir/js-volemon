@@ -7,7 +7,7 @@ export default class ArtificialIntelligence {
 	computers = {};
 	pointStartTime = 0;
 	numberPointsToCalculateGenomes = 10;
-	canJump = false;
+	canJump = true;
 	isLearning = false;
 	genomesFromExisting = true;
 
@@ -115,13 +115,12 @@ export default class ArtificialIntelligence {
 	 */
 	applyLearnerOutput(key, modifiers, outputs) {
 		if (this.computers.hasOwnProperty(key) && outputs.length === 2) {
-			this.computers[key].left = false;
-			this.computers[key].right = false;
-
 			if (outputs[0] < 0.45) {
-				this.computers[key].left = true;
+				this.moveLeft(key);
 			} else if (outputs[0] > 0.55) {
-				this.computers[key].right = true;
+				this.moveRight(key);
+			} else {
+				this.stopMovingHorizontally(key);
 			}
 
 			this.computers[key].jump = false;
@@ -174,8 +173,8 @@ export default class ArtificialIntelligence {
 					[
 						Math.round(computerPosition.x - ballPosition.x),
 						Math.round(computerPosition.y - ballPosition.y),
-						Math.round(ballPosition.velocityX),
-						Math.round(ballPosition.velocityY)
+						this.round5(ballPosition.velocityX),
+						this.round5(ballPosition.velocityY)
 					]
 				)
 			);
@@ -183,14 +182,14 @@ export default class ArtificialIntelligence {
 			return;
 		}
 
-		this.computers[key].left = false;
-		this.computers[key].right = false;
 		this.computers[key].jump = false;
 		this.computers[key].dropshot = false;
 
 		const height = gameConfiguration.height();
 		const gravity = Math.abs(gameConfiguration.worldGravity() * ballPosition.gravityScale);
 		const groundY = height - gameConfiguration.groundHeight();
+		const netWidth = gameConfiguration.netWidth();
+		const netY = groundY - gameConfiguration.netHeight();
 
 		let timeToGround = this.timeToReachY(ballPosition.velocityY, gravity, Math.abs(ballPosition.y - groundY + computerPosition.height / 2));
 		let xAtGround = ballPosition.x + ballPosition.velocityX * timeToGround;
@@ -200,8 +199,8 @@ export default class ArtificialIntelligence {
 		xAtGround = this.reboundsOnNet(
 			xAtGround,
 			ballPosition,
-			gameConfiguration.netWidth(),
-			groundY - gameConfiguration.netHeight(),
+			netWidth,
+			netY,
 			halfWidth,
 			gravity,
 			isLeft
@@ -211,51 +210,65 @@ export default class ArtificialIntelligence {
 
 		if (isLeft) {
 			if (xAtGround < halfWidth) {
-				//move to ball position
 				if (
-					xAtGround > computerPosition.x + computerPosition.width / 4 &&
-					computerPosition.x < halfWidth - computerPosition.width / 2
+					this.shouldSmash(modifiers.key, ballPosition, computerPosition, halfWidth, netY, netWidth) ||
+					this.isSmashing(modifiers.key, computerPosition)
 				) {
-					//ball is in front
-					this.computers[key].right = true;
-				} else if (
-					xAtGround < computerPosition.x + computerPosition.width / 6 &&
-					computerPosition.x > computerPosition.width / 2
-				) {
-					//ball is behind
-					this.computers[key].left = true;
-				}
-
-				if (this.shouldJump(modifiers.key, ballPosition, computerPosition)) {
 					this.computers[key].jump = true;
+					this.moveRight(key);
+					this.computers[key].isSmashing = true;
+				} else {
+					this.computers[key].isSmashing = false;
+
+					if (
+						this.ballWillFallAhead(isLeft, xAtGround, computerPosition) &&
+						this.playerAtTheNet(isLeft, halfWidth, netWidth, computerPosition) === false
+					) {
+						this.moveRight(key);
+					} else if (
+						this.ballWillFallBehind(isLeft, xAtGround, computerPosition) &&
+						this.playerIsBackToTheWall(isLeft, width, computerPosition) === false
+					) {
+						this.moveLeft(key);
+					} else {
+						this.stopMovingHorizontally(key);
+					}
 				}
 			} else {
 				//Avoid maluses or grab bonuses or move to center
 				this.moveToCenter(modifiers.key, computerPosition, width);
+				this.computers[key].isSmashing = false;
 			}
 		} else {
 			if (xAtGround > halfWidth) {
-				//move to ball position
 				if (
-					xAtGround < computerPosition.x - computerPosition.width / 4 &&
-					computerPosition.x > halfWidth + computerPosition.width / 2
+					this.shouldSmash(modifiers.key, ballPosition, computerPosition, halfWidth, netY, netWidth) ||
+					this.isSmashing(modifiers.key, computerPosition)
 				) {
-					//ball is in front
-					this.computers[key].left = true;
-				} else if (
-					xAtGround > computerPosition.x - computerPosition.width / 6 &&
-					computerPosition.x < width - computerPosition.width / 2
-				) {
-					//ball is behind
-					this.computers[key].right = true;
-				}
-
-				if (this.shouldJump(modifiers.key, ballPosition, computerPosition)) {
 					this.computers[key].jump = true;
+					this.moveLeft(key);
+					this.computers[key].isSmashing = true;
+				} else {
+					this.computers[key].isSmashing = false;
+
+					if (
+						this.ballWillFallAhead(isLeft, xAtGround, computerPosition) &&
+						this.playerAtTheNet(isLeft, halfWidth, netWidth, computerPosition) === false
+					) {
+						this.moveLeft(key);
+					} else if (
+						this.ballWillFallBehind(isLeft, xAtGround, computerPosition) &&
+						this.playerIsBackToTheWall(isLeft, width, computerPosition) === false
+					) {
+						this.moveRight(key);
+					} else {
+						this.stopMovingHorizontally(key);
+					}
 				}
 			} else {
 				//Avoid maluses or grab bonuses or move to center
 				this.moveToCenter(modifiers.key, computerPosition, width);
+				this.computers[key].isSmashing = false;
 			}
 		}
 
@@ -294,23 +307,86 @@ export default class ArtificialIntelligence {
 		return false;
 	}
 
-	shouldJump(key, ballPosition, computerPosition) {
-		let isLeftPlayer = this.isLeftPlayer(key);
+	/**
+	 * @private
+	 * @param key
+	 */
+	moveLeft(key) {
+		this.computers[key].left = true;
+		this.computers[key].right = false;
+	}
+
+	/**
+	 * @private
+	 * @param key
+	 */
+	moveRight(key) {
+		this.computers[key].right = true;
+		this.computers[key].left = false;
+	}
+
+	/**
+	 * @private
+	 * @param key
+	 */
+	stopMovingHorizontally(key) {
+		this.computers[key].left = false;
+		this.computers[key].right = false;
+	}
+
+	/**
+	 * @private
+	 * @param key
+	 * @param ballPosition
+	 * @param computerPosition
+	 * @param halfLevelWidth
+	 * @param netY
+	 * @param netWidth
+	 * @returns {boolean}
+	 */
+	shouldSmash(key, ballPosition, computerPosition, halfLevelWidth, netY, netWidth) {
+		let isLeft = this.isLeftPlayer(key);
 		let width = computerPosition.width;
-		let playerLeftLimit = computerPosition.x - (isLeftPlayer ? 0 : width);
-		let playerRightLimit = computerPosition.x + (isLeftPlayer ? width : 0);
-		let maximumHeight = computerPosition.y - computerPosition.height * 4;
-		let minimumHeight = computerPosition.y - computerPosition.height * 1.5;
+		let maximumHeight = netY - computerPosition.height * 1.5;
+		let minimumHeight = netY - computerPosition.height;
+		let playerLeftLimit;
+		let playerRightLimit;
+
+		if (isLeft) {
+			playerLeftLimit = computerPosition.x + width;
+			playerRightLimit = playerLeftLimit + width;
+			//limit to net
+			if (playerRightLimit > halfLevelWidth - netWidth) {
+				playerRightLimit = halfLevelWidth - netWidth;
+			}
+		} else {
+			playerRightLimit = computerPosition.x - width;
+			playerLeftLimit = playerRightLimit - width;
+			//limit to net
+			if (playerLeftLimit < halfLevelWidth + netWidth) {
+				playerLeftLimit = halfLevelWidth + netWidth;
+			}
+		}
 
 		return (
 			this.canJump &&
+			Math.abs(ballPosition.velocityX) < 350 &&
+			ballPosition.velocityY > 0 &&
 			ballPosition.x > playerLeftLimit &&
 			ballPosition.x < playerRightLimit &&
 			ballPosition.y > maximumHeight &&
 			ballPosition.y < minimumHeight &&
-			Math.abs(ballPosition.velocityX) < 350 &&
-			(isLeftPlayer ? ballPosition.velocityX >= 0 : ballPosition.velocityX <= 0)
+			this.playerAtTheNet(isLeft, halfLevelWidth, netWidth, computerPosition) === false
 		);
+	}
+
+	/**
+	 * @private
+	 * @param key
+	 * @param computerPosition
+	 */
+	isSmashing(key, computerPosition) {
+		return this.computers[key].isSmashing && computerPosition.velocityY < 0;
 	}
 
 	/**
@@ -323,9 +399,11 @@ export default class ArtificialIntelligence {
 		const halfSpace = (this.isLeftPlayer(key) ? width * 1 / 4 : width * 3 / 4);
 
 		if (computerPosition.x + computerPosition.width / 4 < halfSpace) {
-			this.computers[key].right = true;
+			this.moveRight(key);
 		} else if (computerPosition.x - computerPosition.width / 4 > halfSpace) {
-			this.computers[key].left = true;
+			this.moveLeft(key);
+		} else {
+			this.stopMovingHorizontally(key);
 		}
 	}
 
@@ -436,6 +514,67 @@ export default class ArtificialIntelligence {
 
 	/**
 	 * @private
+	 * @param isLeft
+	 * @param xAtGround
+	 * @param computerPosition
+	 * @returns {boolean}
+	 */
+	ballWillFallAhead(isLeft, xAtGround, computerPosition) {
+		if (isLeft) {
+			return xAtGround > computerPosition.x + computerPosition.width / 4;
+		} else {
+			return xAtGround < computerPosition.x - computerPosition.width / 4;
+		}
+	}
+
+	/**
+	 * @private
+	 * @param isLeft
+	 * @param xAtGround
+	 * @param computerPosition
+	 * @returns {boolean}
+	 */
+	ballWillFallBehind(isLeft, xAtGround, computerPosition) {
+		if (isLeft) {
+			return xAtGround < computerPosition.x + computerPosition.width / 6;
+		} else {
+			return xAtGround > computerPosition.x - computerPosition.width / 6;
+		}
+	}
+
+	/**
+	 * @private
+	 * @param isLeft
+	 * @param halfLevelWidth
+	 * @param netWidth
+	 * @param computerPosition
+	 * @returns {boolean}
+	 */
+	playerAtTheNet(isLeft, halfLevelWidth, netWidth, computerPosition) {
+		if (isLeft) {
+			return computerPosition.x + computerPosition.width / 2 >= halfLevelWidth - netWidth;
+		} else {
+			return computerPosition.x - computerPosition.width / 2 <= halfLevelWidth + netWidth;
+		}
+	}
+
+	/**
+	 * @private
+	 * @param isLeft
+	 * @param levelWidth
+	 * @param computerPosition
+	 * @returns {boolean}
+	 */
+	playerIsBackToTheWall(isLeft, levelWidth, computerPosition) {
+		if (isLeft) {
+			return computerPosition.x - computerPosition.width / 2 <= 0;
+		} else {
+			return computerPosition.x + computerPosition.width / 2 >= levelWidth;
+		}
+	}
+
+	/**
+	 * @private
 	 * @param key
 	 * @param {{key: string, isMoveReversed: boolean, horizontalMoveModifier: Function, verticalMoveModifier: Function, alwaysJump: boolean, canJump: boolean, velocityXOnMove: number, velocityYOnJump: number}} modifiers
 	 */
@@ -446,5 +585,14 @@ export default class ArtificialIntelligence {
 			this.computers[key].left = left;
 			this.computers[key].right = right;
 		}
+	}
+
+	/**
+	 * @private
+	 * @param {number} value
+	 * @returns {number}
+	 */
+	round5(value) {
+		return Math.ceil(value / 5) * 5;
 	}
 }
