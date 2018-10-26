@@ -94,9 +94,14 @@ export default class EloMatchMaker extends MatchMaker {
 	 * @returns {{id: {string}, name: {string}}[]}
 	 */
 	sortByEloRating(usersToMatch, tournamentId) {
-		const unsortedUsers = {};
+		const randomize = arr => arr
+			.map(a => [Math.random(), a])
+			.sort((a, b) => a[0] - b[0])
+			.map(a => a[1]);
 
-		for (let user of usersToMatch) {
+		const randomizedUsers = randomize(usersToMatch);
+		const unsortedUsers = {};
+		for (let user of randomizedUsers) {
 			const eloRating = this.getEloRating(tournamentId, user.id);
 
 			if (unsortedUsers[eloRating] === undefined) {

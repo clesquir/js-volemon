@@ -1,12 +1,12 @@
 PIXI = require('phaser-ce/build/custom/pixi');
 p2 = require('phaser-ce/build/custom/p2');
 Phaser = require('phaser-ce/build/custom/phaser-split');
-import Engine from '/imports/api/games/engine/Engine.js';
 import {
+	BIG_SCALE_PHYSICS_DATA,
 	NORMAL_SCALE_PHYSICS_DATA,
-	SMALL_SCALE_PHYSICS_DATA,
-	BIG_SCALE_PHYSICS_DATA
+	SMALL_SCALE_PHYSICS_DATA
 } from '/imports/api/games/constants.js';
+import Engine from '/imports/api/games/engine/Engine.js';
 import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
 
 export default class PhaserEngine extends Engine {
@@ -751,11 +751,19 @@ export default class PhaserEngine extends Engine {
 			.start();
 	}
 
+	isAlive(sprite) {
+		return sprite.alive;
+	}
+
 	kill(sprite) {
-		if (sprite.alive) {
+		if (this.isAlive(sprite)) {
 			this.playDeathAnimation(sprite);
 			sprite.kill();
 		}
+	}
+
+	revive(sprite, x, y) {
+		sprite.reset(x, y);
 	}
 
 	playCountAnimation(countText) {
