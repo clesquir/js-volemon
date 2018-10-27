@@ -6,18 +6,25 @@ import './ai.html';
 /** @type {Ai}|null */
 let ai = null;
 let started = new ReactiveVar(false);
+const genomesFromExisting = new ReactiveVar(true);
 const firstPlayerHumanEnabled = new ReactiveVar(false);
 const firstPlayerMachineLearningEnabled = new ReactiveVar(false);
 const secondPlayerHumanEnabled = new ReactiveVar(false);
-const secondPlayerMachineLearningEnabled = new ReactiveVar(true);
+const secondPlayerMachineLearningEnabled = new ReactiveVar(false);
 const rendererEnabled = new ReactiveVar(false);
 const fullSpeedEnabled = new ReactiveVar(true);
 const jumpEnabled = new ReactiveVar(true);
 
 Template.ai.rendered = function() {
-	Session.set('dev.ai.renderer', 3);
 	ai = new Ai();
-	ai.renderer = Session.get('dev.ai.renderer');
+	enableGenomesFromExisting();
+	enableFirstPlayerHuman();
+	enableFirstPlayerMachineLearning();
+	enableSecondPlayerHuman();
+	enableSecondPlayerMachineLearning();
+	enableRenderer();
+	enableFullSpeed();
+	enableAiToJump();
 };
 
 Template.ai.destroyed = function() {
@@ -30,6 +37,9 @@ Template.ai.destroyed = function() {
 Template.ai.helpers({
 	started: function() {
 		return started.get();
+	},
+	genomesFromExisting: function() {
+		return genomesFromExisting.get();
 	},
 	firstPlayerHumanEnabled: function() {
 		return firstPlayerHumanEnabled.get();
@@ -59,64 +69,101 @@ Template.ai.events({
 		ai.start();
 		started.set(true);
 	},
-	'click [data-action="enable-first-player-human"]': function() {
-		ai.enableFirstPlayerHuman(!firstPlayerHumanEnabled.get());
+	'click [data-action="start-genomes-from-existing"]': function() {
+		genomesFromExisting.set(!genomesFromExisting.get());
 
+		enableGenomesFromExisting();
+	},
+	'click [data-action="enable-first-player-human"]': function() {
 		firstPlayerHumanEnabled.set(!firstPlayerHumanEnabled.get());
 
-		if (secondPlayerHumanEnabled.get()) {
-			ai.enableSecondPlayerHuman(!secondPlayerHumanEnabled.get());
-			secondPlayerHumanEnabled.set(!secondPlayerHumanEnabled);
-		}
+		enableFirstPlayerHuman();
 	},
 	'click [data-action="enable-first-player-machine-learning"]': function() {
-		ai.enableFirstPlayerMachineLearning(!firstPlayerMachineLearningEnabled.get());
-
 		firstPlayerMachineLearningEnabled.set(!firstPlayerMachineLearningEnabled.get());
+
+		enableFirstPlayerMachineLearning();
 	},
 	'click [data-action="enable-second-player-human"]': function() {
-		ai.enableSecondPlayerHuman(!secondPlayerHumanEnabled.get());
-
 		secondPlayerHumanEnabled.set(!secondPlayerHumanEnabled.get());
 
-		if (firstPlayerHumanEnabled.get()) {
-			ai.enableFirstPlayerHuman(!firstPlayerHumanEnabled.get());
-			firstPlayerHumanEnabled.set(!firstPlayerHumanEnabled);
-		}
+		enableSecondPlayerHuman();
 	},
 	'click [data-action="enable-second-player-machine-learning"]': function() {
-		ai.enableSecondPlayerMachineLearning(!secondPlayerMachineLearningEnabled.get());
-
 		secondPlayerMachineLearningEnabled.set(!secondPlayerMachineLearningEnabled.get());
+
+		enableSecondPlayerMachineLearning();
 	},
 	'click [data-action="enable-renderer"]': function() {
-		if (!rendererEnabled.get()) {
-			Session.set('dev.ai.renderer', 0);
-		} else {
-			Session.set('dev.ai.renderer', 3);
-		}
-
-		ai.renderer = Session.get('dev.ai.renderer');
-
-		if (started.get()) {
-			ai.stop();
-			ai.start();
-		}
-
 		rendererEnabled.set(!rendererEnabled.get());
+
+		enableRenderer();
 	},
 	'click [data-action="speed-up-game"]': function() {
-		if (fullSpeedEnabled.get()) {
-			ai.normalGameSpeed();
-		} else {
-			ai.speedUpGame();
-		}
-
 		fullSpeedEnabled.set(!fullSpeedEnabled.get());
+
+		enableFullSpeed();
 	},
 	'click [data-action="allow-ai-to-jump"]': function() {
-		ai.enableAiToJump(!jumpEnabled.get());
-
 		jumpEnabled.set(!jumpEnabled.get());
+
+		enableAiToJump();
 	}
 });
+
+const enableGenomesFromExisting = function() {
+	ai.enableGenomesFromExisting(genomesFromExisting.get());
+};
+
+const enableFirstPlayerHuman = function() {
+	ai.enableFirstPlayerHuman(firstPlayerHumanEnabled.get());
+
+	if (firstPlayerHumanEnabled.get() && secondPlayerHumanEnabled.get()) {
+		secondPlayerHumanEnabled.set(!secondPlayerHumanEnabled.get());
+
+		ai.enableSecondPlayerHuman(secondPlayerHumanEnabled.get());
+	}
+};
+
+const enableFirstPlayerMachineLearning = function() {
+	ai.enableFirstPlayerMachineLearning(firstPlayerMachineLearningEnabled.get());
+};
+
+const enableSecondPlayerHuman = function() {
+	ai.enableSecondPlayerHuman(secondPlayerHumanEnabled.get());
+
+	if (firstPlayerHumanEnabled.get() && secondPlayerHumanEnabled.get()) {
+		firstPlayerHumanEnabled.set(!firstPlayerHumanEnabled.get());
+
+		ai.enableFirstPlayerHuman(firstPlayerHumanEnabled.get());
+	}
+};
+
+const enableSecondPlayerMachineLearning = function() {
+	ai.enableSecondPlayerMachineLearning(secondPlayerMachineLearningEnabled.get());
+};
+
+const enableRenderer = function() {
+	if (rendererEnabled.get()) {
+		ai.renderer = 0;
+	} else {
+		ai.renderer = 3;
+	}
+
+	if (started.get()) {
+		ai.stop();
+		ai.start();
+	}
+};
+
+const enableFullSpeed = function() {
+	if (fullSpeedEnabled.get()) {
+		ai.speedUpGame();
+	} else {
+		ai.normalGameSpeed();
+	}
+};
+
+const enableAiToJump = function() {
+	ai.enableAiToJump(jumpEnabled.get());
+};

@@ -103,6 +103,7 @@ export default class Dev {
 		);
 		this.game.collisions.init();
 
+		this.game.createArtificialIntelligence();
 		this.createPlayersComponents();
 
 		this.game.createBall(100, 100);

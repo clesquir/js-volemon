@@ -9,6 +9,7 @@ export default class Ai extends Dev {
 		this.isStarted = false;
 		this.slowMotion = 0.000001;
 		this.canJump = true;
+		this.genomesFromExisting = true;
 		this.gameData.firstPlayerComputer = true;
 		this.gameData.firstPlayerComputerMachineLearning = false;
 		this.gameData.secondPlayerComputer = true;
@@ -29,6 +30,10 @@ export default class Ai extends Dev {
 		this.engine.game.forceSingleUpdate = false;
 		this.engine.game.time.advancedTiming = true;
 		this.engine.game.time.slowMotion = this.slowMotion;
+		this.game.artificialIntelligence.isLearning = true;
+		this.game.artificialIntelligence.canJump = this.canJump;
+		this.game.artificialIntelligence.genomesFromExisting = this.genomesFromExisting;
+
 		this.createComponents();
 		this.gameBonus.createComponents();
 
@@ -37,8 +42,6 @@ export default class Ai extends Dev {
 
 		this.game.gameInitiated = true;
 
-		this.game.artificialIntelligence.isLearning = true;
-		this.game.artificialIntelligence.canJump = this.canJump;
 		this.game.artificialIntelligence.startGame();
 
 		this.game.startCountdownTimer = function() {
@@ -64,7 +67,11 @@ export default class Ai extends Dev {
 
 		//If the point takes more than 2 minutes, stop it
 		const pointTime = ((new Date()).getTime() - this.pointStartTime);
-		if (pointTime > 2 * 60 * 1000) {
+		if (
+			pointTime > 2 * 60 * 1000 &&
+			this.gameData.firstPlayerComputer &&
+			this.gameData.secondPlayerComputer
+		) {
 			this.game.gameResumed = false;
 
 			this.gameData.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
@@ -123,6 +130,10 @@ export default class Ai extends Dev {
 			this.gameData.lastPointTaken = pointSide === HOST_POINTS_COLUMN ? HOST_SIDE : CLIENT_SIDE;
 			this.resumeOnTimerEnd();
 		}
+	}
+
+	enableGenomesFromExisting(genomesFromExisting) {
+		this.genomesFromExisting = genomesFromExisting;
 	}
 
 	enableFirstPlayerHuman(isHuman) {
