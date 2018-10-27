@@ -46,29 +46,23 @@
 					{{#if isGamePlayer}}
 						{{#if showOpponentDeclinedRematch}}
 							<div class="rematch-declined">
-								{{#if isTwoVersusTwo}}
-									A player declined a rematch...
-								{{else}}
-									Your opponent declined a rematch...
-								{{/if}}
+								{{#each declinedRematchPlayers}}
+									<div><em>{{name}}</em> declined a rematch...</div>
+								{{/each}}
 							</div>
 						{{/if}}
 						{{#if showPlayerLeftTheGame}}
 							<div class="rematch-declined">
-								{{#if isTwoVersusTwo}}
-									A player left the game...
-								{{else}}
-									Your opponent left the game...
-								{{/if}}
+								{{#each leftTheGamePlayers}}
+									<div><em>{{name}}</em> left the game...</div>
+								{{/each}}
 							</div>
 						{{/if}}
 						{{#if showWaitingForReply}}
 							<div>
-								{{#if isTwoVersusTwo}}
-									Waiting for all players to accept...
-								{{else}}
-									Waiting for your opponent to accept...
-								{{/if}}
+								{{#each waitingForReplyPlayers}}
+									<div>Waiting for <em>{{name}}</em> to accept...</div>
+								{{/each}}
 							</div>
 						{{/if}}
 						{{#if showCreatingGame}}

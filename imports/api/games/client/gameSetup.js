@@ -1,25 +1,33 @@
 export const playerDeclinedRematch = function(players) {
-	let hasDeclined = false;
+	return declinedRematchPlayers(players).length > 0;
+};
+
+export const declinedRematchPlayers = function(players) {
+	const declined = [];
 
 	players.forEach(function(player) {
 		if (player.askedForRematch === false) {
-			hasDeclined = true;
+			declined.push(player);
 		}
 	});
 
-	return hasDeclined;
+	return declined;
 };
 
 export const playerLeftGame = function(players) {
-	let hasQuit = false;
+	return leftTheGamePlayers(players).length > 0;
+};
+
+export const leftTheGamePlayers = function(players) {
+	const left = [];
 
 	players.forEach(function(player) {
 		if (player.hasQuit !== false) {
-			hasQuit = true;
+			left.push(player);
 		}
 	});
 
-	return hasQuit;
+	return left;
 };
 
 export const playerAcceptedRematch = function(players) {
@@ -43,7 +51,19 @@ export const playerHasNotRepliedRematch = function(players) {
 		}
 	});
 
-	return hasNotReplied;
+	return hasNotRepliedRematchPlayers(players).length > 0;
+};
+
+export const hasNotRepliedRematchPlayers = function(players) {
+	const notReplied = [];
+
+	players.forEach(function(player) {
+		if (player.askedForRematch === undefined || player.askedForRematch === null) {
+			notReplied.push(player);
+		}
+	});
+
+	return notReplied;
 };
 
 export const currentPlayerAcceptedRematch = function(players, userId) {

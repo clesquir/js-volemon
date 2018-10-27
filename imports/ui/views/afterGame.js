@@ -1,6 +1,9 @@
 import {
 	currentPlayerAcceptedRematch,
 	currentPlayerHasRepliedRematch,
+	declinedRematchPlayers,
+	hasNotRepliedRematchPlayers,
+	leftTheGamePlayers,
 	playerAcceptedRematch,
 	playerDeclinedRematch,
 	playerHasNotRepliedRematch,
@@ -211,6 +214,12 @@ Template.afterGame.helpers({
 		);
 	},
 
+	waitingForReplyPlayers() {
+		const players = Players.find({gameId: Session.get('game')});
+
+		return hasNotRepliedRematchPlayers(players);
+	},
+
 	showPlayerLeftTheGame() {
 		const players = Players.find({gameId: Session.get('game')});
 
@@ -220,6 +229,12 @@ Template.afterGame.helpers({
 		);
 	},
 
+	leftTheGamePlayers() {
+		const players = Players.find({gameId: Session.get('game')});
+
+		return leftTheGamePlayers(players);
+	},
+
 	showOpponentDeclinedRematch() {
 		const players = Players.find({gameId: Session.get('game')});
 
@@ -227,6 +242,12 @@ Template.afterGame.helpers({
 			currentPlayerAcceptedRematch(players, Meteor.userId()) &&
 			playerDeclinedRematch(players)
 		);
+	},
+
+	declinedRematchPlayers() {
+		const players = Players.find({gameId: Session.get('game')});
+
+		return declinedRematchPlayers(players);
 	},
 
 	askForRematchReply() {
