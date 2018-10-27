@@ -57,8 +57,9 @@ export const tournamentName = function(tournament) {
 		case ONE_VS_ONE_GAME_MODE:
 			return '1 VS 1: ' + tournament.name;
 		case TWO_VS_TWO_GAME_MODE:
-		case TWO_VS_TWO_HUMAN_CPU_GAME_MODE:
 			return '2 VS 2: ' + tournament.name;
+		case TWO_VS_TWO_HUMAN_CPU_GAME_MODE:
+			return '2 VS 2 w/ CPU: ' + tournament.name;
 	}
 
 	return tournament.name;
