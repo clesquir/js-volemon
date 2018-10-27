@@ -22,7 +22,7 @@ export default class ArtificialIntelligence {
 		};
 
 		if (machineLearning) {
-			this.computers[key].learner = new Learner(4, 2, 12, 4, 0.2);
+			this.computers[key].learner = new Learner(6, 2, 12, 4, 0.2);
 			this.computers[key].learner.init();
 
 			if (this.genomesFromExisting) {
@@ -171,8 +171,10 @@ export default class ArtificialIntelligence {
 				modifiers,
 				this.computers[key].learner.emitData(
 					[
-						Math.round(computerPosition.x - ballPosition.x),
-						Math.round(computerPosition.y - ballPosition.y),
+						this.round5(computerPosition.x),
+						this.round5(computerPosition.y),
+						this.round5(ballPosition.x),
+						this.round5(ballPosition.y),
 						this.round5(ballPosition.velocityX),
 						this.round5(ballPosition.velocityY)
 					]
