@@ -17,7 +17,7 @@ describe('EloMatchMaker', function() {
 				{id: 3, name: 'c', eloRating: 1000},
 				{id: 4, name: 'd', eloRating: 1100},
 			],
-			expected: [4, 2, 1, 3],
+			expected: [1100, 900, 800, 1000],
 		},
 		{
 			name: 'half and half',
@@ -27,7 +27,7 @@ describe('EloMatchMaker', function() {
 				{id: 3, name: 'c', eloRating: 1100},
 				{id: 4, name: 'd', eloRating: 900},
 			],
-			expected: [3, 4, 1, 2],
+			expected: [1100, 900, 900, 1100],
 		},
 		{
 			name: 'all high but one',
@@ -37,7 +37,7 @@ describe('EloMatchMaker', function() {
 				{id: 3, name: 'c', eloRating: 1100},
 				{id: 4, name: 'd', eloRating: 900},
 			],
-			expected: [3, 1, 4, 2],
+			expected: [1100, 1100, 900, 1100],
 		},
 		{
 			name: 'all low but one',
@@ -47,7 +47,7 @@ describe('EloMatchMaker', function() {
 				{id: 3, name: 'c', eloRating: 900},
 				{id: 4, name: 'd', eloRating: 1000},
 			],
-			expected: [4, 2, 1, 3],
+			expected: [1000, 900, 900, 900],
 		},
 		{
 			name: 'all equal',
@@ -57,7 +57,7 @@ describe('EloMatchMaker', function() {
 				{id: 3, name: 'c', eloRating: 1000},
 				{id: 4, name: 'd', eloRating: 1000},
 			],
-			expected: [4, 2, 1, 3],
+			expected: [1000, 1000, 1000, 1000],
 		},
 		{
 			name: 'first really high',
@@ -67,7 +67,7 @@ describe('EloMatchMaker', function() {
 				{id: 3, name: 'c', eloRating: 1000},
 				{id: 4, name: 'd', eloRating: 1000},
 			],
-			expected: [1, 3, 2, 4],
+			expected: [9999, 1000, 1000, 1000],
 		},
 		{
 			name: 'still 1, 2, 3, 4',
@@ -77,7 +77,7 @@ describe('EloMatchMaker', function() {
 				{id: 3, name: 'c', eloRating: 1100},
 				{id: 4, name: 'd', eloRating: 1000},
 			],
-			expected: [3, 2, 1, 4],
+			expected: [1100, 900, 800, 1000],
 		},
 	];
 
@@ -102,6 +102,16 @@ describe('EloMatchMaker', function() {
 	afterEach(function() {
 		StubCollections.restore();
 	});
+
+	const eloRatingForUser = function(users, id) {
+		for (let user of users) {
+			if (user.id === id) {
+				return user.eloRating;
+			}
+		}
+
+		return undefined;
+	};
 
 	for (let test of tests) {
 		it('match 2v2 users depending on their elo scores - ' + test.name, function() {
@@ -129,10 +139,10 @@ describe('EloMatchMaker', function() {
 			assert.isArray(matchedUsers);
 			assert.equal(4, matchedUsers.length);
 
-			assert.equal(test.expected[0], matchedUsers[0].id);
-			assert.equal(test.expected[1], matchedUsers[1].id);
-			assert.equal(test.expected[2], matchedUsers[2].id);
-			assert.equal(test.expected[3], matchedUsers[3].id);
+			assert.equal(test.expected[0], eloRatingForUser(test.users, matchedUsers[0].id));
+			assert.equal(test.expected[1], eloRatingForUser(test.users, matchedUsers[1].id));
+			assert.equal(test.expected[2], eloRatingForUser(test.users, matchedUsers[2].id));
+			assert.equal(test.expected[3], eloRatingForUser(test.users, matchedUsers[3].id));
 		});
 	}
 });
