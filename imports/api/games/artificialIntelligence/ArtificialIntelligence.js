@@ -206,7 +206,10 @@ export default class ArtificialIntelligence {
 			isLeft
 		);
 
-		engine.drawBallPrediction(xAtGround, groundY, 'rgb(200, 0, 0.5)');
+		engine.drawBallPrediction(xAtGround, groundY, 'rgb(200, 0, 0)');
+
+		const horizontalThreshold = 100;
+		const distanceWithTimeToGround = timeToGround * modifiers.velocityXOnMove * modifiers.horizontalMoveModifier();
 
 		if (isLeft) {
 			if (xAtGround < halfWidth) {
@@ -224,7 +227,11 @@ export default class ArtificialIntelligence {
 						this.ballWillFallAhead(isLeft, xAtGround, computerPosition) &&
 						this.playerAtTheNet(isLeft, halfWidth, netWidth, computerPosition) === false
 					) {
-						this.moveRight(key);
+						if (computerPosition.x + distanceWithTimeToGround > xAtGround + horizontalThreshold) {
+							this.stopMovingHorizontally(key);
+						} else {
+							this.moveRight(key);
+						}
 					} else if (
 						this.ballWillFallBehind(isLeft, xAtGround, computerPosition) &&
 						this.playerIsBackToTheWall(isLeft, width, computerPosition) === false
@@ -234,7 +241,7 @@ export default class ArtificialIntelligence {
 						this.stopMovingHorizontally(key);
 					}
 				}
-			} else {
+			} else if (!this.isSmashing(modifiers.key, computerPosition)) {
 				//Avoid maluses or grab bonuses or move to center
 				this.moveToCenter(modifiers.key, computerPosition, width);
 				this.computers[key].isSmashing = false;
@@ -255,7 +262,11 @@ export default class ArtificialIntelligence {
 						this.ballWillFallAhead(isLeft, xAtGround, computerPosition) &&
 						this.playerAtTheNet(isLeft, halfWidth, netWidth, computerPosition) === false
 					) {
-						this.moveLeft(key);
+						if (computerPosition.x - distanceWithTimeToGround < xAtGround - horizontalThreshold) {
+							this.stopMovingHorizontally(key);
+						} else {
+							this.moveLeft(key);
+						}
 					} else if (
 						this.ballWillFallBehind(isLeft, xAtGround, computerPosition) &&
 						this.playerIsBackToTheWall(isLeft, width, computerPosition) === false
@@ -265,7 +276,7 @@ export default class ArtificialIntelligence {
 						this.stopMovingHorizontally(key);
 					}
 				}
-			} else {
+			} else if (!this.isSmashing(modifiers.key, computerPosition)) {
 				//Avoid maluses or grab bonuses or move to center
 				this.moveToCenter(modifiers.key, computerPosition, width);
 				this.computers[key].isSmashing = false;
@@ -347,8 +358,8 @@ export default class ArtificialIntelligence {
 	shouldSmash(key, ballPosition, computerPosition, halfLevelWidth, netY, netWidth) {
 		let isLeft = this.isLeftPlayer(key);
 		let width = computerPosition.width;
-		let maximumHeight = netY - computerPosition.height * 1.5;
-		let minimumHeight = netY - computerPosition.height;
+		let maximumHeight = netY - computerPosition.height * 2;
+		let minimumHeight = netY - computerPosition.height * 1.25;
 		let playerLeftLimit;
 		let playerRightLimit;
 

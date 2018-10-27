@@ -11,8 +11,8 @@ const firstPlayerHumanEnabled = new ReactiveVar(false);
 const firstPlayerMachineLearningEnabled = new ReactiveVar(false);
 const secondPlayerHumanEnabled = new ReactiveVar(false);
 const secondPlayerMachineLearningEnabled = new ReactiveVar(false);
-const rendererEnabled = new ReactiveVar(true);
-const fullSpeedEnabled = new ReactiveVar(false);
+const rendererEnabled = new ReactiveVar(false);
+const fullSpeedEnabled = new ReactiveVar(true);
 const jumpEnabled = new ReactiveVar(true);
 
 Template.ai.rendered = function() {

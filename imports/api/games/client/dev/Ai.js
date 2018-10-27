@@ -67,7 +67,11 @@ export default class Ai extends Dev {
 
 		//If the point takes more than 2 minutes, stop it
 		const pointTime = ((new Date()).getTime() - this.pointStartTime);
-		if (pointTime > 2 * 60 * 1000) {
+		if (
+			pointTime > 2 * 60 * 1000 &&
+			this.gameData.firstPlayerComputer &&
+			this.gameData.secondPlayerComputer
+		) {
 			this.game.gameResumed = false;
 
 			this.gameData.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
