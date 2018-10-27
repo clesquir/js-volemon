@@ -6,7 +6,7 @@ import hostGenomes from '/public/assets/artificial-intelligence/host_genomes.jso
 export default class ArtificialIntelligence {
 	computers = {};
 	pointStartTime = 0;
-	numberPointsToCalculateGenomes = 10;
+	numberPointsToCalculateGenomes = 5;
 	canJump = true;
 	isLearning = false;
 	genomesFromExisting = true;
@@ -22,7 +22,7 @@ export default class ArtificialIntelligence {
 		};
 
 		if (machineLearning) {
-			this.computers[key].learner = new Learner(4, 2, 12, 4, 0.2);
+			this.computers[key].learner = new Learner(7, 2, 12, 4, 0.2);
 			this.computers[key].learner.init();
 
 			if (this.genomesFromExisting) {
@@ -139,7 +139,7 @@ export default class ArtificialIntelligence {
 	/**
 	 * @param {string} key
 	 * @param {{key: string, isMoveReversed: boolean, horizontalMoveModifier: Function, verticalMoveModifier: Function, alwaysJump: boolean, canJump: boolean, velocityXOnMove: number, velocityYOnJump: number}} modifiers
-	 * @param {{x: number, y: number, velocityX: number, velocityY: number, gravityScale: number, width: number, height: number}} computerPosition
+	 * @param {{x: number, y: number, scale: number, velocityX: number, velocityY: number, gravityScale: number, width: number, height: number}} computerPosition
 	 * @param {{x: number, y: number, velocityX: number, velocityY: number, gravityScale: number, width: number, height: number}} ballPosition
 	 * @param {{x: number, y: number, velocityX: number, velocityY: number, gravityScale: number, width: number, height: number}[]} bonusesPosition
 	 * @param {GameConfiguration} gameConfiguration
@@ -149,6 +149,8 @@ export default class ArtificialIntelligence {
 		const isLeft = this.isLeftPlayer(modifiers.key);
 		const width = gameConfiguration.width();
 		const halfWidth = (width / 2);
+		const height = gameConfiguration.height();
+		const groundY = height - gameConfiguration.groundHeight();
 
 		if (this.computers[key].learner) {
 			if (
@@ -171,10 +173,13 @@ export default class ArtificialIntelligence {
 				modifiers,
 				this.computers[key].learner.emitData(
 					[
-						Math.round(computerPosition.x - ballPosition.x),
-						Math.round(computerPosition.y - ballPosition.y),
-						this.round5(ballPosition.velocityX),
-						this.round5(ballPosition.velocityY)
+						this.round5(computerPosition.x - ballPosition.x), //Distance X from ball
+						this.round5(computerPosition.y - ballPosition.y), //Distance Y from ball
+						Math.round(ballPosition.x / width * 100),
+						this.round5(ballPosition.y),
+						this.round5(ballPosition.velocityX), //Ball X speed
+						this.round5(ballPosition.velocityY), //Ball Y speed
+						computerPosition.scale
 					]
 				)
 			);
@@ -185,9 +190,7 @@ export default class ArtificialIntelligence {
 		this.computers[key].jump = false;
 		this.computers[key].dropshot = false;
 
-		const height = gameConfiguration.height();
 		const gravity = Math.abs(gameConfiguration.worldGravity() * ballPosition.gravityScale);
-		const groundY = height - gameConfiguration.groundHeight();
 		const netWidth = gameConfiguration.netWidth();
 		const netY = groundY - gameConfiguration.netHeight();
 

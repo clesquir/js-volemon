@@ -215,7 +215,7 @@ export default class Engine {
 
 	/**
 	 * @param sprite
-	 * @returns {{x: number, y: number, velocityX: number, velocityY: number, gravityScale: number, width: number, height: number}}
+	 * @returns {{x: number, y: number, scale: number, velocityX: number, velocityY: number, gravityScale: number, width: number, height: number}}
 	 */
 	fullPositionData(sprite) {
 	}
