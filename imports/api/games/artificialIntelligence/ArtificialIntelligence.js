@@ -22,7 +22,7 @@ export default class ArtificialIntelligence {
 		};
 
 		if (machineLearning) {
-			this.computers[key].learner = new Learner(7, 2, 12, 4, 0.2);
+			this.computers[key].learner = new Learner(6, 2, 12, 4, 0.2);
 			this.computers[key].learner.init();
 
 			if (this.genomesFromExisting) {
@@ -77,18 +77,18 @@ export default class ArtificialIntelligence {
 				//When it has the point, the shortest the point, the better
 				//When it doesn't, the longest the point, the better. Negative value
 				if (pointSide === HOST_POINTS_COLUMN) {
-					fitness = 1 / pointTime * 10000000;
+					//fitness = 1 / pointTime * 10000000;
 
 					if (key === 'player2') {
-						fitness = -1 * fitness;
+						fitness = -1 / pointTime * 10000000;
 					} else {
 						console.log('SCORED!');
 					}
 				} else if (pointSide === CLIENT_POINTS_COLUMN) {
-					fitness = 1 / pointTime * 10000000;
+					//fitness = 1 / pointTime * 10000000;
 
 					if (key === 'player1') {
-						fitness = -1 * fitness;
+						fitness = -1 / pointTime * 10000000;
 					} else {
 						console.log('SCORED!');
 					}
@@ -176,10 +176,9 @@ export default class ArtificialIntelligence {
 						this.round5(computerPosition.x - ballPosition.x), //Distance X from ball
 						this.round5(computerPosition.y - ballPosition.y), //Distance Y from ball
 						Math.round(ballPosition.x / width * 100),
-						this.round5(ballPosition.y),
+						this.round5(groundY - ballPosition.y), //Distance from ground
 						this.round5(ballPosition.velocityX), //Ball X speed
-						this.round5(ballPosition.velocityY), //Ball Y speed
-						computerPosition.scale
+						this.round5(ballPosition.velocityY) //Ball Y speed
 					]
 				)
 			);
