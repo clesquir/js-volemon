@@ -5,7 +5,8 @@ import {
 	SKIN_INDUSTRIAL,
 	SKIN_JUJU_WORLD,
 	SKIN_MARIO_BROS,
-	SKIN_SPACE
+	SKIN_SPACE,
+	SKIN_XMAS
 } from '/imports/api/skins/skinConstants.js';
 import {Skins} from '/imports/api/skins/skins.js';
 import {Meteor} from 'meteor/meteor';
@@ -46,6 +47,11 @@ Meteor.startup(function() {
 			_id: SKIN_HALLOWEEN,
 			name: "Halloween",
 			displayOrder: 7
+		},
+		{
+			_id: SKIN_XMAS,
+			name: "Xmas",
+			displayOrder: 8
 		}
 	];
 

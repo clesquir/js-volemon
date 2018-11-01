@@ -1,0 +1,190 @@
+{
+  "frames": [
+    {
+      "filename": "ground",
+      "frame": {
+        "x": 3,
+        "y": 1,
+        "w": 170,
+        "h": 70
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 173,
+        "h": 70
+      },
+      "sourceSize": {
+        "w": 173,
+        "h": 70
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "net",
+      "frame": {
+        "x": 1,
+        "y": 73,
+        "w": 8,
+        "h": 43
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 8,
+        "h": 43
+      },
+      "sourceSize": {
+        "w": 8,
+        "h": 43
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "ball",
+      "frame": {
+        "x": 176,
+        "y": 1,
+        "w": 24,
+        "h": 24
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 24
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "confettis-4",
+      "frame": {
+        "x": 1,
+        "y": 118,
+        "w": 14,
+        "h": 16
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 14,
+        "h": 16
+      },
+      "sourceSize": {
+        "w": 14,
+        "h": 16
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "confettis-1",
+      "frame": {
+        "x": 176,
+        "y": 27,
+        "w": 16,
+        "h": 15
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 16,
+        "h": 15
+      },
+      "sourceSize": {
+        "w": 16,
+        "h": 15
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "confettis-2",
+      "frame": {
+        "x": 202,
+        "y": 1,
+        "w": 16,
+        "h": 15
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 16,
+        "h": 15
+      },
+      "sourceSize": {
+        "w": 16,
+        "h": 15
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "confettis-3",
+      "frame": {
+        "x": 1,
+        "y": 136,
+        "w": 16,
+        "h": 15
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 16,
+        "h": 15
+      },
+      "sourceSize": {
+        "w": 16,
+        "h": 15
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  ],
+  "meta": {
+    "app": "http://free-tex-packer.com/",
+    "version": "0.3.3",
+    "image": "texture-atlas.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 219,
+      "h": 152
+    },
+    "scale": 1
+  }
+}

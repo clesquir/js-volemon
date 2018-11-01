@@ -3,9 +3,9 @@
     {
       "filename": "ground",
       "frame": {
-        "x": 1,
+        "x": 3,
         "y": 1,
-        "w": 283,
+        "w": 280,
         "h": 70
       },
       "rotated": false,
