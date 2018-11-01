@@ -5,3 +5,4 @@ export const SKIN_JUJU_WORLD = 'juju-world';
 export const SKIN_INDUSTRIAL = 'industrial';
 export const SKIN_SPACE = 'space';
 export const SKIN_HALLOWEEN = 'halloween';
+export const SKIN_XMAS = 'xmas';
