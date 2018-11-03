@@ -210,13 +210,13 @@ export default class ArtificialIntelligence {
 
 		engine.drawBallPrediction(xAtGround, groundY, 'rgb(200, 0, 0)');
 
-		const horizontalThreshold = 100;
+		const horizontalThreshold = 90;
 		const distanceWithTimeToGround = timeToGround * modifiers.velocityXOnMove * modifiers.horizontalMoveModifier();
 
 		if (isLeft) {
 			if (xAtGround < halfWidth) {
 				if (
-					this.shouldSmash(modifiers.key, ballPosition, computerPosition, halfWidth, netY, netWidth) ||
+					this.shouldSmash(modifiers.key, modifiers, ballPosition, computerPosition, halfWidth, netY, netWidth) ||
 					this.isSmashing(modifiers.key, computerPosition)
 				) {
 					this.computers[key].jump = true;
@@ -251,7 +251,7 @@ export default class ArtificialIntelligence {
 		} else {
 			if (xAtGround > halfWidth) {
 				if (
-					this.shouldSmash(modifiers.key, ballPosition, computerPosition, halfWidth, netY, netWidth) ||
+					this.shouldSmash(modifiers.key, modifiers, ballPosition, computerPosition, halfWidth, netY, netWidth) ||
 					this.isSmashing(modifiers.key, computerPosition)
 				) {
 					this.computers[key].jump = true;
@@ -350,6 +350,7 @@ export default class ArtificialIntelligence {
 	/**
 	 * @private
 	 * @param key
+	 * @param modifiers
 	 * @param ballPosition
 	 * @param computerPosition
 	 * @param halfLevelWidth
@@ -357,11 +358,11 @@ export default class ArtificialIntelligence {
 	 * @param netWidth
 	 * @returns {boolean}
 	 */
-	shouldSmash(key, ballPosition, computerPosition, halfLevelWidth, netY, netWidth) {
+	shouldSmash(key, modifiers, ballPosition, computerPosition, halfLevelWidth, netY, netWidth) {
 		let isLeft = this.isLeftPlayer(key);
 		let width = computerPosition.width;
-		let maximumHeight = netY - computerPosition.height * 2;
-		let minimumHeight = netY - computerPosition.height * 1.25;
+		let maximumHeight = netY - computerPosition.height * 2.5;
+		let minimumHeight = netY - computerPosition.height * 1.75;
 		let playerLeftLimit;
 		let playerRightLimit;
 
@@ -382,7 +383,7 @@ export default class ArtificialIntelligence {
 		}
 
 		return (
-			this.canJump &&
+			this.canJump && modifiers.canJump &&
 			Math.abs(ballPosition.velocityX) < 350 &&
 			ballPosition.velocityY > 0 &&
 			ballPosition.x > playerLeftLimit &&
