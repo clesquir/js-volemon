@@ -25,6 +25,7 @@ export default class CollectionGameData extends GameData {
 		this.gameId = gameId;
 		this.currentUserId = currentUserId;
 		this._activeBonuses = [];
+		this.robots = {};
 	}
 
 	/**
@@ -51,6 +52,10 @@ export default class CollectionGameData extends GameData {
 		this.initTournament();
 	}
 
+	addRobot(id) {
+		this.robots[id] = {id: id};
+	}
+
 	gamePlayerFromKey(playerKey) {
 		if (playerKey === 'player1') {
 			return this.firstGamePlayer;
@@ -60,6 +65,8 @@ export default class CollectionGameData extends GameData {
 			return this.thirdGamePlayer;
 		} else if (playerKey === 'player4') {
 			return this.fourthGamePlayer;
+		} else if (this.robots.hasOwnProperty(playerKey)) {
+			return this.robots[playerKey];
 		}
 
 		return null;
@@ -74,6 +81,8 @@ export default class CollectionGameData extends GameData {
 			return this.thirdPlayer;
 		} else if (playerKey === 'player4') {
 			return this.fourthPlayer;
+		} else if (this.robots.hasOwnProperty(playerKey)) {
+			return this.robots[playerKey];
 		}
 
 		return null;
@@ -86,7 +95,7 @@ export default class CollectionGameData extends GameData {
 	getPlayerShapeFromKey(playerKey) {
 		let player = this.gamePlayerFromKey(playerKey);
 
-		if (!player) {
+		if (!player || !player.shape) {
 			return PLAYER_DEFAULT_SHAPE;
 		}
 
@@ -100,7 +109,7 @@ export default class CollectionGameData extends GameData {
 	getPlayerPolygonFromKey(playerKey) {
 		let player = this.gamePlayerFromKey(playerKey);
 
-		if (!player) {
+		if (!player || !player.shape) {
 			return PLAYER_DEFAULT_SHAPE;
 		}
 

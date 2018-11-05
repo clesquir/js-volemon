@@ -28,6 +28,7 @@ import SmallBallBonus from '/imports/api/games/bonus/SmallBallBonus.js';
 import SmallMonsterBonus from '/imports/api/games/bonus/SmallMonsterBonus.js';
 import SmokeBombBonus from '/imports/api/games/bonus/SmokeBombBonus.js';
 import UnfreezeMonsterBonus from '/imports/api/games/bonus/UnfreezeMonsterBonus.js';
+import RobotBonus from '/imports/api/games/bonus/RobotBonus.js';
 import CardSwitcher from '/imports/lib/client/CardSwitcher.js';
 import {onMobileAndTablet} from '/imports/lib/utils.js';
 import {Template} from 'meteor/templating';
@@ -87,6 +88,7 @@ Template.help.helpers({
 			new InstantDeathBonus(),
 			new ReviveBonus(),
 			new InvincibleInstantDeathBonus(),
+			new RobotBonus(),
 			new PoisonBonus(),
 			new CureBonus(),
 		];

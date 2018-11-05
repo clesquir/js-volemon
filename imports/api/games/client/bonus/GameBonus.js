@@ -39,22 +39,11 @@ export default class GameBonus {
 		this.lastBonusCreated = 0;
 		this.bonusFrequenceTime = 0;
 		this.lastGameRespawn = 0;
+		this.robots = {};
 		this.bonuses = [];
 		this.clouds = [];
 		this.activeBonuses = [];
 		this.removedBonuses = [];
-	}
-
-	getPlayerFromKey(playerKey) {
-		return this.game.getPlayerFromKey(playerKey);
-	}
-
-	getTeammatePlayerFromKey(playerKey) {
-		return this.game.getTeammatePlayerFromKey(playerKey);
-	}
-
-	getPlayerInitialXFromKey(playerKey) {
-		return this.game.getPlayerInitialXFromKey(playerKey);
 	}
 
 	playerInitialPolygonFromKey(playerKey) {
@@ -138,7 +127,7 @@ export default class GameBonus {
 		let player4Count = 0;
 
 		this.activeBonuses.forEach((bonus) => {
-			if (bonus.getTargetPlayerKey()) {
+			if (bonus.getTargetPlayerKey() && this.game.isPlayerKey(bonus.getTargetPlayerKey())) {
 				let bonusSprite = this.activatedBonusSpriteWithIdentifier(bonus.activationIdentifier());
 
 				let xModifier = 0;
@@ -639,13 +628,13 @@ export default class GameBonus {
 
 	isInvincible(playerKey) {
 		return (
-			this.getPlayerFromKey(playerKey) &&
-			this.getPlayerFromKey(playerKey).data.isInvincible
+			this.game.getPlayerFromKey(playerKey) &&
+			this.game.getPlayerFromKey(playerKey).data.isInvincible
 		);
 	}
 
 	killPlayer(playerKey) {
-		if (this.game.canAddGamePoint() && this.getPlayerFromKey(playerKey) && !this.isInvincible(playerKey)) {
+		if (this.game.canAddGamePoint() && this.game.getPlayerFromKey(playerKey) && !this.isInvincible(playerKey)) {
 			this.killAndRemovePlayer(playerKey);
 
 			//Send to client
@@ -665,21 +654,33 @@ export default class GameBonus {
 		if (!this.killingPlayer) {
 			this.killingPlayer = true;
 			this.resetBonusesForPlayerKey(playerKey);
-			this.engine.kill(this.getPlayerFromKey(playerKey));
+			this.engine.kill(this.game.getPlayerFromKey(playerKey));
 			this.killingPlayer = false;
 		}
 	}
 
 	revivePlayer(playerKey) {
-		const teammatePlayer = this.getTeammatePlayerFromKey(playerKey);
+		const player = this.game.getPlayerFromKey(playerKey);
+		let teammatePlayers = [];
 
-		if (teammatePlayer && !this.engine.isAlive(teammatePlayer)) {
-			this.engine.revive(
-				teammatePlayer,
-				this.getPlayerInitialXFromKey(teammatePlayer.data.key),
-				this.gameConfiguration.playerInitialY()
-			);
-			this.game.resetPlayer(teammatePlayer);
+		if (this.game.isPlayerHostSide(player)) {
+			teammatePlayers = this.game.hostPlayerKeys();
+		} else if (this.game.isPlayerClientSide(player)) {
+			teammatePlayers = this.game.clientPlayerKeys();
+		}
+
+		for (let teammatePlayerKey of teammatePlayers) {
+			const teammatePlayer = this.game.getPlayerFromKey(teammatePlayerKey);
+
+			if (teammatePlayer && !this.engine.isAlive(teammatePlayer)) {
+				this.engine.revive(
+					teammatePlayer,
+					this.game.getPlayerInitialXFromKey(teammatePlayer.data.key, this.game.isPlayerHostSide(teammatePlayer)),
+					this.gameConfiguration.playerInitialY()
+				);
+				this.game.resetPlayer(teammatePlayer);
+				return;
+			}
 		}
 	}
 
@@ -689,6 +690,33 @@ export default class GameBonus {
 
 	resetGravityScale() {
 		this.engine.setWorldGravity(this.gameConfiguration.worldGravity());
+	}
+
+	createRobot(activatorPlayerKey, robotId) {
+		const activatorPlayer = this.game.getPlayerFromKey(activatorPlayerKey);
+
+		this.gameData.addRobot(robotId);
+
+		if (this.game.isPlayerHostSide(activatorPlayer)) {
+			this.robots[robotId] = this.game.createHostPlayer(robotId);
+		} else {
+			this.robots[robotId] = this.game.createClientPlayer(robotId);
+		}
+
+		this.robots[robotId].data.isRobot = true;
+		this.game.addPlayerCanJumpOnBodies(this.robots[robotId]);
+		this.game.artificialIntelligence.addComputerWithKey(robotId, false);
+	}
+
+	removeRobot(robotId) {
+		if (this.robots[robotId]) {
+			this.killAndRemovePlayer(robotId);
+			delete this.robots[robotId];
+		}
+	}
+
+	robotHasBeenKilled(robotId) {
+		return (this.robots[robotId] && !this.engine.isAlive(this.robots[robotId]));
 	}
 
 	regenerateLastBonusCreatedAndFrequenceTime() {
@@ -839,7 +867,7 @@ export default class GameBonus {
 
 	resetBonusesForPlayerKey(playerKey) {
 		for (let bonus of this.activeBonuses) {
-			if (bonus.getTargetPlayerKey() === playerKey) {
+			if (bonus.getTargetPlayerKey() === playerKey && bonus.shouldBeRemovedWhenKilling()) {
 				bonus.stop();
 
 				this.removeActiveBonusWithIdentifier(bonus.activationIdentifier());

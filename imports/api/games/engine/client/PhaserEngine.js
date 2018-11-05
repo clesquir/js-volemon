@@ -756,7 +756,7 @@ export default class PhaserEngine extends Engine {
 	}
 
 	kill(sprite) {
-		if (this.isAlive(sprite)) {
+		if (sprite && this.isAlive(sprite)) {
 			this.playDeathAnimation(sprite);
 			sprite.kill();
 		}

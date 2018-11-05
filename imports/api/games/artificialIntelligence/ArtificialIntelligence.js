@@ -146,7 +146,7 @@ export default class ArtificialIntelligence {
 	 * @param {Engine} engine
 	 */
 	computeMovement(key, modifiers, computerPosition, ballPosition, bonusesPosition, gameConfiguration, engine) {
-		const isLeft = this.isLeftPlayer(modifiers.key);
+		const isLeft = this.isLeftPlayer(modifiers);
 		const width = gameConfiguration.width();
 		const halfWidth = (width / 2);
 
@@ -245,7 +245,7 @@ export default class ArtificialIntelligence {
 				}
 			} else if (!this.isSmashing(modifiers.key, computerPosition)) {
 				//Avoid maluses or grab bonuses or move to center
-				this.moveToCenter(modifiers.key, computerPosition, width);
+				this.moveToCenter(modifiers.key, modifiers, computerPosition, width);
 				this.computers[key].isSmashing = false;
 			}
 		} else {
@@ -280,7 +280,7 @@ export default class ArtificialIntelligence {
 				}
 			} else if (!this.isSmashing(modifiers.key, computerPosition)) {
 				//Avoid maluses or grab bonuses or move to center
-				this.moveToCenter(modifiers.key, computerPosition, width);
+				this.moveToCenter(modifiers.key, modifiers, computerPosition, width);
 				this.computers[key].isSmashing = false;
 			}
 		}
@@ -359,7 +359,7 @@ export default class ArtificialIntelligence {
 	 * @returns {boolean}
 	 */
 	shouldSmash(key, modifiers, ballPosition, computerPosition, halfLevelWidth, netY, netWidth) {
-		let isLeft = this.isLeftPlayer(key);
+		let isLeft = this.isLeftPlayer(modifiers);
 		let width = computerPosition.width;
 		let maximumHeight = netY - computerPosition.height * 2.5;
 		let minimumHeight = netY - computerPosition.height * 1.75;
@@ -406,11 +406,12 @@ export default class ArtificialIntelligence {
 	/**
 	 * @private
 	 * @param key
+	 * @param modifiers
 	 * @param computerPosition
 	 * @param width
 	 */
-	moveToCenter(key, computerPosition, width) {
-		const halfSpace = (this.isLeftPlayer(key) ? width * 1 / 4 : width * 3 / 4);
+	moveToCenter(key, modifiers, computerPosition, width) {
+		const halfSpace = (this.isLeftPlayer(modifiers) ? width * 1 / 4 : width * 3 / 4);
 
 		if (computerPosition.x + computerPosition.width / 4 < halfSpace) {
 			this.moveRight(key);
@@ -519,11 +520,11 @@ export default class ArtificialIntelligence {
 
 	/**
 	 * @private
-	 * @param key
+	 * @param modifiers
 	 * @returns {boolean}
 	 */
-	isLeftPlayer(key) {
-		return key === 'player1' || key === 'player3';
+	isLeftPlayer(modifiers) {
+		return !!modifiers.isHost;
 	}
 
 	/**
