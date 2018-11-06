@@ -199,7 +199,7 @@ export default class Learner {
 	 * Builds a new genome based on the expected number of inputs and outputs
 	 */
 	buildGenome(inputs, outputs) {
-		return new Architect.Perceptron(inputs, (inputs + outputs) / 2, outputs);
+		return new Architect.Perceptron(inputs, Math.ceil((inputs + outputs) / 2), outputs);
 	}
 
 	/**
