@@ -47,7 +47,7 @@
   "scripts": {
     "meteor-dev": "meteor --settings=settings-dev.json",
     "meteor-rollbar": "meteor --settings=settings-rollbar.json",
-    "test": "TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha --port 4000",
+    "test": "TEST_BROWSER_DRIVER=phantomjs meteor test --once --driver-package meteortesting:mocha --port 4000",
     "test-phantom": "TEST_BROWSER_DRIVER=phantomjs meteor test --once --driver-package meteortesting:mocha --port 4000",
     "test-nightmare": "TEST_BROWSER_DRIVER=nightmare meteor test --once --driver-package meteortesting:mocha --port 4000",
     "test-chrome": "TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha --port 4000",
