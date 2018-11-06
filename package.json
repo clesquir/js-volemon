@@ -39,13 +39,13 @@
     "write": "^1.0.3"
   },
   "devDependencies": {
-    "phantomjs-prebuilt": "^2.1.16"
+    "nightmare": "^3.0.1"
   },
   "scripts": {
     "meteor-dev": "meteor --settings=settings-dev.json",
     "meteor-rollbar": "meteor --settings=settings-rollbar.json",
-    "test": "TEST_BROWSER_DRIVER=phantomjs meteor test --once --driver-package meteortesting:mocha --port 4000",
-    "test-web": "meteor test --driver-package=practicalmeteor:mocha --port 4000",
+    "test": "TEST_BROWSER_DRIVER=nightmare meteor test --once --driver-package meteortesting:mocha --port 4000",
+    "test-web": "TEST_BROWSER_DRIVER=nightmare meteor test --driver-package=practicalmeteor:mocha --port 4000",
     "sshkey": "eval \"$(ssh-agent -s)\" && ssh-add ~/.ssh/id_rsa",
     "reconfig": "mup reconfig --settings=settings-prod.json",
     "setup": "mup setup --settings=settings-prod.json",
