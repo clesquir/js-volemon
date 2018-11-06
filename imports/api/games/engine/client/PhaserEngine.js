@@ -327,14 +327,15 @@ export default class PhaserEngine extends Engine {
 
 	/**
 	 * @param sprite
-	 * @returns {{x: number, y: number, velocityX: number, velocityY: number, gravityScale: number, width: number, height: number}}
+	 * @returns {{x: number, y: number, scale: number, velocityX: number, velocityY: number, gravityScale: number, width: number, height: number}}
 	 */
 	fullPositionData(sprite) {
 		return Object.assign(
 			{
 				gravityScale: this.getGravity(sprite),
 				width: this.getWidth(sprite),
-				height: this.getHeight(sprite)
+				height: this.getHeight(sprite),
+				scale: sprite.scale
 			},
 			this.getPositionData(sprite)
 		);
