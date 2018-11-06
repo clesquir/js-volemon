@@ -679,6 +679,7 @@ export default class GameBonus {
 				this.getPlayerInitialXFromKey(teammatePlayer.data.key),
 				this.gameConfiguration.playerInitialY()
 			);
+			this.game.resetPlayer(teammatePlayer);
 		}
 	}
 
