@@ -46,6 +46,14 @@ export default class GameBonus {
 		this.removedBonuses = [];
 	}
 
+	playerFromKey(key) {
+		return this.game.getPlayerFromKey(key);
+	}
+
+	isPlayerHostSide(player) {
+		return this.game.isPlayerHostSide(player);
+	}
+
 	playerInitialPolygonFromKey(playerKey) {
 		return this.game.playerInitialPolygonFromKey(playerKey);
 	}
