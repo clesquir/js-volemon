@@ -707,6 +707,7 @@ export default class GameBonus {
 		}
 
 		if (
+			this.game.gameResumed &&
 			Date.now() - this.lastBonusCreated >= frequenceTime &&
 			this.bonuses.length < this.gameConfiguration.maximumBonusesOnScreen()
 		) {
