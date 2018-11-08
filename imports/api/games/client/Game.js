@@ -519,7 +519,6 @@ export default class Game {
 			this.resetPlayersAndBall();
 
 			this.artificialIntelligence.startPoint();
-			this.gameBonus.resumeGame();
 			this.startCountdownTimer();
 		}
 	}
@@ -542,6 +541,7 @@ export default class Game {
 			this.countdownTimer = this.engine.createTimer(timerLeft, () => {
 				this.countdownText.text = '';
 				this.countdownTimer.stop();
+				this.gameBonus.resumeGame();
 				this.resumeGame();
 			}, this);
 			this.countdownTimer.start();
