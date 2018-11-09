@@ -2,6 +2,9 @@ export default class GameData {
 	init() {
 	}
 
+	addRobot(id) {
+	}
+
 	/**
 	 * @param playerKey
 	 * @returns string Returns the player shape or PLAYER_DEFAULT_SHAPE if no game nor player is found

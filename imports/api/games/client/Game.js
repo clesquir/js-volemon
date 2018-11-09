@@ -94,25 +94,96 @@ export default class Game {
 				return this.player4;
 		}
 
-		return null;
-	}
-
-	getTeammatePlayerFromKey(playerKey) {
-		switch (playerKey) {
-			case 'player1':
-				return this.player3;
-			case 'player2':
-				return this.player4;
-			case 'player3':
-				return this.player1;
-			case 'player4':
-				return this.player2;
+		for (let i in this.gameBonus.robots) {
+			if (this.gameBonus.robots.hasOwnProperty(i) && i === playerKey) {
+				return this.gameBonus.robots[i];
+			}
 		}
 
 		return null;
 	}
 
-	getPlayerInitialXFromKey(playerKey) {
+	hostPlayerKeys() {
+		const playerKeys = [
+			'player1',
+			'player3'
+		];
+
+		for (let robotId in this.gameBonus.robots) {
+			if (this.gameBonus.robots.hasOwnProperty(robotId) && this.isPlayerHostSide(this.gameBonus.robots[robotId])) {
+				playerKeys.push(robotId);
+			}
+		}
+
+		return playerKeys;
+	}
+
+	clientPlayerKeys() {
+		const playerKeys = [
+			'player2',
+			'player4'
+		];
+
+		for (let robotId in this.gameBonus.robots) {
+			if (this.gameBonus.robots.hasOwnProperty(robotId) && this.isPlayerClientSide(this.gameBonus.robots[robotId])) {
+				playerKeys.push(robotId);
+			}
+		}
+
+		return playerKeys;
+	}
+
+	getPlayerKeys() {
+		const playerKeys = [
+			'player1',
+			'player2',
+			'player3',
+			'player4'
+		];
+
+		for (let robotId in this.gameBonus.robots) {
+			if (this.gameBonus.robots.hasOwnProperty(robotId)) {
+				playerKeys.push(robotId);
+			}
+		}
+
+		return playerKeys;
+	}
+
+	isPlayerKey(key) {
+		return [
+			'player1',
+			'player2',
+			'player3',
+			'player4'
+		].indexOf(key) >= 0;
+	}
+
+	getComputerPlayerKeys() {
+		const playerKeys = [];
+
+		if (this.gameData.isFirstPlayerComputer()) {
+			playerKeys.push('player1');
+		}
+		if (this.gameData.isSecondPlayerComputer()) {
+			playerKeys.push('player2');
+		}
+		if (this.gameData.isThirdPlayerComputer()) {
+			playerKeys.push('player3');
+		}
+		if (this.gameData.isFourthPlayerComputer()) {
+			playerKeys.push('player4');
+		}
+		for (let i in this.gameBonus.robots) {
+			if (this.gameBonus.robots.hasOwnProperty(i)) {
+				playerKeys.push(i);
+			}
+		}
+
+		return playerKeys;
+	}
+
+	getPlayerInitialXFromKey(playerKey, isHost) {
 		switch (playerKey) {
 			case 'player1':
 				return this.gameConfiguration.player1InitialX();
@@ -124,15 +195,19 @@ export default class Game {
 				return this.gameConfiguration.player4InitialX();
 		}
 
-		return this.gameConfiguration.player1InitialX();
+		if (isHost) {
+			return this.gameConfiguration.player1InitialX();
+		} else {
+			return this.gameConfiguration.player2InitialX();
+		}
 	}
 
-	isPlayerKeyHostSide(playerKey) {
-		return (playerKey === 'player1' || playerKey === 'player3');
+	isPlayerHostSide(player) {
+		return player && !!player.data.isHost;
 	}
 
-	isPlayerKeyClientSide(playerKey) {
-		return (playerKey === 'player2' || playerKey === 'player4');
+	isPlayerClientSide(player) {
+		return player && !!player.data.isClient;
 	}
 
 	playerInitialPolygonFromKey(playerKey) {
@@ -256,82 +331,15 @@ export default class Game {
 
 		this.createArtificialIntelligence();
 
-		/**
-		 * Player 1
-		 */
-		const player1Key = 'player1';
-		this.player1 = this.engine.addSprite(
-			this.getPlayerInitialXFromKey(player1Key),
-			this.gameConfiguration.playerInitialY(),
-			'shape-' + this.playerShapeFromKey(player1Key)
-		);
-		this.engine.setTint(this.player1, '#a73030');
-		this.player1.data.key = player1Key;
-		this.initPlayer(
-			this.player1,
-			this.getPlayerInitialXFromKey(player1Key),
-			this.gameConfiguration.playerInitialY(),
-			this.collisions.hostPlayerCollisionGroup
-		);
-
-		/**
-		 * Player 2
-		 */
-		const player2Key = 'player2';
-		this.player2 = this.engine.addSprite(
-			this.getPlayerInitialXFromKey(player2Key),
-			this.gameConfiguration.playerInitialY(),
-			'shape-' + this.playerShapeFromKey(player2Key)
-		);
-		this.engine.setTint(this.player2, '#274b7a');
-		this.player2.data.key = player2Key;
-		this.initPlayer(
-			this.player2,
-			this.getPlayerInitialXFromKey(player2Key),
-			this.gameConfiguration.playerInitialY(),
-			this.collisions.clientPlayerCollisionGroup
-		);
+		this.player1 = this.createHostPlayer('player1', '#a73030');
+		this.player2 = this.createClientPlayer('player2', '#274b7a');
 
 		if (this.gameData.isTwoVersusTwo()) {
-			/**
-			 * Player 3
-			 */
-			const player3Key = 'player3';
-			this.player3 = this.engine.addSprite(
-				this.getPlayerInitialXFromKey(player3Key),
-				this.gameConfiguration.playerInitialY(),
-				'shape-' + this.playerShapeFromKey(player3Key)
-			);
-			this.engine.setTint(this.player3, '#d46969');
-			this.player3.data.key = player3Key;
-			this.initPlayer(
-				this.player3,
-				this.getPlayerInitialXFromKey(player3Key),
-				this.gameConfiguration.playerInitialY(),
-				this.collisions.hostPlayerCollisionGroup
-			);
-			this.addPlayerCanJumpOnBody(this.player1, this.player3.body);
-			this.addPlayerCanJumpOnBody(this.player3, this.player1.body);
+			this.player3 = this.createHostPlayer('player3', '#d46969');
+			this.addPlayerCanJumpOnBodies(this.player3);
 
-			/**
-			 * Player 4
-			 */
-			const player4Key = 'player4';
-			this.player4 = this.engine.addSprite(
-				this.getPlayerInitialXFromKey(player4Key),
-				this.gameConfiguration.playerInitialY(),
-				'shape-' + this.playerShapeFromKey(player4Key)
-			);
-			this.engine.setTint(this.player4, '#437bc4');
-			this.player4.data.key = player4Key;
-			this.initPlayer(
-				this.player4,
-				this.getPlayerInitialXFromKey(player4Key),
-				this.gameConfiguration.playerInitialY(),
-				this.collisions.clientPlayerCollisionGroup
-			);
-			this.addPlayerCanJumpOnBody(this.player2, this.player4.body);
-			this.addPlayerCanJumpOnBody(this.player4, this.player2.body);
+			this.player4 = this.createClientPlayer('player4', '#437bc4');
+			this.addPlayerCanJumpOnBodies(this.player4);
 		}
 
 		this.createBall(
@@ -348,6 +356,77 @@ export default class Game {
 		}
 
 		this.createCountdownText();
+	}
+
+	createHostPlayer(key, color) {
+		const player = this.engine.addSprite(
+			this.getPlayerInitialXFromKey(key, true),
+			this.gameConfiguration.playerInitialY(),
+			'shape-' + this.playerShapeFromKey(key)
+		);
+
+		player.data.key = key;
+		player.data.isHost = true;
+
+		if (color) {
+			this.engine.setTint(player, color);
+		}
+
+		this.initPlayer(
+			player,
+			this.getPlayerInitialXFromKey(key, true),
+			this.gameConfiguration.playerInitialY(),
+			this.collisions.hostPlayerCollisionGroup
+		);
+
+		return player;
+	}
+
+	createClientPlayer(key, color) {
+		const player = this.engine.addSprite(
+			this.getPlayerInitialXFromKey(key, false),
+			this.gameConfiguration.playerInitialY(),
+			'shape-' + this.playerShapeFromKey(key)
+		);
+
+		player.data.key = key;
+		player.data.isClient = true;
+
+		if (color) {
+			this.engine.setTint(player, color);
+		}
+
+		this.initPlayer(
+			player,
+			this.getPlayerInitialXFromKey(key, false),
+			this.gameConfiguration.playerInitialY(),
+			this.collisions.clientPlayerCollisionGroup
+		);
+
+		return player;
+	}
+
+	addPlayerCanJumpOnBodies(player) {
+		let teammatePlayerKeys = [];
+
+		if (this.isPlayerHostSide(player)) {
+			teammatePlayerKeys = this.hostPlayerKeys();
+		} else {
+			teammatePlayerKeys = this.clientPlayerKeys();
+		}
+
+		for (let key of teammatePlayerKeys) {
+			const teammate = this.getPlayerFromKey(key);
+
+			if (teammate && key !== player.data.key) {
+				this.addPlayerCanJumpOnBody(teammate, player.body);
+				this.addPlayerCanJumpOnBody(player, teammate.body);
+			}
+		}
+	}
+
+	addPlayerCanJumpOnBody(player, body) {
+		player.data.canJumpOnBodies.push(body);
 	}
 
 	/**
@@ -373,10 +452,6 @@ export default class Game {
 			fill: '#363636',
 			align: 'center'
 		});
-	}
-
-	addPlayerCanJumpOnBody(player, body) {
-		player.data.canJumpOnBodies.push(body);
 	}
 
 	removePlayerCanJumpOnBody(player, body) {
@@ -470,7 +545,7 @@ export default class Game {
 
 		this.engine.addPlayerEye(
 			player,
-			player.data.playerCollisionGroup === this.collisions.hostPlayerCollisionGroup,
+			player.data.isHost,
 			player.data.currentPolygonKey,
 			player.data.currentPolygonObject
 		);
@@ -606,11 +681,12 @@ export default class Game {
 	updateGame() {
 		this.streamBundler.resetBundledStreams();
 
-		this.engine.updatePlayerEye(this.player1, this.ball);
-		this.engine.updatePlayerEye(this.player2, this.ball);
-		if (this.gameData.isTwoVersusTwo()) {
-			this.engine.updatePlayerEye(this.player3, this.ball);
-			this.engine.updatePlayerEye(this.player4, this.ball);
+		for (let key of this.getPlayerKeys()) {
+			const player = this.getPlayerFromKey(key);
+
+			if (player) {
+				this.engine.updatePlayerEye(player, this.ball);
+			}
 		}
 
 		//Do not allow ball movement if it is frozen
@@ -622,17 +698,12 @@ export default class Game {
 		if (this.gameIsOnGoing()) {
 			this.inputs();
 
-			if (this.gameData.isFirstPlayerComputer()) {
-				this.moveComputer(this.player1);
-			}
-			if (this.gameData.isSecondPlayerComputer()) {
-				this.moveComputer(this.player2);
-			}
-			if (this.gameData.isThirdPlayerComputer()) {
-				this.moveComputer(this.player3);
-			}
-			if (this.gameData.isFourthPlayerComputer()) {
-				this.moveComputer(this.player4);
+			for (let key of this.getComputerPlayerKeys()) {
+				const player = this.getPlayerFromKey(key);
+
+				if (player) {
+					this.moveComputer(player);
+				}
 			}
 
 			this.engine.constrainVelocity(this.ball, 1000);
@@ -761,12 +832,12 @@ export default class Game {
 
 			let playerNumberBallHits = ++player.data.numberBallHits;
 			let teamNumberBallHits = 0;
-			if (this.isPlayerKeyHostSide(player.data.key)) {
+			if (this.isPlayerHostSide(player)) {
 				//Increment hit
 				teamNumberBallHits = ++this.hostNumberBallHits;
 				//Reset opponent
 				this.clientNumberBallHits = 0;
-			} else if (this.isPlayerKeyClientSide(player.data.key)) {
+			} else if (this.isPlayerClientSide(player)) {
 				//Increment hit
 				teamNumberBallHits = ++this.clientNumberBallHits;
 				//Reset opponent
@@ -774,7 +845,7 @@ export default class Game {
 			}
 
 			//Reset other players
-			this.resetPlayerNumberBallHitsForOthers(player.data.key);
+			this.resetPlayerNumberBallHitsForOthers(player);
 
 			this.killPlayerOnBallHit(player, teamNumberBallHits, playerNumberBallHits);
 
@@ -788,15 +859,17 @@ export default class Game {
 			teamNumberBallHits > this.gameConfiguration.teamMaximumBallHit()
 		) {
 			//Kill the team
-			if (this.isPlayerKeyHostSide(player.data.key)) {
+			if (this.isPlayerHostSide(player)) {
 				setTimeout(() => {
-					this.gameBonus.killPlayer('player1');
-					this.gameBonus.killPlayer('player3');
+					for (let key of this.hostPlayerKeys()) {
+						this.gameBonus.killPlayer(key);
+					}
 				}, 100);
-			} else if (this.isPlayerKeyClientSide(player.data.key)) {
+			} else if (this.isPlayerClientSide(player)) {
 				setTimeout(() => {
-					this.gameBonus.killPlayer('player2');
-					this.gameBonus.killPlayer('player4');
+					for (let key of this.clientPlayerKeys()) {
+						this.gameBonus.killPlayer(key);
+					}
 				}, 100);
 			}
 		} else if (
@@ -814,7 +887,7 @@ export default class Game {
 			const x = this.engine.getXPosition(ball);
 			const y = this.engine.getYPosition(ball);
 			const fontSize = '35px';
-			let color = this.isPlayerKeyHostSide(player.data.key) ? '#c94141' : '#3363a1';
+			let color = this.isPlayerHostSide(player) ? '#c94141' : '#3363a1';
 
 			this.showBallHitCount(x, y, teamNumberBallHits, fontSize, color);
 
@@ -834,28 +907,18 @@ export default class Game {
 		}
 	}
 
-	resetPlayerNumberBallHitsForOthers(playerKey) {
-		switch (playerKey) {
-			case 'player1':
-				this.resetPlayerBallHits(this.getPlayerFromKey('player2'));
-				this.resetPlayerBallHits(this.getPlayerFromKey('player3'));
-				this.resetPlayerBallHits(this.getPlayerFromKey('player4'));
-				break;
-			case 'player2':
-				this.resetPlayerBallHits(this.getPlayerFromKey('player1'));
-				this.resetPlayerBallHits(this.getPlayerFromKey('player3'));
-				this.resetPlayerBallHits(this.getPlayerFromKey('player4'));
-				break;
-			case 'player3':
-				this.resetPlayerBallHits(this.getPlayerFromKey('player1'));
-				this.resetPlayerBallHits(this.getPlayerFromKey('player2'));
-				this.resetPlayerBallHits(this.getPlayerFromKey('player4'));
-				break;
-			case 'player4':
-				this.resetPlayerBallHits(this.getPlayerFromKey('player1'));
-				this.resetPlayerBallHits(this.getPlayerFromKey('player2'));
-				this.resetPlayerBallHits(this.getPlayerFromKey('player3'));
-				break;
+	resetPlayerNumberBallHitsForOthers(player) {
+		const playerKeys = [
+			'player1',
+			'player2',
+			'player3',
+			'player4'
+		];
+
+		for (let playerKey of playerKeys) {
+			if (player.data.key !== playerKey) {
+				this.resetPlayerBallHits(this.getPlayerFromKey(playerKey));
+			}
 		}
 	}
 
@@ -867,24 +930,20 @@ export default class Game {
 	}
 
 	isPlayerJumpingForward(player) {
-		const playerKey = player.data.key;
-
 		return (
 			Math.round(this.engine.getVerticalSpeed(player)) < 0 &&
 			!this.engine.hasSurfaceTouchingPlayerBottom(player) &&
 			(
-				(this.isPlayerKeyHostSide(playerKey) && Math.round(this.engine.getHorizontalSpeed(player)) > 0) ||
-				(this.isPlayerKeyClientSide(playerKey) && Math.round(this.engine.getHorizontalSpeed(player)) < 0)
+				(this.isPlayerHostSide(player) && Math.round(this.engine.getHorizontalSpeed(player)) > 0) ||
+				(this.isPlayerClientSide(player) && Math.round(this.engine.getHorizontalSpeed(player)) < 0)
 			)
 		);
 	}
 
 	isBallInFrontOfPlayer(ball, player) {
-		const playerKey = player.data.key;
-
 		return (
-			(this.isPlayerKeyHostSide(playerKey) && this.engine.getXPosition(player) < this.engine.getXPosition(ball)) ||
-			(this.isPlayerKeyClientSide(playerKey) && this.engine.getXPosition(ball) < this.engine.getXPosition(player))
+			(this.isPlayerHostSide(player) && this.engine.getXPosition(player) < this.engine.getXPosition(ball)) ||
+			(this.isPlayerClientSide(player) && this.engine.getXPosition(ball) < this.engine.getXPosition(player))
 		);
 	}
 
@@ -905,10 +964,8 @@ export default class Game {
 	}
 
 	smashBallOnPlayerHit(ball, player) {
-		const playerKey = player.data.key;
-
 		//Ball direction should change if smashed the opposite way
-		if (this.ballMovingTowardsPlayer(ball, playerKey)) {
+		if (this.ballMovingTowardsPlayer(ball, player)) {
 			this.engine.setHorizontalSpeed(ball, -this.engine.getHorizontalSpeed(ball));
 		}
 
@@ -922,10 +979,10 @@ export default class Game {
 		}
 	}
 
-	ballMovingTowardsPlayer(ball, playerKey) {
+	ballMovingTowardsPlayer(ball, player) {
 		return (
-			(this.isPlayerKeyHostSide(playerKey) && this.engine.getHorizontalSpeed(ball) < 0) ||
-			(this.isPlayerKeyClientSide(playerKey) && this.engine.getHorizontalSpeed(ball) > 0)
+			(this.isPlayerHostSide(player) && this.engine.getHorizontalSpeed(ball) < 0) ||
+			(this.isPlayerClientSide(player) && this.engine.getHorizontalSpeed(ball) > 0)
 		);
 	}
 
@@ -942,16 +999,24 @@ export default class Game {
 
 	canAddPointOnSide(side) {
 		if (side === CLIENT_POINTS_COLUMN) {
-			return !(
-				this.gameBonus.isInvincible('player1') ||
-				this.gameBonus.isInvincible('player3')
-			);
+			const hostPlayerKeys = this.hostPlayerKeys();
+
+			for (let playerKey of hostPlayerKeys) {
+				if (this.gameBonus.isInvincible(playerKey)) {
+					return false;
+				}
+			}
 		} else {
-			return !(
-				this.gameBonus.isInvincible('player2') ||
-				this.gameBonus.isInvincible('player4')
-			);
+			const clientPlayerKeys = this.clientPlayerKeys();
+
+			for (let playerKey of clientPlayerKeys) {
+				if (this.gameBonus.isInvincible(playerKey)) {
+					return false;
+				}
+			}
 		}
+
+		return true;
 	}
 
 	hitGround(ball) {

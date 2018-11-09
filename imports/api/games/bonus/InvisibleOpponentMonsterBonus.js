@@ -20,7 +20,7 @@ export default class InvisibleOpponentMonsterBonus extends MonsterBonus {
 		);
 	}
 
-	getTargetPlayerKey() {
+	initTargetPlayerKey() {
 		if (this.activatorPlayerKey === 'player1') {
 			return 'player2';
 		} else if (this.activatorPlayerKey === 'player2') {
@@ -29,10 +29,23 @@ export default class InvisibleOpponentMonsterBonus extends MonsterBonus {
 			return 'player4';
 		} else if (this.activatorPlayerKey === 'player4') {
 			return 'player3';
+		} else {
+			const player = this.game.playerFromKey.call(this.game, this.activatorPlayerKey);
+
+			if (this.game.isPlayerHostSide.call(this.game, player)) {
+				return 'player2';
+			} else {
+				return 'player1';
+			}
 		}
 	}
 
+	getTargetPlayerKey() {
+		return this.targetPlayerKey;
+	}
+
 	start() {
+		this.targetPlayerKey = this.initTargetPlayerKey();
 		this.game.hidePlayingPlayer.call(this.game, this.getTargetPlayerKey());
 	}
 

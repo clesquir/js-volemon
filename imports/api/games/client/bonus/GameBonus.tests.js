@@ -40,16 +40,16 @@ describe('GameBonus#getBonusSpriteFromIdentifier', function() {
 	});
 
 	it('returns the matching bonus', function() {
-		const game = new GameBonus(game, engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
+		const gameBonus = new GameBonus(game, engine, gameData, gameConfiguration, streamBundler, serverNormalizedTime);
 		const bBonus = {identifier: 'b'};
 
-		game.bonuses = [
+		gameBonus.bonuses = [
 			{identifier: 'a'},
 			bBonus,
 			{identifier: 'c'}
 		];
 
-		let bonus = game.getBonusSpriteFromIdentifier('b');
+		let bonus = gameBonus.getBonusSpriteFromIdentifier('b');
 
 		assert.equal(bBonus, bonus);
 	});

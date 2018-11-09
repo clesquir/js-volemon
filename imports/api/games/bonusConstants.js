@@ -30,6 +30,7 @@ export const BONUS_LOW_GRAVITY = 'LowGravity';
 export const BONUS_HIGH_GRAVITY = 'HighGravity';
 export const BONUS_POISON = 'Poison';
 export const BONUS_CURE = 'Cure';
+export const BONUS_ROBOT = 'Robot';
 
 export const ALL_BONUSES = [
 	BONUS_RANDOM,
@@ -62,6 +63,7 @@ export const ALL_BONUSES = [
 	BONUS_INVINCIBLE_INSTANT_DEATH,
 	BONUS_POISON,
 	BONUS_CURE,
+	BONUS_ROBOT,
 ];
 
 export const ALL_BONUSES_FOR_RANDOM = [
@@ -94,4 +96,5 @@ export const ALL_BONUSES_FOR_RANDOM = [
 	BONUS_INVINCIBLE_INSTANT_DEATH,
 	BONUS_POISON,
 	BONUS_CURE,
+	BONUS_ROBOT,
 ];

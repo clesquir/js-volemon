@@ -159,4 +159,8 @@ export default class BaseBonus {
 	stop() {
 		this.deactivate();
 	}
+
+	shouldBeRemovedWhenKilling() {
+		return true;
+	}
 };
