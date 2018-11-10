@@ -82,7 +82,7 @@ export default class Game {
 		return this.getPlayerFromKey(key);
 	}
 
-	getPlayerFromKey(playerKey) {
+	getPlayerFromKey(playerKey, includeRobot = true) {
 		switch (playerKey) {
 			case 'player1':
 				return this.player1;
@@ -94,72 +94,86 @@ export default class Game {
 				return this.player4;
 		}
 
-		for (let i in this.gameBonus.robots) {
-			if (this.gameBonus.robots.hasOwnProperty(i) && i === playerKey) {
-				return this.gameBonus.robots[i];
+		if (includeRobot) {
+			for (let i in this.gameBonus.robots) {
+				if (this.gameBonus.robots.hasOwnProperty(i) && i === playerKey) {
+					return this.gameBonus.robots[i];
+				}
 			}
 		}
 
 		return null;
 	}
 
-	hostPlayerKeys() {
+	hostPlayerKeys(includeRobot = true) {
 		const playerKeys = [
-			'player1',
-			'player3'
+			'player1'
 		];
 
-		for (let robotId in this.gameBonus.robots) {
-			if (this.gameBonus.robots.hasOwnProperty(robotId) && this.isPlayerHostSide(this.gameBonus.robots[robotId])) {
-				playerKeys.push(robotId);
+		if (this.gameData.isTwoVersusTwo()) {
+			playerKeys.push('player3');
+		}
+
+		if (includeRobot) {
+			for (let robotId in this.gameBonus.robots) {
+				if (this.gameBonus.robots.hasOwnProperty(robotId) && this.isPlayerHostSide(this.gameBonus.robots[robotId])) {
+					playerKeys.push(robotId);
+				}
 			}
 		}
 
 		return playerKeys;
 	}
 
-	clientPlayerKeys() {
+	clientPlayerKeys(includeRobot = true) {
 		const playerKeys = [
-			'player2',
-			'player4'
+			'player2'
 		];
 
-		for (let robotId in this.gameBonus.robots) {
-			if (this.gameBonus.robots.hasOwnProperty(robotId) && this.isPlayerClientSide(this.gameBonus.robots[robotId])) {
-				playerKeys.push(robotId);
+		if (this.gameData.isTwoVersusTwo()) {
+			playerKeys.push('player4');
+		}
+
+		if (includeRobot) {
+			for (let robotId in this.gameBonus.robots) {
+				if (this.gameBonus.robots.hasOwnProperty(robotId) && this.isPlayerClientSide(this.gameBonus.robots[robotId])) {
+					playerKeys.push(robotId);
+				}
 			}
 		}
 
 		return playerKeys;
 	}
 
-	getPlayerKeys() {
+	getPlayerKeys(includeRobot = true) {
 		const playerKeys = [
 			'player1',
-			'player2',
-			'player3',
-			'player4'
+			'player2'
 		];
 
-		for (let robotId in this.gameBonus.robots) {
-			if (this.gameBonus.robots.hasOwnProperty(robotId)) {
-				playerKeys.push(robotId);
+		if (this.gameData.isTwoVersusTwo()) {
+			playerKeys.push('player3');
+			playerKeys.push('player4');
+		}
+
+		if (includeRobot) {
+			for (let robotId in this.gameBonus.robots) {
+				if (this.gameBonus.robots.hasOwnProperty(robotId)) {
+					playerKeys.push(robotId);
+				}
 			}
 		}
 
 		return playerKeys;
 	}
 
-	isPlayerKey(key) {
-		return [
-			'player1',
-			'player2',
-			'player3',
-			'player4'
-		].indexOf(key) >= 0;
+	isPlayerKey(key, includeRobot = true) {
+		const playerKeys = this.getPlayerKeys(includeRobot);
+
+		return playerKeys.indexOf(key) >= 0;
 	}
 
-	getComputerPlayerKeys() {
+	getComputerPlayerKeys(includeRobot = true) {
 		const playerKeys = [];
 
 		if (this.gameData.isFirstPlayerComputer()) {
@@ -174,9 +188,12 @@ export default class Game {
 		if (this.gameData.isFourthPlayerComputer()) {
 			playerKeys.push('player4');
 		}
-		for (let i in this.gameBonus.robots) {
-			if (this.gameBonus.robots.hasOwnProperty(i)) {
-				playerKeys.push(i);
+
+		if (includeRobot) {
+			for (let i in this.gameBonus.robots) {
+				if (this.gameBonus.robots.hasOwnProperty(i)) {
+					playerKeys.push(i);
+				}
 			}
 		}
 
@@ -908,12 +925,7 @@ export default class Game {
 	}
 
 	resetPlayerNumberBallHitsForOthers(player) {
-		const playerKeys = [
-			'player1',
-			'player2',
-			'player3',
-			'player4'
-		];
+		const playerKeys = this.getPlayerKeys();
 
 		for (let playerKey of playerKeys) {
 			if (player.data.key !== playerKey) {

@@ -46,8 +46,8 @@ export default class GameBonus {
 		this.removedBonuses = [];
 	}
 
-	playerFromKey(key) {
-		return this.game.getPlayerFromKey(key);
+	playerFromKey(key, includeRobot = true) {
+		return this.game.getPlayerFromKey(key, includeRobot);
 	}
 
 	isPlayerHostSide(player) {
@@ -135,7 +135,7 @@ export default class GameBonus {
 		let player4Count = 0;
 
 		this.activeBonuses.forEach((bonus) => {
-			if (bonus.getTargetPlayerKey() && this.game.isPlayerKey(bonus.getTargetPlayerKey())) {
+			if (bonus.getTargetPlayerKey() && this.game.isPlayerKey(bonus.getTargetPlayerKey(), false)) {
 				let bonusSprite = this.activatedBonusSpriteWithIdentifier(bonus.activationIdentifier());
 
 				let xModifier = 0;
@@ -672,9 +672,9 @@ export default class GameBonus {
 		let teammatePlayers = [];
 
 		if (this.game.isPlayerHostSide(player)) {
-			teammatePlayers = this.game.hostPlayerKeys();
+			teammatePlayers = this.game.hostPlayerKeys(false);
 		} else if (this.game.isPlayerClientSide(player)) {
-			teammatePlayers = this.game.clientPlayerKeys();
+			teammatePlayers = this.game.clientPlayerKeys(false);
 		}
 
 		for (let teammatePlayerKey of teammatePlayers) {
