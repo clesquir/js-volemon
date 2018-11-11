@@ -638,6 +638,7 @@ export default class Game {
 			}, this);
 			this.countdownTimer.start();
 		} else {
+			this.gameBonus.resumeGame();
 			this.resumeGame();
 		}
 	}
@@ -1171,9 +1172,22 @@ export default class Game {
 	}
 
 	moveClientPlayer(data) {
+		if (!this.gameInitiated || !this.gameIsOnGoing()) {
+			return;
+		}
+
 		let player = this.getPlayerFromKey(data.key);
 
-		if (!this.gameInitiated || !player || !this.gameIsOnGoing()) {
+		if (!player && data.key.indexOf('robot-') === 0) {
+			//if robot has been removed do not recreate
+			if (this.gameBonus.removedRobots.indexOf(data.key) !== -1) {
+				return;
+			}
+
+			player = this.gameBonus.createRobot(data.key, data.isHost);
+		}
+
+		if (!player) {
 			return;
 		}
 

@@ -312,7 +312,7 @@ export default class PhaserEngine extends Engine {
 
 	/**
 	 * @param sprite
-	 * @returns {{x: number, y: number, velocityX: number, velocityY: number}}
+	 * @returns {{x: number, y: number, velocityX: number, velocityY: number, isHost: boolean, isClient: boolean}}
 	 */
 	getPositionData(sprite) {
 		const body = sprite.body;
@@ -321,7 +321,9 @@ export default class PhaserEngine extends Engine {
 			x: body.x,
 			y: body.y,
 			velocityX: body.velocity.x,
-			velocityY: body.velocity.y
+			velocityY: body.velocity.y,
+			isHost: !!sprite.data.isHost,
+			isClient: !!sprite.data.isClient
 		};
 	}
 

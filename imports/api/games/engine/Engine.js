@@ -208,7 +208,7 @@ export default class Engine {
 
 	/**
 	 * @param sprite
-	 * @returns {{x: number, y: number, velocityX: number, velocityY: number}}
+	 * @returns {{x: number, y: number, velocityX: number, velocityY: number, isHost: boolean, isClient: boolean}}
 	 */
 	getPositionData(sprite) {
 	}

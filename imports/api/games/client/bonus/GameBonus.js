@@ -1,3 +1,4 @@
+import RobotBonus from '/imports/api/games/bonus/RobotBonus.js';
 import BonusFactory from '/imports/api/games/BonusFactory.js';
 import {
 	BIG_SCALE_PHYSICS_DATA,
@@ -44,6 +45,7 @@ export default class GameBonus {
 		this.clouds = [];
 		this.activeBonuses = [];
 		this.removedBonuses = [];
+		this.removedRobots = [];
 	}
 
 	playerFromKey(key, includeRobot = true) {
@@ -120,6 +122,11 @@ export default class GameBonus {
 	applyActiveBonuses() {
 		for (let activeBonus of this.gameData.activeBonuses()) {
 			let bonus = BonusFactory.fromClassName(activeBonus.activatedBonusClass, this);
+
+			if (this.gameConfiguration.overridesBonusDuration()) {
+				bonus.durationMilliseconds = this.gameConfiguration.bonusDuration();
+			}
+
 			bonus.reassignBeforeActivationData(activeBonus.beforeActivationData);
 			bonus.activate(activeBonus.targetPlayerKey, activeBonus.activatedAt);
 			bonus.start();
@@ -700,12 +707,16 @@ export default class GameBonus {
 		this.engine.setWorldGravity(this.gameConfiguration.worldGravity());
 	}
 
-	createRobot(activatorPlayerKey, robotId) {
+	createRobotFromActivatorPlayerKey(activatorPlayerKey, robotId) {
 		const activatorPlayer = this.game.getPlayerFromKey(activatorPlayerKey);
 
+		this.createRobot(robotId, this.game.isPlayerHostSide(activatorPlayer));
+	}
+
+	createRobot(robotId, isHost) {
 		this.gameData.addRobot(robotId);
 
-		if (this.game.isPlayerHostSide(activatorPlayer)) {
+		if (isHost) {
 			this.robots[robotId] = this.game.createHostPlayer(robotId);
 		} else {
 			this.robots[robotId] = this.game.createClientPlayer(robotId);
@@ -714,6 +725,8 @@ export default class GameBonus {
 		this.robots[robotId].data.isRobot = true;
 		this.game.addPlayerCanJumpOnBodies(this.robots[robotId]);
 		this.game.artificialIntelligence.addComputerWithKey(robotId, false);
+
+		return this.robots[robotId];
 	}
 
 	removeRobot(robotId) {
@@ -899,6 +912,10 @@ export default class GameBonus {
 			if (bonus.check(this.serverNormalizedTime.getServerTimestamp())) {
 				stillActiveBonuses.push(bonus);
 			} else {
+				if (bonus instanceof RobotBonus) {
+					this.removedRobots.push(bonus.robotId);
+				}
+
 				if (this.gameData.isUserCreator()) {
 					Meteor.call('removeActiveBonusFromGame', this.game.gameId, bonus.getIdentifier());
 				}
@@ -920,6 +937,9 @@ export default class GameBonus {
 
 		//Remove active bonuses
 		for (let bonus of this.activeBonuses) {
+			if (bonus instanceof RobotBonus) {
+				this.removedRobots.push(bonus.robotId);
+			}
 			bonus.stop();
 
 			this.removeActiveBonusWithIdentifier(bonus.activationIdentifier());

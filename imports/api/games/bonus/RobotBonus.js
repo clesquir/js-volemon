@@ -17,7 +17,7 @@ export default class RobotBonus extends MonsterBonus {
 	}
 
 	beforeActivation(payload) {
-		this.robotId = Random.id(5);
+		this.robotId = 'robot-' + Random.id(5);
 	}
 
 	beforeActivationData() {
@@ -33,7 +33,7 @@ export default class RobotBonus extends MonsterBonus {
 	}
 
 	start() {
-		this.game.createRobot.call(this.game, this.activatorPlayerKey, this.robotId);
+		this.game.createRobotFromActivatorPlayerKey.call(this.game, this.activatorPlayerKey, this.robotId);
 	}
 
 	stop() {
