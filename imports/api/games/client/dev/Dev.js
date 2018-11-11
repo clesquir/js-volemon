@@ -114,33 +114,8 @@ export default class Dev {
 	}
 
 	createPlayersComponents() {
-		this.game.player1 = this.engine.addSprite(
-			this.gameConfiguration.player1InitialX(),
-			this.gameConfiguration.playerInitialY(),
-			'shape-' + PLAYER_DEFAULT_SHAPE
-		);
-		this.engine.setTint(this.game.player1, '#a73030');
-		this.game.player1.data.key = 'player1';
-		this.game.initPlayer(
-			this.game.player1,
-			this.gameConfiguration.player1InitialX(),
-			this.gameConfiguration.playerInitialY(),
-			this.game.collisions.hostPlayerCollisionGroup
-		);
-
-		this.game.player2 = this.engine.addSprite(
-			this.gameConfiguration.player2InitialX(),
-			this.gameConfiguration.playerInitialY(),
-			'shape-' + PLAYER_DEFAULT_SHAPE
-		);
-		this.engine.setTint(this.game.player2, '#274b7a');
-		this.game.player2.data.key = 'player2';
-		this.game.initPlayer(
-			this.game.player2,
-			this.gameConfiguration.player2InitialX(),
-			this.gameConfiguration.playerInitialY(),
-			this.game.collisions.clientPlayerCollisionGroup
-		);
+		this.game.player1 = this.game.createHostPlayer('player1', '#a73030');
+		this.game.player2 = this.game.createClientPlayer('player2', '#274b7a');
 	}
 
 	overrideGame() {
