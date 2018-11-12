@@ -4,7 +4,6 @@ import MonsterBonus from '/imports/api/games/bonus/MonsterBonus.js';
 export default class PoisonBonus extends MonsterBonus {
 	constructor(...args) {
 		super(...args);
-		this.durationMilliseconds = 10000;
 		this.atlasFrame = 'poison';
 		this.description = '10s before death';
 	}

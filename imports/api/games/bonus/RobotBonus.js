@@ -3,6 +3,7 @@ import MonsterBonus from '/imports/api/games/bonus/MonsterBonus.js';
 export default class RobotBonus extends MonsterBonus {
 	constructor(...args) {
 		super(...args);
+		this.durationMilliseconds = 30000;
 		this.robotId = null;
 		this.atlasFrame = 'robot';
 		this.description = 'Add a CPU in your team';
