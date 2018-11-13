@@ -57,9 +57,9 @@
 
 					<h2>Bonus overrides</h2>
 
-					{{> multipleSelectSwitch id="available-bonuses" label="Available bonuses" isOn=(modeOverridden "overriddenAvailableBonuses") options=availableBonuses values=(modeOverriddenValue "overriddenAvailableBonuses") isReadOnly=(canOnlyViewTournament tournament)}}
+					{{> multipleBonusSelectSwitch id="available-bonuses" label="Available bonuses" isOn=(modeOverridden "overriddenAvailableBonuses") hasRandom=true values=(modeOverriddenValue "overriddenAvailableBonuses") isReadOnly=(canOnlyViewTournament tournament)}}
 
-					{{> multipleSelectSwitch id="available-bonuses-for-random" label="Available bonuses for random" isOn=(modeOverridden "overriddenAvailableBonusesForRandom") options=availableBonusesForRandom values=(modeOverriddenValue "overriddenAvailableBonusesForRandom") isReadOnly=(canOnlyViewTournament tournament)}}
+					{{> multipleBonusSelectSwitch id="available-bonuses-for-random" label="Available bonuses for random" isOn=(modeOverridden "overriddenAvailableBonusesForRandom") hasRandom=false values=(modeOverriddenValue "overriddenAvailableBonusesForRandom") isReadOnly=(canOnlyViewTournament tournament)}}
 
 					<div class="splitted-configuration">
 						{{> selectSwitch id="has-bonuses" label="Has bonuses" isOn=(modeOverridden "overriddenHasBonuses") options=booleanOptions value=(modeOverriddenValue "overriddenHasBonuses") isReadOnly=(canOnlyViewTournament tournament)}}

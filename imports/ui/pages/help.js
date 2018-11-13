@@ -1,34 +1,5 @@
-import BigBallBonus from '/imports/api/games/bonus/BigBallBonus.js';
-import BigJumpMonsterBonus from '/imports/api/games/bonus/BigJumpMonsterBonus.js';
-import BigMonsterBonus from '/imports/api/games/bonus/BigMonsterBonus.js';
-import BonusRepellentMonsterBonus from '/imports/api/games/bonus/BonusRepellentMonsterBonus.js';
-import BounceMonsterBonus from '/imports/api/games/bonus/BounceMonsterBonus.js';
-import CloakedMonsterBonus from '/imports/api/games/bonus/CloakedMonsterBonus.js';
-import CloudBonus from '/imports/api/games/bonus/CloudBonus.js';
-import CureBonus from '/imports/api/games/bonus/CureBonus.js';
-import FastMonsterBonus from '/imports/api/games/bonus/FastMonsterBonus.js';
-import FreezeMonsterBonus from '/imports/api/games/bonus/FreezeMonsterBonus.js';
-import HighGravity from '/imports/api/games/bonus/HighGravity.js';
-import InstantDeathBonus from '/imports/api/games/bonus/InstantDeathBonus.js';
-import InvincibleInstantDeathBonus from '/imports/api/games/bonus/InvincibleInstantDeathBonus.js';
-import InvincibleMonsterBonus from '/imports/api/games/bonus/InvincibleMonsterBonus.js';
-import InvisibleBallBonus from '/imports/api/games/bonus/InvisibleBallBonus.js';
-import InvisibleMonsterBonus from '/imports/api/games/bonus/InvisibleMonsterBonus.js';
-import InvisibleOpponentMonsterBonus from '/imports/api/games/bonus/InvisibleOpponentMonsterBonus.js';
-import LowGravity from '/imports/api/games/bonus/LowGravity.js';
-import NoJumpMonsterBonus from '/imports/api/games/bonus/NoJumpMonsterBonus.js';
-import NothingBonus from '/imports/api/games/bonus/NothingBonus.js';
-import PoisonBonus from '/imports/api/games/bonus/PoisonBonus.js';
-import RandomBonus from '/imports/api/games/bonus/RandomBonus.js';
-import ReverseMoveMonsterBonus from '/imports/api/games/bonus/ReverseMoveMonsterBonus.js';
-import ReviveBonus from '/imports/api/games/bonus/ReviveBonus.js';
-import ShapeShiftMonsterBonus from '/imports/api/games/bonus/ShapeShiftMonsterBonus.js';
-import SlowMonsterBonus from '/imports/api/games/bonus/SlowMonsterBonus.js';
-import SmallBallBonus from '/imports/api/games/bonus/SmallBallBonus.js';
-import SmallMonsterBonus from '/imports/api/games/bonus/SmallMonsterBonus.js';
-import SmokeBombBonus from '/imports/api/games/bonus/SmokeBombBonus.js';
-import UnfreezeMonsterBonus from '/imports/api/games/bonus/UnfreezeMonsterBonus.js';
-import RobotBonus from '/imports/api/games/bonus/RobotBonus.js';
+import {ALL_BONUSES} from '/imports/api/games/bonusConstants.js';
+import BonusFactory from '/imports/api/games/BonusFactory.js';
 import CardSwitcher from '/imports/lib/client/CardSwitcher.js';
 import {onMobileAndTablet} from '/imports/lib/utils.js';
 import {Template} from 'meteor/templating';
@@ -58,40 +29,7 @@ Template.help.helpers({
 	},
 
 	bonusesHelpList: function() {
-		/** @var {BaseBonus[]} bonuses */
-		const bonuses = [
-			new RandomBonus(),
-			new CloudBonus(),
-			new SmokeBombBonus(),
-			new SmallBallBonus(),
-			new BigBallBonus(),
-			new InvisibleBallBonus(),
-			new LowGravity(),
-			new HighGravity(),
-			new NothingBonus(),
-			new SmallMonsterBonus(),
-			new BigMonsterBonus(),
-			new ReverseMoveMonsterBonus(),
-			new SlowMonsterBonus(),
-			new FastMonsterBonus(),
-			new NoJumpMonsterBonus(),
-			new BigJumpMonsterBonus(),
-			new BounceMonsterBonus(),
-			new FreezeMonsterBonus(),
-			new UnfreezeMonsterBonus(),
-			new InvisibleMonsterBonus(),
-			new InvisibleOpponentMonsterBonus(),
-			new CloakedMonsterBonus(),
-			new ShapeShiftMonsterBonus(),
-			new BonusRepellentMonsterBonus(),
-			new InvincibleMonsterBonus(),
-			new InstantDeathBonus(),
-			new ReviveBonus(),
-			new InvincibleInstantDeathBonus(),
-			new RobotBonus(),
-			new PoisonBonus(),
-			new CureBonus(),
-		];
+		const bonusClassNames = ALL_BONUSES;
 		const helpList = [];
 		let textureAtlasFrames = [];
 		$.ajax({
@@ -101,7 +39,9 @@ Template.help.helpers({
 			textureAtlasFrames = json.frames;
 		});
 
-		for (let bonus of bonuses) {
+		for (let bonusClassName of bonusClassNames) {
+			const bonus = BonusFactory.fromClassName(bonusClassName, null);
+
 			let x = 0;
 			let y = 0;
 			for (let frame in textureAtlasFrames) {

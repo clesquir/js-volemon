@@ -14,6 +14,7 @@ import {UserSettingsController} from '/imports/startup/client/controllers/UserSe
 import '/imports/ui/components/lightbox.js';
 import '/imports/ui/components/loading.js';
 import '/imports/ui/components/matchMaking.js';
+import '/imports/ui/components/multipleBonusSelectSwitch.js';
 import '/imports/ui/components/multipleSelectSwitch.js';
 import '/imports/ui/components/noInternetConnection.js';
 import '/imports/ui/components/numberSwitch.js';

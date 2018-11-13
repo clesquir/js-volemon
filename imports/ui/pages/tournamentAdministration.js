@@ -1,4 +1,3 @@
-import {ALL_BONUSES, ALL_BONUSES_FOR_RANDOM} from '/imports/api/games/bonusConstants.js';
 import {
 	BIG_SCALE_PHYSICS_DATA,
 	NORMAL_SCALE_PHYSICS_DATA,
@@ -56,26 +55,6 @@ Template.tournamentAdministration.helpers({
 
 	booleanOptions: function() {
 		return [{id: "1", name: 'Yes'}, {id: "0", name: 'No'}];
-	},
-
-	availableBonuses: function() {
-		const options = [];
-
-		for (let bonus of ALL_BONUSES) {
-			options.push({id: bonus, name: bonus});
-		}
-
-		return options;
-	},
-
-	availableBonusesForRandom: function() {
-		const options = [];
-
-		for (let bonus of ALL_BONUSES_FOR_RANDOM) {
-			options.push({id: bonus, name: bonus});
-		}
-
-		return options;
 	},
 
 	initialPolygonKeys: function() {

@@ -1,0 +1,17 @@
+<template name="multipleBonusSelectSwitch">
+	<div class="multiple-bonus-select-switch">
+		<h3>
+			<input type="checkbox" id="check-{{id}}" data-checkbox-action="enable-multiple-bonus-select-switch" disabled="{{#if isReadOnly}}disabled{{/if}}">
+			<label for="check-{{id}}"> {{label}}</label>
+		</h3>
+
+		<div class="styled-multiple-select">
+			<select id="{{id}}" multiple="">
+				{{#each option in options hasRandom}}
+					<option value="{{option.id}}" selected="{{isSelected isOn option.id values}}" class="bonus-icon-container" data-tooltip="{{option.description}}" style="{{option.style}}">
+					</option>
+				{{/each}}
+			</select>
+		</div>
+	</div>
+</template>
