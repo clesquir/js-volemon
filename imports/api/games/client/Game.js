@@ -1138,8 +1138,6 @@ export default class Game {
 					const verticalMoveModifier = player.data.verticalMoveModifier();
 
 					this.engine.setVerticalSpeed(player, verticalMoveModifier * -player.data.velocityYOnJump);
-				} else {
-					this.engine.setVerticalSpeed(player, 0);
 				}
 			} else {
 				player.data.doingDropShot = dropshots;
