@@ -3,8 +3,8 @@
     {
       "filename": "big-ball",
       "frame": {
-        "x": 1,
-        "y": 1,
+        "x": 5,
+        "y": 5,
         "w": 34,
         "h": 34
       },
@@ -28,8 +28,8 @@
     {
       "filename": "big-jump-monster",
       "frame": {
-        "x": 1,
-        "y": 37,
+        "x": 5,
+        "y": 49,
         "w": 34,
         "h": 34
       },
@@ -53,8 +53,8 @@
     {
       "filename": "big-monster",
       "frame": {
-        "x": 37,
-        "y": 1,
+        "x": 49,
+        "y": 5,
         "w": 34,
         "h": 34
       },
@@ -78,8 +78,8 @@
     {
       "filename": "bonus-repellent",
       "frame": {
-        "x": 1,
-        "y": 73,
+        "x": 5,
+        "y": 93,
         "w": 34,
         "h": 34
       },
@@ -103,8 +103,8 @@
     {
       "filename": "bounce-monster",
       "frame": {
-        "x": 37,
-        "y": 37,
+        "x": 49,
+        "y": 49,
         "w": 34,
         "h": 34
       },
@@ -128,8 +128,8 @@
     {
       "filename": "cloaked-monster",
       "frame": {
-        "x": 73,
-        "y": 1,
+        "x": 93,
+        "y": 5,
         "w": 34,
         "h": 34
       },
@@ -153,8 +153,8 @@
     {
       "filename": "cloud",
       "frame": {
-        "x": 1,
-        "y": 109,
+        "x": 5,
+        "y": 137,
         "w": 34,
         "h": 34
       },
@@ -178,8 +178,8 @@
     {
       "filename": "cure",
       "frame": {
-        "x": 37,
-        "y": 73,
+        "x": 49,
+        "y": 93,
         "w": 34,
         "h": 34
       },
@@ -203,8 +203,8 @@
     {
       "filename": "drunk-monster",
       "frame": {
-        "x": 73,
-        "y": 37,
+        "x": 93,
+        "y": 49,
         "w": 34,
         "h": 34
       },
@@ -228,8 +228,8 @@
     {
       "filename": "fast-monster",
       "frame": {
-        "x": 109,
-        "y": 1,
+        "x": 137,
+        "y": 5,
         "w": 34,
         "h": 34
       },
@@ -253,8 +253,8 @@
     {
       "filename": "freeze-monster",
       "frame": {
-        "x": 1,
-        "y": 145,
+        "x": 5,
+        "y": 181,
         "w": 34,
         "h": 34
       },
@@ -278,8 +278,8 @@
     {
       "filename": "high-gravity",
       "frame": {
-        "x": 37,
-        "y": 109,
+        "x": 49,
+        "y": 137,
         "w": 34,
         "h": 34
       },
@@ -303,8 +303,8 @@
     {
       "filename": "instant-death",
       "frame": {
-        "x": 73,
-        "y": 73,
+        "x": 93,
+        "y": 93,
         "w": 34,
         "h": 34
       },
@@ -328,8 +328,8 @@
     {
       "filename": "invincible-instant-death",
       "frame": {
-        "x": 109,
-        "y": 37,
+        "x": 137,
+        "y": 49,
         "w": 34,
         "h": 34
       },
@@ -353,8 +353,8 @@
     {
       "filename": "invincible-monster",
       "frame": {
-        "x": 145,
-        "y": 1,
+        "x": 181,
+        "y": 5,
         "w": 34,
         "h": 34
       },
@@ -378,8 +378,8 @@
     {
       "filename": "invisible-ball",
       "frame": {
-        "x": 1,
-        "y": 181,
+        "x": 5,
+        "y": 225,
         "w": 34,
         "h": 34
       },
@@ -403,8 +403,8 @@
     {
       "filename": "invisible-monster",
       "frame": {
-        "x": 37,
-        "y": 145,
+        "x": 49,
+        "y": 181,
         "w": 34,
         "h": 34
       },
@@ -428,8 +428,8 @@
     {
       "filename": "invisible-opponent-monster",
       "frame": {
-        "x": 73,
-        "y": 109,
+        "x": 93,
+        "y": 137,
         "w": 34,
         "h": 34
       },
@@ -453,8 +453,8 @@
     {
       "filename": "junk-food-monster",
       "frame": {
-        "x": 109,
-        "y": 73,
+        "x": 137,
+        "y": 93,
         "w": 34,
         "h": 34
       },
@@ -478,8 +478,8 @@
     {
       "filename": "low-gravity",
       "frame": {
-        "x": 145,
-        "y": 37,
+        "x": 181,
+        "y": 49,
         "w": 34,
         "h": 34
       },
@@ -503,8 +503,8 @@
     {
       "filename": "no-jump-monster",
       "frame": {
-        "x": 181,
-        "y": 1,
+        "x": 225,
+        "y": 5,
         "w": 34,
         "h": 34
       },
@@ -528,8 +528,8 @@
     {
       "filename": "nothing",
       "frame": {
-        "x": 1,
-        "y": 217,
+        "x": 5,
+        "y": 269,
         "w": 34,
         "h": 34
       },
@@ -553,8 +553,8 @@
     {
       "filename": "poison",
       "frame": {
-        "x": 37,
-        "y": 181,
+        "x": 49,
+        "y": 225,
         "w": 34,
         "h": 34
       },
@@ -578,8 +578,8 @@
     {
       "filename": "random",
       "frame": {
-        "x": 73,
-        "y": 145,
+        "x": 93,
+        "y": 181,
         "w": 34,
         "h": 34
       },
@@ -603,8 +603,8 @@
     {
       "filename": "reverse-move-monster",
       "frame": {
-        "x": 109,
-        "y": 109,
+        "x": 137,
+        "y": 137,
         "w": 34,
         "h": 34
       },
@@ -628,8 +628,8 @@
     {
       "filename": "revive",
       "frame": {
-        "x": 145,
-        "y": 73,
+        "x": 181,
+        "y": 93,
         "w": 34,
         "h": 34
       },
@@ -653,8 +653,8 @@
     {
       "filename": "robot",
       "frame": {
-        "x": 181,
-        "y": 37,
+        "x": 225,
+        "y": 49,
         "w": 34,
         "h": 34
       },
@@ -678,8 +678,8 @@
     {
       "filename": "shape-shift-monster",
       "frame": {
-        "x": 217,
-        "y": 1,
+        "x": 269,
+        "y": 5,
         "w": 34,
         "h": 34
       },
@@ -703,8 +703,8 @@
     {
       "filename": "slow-monster",
       "frame": {
-        "x": 1,
-        "y": 253,
+        "x": 5,
+        "y": 313,
         "w": 34,
         "h": 34
       },
@@ -728,8 +728,8 @@
     {
       "filename": "small-ball",
       "frame": {
-        "x": 37,
-        "y": 217,
+        "x": 49,
+        "y": 269,
         "w": 34,
         "h": 34
       },
@@ -753,8 +753,8 @@
     {
       "filename": "small-monster",
       "frame": {
-        "x": 73,
-        "y": 181,
+        "x": 93,
+        "y": 225,
         "w": 34,
         "h": 34
       },
@@ -778,8 +778,8 @@
     {
       "filename": "smoke-bomb",
       "frame": {
-        "x": 109,
-        "y": 145,
+        "x": 137,
+        "y": 181,
         "w": 34,
         "h": 34
       },
@@ -803,8 +803,8 @@
     {
       "filename": "unfreeze-monster",
       "frame": {
-        "x": 145,
-        "y": 109,
+        "x": 181,
+        "y": 137,
         "w": 34,
         "h": 34
       },
@@ -832,8 +832,8 @@
     "image": "texture-atlas.png",
     "format": "RGBA8888",
     "size": {
-      "w": 252,
-      "h": 288
+      "w": 308,
+      "h": 352
     },
     "scale": 1
   }

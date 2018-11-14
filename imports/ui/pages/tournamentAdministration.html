@@ -81,9 +81,9 @@
 
 					<h2>Player overrides</h2>
 
-					{{> multipleSelectSwitch id="allowed-list-of-shapes" label="Available shapes" isOn=(modeOverridden "overriddenAllowedListOfShapes") options=allowedListOfShapes values=(modeOverriddenValue "overriddenAllowedListOfShapes") isReadOnly=(canOnlyViewTournament tournament)}}
+					{{> multipleShapeSelectSwitch id="allowed-list-of-shapes" label="Available shapes" isOn=(modeOverridden "overriddenAllowedListOfShapes") hasRandom=true values=(modeOverriddenValue "overriddenAllowedListOfShapes") isReadOnly=(canOnlyViewTournament tournament)}}
 
-					{{> multipleSelectSwitch id="list-of-shapes" label="Available shapes for random" isOn=(modeOverridden "overriddenListOfShapes") options=listOfShapes values=(modeOverriddenValue "overriddenListOfShapes") isReadOnly=(canOnlyViewTournament tournament)}}
+					{{> multipleShapeSelectSwitch id="list-of-shapes" label="Available shapes for random" isOn=(modeOverridden "overriddenListOfShapes") hasRandom=false values=(modeOverriddenValue "overriddenListOfShapes") isReadOnly=(canOnlyViewTournament tournament)}}
 
 					{{> selectSwitch id="current-player-shape" label="Visual player shape" isOn=(modeOverridden "overriddenCurrentPlayerShape") options=visualPlayerShapes value=(modeOverriddenValue "overriddenCurrentPlayerShape") isReadOnly=(canOnlyViewTournament tournament)}}
 

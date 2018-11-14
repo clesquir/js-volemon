@@ -16,6 +16,7 @@ import '/imports/ui/components/loading.js';
 import '/imports/ui/components/matchMaking.js';
 import '/imports/ui/components/multipleBonusSelectSwitch.js';
 import '/imports/ui/components/multipleSelectSwitch.js';
+import '/imports/ui/components/multipleShapeSelectSwitch.js';
 import '/imports/ui/components/noInternetConnection.js';
 import '/imports/ui/components/numberSwitch.js';
 import '/imports/ui/components/selectSwitch.js';

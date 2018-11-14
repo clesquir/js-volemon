@@ -47,8 +47,8 @@ Template.multipleBonusSelectSwitch.helpers({
 			let y = 0;
 			for (let frame in textureAtlasFrames) {
 				if (textureAtlasFrames[frame].filename === bonus.atlasFrame) {
-					x = textureAtlasFrames[frame].frame.x - 2;
-					y = textureAtlasFrames[frame].frame.y - 2;
+					x = textureAtlasFrames[frame].frame.x - 3;
+					y = textureAtlasFrames[frame].frame.y - 3;
 					break;
 				}
 			}

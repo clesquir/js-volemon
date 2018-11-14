@@ -1,11 +1,3 @@
-@shape-list: 'random', 'half-circle', 'triangle', 'x', 'rectangle', 'hyphen', 'obelisk',
-	'equal', 'magnet', 'crown', 'rhombus', 'hexagon', 'dot', 'ellipse', 'triple-colon';
-@number-of-shapes: length(@shape-list);
-
-.mixin-shape-content(@position, @height) {
-	transform: translateY((@position - 1) * -@height);
-}
-
 .shape-selector {
 	display: flex;
 	align-items: center;
@@ -20,17 +12,20 @@
 	}
 }
 
+@shape-scroller-width: 32px;
+@shape-scroller-height: 21px;
+
 .shape-selector-container {
 	display: inline-block;
 	position: relative;
 	overflow: hidden;
-	width: 32px;
+	width: @shape-scroller-width;
 	height: 16px;
 
 	.shape-content-scroller {
 		background-image: url("/assets/component/shape/player-shapes-small.png");
-		height: @number-of-shapes * 21px;
-		width: 32px;
+		height: @number-of-shapes * @shape-scroller-height;
+		width: @shape-scroller-width;
 	}
 
 	.-(@i: length(@shape-list)) when (@i > 0) {
@@ -38,7 +33,7 @@
 		@shape-class: ~'.shape-@{shape}';
 
 		&@{shape-class} .shape-content-scroller {
-			.mixin-shape-content(@i, 21px);
+			transform: translateY((@i - 1) * -@shape-scroller-height);
 		}
 
 		.-((@i - 1));

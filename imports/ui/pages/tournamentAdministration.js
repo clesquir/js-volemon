@@ -6,7 +6,6 @@ import {
 	TWO_VS_TWO_GAME_MODE,
 	TWO_VS_TWO_HUMAN_CPU_GAME_MODE
 } from '/imports/api/games/constants.js';
-import {PLAYER_ALLOWED_LIST_OF_SHAPES, PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
 import {isTournamentAdministrator, isTournamentEditor} from '/imports/api/users/userConfigurations.js';
 import ButtonEnabler from '/imports/ui/util/ButtonEnabler.js';
 import '/imports/ui/util/error-messages.js';
@@ -63,26 +62,6 @@ Template.tournamentAdministration.helpers({
 			{id: SMALL_SCALE_PHYSICS_DATA, name: 'Small'},
 			{id: BIG_SCALE_PHYSICS_DATA, name: 'Big'},
 		];
-	},
-
-	listOfShapes: function() {
-		const options = [];
-
-		for (let shape of PLAYER_LIST_OF_SHAPES) {
-			options.push({id: shape, name: shape});
-		}
-
-		return options;
-	},
-
-	allowedListOfShapes: function() {
-		const options = [];
-
-		for (let shape of PLAYER_ALLOWED_LIST_OF_SHAPES) {
-			options.push({id: shape, name: shape});
-		}
-
-		return options;
 	},
 
 	visualPlayerShapes: function() {

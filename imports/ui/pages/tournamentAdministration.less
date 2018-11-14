@@ -114,10 +114,28 @@
 
 .styled-multiple-select > select option {
 	&.bonus-icon-container {
-		position: relative;
 		width: @bonus-size;
 		height: @bonus-size;
 		background-image: url("/assets/bonus/texture-atlas.png");
-		padding: 2px;
+		padding: 3px;
+	}
+
+	&.shape-icon-container {
+		width: @shape-width;
+		height: @shape-height;
+		padding: 5px;
+		background-repeat: no-repeat;
+		background-position: center center;
+
+		.-(@i: length(@shape-list)) when (@i > 0) {
+			@shape: extract(@shape-list, @i);
+			@shape-class: ~'.shape-@{shape}';
+
+			&@{shape-class} {
+				background-image: url("/assets/component/shape/player-@{shape}.png");
+			}
+
+			.-((@i - 1));
+		} .-;
 	}
 }
