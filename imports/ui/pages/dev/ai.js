@@ -9,8 +9,10 @@ let started = new ReactiveVar(false);
 const genomesFromExisting = new ReactiveVar(true);
 const firstPlayerHumanEnabled = new ReactiveVar(false);
 const firstPlayerMachineLearningEnabled = new ReactiveVar(false);
+const firstPlayerLearningEnabled = new ReactiveVar(false);
 const secondPlayerHumanEnabled = new ReactiveVar(false);
 const secondPlayerMachineLearningEnabled = new ReactiveVar(false);
+const secondPlayerLearningEnabled = new ReactiveVar(false);
 const rendererEnabled = new ReactiveVar(false);
 const fullSpeedEnabled = new ReactiveVar(true);
 const jumpEnabled = new ReactiveVar(true);
@@ -20,8 +22,10 @@ Template.ai.rendered = function() {
 	enableGenomesFromExisting();
 	enableFirstPlayerHuman();
 	enableFirstPlayerMachineLearning();
+	enableFirstPlayerLearning();
 	enableSecondPlayerHuman();
 	enableSecondPlayerMachineLearning();
+	enableSecondPlayerLearning();
 	enableRenderer();
 	enableFullSpeed();
 	enableAiToJump();
@@ -47,11 +51,17 @@ Template.ai.helpers({
 	firstPlayerMachineLearningEnabled: function() {
 		return firstPlayerMachineLearningEnabled.get();
 	},
+	firstPlayerLearningEnabled: function() {
+		return firstPlayerLearningEnabled.get();
+	},
 	secondPlayerHumanEnabled: function() {
 		return secondPlayerHumanEnabled.get();
 	},
 	secondPlayerMachineLearningEnabled: function() {
 		return secondPlayerMachineLearningEnabled.get();
+	},
+	secondPlayerLearningEnabled: function() {
+		return secondPlayerLearningEnabled.get();
 	},
 	rendererEnabled: function() {
 		return rendererEnabled.get();
@@ -84,6 +94,11 @@ Template.ai.events({
 
 		enableFirstPlayerMachineLearning();
 	},
+	'click [data-action="enable-first-player-learning"]': function() {
+		firstPlayerLearningEnabled.set(!firstPlayerLearningEnabled.get());
+
+		enableFirstPlayerLearning();
+	},
 	'click [data-action="enable-second-player-human"]': function() {
 		secondPlayerHumanEnabled.set(!secondPlayerHumanEnabled.get());
 
@@ -93,6 +108,11 @@ Template.ai.events({
 		secondPlayerMachineLearningEnabled.set(!secondPlayerMachineLearningEnabled.get());
 
 		enableSecondPlayerMachineLearning();
+	},
+	'click [data-action="enable-second-player-learning"]': function() {
+		secondPlayerLearningEnabled.set(!secondPlayerLearningEnabled.get());
+
+		enableSecondPlayerLearning();
 	},
 	'click [data-action="enable-renderer"]': function() {
 		rendererEnabled.set(!rendererEnabled.get());
@@ -129,6 +149,10 @@ const enableFirstPlayerMachineLearning = function() {
 	ai.enableFirstPlayerMachineLearning(firstPlayerMachineLearningEnabled.get());
 };
 
+const enableFirstPlayerLearning = function() {
+	ai.enableFirstPlayerLearning(firstPlayerLearningEnabled.get());
+};
+
 const enableSecondPlayerHuman = function() {
 	ai.enableSecondPlayerHuman(secondPlayerHumanEnabled.get());
 
@@ -141,6 +165,10 @@ const enableSecondPlayerHuman = function() {
 
 const enableSecondPlayerMachineLearning = function() {
 	ai.enableSecondPlayerMachineLearning(secondPlayerMachineLearningEnabled.get());
+};
+
+const enableSecondPlayerLearning = function() {
+	ai.enableSecondPlayerLearning(secondPlayerLearningEnabled.get());
 };
 
 const enableRenderer = function() {

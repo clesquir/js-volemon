@@ -49,6 +49,18 @@ export default class GameData {
 	isFourthPlayerComputerMachineLearning() {
 	}
 
+	isFirstPlayerComputerLearning() {
+	}
+
+	isSecondPlayerComputerLearning() {
+	}
+
+	isThirdPlayerComputerLearning() {
+	}
+
+	isFourthPlayerComputerLearning() {
+	}
+
 	isTwoVersusTwo() {
 	}
 

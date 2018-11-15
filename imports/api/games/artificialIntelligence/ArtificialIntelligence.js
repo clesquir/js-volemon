@@ -8,11 +8,11 @@ export default class ArtificialIntelligence {
 	pointStartTime = 0;
 	numberPointsToCalculateGenomes = 5;
 	canJump = true;
-	isLearning = false;
 	genomesFromExisting = true;
 
-	addComputerWithKey(key, machineLearning = false) {
+	addComputerWithKey(key, machineLearning = false, isLearning = false) {
 		this.computers[key] = {
+			isLearning: isLearning,
 			left: false,
 			right: false,
 			jump: false,
@@ -70,7 +70,7 @@ export default class ArtificialIntelligence {
 
 	stopPoint(pointSide) {
 		for (let key in this.computers) {
-			if (this.computers.hasOwnProperty(key) && this.computers[key].learner && this.isLearning) {
+			if (this.computers.hasOwnProperty(key) && this.computers[key].learner && this.computers[key].isLearning) {
 				const pointTime = ((new Date()).getTime() - this.pointStartTime);
 				let fitness = 0;
 

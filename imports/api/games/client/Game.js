@@ -320,25 +320,29 @@ export default class Game {
 		if (this.gameData.isFirstPlayerComputer()) {
 			this.artificialIntelligence.addComputerWithKey(
 				'player1',
-				this.gameData.isFirstPlayerComputerMachineLearning()
+				this.gameData.isFirstPlayerComputerMachineLearning(),
+				this.gameData.isFirstPlayerComputerLearning()
 			);
 		}
 		if (this.gameData.isSecondPlayerComputer()) {
 			this.artificialIntelligence.addComputerWithKey(
 				'player2',
-				this.gameData.isSecondPlayerComputerMachineLearning()
+				this.gameData.isSecondPlayerComputerMachineLearning(),
+				this.gameData.isSecondPlayerComputerLearning()
 			);
 		}
 		if (this.gameData.isThirdPlayerComputer()) {
 			this.artificialIntelligence.addComputerWithKey(
 				'player3',
-				this.gameData.isThirdPlayerComputerMachineLearning()
+				this.gameData.isThirdPlayerComputerMachineLearning(),
+				this.gameData.isThirdPlayerComputerLearning()
 			);
 		}
 		if (this.gameData.isFourthPlayerComputer()) {
 			this.artificialIntelligence.addComputerWithKey(
 				'player4',
-				this.gameData.isFourthPlayerComputerMachineLearning()
+				this.gameData.isFourthPlayerComputerMachineLearning(),
+				this.gameData.isFourthPlayerComputerLearning()
 			);
 		}
 	}

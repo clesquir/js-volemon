@@ -158,6 +158,22 @@ export default class CollectionGameData extends GameData {
 		return this.fourthGamePlayer && this.fourthGamePlayer.isMachineLearning === true;
 	}
 
+	isFirstPlayerComputerLearning() {
+		return false;
+	}
+
+	isSecondPlayerComputerLearning() {
+		return false;
+	}
+
+	isThirdPlayerComputerLearning() {
+		return false;
+	}
+
+	isFourthPlayerComputerLearning() {
+		return false;
+	}
+
 	isTwoVersusTwo() {
 		return isTwoVersusTwoGameMode(this.gameMode);
 	}

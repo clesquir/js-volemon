@@ -30,7 +30,6 @@ export default class Ai extends Dev {
 		this.engine.game.forceSingleUpdate = false;
 		this.engine.game.time.advancedTiming = true;
 		this.engine.game.time.slowMotion = this.slowMotion;
-		this.game.artificialIntelligence.isLearning = true;
 		this.game.artificialIntelligence.canJump = this.canJump;
 		this.game.artificialIntelligence.genomesFromExisting = this.genomesFromExisting;
 
@@ -154,7 +153,16 @@ export default class Ai extends Dev {
 		this.gameData.firstPlayerComputerMachineLearning = isMachineLearning;
 
 		if (this.isStarted) {
-			this.game.artificialIntelligence.addComputerWithKey('player1', isMachineLearning);
+			this.game.artificialIntelligence.addComputerWithKey('player1', isMachineLearning, this.gameData.firstPlayerComputerMachineLearning);
+			this.game.artificialIntelligence.startGame();
+		}
+	}
+
+	enableFirstPlayerLearning(isLearning) {
+		this.gameData.firstPlayerComputerLearning = isLearning;
+
+		if (this.isStarted) {
+			this.game.artificialIntelligence.addComputerWithKey('player1', this.gameData.firstPlayerComputerMachineLearning, isLearning);
 			this.game.artificialIntelligence.startGame();
 		}
 	}
@@ -163,7 +171,16 @@ export default class Ai extends Dev {
 		this.gameData.secondPlayerComputerMachineLearning = isMachineLearning;
 
 		if (this.isStarted) {
-			this.game.artificialIntelligence.addComputerWithKey('player2', isMachineLearning);
+			this.game.artificialIntelligence.addComputerWithKey('player2', isMachineLearning, this.gameData.secondPlayerComputerLearning);
+			this.game.artificialIntelligence.startGame();
+		}
+	}
+
+	enableSecondPlayerLearning(isLearning) {
+		this.gameData.secondPlayerComputerLearning = isLearning;
+
+		if (this.isStarted) {
+			this.game.artificialIntelligence.addComputerWithKey('player2', this.gameData.secondPlayerComputerMachineLearning, isLearning);
 			this.game.artificialIntelligence.startGame();
 		}
 	}

@@ -11,6 +11,10 @@ export default class StaticGameData extends GameData {
 	secondPlayerComputerMachineLearning = false;
 	thirdPlayerComputerMachineLearning = false;
 	fourthPlayerComputerMachineLearning = false;
+	firstPlayerComputerLearning = false;
+	secondPlayerComputerLearning = false;
+	thirdPlayerComputerLearning = false;
+	fourthPlayerComputerLearning = false;
 
 	init() {
 		this.maximumPoints = 1;
@@ -73,6 +77,22 @@ export default class StaticGameData extends GameData {
 
 	isFourthPlayerComputerMachineLearning() {
 		return this.fourthPlayerComputerMachineLearning;
+	}
+
+	isFirstPlayerComputerLearning() {
+		return this.firstPlayerComputerLearning;
+	}
+
+	isSecondPlayerComputerLearning() {
+		return this.secondPlayerComputerLearning;
+	}
+
+	isThirdPlayerComputerLearning() {
+		return this.thirdPlayerComputerLearning;
+	}
+
+	isFourthPlayerComputerLearning() {
+		return this.fourthPlayerComputerLearning;
 	}
 
 	isTwoVersusTwo() {
