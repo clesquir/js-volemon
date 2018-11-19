@@ -9,7 +9,19 @@
 					<i class="fa fa-arrow-circle-left"></i>
 				</a>
 				<div class="tournament-name-container">
-					<div>{{tournamentName}}</div>
+					<div>
+						{{tournamentName}}
+						{{#if canEditTournament}}
+							<div class="tournaments-action-buttons">
+								<a class="edit-tournament-button action-button" data-action="edit-tournament">
+									<i class="fa fa-pencil"></i>
+								</a>
+								<a class="remove-tournament-button action-button" data-action="remove-tournament">
+									<i class="fa fa-trash"></i>
+								</a>
+							</div>
+						{{/if}}
+					</div>
 					{{#if isTournamentActive}}
 						<div class="currently-waiting-match-making {{#if hasPlayersWaiting}}has-players-waiting-match-making{{/if}}" data-tooltip="{{playersWaiting}}" data-tooltip-direction="s">
 							<div class="currently-waiting-match-making-number">{{numberOfPlayersWaiting}}</div>

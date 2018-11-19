@@ -5,6 +5,6 @@
 			<label for="check-{{id}}"> {{label}}</label>
 		</h3>
 
-		<div><input type="text" id="{{id}}" value="{{value}}"></div>
+		<div><input type="text" id="{{id}}" value="{{value}}" disabled="{{#if fieldIsReadOnly isOn isReadOnly}}disabled{{/if}}"></div>
 	</div>
 </template>

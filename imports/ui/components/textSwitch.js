@@ -15,6 +15,16 @@ Template.textSwitch.onRendered(function() {
 	}
 });
 
+Template.textSwitch.helpers({
+	fieldIsReadOnly: function(isOn, isReadOnly) {
+		if (isReadOnly) {
+			return true;
+		}
+
+		return !isOn;
+	}
+});
+
 Template.textSwitch.events({
 	'click [data-checkbox-action=enable-text-switch]': function(e) {
 		if (this.isReadOnly) {

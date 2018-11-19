@@ -18,6 +18,14 @@ Template.multipleShapeSelectSwitch.onRendered(function() {
 });
 
 Template.multipleShapeSelectSwitch.helpers({
+	fieldIsReadOnly: function(isOn, isReadOnly) {
+		if (isReadOnly) {
+			return true;
+		}
+
+		return !isOn;
+	},
+
 	isSelected: function(isOn, option, values) {
 		return isOn && Array.isArray(values) && values.indexOf(option) !== -1;
 	},

@@ -121,10 +121,6 @@ Meteor.methods({
 			throw new Meteor.Error('not-allowed', 'The tournament has to be draft');
 		}
 
-		if (isTournamentAdministrator() && tournament.status.id === 'approved') {
-			throw new Meteor.Error('not-allowed', 'The tournament has to be not-approved');
-		}
-
 		Tournaments.update(
 			{_id: id},
 			{$set:
@@ -156,6 +152,10 @@ Meteor.methods({
 
 		if (!isTournamentAdministrator() && (!isTournamentEditor() || tournament.editor.id !== userId)) {
 			throw new Meteor.Error('not-allowed', 'You can only remove tournaments you have created');
+		}
+
+		if (isTournamentEditor() && tournament.status.id !== 'approved') {
+			throw new Meteor.Error('not-allowed', 'The tournament has to be not-approved');
 		}
 
 		Tournaments.remove({_id: id});

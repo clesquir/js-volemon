@@ -29,7 +29,7 @@ Template.tournamentAdministration.helpers({
 	},
 
 	tournamentDate: function(date) {
-		return Moment.moment(date, "YYYY-MM-DD ZZ").format('YYYY-MM-DD');
+		return Moment.moment(date, "YYYY-MM-DD").format('YYYY-MM-DD');
 	},
 
 	canOnlyViewTournament: function(tournament) {
@@ -177,13 +177,15 @@ Template.tournamentAdministration.events({
 				'approveTournament',
 				Session.get('tournament'),
 				function(error) {
+					ButtonEnabler.enableButton(form);
 					if (error !== undefined) {
 						ButtonEnabler.enableButton(form);
 						const errorLabelContainer = $('.error-label-container');
 						errorLabelContainer.show();
 						errorLabelContainer.html(error.reason);
 					} else {
-						Router.go('tournaments');
+						$('#save-checkmark').removeClass('activated-checkmark');
+						$('#save-checkmark').addClass('activated-checkmark');
 					}
 				}
 			);
@@ -200,14 +202,14 @@ Template.tournamentAdministration.events({
 const canEditDraftTournament = function(tournament) {
 	return (
 		(isTournamentEditor() && tournament.editor.id === Meteor.userId()) ||
-		(isTournamentAdministrator())
+		isTournamentAdministrator()
 	);
 };
 
 const canSaveTournament = function(tournament) {
 	return (
 		(isTournamentEditor() && tournament.status.id === 'draft' && canEditDraftTournament(tournament)) ||
-		(isTournamentAdministrator() && tournament.status.id !== 'approved')
+		isTournamentAdministrator()
 	);
 };
 

@@ -1,5 +1,4 @@
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
-import {isTournamentAdministrator, isTournamentEditor} from '/imports/api/users/userConfigurations.js';
 import {Router} from 'meteor/iron:router';
 import {Meteor} from 'meteor/meteor';
 import {Session} from 'meteor/session';

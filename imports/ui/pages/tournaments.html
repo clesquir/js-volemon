@@ -98,7 +98,7 @@
 							<div class="card-row card-row-bottom">
 								<div class="card-cell card-right">By: {{editor.name}}</div>
 							</div>
-							<div class="proposed-tournaments-action-buttons">
+							<div class="tournaments-action-buttons">
 								{{#if canOnlyViewTournament}}
 									<a class="view-tournament-button action-button" data-action="view-tournament" data-tournament-id="{{_id}}">
 										<i class="fa fa-eye"></i>
@@ -115,7 +115,7 @@
 									</a>
 								{{/if}}
 							</div>
-							<div class="proposed-tournaments-vote-buttons {{#if cannotVote}}disabled-vote-tournament-button{{/if}}">
+							<div class="tournaments-vote-buttons {{#if cannotVote}}disabled-vote-tournament-button{{/if}}">
 								<a class="vote-tournament-button {{#if hasVotedUp}}has-voted-tournament-button{{/if}}" data-action="vote-up-tournament" data-tournament-id="{{_id}}">
 									<i class="fa fa-caret-up"></i>
 								</a>
@@ -144,7 +144,7 @@
 							<div class="card-row card-row-bottom">
 								<div class="card-cell card-right">By: {{editor.name}}</div>
 							</div>
-							<div class="proposed-tournaments-action-buttons">
+							<div class="tournaments-action-buttons">
 								{{#if canOnlyViewTournament}}
 									<a class="view-tournament-button action-button" data-action="view-tournament" data-tournament-id="{{_id}}">
 										<i class="fa fa-eye"></i>

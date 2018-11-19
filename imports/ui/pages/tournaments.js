@@ -305,13 +305,13 @@ export const updatePastTournaments = function() {
 const canEditDraftTournament = function(tournament) {
 	return (
 		(isTournamentEditor() && tournament.editor.id === Meteor.userId()) ||
-		(isTournamentAdministrator())
+		isTournamentAdministrator()
 	);
 };
 
 const canSaveTournament = function(tournament) {
 	return (
 		(isTournamentEditor() && tournament.status.id === 'draft' && canEditDraftTournament(tournament)) ||
-		(isTournamentAdministrator() && tournament.status.id !== 'approved')
+		isTournamentAdministrator()
 	);
 };

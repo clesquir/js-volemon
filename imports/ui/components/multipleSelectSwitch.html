@@ -6,7 +6,7 @@
 		</h3>
 
 		<div class="styled-multiple-select">
-			<select id="{{id}}" multiple="">
+			<select id="{{id}}" multiple="" disabled="{{#if fieldIsReadOnly isOn isReadOnly}}disabled{{/if}}">
 				{{#each option in options}}
 					<option value="{{option.id}}" selected="{{isSelected isOn option.id values}}">{{option.name}}</option>
 				{{/each}}

@@ -6,7 +6,7 @@
 		</h3>
 
 		<span class="styled-single-select">
-			<select id="{{id}}">
+			<select id="{{id}}" disabled="{{#if fieldIsReadOnly isOn isReadOnly}}disabled{{/if}}">
 				{{#each option in options}}
 					<option value="{{option.id}}" selected="{{isSelected isOn option.id value}}">{{option.name}}</option>
 				{{/each}}

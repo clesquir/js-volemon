@@ -15,6 +15,16 @@ Template.numberSwitch.onRendered(function() {
 	}
 });
 
+Template.numberSwitch.helpers({
+	fieldIsReadOnly: function(isOn, isReadOnly) {
+		if (isReadOnly) {
+			return true;
+		}
+
+		return !isOn;
+	}
+});
+
 Template.numberSwitch.events({
 	'click [data-checkbox-action=enable-number-switch]': function(e) {
 		if (this.isReadOnly) {

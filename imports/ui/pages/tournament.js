@@ -2,6 +2,7 @@ import {MatchMakers} from '/imports/api/games/matchMakers.js';
 import RankChart from '/imports/api/ranks/client/RankChart.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {canPlayTournament, isTournamentActive, tournamentName} from '/imports/api/tournaments/utils.js';
+import {isTournamentAdministrator, isTournamentEditor} from '/imports/api/users/userConfigurations.js';
 import CardSwitcher from '/imports/lib/client/CardSwitcher.js';
 import {timeElapsedSince} from '/imports/lib/utils.js';
 import {loadStatistics} from '/imports/ui/views/statistics.js';
@@ -55,6 +56,18 @@ Template.tournament.helpers({
 		return tournamentName(this.tournament);
 	},
 
+	tournamentDescription: function() {
+		if (this.tournament.description) {
+			return this.tournament.description;
+		}
+
+		return '';
+	},
+
+	canEditTournament: function() {
+		return isTournamentAdministrator();
+	},
+
 	hasPlayersWaiting: function() {
 		const match = MatchMakers.findOne({modeSelection: 'tournament', tournamentId: this.tournament._id});
 
@@ -85,14 +98,6 @@ Template.tournament.helpers({
 		}
 
 		return 0;
-	},
-
-	tournamentDescription: function() {
-		if (this.tournament.description) {
-			return this.tournament.description;
-		}
-
-		return '';
 	},
 
 	isTournamentActive: function() {
@@ -137,6 +142,22 @@ Template.tournament.helpers({
 });
 
 Template.tournament.events({
+	'click [data-action="edit-tournament"]': function(e) {
+		Router.go(Router.routes['tournamentAdministration'].url({tournamentId: Session.get('tournament')}));
+	},
+
+	'click [data-action="remove-tournament"]': function(e) {
+		Meteor.call(
+			'removeTournament',
+			Session.get('tournament'),
+			function(error) {
+				if (error !== undefined) {
+					alert(error);
+				}
+			}
+		);
+	},
+
 	'click [data-action=view-tournament-games]': function() {
 		cardSwitcher.slideTo(0);
 	},

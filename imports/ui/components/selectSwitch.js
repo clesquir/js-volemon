@@ -17,6 +17,14 @@ Template.selectSwitch.onRendered(function() {
 });
 
 Template.selectSwitch.helpers({
+	fieldIsReadOnly: function(isOn, isReadOnly) {
+		if (isReadOnly) {
+			return true;
+		}
+
+		return !isOn;
+	},
+
 	isSelected: function(isOn, option, value) {
 		return isOn && option === value;
 	}
