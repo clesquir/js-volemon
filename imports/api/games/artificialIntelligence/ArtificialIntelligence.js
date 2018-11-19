@@ -7,7 +7,6 @@ export default class ArtificialIntelligence {
 	computers = {};
 	pointStartTime = 0;
 	numberPointsToCalculateGenomes = 5;
-	canJump = true;
 	genomesFromExisting = true;
 
 	addComputerWithKey(key, machineLearning = false, isLearning = false) {
@@ -383,7 +382,7 @@ export default class ArtificialIntelligence {
 		}
 
 		return (
-			this.canJump && modifiers.canJump &&
+			modifiers.canJump &&
 			Math.abs(ballPosition.velocityX) < 350 &&
 			ballPosition.velocityY > 0 &&
 			ballPosition.x > playerLeftLimit &&

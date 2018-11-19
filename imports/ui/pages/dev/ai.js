@@ -7,28 +7,18 @@ import './ai.html';
 let ai = null;
 let started = new ReactiveVar(false);
 const genomesFromExisting = new ReactiveVar(true);
-const firstPlayerHumanEnabled = new ReactiveVar(false);
-const firstPlayerMachineLearningEnabled = new ReactiveVar(false);
-const firstPlayerLearningEnabled = new ReactiveVar(false);
-const secondPlayerHumanEnabled = new ReactiveVar(false);
-const secondPlayerMachineLearningEnabled = new ReactiveVar(false);
-const secondPlayerLearningEnabled = new ReactiveVar(false);
+const firstPlayerMode = new ReactiveVar('CPU');
+const secondPlayerMode = new ReactiveVar('CPU');
 const rendererEnabled = new ReactiveVar(false);
 const fullSpeedEnabled = new ReactiveVar(true);
-const jumpEnabled = new ReactiveVar(true);
 
 Template.ai.rendered = function() {
 	ai = new Ai();
 	enableGenomesFromExisting();
-	enableFirstPlayerHuman();
-	enableFirstPlayerMachineLearning();
-	enableFirstPlayerLearning();
-	enableSecondPlayerHuman();
-	enableSecondPlayerMachineLearning();
-	enableSecondPlayerLearning();
+	setupFirstPlayerMode();
+	setupSecondPlayerMode();
 	enableRenderer();
 	enableFullSpeed();
-	enableAiToJump();
 };
 
 Template.ai.destroyed = function() {
@@ -45,32 +35,35 @@ Template.ai.helpers({
 	genomesFromExisting: function() {
 		return genomesFromExisting.get();
 	},
-	firstPlayerHumanEnabled: function() {
-		return firstPlayerHumanEnabled.get();
+	firstPlayerHuman: function() {
+		return firstPlayerMode.get() === 'human';
 	},
-	firstPlayerMachineLearningEnabled: function() {
-		return firstPlayerMachineLearningEnabled.get();
+	firstPlayerCPU: function() {
+		return firstPlayerMode.get() === 'CPU';
 	},
-	firstPlayerLearningEnabled: function() {
-		return firstPlayerLearningEnabled.get();
+	firstPlayerMLLearning: function() {
+		return firstPlayerMode.get() === 'ML-learning';
 	},
-	secondPlayerHumanEnabled: function() {
-		return secondPlayerHumanEnabled.get();
+	firstPlayerMLNotLearning: function() {
+		return firstPlayerMode.get() === 'ML-not-learning';
 	},
-	secondPlayerMachineLearningEnabled: function() {
-		return secondPlayerMachineLearningEnabled.get();
+	secondPlayerHuman: function() {
+		return secondPlayerMode.get() === 'human';
 	},
-	secondPlayerLearningEnabled: function() {
-		return secondPlayerLearningEnabled.get();
+	secondPlayerCPU: function() {
+		return secondPlayerMode.get() === 'CPU';
+	},
+	secondPlayerMLLearning: function() {
+		return secondPlayerMode.get() === 'ML-learning';
+	},
+	secondPlayerMLNotLearning: function() {
+		return secondPlayerMode.get() === 'ML-not-learning';
 	},
 	rendererEnabled: function() {
 		return rendererEnabled.get();
 	},
 	fullSpeedEnabled: function() {
 		return fullSpeedEnabled.get();
-	},
-	jumpEnabled: function() {
-		return jumpEnabled.get();
 	}
 });
 
@@ -84,35 +77,41 @@ Template.ai.events({
 
 		enableGenomesFromExisting();
 	},
-	'click [data-action="enable-first-player-human"]': function() {
-		firstPlayerHumanEnabled.set(!firstPlayerHumanEnabled.get());
+	'click [data-action="switch-first-player"]': function() {
+		switch (firstPlayerMode.get()) {
+			case 'human':
+				firstPlayerMode.set('CPU');
+				break;
+			case 'CPU':
+				firstPlayerMode.set('ML-learning');
+				break;
+			case 'ML-learning':
+				firstPlayerMode.set('ML-not-learning');
+				break;
+			case 'ML-not-learning':
+				firstPlayerMode.set('human');
+				break;
+		}
 
-		enableFirstPlayerHuman();
+		setupFirstPlayerMode();
 	},
-	'click [data-action="enable-first-player-machine-learning"]': function() {
-		firstPlayerMachineLearningEnabled.set(!firstPlayerMachineLearningEnabled.get());
+	'click [data-action="switch-second-player"]': function() {
+		switch (secondPlayerMode.get()) {
+			case 'human':
+				secondPlayerMode.set('CPU');
+				break;
+			case 'CPU':
+				secondPlayerMode.set('ML-learning');
+				break;
+			case 'ML-learning':
+				secondPlayerMode.set('ML-not-learning');
+				break;
+			case 'ML-not-learning':
+				secondPlayerMode.set('human');
+				break;
+		}
 
-		enableFirstPlayerMachineLearning();
-	},
-	'click [data-action="enable-first-player-learning"]': function() {
-		firstPlayerLearningEnabled.set(!firstPlayerLearningEnabled.get());
-
-		enableFirstPlayerLearning();
-	},
-	'click [data-action="enable-second-player-human"]': function() {
-		secondPlayerHumanEnabled.set(!secondPlayerHumanEnabled.get());
-
-		enableSecondPlayerHuman();
-	},
-	'click [data-action="enable-second-player-machine-learning"]': function() {
-		secondPlayerMachineLearningEnabled.set(!secondPlayerMachineLearningEnabled.get());
-
-		enableSecondPlayerMachineLearning();
-	},
-	'click [data-action="enable-second-player-learning"]': function() {
-		secondPlayerLearningEnabled.set(!secondPlayerLearningEnabled.get());
-
-		enableSecondPlayerLearning();
+		setupSecondPlayerMode();
 	},
 	'click [data-action="enable-renderer"]': function() {
 		rendererEnabled.set(!rendererEnabled.get());
@@ -123,11 +122,6 @@ Template.ai.events({
 		fullSpeedEnabled.set(!fullSpeedEnabled.get());
 
 		enableFullSpeed();
-	},
-	'click [data-action="allow-ai-to-jump"]': function() {
-		jumpEnabled.set(!jumpEnabled.get());
-
-		enableAiToJump();
 	}
 });
 
@@ -135,40 +129,54 @@ const enableGenomesFromExisting = function() {
 	ai.enableGenomesFromExisting(genomesFromExisting.get());
 };
 
-const enableFirstPlayerHuman = function() {
-	ai.enableFirstPlayerHuman(firstPlayerHumanEnabled.get());
-
-	if (firstPlayerHumanEnabled.get() && secondPlayerHumanEnabled.get()) {
-		secondPlayerHumanEnabled.set(!secondPlayerHumanEnabled.get());
-
-		ai.enableSecondPlayerHuman(secondPlayerHumanEnabled.get());
+const setupFirstPlayerMode = function() {
+	switch (firstPlayerMode.get()) {
+		case 'human':
+			ai.enableFirstPlayerHuman(true);
+			ai.enableFirstPlayerMachineLearning(false);
+			ai.enableFirstPlayerLearning(false);
+			break;
+		case 'CPU':
+			ai.enableFirstPlayerHuman(false);
+			ai.enableFirstPlayerMachineLearning(false);
+			ai.enableFirstPlayerLearning(false);
+			break;
+		case 'ML-learning':
+			ai.enableFirstPlayerHuman(false);
+			ai.enableFirstPlayerMachineLearning(true);
+			ai.enableFirstPlayerLearning(true);
+			break;
+		case 'ML-not-learning':
+			ai.enableFirstPlayerHuman(false);
+			ai.enableFirstPlayerMachineLearning(true);
+			ai.enableFirstPlayerLearning(false);
+			break;
 	}
 };
 
-const enableFirstPlayerMachineLearning = function() {
-	ai.enableFirstPlayerMachineLearning(firstPlayerMachineLearningEnabled.get());
-};
-
-const enableFirstPlayerLearning = function() {
-	ai.enableFirstPlayerLearning(firstPlayerLearningEnabled.get());
-};
-
-const enableSecondPlayerHuman = function() {
-	ai.enableSecondPlayerHuman(secondPlayerHumanEnabled.get());
-
-	if (firstPlayerHumanEnabled.get() && secondPlayerHumanEnabled.get()) {
-		firstPlayerHumanEnabled.set(!firstPlayerHumanEnabled.get());
-
-		ai.enableFirstPlayerHuman(firstPlayerHumanEnabled.get());
+const setupSecondPlayerMode = function() {
+	switch (secondPlayerMode.get()) {
+		case 'human':
+			ai.enableSecondPlayerHuman(true);
+			ai.enableSecondPlayerMachineLearning(false);
+			ai.enableSecondPlayerLearning(false);
+			break;
+		case 'CPU':
+			ai.enableSecondPlayerHuman(false);
+			ai.enableSecondPlayerMachineLearning(false);
+			ai.enableSecondPlayerLearning(false);
+			break;
+		case 'ML-learning':
+			ai.enableSecondPlayerHuman(false);
+			ai.enableSecondPlayerMachineLearning(true);
+			ai.enableSecondPlayerLearning(true);
+			break;
+		case 'ML-not-learning':
+			ai.enableSecondPlayerHuman(false);
+			ai.enableSecondPlayerMachineLearning(true);
+			ai.enableSecondPlayerLearning(false);
+			break;
 	}
-};
-
-const enableSecondPlayerMachineLearning = function() {
-	ai.enableSecondPlayerMachineLearning(secondPlayerMachineLearningEnabled.get());
-};
-
-const enableSecondPlayerLearning = function() {
-	ai.enableSecondPlayerLearning(secondPlayerLearningEnabled.get());
 };
 
 const enableRenderer = function() {
@@ -190,8 +198,4 @@ const enableFullSpeed = function() {
 	} else {
 		ai.normalGameSpeed();
 	}
-};
-
-const enableAiToJump = function() {
-	ai.enableAiToJump(jumpEnabled.get());
 };

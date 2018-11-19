@@ -200,12 +200,4 @@ export default class Ai extends Dev {
 			this.engine.game.time.slowMotion = this.slowMotion;
 		}
 	}
-
-	enableAiToJump(canJump) {
-		this.canJump = canJump;
-
-		if (this.isStarted) {
-			this.game.artificialIntelligence.canJump = this.canJump;
-		}
-	}
 }

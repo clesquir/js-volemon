@@ -37,32 +37,45 @@
 					<a href="#" class="button" data-action="start-genomes-from-existing">
 						{{#if genomesFromExisting}}Genomes from existing{{else}}Genomes from scratch{{/if}}
 					</a>
-					<a href="#" class="button" data-action="enable-first-player-human">
-						{{#if firstPlayerHumanEnabled}}You are first player{{else}}First player CPU{{/if}}
+
+					<a href="#" class="button" data-action="switch-first-player">
+						{{#if firstPlayerHuman}}
+							You are first player
+						{{else}}
+							{{#if firstPlayerMLLearning}}
+								First player ML learning
+							{{else}}
+								{{#if firstPlayerMLNotLearning}}
+									First player ML not learning
+								{{else}}
+									First player CPU
+								{{/if}}
+							{{/if}}
+						{{/if}}
 					</a>
-					<a href="#" class="button" data-action="enable-first-player-machine-learning">
-						{{#if firstPlayerMachineLearningEnabled}}First player ML{{else}}First player not ML{{/if}}
+
+					<a href="#" class="button" data-action="switch-second-player">
+						{{#if secondPlayerHuman}}
+							You are second player
+						{{else}}
+							{{#if secondPlayerMLLearning}}
+								Second player ML learning
+							{{else}}
+								{{#if secondPlayerMLNotLearning}}
+									Second player ML not learning
+								{{else}}
+									Second player CPU
+								{{/if}}
+							{{/if}}
+						{{/if}}
 					</a>
-					<a href="#" class="button" data-action="enable-first-player-learning">
-						{{#if firstPlayerLearningEnabled}}First player learning{{else}}First player not learning{{/if}}
-					</a>
-					<a href="#" class="button" data-action="enable-second-player-human">
-						{{#if secondPlayerHumanEnabled}}You are second player{{else}}Second player CPU{{/if}}
-					</a>
-					<a href="#" class="button" data-action="enable-second-player-machine-learning">
-						{{#if secondPlayerMachineLearningEnabled}}Second player ML{{else}}Second player not ML{{/if}}
-					</a>
-					<a href="#" class="button" data-action="enable-second-player-learning">
-						{{#if secondPlayerLearningEnabled}}Second player learning{{else}}Second player not learning{{/if}}
-					</a>
+
 					<a href="#" class="button" data-action="enable-renderer">
 						{{#if rendererEnabled}}Auto renderer{{else}}Headless renderer{{/if}}
 					</a>
+
 					<a href="#" class="button" data-action="speed-up-game">
 						{{#if fullSpeedEnabled}}Full speed{{else}}Normal speed{{/if}}
-					</a>
-					<a href="#" class="button" data-action="allow-ai-to-jump">
-						{{#if jumpEnabled}}CPU can jump{{else}}CPU do not jump{{/if}}
 					</a>
 				</div>
 			</div>
