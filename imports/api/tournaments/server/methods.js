@@ -154,7 +154,7 @@ Meteor.methods({
 			throw new Meteor.Error('not-allowed', 'You can only remove tournaments you have created');
 		}
 
-		if (isTournamentEditor() && tournament.status.id !== 'approved') {
+		if (isTournamentEditor() && tournament.status.id === 'approved') {
 			throw new Meteor.Error('not-allowed', 'The tournament has to be not-approved');
 		}
 
