@@ -161,10 +161,10 @@ export default class ArtificialIntelligence {
 			}
 			if (isLeft === (ballPosition.x > halfWidth)) {
 				//Increase fitness if ball is not on player's side
-				this.computers[key].cumulatedFitness += 0.1;
+				this.computers[key].cumulatedFitness += 1;
 			} else {
 				//Reduce fitness if ball is on player's side
-				this.computers[key].cumulatedFitness -= 0.1;
+				this.computers[key].cumulatedFitness -= 1;
 			}
 
 			this.applyLearnerOutput(
