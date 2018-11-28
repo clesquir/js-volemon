@@ -358,23 +358,40 @@ export default class ArtificialIntelligence {
 	 * @returns {boolean}
 	 */
 	shouldSmash(key, modifiers, ballPosition, computerPosition, halfLevelWidth, netY, netWidth) {
-		let isLeft = this.isLeftPlayer(modifiers);
-		let width = computerPosition.width;
-		let maximumHeight = netY - computerPosition.height * 2.5;
-		let minimumHeight = netY - computerPosition.height * 1.75;
+		//Constants
+		const widthRatioClose = 0.75;
+		const widthRatioFar = 2.25;
+		const heightRatioClose = 1.7;
+		const heightRatioFar = 2.35;
+		const positionRatioMinimum = 0.8;
+		const positionRatioMaximum = 2;
+		const xVelocityMaximum = 350;
+		const yVelocityMinimum = 0;
+		const yVelocityMaximum = 150;
+
+		const isLeft = this.isLeftPlayer(modifiers);
+		const width = computerPosition.width;
+		const minimumHeight = netY - computerPosition.height * heightRatioClose;
+		const maximumHeight = netY - computerPosition.height * heightRatioFar;
+		const xDifferenceWithPlayer = Math.abs(ballPosition.x - computerPosition.x);
+		const yDifferenceWithPlayer = Math.abs(ballPosition.y - computerPosition.y);
+		const ratioDifference = xDifferenceWithPlayer / yDifferenceWithPlayer;
 		let playerLeftLimit;
 		let playerRightLimit;
 
+		let isInFront = false;
 		if (isLeft) {
-			playerLeftLimit = computerPosition.x + width;
-			playerRightLimit = playerLeftLimit + width;
+			isInFront = ballPosition.x > computerPosition.x;
+			playerLeftLimit = computerPosition.x + width * widthRatioClose;
+			playerRightLimit = playerLeftLimit + width * widthRatioFar;
 			//limit to net
 			if (playerRightLimit > halfLevelWidth - netWidth) {
 				playerRightLimit = halfLevelWidth - netWidth;
 			}
 		} else {
-			playerRightLimit = computerPosition.x - width;
-			playerLeftLimit = playerRightLimit - width;
+			isInFront = ballPosition.x < computerPosition.x;
+			playerRightLimit = computerPosition.x - width * widthRatioClose;
+			playerLeftLimit = playerRightLimit - width * widthRatioFar;
 			//limit to net
 			if (playerLeftLimit < halfLevelWidth + netWidth) {
 				playerLeftLimit = halfLevelWidth + netWidth;
@@ -383,8 +400,10 @@ export default class ArtificialIntelligence {
 
 		return (
 			modifiers.canJump &&
-			Math.abs(ballPosition.velocityX) < 350 &&
-			ballPosition.velocityY > 0 &&
+			isInFront &&
+			ratioDifference > positionRatioMinimum && ratioDifference < positionRatioMaximum &&
+			Math.abs(ballPosition.velocityX) < xVelocityMaximum &&
+			ballPosition.velocityY > yVelocityMinimum && ballPosition.velocityY < yVelocityMaximum &&
 			ballPosition.x > playerLeftLimit &&
 			ballPosition.x < playerRightLimit &&
 			ballPosition.y > maximumHeight &&
