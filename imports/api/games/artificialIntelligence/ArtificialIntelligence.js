@@ -114,9 +114,9 @@ export default class ArtificialIntelligence {
 	 */
 	applyLearnerOutput(key, modifiers, outputs) {
 		if (this.computers.hasOwnProperty(key) && outputs.length === 2) {
-			if (outputs[0] < 0.45) {
+			if (outputs[0] < 0.33) {
 				this.moveLeft(key);
-			} else if (outputs[0] > 0.55) {
+			} else if (outputs[0] > 0.66) {
 				this.moveRight(key);
 			} else {
 				this.stopMovingHorizontally(key);
@@ -125,9 +125,9 @@ export default class ArtificialIntelligence {
 			this.computers[key].jump = false;
 			this.computers[key].dropshot = false;
 
-			if (outputs[1] < 0.45) {
+			if (outputs[1] < 0.33) {
 				this.computers[key].jump = true;
-			} else if (outputs[1] > 0.55) {
+			} else if (outputs[1] > 0.66) {
 				this.computers[key].dropshot = true;
 			}
 
@@ -209,7 +209,7 @@ export default class ArtificialIntelligence {
 
 		engine.drawBallPrediction(xAtGround, groundY, 'rgb(200, 0, 0)');
 
-		const horizontalThreshold = 90;
+		const horizontalThreshold = 25;
 		const distanceWithTimeToGround = timeToGround * modifiers.velocityXOnMove * modifiers.horizontalMoveModifier();
 
 		if (isLeft) {
