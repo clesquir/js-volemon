@@ -8,6 +8,7 @@ import CarefullyRandomlyPicked from '/imports/api/achievements/server/listeners/
 import ConsecutiveDaysPlayed from '/imports/api/achievements/server/listeners/ConsecutiveDaysPlayed.js';
 import ConsecutiveLostGames from '/imports/api/achievements/server/listeners/ConsecutiveLostGames.js';
 import ConsecutiveWonGames from '/imports/api/achievements/server/listeners/ConsecutiveWonGames.js';
+import CrushingMetal from '/imports/api/achievements/server/listeners/CrushingMetal.js';
 import DavidVsGoliath from '/imports/api/achievements/server/listeners/DavidVsGoliath.js';
 import FullStop from '/imports/api/achievements/server/listeners/FullStop.js';
 import GamesPlayed from '/imports/api/achievements/server/listeners/GamesPlayed.js';
@@ -32,6 +33,7 @@ import RandomInAGame from '/imports/api/achievements/server/listeners/RandomInAG
 import Shutouts from '/imports/api/achievements/server/listeners/Shutouts.js';
 import SimultaneousActivatedBonuses from '/imports/api/achievements/server/listeners/SimultaneousActivatedBonuses.js';
 import Snoozer from '/imports/api/achievements/server/listeners/Snoozer.js';
+import SteelPracticing from '/imports/api/achievements/server/listeners/SteelPracticing.js';
 import SuicidalTendencies from '/imports/api/achievements/server/listeners/SuicidalTendencies.js';
 import TeenyTinyWorld from '/imports/api/achievements/server/listeners/TeenyTinyWorld.js';
 import TheyAreAllOver from '/imports/api/achievements/server/listeners/TheyAreAllOver.js';
@@ -104,6 +106,8 @@ export default class GameListeners {
 			this.listeners.push((new SuicidalTendencies()).forGame(this.gameId, player.userId));
 			this.listeners.push((new Intoxicated()).forGame(this.gameId, player.userId));
 			this.listeners.push((new GoneButNotForgotten()).forGame(this.gameId, player.userId));
+			this.listeners.push((new CrushingMetal()).forGame(this.gameId, player.userId));
+			this.listeners.push((new SteelPracticing()).forGame(this.gameId, player.userId));
 		});
 	}
 

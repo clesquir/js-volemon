@@ -1,3 +1,4 @@
+import {ONE_VS_COMPUTER_GAME_MODE, ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE} from '/imports/api/games/constants';
 import {GAME_MAXIMUM_POINTS, isTwoVersusTwoGameMode} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
@@ -153,6 +154,18 @@ export default class GameListener extends Listener {
 		const game = this.getGame();
 
 		return game && !!game.isPracticeGame;
+	}
+
+	is1VsCpuGame() {
+		const game = this.getGame();
+
+		return (game && game.gameMode === ONE_VS_COMPUTER_GAME_MODE);
+	}
+
+	is1VsMLCpuGame() {
+		const game = this.getGame();
+
+		return (game && game.gameMode === ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE);
 	}
 
 	is2Vs2Game() {
