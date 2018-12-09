@@ -1239,11 +1239,12 @@ export default class Game {
 	}
 
 	stopGame() {
-		this.engine.freeze(this.player1);
-		this.engine.freeze(this.player2);
-		if (this.gameData.isTwoVersusTwo()) {
-			this.engine.freeze(this.player3);
-			this.engine.freeze(this.player4);
+		for (let key of this.getPlayerKeys(true)) {
+			const player = this.getPlayerFromKey(key);
+
+			if (player) {
+				this.engine.freeze(player);
+			}
 		}
 		this.engine.freeze(this.ball);
 
