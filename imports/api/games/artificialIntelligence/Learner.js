@@ -183,7 +183,6 @@ export default class Learner {
 		this.onGameEnd = (fitness) => {
 			//Save Genome fitness
 			genome.fitness = fitness;
-			console.log('fitness = ' + fitness);
 
 			//Go to next genome
 			next();
