@@ -14,7 +14,9 @@ export const MatchMakingController = RouteController.extend({
 			Session.set('lightbox', 'login');
 		} else {
 			Router.go('home');
-			Session.set('matchMaking.modeSelection', this.params.modeSelection);
+			if (this.params.modeSelection !== 'none') {
+				Session.set('matchMaking.modeSelection', this.params.modeSelection);
+			}
 			if (this.params.tournamentId !== 'none') {
 				Session.set('matchMaking.tournamentId', this.params.tournamentId);
 			}

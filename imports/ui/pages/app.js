@@ -117,8 +117,7 @@ Template.app.events({
 		if (!Meteor.userId()) {
 			Session.set('lightbox', 'login');
 		} else {
-			Session.set('lightbox', 'matchMaking');
-			Session.set('lightbox.closable', false);
+			Router.go(Router.routes['matchMaking'].url({modeSelection: 'none', tournamentId: 'none'}));
 		}
 	},
 
