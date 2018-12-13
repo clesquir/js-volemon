@@ -13,12 +13,19 @@
 						{{tournamentName}}
 						{{#if canEditTournament}}
 							<div class="tournaments-action-buttons">
-								<a class="edit-tournament-button action-button" data-action="edit-tournament">
-									<i class="fa fa-pencil"></i>
+								{{#if isTournamentAdministrator}}
+									<a class="edit-tournament-button action-button" data-action="edit-tournament">
+										<i class="fa fa-pencil"></i>
+									</a>
+								{{/if}}
+								<a class="duplicate-tournament-button action-button" data-action="duplicate-tournament">
+									<i class="fa fa-copy"></i>
 								</a>
-								<a class="remove-tournament-button action-button" data-action="remove-tournament">
-									<i class="fa fa-trash"></i>
-								</a>
+								{{#if isTournamentAdministrator}}
+									<a class="remove-tournament-button action-button" data-action="remove-tournament">
+										<i class="fa fa-trash"></i>
+									</a>
+								{{/if}}
 							</div>
 						{{/if}}
 					</div>

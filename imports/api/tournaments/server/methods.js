@@ -137,6 +137,40 @@ Meteor.methods({
 		);
 	},
 
+	duplicateTournament: function(id) {
+		const userId = Meteor.userId();
+
+		if (!userId) {
+			throw new Meteor.Error(401, 'You need to login to create a tournament');
+		}
+
+		if (!isTournamentEditor() && !isTournamentAdministrator()) {
+			throw new Meteor.Error('not-allowed', 'You cannot create a tournament');
+		}
+
+		const tournament = Tournaments.findOne({_id: id});
+
+		if (!tournament) {
+			throw new Meteor.Error(404, 'The tournament does not exist');
+		}
+
+		const duplicateId = Meteor.call('createTournament');
+
+		Tournaments.update(
+			{_id: duplicateId},
+			{$set:
+					{
+						name: tournament.name,
+						description: tournament.description,
+						gameMode: tournament.gameMode,
+						mode: tournament.mode
+					}
+			}
+		);
+
+		return duplicateId;
+	},
+
 	removeTournament: function(id) {
 		const userId = Meteor.userId();
 

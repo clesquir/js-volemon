@@ -109,6 +109,11 @@
 										<i class="fa fa-pencil"></i>
 									</a>
 								{{/if}}
+								{{#if canCreateTournament}}
+									<a class="duplicate-tournament-button action-button" data-action="duplicate-tournament" data-tournament-id="{{_id}}">
+										<i class="fa fa-copy"></i>
+									</a>
+								{{/if}}
 								{{#if canRemoveTournament}}
 									<a class="remove-tournament-button action-button" data-action="remove-tournament" data-tournament-id="{{_id}}">
 										<i class="fa fa-trash"></i>
@@ -153,6 +158,11 @@
 								{{#if canEditTournament}}
 									<a class="edit-tournament-button action-button" data-action="edit-tournament" data-tournament-id="{{_id}}">
 										<i class="fa fa-pencil"></i>
+									</a>
+								{{/if}}
+								{{#if canCreateTournament}}
+									<a class="duplicate-tournament-button action-button" data-action="duplicate-tournament" data-tournament-id="{{_id}}">
+										<i class="fa fa-copy"></i>
 									</a>
 								{{/if}}
 								{{#if canRemoveTournament}}

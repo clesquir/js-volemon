@@ -234,6 +234,26 @@ Template.tournaments.events({
 		Router.go(Router.routes['tournamentAdministration'].url({tournamentId: $(e.currentTarget).attr('data-tournament-id')}));
 	},
 
+	'click [data-action="duplicate-tournament"]': function(e) {
+		const tournament = $(e.currentTarget).attr('data-tournament-id');
+
+		Session.set('appLoadingMask', true);
+		Session.set('appLoadingMask.text', 'Creating draft tournament...');
+
+		Meteor.call(
+			'duplicateTournament',
+			tournament,
+			function(error, tournament) {
+				Session.set('appLoadingMask', false);
+				if (error !== undefined) {
+					alert(error);
+				} else {
+					Router.go(Router.routes['tournamentAdministration'].url({tournamentId: tournament}));
+				}
+			}
+		);
+	},
+
 	'click [data-action="remove-tournament"]': function(e) {
 		const tournament = $(e.currentTarget).attr('data-tournament-id');
 

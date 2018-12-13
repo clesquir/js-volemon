@@ -65,6 +65,10 @@ Template.tournament.helpers({
 	},
 
 	canEditTournament: function() {
+		return isTournamentEditor() || isTournamentAdministrator();
+	},
+
+	isTournamentAdministrator: function() {
 		return isTournamentAdministrator();
 	},
 
@@ -142,11 +146,29 @@ Template.tournament.helpers({
 });
 
 Template.tournament.events({
-	'click [data-action="edit-tournament"]': function(e) {
+	'click [data-action="edit-tournament"]': function() {
 		Router.go(Router.routes['tournamentAdministration'].url({tournamentId: Session.get('tournament')}));
 	},
 
-	'click [data-action="remove-tournament"]': function(e) {
+	'click [data-action="duplicate-tournament"]': function() {
+		Session.set('appLoadingMask', true);
+		Session.set('appLoadingMask.text', 'Creating draft tournament...');
+
+		Meteor.call(
+			'duplicateTournament',
+			Session.get('tournament'),
+			function(error, tournament) {
+				Session.set('appLoadingMask', false);
+				if (error !== undefined) {
+					alert(error);
+				} else {
+					Router.go(Router.routes['tournamentAdministration'].url({tournamentId: tournament}));
+				}
+			}
+		);
+	},
+
+	'click [data-action="remove-tournament"]': function() {
 		Meteor.call(
 			'removeTournament',
 			Session.get('tournament'),
