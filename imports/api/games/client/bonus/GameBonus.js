@@ -123,7 +123,7 @@ export default class GameBonus {
 		for (let activeBonus of this.gameData.activeBonuses()) {
 			let bonus = BonusFactory.fromClassName(activeBonus.activatedBonusClass, this);
 
-			if (this.gameConfiguration.overridesBonusDuration()) {
+			if (this.gameConfiguration.overridesBonusDuration() && bonus.canOverrideDuration()) {
 				bonus.durationMilliseconds = this.gameConfiguration.bonusDuration();
 			}
 
@@ -699,6 +699,23 @@ export default class GameBonus {
 		}
 	}
 
+	resetBallHitCount(playerKey) {
+		const player = this.game.getPlayerFromKey(playerKey);
+		let teammatePlayers = [];
+
+		if (this.game.isPlayerHostSide(player)) {
+			teammatePlayers = this.game.hostPlayerKeys(false);
+			this.game.resetHostNumberBallHits();
+		} else if (this.game.isPlayerClientSide(player)) {
+			teammatePlayers = this.game.clientPlayerKeys(false);
+			this.game.resetClientNumberBallHits();
+		}
+
+		for (let teammatePlayerKey of teammatePlayers) {
+			this.game.resetPlayerBallHits(this.game.getPlayerFromKey(teammatePlayerKey));
+		}
+	}
+
 	scaleGravity(scale) {
 		this.engine.setWorldGravity(this.gameConfiguration.worldGravity() * scale);
 	}
@@ -845,7 +862,7 @@ export default class GameBonus {
 		const bonus = correspondingBonusSprite.data.bonus;
 		let bonusToActivate = bonus.bonusToActivate();
 
-		if (this.gameConfiguration.overridesBonusDuration()) {
+		if (this.gameConfiguration.overridesBonusDuration() && bonus.canOverrideDuration()) {
 			bonusToActivate.durationMilliseconds = this.gameConfiguration.bonusDuration();
 		}
 

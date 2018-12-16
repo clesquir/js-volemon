@@ -12,6 +12,10 @@ export default class InstantDeathBonus extends BaseBonus {
 		return bonus instanceof InstantDeathBonus;
 	}
 
+	canOverrideDuration() {
+		return false;
+	}
+
 	start() {
 		this.game.killPlayer.call(this.game, this.activatorPlayerKey);
 	}

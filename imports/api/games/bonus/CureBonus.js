@@ -8,6 +8,10 @@ export default class CureBonus extends MonsterBonus {
 		this.description = 'Cures poison (only available in tournament)';
 	}
 
+	canOverrideDuration() {
+		return false;
+	}
+
 	start() {
 	}
 

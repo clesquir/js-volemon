@@ -12,6 +12,10 @@ export default class ReviveBonus extends BaseBonus {
 		return bonus instanceof ReviveBonus;
 	}
 
+	canOverrideDuration() {
+		return false;
+	}
+
 	start() {
 		this.game.revivePlayer.call(this.game, this.activatorPlayerKey);
 	}

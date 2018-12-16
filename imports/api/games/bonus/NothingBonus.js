@@ -8,6 +8,10 @@ export default class NothingBonus extends BaseBonus {
 		this.description = 'Does nothing but obstruct';
 	}
 
+	canOverrideDuration() {
+		return false;
+	}
+
 	canActivate() {
 		return false;
 	}

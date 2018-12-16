@@ -13,6 +13,10 @@ export default class UnfreezeMonsterBonus extends MonsterBonus {
 		return bonus instanceof FreezeMonsterBonus && playerKey === this.activatorPlayerKey;
 	}
 
+	canOverrideDuration() {
+		return false;
+	}
+
 	start() {
 		this.game.unFreezePlayer.call(this.game, this.activatorPlayerKey);
 	}

@@ -31,6 +31,7 @@ export const BONUS_HIGH_GRAVITY = 'HighGravity';
 export const BONUS_POISON = 'Poison';
 export const BONUS_CURE = 'Cure';
 export const BONUS_ROBOT = 'Robot';
+export const BONUS_RESET_BALL_HIT_COUNT = 'ResetBallHitCountBonus';
 
 export const ALL_BONUSES = [
 	BONUS_RANDOM,
@@ -64,6 +65,7 @@ export const ALL_BONUSES = [
 	BONUS_POISON,
 	BONUS_CURE,
 	BONUS_ROBOT,
+	BONUS_RESET_BALL_HIT_COUNT,
 ];
 
 export const ALL_BONUSES_FOR_RANDOM = [
@@ -97,4 +99,5 @@ export const ALL_BONUSES_FOR_RANDOM = [
 	BONUS_POISON,
 	BONUS_CURE,
 	BONUS_ROBOT,
+	BONUS_RESET_BALL_HIT_COUNT,
 ];

@@ -648,7 +648,7 @@ export default class Game {
 	}
 
 	resetPlayersAndBall() {
-		this.resetNumberBalHits();
+		this.resetNumberBallHits();
 		this.resetPlayer(this.player1);
 		this.resetPlayer(this.player2);
 		if (this.gameData.isTwoVersusTwo()) {
@@ -658,8 +658,16 @@ export default class Game {
 		this.spawnBall();
 	}
 
-	resetNumberBalHits() {
+	resetNumberBallHits() {
+		this.resetHostNumberBallHits();
+		this.resetClientNumberBallHits();
+	}
+
+	resetHostNumberBallHits() {
 		this.hostNumberBallHits = 0;
+	}
+
+	resetClientNumberBallHits() {
 		this.clientNumberBallHits = 0;
 	}
 
@@ -858,12 +866,12 @@ export default class Game {
 				//Increment hit
 				teamNumberBallHits = ++this.hostNumberBallHits;
 				//Reset opponent
-				this.clientNumberBallHits = 0;
+				this.resetClientNumberBallHits();
 			} else if (this.isPlayerClientSide(player)) {
 				//Increment hit
 				teamNumberBallHits = ++this.clientNumberBallHits;
 				//Reset opponent
-				this.hostNumberBallHits = 0;
+				this.resetHostNumberBallHits();
 			}
 
 			//Reset other players

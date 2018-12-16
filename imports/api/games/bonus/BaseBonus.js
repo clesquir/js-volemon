@@ -63,6 +63,10 @@ export default class BaseBonus {
 		return this.durationMilliseconds;
 	}
 
+	canOverrideDuration() {
+		return true;
+	}
+
 	getActivatorPlayerKey() {
 		return this.activatorPlayerKey;
 	}
