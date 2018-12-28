@@ -4,11 +4,14 @@ accounts-google@1.3.2
 accounts-oauth@1.1.16
 accounts-password@1.5.1
 accounts-ui-unstyled@1.4.1
+adornis:typescript@0.8.1
+adornis:typescript-compiler@0.11.1
 allow-deny@1.1.0
 amplify@1.0.0
 autoupdate@1.5.0
 babel-compiler@7.2.0
 babel-runtime@1.3.0
+barbatus:typescript-runtime@1.1.0
 base64@1.0.11
 binary-heap@1.0.11
 blaze@2.3.3

@@ -1,18 +1,22 @@
-import Computer from '/imports/api/games/artificialIntelligence/Computer.js';
+import Computer from "./Computer";
 
-export default class CalculatedComputer extends Computer {
-	isSmashing = false;
+export default class CalculatedComputer implements Computer {
+	key: string;
+	left: boolean = false;
+	right: boolean = false;
+	jump: boolean = false;
+	dropshot: boolean = false;
+	isSmashing: boolean = false;
 
 	constructor(key) {
-		super();
 		this.key = key;
 	}
 
-	currentGeneration() {
+	currentGeneration(): number {
 		return 1;
 	}
 
-	getGenomes() {
+	getGenomes(): string {
 		return '';
 	}
 
@@ -22,7 +26,7 @@ export default class CalculatedComputer extends Computer {
 	startPoint() {
 	}
 
-	stopPoint(pointSide) {
+	stopPoint(pointSide: string) {
 	}
 
 	/**
@@ -142,41 +146,29 @@ export default class CalculatedComputer extends Computer {
 		this.applyModifiers(modifiers);
 	}
 
-	/**
-	 * @private
-	 */
-	moveLeft() {
+	private moveLeft() {
 		this.left = true;
 		this.right = false;
 	}
 
-	/**
-	 * @private
-	 */
-	moveRight() {
+	private moveRight() {
 		this.right = true;
 		this.left = false;
 	}
 
-	/**
-	 * @private
-	 */
-	stopMovingHorizontally() {
+	private stopMovingHorizontally() {
 		this.left = false;
 		this.right = false;
 	}
 
-	/**
-	 * @private
-	 * @param modifiers
-	 * @param ballPosition
-	 * @param computerPosition
-	 * @param halfLevelWidth
-	 * @param netY
-	 * @param netWidth
-	 * @returns {boolean}
-	 */
-	shouldSmash(modifiers, ballPosition, computerPosition, halfLevelWidth, netY, netWidth) {
+	private shouldSmash(
+		modifiers,
+		ballPosition,
+		computerPosition,
+		halfLevelWidth: number,
+		netY: number,
+		netWidth: number
+	): boolean {
 		//Constants
 		const widthRatioClose = 0.75;
 		const widthRatioFar = 2.25;
@@ -231,22 +223,12 @@ export default class CalculatedComputer extends Computer {
 		);
 	}
 
-	/**
-	 * @private
-	 * @param computerPosition
-	 */
-	doingSmash(computerPosition) {
+	private doingSmash(computerPosition): boolean {
 		return this.isSmashing && computerPosition.velocityY < 0;
 	}
 
-	/**
-	 * @private
-	 * @param modifiers
-	 * @param computerPosition
-	 * @param width
-	 */
-	moveToCenter(modifiers, computerPosition, width) {
-		const halfSpace = (this.isLeftPlayer(modifiers) ? width * 1 / 4 : width * 3 / 4);
+	private moveToCenter(modifiers, computerPosition, width: number) {
+		const halfSpace = (this.isLeftPlayer(modifiers) ? width / 4 : width * 3 / 4);
 
 		if (computerPosition.x + computerPosition.width / 4 < halfSpace) {
 			this.moveRight();
@@ -257,14 +239,7 @@ export default class CalculatedComputer extends Computer {
 		}
 	}
 
-	/**
-	 * @private
-	 * @param velocityY
-	 * @param gravity
-	 * @param distance
-	 * @returns {number}
-	 */
-	timeToReachY(velocityY, gravity, distance) {
+	private timeToReachY(velocityY: number, gravity: number, distance: number): number {
 		let delta = Math.sqrt((velocityY * velocityY) + (2 * gravity * distance));
 
 		if (delta === 0) {
@@ -280,14 +255,7 @@ export default class CalculatedComputer extends Computer {
 		return t;
 	}
 
-	/**
-	 * @private
-	 * @param xAtGround
-	 * @param ballPosition
-	 * @param gravity
-	 * @returns {number}
-	 */
-	restrictToVerticalBounds(xAtGround, ballPosition, gravity) {
+	private restrictToVerticalBounds(xAtGround: number, ballPosition, gravity: number): number {
 		const velocityY = ballPosition.velocityY;
 
 		if (velocityY < 0) {
@@ -305,13 +273,7 @@ export default class CalculatedComputer extends Computer {
 		return xAtGround;
 	}
 
-	/**
-	 * @private
-	 * @param {number} x
-	 * @param {number} width
-	 * @returns {number}
-	 */
-	restrictToHorizontalBounds(x, width) {
+	private restrictToHorizontalBounds(x: number, width: number): number {
 		//wall rebounds
 		if (x < 0) {
 			x = -x;
@@ -327,18 +289,15 @@ export default class CalculatedComputer extends Computer {
 		return x;
 	}
 
-	/**
-	 * @private
-	 * @param xAtGround
-	 * @param ballPosition
-	 * @param netWidth
-	 * @param netY
-	 * @param halfWidth
-	 * @param gravity
-	 * @param isLeft
-	 * @returns {number}
-	 */
-	reboundsOnNet(xAtGround, ballPosition, netWidth, netY, halfWidth, gravity, isLeft) {
+	private reboundsOnNet(
+		xAtGround: number,
+		ballPosition,
+		netWidth: number,
+		netY: number,
+		halfWidth: number,
+		gravity: number,
+		isLeft: boolean
+	): number {
 		const isRight = !isLeft;
 
 		if ((isLeft && xAtGround > halfWidth) || (isRight && xAtGround < halfWidth)) {
@@ -353,23 +312,11 @@ export default class CalculatedComputer extends Computer {
 		return xAtGround;
 	}
 
-	/**
-	 * @private
-	 * @param modifiers
-	 * @returns {boolean}
-	 */
-	isLeftPlayer(modifiers) {
+	private isLeftPlayer(modifiers): boolean {
 		return !!modifiers.isHost;
 	}
 
-	/**
-	 * @private
-	 * @param isLeft
-	 * @param xAtGround
-	 * @param computerPosition
-	 * @returns {boolean}
-	 */
-	ballWillFallAhead(isLeft, xAtGround, computerPosition) {
+	private ballWillFallAhead(isLeft: boolean, xAtGround: number, computerPosition): boolean {
 		if (isLeft) {
 			return xAtGround > computerPosition.x + computerPosition.width / 4;
 		} else {
@@ -377,14 +324,7 @@ export default class CalculatedComputer extends Computer {
 		}
 	}
 
-	/**
-	 * @private
-	 * @param isLeft
-	 * @param xAtGround
-	 * @param computerPosition
-	 * @returns {boolean}
-	 */
-	ballWillFallBehind(isLeft, xAtGround, computerPosition) {
+	private ballWillFallBehind(isLeft: boolean, xAtGround: number, computerPosition): boolean {
 		if (isLeft) {
 			return xAtGround < computerPosition.x + computerPosition.width / 6;
 		} else {
@@ -392,15 +332,7 @@ export default class CalculatedComputer extends Computer {
 		}
 	}
 
-	/**
-	 * @private
-	 * @param isLeft
-	 * @param halfLevelWidth
-	 * @param netWidth
-	 * @param computerPosition
-	 * @returns {boolean}
-	 */
-	playerAtTheNet(isLeft, halfLevelWidth, netWidth, computerPosition) {
+	private playerAtTheNet(isLeft: boolean, halfLevelWidth: number, netWidth: number, computerPosition): boolean {
 		if (isLeft) {
 			return computerPosition.x + computerPosition.width / 2 >= halfLevelWidth - netWidth;
 		} else {
@@ -408,14 +340,7 @@ export default class CalculatedComputer extends Computer {
 		}
 	}
 
-	/**
-	 * @private
-	 * @param isLeft
-	 * @param levelWidth
-	 * @param computerPosition
-	 * @returns {boolean}
-	 */
-	playerIsBackToTheWall(isLeft, levelWidth, computerPosition) {
+	private playerIsBackToTheWall(isLeft: boolean, levelWidth: number, computerPosition): boolean {
 		if (isLeft) {
 			return computerPosition.x - computerPosition.width / 2 <= 0;
 		} else {
@@ -424,10 +349,9 @@ export default class CalculatedComputer extends Computer {
 	}
 
 	/**
-	 * @private
 	 * @param {{key: string, isMoveReversed: boolean, horizontalMoveModifier: Function, verticalMoveModifier: Function, alwaysJump: boolean, canJump: boolean, velocityXOnMove: number, velocityYOnJump: number}} modifiers
 	 */
-	applyModifiers(modifiers) {
+	private applyModifiers(modifiers) {
 		if (modifiers.isMoveReversed !== modifiers.velocityXOnMove < 0) {
 			const left = this.right;
 			const right = this.left;

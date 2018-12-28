@@ -1,19 +1,20 @@
-import CalculatedComputer from '/imports/api/games/artificialIntelligence/CalculatedComputer';
-import MachineLearningComputer from '/imports/api/games/artificialIntelligence/MachineLearningComputer';
+import Computer from "./computer/Computer";
+import MachineLearningComputer from "./computer/MachineLearningComputer";
+import CalculatedComputer from "./computer/CalculatedComputer";
 
 export default class ArtificialIntelligence {
-	/** @var { [key: string]: Computer } */
-	computers = {};
+	computers: { [key: string]: Computer } = {};
+	genomesFromExisting = true;
 
-	addComputerWithKey(key, machineLearning = false, isLearning = false) {
+	addComputerWithKey(key: string, machineLearning: boolean = false, isLearning: boolean = false) {
 		if (machineLearning) {
-			this.computers[key] = new MachineLearningComputer(key, isLearning);
+			this.computers[key] = new MachineLearningComputer(key, isLearning, this.genomesFromExisting);
 		} else {
 			this.computers[key] = new CalculatedComputer(key);
 		}
 	}
 
-	currentGeneration(key) {
+	currentGeneration(key: string): number {
 		if (this.computers.hasOwnProperty(key)) {
 			return this.computers[key].currentGeneration();
 		}
@@ -21,7 +22,7 @@ export default class ArtificialIntelligence {
 		return 1;
 	}
 
-	getGenomes(key) {
+	getGenomes(key: string): string {
 		if (this.computers[key]) {
 			return this.computers[key].getGenomes();
 		}
@@ -45,7 +46,7 @@ export default class ArtificialIntelligence {
 		}
 	}
 
-	stopPoint(pointSide) {
+	stopPoint(pointSide: string) {
 		for (let key in this.computers) {
 			if (this.computers.hasOwnProperty(key)) {
 				this.computers[key].stopPoint(pointSide);
@@ -62,7 +63,7 @@ export default class ArtificialIntelligence {
 	 * @param {GameConfiguration} gameConfiguration
 	 * @param {Engine} engine
 	 */
-	computeMovement(key, modifiers, computerPosition, ballPosition, bonusesPosition, gameConfiguration, engine) {
+	computeMovement(key: string, modifiers, computerPosition, ballPosition, bonusesPosition, gameConfiguration, engine) {
 		if (this.computers.hasOwnProperty(key)) {
 			this.computers[key].computeMovement(
 				modifiers,
@@ -75,7 +76,7 @@ export default class ArtificialIntelligence {
 		}
 	}
 
-	movesLeft(key) {
+	movesLeft(key: string): boolean {
 		if (this.computers.hasOwnProperty(key)) {
 			return this.computers[key].left;
 		}
@@ -83,7 +84,7 @@ export default class ArtificialIntelligence {
 		return false;
 	}
 
-	movesRight(key) {
+	movesRight(key: string): boolean {
 		if (this.computers.hasOwnProperty(key)) {
 			return this.computers[key].right;
 		}
@@ -91,7 +92,7 @@ export default class ArtificialIntelligence {
 		return false;
 	}
 
-	jumps(key) {
+	jumps(key: string): boolean {
 		if (this.computers.hasOwnProperty(key)) {
 			return this.computers[key].jump;
 		}
@@ -99,7 +100,7 @@ export default class ArtificialIntelligence {
 		return false;
 	}
 
-	dropshots(key) {
+	dropshots(key: string): boolean {
 		if (this.computers.hasOwnProperty(key)) {
 			return this.computers[key].dropshot;
 		}

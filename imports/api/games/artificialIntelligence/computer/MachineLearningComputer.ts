@@ -1,27 +1,32 @@
-import Computer from '/imports/api/games/artificialIntelligence/Computer.js';
-import SynapticLearner from '/imports/api/games/artificialIntelligence/SynapticLearner.js';
-import {CLIENT_POINTS_COLUMN, HOST_POINTS_COLUMN} from '/imports/api/games/constants.js';
-import clientGenomes from '/public/assets/artificial-intelligence/client_genomes.json';
-import hostGenomes from '/public/assets/artificial-intelligence/host_genomes.json';
+import {CLIENT_POINTS_COLUMN, HOST_POINTS_COLUMN} from 'imports/api/games/constants';
+import * as clientGenomes from '/public/assets/artificial-intelligence/client_genomes.json';
+import * as hostGenomes from '/public/assets/artificial-intelligence/host_genomes.json';
+import Computer from "./Computer";
+import Learner from "../learner/Learner";
+import SynapticLearner from "../learner/SynapticLearner";
 
-export default class MachineLearningComputer extends Computer {
-	isLearning = false;
-	learner;
-	pointStartTime = 0;
-	cumulatedFitness = 0;
-	numberPointsForCurrentGenome = 0;
-	numberPointsToCalculateGenomes = 5;
-	genomesFromExisting = true;
+export default class MachineLearningComputer implements Computer {
+	key: string;
+	isLearning: boolean = false;
+	left: boolean = false;
+	right: boolean = false;
+	jump: boolean = false;
+	dropshot: boolean = false;
+	cumulatedFitness: number = 0;
 
-	constructor(key, isLearning) {
-		super();
+	private learner: Learner;
+	private pointStartTime: number = 0;
+	private numberPointsForCurrentGenome: number = 0;
+	private numberPointsToCalculateGenomes: number = 5;
+
+	constructor(key, isLearning, genomesFromExisting) {
 		this.key = key;
 		this.isLearning = isLearning;
 
 		this.learner = new SynapticLearner(6, 2, 12, 4, 0.2);
 		this.learner.init();
 
-		if (this.genomesFromExisting) {
+		if (genomesFromExisting) {
 			this.learner.loadGenomes(
 				JSON.stringify(key === 'player1' || key === 'player3' ? hostGenomes : clientGenomes),
 				true
@@ -29,11 +34,11 @@ export default class MachineLearningComputer extends Computer {
 		}
 	}
 
-	currentGeneration() {
+	currentGeneration(): number {
 		return this.learner.generation;
 	}
 
-	getGenomes() {
+	getGenomes(): string {
 		return this.learner.getGenomes();
 	}
 
@@ -45,7 +50,7 @@ export default class MachineLearningComputer extends Computer {
 		this.pointStartTime = (new Date()).getTime();
 	}
 
-	stopPoint(pointSide) {
+	stopPoint(pointSide: string) {
 		if (!this.isLearning) {
 			return;
 		}
@@ -129,11 +134,10 @@ export default class MachineLearningComputer extends Computer {
 	}
 
 	/**
-	 * @private
 	 * @param {{key: string, isMoveReversed: boolean, horizontalMoveModifier: Function, verticalMoveModifier: Function, alwaysJump: boolean, canJump: boolean, velocityXOnMove: number, velocityYOnJump: number}} modifiers
 	 * @param outputs
 	 */
-	applyLearnerOutput(modifiers, outputs) {
+	private applyLearnerOutput(modifiers, outputs: Array<number>) {
 		if (outputs.length === 2) {
 			if (outputs[0] < 0.33) {
 				this.moveLeft();
@@ -156,44 +160,29 @@ export default class MachineLearningComputer extends Computer {
 		}
 	}
 
-	/**
-	 * @private
-	 */
-	moveLeft() {
+	private moveLeft() {
 		this.left = true;
 		this.right = false;
 	}
 
-	/**
-	 * @private
-	 */
-	moveRight() {
+	private moveRight() {
 		this.right = true;
 		this.left = false;
 	}
 
-	/**
-	 * @private
-	 */
-	stopMovingHorizontally() {
+	private stopMovingHorizontally() {
 		this.left = false;
 		this.right = false;
 	}
 
-	/**
-	 * @private
-	 * @param modifiers
-	 * @returns {boolean}
-	 */
-	isLeftPlayer(modifiers) {
+	private isLeftPlayer(modifiers): boolean {
 		return !!modifiers.isHost;
 	}
 
 	/**
-	 * @private
 	 * @param {{key: string, isMoveReversed: boolean, horizontalMoveModifier: Function, verticalMoveModifier: Function, alwaysJump: boolean, canJump: boolean, velocityXOnMove: number, velocityYOnJump: number}} modifiers
 	 */
-	applyModifiers(modifiers) {
+	private applyModifiers(modifiers) {
 		if (modifiers.isMoveReversed !== modifiers.velocityXOnMove < 0) {
 			const left = this.right;
 			const right = this.left;
@@ -202,12 +191,7 @@ export default class MachineLearningComputer extends Computer {
 		}
 	}
 
-	/**
-	 * @private
-	 * @param {number} value
-	 * @returns {number}
-	 */
-	round5(value) {
+	private round5(value: number): number {
 		return Math.ceil(value / 5) * 5;
 	}
 }

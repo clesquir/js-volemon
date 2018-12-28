@@ -39,3 +39,4 @@ accounts-google@1.3.2
 service-configuration@1.0.11
 bozhao:link-accounts
 underscore@1.0.10
+adornis:typescript

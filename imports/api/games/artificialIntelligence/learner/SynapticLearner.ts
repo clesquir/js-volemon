@@ -1,3 +1,5 @@
+import Learner from "./Learner";
+
 const synaptic = require('synaptic');
 const async = require('async');
 const _ = require('lodash');
@@ -5,19 +7,28 @@ const _ = require('lodash');
 const Architect = synaptic.Architect;
 const Network = synaptic.Network;
 
-export default class SynapticLearner {
-	numberOfInputs = 0;
-	numberOfOutputs = 0;
+export default class SynapticLearner implements Learner {
+	generation: number = 0;
 
-	//Array of networks for current Genomes
-	//(Genomes will be added the key `fitness`)
-	genomes = [];
+	private readonly numberOfInputs: number;
+	private readonly numberOfOutputs: number;
+	private readonly genomeUnits: number;
+	private readonly selection: number;
+	private readonly mutationProb: number;
 
-	//Current genome/generation tryout
-	genome = 0;
-	generation = 0;
+	private onSensorData;
+	private onGameEnd;
 
-	constructor(numberOfInputs, numberOfOutputs, numberOfGenomes, selection, mutationProb) {
+	private genomes: Array<any> = [];
+	private genome: number = 0;
+
+	constructor(
+		numberOfInputs: number,
+		numberOfOutputs: number,
+		numberOfGenomes: number,
+		selection: number,
+		mutationProb: number
+	) {
 		this.numberOfInputs = numberOfInputs;
 		this.numberOfOutputs = numberOfOutputs;
 		this.genomeUnits = numberOfGenomes;
@@ -30,7 +41,7 @@ export default class SynapticLearner {
 		this.generation = 0;
 	}
 
-	emitData(inputs) {
+	emitData(inputs: Array<number>) {
 		if (this.onSensorData) {
 			return this.onSensorData(inputs);
 		}
@@ -38,7 +49,7 @@ export default class SynapticLearner {
 		return [];
 	}
 
-	applyGenomeFitness(fitness) {
+	applyGenomeFitness(fitness: number) {
 		if (this.onGameEnd) {
 			this.onGameEnd(fitness);
 		}
@@ -54,7 +65,7 @@ export default class SynapticLearner {
 		this.executeGeneration();
 	}
 
-	getGenomes() {
+	getGenomes(): string {
 		const jsonGenomes = [];
 		for (let k in this.genomes) {
 			jsonGenomes.push(this.genomes[k].toJSON());
@@ -63,8 +74,8 @@ export default class SynapticLearner {
 		return JSON.stringify(jsonGenomes);
 	}
 
-	loadGenomes(genomes, deleteOthers) {
-		genomes = JSON.parse(genomes);
+	loadGenomes(genomesString: string, deleteOthers: boolean) {
+		const genomes = JSON.parse(genomesString);
 
 		if (deleteOthers) {
 			this.genomes = [];
@@ -80,8 +91,6 @@ export default class SynapticLearner {
 	}
 
 	/**
-	 * @private
-	 *
 	 * Given the entire generation of genomes, applies method `executeGenome` for each element.
 	 *
 	 * After all elements have completed executing:
@@ -90,7 +99,7 @@ export default class SynapticLearner {
 	 * 3) Does Mutation-only on remaining genomes
 	 * 4) Execute generation (recursively)
 	 */
-	executeGeneration() {
+	private executeGeneration() {
 		this.generation++;
 		this.genome = 0;
 
@@ -103,10 +112,7 @@ export default class SynapticLearner {
 		)
 	}
 
-	/**
-	 * @private
-	 */
-	filterGenomesOnGenerationEnd() {
+	private filterGenomesOnGenerationEnd() {
 		//Kill worst genomes
 		this.genomes = this.selectBestGenomes(this.selection);
 
@@ -143,13 +149,12 @@ export default class SynapticLearner {
 	}
 
 	/**
-	 * @private
 	 * @param {int} selectN
 	 * @returns {*}
 	 *
 	 * Sort all the genomes, and delete the worst one until the genome list has selectN elements.
 	 */
-	selectBestGenomes(selectN) {
+	private selectBestGenomes(selectN) {
 		const selected = _.sortBy(this.genomes, 'fitness').reverse();
 
 		while (selected.length > selectN) {
@@ -162,7 +167,6 @@ export default class SynapticLearner {
 	}
 
 	/**
-	 * @private
 	 * @param genome
 	 * @param next
 	 *
@@ -170,7 +174,7 @@ export default class SynapticLearner {
 	 * 2) On data read, applies the neural network, and sets its output
 	 * 3) When the game has ended, computes the fitness
 	 */
-	executeGenome(genome, next) {
+	private executeGenome(genome, next) {
 		this.genome = this.genomes.indexOf(genome) + 1;
 
 		//Reads sensor data, and apply network
@@ -190,26 +194,24 @@ export default class SynapticLearner {
 	}
 
 	/**
-	 * @private
 	 * @param {int} inputs
 	 * @param {int} outputs
 	 * @returns {Architect.Perceptron}
 	 *
 	 * Builds a new genome based on the expected number of inputs and outputs
 	 */
-	buildGenome(inputs, outputs) {
+	private buildGenome(inputs, outputs) {
 		return new Architect.Perceptron(inputs, Math.ceil((inputs + outputs) / 2), outputs);
 	}
 
 	/**
-	 * @private
 	 * @param netA
 	 * @param netB
 	 * @returns {*}
 	 *
 	 * SPECIFIC to Neural Network. Those two methods convert from JSON to Array, and from Array to JSON
 	 */
-	crossOver(netA, netB) {
+	private crossOver(netA, netB) {
 		//Swap (50% prob.)
 		if (Math.random() > 0.5) {
 			const tmp = netA;
@@ -228,14 +230,13 @@ export default class SynapticLearner {
 	}
 
 	/**
-	 * @private
 	 * @param net
 	 * @returns {*}
 	 *
 	 * Does random mutations across all the biases and weights of the Networks
 	 * (This must be done in the JSON to prevent modifying the current one)
 	 */
-	mutate(net) {
+	private mutate(net) {
 		//Mutate
 		this.mutateDataKeys(net.neurons, 'bias', this.mutationProb);
 
@@ -245,7 +246,6 @@ export default class SynapticLearner {
 	}
 
 	/**
-	 * @private
 	 * @param a
 	 * @param b
 	 * @param key
@@ -254,7 +254,7 @@ export default class SynapticLearner {
 	 * 1) Select a cross over point (cutLocation) randomly (going from 0 to A.length)
 	 * 2) Swap values from `key` one to another, starting by cutLocation
 	 */
-	crossOverDataKey(a, b, key) {
+	private crossOverDataKey(a, b, key) {
 		const cutLocation = Math.round(a.length * Math.random());
 
 		let tmp;
@@ -267,7 +267,6 @@ export default class SynapticLearner {
 	}
 
 	/**
-	 * @private
 	 * @param a
 	 * @param key
 	 * @param mutationRate
@@ -275,7 +274,7 @@ export default class SynapticLearner {
 	 * Given an Array of objects with key `key`, and also a `mutationRate`, randomly Mutate the value of each key
 	 * if random value is lower than mutationRate for each element.
 	 */
-	mutateDataKeys(a, key, mutationRate) {
+	private mutateDataKeys(a, key, mutationRate) {
 		for (let k = 0; k < a.length; k++) {
 			//Should mutate?
 			if (Math.random() > mutationRate) {

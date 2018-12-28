@@ -1,24 +1,19 @@
-export default class Computer {
-	key;
-	left = false;
-	right = false;
-	jump = false;
-	dropshot = false;
+export default interface Computer {
+	key: string;
+	left: boolean;
+	right: boolean;
+	jump: boolean;
+	dropshot: boolean;
 
-	currentGeneration() {
-	}
+	currentGeneration(): number;
 
-	getGenomes() {
-	}
+	getGenomes(): string;
 
-	startGame() {
-	}
+	startGame();
 
-	startPoint() {
-	}
+	startPoint();
 
-	stopPoint(pointSide) {
-	}
+	stopPoint(pointSide: string);
 
 	/**
 	 * @param {{key: string, isMoveReversed: boolean, horizontalMoveModifier: Function, verticalMoveModifier: Function, alwaysJump: boolean, canJump: boolean, velocityXOnMove: number, velocityYOnJump: number}} modifiers
@@ -28,6 +23,5 @@ export default class Computer {
 	 * @param {GameConfiguration} gameConfiguration
 	 * @param {Engine} engine
 	 */
-	computeMovement(modifiers, computerPosition, ballPosition, bonusesPosition, gameConfiguration, engine) {
-	}
+	computeMovement(modifiers, computerPosition, ballPosition, bonusesPosition, gameConfiguration, engine);
 }
