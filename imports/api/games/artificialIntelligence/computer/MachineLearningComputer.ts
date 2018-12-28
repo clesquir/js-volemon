@@ -23,7 +23,7 @@ export default class MachineLearningComputer implements Computer {
 		this.key = key;
 		this.isLearning = isLearning;
 
-		this.learner = new SynapticLearner(6, 2, 12, 4, 0.2);
+		this.learner = new SynapticLearner(6, 4, 6, 4, 0.2);
 		this.learner.init();
 
 		if (genomesFromExisting) {
@@ -124,7 +124,7 @@ export default class MachineLearningComputer implements Computer {
 				[
 					this.round5(computerPosition.x - ballPosition.x), //Distance X from ball
 					this.round5(computerPosition.y - ballPosition.y), //Distance Y from ball
-					Math.round(ballPosition.x / width * 100),
+					Math.round(ballPosition.x / width * 100), //Ball position percentage
 					this.round5(groundY - ballPosition.y), //Distance from ground
 					this.round5(ballPosition.velocityX), //Ball X speed
 					this.round5(ballPosition.velocityY) //Ball Y speed
@@ -138,23 +138,17 @@ export default class MachineLearningComputer implements Computer {
 	 * @param outputs
 	 */
 	private applyLearnerOutput(modifiers, outputs: Array<number>) {
-		if (outputs.length === 2) {
-			if (outputs[0] < 0.33) {
+		if (outputs.length === 4) {
+			if (outputs[0] > 0.75) {
 				this.moveLeft();
-			} else if (outputs[0] > 0.66) {
+			} else if (outputs[1] > 0.75) {
 				this.moveRight();
 			} else {
 				this.stopMovingHorizontally();
 			}
 
-			this.jump = false;
-			this.dropshot = false;
-
-			if (outputs[1] < 0.33) {
-				this.jump = true;
-			} else if (outputs[1] > 0.66) {
-				this.dropshot = true;
-			}
+			this.jump = (outputs[2] > 0.75);
+			this.dropshot = (outputs[3] > 0.75);
 
 			this.applyModifiers(modifiers);
 		}
