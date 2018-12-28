@@ -5,7 +5,7 @@ const _ = require('lodash');
 const Architect = synaptic.Architect;
 const Network = synaptic.Network;
 
-export default class Learner {
+export default class SynapticLearner {
 	numberOfInputs = 0;
 	numberOfOutputs = 0;
 
