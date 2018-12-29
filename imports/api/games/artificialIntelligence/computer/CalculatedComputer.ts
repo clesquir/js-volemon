@@ -173,8 +173,8 @@ export default class CalculatedComputer implements Computer {
 		const widthRatioClose = 0.75;
 		const widthRatioFar = 2.25;
 		const heightRatioClose = 1.7;
-		const heightRatioFar = 2.35;
-		const positionRatioMinimum = 0.8;
+		const heightRatioFar = 2.3;
+		const positionRatioMinimum = 0.9;
 		const positionRatioMaximum = 2;
 		const xVelocityMaximum = 350;
 		const yVelocityMinimum = 0;

@@ -11,5 +11,5 @@ export default interface Learner {
 
 	applyGenomeFitness(fitness: number);
 
-	emitData(inputs: Array<number>);
+	emitData(inputs: number[]);
 }

@@ -1,8 +1,8 @@
 import {Meteor} from 'meteor/meteor';
 import {Template} from 'meteor/templating';
 import {Session} from 'meteor/session';
-import {UserKeymaps} from '/imports/api/users/userKeymaps.js';
-import CustomKeymaps from '/imports/lib/keymaps/CustomKeymaps.js';
+import {UserKeymaps} from '/imports/api/users/userKeymaps';
+import CustomKeymaps from '/imports/lib/keymaps/CustomKeymaps';
 const hotkeys = require('hotkeys-js');
 const keycode = require('keycode');
 

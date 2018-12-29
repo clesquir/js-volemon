@@ -66,7 +66,7 @@ Meteor.methods({
 		if (computerAdded[modeSelection + '_' + tournamentId] === undefined) {
 			const matchMaker = new EloMatchMaker();
 
-			matchMaker.subscribe({id: 'CPU', isMachineLearning: true, name: 'CPU'}, modeSelection, tournamentId);
+			matchMaker.subscribe({id: 'CPU', isMachineLearning: true, name: 'ML CPU'}, modeSelection, tournamentId);
 
 			computerAdded[modeSelection + '_' + tournamentId] = true;
 			Meteor.setTimeout(() => {

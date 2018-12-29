@@ -19,7 +19,7 @@ export default class SynapticLearner implements Learner {
 	private onSensorData;
 	private onGameEnd;
 
-	private genomes: Array<any> = [];
+	private genomes: any[] = [];
 	private genome: number = 0;
 
 	constructor(
@@ -41,7 +41,7 @@ export default class SynapticLearner implements Learner {
 		this.generation = 0;
 	}
 
-	emitData(inputs: Array<number>) {
+	emitData(inputs: number[]) {
 		if (this.onSensorData) {
 			return this.onSensorData(inputs);
 		}
@@ -85,8 +85,10 @@ export default class SynapticLearner implements Learner {
 
 		let loaded = 0;
 		for (let k in genomes) {
-			this.genomes.push(Network.fromJSON(genomes[k]));
-			loaded++;
+			if (genomes.hasOwnProperty(k)) {
+				this.genomes.push(Network.fromJSON(genomes[k]));
+				loaded++;
+			}
 		}
 	}
 

@@ -137,7 +137,7 @@ export default class MachineLearningComputer implements Computer {
 	 * @param {{key: string, isMoveReversed: boolean, horizontalMoveModifier: Function, verticalMoveModifier: Function, alwaysJump: boolean, canJump: boolean, velocityXOnMove: number, velocityYOnJump: number}} modifiers
 	 * @param outputs
 	 */
-	private applyLearnerOutput(modifiers, outputs: Array<number>) {
+	private applyLearnerOutput(modifiers, outputs: number[]) {
 		if (outputs.length === 4) {
 			if (outputs[0] > 0.75) {
 				this.moveLeft();

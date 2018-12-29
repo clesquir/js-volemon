@@ -83,6 +83,9 @@ export default class GameConfiguration {
 		return PLAYER_ALLOWED_LIST_OF_SHAPES;
 	}
 
+	/**
+	 * @returns {boolean}
+	 */
 	overridesCurrentPlayerShape() {
 		return (this.hasTournament() && this.tournamentMode.overridesCurrentPlayerShape());
 	}

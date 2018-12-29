@@ -1,20 +1,29 @@
-import DeviceController from '/imports/api/games/deviceController/DeviceController.js';
+import DeviceController from "./DeviceController";
+import CustomKeymaps from "imports/lib/keymaps/CustomKeymaps";
+import Keymaps from "imports/lib/keymaps/Keymaps";
 
-export default class DesktopController extends DeviceController {
-	/**
-	 * @param {Keymaps} keymaps
-	 */
-	constructor(keymaps) {
-		super();
+export default class DesktopController implements DeviceController {
+	private keymaps: Keymaps;
+	private keys: {left: string, right: string, up: string, down: string} = {left: null, right: null, up: null, down: null};
+	private monitoringStarted: boolean = false;
+	private readonly onKeyDown;
+	private readonly onKeyUp;
+
+	constructor(keymaps: Keymaps) {
 		this.keymaps = keymaps;
-		this.keys = {left: null, right: null, up: null, down: null};
-		this.monitoringStarted = false;
 		this.onKeyDown = (event) => {
 			return this.processKeyDown(event);
 		};
 		this.onKeyUp = (event) => {
 			return this.processKeyUp(event);
 		};
+	}
+
+	static fromDefaults(): DesktopController {
+		return new DesktopController(CustomKeymaps.defaultKeymaps());
+	}
+
+	init() {
 	}
 
 	startMonitoring() {
@@ -55,19 +64,19 @@ export default class DesktopController extends DeviceController {
 		}
 	}
 
-	leftPressed() {
+	leftPressed(): boolean {
 		return this.keys.left !== null;
 	}
 
-	rightPressed() {
+	rightPressed(): boolean {
 		return this.keys.right !== null;
 	}
 
-	upPressed() {
+	upPressed(): boolean {
 		return this.keys.up !== null;
 	}
 
-	downPressed() {
+	downPressed(): boolean {
 		return this.keys.down !== null;
 	}
 }

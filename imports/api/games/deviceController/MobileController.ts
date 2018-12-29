@@ -1,8 +1,15 @@
-import DeviceController from '/imports/api/games/deviceController/DeviceController.js';
+import DeviceController from "./DeviceController";
 
-export default class MobileController extends DeviceController {
+export default class MobileController implements DeviceController {
+	parentSelector: string;
+	controllerSelector: string;
+	controllerLeft: string;
+	controllerRight: string;
+	controllerUp: string;
+	controllerDown: string;
+	events: {left: string[], right: string[], up: string[], down: string[]} = {left: [], right: [], up: [], down: []};
+
 	constructor(parentSelector, controllerClass) {
-		super();
 		this.parentSelector = parentSelector;
 		this.controllerSelector = `.${controllerClass}`;
 		this.controllerLeft = controllerClass + '-left';
@@ -16,6 +23,9 @@ export default class MobileController extends DeviceController {
 			up: [],
 			down: []
 		};
+	}
+
+	init() {
 	}
 
 	startMonitoring() {
@@ -61,27 +71,23 @@ export default class MobileController extends DeviceController {
 		$(document).find(this.parentSelector).off('touchstart touchmove touchend touchcancel');
 	}
 
-	leftPressed() {
+	leftPressed(): boolean {
 		return this.events.left.length > 0;
 	}
 
-	rightPressed() {
+	rightPressed(): boolean {
 		return this.events.right.length > 0;
 	}
 
-	upPressed() {
+	upPressed(): boolean {
 		return this.events.up.length > 0;
 	}
 
-	downPressed() {
+	downPressed(): boolean {
 		return this.events.down.length > 0;
 	}
 
-	/**
-	 * @private
-	 * @param originalEvent
-	 */
-	onPressDown(originalEvent) {
+	private onPressDown(originalEvent) {
 		const touches = originalEvent.changedTouches[0];
 		const realTarget = document.elementFromPoint(touches.clientX, touches.clientY);
 
@@ -115,11 +121,7 @@ export default class MobileController extends DeviceController {
 		this.colorizeOnPress();
 	}
 
-	/**
-	 * @private
-	 * @param originalEvent
-	 */
-	onPressUp(originalEvent) {
+	private onPressUp(originalEvent) {
 		this.removePressed('left', originalEvent);
 		this.removePressed('right', originalEvent);
 		this.removePressed('up', originalEvent);
@@ -128,12 +130,7 @@ export default class MobileController extends DeviceController {
 		this.colorizeOnPress();
 	}
 
-	/**
-	 * @private
-	 * @param key
-	 * @param originalEvent
-	 */
-	addPressed(key, originalEvent) {
+	private addPressed(key: string, originalEvent) {
 		if (!this.events[key]) {
 			throw `${key} do not exist.`;
 		}
@@ -143,12 +140,7 @@ export default class MobileController extends DeviceController {
 		}
 	}
 
-	/**
-	 * @private
-	 * @param key
-	 * @param originalEvent
-	 */
-	removePressed(key, originalEvent) {
+	private removePressed(key: string, originalEvent) {
 		if (!this.events[key]) {
 			throw `${key} do not exist.`;
 		}
@@ -159,10 +151,7 @@ export default class MobileController extends DeviceController {
 		}
 	}
 
-	/**
-	 * @private
-	 */
-	colorizeOnPress() {
+	private colorizeOnPress() {
 		const controller = $(document).find(this.parentSelector);
 
 		this.colorizeButton(controller.find(`.${this.controllerLeft}`), this.leftPressed());
@@ -171,10 +160,7 @@ export default class MobileController extends DeviceController {
 		this.colorizeButton(controller.find(`.${this.controllerDown}`), this.downPressed());
 	}
 
-	/**
-	 * @private
-	 */
-	colorizeButton(button, isPressed) {
+	private colorizeButton(button, isPressed) {
 		if (isPressed) {
 			button.addClass('mobile-controller-pressed');
 		} else {

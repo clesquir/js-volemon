@@ -1,11 +1,8 @@
-import WeatherPlugin from '/imports/api/skins/plugins/WeatherPlugin.js';
+import Plugin from './Plugin';
+import WeatherPlugin from './WeatherPlugin';
 
 export default class PluginFactory {
-	/**
-	 * @param configuration
-	 * @returns {Plugin[]}
-	 */
-	static fromConfiguration(configuration) {
+	static fromConfiguration(configuration): Plugin[] {
 		const plugins = [];
 
 		if (configuration) {
