@@ -1,11 +1,11 @@
 import {Random} from 'meteor/random';
-import Skin from '/imports/api/skins/skins/Skin.js';
+import Skin from './Skin';
 
-export default class DevaltoSkin extends Skin {
-	/**
-	 * @returns {{key: {string}, imagePath: {string}, jsonPath: {string}}[]}
-	 */
-	atlasJSONHash() {
+export default class DevaltoSkin implements Skin {
+	init() {
+	}
+
+	atlasJSONHash(): { key: string, imagePath: string, jsonPath: string }[] {
 		return [
 			{
 				key: 'devalto-skin',
@@ -15,12 +15,7 @@ export default class DevaltoSkin extends Skin {
 		];
 	}
 
-	/**
-	 * @param xSize
-	 * @param ySize
-	 * @returns {{key: {string}, path: {string}}[]}
-	 */
-	imagesToLoad(xSize, ySize) {
+	imagesToLoad(xSize: number, ySize: number): { path: string; key: string }[] {
 		let background = 840;
 		if (xSize > 840) {
 			background = 1020;
@@ -31,28 +26,21 @@ export default class DevaltoSkin extends Skin {
 		];
 	}
 
-	/**
-	 * @returns {string}
-	 */
-	backgroundColor() {
+	spriteSheetsToLoad(): { key: string, path: string, width: number, height: number }[] {
+		return [];
+	}
+
+	backgroundColor(): string {
 		return '#83d8e8';
 	}
 
-	/**
-	 * @param xSize
-	 * @param ySize
-	 * @returns {{key: {string}, frame: {string}, animation: {frame: {string}, frames: {string}[], speed: {int}}, x: {int}, y: {int}, width: {int}, height: {int}}[]}
-	 */
-	backgroundComponents(xSize, ySize) {
+	backgroundComponents(xSize: number, ySize: number): { key: string, frame?: string, animation?: { frame: string, frames: string[], speed: number }, x: number, y: number, width: number, height: number }[] {
 		return [
 			{key: 'background', x: 0, y: 0, width: xSize, height: ySize}
 		];
 	}
 
-	/**
-	 * @returns {{key: {string}, frame: {string}, animation: {frame: {string}, frames: {string}[], speed: {int}}}}
-	 */
-	ballComponent() {
+	ballComponent(): { key: string, frame?: string, animation?: { frame: string, frames: string[], speed: number } } {
 		const ballImage = Random.choice(
 			[
 				'abdellah',
@@ -83,20 +71,14 @@ export default class DevaltoSkin extends Skin {
 		};
 	}
 
-	/**
-	 * @returns {{key: {string}, frame: {string}}}
-	 */
-	netComponent() {
+	netComponent(): { key: string; frame: string } {
 		return {
 			key: 'devalto-skin',
 			frame: 'net'
 		};
 	}
 
-	/**
-	 * @returns {{key: {string}, frame: {string}}[]}
-	 */
-	groundComponents() {
+	groundComponents(): { key: string; frame: string, height?: number }[] {
 		return [
 			{
 				key: 'devalto-skin',
@@ -105,10 +87,7 @@ export default class DevaltoSkin extends Skin {
 		];
 	}
 
-	/**
-	 * @returns {{key: {string}, hostFrames: {string}[], clientFrames: {string}[]}[]}
-	 */
-	confettisComponent() {
+	confettisComponent(): { clientFrames: string[]; hostFrames: string[]; key: string } {
 		return {
 			key: 'devalto-skin',
 			hostFrames: ['confettis-logalto'],

@@ -7,7 +7,7 @@ export default class GameData {
 
 	/**
 	 * @param playerKey
-	 * @returns string Returns the player shape or PLAYER_DEFAULT_SHAPE if no game nor player is found
+	 * @returns {string} Returns the player shape or PLAYER_DEFAULT_SHAPE if no game nor player is found
 	 */
 	getPlayerShapeFromKey(playerKey) {
 	}
@@ -22,6 +22,10 @@ export default class GameData {
 	getCurrentPlayerKey() {
 	}
 
+	/**
+	 * @param playerKey
+	 * @returns {boolean}
+	 */
 	isCurrentPlayerKey(playerKey) {
 	}
 
@@ -61,6 +65,9 @@ export default class GameData {
 	isFourthPlayerComputerLearning() {
 	}
 
+	/**
+	 * @returns {boolean}
+	 */
 	isTwoVersusTwo() {
 	}
 
@@ -82,6 +89,9 @@ export default class GameData {
 	isGameStatusOnGoing() {
 	}
 
+	/**
+	 * @returns {boolean}
+	 */
 	isGameStatusStarted() {
 	}
 

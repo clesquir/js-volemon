@@ -1,5 +1,5 @@
 import {Meteor} from 'meteor/meteor';
-import PluginFactory from '/imports/api/skins/plugins/PluginFactory.js';
+import PluginFactory from '/imports/api/skins/plugins/PluginFactory';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 
 export default class Startup {

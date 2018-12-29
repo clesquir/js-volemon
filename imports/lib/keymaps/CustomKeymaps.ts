@@ -1,11 +1,7 @@
-import Keymaps from '/imports/lib/keymaps/Keymaps.js';
+import Keymaps from './Keymaps';
 
 export default class CustomKeymaps extends Keymaps {
-	/**
-	 * @param userKeymaps
-	 * @returns {CustomKeymaps}
-	 */
-	static fromUserKeymaps(userKeymaps) {
+	static fromUserKeymaps(userKeymaps: {left: number, right: number, up: number, down: number}): CustomKeymaps {
 		if (userKeymaps) {
 			return new CustomKeymaps(
 				userKeymaps.left,
@@ -18,10 +14,7 @@ export default class CustomKeymaps extends Keymaps {
 		return CustomKeymaps.defaultKeymaps();
 	}
 
-	/**
-	 * @returns {CustomKeymaps}
-	 */
-	static defaultKeymaps() {
+	static defaultKeymaps(): CustomKeymaps {
 		return new CustomKeymaps(
 			37,
 			39,

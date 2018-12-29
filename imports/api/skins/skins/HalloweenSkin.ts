@@ -1,11 +1,11 @@
-import Skin from '/imports/api/skins/skins/Skin.js';
+import Skin from './Skin';
 import {Random} from 'meteor/random';
 
-export default class HalloweenSkin extends Skin {
-	/**
-	 * @returns {{key: {string}, imagePath: {string}, jsonPath: {string}}[]}
-	 */
-	atlasJSONHash() {
+export default class HalloweenSkin implements Skin {
+	init() {
+	}
+
+	atlasJSONHash(): { key: string, imagePath: string, jsonPath: string }[] {
 		return [
 			{
 				key: 'halloween-skin',
@@ -15,12 +15,7 @@ export default class HalloweenSkin extends Skin {
 		];
 	}
 
-	/**
-	 * @param xSize
-	 * @param ySize
-	 * @returns {{key: {string}, path: {string}}[]}
-	 */
-	imagesToLoad(xSize, ySize) {
+	imagesToLoad(xSize: number, ySize: number): { key: string, path: string }[] {
 		let background = 840;
 		if (xSize > 840) {
 			background = 1020;
@@ -31,12 +26,15 @@ export default class HalloweenSkin extends Skin {
 		];
 	}
 
-	/**
-	 * @param xSize
-	 * @param ySize
-	 * @returns {{key: {string}, frame: {string}, animation: {frame: {string}, frames: {string}[], speed: {int}}, x: {int}, y: {int}, width: {int}, height: {int}}[]}
-	 */
-	backgroundComponents(xSize, ySize) {
+	backgroundColor(): string {
+		return '#000000';
+	}
+
+	spriteSheetsToLoad(): { key: string; path: string; width: number; height: number }[] {
+		return [];
+	}
+
+	backgroundComponents(xSize: number, ySize: number): { key: string, frame?: string, animation?: { frame: string, frames: string[], speed: number }, x: number, y: number, width: number, height: number }[] {
 		return [
 			{
 				key: 'background',
@@ -64,30 +62,21 @@ export default class HalloweenSkin extends Skin {
 		];
 	}
 
-	/**
-	 * @returns {{key: {string}, frame: {string}, animation: {frame: {string}, frames: {string}[], speed: {int}}}}
-	 */
-	ballComponent() {
+	ballComponent(): { key: string, frame?: string, animation?: { frame: string, frames: string[], speed: number } } {
 		return {
 			key: 'halloween-skin',
 			frame: 'ball'
 		};
 	}
 
-	/**
-	 * @returns {{key: {string}, frame: {string}}}
-	 */
-	netComponent() {
+	netComponent(): { key: string; frame: string } {
 		return {
 			key: 'halloween-skin',
 			frame: 'net'
 		};
 	}
 
-	/**
-	 * @returns {{key: {string}, frame: {string}}[]}
-	 */
-	groundComponents() {
+	groundComponents(): { key: string; frame: string, height?: number }[] {
 		return [
 			{
 				key: 'halloween-skin',
@@ -96,10 +85,7 @@ export default class HalloweenSkin extends Skin {
 		];
 	}
 
-	/**
-	 * @returns {{key: {string}, hostFrames: {string}[], clientFrames: {string}[]}[]}
-	 */
-	confettisComponent() {
+	confettisComponent(): { clientFrames: string[]; hostFrames: string[]; key: string } {
 		return {
 			key: 'halloween-skin',
 			hostFrames: ['confettis-1', 'confettis-2', 'confettis-3', 'confettis-4', 'confettis-5'],

@@ -1,12 +1,14 @@
-import {locationDetector} from '/imports/lib/geoLocation/LocationDetector.js';
-import {YahooWeatherApi} from '/imports/lib/weatherApi/YahooWeatherApi.js';
+import {locationDetector} from 'imports/lib/geoLocation/LocationDetector.js';
+import {YahooWeatherApi} from 'imports/lib/weatherApi/YahooWeatherApi.js';
 import {
 	CONDITION_CLOUD, CONDITION_FOG, CONDITION_RAIN, CONDITION_THUNDER, CONDITION_SNOW,
 	TIME_OF_DAY_NIGHT, TIME_OF_DAY_DAYLIGHT
-} from '/imports/lib/weatherApi/WeatherApi.js';
-import Plugin from '/imports/api/skins/plugins/Plugin.js';
+} from 'imports/lib/weatherApi/WeatherApi.js';
+import Plugin from './Plugin';
 
-export default class WeatherPlugin extends Plugin {
+export default class WeatherPlugin implements Plugin {
+	weatherApi: YahooWeatherApi;
+
 	start() {
 		locationDetector.init();
 	}
@@ -16,10 +18,7 @@ export default class WeatherPlugin extends Plugin {
 		this.weatherApi.init();
 	}
 
-	/**
-	 * @returns {{key: {string}, imagePath: {string}, jsonPath: {string}}[]}
-	 */
-	atlasJSONHash() {
+	atlasJSONHash(): { imagePath: string; jsonPath: string; key: string }[] {
 		return [
 			{
 				key: 'weather-plugin',
@@ -29,10 +28,15 @@ export default class WeatherPlugin extends Plugin {
 		];
 	}
 
-	/**
-	 * @returns {{color: {string}, opacity: {float}}[]}
-	 */
-	backgroundColorModifier() {
+	imagesToLoad(): { key: string, path: string }[] {
+		return [];
+	}
+
+	spriteSheetsToLoad(): { key: string, path: string, width: number, height: number }[] {
+		return [];
+	}
+
+	backgroundColorModifier(): { color: string, opacity: number }[] {
 		const modifiers = [];
 
 		switch (this.weatherApi.timeOfDay()) {
@@ -47,12 +51,7 @@ export default class WeatherPlugin extends Plugin {
 		return modifiers;
 	}
 
-	/**
-	 * @param xSize
-	 * @param ySize
-	 * @returns {{key: {string}, frame: {string}, animation: {frame: {string}, frames: {string}[], speed: {int}}, x: {int}, y: {int}, width: {int}, height: {int}}[]}
-	 */
-	backgroundComponents(xSize, ySize) {
+	backgroundComponents(xSize: number, ySize: number): { key: string, frame: string, animation: { frame: string, frames: string[], speed: number }, x: number, y: number, width: number, height: number }[] {
 		const condition = this.weatherApi.condition();
 		const keys = [];
 
@@ -188,10 +187,7 @@ export default class WeatherPlugin extends Plugin {
 		return keys;
 	}
 
-	/**
-	 * @returns {{key: {string}, frame: {string}}[]}
-	 */
-	groundComponents() {
+	groundComponents(): { key: string, frame: string, height?: number }[] {
 		const condition = this.weatherApi.condition();
 		const groundComponents = [];
 

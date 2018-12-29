@@ -1,14 +1,14 @@
-import Game from '/imports/api/games/client/Game.js';
-import NullStreamBundler from '/imports/api/games/client/streamBundler/NullStreamBundler.js';
-import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
-import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
-import StaticGameConfiguration from '/imports/api/games/configuration/StaticGameConfiguration.js';
-import StaticGameData from '/imports/api/games/data/StaticGameData.js';
-import DesktopController from '/imports/api/games/deviceController/DesktopController.js';
-import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine.js';
-import {PLAYER_DEFAULT_SHAPE} from '/imports/api/games/shapeConstants.js';
-import DefaultSkin from '/imports/api/skins/skins/DefaultSkin.js';
-import CustomKeymaps from '/imports/lib/keymaps/CustomKeymaps.js';
+import Game from '/imports/api/games/client/Game';
+import NullStreamBundler from '/imports/api/games/client/streamBundler/NullStreamBundler';
+import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime';
+import GameSkin from '/imports/api/games/client/skin/GameSkin';
+import StaticGameConfiguration from '/imports/api/games/configuration/StaticGameConfiguration';
+import StaticGameData from '/imports/api/games/data/StaticGameData';
+import DesktopController from '/imports/api/games/deviceController/DesktopController';
+import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine';
+import {PLAYER_DEFAULT_SHAPE} from '/imports/api/games/shapeConstants';
+import DefaultSkin from '/imports/api/skins/skins/DefaultSkin';
+import CustomKeymaps from '/imports/lib/keymaps/CustomKeymaps';
 import {Random} from 'meteor/random';
 
 export default class Dev {

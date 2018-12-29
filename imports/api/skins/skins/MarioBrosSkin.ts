@@ -1,11 +1,11 @@
+import Skin from './Skin';
 import {Random} from 'meteor/random';
-import Skin from '/imports/api/skins/skins/Skin.js';
 
-export default class MarioBrosSkin extends Skin {
-	/**
-	 * @returns {{key: {string}, imagePath: {string}, jsonPath: {string}}[]}
-	 */
-	atlasJSONHash() {
+export default class MarioBrosSkin implements Skin {
+	init() {
+	}
+
+	atlasJSONHash(): { key: string, imagePath: string, jsonPath: string }[] {
 		return [
 			{
 				key: 'mario-bros-skin',
@@ -15,19 +15,19 @@ export default class MarioBrosSkin extends Skin {
 		];
 	}
 
-	/**
-	 * @returns {string}
-	 */
-	backgroundColor() {
+	imagesToLoad(xSize: number, ySize: number): { key: string, path: string }[] {
+		return [];
+	}
+
+	spriteSheetsToLoad(): { key: string; path: string; width: number; height: number }[] {
+		return [];
+	}
+
+	backgroundColor(): string {
 		return '#6b8cff';
 	}
 
-	/**
-	 * @param xSize
-	 * @param ySize
-	 * @returns {{key: {string}, frame: {string}, animation: {frame: {string}, frames: {string}[], speed: {int}}, x: {int}, y: {int}, width: {int}, height: {int}}[]}
-	 */
-	backgroundComponents(xSize, ySize) {
+	backgroundComponents(xSize: number, ySize: number): { key: string, frame?: string, animation?: { frame: string, frames: string[], speed: number }, x: number, y: number, width: number, height: number }[] {
 		return [
 			{
 				key: 'mario-bros-skin',
@@ -56,10 +56,7 @@ export default class MarioBrosSkin extends Skin {
 		];
 	}
 
-	/**
-	 * @returns {{key: {string}, frame: {string}, animation: {frame: {string}, frames: {string}[], speed: {int}}}}
-	 */
-	ballComponent() {
+	ballComponent(): { key: string, frame?: string, animation?: { frame: string, frames: string[], speed: number } } {
 		return {
 			key: 'mario-bros-skin',
 			animation: {
@@ -70,20 +67,14 @@ export default class MarioBrosSkin extends Skin {
 		};
 	}
 
-	/**
-	 * @returns {{key: {string}, frame: {string}}}
-	 */
-	netComponent() {
+	netComponent(): { key: string; frame: string } {
 		return {
 			key: 'mario-bros-skin',
 			frame: 'net'
 		};
 	}
 
-	/**
-	 * @returns {{key: {string}, frame: {string}}[]}
-	 */
-	groundComponents() {
+	groundComponents(): { key: string; frame: string, height?: number }[] {
 		return [
 			{
 				key: 'mario-bros-skin',
@@ -92,10 +83,7 @@ export default class MarioBrosSkin extends Skin {
 		];
 	}
 
-	/**
-	 * @returns {{key: {string}, hostFrames: {string}[], clientFrames: {string}[]}[]}
-	 */
-	confettisComponent() {
+	confettisComponent(): { clientFrames: string[]; hostFrames: string[]; key: string } {
 		return {
 			key: 'mario-bros-skin',
 			hostFrames: ['confettis-goomba-light'],

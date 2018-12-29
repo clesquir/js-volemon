@@ -25,14 +25,12 @@ export default class GameSkin {
 		let atlasJSONHash = this.skin.atlasJSONHash();
 		let imagesToLoad = this.skin.imagesToLoad(xSize, ySize);
 		let spriteSheetToLoad = this.skin.spriteSheetsToLoad();
-		let dataToLoad = this.skin.dataToLoad();
 		let background = this.skin.backgroundColor();
 
 		for (let plugin of this.plugins) {
 			atlasJSONHash = atlasJSONHash.concat(plugin.atlasJSONHash());
 			imagesToLoad = imagesToLoad.concat(plugin.imagesToLoad());
 			spriteSheetToLoad = spriteSheetToLoad.concat(plugin.spriteSheetsToLoad());
-			dataToLoad = dataToLoad.concat(plugin.dataToLoad());
 		}
 
 		for (let atlas of atlasJSONHash) {
@@ -43,9 +41,6 @@ export default class GameSkin {
 		}
 		for (let spriteSheet of spriteSheetToLoad) {
 			engine.loadSpriteSheet(spriteSheet.key, spriteSheet.path, spriteSheet.width, spriteSheet.height);
-		}
-		for (let data of dataToLoad) {
-			engine.loadData(data.key, data.path);
 		}
 
 		engine.changeBackgroundColor(background);
