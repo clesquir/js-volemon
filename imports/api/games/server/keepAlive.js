@@ -20,7 +20,7 @@ export const startKeepAlive = function(gameId, stream) {
 };
 
 const updateKeepAlive = function(movedPlayer, gameId) {
-	if (movedPlayer) {
+	if (movedPlayer && movedPlayer.id !== 'CPU') {
 		if (!lastKeepAliveUpdateByPlayerIds[movedPlayer.id]) {
 			lastKeepAliveUpdateByPlayerIds[movedPlayer.id] = 0;
 		}
