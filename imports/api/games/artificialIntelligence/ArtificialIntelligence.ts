@@ -1,10 +1,45 @@
 import Computer from "./computer/Computer";
 import MachineLearningComputer from "./computer/MachineLearningComputer";
 import CalculatedComputer from "./computer/CalculatedComputer";
+import GameData from "../data/GameData";
+import {ArtificialIntelligenceData} from "./ArtificialIntelligenceData";
+import GameConfiguration from "../configuration/GameConfiguration";
+import {ArtificialIntelligencePositionData} from "./ArtificialIntelligencePositionData";
 
 export default class ArtificialIntelligence {
 	computers: { [key: string]: Computer } = {};
 	genomesFromExisting = true;
+
+	initFromData(gameData: GameData) {
+		if (gameData.isFirstPlayerComputer()) {
+			this.addComputerWithKey(
+				'player1',
+				gameData.isFirstPlayerComputerMachineLearning(),
+				gameData.isFirstPlayerComputerLearning()
+			);
+		}
+		if (gameData.isSecondPlayerComputer()) {
+			this.addComputerWithKey(
+				'player2',
+				gameData.isSecondPlayerComputerMachineLearning(),
+				gameData.isSecondPlayerComputerLearning()
+			);
+		}
+		if (gameData.isThirdPlayerComputer()) {
+			this.addComputerWithKey(
+				'player3',
+				gameData.isThirdPlayerComputerMachineLearning(),
+				gameData.isThirdPlayerComputerLearning()
+			);
+		}
+		if (gameData.isFourthPlayerComputer()) {
+			this.addComputerWithKey(
+				'player4',
+				gameData.isFourthPlayerComputerMachineLearning(),
+				gameData.isFourthPlayerComputerLearning()
+			);
+		}
+	}
 
 	addComputerWithKey(key: string, machineLearning: boolean = false, isLearning: boolean = false) {
 		if (machineLearning) {
@@ -54,24 +89,21 @@ export default class ArtificialIntelligence {
 		}
 	}
 
-	/**
-	 * @param {string} key
-	 * @param {{key: string, isMoveReversed: boolean, horizontalMoveModifier: Function, verticalMoveModifier: Function, alwaysJump: boolean, canJump: boolean, velocityXOnMove: number, velocityYOnJump: number}} modifiers
-	 * @param {{x: number, y: number, scale: number, velocityX: number, velocityY: number, gravityScale: number, width: number, height: number}} computerPosition
-	 * @param {{x: number, y: number, velocityX: number, velocityY: number, gravityScale: number, width: number, height: number}} ballPosition
-	 * @param {{x: number, y: number, velocityX: number, velocityY: number, gravityScale: number, width: number, height: number}[]} bonusesPosition
-	 * @param {GameConfiguration} gameConfiguration
-	 * @param {Engine} engine
-	 */
-	computeMovement(key: string, modifiers, computerPosition, ballPosition, bonusesPosition, gameConfiguration, engine) {
+	computeMovement(
+		key: string,
+		modifiers: ArtificialIntelligenceData,
+		computerPosition: ArtificialIntelligencePositionData,
+		ballPosition: ArtificialIntelligencePositionData,
+		bonusesPosition: ArtificialIntelligencePositionData[],
+		gameConfiguration: GameConfiguration
+	) {
 		if (this.computers.hasOwnProperty(key)) {
 			this.computers[key].computeMovement(
 				modifiers,
 				computerPosition,
 				ballPosition,
 				bonusesPosition,
-				gameConfiguration,
-				engine
+				gameConfiguration
 			);
 		}
 	}

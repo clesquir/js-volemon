@@ -6,15 +6,15 @@ import {
 	SKIN_MARIO_BROS,
 	SKIN_SPACE,
 	SKIN_XMAS
-} from 'imports/api/skins/skinConstants.js';
-import DefaultSkin from './DefaultSkin.js';
-import DevaltoSkin from './DevaltoSkin.js';
-import HalloweenSkin from './HalloweenSkin.js';
-import IndustrialSkin from './IndustrialSkin.js';
-import JujuWorldSkin from './JujuWorldSkin.js';
-import MarioBrosSkin from './MarioBrosSkin.js';
-import SpaceSkin from './SpaceSkin.js';
-import XmasSkin from './XmasSkin.js';
+} from 'imports/api/skins/skinConstants';
+import DefaultSkin from './DefaultSkin';
+import DevaltoSkin from './DevaltoSkin';
+import HalloweenSkin from './HalloweenSkin';
+import IndustrialSkin from './IndustrialSkin';
+import JujuWorldSkin from './JujuWorldSkin';
+import MarioBrosSkin from './MarioBrosSkin';
+import SpaceSkin from './SpaceSkin';
+import XmasSkin from './XmasSkin';
 import Skin from "./Skin";
 
 export default class SkinFactory {
