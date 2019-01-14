@@ -376,8 +376,31 @@ export default class GameConfiguration {
 		return this.levelConfiguration.playerWidth();
 	}
 
+	playerHeight() {
+		return this.levelConfiguration.playerHeight();
+	}
+
 	playerInitialY() {
 		return this.levelConfiguration.playerInitialY();
+	}
+
+	playerInitialXFromKey(playerKey, isHost) {
+		switch (playerKey) {
+			case 'player1':
+				return this.player1InitialX();
+			case 'player2':
+				return this.player2InitialX();
+			case 'player3':
+				return this.player3InitialX();
+			case 'player4':
+				return this.player4InitialX();
+		}
+
+		if (isHost) {
+			return this.player1InitialX();
+		} else {
+			return this.player2InitialX();
+		}
 	}
 
 	player1InitialX() {

@@ -1,13 +1,16 @@
-import Dev from '/imports/api/games/client/dev/Dev.js';
-import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
-import LevelConfiguration from '/imports/api/games/levelConfiguration/LevelConfiguration.js';
-import SkinFactory from '/imports/api/skins/skins/SkinFactory.js';
+import Dev from "./Dev";
+import LevelConfiguration from 'imports/api/games/levelConfiguration/LevelConfiguration.js';
 import {Meteor} from 'meteor/meteor';
 import {moment} from 'meteor/momentjs:moment';
 import {Random} from 'meteor/random';
 import {Session} from 'meteor/session';
+import SkinManager from "../skin/SkinManager";
+import SkinFactory from "../../../skins/skins/SkinFactory";
 
 export default class Skin extends Dev {
+	startTime: number = 0;
+	timerUpdater;
+
 	constructor() {
 		super();
 
@@ -17,7 +20,7 @@ export default class Skin extends Dev {
 
 	beforeStart() {
 		this.gameConfiguration.levelConfiguration = LevelConfiguration.fromMode(Session.get('dev.skin.currentMode'));
-		this.gameSkin = new GameSkin(SkinFactory.fromId(Session.get('dev.skin.currentSkin')), []);
+		this.skinManager = new SkinManager(this.gameConfiguration, SkinFactory.fromId(Session.get('dev.skin.currentSkin')), []);
 	}
 
 	start() {

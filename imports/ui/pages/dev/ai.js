@@ -1,4 +1,4 @@
-import Ai from '/imports/api/games/client/dev/Ai.js';
+import Ai from '/imports/api/games/client/dev/Ai';
 import {Template} from 'meteor/templating';
 
 import './ai.html';

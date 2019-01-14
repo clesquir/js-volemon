@@ -1,5 +1,5 @@
 import {Template} from 'meteor/templating';
-import Shape from '/imports/api/games/client/dev/Shape.js';
+import Shape from '/imports/api/games/client/dev/Shape';
 
 import './shape.html';
 

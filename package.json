@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "@babel/runtime": "^7.1.2",
+    "@types/jquery": "^3.3.29",
     "@types/meteor": "^1.4.24",
     "async": "^2.6.1",
     "buffer": "^5.2.1",
@@ -24,6 +25,7 @@
     "lodash": "^4.17.11",
     "lodash.throttle": "^4.1.1",
     "meteor-node-stubs": "^0.4.1",
+    "phaser": "^3.15.1",
     "phaser-ce": "^2.11.1",
     "rollbar": "^2.4.7",
     "sc-cluster-broker-client": "^1.0.5",
@@ -57,7 +59,8 @@
     "reconfig": "mup reconfig --settings=settings-prod.json",
     "setup": "mup setup --settings=settings-prod.json",
     "proxy-reconfig": "mup proxy reconfig-shared --settings=settings-prod.json",
-    "deploy": "mup deploy --settings=settings-prod.json"
+    "deploy": "mup deploy --settings=settings-prod.json",
+    "get-phaser-typings": "curl -o phaser.d.ts https://raw.githubusercontent.com/photonstorm/phaser3-docs/master/typescript/phaser.d.ts"
   },
   "repository": {
     "type": "git",

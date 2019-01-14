@@ -103,7 +103,7 @@ export default class StaticGameData implements GameData {
 	}
 
 	isUserHost(): boolean {
-		return false;
+		return true;
 	}
 
 	isUserClient(): boolean {

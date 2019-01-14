@@ -1,4 +1,4 @@
-import Skin from '/imports/api/games/client/dev/Skin.js';
+import Skin from '/imports/api/games/client/dev/Skin';
 import {ONE_VS_ONE_GAME_MODE} from '/imports/api/games/constants.js';
 import {SKIN_DEFAULT} from '/imports/api/skins/skinConstants.js';
 import {Skins} from '/imports/api/skins/skins.js';
