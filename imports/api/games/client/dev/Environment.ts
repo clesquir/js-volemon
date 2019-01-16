@@ -17,6 +17,12 @@ export default class Environment extends Dev {
 
 	onBallHitGround(ball: Ball) {
 		if (this.groundHitEnabled && this.mainScene.gameResumed === true) {
+			this.mainScene.showBallHitPoint(
+				ball.x(),
+				ball.y(),
+				ball.diameter()
+			);
+
 			this.mainScene.gameResumed = false;
 
 			this.gameData.lastPointAt = this.serverNormalizedTime.getServerTimestamp();

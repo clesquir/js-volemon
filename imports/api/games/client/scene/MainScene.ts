@@ -89,8 +89,9 @@ export default class MainScene extends Phaser.Scene {
 			Session.set('userCurrentlyPlaying', true);
 		}
 
-		this.eventEmitter.on('collisionactive', this.onCollide, this);
-		this.eventEmitter.on('collisionend', this.onCollide, this);
+		this.eventEmitter.on('collisionstart', this.onCollisionStart, this);
+		this.eventEmitter.on('collisionactive', this.onCollisionActive, this);
+		this.eventEmitter.on('collisionend', this.onCollisionEnd, this);
 
 		this.gameInitiated = true;
 		this.artificialIntelligence.startGame();
@@ -244,7 +245,37 @@ export default class MainScene extends Phaser.Scene {
 	}
 
 	showBallHitPoint(x: number, y: number, diameter: number) {
-		//@todo Ball hit point
+		const radius = diameter / 2;
+		const hitPoint = this.add.graphics({
+			x: x,
+			y: y
+		});
+		hitPoint.lineStyle(2, 0xffffff);
+		hitPoint.strokeCircle(
+			0,
+			0,
+			radius
+		);
+
+		//Play animation
+		const duration = 250;
+		const scale = 4;
+
+		hitPoint.setAlpha(0.5);
+
+		this.tweens.add({
+			targets: hitPoint,
+			scaleX: scale,
+			scaleY: scale,
+			alpha: 0,
+			duration: duration,
+			onComplete: function () {
+				if (hitPoint) {
+					hitPoint.destroy();
+					console.log('desotry');
+				}
+			}
+		});
 	}
 
 	showBallHitCount(x: number, y: number, ballHitCount: number, color: string) {
@@ -268,12 +299,33 @@ export default class MainScene extends Phaser.Scene {
 		}
 	}
 
-	private onCollide({bodyA, bodyB}) {
+	private onCollisionStart({bodyA, bodyB}) {
+		this.collidePlayerBonus({bodyA, bodyB});
+		this.collideBallGround({bodyA, bodyB});
+	}
+
+	private onCollisionActive({bodyA, bodyB}) {
+		this.collidePlayerBall({bodyA, bodyB});
+	}
+
+	private onCollisionEnd({bodyA, bodyB}) {
+		this.collidePlayerBall({bodyA, bodyB});
+	}
+
+	private collidePlayerBall({bodyA, bodyB}) {
 		if (bodyA.gameObject && bodyA.gameObject.getData('isPlayer') && bodyB.gameObject && bodyB.gameObject.getData('isBall')) {
 			this.onPlayerHitBall(bodyA.gameObject.getData('owner'), bodyB.gameObject.getData('owner'));
-		} else if (bodyA.gameObject && bodyA.gameObject.getData('isPlayer') && bodyB.gameObject && bodyB.gameObject.getData('isBonus')) {
+		}
+	}
+
+	private collidePlayerBonus({bodyA, bodyB}) {
+		if (bodyA.gameObject && bodyA.gameObject.getData('isPlayer') && bodyB.gameObject && bodyB.gameObject.getData('isBonus')) {
 			//@todo Bonus
-		} else if (bodyA.gameObject && bodyA.gameObject.getData('isBall') && bodyB === this.level.ballGround()) {
+		}
+	}
+
+	private collideBallGround({bodyA, bodyB}) {
+		if (bodyA.gameObject && bodyA.gameObject.getData('isBall') && bodyB === this.level.ballGround()) {
 			this.onBallHitGround(bodyA.gameObject.getData('owner'));
 		}
 	}
@@ -550,6 +602,7 @@ export default class MainScene extends Phaser.Scene {
 	}
 
 	private getCurrentPlayer(): Player | null {
+		//@todo Create Players class and put all that stuff there
 		const key = this.gameData.getCurrentPlayerKey();
 
 		return this.getPlayerFromKey(key);
