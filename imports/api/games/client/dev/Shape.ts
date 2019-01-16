@@ -45,12 +45,14 @@ export default class Shape extends Dev {
 		for (let i = 0; i < PLAYER_LIST_OF_SHAPES.length * 2; i++) {
 			let playerIndex = i + 1;
 			let isHost = true;
+			let color = '#a73030';
 
 			if (playerIndex > PLAYER_LIST_OF_SHAPES.length) {
 				isHost = false;
+				color = '#274b7a';
 			}
 
-			this.players['player' + playerIndex] = this.mainScene.createPlayer('player' + playerIndex, '#ffffff', isHost);
+			this.players['player' + playerIndex] = this.mainScene.createPlayer('player' + playerIndex, color, isHost);
 		}
 	}
 

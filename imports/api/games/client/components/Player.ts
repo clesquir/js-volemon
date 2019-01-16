@@ -33,6 +33,8 @@ export default class Player {
 	color: string;
 	isHost: boolean;
 
+	container: Phaser.GameObjects.Container;
+	containerPhysics: Phaser.Physics.Matter.MatterPhysics | Phaser.Physics.Matter.Image | any;
 	playerObject: Phaser.Physics.Matter.Image;
 
 	eyeBall: Phaser.GameObjects.Graphics;
@@ -110,12 +112,18 @@ export default class Player {
 
 		let shapeKey = this.playerShapeFromKey();
 
-		this.playerObject = scene.matter.add.image(x, y, 'shape-' + shapeKey);
+		this.container = this.scene.add.container(x, y);
+
+		this.containerPhysics = this.scene.matter.add.gameObject(this.container);
+		this.containerPhysics.setDataEnabled();
+		this.containerPhysics.setData('owner', this);
+		this.containerPhysics.setData('isPlayer', true);
+		this.containerPhysics.setData('isHost', isHost);
+
+		this.playerObject = this.scene.add.image(0, 0, 'shape-' + shapeKey);
 		this.playerObject.setTint(Phaser.Display.Color.ValueToColor(color).color);
-		this.playerObject.setDataEnabled();
-		this.playerObject.setData('owner', this);
-		this.playerObject.setData('isPlayer', true);
-		this.playerObject.setData('isHost', isHost);
+
+		this.container.add(this.playerObject);
 
 		this.init(x, y);
 	}
@@ -130,33 +138,33 @@ export default class Player {
 	}
 
 	resetPosition() {
-		this.playerObject.setVelocity(0, 0);
-		this.playerObject.setX(this.initialXLocation);
-		this.playerObject.setY(this.initialYLocation);
+		this.containerPhysics.setVelocity(0, 0);
+		this.containerPhysics.setX(this.initialXLocation);
+		this.containerPhysics.setY(this.initialYLocation);
 	}
 
 	movePlayer(movesLeft: boolean, movesRight: boolean, jumps: boolean, dropshots: boolean) {
 		this.dropShots = false;
 
 		if (this.isFrozen) {
-			this.playerObject.setVelocity(0, 0);
+			this.containerPhysics.setVelocity(0, 0);
 		} else {
 			const horizontalMoveModifier = this.horizontalMoveModifier();
 			const moveReversal = (this.isMoveReversed ? -1 : 1);
 
 			if (movesLeft) {
-				this.playerObject.setVelocityX(horizontalMoveModifier * moveReversal * -this.velocityXOnMove);
+				this.containerPhysics.setVelocityX(horizontalMoveModifier * moveReversal * -this.velocityXOnMove);
 			} else if (movesRight) {
-				this.playerObject.setVelocityX(horizontalMoveModifier * moveReversal * this.velocityXOnMove);
+				this.containerPhysics.setVelocityX(horizontalMoveModifier * moveReversal * this.velocityXOnMove);
 			} else {
-				this.playerObject.setVelocityX(0);
+				this.containerPhysics.setVelocityX(0);
 			}
 
 			if (this.hasBottomTouching && !this.isJumping) {
 				if (this.alwaysJump || (jumps && this.canJump)) {
 					const verticalMoveModifier = this.verticalMoveModifier();
 
-					this.playerObject.setVelocityY(verticalMoveModifier * -this.velocityYOnJump);
+					this.containerPhysics.setVelocityY(verticalMoveModifier * -this.velocityYOnJump);
 
 					this.isJumping = true;
 					this.isJumpingTimer = this.scene.time.addEvent({
@@ -173,15 +181,9 @@ export default class Player {
 	}
 
 	updateEye(ball: Ball) {
-		//Move eyeBall
-		this.eyeBall.setPosition(
-			this.playerObject.x + this.eyeBallXOffset,
-			this.playerObject.y + this.eyeBallYOffset
-		);
-
 		//Move eyePupil
-		const dx = this.eyeBall.x - ball.x();
-		const dy = this.eyeBall.y - ball.y();
+		const dx = this.containerPhysics.x - ball.x();
+		const dy = this.containerPhysics.y - ball.y();
 		const r = Math.sqrt(dx * dx + dy * dy);
 		const max = this.eyeBallRadius - this.eyePupilRadius;
 		const x = (r < max) ? dx : dx * max / r;
@@ -194,13 +196,13 @@ export default class Player {
 
 	freeze() {
 		this.isFrozen = true;
-		this.playerObject.setIgnoreGravity(true);
-		this.playerObject.setVelocity(0, 0);
+		this.containerPhysics.setIgnoreGravity(true);
+		this.containerPhysics.setVelocity(0, 0);
 	}
 
 	unfreeze() {
 		this.isFrozen = false;
-		this.playerObject.setIgnoreGravity(false);
+		this.containerPhysics.setIgnoreGravity(false);
 	}
 
 	isSmashing(ballX: number): boolean {
@@ -209,7 +211,7 @@ export default class Player {
 
 	isBallBelow(ballY: number): boolean {
 		return (
-			ballY > this.playerObject.y + (this.playerObject.height / 2)
+			ballY > this.containerPhysics.y + (this.playerObject.height / 2)
 		);
 	}
 
@@ -229,8 +231,8 @@ export default class Player {
 	positionData(): PositionData {
 		return {
 			key: this.key,
-			x: this.playerObject.x,
-			y: this.playerObject.y,
+			x: this.containerPhysics.x,
+			y: this.containerPhysics.y,
 			velocityX: this.velocityX(),
 			velocityY: this.velocityY(),
 			isHost: this.isHost,
@@ -241,8 +243,8 @@ export default class Player {
 
 	artificialIntelligencePositionData(): ArtificialIntelligencePositionData {
 		return {
-			x: this.playerObject.x,
-			y: this.playerObject.y,
+			x: this.containerPhysics.x,
+			y: this.containerPhysics.y,
 			scale: this.currentScale,
 			velocityX: this.velocityX(),
 			velocityY: this.velocityY(),
@@ -309,7 +311,7 @@ export default class Player {
 		this.currentPolygonKey = this.initialPolygonKey;
 		this.initialScale = this.gameConfiguration.initialPlayerScale();
 		this.currentScale = this.initialScale;
-		this.playerObject.setScale(this.initialScale);
+		this.containerPhysics.setScale(this.initialScale);
 	}
 
 	private applyPlayerPolygon() {
@@ -319,9 +321,10 @@ export default class Player {
 	}
 
 	private initBody() {
-		const x = this.playerObject.x;
-		const y = this.playerObject.y;
+		const x = this.containerPhysics.x;
+		const y = this.containerPhysics.y;
 		const bodies = [];
+		const counterweights = [];
 		const sensors = [];
 
 		const matterFromPath = this.scene.matter.verts.fromPath;
@@ -331,10 +334,14 @@ export default class Player {
 		switch (this.currentShape) {
 			case PLAYER_SHAPE_HALF_CIRCLE:
 				bodies.push(matterFromVertices(x, y, matterFromPath('0 49 0 35 9 20 12 17.5 24 6 40 0 49 0 58 0 74 6 86 17.5 89 20 98 35 98 49')));
+				counterweights.push(matterFromVertices(x, y - 16, matterFromPath('12 20 12 17.5 24 6 40 0 49 0 58 0 74 6 86 17.5 86 20')));
 				sensors.push(matterRectangle(x, y + 20, 98, 2, { isSensor: true }));
 				break;
 			case PLAYER_SHAPE_TRIANGLE:
 				bodies.push(matterFromVertices(x, y, matterFromPath('0 49 49 0 98 49')));
+				counterweights.push(matterFromVertices(x, y - 12, matterFromPath('25 23 49 0 73 23 49 35')));
+				counterweights.push(matterFromVertices(x, y - 12, matterFromPath('25 23 49 0 73 23 49 35')));
+				counterweights.push(matterFromVertices(x, y - 12, matterFromPath('25 23 49 0 73 23 49 35')));
 				sensors.push(matterRectangle(x, y + 17, 98, 2, { isSensor: true }));
 				break;
 			case PLAYER_SHAPE_X:
@@ -364,9 +371,7 @@ export default class Player {
 			case PLAYER_SHAPE_MAGNET:
 				bodies.push(matterRectangle(x + 12.25, y - 18, 73.5, 13));
 				bodies.push(matterRectangle(x + 12.25, y + 20, 73.5, 13));
-				bodies.push(matterFromVertices(x - 42.5, y, matterFromPath('13 36 3 36 0 24.5 3 13 13 13')));
-				bodies.push(matterFromVertices(x - 36.25, y - 12.5, matterFromPath('24.5 13 13 24.5 0 24.5 3 13 13 3 24.5 0')));
-				bodies.push(matterFromVertices(x - 36.25, y + 12.5, matterFromPath('24.5 49 13 46 3 36 0 24.5 13 24.5 24.5 36')));
+				bodies.push(matterFromVertices(x - 35, y, matterFromPath('0 33 0 16 24.5 0 24.5 49')));
 				sensors.push(matterCircle(x - 37, y + 17, 8, { isSensor: true }));
 				sensors.push(matterRectangle(x + 12.25, y + 26, 73.5, 2, { isSensor: true }));
 				break;
@@ -374,7 +379,12 @@ export default class Player {
 				bodies.push(matterFromVertices(x - 38, y, matterFromPath('0 49 0 0 24.5 24.5 24.5 49')));
 				bodies.push(matterFromVertices(x, y, matterFromPath('24.5 49 24.5 24.5 49 0 73.5 24.5 73.5 49')));
 				bodies.push(matterFromVertices(x + 38, y, matterFromPath('73.5 24.5 98 0 98 49 73.5 49')));
-				bodies.push(matterRectangle(x, y + 8, 98, 20));
+				bodies.push(matterFromVertices(x + 41, y - 14, matterFromPath('73.5 24.5 98 0 98 24.5 73.5 24.5')));
+				bodies.push(matterRectangle(x - 24, y + 8, 5, 20));
+				bodies.push(matterRectangle(x + 24, y + 8, 5, 20));
+				counterweights.push(matterFromVertices(x - 41, y - 14, matterFromPath('0 24.5 0 0 24.5 24.5 24.5 24.5')));
+				counterweights.push(matterFromVertices(x, y - 14, matterFromPath('24.5 24.5 24.5 24.5 49 0 73.5 24.5 73.5 24.5')));
+				counterweights.push(matterFromVertices(x, y - 14, matterFromPath('24.5 24.5 24.5 24.5 49 0 73.5 24.5 73.5 24.5')));
 				sensors.push(matterRectangle(x, y + 19, 98, 2, { isSensor: true }));
 				break;
 			case PLAYER_SHAPE_RHOMBUS:
@@ -395,6 +405,7 @@ export default class Player {
 				break;
 			case PLAYER_SHAPE_ELLIPSE:
 				bodies.push(matterFromVertices(x, y, matterFromPath('0 24.5 7.5 11 15 7 32 1.5 49 0 66 1.5 83 7 90.5 11 98 24.5 90.5 38 83 42 66 47.5 49 49 32 47.5 15 42 7.5 38')));
+				counterweights.push(matterFromVertices(x, y - 18, matterFromPath('7.5 11 15 7 32 1.5 49 0 66 1.5 83 7 90.5 11')));
 				sensors.push(matterRectangle(x, y + 21, 80, 10, { isSensor: true }));
 				break;
 			case PLAYER_SHAPE_TRIPLE_COLON:
@@ -404,32 +415,35 @@ export default class Player {
 				bodies.push(matterRectangle(x, y + 20, 13, 13));
 				bodies.push(matterRectangle(x + 42.5, y - 18, 13, 13));
 				bodies.push(matterRectangle(x + 42.5, y + 20, 13, 13));
+				counterweights.push(matterRectangle(x - 42.5, y - 18, 13, 4));
+				counterweights.push(matterRectangle(x, y - 18, 13, 4));
+				counterweights.push(matterRectangle(x + 42.5, y - 18, 13, 4));
 				sensors.push(matterRectangle(x - 42.5, y + 25, 13, 5, { isSensor: true }));
 				sensors.push(matterRectangle(x, y + 25, 13, 5, { isSensor: true }));
 				sensors.push(matterRectangle(x + 42.5, y + 25, 13, 5, { isSensor: true }));
 				break;
 		}
 
-		const body = this.matter().Body.create({
-			parts: bodies.concat(sensors)
-		});
-		this.playerObject.setExistingBody(body);
-		this.playerObject.setOrigin(0.5, 0.5);
+		this.containerPhysics.setExistingBody(
+			this.matter().Body.create({
+				parts: bodies.concat(counterweights, sensors)
+			})
+		);
 
 		this.sensors = sensors;
 	}
 
 	private setupBody() {
 		this.playerObject.setTexture(this.currentTextureKey);
-		this.playerObject.setFixedRotation();
-		this.playerObject.setIgnoreGravity(this.isFrozen);
-		this.playerObject.setFriction(0, 0, 0);
-		this.playerObject.setMass(this.currentMass);
+		this.containerPhysics.setFixedRotation();
+		this.containerPhysics.setIgnoreGravity(this.isFrozen);
+		this.containerPhysics.setFriction(0, 0, 0);
+		this.containerPhysics.setMass(this.currentMass);
 
 		const collisionCategory = this.isHost ? this.level.collisionCategoryHost : this.level.collisionCategoryClient;
 		const collisionLimit = this.isHost ? this.level.collisionCategoryHostLimit : this.level.collisionCategoryClientLimit;
-		this.playerObject.setCollisionCategory(collisionCategory);
-		this.playerObject.setCollidesWith([
+		this.containerPhysics.setCollisionCategory(collisionCategory);
+		this.containerPhysics.setCollidesWith([
 			collisionCategory,
 			collisionLimit,
 			this.level.collisionCategoryBall,
@@ -537,8 +551,8 @@ export default class Player {
 
 		this.eyeBall = this.scene.add.graphics(
 			{
-				x: this.playerObject.x + this.eyeBallXOffset,
-				y: this.playerObject.y + this.eyeBallYOffset
+				x: this.eyeBallXOffset,
+				y: this.eyeBallYOffset
 			}
 		);
 		this.eyeBall.fillStyle(0xffffff, 1);
@@ -556,8 +570,8 @@ export default class Player {
 
 		this.eyePupil = this.scene.add.graphics(
 			{
-				x: this.playerObject.x + this.eyeBallXOffset,
-				y: this.playerObject.y + this.eyeBallYOffset
+				x: this.eyeBallXOffset,
+				y: this.eyeBallYOffset
 			}
 		);
 		this.eyePupil.fillStyle(0x363636, 1);
@@ -566,6 +580,9 @@ export default class Player {
 			0,
 			this.eyePupilRadius
 		);
+
+		this.container.add(this.eyeBall);
+		this.container.add(this.eyePupil);
 	}
 
 	private onCollide({bodyA, bodyB}) {
@@ -596,8 +613,8 @@ export default class Player {
 
 	private isInFrontOfPlayer(ballX: number): boolean {
 		return (
-			(this.isHost && this.playerObject.x < ballX) ||
-			(!this.isHost && ballX < this.playerObject.x)
+			(this.isHost && this.containerPhysics.x < ballX) ||
+			(!this.isHost && ballX < this.containerPhysics.x)
 		);
 	}
 
@@ -608,13 +625,13 @@ export default class Player {
 	}
 
 	private velocityX(): number {
-		const body = <any>this.playerObject.body;
+		const body = <any>this.containerPhysics.body;
 
 		return body.velocity.x;
 	}
 
 	private velocityY(): number {
-		const body = <any>this.playerObject.body;
+		const body = <any>this.containerPhysics.body;
 
 		return body.velocity.y;
 	}
