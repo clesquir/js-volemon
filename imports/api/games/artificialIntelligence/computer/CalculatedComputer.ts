@@ -68,7 +68,7 @@ export default class CalculatedComputer implements Computer {
 		);
 
 		const horizontalThreshold = 25;
-		const distanceWithTimeToGround = timeToGround * modifiers.velocityXOnMove * modifiers.horizontalMoveModifier();
+		const distanceWithTimeToGround = timeToGround * modifiers.velocityXOnMove * modifiers.horizontalMoveMultiplier;
 
 		if (isLeft) {
 			if (xAtGround < halfWidth) {
@@ -347,10 +347,7 @@ export default class CalculatedComputer implements Computer {
 		}
 	}
 
-	/**
-	 * @param {{key: string, isMoveReversed: boolean, horizontalMoveModifier: Function, verticalMoveModifier: Function, alwaysJump: boolean, canJump: boolean, velocityXOnMove: number, velocityYOnJump: number}} modifiers
-	 */
-	private applyModifiers(modifiers) {
+	private applyModifiers(modifiers: ArtificialIntelligenceData) {
 		if (modifiers.isMoveReversed !== modifiers.velocityXOnMove < 0) {
 			const left = this.right;
 			const right = this.left;

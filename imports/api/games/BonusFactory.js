@@ -6,7 +6,6 @@ import BounceMonsterBonus from '/imports/api/games/bonus/BounceMonsterBonus.js';
 import CloakedMonsterBonus from '/imports/api/games/bonus/CloakedMonsterBonus.js';
 import CloudBonus from '/imports/api/games/bonus/CloudBonus.js';
 import CureBonus from '/imports/api/games/bonus/CureBonus.js';
-import DrunkMonsterBonus from '/imports/api/games/bonus/DrunkMonsterBonus.js';
 import FastMonsterBonus from '/imports/api/games/bonus/FastMonsterBonus.js';
 import FreezeMonsterBonus from '/imports/api/games/bonus/FreezeMonsterBonus.js';
 import HighGravity from '/imports/api/games/bonus/HighGravity.js';
@@ -40,7 +39,6 @@ import {
 	BONUS_CLOAKED_MONSTER,
 	BONUS_CLOUD,
 	BONUS_CURE,
-	BONUS_DRUNK_MONSTER,
 	BONUS_FAST_MONSTER,
 	BONUS_FREEZE_MONSTER,
 	BONUS_HIGH_GRAVITY,
@@ -222,8 +220,6 @@ export default class BonusFactory {
 				return new ReviveBonus(game, bonusClass);
 			case BONUS_INVINCIBLE_INSTANT_DEATH:
 				return new InvincibleInstantDeathBonus(game, bonusClass);
-			case BONUS_DRUNK_MONSTER:
-				return new DrunkMonsterBonus(game, bonusClass);
 			case BONUS_LOW_GRAVITY:
 				return new LowGravity(game, bonusClass);
 			case BONUS_HIGH_GRAVITY:

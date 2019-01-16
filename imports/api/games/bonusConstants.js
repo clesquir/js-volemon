@@ -23,7 +23,6 @@ export const BONUS_SMOKE_BOMB = 'SmokeBomb';
 export const BONUS_INSTANT_DEATH = 'InstantDeath';
 export const BONUS_REVIVE = 'ReviveBonus';
 export const BONUS_INVINCIBLE_INSTANT_DEATH = 'InvincibleInstantDeathBonus';
-export const BONUS_DRUNK_MONSTER = 'DrunkMonsterBonus';
 export const BONUS_NOTHING = 'NothingBonus';
 export const BONUS_REPELLENT = 'BonusRepellent';
 export const BONUS_LOW_GRAVITY = 'LowGravity';

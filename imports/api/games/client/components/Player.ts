@@ -46,8 +46,8 @@ export default class Player {
 
 	dropShots: boolean = false;
 	isFrozen: boolean = false;
-	horizontalMoveModifier: any; //@todo Rename to Multiplier
-	verticalMoveModifier: any; //@todo Rename to Multiplier
+	horizontalMoveMultiplier: number;
+	verticalMoveMultiplier: number;
 	isMoveReversed: boolean = false;
 	canJump: boolean = true;
 	alwaysJump: boolean = false;
@@ -149,22 +149,22 @@ export default class Player {
 		if (this.isFrozen) {
 			this.containerPhysics.setVelocity(0, 0);
 		} else {
-			const horizontalMoveModifier = this.horizontalMoveModifier();
+			const horizontalMoveMultiplier = this.horizontalMoveMultiplier;
 			const moveReversal = (this.isMoveReversed ? -1 : 1);
 
 			if (movesLeft) {
-				this.containerPhysics.setVelocityX(horizontalMoveModifier * moveReversal * -this.velocityXOnMove);
+				this.containerPhysics.setVelocityX(horizontalMoveMultiplier * moveReversal * -this.velocityXOnMove);
 			} else if (movesRight) {
-				this.containerPhysics.setVelocityX(horizontalMoveModifier * moveReversal * this.velocityXOnMove);
+				this.containerPhysics.setVelocityX(horizontalMoveMultiplier * moveReversal * this.velocityXOnMove);
 			} else {
 				this.containerPhysics.setVelocityX(0);
 			}
 
 			if (this.hasBottomTouching && !this.isJumping) {
 				if (this.alwaysJump || (jumps && this.canJump)) {
-					const verticalMoveModifier = this.verticalMoveModifier();
+					const verticalMoveMultiplier = this.verticalMoveMultiplier;
 
-					this.containerPhysics.setVelocityY(verticalMoveModifier * -this.velocityYOnJump);
+					this.containerPhysics.setVelocityY(verticalMoveMultiplier * -this.velocityYOnJump);
 
 					this.isJumping = true;
 					this.isJumpingTimer = this.scene.time.addEvent({
@@ -220,8 +220,8 @@ export default class Player {
 			key: this.key,
 			isHost: this.isHost,
 			isMoveReversed: this.isMoveReversed,
-			horizontalMoveModifier: this.horizontalMoveModifier,
-			verticalMoveModifier: this.verticalMoveModifier,
+			horizontalMoveMultiplier: this.horizontalMoveMultiplier,
+			verticalMoveMultiplier: this.verticalMoveMultiplier,
 			canJump: this.canJump,
 			velocityXOnMove: this.velocityXOnMove,
 			velocityYOnJump: this.velocityYOnJump,
@@ -265,8 +265,8 @@ export default class Player {
 		this.velocityYOnJump = this.gameConfiguration.playerYVelocity();
 
 		//Bonus
-		this.horizontalMoveModifier = () => {return 1;};
-		this.verticalMoveModifier = () => {return 1;};
+		this.horizontalMoveMultiplier = 1;
+		this.verticalMoveMultiplier = 1;
 		this.initialIsHiddenToHimself = this.gameConfiguration.isHiddenToHimself();
 		this.isHiddenToHimself = this.gameConfiguration.isHiddenToHimself();
 		this.initialIsHiddenToOpponent = this.gameConfiguration.isHiddenToOpponent();

@@ -724,8 +724,8 @@ describe('Game#inputs', function() {
 	it('sets engine Horizontal speed if left is pressed and sends player position', function() {
 		const engine = new NullEngine();
 		const game = new Game(Random.id(5), deviceController, engine, gameData, gameConfiguration, gameSkin, streamBundler, serverNormalizedTime);
-		const horizontalMoveModifier = function() {return 1;};
-		const verticalMoveModifier = function() {return 1;};
+		const horizontalMoveMultiplier = 1;
+		const verticalMoveMultiplier = 1;
 		const velocity = 100;
 		let horizontalSpeedValue = null;
 		let verticalSpeedValue = null;
@@ -734,8 +734,8 @@ describe('Game#inputs', function() {
 			return {
 				data: {
 					isFrozen: false,
-					horizontalMoveModifier: horizontalMoveModifier,
-					verticalMoveModifier: verticalMoveModifier,
+					horizontalMoveMultiplier: horizontalMoveMultiplier,
+					verticalMoveMultiplier: verticalMoveMultiplier,
 					velocityXOnMove: velocity,
 					velocityYOnJump: velocity
 				}
@@ -756,7 +756,7 @@ describe('Game#inputs', function() {
 		};
 
 		assert.isTrue(game.inputs());
-		assert.equal(-horizontalMoveModifier() * velocity, horizontalSpeedValue);
+		assert.equal(-horizontalMoveMultiplier() * velocity, horizontalSpeedValue);
 		assert.equal(0, verticalSpeedValue);
 		assert.isTrue(sendPlayerPositionStub.called);
 	});
@@ -764,8 +764,8 @@ describe('Game#inputs', function() {
 	it('sets engine Horizontal speed if right is pressed and sends player position', function() {
 		const engine = new NullEngine();
 		const game = new Game(Random.id(5), deviceController, engine, gameData, gameConfiguration, gameSkin, streamBundler, serverNormalizedTime);
-		const horizontalMoveModifier = function() {return 1;};
-		const verticalMoveModifier = function() {return 1;};
+		const horizontalMoveMultiplier = 1;
+		const verticalMoveMultiplier = 1;
 		const velocity = 100;
 		let horizontalSpeedValue = null;
 		let verticalSpeedValue = null;
@@ -774,8 +774,8 @@ describe('Game#inputs', function() {
 			return {
 				data: {
 					isFrozen: false,
-					horizontalMoveModifier: horizontalMoveModifier,
-					verticalMoveModifier: verticalMoveModifier,
+					horizontalMoveMultiplier: horizontalMoveMultiplier,
+					verticalMoveMultiplier: verticalMoveMultiplier,
 					velocityXOnMove: velocity,
 					velocityYOnJump: velocity
 				}
@@ -796,7 +796,7 @@ describe('Game#inputs', function() {
 		};
 
 		assert.isTrue(game.inputs());
-		assert.equal(horizontalMoveModifier() * velocity, horizontalSpeedValue);
+		assert.equal(horizontalMoveMultiplier() * velocity, horizontalSpeedValue);
 		assert.equal(0, verticalSpeedValue);
 		assert.isTrue(sendPlayerPositionStub.called);
 	});
@@ -804,8 +804,8 @@ describe('Game#inputs', function() {
 	it('sets engine Horizontal speed to 0 if neither left or right is pressed and sends player position', function() {
 		const engine = new NullEngine();
 		const game = new Game(Random.id(5), deviceController, engine, gameData, gameConfiguration, gameSkin, streamBundler, serverNormalizedTime);
-		const horizontalMoveModifier = function() {return 1;};
-		const verticalMoveModifier = function() {return 1;};
+		const horizontalMoveMultiplier = 1;
+		const verticalMoveMultiplier = 1;
 		const velocity = 100;
 		let horizontalSpeedValue = null;
 		let verticalSpeedValue = null;
@@ -814,8 +814,8 @@ describe('Game#inputs', function() {
 			return {
 				data: {
 					isFrozen: false,
-					horizontalMoveModifier: horizontalMoveModifier,
-					verticalMoveModifier: verticalMoveModifier,
+					horizontalMoveMultiplier: horizontalMoveMultiplier,
+					verticalMoveMultiplier: verticalMoveMultiplier,
 					velocityXOnMove: velocity,
 					velocityYOnJump: velocity
 				}
@@ -844,8 +844,8 @@ describe('Game#inputs', function() {
 	it('sets engine Vertical speed if up is pressed and sends player position', function() {
 		const engine = new NullEngine();
 		const game = new Game(Random.id(5), deviceController, engine, gameData, gameConfiguration, gameSkin, streamBundler, serverNormalizedTime);
-		const horizontalMoveModifier = function() {return 1;};
-		const verticalMoveModifier = function() {return 1;};
+		const horizontalMoveMultiplier = 1;
+		const verticalMoveMultiplier = 1;
 		const velocity = 100;
 		let horizontalSpeedValue = null;
 		let verticalSpeedValue = null;
@@ -855,8 +855,8 @@ describe('Game#inputs', function() {
 				data: {
 					isFrozen: false,
 					canJump: true,
-					horizontalMoveModifier: horizontalMoveModifier,
-					verticalMoveModifier: verticalMoveModifier,
+					horizontalMoveMultiplier: horizontalMoveMultiplier,
+					verticalMoveMultiplier: verticalMoveMultiplier,
 					velocityXOnMove: velocity,
 					velocityYOnJump: velocity
 				}
@@ -885,8 +885,8 @@ describe('Game#inputs', function() {
 	it('sets engine Vertical speed to 0 if up is not pressed and sends player position', function() {
 		const engine = new NullEngine();
 		const game = new Game(Random.id(5), deviceController, engine, gameData, gameConfiguration, gameSkin, streamBundler, serverNormalizedTime);
-		const horizontalMoveModifier = function() {return 1;};
-		const verticalMoveModifier = function() {return 1;};
+		const horizontalMoveMultiplier = 1;
+		const verticalMoveMultiplier = 1;
 		const velocity = 100;
 		let horizontalSpeedValue = null;
 		let verticalSpeedValue = null;
@@ -895,8 +895,8 @@ describe('Game#inputs', function() {
 			return {
 				data: {
 					isFrozen: false,
-					horizontalMoveModifier: horizontalMoveModifier,
-					verticalMoveModifier: verticalMoveModifier,
+					horizontalMoveMultiplier: horizontalMoveMultiplier,
+					verticalMoveMultiplier: verticalMoveMultiplier,
 					velocityXOnMove: velocity,
 					velocityYOnJump: velocity
 				}
@@ -925,8 +925,8 @@ describe('Game#inputs', function() {
 	it('does not increase engine Vertical speed if player is not at ground level and sends player position', function() {
 		const engine = new NullEngine();
 		const game = new Game(Random.id(5), deviceController, engine, gameData, gameConfiguration, gameSkin, streamBundler, serverNormalizedTime);
-		const horizontalMoveModifier = function() {return 1;};
-		const verticalMoveModifier = function() {return 1;};
+		const horizontalMoveMultiplier = 1;
+		const verticalMoveMultiplier = 1;
 		const velocity = 100;
 		let horizontalSpeedValue = null;
 
@@ -934,8 +934,8 @@ describe('Game#inputs', function() {
 			return {
 				data: {
 					isFrozen: false,
-					horizontalMoveModifier: horizontalMoveModifier,
-					verticalMoveModifier: verticalMoveModifier,
+					horizontalMoveMultiplier: horizontalMoveMultiplier,
+					verticalMoveMultiplier: verticalMoveMultiplier,
 					velocityXOnMove: velocity,
 					velocityYOnJump: velocity
 				}

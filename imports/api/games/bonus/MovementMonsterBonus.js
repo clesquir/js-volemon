@@ -6,7 +6,7 @@ export default class MovementMonsterBonus extends MonsterBonus {
 	}
 
 	stop() {
-		this.game.changePlayerProperty.call(this.game, this.activatorPlayerKey, 'horizontalMoveModifier', () => {return 1;});
+		this.game.changePlayerProperty.call(this.game, this.activatorPlayerKey, 'horizontalMoveMultiplier', 1);
 
 		this.deactivate();
 	}

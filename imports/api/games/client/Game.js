@@ -497,8 +497,8 @@ export default class Game {
 		player.data.lastBallHit = 0;
 		player.data.numberBallHits = 0;
 		//Bonus
-		player.data.horizontalMoveModifier = () => {return 1;};
-		player.data.verticalMoveModifier = () => {return 1;};
+		player.data.horizontalMoveMultiplier = 1;
+		player.data.verticalMoveMultiplier = 1;
 		player.data.isMoveReversed = false;
 		player.data.isFrozen = false;
 		player.data.canJump = true;
@@ -1127,22 +1127,22 @@ export default class Game {
 			this.engine.setHorizontalSpeed(player, 0);
 			this.engine.setVerticalSpeed(player, 0);
 		} else {
-			const horizontalMoveModifier = player.data.horizontalMoveModifier();
+			const horizontalMoveMultiplier = player.data.horizontalMoveMultiplier;
 			const moveReversal = (player.data.isMoveReversed ? -1 : 1);
 
 			if (movesLeft) {
-				this.engine.setHorizontalSpeed(player, horizontalMoveModifier * moveReversal * -player.data.velocityXOnMove);
+				this.engine.setHorizontalSpeed(player, horizontalMoveMultiplier * moveReversal * -player.data.velocityXOnMove);
 			} else if (movesRight) {
-				this.engine.setHorizontalSpeed(player, horizontalMoveModifier * moveReversal * player.data.velocityXOnMove);
+				this.engine.setHorizontalSpeed(player, horizontalMoveMultiplier * moveReversal * player.data.velocityXOnMove);
 			} else {
 				this.engine.setHorizontalSpeed(player, 0);
 			}
 
 			if (this.engine.hasSurfaceTouchingPlayerBottom(player)) {
 				if (player.data.alwaysJump || (jumps && player.data.canJump)) {
-					const verticalMoveModifier = player.data.verticalMoveModifier();
+					const verticalMoveMultiplier = player.data.verticalMoveMultiplier;
 
-					this.engine.setVerticalSpeed(player, verticalMoveModifier * -player.data.velocityYOnJump);
+					this.engine.setVerticalSpeed(player, verticalMoveMultiplier * -player.data.velocityYOnJump);
 				} else {
 					this.engine.setVerticalSpeed(player, 0);
 				}

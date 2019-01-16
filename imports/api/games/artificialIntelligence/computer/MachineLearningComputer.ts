@@ -134,11 +134,7 @@ export default class MachineLearningComputer implements Computer {
 		);
 	}
 
-	/**
-	 * @param {{key: string, isMoveReversed: boolean, horizontalMoveModifier: Function, verticalMoveModifier: Function, alwaysJump: boolean, canJump: boolean, velocityXOnMove: number, velocityYOnJump: number}} modifiers
-	 * @param outputs
-	 */
-	private applyLearnerOutput(modifiers, outputs: number[]) {
+	private applyLearnerOutput(modifiers: ArtificialIntelligenceData, outputs: number[]) {
 		if (outputs.length === 2) {
 			if (outputs[0] < 0.33) {
 				this.moveLeft();
@@ -180,10 +176,7 @@ export default class MachineLearningComputer implements Computer {
 		return !!modifiers.isHost;
 	}
 
-	/**
-	 * @param {{key: string, isMoveReversed: boolean, horizontalMoveModifier: Function, verticalMoveModifier: Function, alwaysJump: boolean, canJump: boolean, velocityXOnMove: number, velocityYOnJump: number}} modifiers
-	 */
-	private applyModifiers(modifiers) {
+	private applyModifiers(modifiers: ArtificialIntelligenceData) {
 		if (modifiers.isMoveReversed !== modifiers.velocityXOnMove < 0) {
 			const left = this.right;
 			const right = this.left;
