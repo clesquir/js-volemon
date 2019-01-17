@@ -12,6 +12,7 @@ import {CLIENT_POINTS_COLUMN, HOST_POINTS_COLUMN} from "../../constants";
 import {BALL_INTERVAL, PLAYER_INTERVAL} from "../../emissionConstants";
 import {PositionData} from "../components/PositionData";
 import Countdown from "../components/Countdown";
+import Animations from "../components/Animations";
 
 const Phaser = require('phaser');
 
@@ -23,6 +24,7 @@ export default class MainScene extends Phaser.Scene {
 	streamBundler: StreamBundler;
 	serverNormalizedTime: ServerNormalizedTime;
 
+	animations: Animations;
 	level: Level;
 	artificialIntelligence: ArtificialIntelligence;
 	eventEmitter: Phaser.Events.EventEmitter;
@@ -37,8 +39,8 @@ export default class MainScene extends Phaser.Scene {
 	gameInitiated: boolean = false;
 	gameResumed: boolean = false;
 	gameHasEnded: boolean = false;
-	hostNumberBallHits: number;
-	clientNumberBallHits: number;
+	hostNumberBallHits: number = 0;
+	clientNumberBallHits: number = 0;
 
 	lastPlayerPositionData: { [key: string]: PositionData } = {};
 	lastBallPositionData: PositionData;
@@ -57,6 +59,7 @@ export default class MainScene extends Phaser.Scene {
 		this.streamBundler = config.streamBundler;
 		this.serverNormalizedTime = config.serverNormalizedTime;
 
+		this.animations = new Animations(this);
 		this.level = new Level(
 			this,
 			this.gameConfiguration,
@@ -257,29 +260,19 @@ export default class MainScene extends Phaser.Scene {
 			radius
 		);
 
-		//Play animation
-		const duration = 250;
-		const scale = 4;
-
-		hitPoint.setAlpha(0.5);
-
-		this.tweens.add({
-			targets: hitPoint,
-			scaleX: scale,
-			scaleY: scale,
-			alpha: 0,
-			duration: duration,
-			onComplete: function () {
-				if (hitPoint) {
-					hitPoint.destroy();
-					console.log('desotry');
-				}
-			}
-		});
+		this.animations.activate(hitPoint);
 	}
 
 	showBallHitCount(x: number, y: number, ballHitCount: number, color: string) {
-		//@todo Ball hit count
+		const countText = this.add.text(
+			x,
+			y,
+			ballHitCount,
+			{fontFamily: "'Oxygen Mono', sans-serif", fontSize: 35, color: color, align: 'center'}
+		);
+		countText.setOrigin(0.5);
+
+		this.animations.disappear(countText);
 	}
 
 	private onCollision(event, eventName) {

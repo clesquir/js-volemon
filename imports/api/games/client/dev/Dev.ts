@@ -135,6 +135,8 @@ export default class Dev {
 	}
 
 	resetPlayersAndBall() {
+		this.mainScene.resetHostNumberBallHits();
+		this.mainScene.resetClientNumberBallHits();
 		this.mainScene.player1.reset();
 		this.mainScene.player2.reset();
 		this.mainScene.ball.reset(this.gameData.lastPointTaken);

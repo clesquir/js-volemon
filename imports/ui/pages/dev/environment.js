@@ -6,12 +6,12 @@ import './environment.html';
 
 /** @type {Environment}|null */
 let environment = null;
-const groundHitEnabled = new ReactiveVar(false);
+const groundHitEnabled = new ReactiveVar(true);
+const ballHitCountEnabled = new ReactiveVar(true);
 
 Template.environment.rendered = function() {
 	environment = new Environment();
 	environment.start();
-	environment.disableGroundHit();
 };
 
 Template.environment.destroyed = function() {
@@ -23,12 +23,19 @@ Template.environment.destroyed = function() {
 Template.environment.helpers({
 	groundHitEnabled: function() {
 		return groundHitEnabled.get();
+	},
+	ballHitCountEnabled: function() {
+		return ballHitCountEnabled.get();
 	}
 });
 
 Template.environment.events({
 	'click [data-action="kill-player"]': function() {
 		environment.killPlayer();
+	},
+
+	'click [data-action="revive-player"]': function() {
+		environment.revivePlayer();
 	},
 
 	'click [data-action="create-random-bonus"]': function() {
@@ -43,5 +50,15 @@ Template.environment.events({
 		}
 
 		groundHitEnabled.set(!groundHitEnabled.get());
+	},
+
+	'click [data-action="enable-ball-hit-count"]': function() {
+		if (ballHitCountEnabled.get()) {
+			environment.disableBallHitCount();
+		} else {
+			environment.enableBallHitCount();
+		}
+
+		ballHitCountEnabled.set(!ballHitCountEnabled.get());
 	}
 });

@@ -3,11 +3,23 @@ import {Random} from 'meteor/random';
 import Ball from "../components/Ball";
 
 export default class Environment extends Dev {
-	groundHitEnabled: boolean = false;
+	groundHitEnabled: boolean = true;
+	showBallHitCount: boolean = true;
+
+	overrideGame() {
+		super.overrideGame();
+
+		this.gameConfiguration.overridesTeamMaximumBallHit = () => {
+			return this.showBallHitCount;
+		};
+		this.gameConfiguration.teamMaximumBallHit = () => {
+			return 3;
+		};
+	}
 
 	createPlayersComponents() {
 		this.mainScene.player1 = this.mainScene.createPlayer('player1', '#a73030', true);
-		this.mainScene.player2 = this.mainScene.createPlayer('player2', '#274b7a', true);
+		this.mainScene.player2 = this.mainScene.createPlayer('player2', '#274b7a', false);
 	}
 
 	createLevelComponents() {
@@ -35,6 +47,11 @@ export default class Environment extends Dev {
 		// this.gameBonus.killPlayer('player1');
 	}
 
+	revivePlayer() {
+		//@todo Bonus
+		// this.gameBonus.revivePlayer('player1');
+	}
+
 	createRandomBonus() {
 		//@todo Bonus
 		// this.gameBonus.createRandomBonus();
@@ -46,5 +63,13 @@ export default class Environment extends Dev {
 
 	disableGroundHit() {
 		this.groundHitEnabled = false;
+	}
+
+	enableBallHitCount() {
+		this.showBallHitCount = true;
+	}
+
+	disableBallHitCount() {
+		this.showBallHitCount = false;
 	}
 }
