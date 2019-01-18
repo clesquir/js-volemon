@@ -17,11 +17,6 @@ export default class Environment extends Dev {
 		};
 	}
 
-	createPlayersComponents() {
-		this.mainScene.player1 = this.mainScene.createPlayer('player1', '#a73030', true);
-		this.mainScene.player2 = this.mainScene.createPlayer('player2', '#274b7a', false);
-	}
-
 	createLevelComponents() {
 		this.mainScene.level.createGround();
 		this.mainScene.level.createFieldLimits(false);

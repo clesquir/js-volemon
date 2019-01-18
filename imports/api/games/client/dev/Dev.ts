@@ -80,7 +80,6 @@ export default class Dev {
 		this.mainScene.resumeOnTimerEnd = () => {this.resumeOnTimerEnd();};
 		this.initialUpdate = this.mainScene.update;
 		this.mainScene.update = () => {this.updateGame();};
-
 		this.mainScene.onBallHitGround = (ball: Ball) => {
 			this.onBallHitGround(ball);
 		};
@@ -90,9 +89,7 @@ export default class Dev {
 		this.mainScene.level.createCollisionCategories();
 
 		this.mainScene.artificialIntelligence.initFromData(this.gameData);
-
-		this.createPlayersComponents();
-
+		this.mainScene.players.create();
 		this.mainScene.ball = this.mainScene.createBall();
 
 		this.createLevelComponents();
@@ -101,16 +98,6 @@ export default class Dev {
 			this.gameData,
 			this.serverNormalizedTime
 		);
-	}
-
-	createPlayersComponents() {
-		this.mainScene.player1 = this.mainScene.createPlayer('player1', '#a73030', true);
-		this.mainScene.player2 = this.mainScene.createPlayer('player2', '#274b7a', false);
-
-		if (this.gameData.isTwoVersusTwo()) {
-			this.mainScene.player3 = this.mainScene.createPlayer('player3', '#d46969', true);
-			this.mainScene.player4 = this.mainScene.createPlayer('player4', '#437bc4', false);
-		}
 	}
 
 	createLevelComponents() {
@@ -135,10 +122,7 @@ export default class Dev {
 	}
 
 	resetPlayersAndBall() {
-		this.mainScene.resetHostNumberBallHits();
-		this.mainScene.resetClientNumberBallHits();
-		this.mainScene.player1.reset();
-		this.mainScene.player2.reset();
+		this.mainScene.players.reset();
 		this.mainScene.ball.reset(this.gameData.lastPointTaken);
 	}
 

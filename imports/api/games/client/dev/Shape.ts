@@ -32,7 +32,9 @@ export default class Shape extends Dev {
 				return this.gameConfiguration.levelConfiguration.playerInitialY() - this.gameConfiguration.playerHeight() - 5;
 			}
 		};
-		this.mainScene.getPlayerFromKey = (playerKey) => {
+
+		this.mainScene.players.create = () => {this.createPlayersComponents()};
+		this.mainScene.players.getPlayerFromKey = (playerKey) => {
 			return this.players[playerKey];
 		};
 	}
@@ -52,7 +54,7 @@ export default class Shape extends Dev {
 				color = '#274b7a';
 			}
 
-			this.players['player' + playerIndex] = this.mainScene.createPlayer('player' + playerIndex, color, isHost);
+			this.players['player' + playerIndex] = this.mainScene.players.createPlayer('player' + playerIndex, color, isHost);
 		}
 	}
 
