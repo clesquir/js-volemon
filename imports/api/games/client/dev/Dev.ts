@@ -95,7 +95,9 @@ export default class Dev {
 		this.createLevelComponents();
 
 		this.mainScene.countdown = new Countdown(
+			this.mainScene,
 			this.gameData,
+			this.gameConfiguration,
 			this.serverNormalizedTime
 		);
 	}

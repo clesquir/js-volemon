@@ -13,8 +13,8 @@ import ServerNormalizedTime from "../ServerNormalizedTime";
 
 export default class Players {
 	scene: MainScene;
-	gameConfiguration: GameConfiguration;
 	gameData: GameData;
+	gameConfiguration: GameConfiguration;
 	streamBundler: StreamBundler;
 	serverNormalizedTime: ServerNormalizedTime;
 	level: Level;
@@ -33,16 +33,16 @@ export default class Players {
 
 	constructor (
 		scene: MainScene,
-		gameConfiguration: GameConfiguration,
 		gameData: GameData,
+		gameConfiguration: GameConfiguration,
 		streamBundler: StreamBundler,
 		serverNormalizedTime: ServerNormalizedTime,
 		level: Level,
 		artificialIntelligence: ArtificialIntelligence
 	) {
 		this.scene = scene;
-		this.gameConfiguration = gameConfiguration;
 		this.gameData = gameData;
+		this.gameConfiguration = gameConfiguration;
 		this.streamBundler = streamBundler;
 		this.serverNormalizedTime = serverNormalizedTime;
 		this.level = level;
@@ -180,8 +180,8 @@ export default class Players {
 	private createPlayer(key, color, isHost): Player {
 		return new Player(
 			this.scene,
-			this.gameConfiguration,
 			this.gameData,
+			this.gameConfiguration,
 			this.level,
 			key,
 			color,

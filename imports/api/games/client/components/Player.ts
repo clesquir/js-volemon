@@ -26,8 +26,8 @@ import {PositionData} from "./PositionData";
 
 export default class Player {
 	scene: MainScene;
-	gameConfiguration: GameConfiguration;
 	gameData: GameData;
+	gameConfiguration: GameConfiguration;
 	level: Level;
 	key: string;
 	color: string;
@@ -88,8 +88,8 @@ export default class Player {
 
 	constructor (
 		scene: MainScene,
-		gameConfiguration: GameConfiguration,
 		gameData: GameData,
+		gameConfiguration: GameConfiguration,
 		level: Level,
 		key: string,
 		color: string,

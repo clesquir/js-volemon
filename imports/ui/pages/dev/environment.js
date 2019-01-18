@@ -8,6 +8,8 @@ import './environment.html';
 let environment = null;
 const groundHitEnabled = new ReactiveVar(true);
 const ballHitCountEnabled = new ReactiveVar(true);
+const matchPointEnabled = new ReactiveVar(false);
+const deucePointEnabled = new ReactiveVar(false);
 
 Template.environment.rendered = function() {
 	environment = new Environment();
@@ -26,6 +28,12 @@ Template.environment.helpers({
 	},
 	ballHitCountEnabled: function() {
 		return ballHitCountEnabled.get();
+	},
+	matchPointEnabled: function() {
+		return matchPointEnabled.get();
+	},
+	deucePointEnabled: function() {
+		return deucePointEnabled.get();
 	}
 });
 
@@ -60,5 +68,25 @@ Template.environment.events({
 		}
 
 		ballHitCountEnabled.set(!ballHitCountEnabled.get());
+	},
+
+	'click [data-action="enable-match-point"]': function() {
+		if (matchPointEnabled.get()) {
+			environment.disableMatchPoint();
+		} else {
+			environment.enableMatchPoint();
+		}
+
+		matchPointEnabled.set(!matchPointEnabled.get());
+	},
+
+	'click [data-action="enable-deuce-point"]': function() {
+		if (deucePointEnabled.get()) {
+			environment.disableDeucePoint();
+		} else {
+			environment.enableDeucePoint();
+		}
+
+		deucePointEnabled.set(!deucePointEnabled.get());
 	}
 });

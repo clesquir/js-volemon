@@ -61,8 +61,8 @@ export default class MainScene extends Phaser.Scene {
 		this.artificialIntelligence = new ArtificialIntelligence();
 		this.players = new Players(
 			this,
-			this.gameConfiguration,
 			this.gameData,
+			this.gameConfiguration,
 			this.streamBundler,
 			this.serverNormalizedTime,
 			this.level,
@@ -151,7 +151,9 @@ export default class MainScene extends Phaser.Scene {
 		this.level.createFieldLimits(true);
 
 		this.countdown = new Countdown(
+			this,
 			this.gameData,
+			this.gameConfiguration,
 			this.serverNormalizedTime
 		);
 	}

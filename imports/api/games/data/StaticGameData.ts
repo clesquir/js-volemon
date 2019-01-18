@@ -135,7 +135,7 @@ export default class StaticGameData implements GameData {
 	}
 
 	numberMaximumPoints(): number {
-		return 1;
+		return 5;
 	}
 
 	isMatchPoint(): boolean {

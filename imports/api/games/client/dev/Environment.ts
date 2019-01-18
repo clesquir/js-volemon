@@ -5,6 +5,8 @@ import Ball from "../components/Ball";
 export default class Environment extends Dev {
 	groundHitEnabled: boolean = true;
 	showBallHitCount: boolean = true;
+	isMatchPoint: boolean = false;
+	isDeucePoint: boolean = false;
 
 	overrideGame() {
 		super.overrideGame();
@@ -14,6 +16,12 @@ export default class Environment extends Dev {
 		};
 		this.gameConfiguration.teamMaximumBallHit = () => {
 			return 3;
+		};
+		this.gameData.isMatchPoint = () => {
+			return this.isMatchPoint;
+		};
+		this.gameData.isDeucePoint = () => {
+			return this.isDeucePoint;
 		};
 	}
 
@@ -66,5 +74,21 @@ export default class Environment extends Dev {
 
 	disableBallHitCount() {
 		this.showBallHitCount = false;
+	}
+
+	enableMatchPoint() {
+		this.isMatchPoint = true;
+	}
+
+	disableMatchPoint() {
+		this.isMatchPoint = false;
+	}
+
+	enableDeucePoint() {
+		this.isDeucePoint = true;
+	}
+
+	disableDeucePoint() {
+		this.isDeucePoint = false;
 	}
 }
