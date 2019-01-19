@@ -153,23 +153,28 @@ export default class SkinManager {
 		const x = forHost ? 0 : this.gameConfiguration.width();
 		const y = this.gameConfiguration.height() * 0.10 + 25;
 
-		//@todo Cheer
+		const particles = scene.add.particles(confettis.key);
+		let emittedParticles = 0;
+		const maxParticles = 50;
+		const emitter = particles.createEmitter({
+			frame: (forHost ? confettis.hostFrames : confettis.clientFrames),
+			x: x,
+			y: y,
+			lifespan: 5000,
+			maxParticles: maxParticles,
+			angle: {min: (forHost ? 10 : 120), max: (forHost ? 60 : 170)},
+			speed: {min: (forHost ? 1 : -1) * 25, max: (forHost ? 1 : -1) * 300},
+			rotate: {min: 0, max: 360},
+			gravityY: 100,
+			emitCallback: () => {
+				emittedParticles++;
 
-		scene.add.particles(
-			confettis.key,
-			(forHost ? confettis.hostFrames : confettis.clientFrames),
-			{
-				x: x,
-				y: y,
-				xMinSpeed: (forHost ? 1 : -1) * 50,
-				maxVelocityX: (forHost ? 1 : -1) * 250,
-				yMinSpeed: 25,
-				maxVelocityY: 150,
-				lifespan: 3000,
-				quantity: 500,
-				frequency: 0
-			}
-		);
+				if (emittedParticles > maxParticles) {
+					emitter.stop();
+					particles.destroy();
+				}
+			},
+		});
 	}
 
 	private renderBackgroundComponents(
