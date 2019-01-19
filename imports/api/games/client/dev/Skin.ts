@@ -1,5 +1,5 @@
 import Dev from "./Dev";
-import LevelConfiguration from 'imports/api/games/levelConfiguration/LevelConfiguration.js';
+import LevelConfiguration from 'imports/api/games/levelConfiguration/LevelConfiguration';
 import {Meteor} from 'meteor/meteor';
 import {moment} from 'meteor/momentjs:moment';
 import {Random} from 'meteor/random';

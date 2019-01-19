@@ -1,14 +1,13 @@
 import Game from '/imports/api/games/client/Game.js';
-import GameStreamBundler from '/imports/api/games/client/streamBundler/GameStreamBundler.js';
-import NullStreamBundler from '/imports/api/games/client/streamBundler/NullStreamBundler.js';
-import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime.js';
+import NullStreamBundler from '/imports/api/games/client/streamBundler/NullStreamBundler';
+import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime';
 import GameSkin from '/imports/api/games/client/skin/GameSkin.js';
 import StaticGameConfiguration from '/imports/api/games/configuration/StaticGameConfiguration.js';
 import {PLAYER_FROZEN_MASS} from '/imports/api/games/constants.js';
-import StaticGameData from '/imports/api/games/data/StaticGameData.js';
-import NullDeviceController from '/imports/api/games/deviceController/NullDeviceController.js';
+import StaticGameData from '/imports/api/games/data/StaticGameData';
+import NullDeviceController from '/imports/api/games/deviceController/NullDeviceController';
 import NullEngine from '/imports/api/games/engine/NullEngine.js';
-import DefaultSkin from '/imports/api/skins/skins/DefaultSkin.js';
+import DefaultSkin from '/imports/api/skins/skins/DefaultSkin';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 import {assert} from 'chai';
 import {Random} from 'meteor/random';
@@ -59,7 +58,7 @@ describe('GameBonus#createBonusIfTimeHasElapsed', function() {
 	const gameId = Random.id(5);
 	const gameData = new StaticGameData();
 	const gameConfiguration = new StaticGameConfiguration();
-	const streamBundler = new GameStreamBundler();
+	const streamBundler = new NullStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 	const deviceController = new NullDeviceController();
 	const engine = new NullEngine();

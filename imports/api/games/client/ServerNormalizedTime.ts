@@ -2,6 +2,9 @@ import {Meteor} from 'meteor/meteor';
 import {TimeSync} from 'meteor/mizzao:timesync';
 
 export default class ServerNormalizedTime {
+	serverOffset: number;
+	timeSyncTimeout: number;
+
 	init() {
 		this.serverOffset = TimeSync.serverOffset();
 		this.timeSyncTimeout = Meteor.setInterval(() => {

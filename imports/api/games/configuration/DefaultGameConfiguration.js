@@ -1,6 +1,6 @@
 import {isTwoVersusTwoGameMode} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
-import LevelConfiguration from '/imports/api/games/levelConfiguration/LevelConfiguration.js';
+import LevelConfiguration from '/imports/api/games/levelConfiguration/LevelConfiguration';
 import TournamentMode from '/imports/api/tournaments/TournamentMode.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import GameConfiguration from './GameConfiguration.js';
