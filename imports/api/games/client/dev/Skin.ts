@@ -6,10 +6,11 @@ import {Random} from 'meteor/random';
 import {Session} from 'meteor/session';
 import SkinManager from "../skin/SkinManager";
 import SkinFactory from "../../../skins/skins/SkinFactory";
+import WeatherPlugin from "../../../skins/plugins/WeatherPlugin";
 
 export default class Skin extends Dev {
 	startTime: number = 0;
-	timerUpdater;
+	timerUpdater: number;
 
 	constructor() {
 		super();
@@ -20,7 +21,21 @@ export default class Skin extends Dev {
 
 	beforeStart() {
 		this.gameConfiguration.levelConfiguration = LevelConfiguration.fromMode(Session.get('dev.skin.currentMode'));
-		this.skinManager = new SkinManager(this.gameConfiguration, SkinFactory.fromId(Session.get('dev.skin.currentSkin')), []);
+
+		const weatherPlugin = new WeatherPlugin();
+		weatherPlugin.init();
+		weatherPlugin.weatherApi.timeOfDay = () => {
+			return Session.get('dev.skin.timeOfDay');
+		};
+		weatherPlugin.weatherApi.condition = () => {
+			return Session.get('dev.skin.condition');
+		};
+
+		this.skinManager = new SkinManager(
+			this.gameConfiguration,
+			SkinFactory.fromId(Session.get('dev.skin.currentSkin')),
+			Session.get('dev.skin.pluginEnabled') ? [weatherPlugin] : []
+		);
 	}
 
 	start() {

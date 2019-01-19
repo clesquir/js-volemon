@@ -57,6 +57,22 @@
 					<a href="#" class="button {{#if modeIsSelected '2vs2'}}option-selected{{/if}}" data-action="change-mode" data-mode-id="2vs2">2 VS 2</a>
 				</div>
 
+				<div class="skin-options">
+					<a href="#" class="button {{#if pluginEnabled}}option-selected{{/if}}" data-action="switch-plugin">
+						Weather plugin {{#if pluginEnabled}}enabled{{else}}disabled{{/if}}
+					</a>
+					<a href="#" class="button {{#if timeOfDayTwilightSelected }}option-selected{{/if}}" data-action="change-time-of-day" data-time-of-day-id="{{timeOfDayTwilight}}">Twilight</a>
+					<a href="#" class="button {{#if timeOfDayDaylightSelected }}option-selected{{/if}}" data-action="change-time-of-day" data-time-of-day-id="{{timeOfDayDaylight}}">Daylight</a>
+					<a href="#" class="button {{#if timeOfDayNightSelected }}option-selected{{/if}}" data-action="change-time-of-day" data-time-of-day-id="{{timeOfDayNight}}">Night</a>
+					<a href="#" class="button {{#if conditionClearSelected }}option-selected{{/if}}" data-action="change-condition" data-condition-id="{{conditionClear}}">Clear</a>
+					<a href="#" class="button {{#if conditionRainSelected }}option-selected{{/if}}" data-action="change-condition" data-condition-id="{{conditionRain}}">Rain</a>
+					<a href="#" class="button {{#if conditionThunderSelected }}option-selected{{/if}}" data-action="change-condition" data-condition-id="{{conditionThunder}}">Thunder</a>
+					<a href="#" class="button {{#if conditionSnowSelected }}option-selected{{/if}}" data-action="change-condition" data-condition-id="{{conditionSnow}}">Snow</a>
+					<a href="#" class="button {{#if conditionFogSelected }}option-selected{{/if}}" data-action="change-condition" data-condition-id="{{conditionFog}}">Fog</a>
+					<a href="#" class="button {{#if conditionWindSelected }}option-selected{{/if}}" data-action="change-condition" data-condition-id="{{conditionWind}}">Wind</a>
+					<a href="#" class="button {{#if conditionCloudSelected }}option-selected{{/if}}" data-action="change-condition" data-condition-id="{{conditionCloud}}">Cloud</a>
+				</div>
+
 			</div>
 
 			<div class="game-container">
