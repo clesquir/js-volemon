@@ -1,4 +1,4 @@
-import * as Moment from 'meteor/momentjs:moment';
+import moment from 'moment';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import Listener from './Listener';
 
@@ -20,6 +20,6 @@ export default class TournamentListener extends Listener {
 	tournamentFinished() {
 		const tournament = Tournaments.findOne({_id: this.tournamentId});
 
-		return (tournament && Moment.moment(tournament.endDate, "YYYY-MM-DD ZZ").diff(new Date()) < 0);
+		return (tournament && moment(tournament.endDate, "YYYY-MM-DD ZZ").diff(new Date()) < 0);
 	}
 }

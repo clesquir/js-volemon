@@ -1,4 +1,4 @@
-import {PLAYER_DEFAULT_SHAPE} from 'imports/api/games/shapeConstants';
+import {PLAYER_DEFAULT_SHAPE} from '../shapeConstants';
 import GameData from "./GameData";
 
 export default class StaticGameData implements GameData {

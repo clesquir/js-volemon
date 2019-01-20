@@ -1,7 +1,7 @@
-import {isTwoVersusTwoGameMode} from 'imports/api/games/constants';
+import {isTwoVersusTwoGameMode} from '../constants';
 import {Games} from 'imports/api/games/games';
 import {Players} from 'imports/api/games/players';
-import {PLAYER_DEFAULT_SHAPE} from 'imports/api/games/shapeConstants';
+import {PLAYER_DEFAULT_SHAPE} from '../shapeConstants';
 import {
 	hasGameAborted,
 	hasGameStatusEndedWithAWinner,

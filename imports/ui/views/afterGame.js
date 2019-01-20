@@ -26,7 +26,7 @@ import {playersCanPlayTournament} from '/imports/api/tournaments/utils.js';
 import CardSwitcher from '/imports/lib/client/CardSwitcher.js';
 import ButtonEnabler from '/imports/ui/util/ButtonEnabler.js';
 import {Meteor} from 'meteor/meteor';
-import * as Moment from 'meteor/momentjs:moment';
+import moment from 'moment';
 import {Session} from 'meteor/session';
 import {Template} from 'meteor/templating';
 
@@ -130,7 +130,7 @@ Template.afterGame.helpers({
 				durationClass += 'game-duration-winner-' + this.game.pointsSide[index] + ' ';
 			}
 
-			return '<span class="' + durationClass + '">' + Moment.moment(value).format('mm:ss') + "</span>";
+			return '<span class="' + durationClass + '">' + moment(value).format('mm:ss') + "</span>";
 		}).join('<span class="game-duration-separator"> &#8226; </span>');
 	},
 

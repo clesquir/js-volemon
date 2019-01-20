@@ -7,7 +7,7 @@ import {timeElapsedSince} from '/imports/lib/utils.js';
 import {initRecentGames} from '/imports/ui/views/recentGames.js';
 import {loadStatistics} from '/imports/ui/views/statistics.js';
 import {Meteor} from 'meteor/meteor';
-import * as Moment from 'meteor/momentjs:moment';
+import moment from 'moment';
 import {Mongo} from 'meteor/mongo';
 import {Template} from 'meteor/templating';
 
@@ -158,7 +158,7 @@ class UserProfileViews {
 				const tournament = Tournaments.findOne({_id: Session.get('tournament')});
 
 				if (tournament) {
-					const date = Moment.moment(tournament.startDate, 'YYYY-MM-DD ZZ');
+					const date = moment(tournament.startDate, 'YYYY-MM-DD ZZ');
 					updateRankChart(null, timeElapsedSince(date.valueOf()), false);
 				}
 			} else {

@@ -1,4 +1,4 @@
-import * as Moment from 'meteor/momentjs:moment';
+import moment from 'moment';
 
 const DetectRTC = require('detectrtc');
 
@@ -53,7 +53,7 @@ export const getWinRateFromNumbers = function(numberOfWin, numberOfLost) {
 };
 
 export const getUTCTimeStamp = function() {
-	return Moment.moment.utc().valueOf();
+	return moment.utc().valueOf();
 };
 
 export const timeElapsedSince = function(time) {
@@ -61,7 +61,7 @@ export const timeElapsedSince = function(time) {
 };
 
 export const timeDifference = function(time, prefix = '', suffix = '') {
-	let minutes = Math.floor(Math.abs(Moment.moment.duration(getUTCTimeStamp() - time).asMinutes()));
+	let minutes = Math.floor(Math.abs(moment.duration(getUTCTimeStamp() - time).asMinutes()));
 	let hours = Math.floor(minutes / 60);
 	let days = Math.floor(hours / 24);
 	let weeks = Math.floor(days / 7);
@@ -93,7 +93,7 @@ export const timeDifference = function(time, prefix = '', suffix = '') {
 		return prefix + difference + suffix;
 	}
 
-	return Moment.moment(time).format('YYYY-MM-DD');
+	return moment(time).format('YYYY-MM-DD');
 };
 
 export const callAtFrequence = function(lastCallTime, frequenceTime, callback) {

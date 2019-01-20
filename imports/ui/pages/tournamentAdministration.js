@@ -12,7 +12,7 @@ import '/imports/ui/util/error-messages.js';
 import {removeErrorLabelContainer, validateFieldsPresenceAndMarkInvalid} from '/imports/ui/util/form.js';
 import {Router} from 'meteor/iron:router';
 import {Meteor} from 'meteor/meteor';
-import * as Moment from 'meteor/momentjs:moment';
+import moment from 'moment';
 import {Mongo} from "meteor/mongo";
 import {Session} from 'meteor/session';
 import {Template} from 'meteor/templating';
@@ -29,7 +29,7 @@ Template.tournamentAdministration.helpers({
 	},
 
 	tournamentDate: function(date) {
-		return Moment.moment(date, "YYYY-MM-DD").format('YYYY-MM-DD');
+		return moment(date, "YYYY-MM-DD").format('YYYY-MM-DD');
 	},
 
 	canOnlyViewTournament: function(tournament) {

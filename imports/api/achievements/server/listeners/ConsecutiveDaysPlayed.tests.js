@@ -5,7 +5,7 @@ import GameFinished from '/imports/api/games/events/GameFinished.js';
 import {Games} from '/imports/api/games/games.js';
 import {assert} from 'chai';
 import StubCollections from 'meteor/hwillson:stub-collections';
-import * as Moment from 'meteor/momentjs:moment';
+import moment from 'moment';
 import {Random} from 'meteor/random';
 import sinon from 'sinon';
 
@@ -47,7 +47,7 @@ describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 
 	it('creates achievement if not created', function() {
 		Games.insert({_id: gameId, players: [{id: userId}]});
-		let lastDatePlayed = Moment.moment([2017, 0, 1]).valueOf();
+		let lastDatePlayed = moment([2017, 0, 1]).valueOf();
 		const listener = (new ConsecutiveDaysPlayed()).forGame(gameId, userId);
 		stubTodaysDate(listener, lastDatePlayed);
 
@@ -75,7 +75,7 @@ describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 
 	it('increment achievement if last increment was yesterday', function() {
 		Games.insert({_id: gameId, players: [{id: userId}]});
-		let lastDatePlayed = Moment.moment([2017, 0, 1]).valueOf();
+		let lastDatePlayed = moment([2017, 0, 1]).valueOf();
 		let listener = (new ConsecutiveDaysPlayed()).forGame(gameId, userId);
 		stubTodaysDate(listener, lastDatePlayed);
 
@@ -85,7 +85,7 @@ describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 		assert.equal(1, UserAchievements.find().count());
 		assertConsecutiveDaysPlayedUserAchievementValuesEqual(1, lastDatePlayed, 1);
 
-		lastDatePlayed = Moment.moment([2017, 0, 2]).valueOf();
+		lastDatePlayed = moment([2017, 0, 2]).valueOf();
 		listener = (new ConsecutiveDaysPlayed()).forGame(gameId, userId);
 		stubTodaysDate(listener, lastDatePlayed);
 
@@ -96,7 +96,7 @@ describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 
 	it('do not reset nor increase achievement if last increment was today', function() {
 		Games.insert({_id: gameId, players: [{id: userId}]});
-		let lastDatePlayed = Moment.moment([2017, 0, 1]).valueOf();
+		let lastDatePlayed = moment([2017, 0, 1]).valueOf();
 		let listener = (new ConsecutiveDaysPlayed()).forGame(gameId, userId);
 		stubTodaysDate(listener, lastDatePlayed);
 
@@ -116,7 +116,7 @@ describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 
 	it('reset achievement if last increment was before yesterday', function() {
 		Games.insert({_id: gameId, players: [{id: userId}]});
-		let lastDatePlayed = Moment.moment([2017, 0, 1]).valueOf();
+		let lastDatePlayed = moment([2017, 0, 1]).valueOf();
 		let listener = (new ConsecutiveDaysPlayed()).forGame(gameId, userId);
 		stubTodaysDate(listener, lastDatePlayed);
 
@@ -126,7 +126,7 @@ describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 		assert.equal(1, UserAchievements.find().count());
 		assertConsecutiveDaysPlayedUserAchievementValuesEqual(1, lastDatePlayed, 1);
 
-		lastDatePlayed = Moment.moment([2017, 0, 3]).valueOf();
+		lastDatePlayed = moment([2017, 0, 3]).valueOf();
 		listener = (new ConsecutiveDaysPlayed()).forGame(gameId, userId);
 		stubTodaysDate(listener, lastDatePlayed);
 
@@ -137,7 +137,7 @@ describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 
 	it('do not increment achievement if consecutive days have already been higher', function() {
 		Games.insert({_id: gameId, players: [{id: userId}]});
-		let lastDatePlayed = Moment.moment([2017, 0, 1]).valueOf();
+		let lastDatePlayed = moment([2017, 0, 1]).valueOf();
 		let listener = (new ConsecutiveDaysPlayed()).forGame(gameId, userId);
 		stubTodaysDate(listener, lastDatePlayed);
 
@@ -147,7 +147,7 @@ describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 		assert.equal(1, UserAchievements.find().count());
 		assertConsecutiveDaysPlayedUserAchievementValuesEqual(1, lastDatePlayed, 1);
 
-		lastDatePlayed = Moment.moment([2017, 0, 2]).valueOf();
+		lastDatePlayed = moment([2017, 0, 2]).valueOf();
 		listener = (new ConsecutiveDaysPlayed()).forGame(gameId, userId);
 		stubTodaysDate(listener, lastDatePlayed);
 
@@ -155,7 +155,7 @@ describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 
 		assertConsecutiveDaysPlayedUserAchievementValuesEqual(2, lastDatePlayed, 2);
 
-		lastDatePlayed = Moment.moment([2017, 0, 4]).valueOf();
+		lastDatePlayed = moment([2017, 0, 4]).valueOf();
 		listener = (new ConsecutiveDaysPlayed()).forGame(gameId, userId);
 		stubTodaysDate(listener, lastDatePlayed);
 
@@ -163,7 +163,7 @@ describe('AchievementListener#ConsecutiveDaysPlayed', function() {
 
 		assertConsecutiveDaysPlayedUserAchievementValuesEqual(2, lastDatePlayed, 1);
 
-		lastDatePlayed = Moment.moment([2017, 0, 5]).valueOf();
+		lastDatePlayed = moment([2017, 0, 5]).valueOf();
 		listener = (new ConsecutiveDaysPlayed()).forGame(gameId, userId);
 		stubTodaysDate(listener, lastDatePlayed);
 

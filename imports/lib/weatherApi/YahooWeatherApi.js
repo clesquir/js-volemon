@@ -12,7 +12,7 @@ import {
 	TIME_OF_DAY_TWILIGHT,
 	WeatherApi
 } from '/imports/lib/weatherApi/WeatherApi.js';
-import {moment} from 'meteor/momentjs:moment';
+import {moment} from 'moment';
 
 const maximumAge = 15 * 60 * 1000;
 

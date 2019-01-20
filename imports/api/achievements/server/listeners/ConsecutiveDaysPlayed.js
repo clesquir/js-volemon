@@ -1,4 +1,4 @@
-import * as Moment from 'meteor/momentjs:moment';
+import moment from 'moment';
 import GameListener from './GameListener.js';
 import {ACHIEVEMENT_CONSECUTIVE_DAYS_PLAYED} from '/imports/api/achievements/constants.js';
 import GameFinished from '/imports/api/games/events/GameFinished.js';
@@ -37,8 +37,8 @@ export default class ConsecutiveDaysPlayed extends GameListener {
 					}
 				);
 			} else {
-				const lastDatePlayed = Moment.moment(userAchievement.lastDatePlayed);
-				const yesterday = Moment.moment(this.yesterdaysDate());
+				const lastDatePlayed = moment(userAchievement.lastDatePlayed);
+				const yesterday = moment(this.yesterdaysDate());
 
 				if (lastDatePlayed.format('YYYY-MM-DD') === yesterday.format('YYYY-MM-DD')) {
 					this.increaseConsecutiveDays(userAchievement);
@@ -53,7 +53,7 @@ export default class ConsecutiveDaysPlayed extends GameListener {
 	 * @returns {int}
 	 */
 	yesterdaysDate() {
-		return Moment.moment(this.todaysDate()).subtract(Moment.moment.duration({'days': 1})).valueOf();
+		return moment(this.todaysDate()).subtract(moment.duration({'days': 1})).valueOf();
 	}
 
 	/**
