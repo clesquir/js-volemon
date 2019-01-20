@@ -1,6 +1,7 @@
 import Dev from "./Dev";
 import {Random} from 'meteor/random';
 import Ball from "../components/Ball";
+import BonusFactory from "../../BonusFactory";
 
 export default class Environment extends Dev {
 	groundHitEnabled: boolean = true;
@@ -46,18 +47,17 @@ export default class Environment extends Dev {
 	}
 
 	killPlayer() {
-		//@todo Bonus
-		// this.gameBonus.killPlayer('player1');
+		this.mainScene.killPlayer('player1', (new Date()).getTime());
 	}
 
 	revivePlayer() {
-		//@todo Bonus
-		// this.gameBonus.revivePlayer('player1');
+		this.mainScene.players.reviveTeammatePlayer('player1');
 	}
 
-	createRandomBonus() {
+	createBonus(bonusName) {
 		//@todo Bonus
-		// this.gameBonus.createRandomBonus();
+		const bonus = BonusFactory.fromClassName(bonusName, this.mainScene);
+		// this.gameBonus.createBonus(bonus.dataToStream());
 	}
 
 	enableGroundHit() {

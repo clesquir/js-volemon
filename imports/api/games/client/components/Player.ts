@@ -23,11 +23,17 @@ import Level from "./Level";
 import {ArtificialIntelligenceData} from "../../artificialIntelligence/ArtificialIntelligenceData";
 import {ArtificialIntelligencePositionData} from "../../artificialIntelligence/ArtificialIntelligencePositionData";
 import {PositionData} from "./PositionData";
+import StreamBundler from "../streamBundler/StreamBundler";
+import ServerNormalizedTime from "../ServerNormalizedTime";
+import Animations from "./Animations";
 
 export default class Player {
 	scene: MainScene;
 	gameData: GameData;
 	gameConfiguration: GameConfiguration;
+	streamBundler: StreamBundler;
+	serverNormalizedTime: ServerNormalizedTime;
+	animations: Animations;
 	level: Level;
 	key: string;
 	color: string;
@@ -80,6 +86,8 @@ export default class Player {
 	canJumpOnBodies: any[] = [];
 	isInvincible: boolean = false;
 	canActivateBonuses: boolean = true;
+	killed: boolean = false;
+	killing: boolean = false;
 
 	private sensors: any[] = [];
 	private hasBottomTouching: boolean = true;
@@ -90,6 +98,9 @@ export default class Player {
 		scene: MainScene,
 		gameData: GameData,
 		gameConfiguration: GameConfiguration,
+		streamBundler: StreamBundler,
+		serverNormalizedTime: ServerNormalizedTime,
+		animations: Animations,
 		level: Level,
 		key: string,
 		color: string,
@@ -98,6 +109,9 @@ export default class Player {
 		this.scene = scene;
 		this.gameConfiguration = gameConfiguration;
 		this.gameData = gameData;
+		this.streamBundler = streamBundler;
+		this.serverNormalizedTime = serverNormalizedTime;
+		this.animations = animations;
 		this.level = level;
 		this.key = key;
 		this.color = color;
@@ -107,28 +121,15 @@ export default class Player {
 		this.scene.eventEmitter.on('collisionstart', this.onCollide, this);
 		this.scene.eventEmitter.on('collisionactive', this.onCollide, this);
 
-		const x = this.gameConfiguration.playerInitialXFromKey(key, isHost);
-		const y = this.gameConfiguration.playerInitialY();
-
-		let shapeKey = this.playerShapeFromKey();
-
-		this.container = this.scene.add.container(x, y);
-
-		this.containerPhysics = this.scene.matter.add.gameObject(this.container);
-		this.containerPhysics.setDataEnabled();
-		this.containerPhysics.setData('owner', this);
-		this.containerPhysics.setData('isPlayer', true);
-		this.containerPhysics.setData('isHost', isHost);
-
-		this.playerObject = this.scene.add.image(0, 0, 'shape-' + shapeKey);
-		this.playerObject.setTint(Phaser.Display.Color.ValueToColor(color).color);
-
-		this.container.add(this.playerObject);
-
-		this.init(x, y);
+		this.init();
 	}
 
 	reset() {
+		if (this.killed) {
+			this.killed = false;
+			this.init();
+		}
+
 		this.resetBallHits();
 		this.resetPosition();
 	}
@@ -143,7 +144,11 @@ export default class Player {
 		this.containerPhysics.setY(this.initialYLocation);
 	}
 
-	movePlayer(movesLeft: boolean, movesRight: boolean, jumps: boolean, dropshots: boolean) {
+	move(movesLeft: boolean, movesRight: boolean, jumps: boolean, dropshots: boolean) {
+		if (this.killed) {
+			return;
+		}
+
 		this.dropShots = false;
 
 		if (this.isFrozen) {
@@ -181,6 +186,10 @@ export default class Player {
 	}
 
 	updateEye(ball: Ball) {
+		if (this.killed) {
+			return;
+		}
+
 		//Move eyePupil
 		const dx = this.containerPhysics.x - ball.x();
 		const dy = this.containerPhysics.y - ball.y();
@@ -213,6 +222,124 @@ export default class Player {
 		return (
 			ballY > this.containerPhysics.y + (this.playerObject.height / 2)
 		);
+	}
+
+	hideFromHimself() {
+		this.isHiddenToHimself = true;
+
+		if (!this.gameData.isUserViewer()) {
+			if (this.gameData.isCurrentPlayerKey(this.key)) {
+				//Target player cannot see himself
+				this.playerObject.setAlpha(0);
+			} else if (!this.isHiddenToOpponent) {
+				//Opponent see transparent if he can see
+				this.playerObject.setAlpha(0.5);
+			}
+		} else {
+			//Viewers always see transparent
+			this.playerObject.setAlpha(0.5);
+		}
+	}
+
+	showToHimself() {
+		this.isHiddenToHimself = this.initialIsHiddenToHimself;
+
+		if (this.isHiddenToHimself) {
+			return;
+		}
+
+		if (this.isHiddenToOpponent) {
+			if (
+				this.gameData.isCurrentPlayerKey(this.key) ||
+				this.gameData.isUserViewer()
+			) {
+				this.playerObject.setAlpha(0.5);
+			}
+		} else {
+			this.playerObject.setAlpha(1);
+		}
+	}
+
+	hideFromOpponent() {
+		this.isHiddenToOpponent = true;
+
+		if (!this.gameData.isUserViewer()) {
+			if (!this.gameData.isCurrentPlayerKey(this.key)) {
+				//Opponent cannot see player
+				this.playerObject.setAlpha(0);
+			} else if (!this.isHiddenToHimself) {
+				//Bonus player see himself transparent if not hidden to himself
+				this.playerObject.setAlpha(0.5);
+			}
+		} else {
+			//Viewers always see transparent
+			this.playerObject.setAlpha(0.5);
+		}
+	}
+
+	showToOpponent() {
+		this.isHiddenToOpponent = this.initialIsHiddenToOpponent;
+
+		if (this.isHiddenToOpponent) {
+			return;
+		}
+
+		if (this.isHiddenToHimself) {
+			if (!this.gameData.isCurrentPlayerKey(this.key)) {
+				this.playerObject.setAlpha(0.5);
+			}
+		} else {
+			this.playerObject.setAlpha(1);
+		}
+	}
+
+	kill() {
+		if (this.scene.canAddGamePoint() && !this.isInvincible) {
+			this.killAndRemove();
+
+			//Send to client
+			const serverTimestamp = this.serverNormalizedTime.getServerTimestamp();
+			this.streamBundler.emitStream(
+				'killPlayer-' + this.gameData.gameId,
+				{
+					playerKey: this.key,
+					killedAt: serverTimestamp
+				},
+				serverTimestamp
+			);
+		}
+	}
+
+	killAndRemove() {
+		if (!this.killing && !this.killed) {
+			this.killing = true;
+
+			const killedImage = this.scene.add.image(0, 0, this.currentTextureKey);
+			killedImage.setTint(Phaser.Display.Color.ValueToColor(this.color).color);
+			const eyeBall = this.createEyeBall();
+			const eyePupil = this.createEyePupil();
+
+			const killingContainer = this.scene.add.container(
+				this.containerPhysics.x,
+				this.containerPhysics.y,
+				[
+					killedImage,
+					eyeBall,
+					eyePupil,
+				]
+			);
+			killingContainer.setScale(this.currentScale);
+			this.animations.disappear(killingContainer);
+
+			this.container.destroy();
+			this.killed = true;
+
+			this.killing = false;
+		}
+	}
+
+	revive() {
+		this.reset();
 	}
 
 	artificialIntelligenceData(): ArtificialIntelligenceData {
@@ -254,7 +381,10 @@ export default class Player {
 		};
 	}
 
-	private init(x: number, y: number) {
+	private init() {
+		const x = this.gameConfiguration.playerInitialXFromKey(this.key, this.isHost);
+		const y = this.gameConfiguration.playerInitialY();
+
 		this.initialXLocation = x;
 		this.initialYLocation = y;
 		this.initialMass = PLAYER_MASS;
@@ -277,16 +407,30 @@ export default class Player {
 		this.initialShape = this.gameData.getPlayerShapeFromKey(this.key);
 		this.currentShape = this.initialShape;
 
+		let shapeKey = this.playerShapeFromKey();
+
+		//Create components
+		this.container = this.scene.add.container(x, y);
+
+		this.containerPhysics = this.scene.matter.add.gameObject(this.container);
+		this.containerPhysics.setDataEnabled();
+		this.containerPhysics.setData('owner', this);
+		this.containerPhysics.setData('isPlayer', true);
+		this.containerPhysics.setData('isHost', this.isHost);
+
+		this.playerObject = this.scene.add.image(0, 0, 'shape-' + shapeKey);
+		this.playerObject.setTint(Phaser.Display.Color.ValueToColor(this.color).color);
+
+		this.container.add(this.playerObject);
+
 		this.initPlayerPolygon();
 		this.applyPlayerPolygon();
 
 		if (this.isHiddenToHimself) {
-			//@todo Bonus
-			// this.gameBonus.hidePlayingPlayer(this.key);
+			this.hideFromHimself();
 		}
 		if (this.isHiddenToOpponent) {
-			//@todo Bonus
-			// this.gameBonus.hideFromOpponent(this.key);
+			this.hideFromOpponent();
 		}
 	}
 
@@ -549,40 +693,51 @@ export default class Player {
 		this.eyeBallRadius = eyeBallRadius;
 		this.eyePupilRadius = eyePupilRadius;
 
-		this.eyeBall = this.scene.add.graphics(
+		this.eyeBall = this.createEyeBall();
+		this.eyePupil = this.createEyePupil();
+
+		this.container.add(this.eyeBall);
+		this.container.add(this.eyePupil);
+	}
+
+	private createEyeBall(): Phaser.GameObjects.Graphics {
+		const eyeBall = this.scene.add.graphics(
 			{
 				x: this.eyeBallXOffset,
 				y: this.eyeBallYOffset
 			}
 		);
-		this.eyeBall.fillStyle(0xffffff, 1);
-		this.eyeBall.lineStyle(1, 0x363636);
-		this.eyeBall.strokeCircle(
+		eyeBall.fillStyle(0xffffff, 1);
+		eyeBall.lineStyle(1, 0x363636);
+		eyeBall.strokeCircle(
 			0,
 			0,
 			this.eyeBallRadius
 		);
-		this.eyeBall.fillCircle(
+		eyeBall.fillCircle(
 			0,
 			0,
 			this.eyeBallRadius
 		);
 
-		this.eyePupil = this.scene.add.graphics(
+		return eyeBall;
+	}
+
+	private createEyePupil(): Phaser.GameObjects.Graphics {
+		const eyePupil = this.scene.add.graphics(
 			{
 				x: this.eyeBallXOffset,
 				y: this.eyeBallYOffset
 			}
 		);
-		this.eyePupil.fillStyle(0x363636, 1);
-		this.eyePupil.fillCircle(
+		eyePupil.fillStyle(0x363636, 1);
+		eyePupil.fillCircle(
 			0,
 			0,
 			this.eyePupilRadius
 		);
 
-		this.container.add(this.eyeBall);
-		this.container.add(this.eyePupil);
+		return eyePupil;
 	}
 
 	private onCollide({bodyA, bodyB}) {

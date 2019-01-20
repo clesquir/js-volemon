@@ -1,3 +1,4 @@
+import {ALL_BONUSES} from '/imports/api/games/bonusConstants';
 import {Template} from 'meteor/templating';
 import {ReactiveVar} from 'meteor/reactive-var';
 import Environment from '/imports/api/games/client/dev/Environment';
@@ -23,6 +24,9 @@ Template.environment.destroyed = function() {
 };
 
 Template.environment.helpers({
+	bonuses: function() {
+		return ALL_BONUSES;
+	},
 	groundHitEnabled: function() {
 		return groundHitEnabled.get();
 	},
@@ -46,8 +50,8 @@ Template.environment.events({
 		environment.revivePlayer();
 	},
 
-	'click [data-action="create-random-bonus"]': function() {
-		environment.createRandomBonus();
+	'click [data-action="create-bonus"]': function() {
+		environment.createBonus($('#bonus-class')[0].value);
 	},
 
 	'click [data-action="enable-disable-ground-hit"]': function() {

@@ -13,6 +13,7 @@ import {PositionData} from "../components/PositionData";
 import Countdown from "../components/Countdown";
 import Animations from "../components/Animations";
 import Players from "../components/Players";
+import GameBonus from "../components/GameBonus";
 
 const Phaser = require('phaser');
 
@@ -29,6 +30,7 @@ export default class MainScene extends Phaser.Scene {
 	artificialIntelligence: ArtificialIntelligence;
 	players: Players;
 	eventEmitter: Phaser.Events.EventEmitter;
+	gameBonus: GameBonus;
 
 	ball: Ball;
 	countdown: Countdown;
@@ -37,6 +39,7 @@ export default class MainScene extends Phaser.Scene {
 	gameResumed: boolean = false;
 	gameHasEnded: boolean = false;
 
+	lastPointAt: number = 0;
 	lastBallPositionData: PositionData;
 	lastBallUpdate: number = 0;
 
@@ -65,9 +68,11 @@ export default class MainScene extends Phaser.Scene {
 			this.gameConfiguration,
 			this.streamBundler,
 			this.serverNormalizedTime,
+			this.animations,
 			this.level,
 			this.artificialIntelligence
 		);
+		this.gameBonus = new GameBonus();
 
 		this.eventEmitter = new Phaser.Events.EventEmitter();
 		this.matter.world.on('collisionstart', (event) => this.onCollision(event, 'collisionstart'), this);
@@ -118,10 +123,9 @@ export default class MainScene extends Phaser.Scene {
 			this.players.moveComputers(this.ball);
 			this.ball.constrainVelocity();
 
-			//@todo Bonus
-			// if (this.gameData.hasBonuses) {
-			// 	this.gameBonus.onUpdateGameOnGoing();
-			// }
+			if (this.gameData.hasBonuses) {
+				this.gameBonus.update();
+			}
 
 			this.countdown.update();
 
@@ -164,8 +168,7 @@ export default class MainScene extends Phaser.Scene {
 		if (this.gameData.hasGameStatusEndedWithAWinner()) {
 			this.onGameEnd();
 		} else if (this.gameIsOnGoing()) {
-			//@todo Bonus
-			// this.gameBonus.reset();
+			this.gameBonus.reset();
 			this.resetPlayersAndBall();
 
 			this.artificialIntelligence.startPoint();
@@ -176,8 +179,7 @@ export default class MainScene extends Phaser.Scene {
 	startCountdownTimer() {
 		this.countdown.start(
 			() => {
-				//@todo Bonus
-				// this.gameBonus.resumeGame();
+				this.gameBonus.resumeGame();
 				this.resumeGame();
 			}
 		);
@@ -190,9 +192,7 @@ export default class MainScene extends Phaser.Scene {
 	stopGame() {
 		this.players.freeze();
 		this.ball.freeze();
-
-		//@todo Bonus
-		// this.gameBonus.onGameStop();
+		this.gameBonus.stopGame();
 	}
 
 	resumeGame() {
@@ -245,6 +245,26 @@ export default class MainScene extends Phaser.Scene {
 		countText.setOrigin(0.5);
 
 		this.animations.disappear(countText);
+	}
+
+	killPlayer(playerKey: string, killedAt: number) {
+		if (killedAt > this.lastPointAt) {
+			//@todo Bonus
+			//this.resetBonusesForPlayerKey(playerKey);
+
+			this.players.killAndRemovePlayer(playerKey);
+		}
+	}
+
+	shakeLevel() {
+		//@todo Shake
+	}
+
+	canAddGamePoint(): boolean {
+		return (
+			this.gameResumed === true &&
+			this.gameData.isUserCreator()
+		);
 	}
 
 	private onCollision(event, eventName) {
@@ -362,13 +382,6 @@ export default class MainScene extends Phaser.Scene {
 
 			this.artificialIntelligence.stopPoint(pointSide);
 		}
-	}
-
-	private canAddGamePoint(): boolean {
-		return (
-			this.gameResumed === true &&
-			this.gameData.isUserCreator()
-		);
 	}
 
 	private canAddPointOnSide(side): boolean {

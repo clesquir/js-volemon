@@ -10,6 +10,7 @@ import DeviceController from "../../deviceController/DeviceController";
 import StreamBundler from "../streamBundler/StreamBundler";
 import {PositionData} from "./PositionData";
 import ServerNormalizedTime from "../ServerNormalizedTime";
+import Animations from "./Animations";
 
 export default class Players {
 	scene: MainScene;
@@ -17,6 +18,7 @@ export default class Players {
 	gameConfiguration: GameConfiguration;
 	streamBundler: StreamBundler;
 	serverNormalizedTime: ServerNormalizedTime;
+	animations: Animations;
 	level: Level;
 	artificialIntelligence: ArtificialIntelligence;
 
@@ -24,6 +26,7 @@ export default class Players {
 	player2: Player;
 	player3: Player;
 	player4: Player;
+	robots: {[id: string]: Player};
 
 	hostNumberBallHits: number = 0;
 	clientNumberBallHits: number = 0;
@@ -37,6 +40,7 @@ export default class Players {
 		gameConfiguration: GameConfiguration,
 		streamBundler: StreamBundler,
 		serverNormalizedTime: ServerNormalizedTime,
+		animations: Animations,
 		level: Level,
 		artificialIntelligence: ArtificialIntelligence
 	) {
@@ -45,6 +49,7 @@ export default class Players {
 		this.gameConfiguration = gameConfiguration;
 		this.streamBundler = streamBundler;
 		this.serverNormalizedTime = serverNormalizedTime;
+		this.animations = animations;
 		this.level = level;
 		this.artificialIntelligence = artificialIntelligence;
 	}
@@ -86,7 +91,7 @@ export default class Players {
 			return;
 		}
 
-		player.movePlayer(
+		player.move(
 			deviceController.leftPressed(),
 			deviceController.rightPressed(),
 			deviceController.upPressed(),
@@ -124,6 +129,34 @@ export default class Players {
 		if (this.gameData.isTwoVersusTwo()) {
 			this.player3.reset();
 			this.player4.reset();
+		}
+	}
+
+	killAndRemovePlayer(playerKey: string) {
+		const player = this.getPlayerFromKey(playerKey);
+
+		if (player) {
+			player.killAndRemove();
+		}
+	}
+
+	reviveTeammatePlayer(playerKey: string) {
+		const player = this.getPlayerFromKey(playerKey);
+		let teammatePlayers = [];
+
+		if (player.isHost) {
+			teammatePlayers = this.hostPlayerKeys(false);
+		} else {
+			teammatePlayers = this.clientPlayerKeys(false);
+		}
+
+		for (let teammatePlayerKey of teammatePlayers) {
+			const teammatePlayer = this.getPlayerFromKey(teammatePlayerKey);
+
+			if (teammatePlayer && teammatePlayer.killed) {
+				teammatePlayer.revive();
+				return;
+			}
 		}
 	}
 
@@ -182,6 +215,9 @@ export default class Players {
 			this.scene,
 			this.gameData,
 			this.gameConfiguration,
+			this.streamBundler,
+			this.serverNormalizedTime,
+			this.animations,
 			this.level,
 			key,
 			color,
@@ -190,6 +226,10 @@ export default class Players {
 	}
 
 	private sendPlayerPosition(player: Player) {
+		if (player.killed) {
+			return;
+		}
+
 		let playerPositionData = player.positionData();
 		let playerInterval = PLAYER_INTERVAL;
 
@@ -227,12 +267,11 @@ export default class Players {
 		}
 
 		if (includeRobot) {
-			//@todo Robot
-			// for (let i in this.gameBonus.robots) {
-			// 	if (this.gameBonus.robots.hasOwnProperty(i) && i === playerKey) {
-			// 		return this.gameBonus.robots[i];
-			// 	}
-			// }
+			for (let i in this.robots) {
+				if (this.robots.hasOwnProperty(i) && i === playerKey) {
+					return this.robots[i];
+				}
+			}
 		}
 
 		return null;
@@ -248,12 +287,11 @@ export default class Players {
 		}
 
 		if (includeRobot) {
-			//@todo Robot
-			// for (let robotId in this.gameBonus.robots) {
-			// 	if (this.gameBonus.robots.hasOwnProperty(robotId) && this.isPlayerHostSide(this.gameBonus.robots[robotId])) {
-			// 		playerKeys.push(robotId);
-			// 	}
-			// }
+			for (let robotId in this.robots) {
+				if (this.robots.hasOwnProperty(robotId) && this.robots[robotId].isHost) {
+					playerKeys.push(robotId);
+				}
+			}
 		}
 
 		return playerKeys;
@@ -269,12 +307,11 @@ export default class Players {
 		}
 
 		if (includeRobot) {
-			//@todo Robot
-			// for (let robotId in this.gameBonus.robots) {
-			// 	if (this.gameBonus.robots.hasOwnProperty(robotId) && this.isPlayerClientSide(this.gameBonus.robots[robotId])) {
-			// 		playerKeys.push(robotId);
-			// 	}
-			// }
+			for (let robotId in this.robots) {
+				if (this.robots.hasOwnProperty(robotId) && !this.robots[robotId].isHost) {
+					playerKeys.push(robotId);
+				}
+			}
 		}
 
 		return playerKeys;
@@ -292,12 +329,11 @@ export default class Players {
 		}
 
 		if (includeRobot) {
-			//@todo Robot
-			// for (let robotId in this.gameBonus.robots) {
-			// 	if (this.gameBonus.robots.hasOwnProperty(robotId)) {
-			// 		playerKeys.push(robotId);
-			// 	}
-			// }
+			for (let robotId in this.robots) {
+				if (this.robots.hasOwnProperty(robotId)) {
+					playerKeys.push(robotId);
+				}
+			}
 		}
 
 		return playerKeys;
@@ -326,12 +362,11 @@ export default class Players {
 		}
 
 		if (includeRobot) {
-			//@todo Robot
-			// for (let i in this.gameBonus.robots) {
-			// 	if (this.gameBonus.robots.hasOwnProperty(i)) {
-			// 		playerKeys.push(i);
-			// 	}
-			// }
+			for (let i in this.robots) {
+				if (this.robots.hasOwnProperty(i)) {
+					playerKeys.push(i);
+				}
+			}
 		}
 
 		return playerKeys;
@@ -354,7 +389,7 @@ export default class Players {
 			this.gameConfiguration
 		);
 
-		player.movePlayer(
+		player.move(
 			this.artificialIntelligence.movesLeft(key),
 			this.artificialIntelligence.movesRight(key),
 			this.artificialIntelligence.jumps(key),
