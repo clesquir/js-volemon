@@ -3,7 +3,6 @@ export const BONUS_BIG_BALL = 'BigBallBonus';
 export const BONUS_INVISIBLE_BALL = 'InvisibleBallBonus';
 export const BONUS_SMALL_MONSTER = 'SmallMonsterBonus';
 export const BONUS_BIG_MONSTER = 'BigMonsterBonus';
-export const BONUS_JUNK_FOOD_MONSTER = 'JunkFoodMonsterBonus';
 export const BONUS_BIG_JUMP_MONSTER = 'BigJumpMonsterBonus';
 export const BONUS_SLOW_MONSTER = 'SlowMonsterBonus';
 export const BONUS_FAST_MONSTER = 'FastMonsterBonus';

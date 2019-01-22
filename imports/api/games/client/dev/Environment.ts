@@ -4,8 +4,8 @@ import Ball from "../components/Ball";
 import BonusFactory from "../../BonusFactory";
 
 export default class Environment extends Dev {
-	groundHitEnabled: boolean = true;
-	showBallHitCount: boolean = true;
+	groundHitEnabled: boolean = false;
+	showBallHitCount: boolean = false;
 	isMatchPoint: boolean = false;
 	isDeucePoint: boolean = false;
 
@@ -24,6 +24,12 @@ export default class Environment extends Dev {
 		this.gameData.isDeucePoint = () => {
 			return this.isDeucePoint;
 		};
+		this.gameData.hasBonuses = true;
+	}
+
+	createPlayersComponents() {
+		this.mainScene.players.player1 = this.mainScene.players.createPlayer('player1', '#a73030', true);
+		this.mainScene.players.player2 = this.mainScene.players.createPlayer('player2', '#a73030', true);
 	}
 
 	createLevelComponents() {
@@ -55,9 +61,13 @@ export default class Environment extends Dev {
 	}
 
 	createBonus(bonusName) {
-		//@todo Bonus
-		const bonus = BonusFactory.fromClassName(bonusName, this.mainScene);
-		// this.gameBonus.createBonus(bonus.dataToStream());
+		const bonus = BonusFactory.fromClassName(bonusName);
+		this.mainScene.createBonus(
+			Object.assign(
+				{initialX: this.gameConfiguration.width() / 2},
+				bonus.dataToStream()
+			)
+		);
 	}
 
 	enableGroundHit() {

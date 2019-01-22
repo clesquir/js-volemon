@@ -1,4 +1,12 @@
 import {
+	BALL_BIG_MASS,
+	BALL_MASS,
+	BALL_SMALL_MASS,
+	PLAYER_BIG_MASS,
+	PLAYER_MASS,
+	PLAYER_SMALL_MASS
+} from '/imports/api/games/constants';
+import {
 	BALL_BIG_GRAVITY_SCALE,
 	BALL_GRAVITY_SCALE,
 	BALL_SMALL_GRAVITY_SCALE,
@@ -166,6 +174,10 @@ export default class GameConfiguration {
 		return NORMAL_SCALE_BONUS;
 	}
 
+	initialBonusScale() {
+		return NORMAL_SCALE_BONUS;
+	}
+
 	smallPlayerScale() {
 		if (this.hasTournament() && this.tournamentMode.overridesSmallPlayerScale()) {
 			return this.tournamentMode.smallPlayerScale();
@@ -196,6 +208,30 @@ export default class GameConfiguration {
 		}
 
 		return BIG_SCALE_BALL_BONUS;
+	}
+
+	initialPlayerMass() {
+		return PLAYER_MASS;
+	}
+
+	smallPlayerMass() {
+		return PLAYER_SMALL_MASS;
+	}
+
+	bigPlayerMass() {
+		return PLAYER_BIG_MASS;
+	}
+
+	initialBallMass() {
+		return BALL_MASS;
+	}
+
+	smallBallMass() {
+		return BALL_SMALL_MASS;
+	}
+
+	bigBallMass() {
+		return BALL_BIG_MASS;
 	}
 
 	isHiddenToHimself() {

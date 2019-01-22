@@ -13,7 +13,8 @@ import {PositionData} from "../components/PositionData";
 import Countdown from "../components/Countdown";
 import Animations from "../components/Animations";
 import Players from "../components/Players";
-import GameBonus from "../components/GameBonus";
+import Bonuses from "../components/Bonuses";
+import {BonusStreamData} from "../../bonus/BonusStreamData";
 
 const Phaser = require('phaser');
 
@@ -30,7 +31,7 @@ export default class MainScene extends Phaser.Scene {
 	artificialIntelligence: ArtificialIntelligence;
 	players: Players;
 	eventEmitter: Phaser.Events.EventEmitter;
-	gameBonus: GameBonus;
+	bonuses: Bonuses;
 
 	ball: Ball;
 	countdown: Countdown;
@@ -72,7 +73,14 @@ export default class MainScene extends Phaser.Scene {
 			this.level,
 			this.artificialIntelligence
 		);
-		this.gameBonus = new GameBonus();
+		this.bonuses = new Bonuses(
+			this,
+			this.gameData,
+			this.gameConfiguration,
+			this.streamBundler,
+			this.serverNormalizedTime,
+			this.level
+		);
 
 		this.eventEmitter = new Phaser.Events.EventEmitter();
 		this.matter.world.on('collisionstart', (event) => this.onCollision(event, 'collisionstart'), this);
@@ -85,126 +93,11 @@ export default class MainScene extends Phaser.Scene {
 		this.matter.world.engine.constraintIterations = 2;
 	}
 
-	preload() {
-		this.skinManager.preload(this.load);
-		this.level.preload();
-	}
-
-	create() {
-		this.skinManager.createBackgroundComponents(this);
-		this.createComponents();
-		this.deviceController.startMonitoring();
-
-		if (this.gameData.getCurrentPlayerKey()) {
-			Session.set('userCurrentlyPlaying', true);
-		}
-
-		this.eventEmitter.on('collisionstart', this.onCollisionStart, this);
-		this.eventEmitter.on('collisionactive', this.onCollisionActive, this);
-		this.eventEmitter.on('collisionend', this.onCollisionEnd, this);
-
-		this.gameInitiated = true;
-		this.artificialIntelligence.startGame();
-		this.resumeOnTimerEnd();
-	}
-
-	update() {
-		this.streamBundler.resetBundledStreams();
-		this.players.beforeUpdate();
-		this.players.updateEyes(this.ball);
-
-		//Do not allow ball movement if it is frozen
-		if (this.gameData.isUserCreator() && this.ball.isFrozen) {
-			this.ball.freeze();
-		}
-
-		if (this.gameIsOnGoing()) {
-			this.players.inputs(this.deviceController);
-			this.players.moveComputers(this.ball);
-			this.ball.constrainVelocity();
-
-			if (this.gameData.hasBonuses) {
-				this.gameBonus.update();
-			}
-
-			this.countdown.update();
-
-			if (this.gameData.isUserCreator()) {
-				this.sendBallPosition();
-			}
-		} else {
-			this.stopGame();
-			this.onGameEnd();
-		}
-
-		this.streamBundler.emitBundledStream(
-			'sendBundledData-' + this.gameData.gameId,
-			this.serverNormalizedTime.getServerTimestamp()
-		);
-	}
-
-	createComponents() {
-		this.level.createCollisionCategories();
-
-		this.artificialIntelligence.initFromData(this.gameData);
-		this.players.create();
-		this.ball = this.createBall();
-
-		this.level.createGround();
-		this.level.createNet();
-		this.level.createFieldLimits(true);
-
-		this.countdown = new Countdown(
-			this,
-			this.gameData,
-			this.gameConfiguration,
-			this.serverNormalizedTime
-		);
-	}
-
-	resumeOnTimerEnd() {
-		this.pauseGame();
-
-		if (this.gameData.hasGameStatusEndedWithAWinner()) {
-			this.onGameEnd();
-		} else if (this.gameIsOnGoing()) {
-			this.gameBonus.reset();
-			this.resetPlayersAndBall();
-
-			this.artificialIntelligence.startPoint();
-			this.startCountdownTimer();
-		}
-	}
-
-	startCountdownTimer() {
-		this.countdown.start(
-			() => {
-				this.gameBonus.resumeGame();
-				this.resumeGame();
-			}
-		);
-	}
-
-	pauseGame() {
-		this.ball.freeze();
-	}
-
-	stopGame() {
-		this.players.freeze();
-		this.ball.freeze();
-		this.gameBonus.stopGame();
-	}
-
-	resumeGame() {
-		this.ball.unfreeze();
-		this.gameResumed = true;
-	}
-
-	onGameEnd() {
-		if (!this.gameHasEnded) {
-			this.deviceController.stopMonitoring();
-			Session.set('userCurrentlyPlaying', false);
-			this.gameHasEnded = true;
+	onPointTaken() {
+		if (this.gameInitiated) {
+			this.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
+			this.shakeLevel();
+			this.resumeOnTimerEnd();
 		}
 	}
 
@@ -247,17 +140,15 @@ export default class MainScene extends Phaser.Scene {
 		this.animations.disappear(countText);
 	}
 
-	killPlayer(playerKey: string, killedAt: number) {
-		if (killedAt > this.lastPointAt) {
-			//@todo Bonus
-			//this.resetBonusesForPlayerKey(playerKey);
-
-			this.players.killAndRemovePlayer(playerKey);
-		}
-	}
-
 	shakeLevel() {
 		//@todo Shake
+	}
+
+	killPlayer(playerKey: string, killedAt: number) {
+		if (killedAt > this.lastPointAt) {
+			this.bonuses.resetBonusesForPlayerKey(playerKey);
+			this.players.killAndRemovePlayer(playerKey);
+		}
 	}
 
 	canAddGamePoint(): boolean {
@@ -265,6 +156,181 @@ export default class MainScene extends Phaser.Scene {
 			this.gameResumed === true &&
 			this.gameData.isUserCreator()
 		);
+	}
+
+	moveClientPlayer(data: any) {
+		if (!this.gameInitiated || !this.gameIsOnGoing()) {
+			return;
+		}
+
+		this.players.moveClientPlayer(data);
+	}
+
+	moveClientBall(data: any) {
+		if (!this.gameInitiated || !this.ball || !this.gameIsOnGoing()) {
+			return;
+		}
+
+		let serverNormalizedTimestamp = this.serverNormalizedTime.getServerTimestamp();
+		//@todo Interpolate client ball movements - in ball class
+		// this.engine.interpolateMoveTo(this.ball, serverNormalizedTimestamp, data, () => {return this.gameIsOnGoing()});
+	}
+
+	createBonus(data: BonusStreamData) {
+		if (!this.gameInitiated || !this.gameIsOnGoing()) {
+			return;
+		}
+
+		this.bonuses.createBonus(data);
+	}
+
+	activateBonus(
+		bonusIdentifier: string,
+		playerKey: string,
+		activatedAt: number,
+		x: number,
+		y: number,
+		beforeActivationData: any
+	) {
+		if (!this.gameInitiated || !this.gameIsOnGoing()) {
+			return;
+		}
+
+		this.bonuses.activateBonus(bonusIdentifier, playerKey, activatedAt, x, y, beforeActivationData);
+	}
+
+	moveClientBonus(bonusIdentifier: string, data: any) {
+		if (!this.gameInitiated || !this.gameIsOnGoing()) {
+			return;
+		}
+
+		this.bonuses.moveClientBonus(bonusIdentifier, data);
+	}
+
+	private preload() {
+		this.skinManager.preload(this.load);
+		this.level.preload();
+	}
+
+	private create() {
+		this.skinManager.createBackgroundComponents(this);
+		this.createComponents();
+		this.deviceController.startMonitoring();
+
+		if (this.gameData.getCurrentPlayerKey()) {
+			Session.set('userCurrentlyPlaying', true);
+		}
+
+		this.eventEmitter.on('collisionstart', this.onCollisionStart, this);
+		this.eventEmitter.on('collisionactive', this.onCollisionActive, this);
+		this.eventEmitter.on('collisionend', this.onCollisionEnd, this);
+
+		this.gameInitiated = true;
+		this.artificialIntelligence.startGame();
+		this.resumeOnTimerEnd();
+	}
+
+	private update() {
+		this.streamBundler.resetBundledStreams();
+		this.players.beforeUpdate();
+		this.players.updateEyes(this.ball);
+
+		//Do not allow ball movement if it is frozen
+		if (this.gameData.isUserCreator() && this.ball.isFrozen) {
+			this.ball.freeze();
+		}
+
+		if (this.gameIsOnGoing()) {
+			this.players.inputs(this.deviceController);
+			this.players.moveComputers(
+				this.ball.artificialIntelligencePositionData(),
+				this.bonuses.artificialIntelligencePositionData()
+			);
+			this.ball.constrainVelocity();
+
+			if (this.gameData.hasBonuses) {
+				this.bonuses.update();
+			}
+
+			this.countdown.update();
+
+			if (this.gameData.isUserCreator()) {
+				this.sendBallPosition();
+			}
+		} else {
+			this.stopGame();
+			this.onGameEnd();
+		}
+
+		this.streamBundler.emitBundledStream(
+			'sendBundledData-' + this.gameData.gameId,
+			this.serverNormalizedTime.getServerTimestamp()
+		);
+	}
+
+	private createComponents() {
+		this.level.createCollisionCategories();
+
+		this.artificialIntelligence.initFromData(this.gameData);
+		this.players.create();
+		this.ball = this.createBall();
+
+		this.level.createGround();
+		this.level.createNet();
+		this.level.createFieldLimits(true);
+
+		this.countdown = new Countdown(
+			this,
+			this.gameData,
+			this.gameConfiguration,
+			this.serverNormalizedTime
+		);
+	}
+
+	private resumeOnTimerEnd() {
+		this.pauseGame();
+
+		if (this.gameData.hasGameStatusEndedWithAWinner()) {
+			this.onGameEnd();
+		} else if (this.gameIsOnGoing()) {
+			this.bonuses.reset();
+			this.resetPlayersAndBall();
+
+			this.artificialIntelligence.startPoint();
+			this.startCountdownTimer();
+		}
+	}
+
+	private startCountdownTimer() {
+		this.countdown.start(
+			() => {
+				this.bonuses.resumeGame();
+				this.resumeGame();
+			}
+		);
+	}
+
+	private pauseGame() {
+		this.ball.freeze();
+	}
+
+	private stopGame() {
+		this.players.freeze();
+		this.ball.freeze();
+		this.bonuses.freeze();
+	}
+
+	private resumeGame() {
+		this.ball.unfreeze();
+		this.gameResumed = true;
+	}
+
+	private onGameEnd() {
+		if (!this.gameHasEnded) {
+			this.deviceController.stopMonitoring();
+			Session.set('userCurrentlyPlaying', false);
+			this.gameHasEnded = true;
+		}
 	}
 
 	private onCollision(event, eventName) {
@@ -305,7 +371,7 @@ export default class MainScene extends Phaser.Scene {
 
 	private collidePlayerBonus({bodyA, bodyB}) {
 		if (bodyA.gameObject && bodyA.gameObject.getData('isPlayer') && bodyB.gameObject && bodyB.gameObject.getData('isBonus')) {
-			//@todo Bonus
+			this.bonuses.onPlayerHitBonus(bodyA.gameObject.getData('owner'), bodyB.gameObject.getData('owner'));
 		}
 	}
 
@@ -378,6 +444,7 @@ export default class MainScene extends Phaser.Scene {
 
 			this.gameResumed = false;
 
+			//@todo Add an interface for Meteor.apply
 			Meteor.apply('addGamePoints', [this.gameData.gameId, pointSide]);
 
 			this.artificialIntelligence.stopPoint(pointSide);

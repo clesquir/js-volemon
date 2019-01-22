@@ -1,5 +1,5 @@
-import RobotBonus from '/imports/api/games/bonus/RobotBonus.js';
-import BonusFactory from '/imports/api/games/BonusFactory.js';
+import RobotBonus from '/imports/api/games/bonus/RobotBonus';
+import BonusFactory from '/imports/api/games/BonusFactory';
 import {
 	BIG_SCALE_PHYSICS_DATA,
 	BONUS_GRAVITY_SCALE,
@@ -121,7 +121,7 @@ export default class GameBonus {
 
 	applyActiveBonuses() {
 		for (let activeBonus of this.gameData.activeBonuses()) {
-			let bonus = BonusFactory.fromClassName(activeBonus.activatedBonusClass, this);
+			let bonus = BonusFactory.fromClassName(activeBonus.activatedBonusClass);
 
 			if (this.gameConfiguration.overridesBonusDuration() && bonus.canOverrideDuration()) {
 				bonus.durationMilliseconds = this.gameConfiguration.bonusDuration();
@@ -177,7 +177,7 @@ export default class GameBonus {
 					const bonusSprite = this.engine.drawBonus(
 						x,
 						this.gameConfiguration.height() - (this.gameConfiguration.groundHeight() / 2),
-						BonusFactory.fromClassName(bonus.classNameToActivate(), this),
+						BonusFactory.fromClassName(bonus.classNameToActivate()),
 						this.getBonusProgress(bonus, bonus.getDuration())
 					);
 					bonusSprite.activationIdentifier = bonus.activationIdentifier();
@@ -782,7 +782,7 @@ export default class GameBonus {
 	}
 
 	createRandomBonus() {
-		let bonus = BonusFactory.randomBonus(this, this.gameConfiguration);
+		let bonus = BonusFactory.randomBonus(this.gameConfiguration);
 		let data = bonus.dataToStream();
 		data.initialX = this.gameConfiguration.width() / 2 + Random.choice([-6, +6]);
 
@@ -800,7 +800,7 @@ export default class GameBonus {
 	}
 
 	createBonus(data) {
-		const bonus = BonusFactory.fromData(data, this);
+		const bonus = BonusFactory.fromData(data);
 		const bonusSprite = this.engine.addBonus(
 			data.initialX,
 			BONUS_GRAVITY_SCALE,

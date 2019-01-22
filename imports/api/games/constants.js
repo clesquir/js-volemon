@@ -6,25 +6,30 @@ export const HOST_SIDE = 'host';
 export const CLIENT_SIDE = 'client';
 
 export const PLAYER_VELOCITY_X_ON_MOVE = 6;
-export const PLAYER_VELOCITY_Y_ON_JUMP = 8;
-export const PLAYER_MASS = 1000;
-export const PLAYER_FROZEN_MASS = 2000;
+export const PLAYER_VELOCITY_Y_ON_JUMP = 6;
+export const PLAYER_MASS = 100;
+export const PLAYER_SMALL_MASS = 70;
+export const PLAYER_BIG_MASS = 200;
+export const PLAYER_FROZEN_MASS = 1000;
 export const PLAYER_GRAVITY_SCALE = 1;
-export const PLAYER_BIG_GRAVITY_SCALE = 3.75;
 export const PLAYER_SMALL_GRAVITY_SCALE = 0.7;
+export const PLAYER_BIG_GRAVITY_SCALE = 3.75;
 
-export const BALL_VERTICAL_SPEED_ON_PLAYER_HIT = -10;
-export const BALL_MASS = 0.1;
+export const BALL_VERTICAL_SPEED_ON_PLAYER_HIT = -6.75;
+export const BALL_MASS = 0.36;
+export const BALL_SMALL_MASS = 0.27;
+export const BALL_BIG_MASS = 0.50;
 export const BALL_GRAVITY_SCALE = 0.3636363636;
-export const BALL_BIG_GRAVITY_SCALE = 0.6;
-export const BALL_SMALL_GRAVITY_SCALE = 0.2;
+export const BALL_SMALL_GRAVITY_SCALE = 1;
+export const BALL_BIG_GRAVITY_SCALE = 1000;
 
-export const BONUS_MASS = 1;
+export const BONUS_MASS = 0.36;
 export const BONUS_RADIUS = 15;
 export const BONUS_GRAVITY_SCALE = 0.3636363636;
 
-export const WORLD_GRAVITY = 1;
+export const WORLD_GRAVITY = 0.6;
 export const WORLD_RESTITUTION = 1;
+export const CONSTRAINED_VELOCITY = 20;
 
 export const NORMAL_SCALE_PHYSICS_DATA = 'physicsData';
 export const SMALL_SCALE_PHYSICS_DATA = 'physicsDataSmall';

@@ -11,6 +11,7 @@ import StreamBundler from "../streamBundler/StreamBundler";
 import {PositionData} from "./PositionData";
 import ServerNormalizedTime from "../ServerNormalizedTime";
 import Animations from "./Animations";
+import {ArtificialIntelligencePositionData} from "../../artificialIntelligence/ArtificialIntelligencePositionData";
 
 export default class Players {
 	scene: MainScene;
@@ -27,6 +28,7 @@ export default class Players {
 	player3: Player;
 	player4: Player;
 	robots: {[id: string]: Player};
+	removedRobots: string[];
 
 	hostNumberBallHits: number = 0;
 	clientNumberBallHits: number = 0;
@@ -101,14 +103,45 @@ export default class Players {
 		this.sendPlayerPosition(player);
 	}
 
-	moveComputers(ball: Ball) {
+	moveComputers(
+		ballData: ArtificialIntelligencePositionData,
+		bonusesData: ArtificialIntelligencePositionData[]
+	) {
 		for (let key of this.getComputerPlayerKeys()) {
 			const player = this.getPlayerFromKey(key);
 
 			if (player) {
-				this.moveComputer(player, ball);
+				this.moveComputer(
+					player,
+					ballData,
+					bonusesData
+				);
 			}
 		}
+	}
+
+	moveClientPlayer(data: any) {
+		let player = this.getPlayerFromKey(data.key);
+
+		if (!player && data.key.indexOf('robot-') === 0) {
+			//if robot has been removed do not recreate
+			if (this.removedRobots.indexOf(data.key) !== -1) {
+				return;
+			}
+
+			//@todo Bonus Robot
+			// player = this.gameBonus.createRobot(data.key, data.isHost);
+		}
+
+		if (!player) {
+			return;
+		}
+
+		player.dropShots = data.doingDropShot;
+
+		let serverNormalizedTimestamp = this.serverNormalizedTime.getServerTimestamp();
+		//@todo Interpolate client player movements
+		// this.engine.interpolateMoveTo(player, serverNormalizedTimestamp, data, () => {return this.gameIsOnGoing()}, true);
 	}
 
 	freeze() {
@@ -210,6 +243,29 @@ export default class Players {
 		return false;
 	}
 
+	getPlayerFromKey(playerKey, includeRobot = true): Player | null {
+		switch (playerKey) {
+			case 'player1':
+				return this.player1;
+			case 'player2':
+				return this.player2;
+			case 'player3':
+				return this.player3;
+			case 'player4':
+				return this.player4;
+		}
+
+		if (includeRobot) {
+			for (let i in this.robots) {
+				if (this.robots.hasOwnProperty(i) && i === playerKey) {
+					return this.robots[i];
+				}
+			}
+		}
+
+		return null;
+	}
+
 	private createPlayer(key, color, isHost): Player {
 		return new Player(
 			this.scene,
@@ -252,29 +308,6 @@ export default class Players {
 		const key = this.gameData.getCurrentPlayerKey();
 
 		return this.getPlayerFromKey(key);
-	}
-
-	private getPlayerFromKey(playerKey, includeRobot = true): Player | null {
-		switch (playerKey) {
-			case 'player1':
-				return this.player1;
-			case 'player2':
-				return this.player2;
-			case 'player3':
-				return this.player3;
-			case 'player4':
-				return this.player4;
-		}
-
-		if (includeRobot) {
-			for (let i in this.robots) {
-				if (this.robots.hasOwnProperty(i) && i === playerKey) {
-					return this.robots[i];
-				}
-			}
-		}
-
-		return null;
 	}
 
 	private hostPlayerKeys(includeRobot = true): string[] {
@@ -339,12 +372,6 @@ export default class Players {
 		return playerKeys;
 	}
 
-	private isPlayerKey(key, includeRobot = true): boolean {
-		const playerKeys = this.getPlayerKeys(includeRobot);
-
-		return playerKeys.indexOf(key) >= 0;
-	}
-
 	private getComputerPlayerKeys(includeRobot = true): string[] {
 		const playerKeys = [];
 
@@ -372,7 +399,11 @@ export default class Players {
 		return playerKeys;
 	}
 
-	private moveComputer(player: Player, ball: Ball) {
+	private moveComputer(
+		player: Player,
+		ballData: ArtificialIntelligencePositionData,
+		bonusesData: ArtificialIntelligencePositionData[]
+	) {
 		const key = player.key;
 
 		//Creator user controls CPU
@@ -384,8 +415,8 @@ export default class Players {
 			key,
 			player.artificialIntelligenceData(),
 			player.artificialIntelligencePositionData(),
-			ball.artificialIntelligencePositionData(),
-			[],
+			ballData,
+			bonusesData,
 			this.gameConfiguration
 		);
 
@@ -469,8 +500,11 @@ export default class Players {
 
 	private delayKillPlayer(key: string) {
 		setTimeout(() => {
-			//@todo Bonus
-			// this.gameBonus.killPlayer(key);
+			const player = this.getPlayerFromKey(key);
+
+			if (player) {
+				player.kill();
+			}
 		}, 100);
 	}
 

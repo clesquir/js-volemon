@@ -17,7 +17,6 @@ import {
 	PLAYER_SHAPE_TRIPLE_COLON,
 	PLAYER_SHAPE_X
 } from "../../shapeConstants";
-import {PLAYER_MASS} from "../../constants";
 import Ball from "./Ball";
 import Level from "./Level";
 import {ArtificialIntelligenceData} from "../../artificialIntelligence/ArtificialIntelligenceData";
@@ -41,7 +40,7 @@ export default class Player {
 
 	container: Phaser.GameObjects.Container;
 	containerPhysics: Phaser.Physics.Matter.MatterPhysics | Phaser.Physics.Matter.Image | any;
-	playerObject: Phaser.Physics.Matter.Image;
+	playerObject: Phaser.GameObjects.Image;
 
 	eyeBall: Phaser.GameObjects.Graphics;
 	eyePupil: Phaser.GameObjects.Graphics;
@@ -138,12 +137,6 @@ export default class Player {
 		this.numberBallHits = 0;
 	}
 
-	resetPosition() {
-		this.containerPhysics.setVelocity(0, 0);
-		this.containerPhysics.setX(this.initialXLocation);
-		this.containerPhysics.setY(this.initialYLocation);
-	}
-
 	move(movesLeft: boolean, movesRight: boolean, jumps: boolean, dropshots: boolean) {
 		if (this.killed) {
 			return;
@@ -169,7 +162,10 @@ export default class Player {
 				if (this.alwaysJump || (jumps && this.canJump)) {
 					const verticalMoveMultiplier = this.verticalMoveMultiplier;
 
-					this.containerPhysics.setVelocityY(verticalMoveMultiplier * -this.velocityYOnJump);
+					this.containerPhysics.setVelocityY(
+						verticalMoveMultiplier * -this.velocityYOnJump *
+						this.initialMass / this.currentMass
+					);
 
 					this.isJumping = true;
 					this.isJumpingTimer = this.scene.time.addEvent({
@@ -230,14 +226,14 @@ export default class Player {
 		if (!this.gameData.isUserViewer()) {
 			if (this.gameData.isCurrentPlayerKey(this.key)) {
 				//Target player cannot see himself
-				this.playerObject.setAlpha(0);
+				this.container.setAlpha(0);
 			} else if (!this.isHiddenToOpponent) {
 				//Opponent see transparent if he can see
-				this.playerObject.setAlpha(0.5);
+				this.container.setAlpha(0.5);
 			}
 		} else {
 			//Viewers always see transparent
-			this.playerObject.setAlpha(0.5);
+			this.container.setAlpha(0.5);
 		}
 	}
 
@@ -253,10 +249,10 @@ export default class Player {
 				this.gameData.isCurrentPlayerKey(this.key) ||
 				this.gameData.isUserViewer()
 			) {
-				this.playerObject.setAlpha(0.5);
+				this.container.setAlpha(0.5);
 			}
 		} else {
-			this.playerObject.setAlpha(1);
+			this.container.setAlpha(1);
 		}
 	}
 
@@ -266,14 +262,14 @@ export default class Player {
 		if (!this.gameData.isUserViewer()) {
 			if (!this.gameData.isCurrentPlayerKey(this.key)) {
 				//Opponent cannot see player
-				this.playerObject.setAlpha(0);
+				this.container.setAlpha(0);
 			} else if (!this.isHiddenToHimself) {
 				//Bonus player see himself transparent if not hidden to himself
-				this.playerObject.setAlpha(0.5);
+				this.container.setAlpha(0.5);
 			}
 		} else {
 			//Viewers always see transparent
-			this.playerObject.setAlpha(0.5);
+			this.container.setAlpha(0.5);
 		}
 	}
 
@@ -286,10 +282,10 @@ export default class Player {
 
 		if (this.isHiddenToHimself) {
 			if (!this.gameData.isCurrentPlayerKey(this.key)) {
-				this.playerObject.setAlpha(0.5);
+				this.container.setAlpha(0.5);
 			}
 		} else {
-			this.playerObject.setAlpha(1);
+			this.container.setAlpha(1);
 		}
 	}
 
@@ -342,6 +338,24 @@ export default class Player {
 		this.reset();
 	}
 
+	scaleSmall() {
+		this.currentScale = this.gameConfiguration.smallPlayerScale();
+		this.currentMass = this.gameConfiguration.smallPlayerMass();
+		this.applyScale();
+	}
+
+	scaleBig() {
+		this.currentScale = this.gameConfiguration.bigPlayerScale();
+		this.currentMass = this.gameConfiguration.bigPlayerMass();
+		this.applyScale();
+	}
+
+	resetScale() {
+		this.currentScale = this.initialScale;
+		this.currentMass = this.initialMass;
+		this.applyScale();
+	}
+
 	artificialIntelligenceData(): ArtificialIntelligenceData {
 		return {
 			key: this.key,
@@ -387,7 +401,7 @@ export default class Player {
 
 		this.initialXLocation = x;
 		this.initialYLocation = y;
-		this.initialMass = PLAYER_MASS;
+		this.initialMass = this.gameConfiguration.initialPlayerMass();
 		this.currentMass = this.initialMass;
 		this.initialGravity = this.gameConfiguration.initialPlayerGravityScale();
 		this.currentGravity = this.initialGravity;
@@ -740,6 +754,12 @@ export default class Player {
 		return eyePupil;
 	}
 
+	private resetPosition() {
+		this.containerPhysics.setVelocity(0, 0);
+		this.containerPhysics.setX(this.initialXLocation);
+		this.containerPhysics.setY(this.initialYLocation);
+	}
+
 	private onCollide({bodyA, bodyB}) {
 		for (let sensor of this.sensors) {
 			if (
@@ -789,5 +809,11 @@ export default class Player {
 		const body = <any>this.containerPhysics.body;
 
 		return body.velocity.y;
+	}
+
+	private applyScale() {
+		this.container.setScale(this.currentScale);
+		this.containerPhysics.setMass(this.currentMass);
+		this.containerPhysics.setFixedRotation();
 	}
 }

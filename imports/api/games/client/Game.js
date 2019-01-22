@@ -1,4 +1,4 @@
-import ArtificialIntelligence from '/imports/api/games/artificialIntelligence/ArtificialIntelligence.js';
+import ArtificialIntelligence from '/imports/api/games/artificialIntelligence/ArtificialIntelligence';
 import GameBonus from '/imports/api/games/client/bonus/GameBonus.js';
 import Collisions from '/imports/api/games/collisions/Collisions.js';
 import {

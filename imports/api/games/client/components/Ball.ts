@@ -1,7 +1,7 @@
 import MainScene from "../scene/MainScene";
 import GameConfiguration from "../../configuration/GameConfiguration";
 import SkinManager from "../skin/SkinManager";
-import {BALL_MASS, CLIENT_SIDE, HOST_SIDE} from "../../constants";
+import {CLIENT_SIDE, CONSTRAINED_VELOCITY, HOST_SIDE} from "../../constants";
 import Level from "./Level";
 import {ArtificialIntelligencePositionData} from "../../artificialIntelligence/ArtificialIntelligencePositionData";
 import {PositionData} from "./PositionData";
@@ -32,19 +32,6 @@ export default class Ball {
 		this.gameConfiguration = gameConfiguration;
 		this.skinManager = skinManager;
 		this.level = level;
-
-		this.ballObject = this.skinManager.createBallComponent(this.scene);
-		this.ballObject.setBody(
-			{
-				type: 'fromVertices',
-				verts: '24, 8, 24, 16, 16, 24, 8, 24, 0, 16, 0, 8, 8, 0, 16, 0'
-			},
-			{}
-		);
-
-		this.ballObject.setDataEnabled();
-		this.ballObject.setData('owner', this);
-		this.ballObject.setData('isBall', true);
 
 		this.init();
 	}
@@ -86,6 +73,24 @@ export default class Ball {
 	unfreeze() {
 		this.isFrozen = false;
 		this.ballObject.setIgnoreGravity(false);
+	}
+
+	scaleSmall() {
+		this.currentScale = this.gameConfiguration.smallBallScale();
+		this.currentMass = this.gameConfiguration.smallBallMass();
+		this.applyScale();
+	}
+
+	scaleBig() {
+		this.currentScale = this.gameConfiguration.bigBallScale();
+		this.currentMass = this.gameConfiguration.bigBallMass();
+		this.applyScale();
+	}
+
+	resetScale() {
+		this.currentScale = this.initialScale;
+		this.currentMass = this.initialMass;
+		this.applyScale();
 	}
 
 	x(): number {
@@ -151,11 +156,14 @@ export default class Ball {
 	}
 
 	rebound() {
-		this.ballObject.setVelocityY(this.gameConfiguration.ballVelocityOnReboundOnPlayer());
+		this.ballObject.setVelocityY(
+			this.gameConfiguration.ballVelocityOnReboundOnPlayer() *
+			this.initialMass / this.currentMass
+		);
 	}
 
 	constrainVelocity() {
-		const maxVelocity = 22.5;
+		const maxVelocity = CONSTRAINED_VELOCITY;
 		let vx = this.velocityX();
 		let vy = this.velocityY();
 		let currVelocitySqr = vx * vx + vy * vy;
@@ -171,7 +179,20 @@ export default class Ball {
 	}
 
 	private init() {
-		this.initialMass = BALL_MASS;
+		this.ballObject = this.skinManager.createBallComponent(this.scene);
+		this.ballObject.setBody(
+			{
+				type: 'fromVertices',
+				verts: '24, 8, 24, 16, 16, 24, 8, 24, 0, 16, 0, 8, 8, 0, 16, 0'
+			},
+			{}
+		);
+
+		this.ballObject.setDataEnabled();
+		this.ballObject.setData('owner', this);
+		this.ballObject.setData('isBall', true);
+
+		this.initialMass = this.gameConfiguration.initialBallMass();
 		this.currentMass = this.initialMass;
 		this.initialGravity = this.gameConfiguration.initialBallGravityScale();
 		this.currentGravity = this.initialGravity;
@@ -183,10 +204,10 @@ export default class Ball {
 	}
 
 	private setupBody() {
-		this.ballObject.setFixedRotation();
 		this.ballObject.setIgnoreGravity(this.isFrozen);
 		this.ballObject.setFriction(0, 0, 0);
 		this.ballObject.setMass(this.currentMass);
+		this.ballObject.setFixedRotation();
 
 		this.ballObject.setCollisionCategory(this.level.collisionCategoryBall);
 		this.ballObject.setCollidesWith([
@@ -207,5 +228,11 @@ export default class Ball {
 		const body = <any>this.ballObject.body;
 
 		return body.velocity.y;
+	}
+
+	private applyScale() {
+		this.ballObject.setScale(this.currentScale);
+		this.ballObject.setMass(this.currentMass);
+		this.ballObject.setFixedRotation();
 	}
 }

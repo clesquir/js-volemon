@@ -73,9 +73,7 @@ export default class Dev {
 	overrideGame() {
 		this.gameData.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
 		this.streamBundler.emitStream = () => {};
-		//@todo Bonus
-		// this.gameBonus.createBonusIfTimeHasElapsed = () => {};
-
+		this.mainScene.bonuses.createBonusIfTimeHasElapsed = () => {};
 		this.mainScene.createComponents = () => {this.createComponents();};
 		this.mainScene.resumeOnTimerEnd = () => {this.resumeOnTimerEnd();};
 		this.initialUpdate = this.mainScene.update;
@@ -89,7 +87,7 @@ export default class Dev {
 		this.mainScene.level.createCollisionCategories();
 
 		this.mainScene.artificialIntelligence.initFromData(this.gameData);
-		this.mainScene.players.create();
+		this.createPlayersComponents();
 		this.mainScene.ball = this.mainScene.createBall();
 
 		this.createLevelComponents();
@@ -100,6 +98,10 @@ export default class Dev {
 			this.gameConfiguration,
 			this.serverNormalizedTime
 		);
+	}
+
+	createPlayersComponents() {
+		this.mainScene.players.create();
 	}
 
 	createLevelComponents() {

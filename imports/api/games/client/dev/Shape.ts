@@ -32,8 +32,6 @@ export default class Shape extends Dev {
 				return this.gameConfiguration.levelConfiguration.playerInitialY() - this.gameConfiguration.playerHeight() - 5;
 			}
 		};
-
-		this.mainScene.players.create = () => {this.createPlayersComponents()};
 		this.mainScene.players.getPlayerFromKey = (playerKey) => {
 			return this.players[playerKey];
 		};

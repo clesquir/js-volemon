@@ -7,8 +7,8 @@ import './environment.html';
 
 /** @type {Environment}|null */
 let environment = null;
-const groundHitEnabled = new ReactiveVar(true);
-const ballHitCountEnabled = new ReactiveVar(true);
+const groundHitEnabled = new ReactiveVar(false);
+const ballHitCountEnabled = new ReactiveVar(false);
 const matchPointEnabled = new ReactiveVar(false);
 const deucePointEnabled = new ReactiveVar(false);
 

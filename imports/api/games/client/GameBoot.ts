@@ -94,6 +94,7 @@ export class GameBoot {
 	}
 
 	stop() {
+		this.deviceController.stopMonitoring();
 		this.game.destroy(true);
 	}
 }

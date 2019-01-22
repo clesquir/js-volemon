@@ -1,5 +1,5 @@
 import {ALL_BONUSES} from '/imports/api/games/bonusConstants.js';
-import BonusFactory from '/imports/api/games/BonusFactory.js';
+import BonusFactory from '/imports/api/games/BonusFactory';
 import CardSwitcher from '/imports/lib/client/CardSwitcher.js';
 import {onMobileAndTablet} from '/imports/lib/utils.js';
 import {Template} from 'meteor/templating';
@@ -40,7 +40,7 @@ Template.help.helpers({
 		});
 
 		for (let bonusClassName of bonusClassNames) {
-			const bonus = BonusFactory.fromClassName(bonusClassName, null);
+			const bonus = BonusFactory.fromClassName(bonusClassName);
 
 			let x = 0;
 			let y = 0;
