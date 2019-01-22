@@ -43,7 +43,7 @@ export default class StaticGameData implements GameData {
 	}
 
 	isCurrentPlayerKey(playerKey: string): boolean {
-		return false;
+		return this.getCurrentPlayerKey() === playerKey;
 	}
 
 	isFirstPlayerComputer(): boolean {

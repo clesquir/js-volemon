@@ -1,4 +1,4 @@
-import {BonusActivationData} from './BonusActivationData';
+import {BonusActivationData} from './data/BonusActivationData';
 import MonsterBonus from './MonsterBonus';
 import {Random} from 'meteor/random';
 import Bonuses from "../client/components/Bonuses";
@@ -15,18 +15,18 @@ export default class ShapeShiftMonsterBonus extends MonsterBonus {
 	}
 
 	beforeActivation(payload) {
-		//@todo Bonus needs bonuses
+		//@todo Bonus
 		//Define the player random shape different from the player initial and current one
-		let listOfShapes = Array.from(this.game.gameConfiguration.listOfShapes());
+		let listOfShapes = Array.from(bonuses.gameConfiguration.listOfShapes());
 
 		//Remove initial player shape (if not only shape available)
-		const initialPolygonObjectIndex = listOfShapes.indexOf(this.game.playerInitialPolygonFromKey(payload.player));
+		const initialPolygonObjectIndex = listOfShapes.indexOf(bonuses.playerInitialPolygonFromKey(payload.player));
 		if (listOfShapes.length > 1 && initialPolygonObjectIndex !== -1) {
 			listOfShapes.splice(initialPolygonObjectIndex, 1);
 		}
 
 		//Remove current player shape (if not last shape available)
-		const currentPolygonObjectIndex = listOfShapes.indexOf(this.game.playerCurrentPolygonFromKey(payload.player));
+		const currentPolygonObjectIndex = listOfShapes.indexOf(bonuses.playerCurrentPolygonFromKey(payload.player));
 		if (listOfShapes.length > 1 && currentPolygonObjectIndex !== -1) {
 			listOfShapes.splice(currentPolygonObjectIndex, 1);
 		}

@@ -11,11 +11,11 @@ export default class BigJumpMonsterBonus extends MonsterBonus {
 	}
 
 	start(bonuses: Bonuses) {
-		bonuses.changePlayerProperty.call(bonuses, this.activatorPlayerKey, 'verticalMoveMultiplier', 1.35);
+		bonuses.applyBigVerticalMoveMultiplier.call(bonuses, this.activatorPlayerKey);
 	}
 
 	stop(bonuses: Bonuses) {
-		bonuses.changePlayerProperty.call(bonuses, this.activatorPlayerKey, 'verticalMoveMultiplier', 1);
+		bonuses.resetVerticalMoveMultiplier.call(bonuses, this.activatorPlayerKey);
 
 		this.deactivate();
 	}

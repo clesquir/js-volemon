@@ -14,7 +14,7 @@ import Countdown from "../components/Countdown";
 import Animations from "../components/Animations";
 import Players from "../components/Players";
 import Bonuses from "../components/Bonuses";
-import {BonusStreamData} from "../../bonus/BonusStreamData";
+import {BonusStreamData} from "../../bonus/data/BonusStreamData";
 
 const Phaser = require('phaser');
 
@@ -79,7 +79,8 @@ export default class MainScene extends Phaser.Scene {
 			this.gameConfiguration,
 			this.streamBundler,
 			this.serverNormalizedTime,
-			this.level
+			this.level,
+			this.players
 		);
 
 		this.eventEmitter = new Phaser.Events.EventEmitter();
@@ -384,6 +385,7 @@ export default class MainScene extends Phaser.Scene {
 	private createBall(): Ball {
 		return new Ball(
 			this,
+			this.gameData,
 			this.gameConfiguration,
 			this.skinManager,
 			this.level

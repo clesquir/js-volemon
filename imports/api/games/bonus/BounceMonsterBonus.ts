@@ -6,13 +6,11 @@ export default class BounceMonsterBonus extends JumpMonsterBonus {
 	description: string = 'Player jumps constantly';
 
 	start(bonuses: Bonuses) {
-		bonuses.changePlayerProperty.call(bonuses, this.activatorPlayerKey, 'alwaysJump', true);
-		bonuses.changePlayerProperty.call(bonuses, this.activatorPlayerKey, 'canJump', false);
+		bonuses.applyBouncePlayer.call(bonuses, this.activatorPlayerKey);
 	}
 
 	stop(bonuses: Bonuses) {
-		bonuses.changePlayerProperty.call(bonuses, this.activatorPlayerKey, 'alwaysJump', false);
-		bonuses.changePlayerProperty.call(bonuses, this.activatorPlayerKey, 'canJump', true);
+		bonuses.resetBouncePlayer.call(bonuses, this.activatorPlayerKey);
 
 		this.deactivate();
 	}

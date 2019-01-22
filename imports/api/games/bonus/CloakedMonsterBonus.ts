@@ -11,11 +11,11 @@ export default class CloakedMonsterBonus extends MonsterBonus {
 	}
 
 	start(bonuses: Bonuses) {
-		bonuses.hideFromOpponent.call(bonuses, this.activatorPlayerKey);
+		bonuses.hidePlayerFromOpponent.call(bonuses, this.activatorPlayerKey);
 	}
 
 	stop(bonuses: Bonuses) {
-		bonuses.showToOpponent.call(bonuses, this.activatorPlayerKey);
+		bonuses.showPlayerToOpponent.call(bonuses, this.activatorPlayerKey);
 
 		this.deactivate();
 	}

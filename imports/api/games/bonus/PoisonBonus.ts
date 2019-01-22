@@ -21,7 +21,7 @@ export default class PoisonBonus extends MonsterBonus {
 	}
 
 	stop(bonuses: Bonuses) {
-		if (!bonuses.isInvincible.call(bonuses, this.activatorPlayerKey)) {
+		if (!bonuses.isPlayerInvincible.call(bonuses, this.activatorPlayerKey)) {
 			bonuses.killPlayer.call(bonuses, this.activatorPlayerKey);
 		}
 

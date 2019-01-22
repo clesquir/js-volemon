@@ -12,11 +12,11 @@ export default class BonusRepellentMonsterBonus extends MonsterBonus {
 	}
 
 	start(bonuses: Bonuses) {
-		bonuses.changePlayerProperty.call(bonuses, this.activatorPlayerKey, 'canActivateBonuses', false);
+		bonuses.disablePlayerBonusActivation.call(bonuses, this.activatorPlayerKey);
 	}
 
 	stop(bonuses: Bonuses) {
-		bonuses.changePlayerProperty.call(bonuses, this.activatorPlayerKey, 'canActivateBonuses', true);
+		bonuses.enablePlayerBonusActivation.call(bonuses, this.activatorPlayerKey);
 
 		this.deactivate();
 	}

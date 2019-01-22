@@ -6,6 +6,6 @@ export default class SlowMonsterBonus extends MovementMonsterBonus {
 	description: string = 'Slows down player';
 
 	start(bonuses: Bonuses) {
-		bonuses.changePlayerProperty.call(bonuses, this.activatorPlayerKey, 'horizontalMoveMultiplier', 0.4);
+		bonuses.applySlowHorizontalMoveMultiplier.call(bonuses, this.activatorPlayerKey);
 	}
 };

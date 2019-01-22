@@ -16,7 +16,7 @@ export default class InvisibleBallBonus extends BallBonus {
 	}
 
 	stop(bonuses: Bonuses) {
-		bonuses.showBall.call(bonuses);
+		bonuses.unhideBall.call(bonuses);
 
 		this.deactivate();
 	}

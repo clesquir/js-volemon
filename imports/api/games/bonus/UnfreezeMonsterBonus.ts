@@ -17,6 +17,6 @@ export default class UnfreezeMonsterBonus extends MonsterBonus {
 	}
 
 	start(bonuses: Bonuses) {
-		bonuses.unFreezePlayer.call(bonuses, this.activatorPlayerKey);
+		bonuses.unfreezePlayer.call(bonuses, this.activatorPlayerKey);
 	}
 };

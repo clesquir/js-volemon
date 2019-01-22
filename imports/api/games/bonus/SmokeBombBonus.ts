@@ -1,5 +1,5 @@
 import BaseBonus from './BaseBonus';
-import {BonusActivationData} from "./BonusActivationData";
+import {BonusActivationData} from "./data/BonusActivationData";
 import Bonuses from "../client/components/Bonuses";
 
 export default class SmokeBombBonus extends BaseBonus {

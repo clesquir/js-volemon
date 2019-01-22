@@ -409,8 +409,8 @@ export default class Player {
 		this.velocityYOnJump = this.gameConfiguration.playerYVelocity();
 
 		//Bonus
-		this.horizontalMoveMultiplier = 1;
-		this.verticalMoveMultiplier = 1;
+		this.horizontalMoveMultiplier = this.gameConfiguration.initialHorizontalMoveMultiplier();
+		this.verticalMoveMultiplier = this.gameConfiguration.initialVerticalMoveMultiplier();
 		this.initialIsHiddenToHimself = this.gameConfiguration.isHiddenToHimself();
 		this.isHiddenToHimself = this.gameConfiguration.isHiddenToHimself();
 		this.initialIsHiddenToOpponent = this.gameConfiguration.isHiddenToOpponent();

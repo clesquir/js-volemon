@@ -9,6 +9,7 @@ export default class RobotBonus extends MonsterBonus {
 	robotId: string = null;
 
 	check(bonuses: Bonuses, currentTimestamp: number): boolean {
+		//@todo Bonus
 		if (bonuses.robotHasBeenKilled.call(bonuses, this.robotId)) {
 			return false;
 		}
@@ -33,10 +34,12 @@ export default class RobotBonus extends MonsterBonus {
 	}
 
 	start(bonuses: Bonuses) {
+		//@todo Bonus
 		bonuses.createRobotFromActivatorPlayerKey.call(bonuses, this.activatorPlayerKey, this.robotId);
 	}
 
 	stop(bonuses: Bonuses) {
+		//@todo Bonus
 		bonuses.removeRobot.call(bonuses, this.robotId);
 
 		this.deactivate();

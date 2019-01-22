@@ -11,11 +11,11 @@ export default class InvincibleMonsterBonus extends MonsterBonus {
 	}
 
 	start(bonuses: Bonuses) {
-		bonuses.changePlayerProperty.call(bonuses, this.activatorPlayerKey, 'isInvincible', true);
+		bonuses.applyInvinciblePlayer.call(bonuses, this.activatorPlayerKey);
 	}
 
 	stop(bonuses: Bonuses) {
-		bonuses.changePlayerProperty.call(bonuses, this.activatorPlayerKey, 'isInvincible', false);
+		bonuses.resetInvinciblePlayer.call(bonuses, this.activatorPlayerKey);
 
 		this.deactivate();
 	}

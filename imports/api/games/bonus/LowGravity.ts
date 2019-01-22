@@ -10,11 +10,11 @@ export default class LowGravity extends GravityBonus {
 	}
 
 	start(bonuses: Bonuses) {
-		bonuses.scaleGravity.call(bonuses, 0.55);
+		bonuses.applyLowGravity.call(bonuses);
 	}
 
 	stop(bonuses: Bonuses) {
-		bonuses.resetGravityScale.call(bonuses);
+		bonuses.resetGravity.call(bonuses);
 
 		this.deactivate();
 	}

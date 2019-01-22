@@ -8,7 +8,7 @@ export default class MovementMonsterBonus extends MonsterBonus {
 	}
 
 	stop(bonuses: Bonuses) {
-		bonuses.changePlayerProperty.call(bonuses, this.activatorPlayerKey, 'horizontalMoveMultiplier', 1);
+		bonuses.resetHorizontalMoveMultiplier.call(bonuses, this.activatorPlayerKey);
 
 		this.deactivate();
 	}

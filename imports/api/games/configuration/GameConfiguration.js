@@ -222,6 +222,26 @@ export default class GameConfiguration {
 		return PLAYER_BIG_MASS;
 	}
 
+	initialVerticalMoveMultiplier() {
+		return 1;
+	}
+
+	bigVerticalMoveMultiplier() {
+		return 1.35;
+	}
+
+	initialHorizontalMoveMultiplier() {
+		return 1;
+	}
+
+	fastHorizontalMoveMultiplier() {
+		return 2;
+	}
+
+	slowHorizontalMoveMultiplier() {
+		return 0.4;
+	}
+
 	initialBallMass() {
 		return BALL_MASS;
 	}

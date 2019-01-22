@@ -8,9 +8,10 @@ import BonusFactory from "../../BonusFactory";
 import {ArtificialIntelligencePositionData} from "../../artificialIntelligence/ArtificialIntelligencePositionData";
 import {BONUS_INTERVAL} from "../../emissionConstants";
 import {getRandomInt} from "../../../../lib/utils";
-import {BonusStreamData} from "../../bonus/BonusStreamData";
+import {BonusStreamData} from "../../bonus/data/BonusStreamData";
 import Player from "./Player";
 import Level from "./Level";
+import Players from "./Players";
 
 export default class Bonuses {
 	scene: MainScene;
@@ -19,6 +20,7 @@ export default class Bonuses {
 	streamBundler: StreamBundler;
 	serverNormalizedTime: ServerNormalizedTime;
 	level: Level;
+	players: Players;
 
 	lastBonusUpdate: number = 0;
 	lastBonusCreated: number = 0;
@@ -35,7 +37,8 @@ export default class Bonuses {
 		gameConfiguration: GameConfiguration,
 		streamBundler: StreamBundler,
 		serverNormalizedTime: ServerNormalizedTime,
-		level: Level
+		level: Level,
+		players: Players
 	) {
 		this.scene = scene;
 		this.gameData = gameData;
@@ -43,6 +46,7 @@ export default class Bonuses {
 		this.streamBundler = streamBundler;
 		this.serverNormalizedTime = serverNormalizedTime;
 		this.level = level;
+		this.players = players;
 	}
 
 	update() {
@@ -102,44 +106,45 @@ export default class Bonuses {
 		return bonusesData;
 	}
 
-	createBonus(data: BonusStreamData) {
+	createBonus(data: BonusStreamData): Bonus {
 		const bonusReference = BonusFactory.fromData(data);
 		bonusReference.createdAt = data.createdAt;
 
-		this.bonuses.push(
-			new Bonus(
-				this.scene,
-				this.gameConfiguration,
-				this.serverNormalizedTime,
-				this.level,
-				bonusReference,
-				data.initialX,
-				data.bonusIdentifier
-			)
+		const bonus = new Bonus(
+			this.scene,
+			this.gameConfiguration,
+			this.serverNormalizedTime,
+			this.level,
+			bonusReference,
+			data.initialX,
+			data.bonusIdentifier
 		);
+
+		this.bonuses.push(bonus);
+
+		return bonus;
 	}
 
 	moveClientBonus(bonusIdentifier: string, data: any) {
-		let correspondingBonusSprite = this.bonusFromIdentifier(bonusIdentifier);
+		let correspondingBonus = this.bonusFromIdentifier(bonusIdentifier);
 
 		if (!this.gameIsOnGoing()) {
 			return;
 		}
 
-		if (!correspondingBonusSprite) {
+		if (!correspondingBonus) {
 			//if bonus has been removed do not recreate
 			if (this.removedBonuses.indexOf(bonusIdentifier) !== -1) {
 				return;
 			}
 
 			data.bonusIdentifier = bonusIdentifier;
-			//@todo Bonus
-			// correspondingBonusSprite = this.createBonus(data);
+			correspondingBonus = this.createBonus(data);
 		}
 
 		let serverNormalizedTimestamp = this.serverNormalizedTime.getServerTimestamp();
 		//@todo Interpolate client bonuses movements
-		// this.engine.interpolateMoveTo(correspondingBonusSprite, serverNormalizedTimestamp, data, () => {return this.gameIsOnGoing()});
+		// this.engine.interpolateMoveTo(correspondingBonus, serverNormalizedTimestamp, data, () => {return this.gameIsOnGoing()});
 	}
 
 	onPlayerHitBonus(player: Player, bonus: Bonus) {
@@ -223,8 +228,36 @@ export default class Bonuses {
 		}
 	}
 
+	drawCloud() {
+		//@todo Bonus
+	}
+
+	hideCloud() {
+		//@todo Bonus
+	}
+
+	drawSmokeBomb(smokeBombIdentifier: string, xPosition: number, yPosition: number) {
+		//@todo Bonus
+	}
+
+	hideSmokeBomb(smokeBombIdentifier: string) {
+		//@todo Bonus
+	}
+
+	applyHighGravity() {
+		//@todo Bonus - this.gameConfiguration.worldGravity() * 2.75
+	}
+
+	applyLowGravity() {
+		//@todo Bonus - this.gameConfiguration.worldGravity() * 0.55
+	}
+
+	resetGravity() {
+		//@todo Bonus - this.gameConfiguration.worldGravity()
+	}
+
 	scaleSmallPlayer(playerKey: string) {
-		const player = this.scene.players.getPlayerFromKey(playerKey);
+		const player = this.players.getPlayerFromKey(playerKey);
 
 		if (player) {
 			player.scaleSmall();
@@ -232,7 +265,7 @@ export default class Bonuses {
 	}
 
 	scaleBigPlayer(playerKey: string) {
-		const player = this.scene.players.getPlayerFromKey(playerKey);
+		const player = this.players.getPlayerFromKey(playerKey);
 
 		if (player) {
 			player.scaleBig();
@@ -240,11 +273,213 @@ export default class Bonuses {
 	}
 
 	resetPlayerScale(playerKey: string) {
-		const player = this.scene.players.getPlayerFromKey(playerKey);
+		const player = this.players.getPlayerFromKey(playerKey);
 
 		if (player) {
 			player.resetScale();
 		}
+	}
+
+	applyBigVerticalMoveMultiplier(playerKey: string) {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player) {
+			player.verticalMoveMultiplier = this.gameConfiguration.bigVerticalMoveMultiplier();
+		}
+	}
+
+	resetVerticalMoveMultiplier(playerKey: string) {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player) {
+			player.verticalMoveMultiplier = this.gameConfiguration.initialVerticalMoveMultiplier();
+		}
+	}
+
+	applyFastHorizontalMoveMultiplier(playerKey: string) {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player) {
+			player.horizontalMoveMultiplier = this.gameConfiguration.fastHorizontalMoveMultiplier();
+		}
+	}
+
+	applySlowHorizontalMoveMultiplier(playerKey: string) {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player) {
+			player.horizontalMoveMultiplier = this.gameConfiguration.slowHorizontalMoveMultiplier();
+		}
+	}
+
+	resetHorizontalMoveMultiplier(playerKey: string) {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player) {
+			player.horizontalMoveMultiplier = this.gameConfiguration.initialHorizontalMoveMultiplier();
+		}
+	}
+
+	enablePlayerBonusActivation(playerKey: string) {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player) {
+			player.canActivateBonuses = true;
+		}
+	}
+
+	disablePlayerBonusActivation(playerKey: string) {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player) {
+			player.canActivateBonuses = false;
+		}
+	}
+
+	applyReversePlayerMove(playerKey: string) {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player) {
+			player.isMoveReversed = true;
+		}
+	}
+
+	resetReversePlayerMove(playerKey: string) {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player) {
+			player.isMoveReversed = false;
+		}
+	}
+
+	applyNoJumpPlayer(playerKey: string) {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player) {
+			player.canJump = false;
+			player.alwaysJump = false;
+		}
+	}
+
+	resetNoJumpPlayer(playerKey: string) {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player) {
+			player.canJump = true;
+			player.alwaysJump = false;
+		}
+	}
+
+	applyBouncePlayer(playerKey: string) {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player) {
+			player.alwaysJump = true;
+			player.canJump = false;
+		}
+	}
+
+	resetBouncePlayer(playerKey: string) {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player) {
+			player.alwaysJump = false;
+			player.canJump = true;
+		}
+	}
+
+	freezePlayer(playerKey: string) {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player) {
+			player.freeze();
+		}
+	}
+
+	unfreezePlayer(playerKey: string) {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player) {
+			player.unfreeze();
+		}
+	}
+
+	hidePlayerFromHimself(playerKey: string) {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player) {
+			player.hideFromHimself();
+		}
+	}
+
+	showPlayerToHimself(playerKey: string) {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player) {
+			player.showToHimself();
+		}
+	}
+
+	hidePlayerFromOpponent(playerKey: string) {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player) {
+			player.hideFromOpponent();
+		}
+	}
+
+	showPlayerToOpponent(playerKey: string) {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player) {
+			player.showToOpponent();
+		}
+	}
+
+	isPlayerInvincible(playerKey: string): boolean {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		return player && player.isInvincible;
+	}
+
+	applyInvinciblePlayer(playerKey: string) {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player) {
+			player.isInvincible = true;
+		}
+	}
+
+	resetInvinciblePlayer(playerKey: string) {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player) {
+			player.isInvincible = false;
+		}
+	}
+
+	killPlayer(playerKey: string) {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player) {
+			player.kill();
+		}
+	}
+
+	revivePlayer(playerKey: string) {
+		this.players.reviveTeammatePlayer(playerKey);
+	}
+
+	shiftPlayerShape(playerKey: string, playerShape: string) {
+		//@todo Bonus
+	}
+
+	resetPlayerShape(playerKey: string) {
+		//@todo Bonus
+	}
+
+	resetBallHitCount(playerKey: string) {
+		//@todo Bonus
 	}
 
 	scaleSmallBall() {
@@ -259,22 +494,12 @@ export default class Bonuses {
 		this.scene.ball.resetScale();
 	}
 
-	isInvincible(playerKey: string): boolean {
-		const player = this.scene.players.getPlayerFromKey(playerKey);
-
-		return player && player.isInvincible;
+	hideBall() {
+		this.scene.ball.hide();
 	}
 
-	killPlayer(playerKey: string) {
-		const player = this.scene.players.getPlayerFromKey(playerKey);
-
-		if (player) {
-			player.kill();
-		}
-	}
-
-	revivePlayer(playerKey: string) {
-		this.scene.players.reviveTeammatePlayer(playerKey);
+	unhideBall() {
+		this.scene.ball.unhide();
 	}
 
 	private bonusFromIdentifier(bonusIdentifier: string): Bonus | null {

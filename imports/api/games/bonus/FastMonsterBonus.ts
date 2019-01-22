@@ -6,6 +6,6 @@ export default class FastMonsterBonus extends MovementMonsterBonus {
 	description: string = 'Speeds up player';
 
 	start(bonuses: Bonuses) {
-		bonuses.changePlayerProperty.call(bonuses, this.activatorPlayerKey, 'horizontalMoveMultiplier', 2);
+		bonuses.applyFastHorizontalMoveMultiplier.call(bonuses, this.activatorPlayerKey);
 	}
 };

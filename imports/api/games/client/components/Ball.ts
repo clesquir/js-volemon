@@ -5,9 +5,11 @@ import {CLIENT_SIDE, CONSTRAINED_VELOCITY, HOST_SIDE} from "../../constants";
 import Level from "./Level";
 import {ArtificialIntelligencePositionData} from "../../artificialIntelligence/ArtificialIntelligencePositionData";
 import {PositionData} from "./PositionData";
+import GameData from "../../data/GameData";
 
 export default class Ball {
 	scene: MainScene;
+	gameData: GameData;
 	gameConfiguration: GameConfiguration;
 	skinManager: SkinManager;
 	level: Level;
@@ -24,11 +26,13 @@ export default class Ball {
 
 	constructor (
 		scene: MainScene,
+		gameData: GameData,
 		gameConfiguration: GameConfiguration,
 		skinManager: SkinManager,
 		level: Level
 	) {
 		this.scene = scene;
+		this.gameData = gameData;
 		this.gameConfiguration = gameConfiguration;
 		this.skinManager = skinManager;
 		this.level = level;
@@ -91,6 +95,18 @@ export default class Ball {
 		this.currentScale = this.initialScale;
 		this.currentMass = this.initialMass;
 		this.applyScale();
+	}
+
+	hide() {
+		if (!this.gameData.isUserViewer()) {
+			this.ballObject.setAlpha(0);
+		} else {
+			this.ballObject.setAlpha(0.5);
+		}
+	}
+
+	unhide() {
+		this.ballObject.setAlpha(1);
 	}
 
 	x(): number {

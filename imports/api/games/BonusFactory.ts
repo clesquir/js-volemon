@@ -66,7 +66,7 @@ import {
 } from './bonusConstants';
 import GameConfiguration from "./configuration/GameConfiguration";
 import {Random} from 'meteor/random';
-import {BonusStreamData} from "./bonus/BonusStreamData";
+import {BonusStreamData} from "./bonus/data/BonusStreamData";
 import BaseBonus from "./bonus/BaseBonus";
 
 export default class BonusFactory {

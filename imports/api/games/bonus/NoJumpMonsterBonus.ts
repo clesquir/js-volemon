@@ -6,13 +6,11 @@ export default class NoJumpMonsterBonus extends JumpMonsterBonus {
 	description: string = 'Restricts player to jump';
 
 	start(bonuses: Bonuses) {
-		bonuses.changePlayerProperty.call(bonuses, this.activatorPlayerKey, 'canJump', false);
-		bonuses.changePlayerProperty.call(bonuses, this.activatorPlayerKey, 'alwaysJump', false);
+		bonuses.applyNoJumpPlayer.call(bonuses, this.activatorPlayerKey);
 	}
 
 	stop(bonuses: Bonuses) {
-		bonuses.changePlayerProperty.call(bonuses, this.activatorPlayerKey, 'canJump', true);
-		bonuses.changePlayerProperty.call(bonuses, this.activatorPlayerKey, 'alwaysJump', false);
+		bonuses.resetNoJumpPlayer.call(bonuses, this.activatorPlayerKey);
 
 		this.deactivate();
 	}

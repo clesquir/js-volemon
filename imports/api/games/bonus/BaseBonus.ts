@@ -1,7 +1,7 @@
 import {BONUS_DURATION} from '../emissionConstants';
 import {getUTCTimeStamp} from '../../../lib/utils';
-import {BonusStreamData} from "./BonusStreamData";
-import {BonusActivationData} from "./BonusActivationData";
+import {BonusStreamData} from "./data/BonusStreamData";
+import {BonusActivationData} from "./data/BonusActivationData";
 import Bonuses from "../client/components/Bonuses";
 
 export default class BaseBonus {

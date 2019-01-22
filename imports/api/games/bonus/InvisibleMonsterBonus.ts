@@ -15,11 +15,11 @@ export default class InvisibleMonsterBonus extends MonsterBonus {
 	}
 
 	start(bonuses: Bonuses) {
-		bonuses.hidePlayingPlayer.call(bonuses, this.activatorPlayerKey);
+		bonuses.hidePlayerFromHimself.call(bonuses, this.activatorPlayerKey);
 	}
 
 	stop(bonuses: Bonuses) {
-		bonuses.showPlayingPlayer.call(bonuses, this.activatorPlayerKey);
+		bonuses.showPlayerToHimself.call(bonuses, this.activatorPlayerKey);
 
 		this.deactivate();
 	}

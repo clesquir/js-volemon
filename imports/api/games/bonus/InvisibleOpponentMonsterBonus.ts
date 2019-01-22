@@ -31,9 +31,9 @@ export default class InvisibleOpponentMonsterBonus extends MonsterBonus {
 		} else if (this.activatorPlayerKey === 'player4') {
 			return 'player3';
 		} else {
-			const player = bonuses.playerFromKey.call(bonuses, this.activatorPlayerKey);
+			const player = bonuses.players.getPlayerFromKey.call(bonuses, this.activatorPlayerKey);
 
-			if (bonuses.isPlayerHostSide.call(bonuses, player)) {
+			if (player.isHost) {
 				return 'player2';
 			} else {
 				return 'player1';
@@ -47,11 +47,11 @@ export default class InvisibleOpponentMonsterBonus extends MonsterBonus {
 
 	start(bonuses: Bonuses) {
 		this.targetPlayerKey = this.initTargetPlayerKey(bonuses);
-		bonuses.hidePlayingPlayer.call(bonuses, this.getTargetPlayerKey());
+		bonuses.hidePlayerFromHimself.call(bonuses, this.getTargetPlayerKey());
 	}
 
 	stop(bonuses: Bonuses) {
-		bonuses.showPlayingPlayer.call(bonuses, this.getTargetPlayerKey());
+		bonuses.showPlayerToHimself.call(bonuses, this.getTargetPlayerKey());
 
 		this.deactivate();
 	}

@@ -20,7 +20,7 @@ export default class FreezeMonsterBonus extends MonsterBonus {
 	}
 
 	stop(bonuses: Bonuses) {
-		bonuses.unFreezePlayer.call(bonuses, this.activatorPlayerKey);
+		bonuses.unfreezePlayer.call(bonuses, this.activatorPlayerKey);
 
 		this.deactivate();
 	}

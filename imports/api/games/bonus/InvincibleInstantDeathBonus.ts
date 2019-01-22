@@ -1,5 +1,5 @@
 import BaseBonus from './BaseBonus';
-import {BonusStreamData} from "./BonusStreamData";
+import {BonusStreamData} from "./data/BonusStreamData";
 import {BONUS_INSTANT_DEATH, BONUS_INVINCIBLE_MONSTER} from '../bonusConstants';
 import BonusFactory from '../BonusFactory';
 import {Random} from 'meteor/random';
