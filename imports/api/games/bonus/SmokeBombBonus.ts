@@ -1,6 +1,7 @@
 import BaseBonus from './BaseBonus';
 import {BonusActivationData} from "./data/BonusActivationData";
 import Bonuses from "../client/components/Bonuses";
+import {getRandomInt} from "../../../lib/utils";
 
 export default class SmokeBombBonus extends BaseBonus {
 	atlasFrame: string = 'smoke-bomb';
@@ -9,6 +10,7 @@ export default class SmokeBombBonus extends BaseBonus {
 
 	xPosition: number;
 	yPosition: number;
+	angle: number;
 
 	getTargetPlayerKey(): string {
 		return null;
@@ -17,6 +19,7 @@ export default class SmokeBombBonus extends BaseBonus {
 	beforeActivation(payload) {
 		this.xPosition = payload.x;
 		this.yPosition = payload.y;
+		this.angle = getRandomInt(-180, 180);
 	}
 
 	beforeActivationData() {
@@ -24,6 +27,7 @@ export default class SmokeBombBonus extends BaseBonus {
 
 		beforeActivationData.xPosition = this.xPosition;
 		beforeActivationData.yPosition = this.yPosition;
+		beforeActivationData.angle = this.angle;
 
 		return beforeActivationData;
 	}
@@ -31,6 +35,7 @@ export default class SmokeBombBonus extends BaseBonus {
 	reassignBeforeActivationData(beforeActivationData) {
 		this.xPosition = beforeActivationData.xPosition;
 		this.yPosition = beforeActivationData.yPosition;
+		this.angle = beforeActivationData.angle;
 	}
 
 	activationData(): BonusActivationData {
@@ -38,12 +43,13 @@ export default class SmokeBombBonus extends BaseBonus {
 
 		activationData.xPosition = this.xPosition;
 		activationData.yPosition = this.yPosition;
+		activationData.angle = this.angle;
 
 		return activationData;
 	}
 
 	start(bonuses: Bonuses) {
-		bonuses.drawSmokeBomb.call(bonuses, this.getIdentifier(), this.xPosition, this.yPosition);
+		bonuses.showSmokeBomb.call(bonuses, this.getIdentifier(), this.xPosition, this.yPosition, this.angle);
 	}
 
 	stop(bonuses: Bonuses) {

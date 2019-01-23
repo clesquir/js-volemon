@@ -31,6 +31,10 @@ export const WORLD_GRAVITY = 0.6;
 export const WORLD_RESTITUTION = 1;
 export const CONSTRAINED_VELOCITY = 20;
 
+export const DEPTH_CLOUDS = 1;
+export const DEPTH_ACTIVATED_BONUSES = 2;
+export const DEPTH_ACTIVATION_ANIMATION = 3;
+
 export const NORMAL_SCALE_PHYSICS_DATA = 'physicsData';
 export const SMALL_SCALE_PHYSICS_DATA = 'physicsDataSmall';
 export const BIG_SCALE_PHYSICS_DATA = 'physicsDataBig';

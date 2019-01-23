@@ -12,6 +12,7 @@ import {BonusStreamData} from "../../bonus/data/BonusStreamData";
 import Player from "./Player";
 import Level from "./Level";
 import Players from "./Players";
+import CloudsGenerator from "./CloudsGenerator";
 
 export default class Bonuses {
 	scene: MainScene;
@@ -21,6 +22,7 @@ export default class Bonuses {
 	serverNormalizedTime: ServerNormalizedTime;
 	level: Level;
 	players: Players;
+	cloudsGenerator: CloudsGenerator;
 
 	lastBonusUpdate: number = 0;
 	lastBonusCreated: number = 0;
@@ -29,7 +31,6 @@ export default class Bonuses {
 	bonuses: Bonus[] = [];
 	activeBonuses: Bonus[] = [];
 	removedBonuses: string[] = [];
-	clouds = [];
 
 	constructor(
 		scene: MainScene,
@@ -47,6 +48,12 @@ export default class Bonuses {
 		this.serverNormalizedTime = serverNormalizedTime;
 		this.level = level;
 		this.players = players;
+
+		this.cloudsGenerator = new CloudsGenerator(
+			this.scene,
+			this.gameData,
+			this.gameConfiguration
+		);
 	}
 
 	update() {
@@ -196,7 +203,7 @@ export default class Bonuses {
 		bonusReferenceToActivate.start(this);
 
 		//Show bonus activation animation
-		//@todo Bonus animation
+		//@todo Bonus animation - always to top (should be on top of cloud) - activatedBonus.setDepth(DEPTH_ACTIVATION_ANIMATION);
 		// this.engine.activateAnimationBonus(x, y, bonusReferenceToActivate);
 
 		this.deactivateSimilarBonusForPlayerKey(bonus, playerKey);
@@ -228,20 +235,20 @@ export default class Bonuses {
 		}
 	}
 
-	drawCloud() {
-		//@todo Bonus
+	showClouds() {
+		this.cloudsGenerator.showClouds();
 	}
 
-	hideCloud() {
-		//@todo Bonus
+	hideClouds() {
+		this.cloudsGenerator.hideClouds();
 	}
 
-	drawSmokeBomb(smokeBombIdentifier: string, xPosition: number, yPosition: number) {
-		//@todo Bonus
+	showSmokeBomb(smokeBombIdentifier: string, xPosition: number, yPosition: number, angle: number) {
+		this.cloudsGenerator.showSmokeBomb(smokeBombIdentifier, xPosition, yPosition, angle);
 	}
 
 	hideSmokeBomb(smokeBombIdentifier: string) {
-		//@todo Bonus
+		this.cloudsGenerator.hideSmokeBomb(smokeBombIdentifier);
 	}
 
 	applyHighGravity() {

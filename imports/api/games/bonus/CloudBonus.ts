@@ -15,11 +15,11 @@ export default class CloudBonus extends BaseBonus {
 	}
 
 	start(bonuses: Bonuses) {
-		bonuses.drawCloud.call(bonuses);
+		bonuses.showClouds.call(bonuses);
 	}
 
 	stop(bonuses: Bonuses) {
-		bonuses.hideCloud.call(bonuses);
+		bonuses.hideClouds.call(bonuses);
 
 		this.deactivate();
 	}

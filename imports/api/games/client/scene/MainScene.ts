@@ -7,7 +7,7 @@ import ServerNormalizedTime from "../ServerNormalizedTime";
 import Level from "../components/Level";
 import Ball from "../components/Ball";
 import ArtificialIntelligence from "../../artificialIntelligence/ArtificialIntelligence";
-import {CLIENT_POINTS_COLUMN, HOST_POINTS_COLUMN} from "../../constants";
+import {CLIENT_POINTS_COLUMN, DEPTH_ACTIVATION_ANIMATION, HOST_POINTS_COLUMN} from "../../constants";
 import {BALL_INTERVAL} from "../../emissionConstants";
 import {PositionData} from "../components/PositionData";
 import Countdown from "../components/Countdown";
@@ -125,6 +125,7 @@ export default class MainScene extends Phaser.Scene {
 			0,
 			radius
 		);
+		hitPoint.setDepth(DEPTH_ACTIVATION_ANIMATION);
 
 		this.animations.activate(hitPoint);
 	}
