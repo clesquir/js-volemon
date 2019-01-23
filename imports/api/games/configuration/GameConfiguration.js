@@ -290,6 +290,14 @@ export default class GameConfiguration {
 		return WORLD_GRAVITY;
 	}
 
+	highGravityMultiplier() {
+		return 2.75;
+	}
+
+	lowGravityMultiplier() {
+		return 0.55;
+	}
+
 	worldRestitution() {
 		if (this.hasTournament() && this.tournamentMode.overridesWorldRestitution()) {
 			return this.tournamentMode.worldRestitution();

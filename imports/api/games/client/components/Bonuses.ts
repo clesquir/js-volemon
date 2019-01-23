@@ -252,15 +252,24 @@ export default class Bonuses {
 	}
 
 	applyHighGravity() {
-		//@todo Bonus - this.gameConfiguration.worldGravity() * 2.75
+		this.scene.matter.world.setGravity(
+			0,
+			this.gameConfiguration.worldGravity() * this.gameConfiguration.highGravityMultiplier()
+		);
 	}
 
 	applyLowGravity() {
-		//@todo Bonus - this.gameConfiguration.worldGravity() * 0.55
+		this.scene.matter.world.setGravity(
+			0,
+			this.gameConfiguration.worldGravity() * this.gameConfiguration.lowGravityMultiplier()
+		);
 	}
 
 	resetGravity() {
-		//@todo Bonus - this.gameConfiguration.worldGravity()
+		this.scene.matter.world.setGravity(
+			0,
+			this.gameConfiguration.worldGravity()
+		);
 	}
 
 	scaleSmallPlayer(playerKey: string) {
