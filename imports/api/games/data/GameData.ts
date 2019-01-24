@@ -10,8 +10,6 @@ export default interface GameData {
 
 	getPlayerShapeFromKey(playerKey: string): string;
 
-	getPlayerPolygonFromKey(playerKey: string): string;
-
 	getCurrentPlayerKey(): string;
 
 	isCurrentPlayerKey(playerKey: string): boolean;

@@ -94,19 +94,19 @@
 					</div>
 
 					<div class="splitted-configuration">
-						{{> selectSwitch id="initial-player-polygon-key" label="Initial player scale" isOn=(modeOverridden "overriddenInitialPlayerPolygonKey") options=initialPolygonKeys value=(modeOverriddenValue "overriddenInitialPlayerPolygonKey") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="initial-player-scale" label="Initial player scale - default 1" isOn=(modeOverridden "overriddenInitialPlayerScale") value=(modeOverriddenValue "overriddenInitialPlayerScale") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> selectSwitch id="initial-ball-polygon-key" label="Initial ball scale" isOn=(modeOverridden "overriddenInitialBallPolygonKey") options=initialPolygonKeys value=(modeOverriddenValue "overriddenInitialBallPolygonKey") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="initial-ball-scale" label="Initial ball scale - default 1" isOn=(modeOverridden "overriddenInitialBallScale") value=(modeOverriddenValue "overriddenInitialBallScale") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<div class="splitted-configuration">
 						{{> numberSwitch id="small-player-scale" label="Small player scale - default 0.5" isOn=(modeOverridden "overriddenSmallPlayerScale") value=(modeOverriddenValue "overriddenSmallPlayerScale") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="big-player-scale" label="Big player scale - default 1.5" isOn=(modeOverridden "overriddenBigPlayerScale") value=(modeOverriddenValue "overriddenBigPlayerScale") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="small-ball-scale" label="Small ball scale - default 0.75" isOn=(modeOverridden "overriddenSmallBallScale") value=(modeOverriddenValue "overriddenSmallBallScale") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<div class="splitted-configuration">
-						{{> numberSwitch id="small-ball-scale" label="Small ball scale - default 0.75" isOn=(modeOverridden "overriddenSmallBallScale") value=(modeOverriddenValue "overriddenSmallBallScale") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="big-player-scale" label="Big player scale - default 1.5" isOn=(modeOverridden "overriddenBigPlayerScale") value=(modeOverriddenValue "overriddenBigPlayerScale") isReadOnly=(canOnlyViewTournament tournament)}}
 
 						{{> numberSwitch id="big-ball-scale" label="Big ball scale - default 1.5" isOn=(modeOverridden "overriddenBigBallScale") value=(modeOverriddenValue "overriddenBigBallScale") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>

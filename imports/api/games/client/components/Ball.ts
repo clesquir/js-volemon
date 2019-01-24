@@ -19,8 +19,6 @@ export default class Ball {
 	isFrozen: boolean = false;
 	initialMass: number;
 	currentMass: number;
-	initialGravity: number;
-	currentGravity: number;
 	initialScale: number;
 	currentScale: number;
 
@@ -137,7 +135,6 @@ export default class Ball {
 			scale: this.currentScale,
 			velocityX: this.velocityX(),
 			velocityY: this.velocityY(),
-			gravityScale: this.currentGravity,
 			width: this.ballObject.width,
 			height: this.ballObject.height,
 		};
@@ -195,6 +192,11 @@ export default class Ball {
 	}
 
 	private init() {
+		this.initialMass = this.gameConfiguration.initialBallMass();
+		this.currentMass = this.initialMass;
+		this.initialScale = this.gameConfiguration.initialBallScale();
+		this.currentScale = this.initialScale;
+
 		this.ballObject = this.skinManager.createBallComponent(this.scene);
 		this.ballObject.setBody(
 			{
@@ -208,12 +210,6 @@ export default class Ball {
 		this.ballObject.setData('owner', this);
 		this.ballObject.setData('isBall', true);
 
-		this.initialMass = this.gameConfiguration.initialBallMass();
-		this.currentMass = this.initialMass;
-		this.initialGravity = this.gameConfiguration.initialBallGravityScale();
-		this.currentGravity = this.initialGravity;
-		this.initialScale = this.gameConfiguration.initialBallScale();
-		this.currentScale = this.initialScale;
 		this.ballObject.setScale(this.initialScale);
 
 		this.setupBody();

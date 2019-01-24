@@ -11,10 +11,10 @@ export default class TournamentMode {
 	overriddenForfeitMinimumPoints;
 	overriddenMaximumPoints;
 	overriddenHasBonuses;
-	overriddenInitialPlayerPolygonKey;
-	overriddenInitialBallPolygonKey;
+	overriddenInitialPlayerScale;
 	overriddenSmallPlayerScale;
 	overriddenBigPlayerScale;
+	overriddenInitialBallScale;
 	overriddenSmallBallScale;
 	overriddenBigBallScale;
 	overriddenListOfShapes;
@@ -134,20 +134,12 @@ export default class TournamentMode {
 		return parseInt(this.overriddenHasBonuses) === 1;
 	}
 
-	overridesInitialPlayerPolygonKey() {
-		return this.overriddenInitialPlayerPolygonKey !== undefined;
+	overridesInitialPlayerScale() {
+		return this.overriddenInitialPlayerScale !== undefined;
 	}
 
-	initialPlayerPolygonKey() {
-		return this.overriddenInitialPlayerPolygonKey;
-	}
-
-	overridesInitialBallPolygonKey() {
-		return this.overriddenInitialBallPolygonKey !== undefined;
-	}
-
-	initialBallPolygonKey() {
-		return this.overriddenInitialBallPolygonKey;
+	initialPlayerScale() {
+		return this.overriddenInitialPlayerScale;
 	}
 
 	overridesSmallPlayerScale() {
@@ -164,6 +156,14 @@ export default class TournamentMode {
 
 	bigPlayerScale() {
 		return this.overriddenBigPlayerScale;
+	}
+
+	overridesInitialBallScale() {
+		return this.overriddenInitialBallScale !== undefined;
+	}
+
+	initialBallScale() {
+		return this.overriddenInitialBallScale;
 	}
 
 	overridesSmallBallScale() {
@@ -344,10 +344,10 @@ export default class TournamentMode {
 		tournamentMode.overriddenForfeitMinimumPoints = mode.overriddenForfeitMinimumPoints;
 		tournamentMode.overriddenMaximumPoints = mode.overriddenMaximumPoints;
 		tournamentMode.overriddenHasBonuses = mode.overriddenHasBonuses;
-		tournamentMode.overriddenInitialPlayerPolygonKey = mode.overriddenInitialPlayerPolygonKey;
-		tournamentMode.overriddenInitialBallPolygonKey = mode.overriddenInitialBallPolygonKey;
+		tournamentMode.overriddenInitialPlayerScale = mode.overriddenInitialPlayerScale;
 		tournamentMode.overriddenSmallPlayerScale = mode.overriddenSmallPlayerScale;
 		tournamentMode.overriddenBigPlayerScale = mode.overriddenBigPlayerScale;
+		tournamentMode.overriddenInitialBallScale = mode.overriddenInitialBallScale;
 		tournamentMode.overriddenSmallBallScale = mode.overriddenSmallBallScale;
 		tournamentMode.overriddenBigBallScale = mode.overriddenBigBallScale;
 		tournamentMode.overriddenListOfShapes = mode.overriddenListOfShapes;

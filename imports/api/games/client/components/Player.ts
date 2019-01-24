@@ -38,8 +38,8 @@ export default class Player {
 	color: string;
 	isHost: boolean;
 
-	container: Phaser.GameObjects.Container;
-	containerPhysics: Phaser.Physics.Matter.MatterPhysics | Phaser.Physics.Matter.Image | any;
+	container: Phaser.GameObjects.Container | any;
+	containerPhysics: Phaser.Physics.Matter.MatterPhysics | any;
 	playerObject: Phaser.GameObjects.Image;
 
 	eyeBall: Phaser.GameObjects.Graphics;
@@ -63,16 +63,10 @@ export default class Player {
 	initialYLocation: number;
 	initialMass: number;
 	currentMass: number;
-	initialGravity: number;
-	currentGravity: number;
 	initialShape: string;
 	currentShape: string;
 	initialTextureKey: string;
 	currentTextureKey: string;
-	initialPolygonObject: string;
-	currentPolygonObject: string;
-	initialPolygonKey: string;
-	currentPolygonKey: string;
 	initialScale: number;
 	currentScale: number;
 	initialIsHiddenToHimself: boolean;
@@ -356,6 +350,16 @@ export default class Player {
 		this.applyScale();
 	}
 
+	shiftShape(shape: string) {
+		this.currentShape = shape;
+		this.currentTextureKey = 'shape-' + shape;
+		this.initBody();
+	}
+
+	resetShape() {
+		this.shiftShape(this.initialShape);
+	}
+
 	artificialIntelligenceData(): ArtificialIntelligenceData {
 		return {
 			key: this.key,
@@ -389,7 +393,6 @@ export default class Player {
 			scale: this.currentScale,
 			velocityX: this.velocityX(),
 			velocityY: this.velocityY(),
-			gravityScale: this.currentGravity,
 			width: this.playerObject.width,
 			height: this.playerObject.height,
 		};
@@ -401,10 +404,10 @@ export default class Player {
 
 		this.initialXLocation = x;
 		this.initialYLocation = y;
+		this.initialScale = this.gameConfiguration.initialPlayerScale();
+		this.currentScale = this.initialScale;
 		this.initialMass = this.gameConfiguration.initialPlayerMass();
 		this.currentMass = this.initialMass;
-		this.initialGravity = this.gameConfiguration.initialPlayerGravityScale();
-		this.currentGravity = this.initialGravity;
 		this.velocityXOnMove = this.gameConfiguration.playerXVelocity();
 		this.velocityYOnJump = this.gameConfiguration.playerYVelocity();
 
@@ -437,8 +440,7 @@ export default class Player {
 
 		this.container.add(this.playerObject);
 
-		this.initPlayerPolygon();
-		this.applyPlayerPolygon();
+		this.initBody();
 
 		if (this.isHiddenToHimself) {
 			this.hideFromHimself();
@@ -461,24 +463,16 @@ export default class Player {
 		}
 	}
 
-	private initPlayerPolygon() {
-		//@todo get rid of PolygonObject and PolygonKey
-		this.initialPolygonObject = 'player-' + this.gameData.getPlayerPolygonFromKey(this.key);
-		this.currentPolygonObject = this.initialPolygonObject;
-		this.initialPolygonKey = this.gameConfiguration.initialPlayerPolygonKey();
-		this.currentPolygonKey = this.initialPolygonKey;
-		this.initialScale = this.gameConfiguration.initialPlayerScale();
-		this.currentScale = this.initialScale;
-		this.containerPhysics.setScale(this.initialScale);
-	}
-
-	private applyPlayerPolygon() {
-		this.initBody();
+	private initBody() {
+		this.container.setScale(1);
+		this.initBodyShape();
 		this.setupBody();
 		this.initEye();
+		this.container.setScale(this.currentScale);
+		this.container.setFixedRotation();
 	}
 
-	private initBody() {
+	private initBodyShape() {
 		const x = this.containerPhysics.x;
 		const y = this.containerPhysics.y;
 		const bodies = [];
@@ -592,11 +586,12 @@ export default class Player {
 	}
 
 	private setupBody() {
+		//@todo check with hidden shape
 		this.playerObject.setTexture(this.currentTextureKey);
-		this.containerPhysics.setFixedRotation();
 		this.containerPhysics.setIgnoreGravity(this.isFrozen);
 		this.containerPhysics.setFriction(0, 0, 0);
 		this.containerPhysics.setMass(this.currentMass);
+		this.containerPhysics.setFixedRotation();
 
 		const collisionCategory = this.isHost ? this.level.collisionCategoryHost : this.level.collisionCategoryClient;
 		const collisionLimit = this.isHost ? this.level.collisionCategoryHostLimit : this.level.collisionCategoryClientLimit;
@@ -707,7 +702,13 @@ export default class Player {
 		this.eyeBallRadius = eyeBallRadius;
 		this.eyePupilRadius = eyePupilRadius;
 
+		if (this.eyeBall) {
+			this.eyeBall.destroy();
+		}
 		this.eyeBall = this.createEyeBall();
+		if (this.eyePupil) {
+			this.eyePupil.destroy();
+		}
 		this.eyePupil = this.createEyePupil();
 
 		this.container.add(this.eyeBall);

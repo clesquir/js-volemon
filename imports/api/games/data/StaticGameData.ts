@@ -34,10 +34,6 @@ export default class StaticGameData implements GameData {
 		return PLAYER_DEFAULT_SHAPE;
 	}
 
-	getPlayerPolygonFromKey(playerKey: string): string {
-		return PLAYER_DEFAULT_SHAPE;
-	}
-
 	getCurrentPlayerKey(): string {
 		return this.currentPlayerKey;
 	}

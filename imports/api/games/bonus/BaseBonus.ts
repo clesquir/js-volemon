@@ -86,15 +86,15 @@ export default class BaseBonus {
 		return true;
 	}
 
-	beforeActivation(payload) {
-		//@todo Bonus - declaration
+	beforeActivation(bonuses: Bonuses, payload) {
+		//@todo Bonus - payload declaration
 		if (this.bonusToActivate() !== this) {
-			this.bonusToActivate().beforeActivation(payload);
+			this.bonusToActivate().beforeActivation(bonuses, payload);
 		}
 	}
 
 	beforeActivationData() {
-		//@todo Bonus - declaration
+		//@todo Bonus - activation data declaration
 		if (this.bonusToActivate() !== this) {
 			return this.bonusToActivate().beforeActivationData();
 		}

@@ -4,7 +4,6 @@ export declare type ArtificialIntelligencePositionData = {
 	velocityX: number;
 	velocityY: number;
 	scale?: number;
-	gravityScale?: number;
 	width?: number;
 	height?: number;
 };

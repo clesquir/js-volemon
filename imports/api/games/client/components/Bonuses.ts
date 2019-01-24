@@ -156,7 +156,7 @@ export default class Bonuses {
 
 	onPlayerHitBonus(player: Player, bonus: Bonus) {
 		if (this.gameData.isUserCreator() && player.canActivateBonuses && bonus.canActivate()) {
-			const payload = bonus.payload(player.key);
+			const payload = bonus.payload(this, player.key);
 
 			//Send to client
 			this.streamBundler.emitStream(
@@ -486,12 +486,20 @@ export default class Bonuses {
 		this.players.reviveTeammatePlayer(playerKey);
 	}
 
-	shiftPlayerShape(playerKey: string, playerShape: string) {
-		//@todo Bonus
+	shiftPlayerShape(playerKey: string, shape: string) {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player) {
+			player.shiftShape(shape);
+		}
 	}
 
 	resetPlayerShape(playerKey: string) {
-		//@todo Bonus
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player) {
+			player.resetShape();
+		}
 	}
 
 	resetBallHitCount(playerKey: string) {

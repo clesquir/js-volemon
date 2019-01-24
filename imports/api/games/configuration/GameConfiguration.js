@@ -1,37 +1,28 @@
 import {
 	BALL_BIG_MASS,
+	BALL_BIG_SCALE,
 	BALL_MASS,
+	BALL_SCALE,
 	BALL_SMALL_MASS,
-	PLAYER_BIG_MASS,
-	PLAYER_MASS,
-	PLAYER_SMALL_MASS
-} from '/imports/api/games/constants';
-import {
-	BALL_BIG_GRAVITY_SCALE,
-	BALL_GRAVITY_SCALE,
-	BALL_SMALL_GRAVITY_SCALE,
+	BALL_SMALL_SCALE,
 	BALL_VERTICAL_SPEED_ON_PLAYER_HIT,
-	BIG_SCALE_BALL_BONUS,
-	BIG_SCALE_PHYSICS_DATA,
-	BIG_SCALE_PLAYER_BONUS,
 	BONUS_RADIUS,
+	BONUS_SCALE,
 	GAME_FORFEIT_MINIMUM_POINTS,
 	GAME_MAXIMUM_POINTS,
-	NORMAL_SCALE_BONUS,
-	NORMAL_SCALE_PHYSICS_DATA,
-	PLAYER_BIG_GRAVITY_SCALE,
-	PLAYER_GRAVITY_SCALE,
-	PLAYER_SMALL_GRAVITY_SCALE,
+	PLAYER_BIG_MASS,
+	PLAYER_BIG_SCALE,
+	PLAYER_MASS,
+	PLAYER_SCALE,
+	PLAYER_SMALL_MASS,
+	PLAYER_SMALL_SCALE,
 	PLAYER_VELOCITY_X_ON_MOVE,
 	PLAYER_VELOCITY_Y_ON_JUMP,
-	SMALL_SCALE_BALL_BONUS,
-	SMALL_SCALE_PHYSICS_DATA,
-	SMALL_SCALE_PLAYER_BONUS,
 	TWO_VS_TWO_GAME_MODE,
 	TWO_VS_TWO_HUMAN_CPU_GAME_MODE,
 	WORLD_GRAVITY,
 	WORLD_RESTITUTION
-} from '/imports/api/games/constants.js';
+} from '/imports/api/games/constants';
 import {
 	BONUS_MAXIMUM_ON_SCREEN,
 	BONUS_SPAWN_INITIAL_MAXIMUM_FREQUENCE,
@@ -106,76 +97,12 @@ export default class GameConfiguration {
 		return this.tournamentMode.currentPlayerShape();
 	}
 
-	initialPlayerPolygonKey() {
-		if (this.hasTournament() && this.tournamentMode.overridesInitialPlayerPolygonKey()) {
-			return this.tournamentMode.initialPlayerPolygonKey();
-		}
-
-		return NORMAL_SCALE_PHYSICS_DATA;
-	}
-
-	initialPlayerGravityScale() {
-		if (this.hasTournament() && this.tournamentMode.overridesInitialPlayerPolygonKey()) {
-			switch (this.tournamentMode.initialPlayerPolygonKey()) {
-				case SMALL_SCALE_PHYSICS_DATA:
-					return PLAYER_SMALL_GRAVITY_SCALE;
-				case BIG_SCALE_PHYSICS_DATA:
-					return PLAYER_BIG_GRAVITY_SCALE;
-			}
-		}
-
-		return PLAYER_GRAVITY_SCALE;
-	}
-
 	initialPlayerScale() {
-		if (this.hasTournament() && this.tournamentMode.overridesInitialPlayerPolygonKey()) {
-			switch (this.tournamentMode.initialPlayerPolygonKey()) {
-				case SMALL_SCALE_PHYSICS_DATA:
-					return this.smallPlayerScale();
-				case BIG_SCALE_PHYSICS_DATA:
-					return this.bigPlayerScale();
-			}
+		if (this.hasTournament() && this.tournamentMode.overridesInitialPlayerScale()) {
+			return this.tournamentMode.initialPlayerScale();
 		}
 
-		return NORMAL_SCALE_BONUS;
-	}
-
-	initialBallPolygonKey() {
-		if (this.hasTournament() && this.tournamentMode.overridesInitialBallPolygonKey()) {
-			return this.tournamentMode.initialBallPolygonKey();
-		}
-
-		return NORMAL_SCALE_PHYSICS_DATA;
-	}
-
-	initialBallGravityScale() {
-		if (this.hasTournament() && this.tournamentMode.overridesInitialBallPolygonKey()) {
-			switch (this.tournamentMode.initialBallPolygonKey()) {
-				case SMALL_SCALE_PHYSICS_DATA:
-					return BALL_SMALL_GRAVITY_SCALE;
-				case BIG_SCALE_PHYSICS_DATA:
-					return BALL_BIG_GRAVITY_SCALE;
-			}
-		}
-
-		return BALL_GRAVITY_SCALE;
-	}
-
-	initialBallScale() {
-		if (this.hasTournament() && this.tournamentMode.overridesInitialBallPolygonKey()) {
-			switch (this.tournamentMode.initialBallPolygonKey()) {
-				case SMALL_SCALE_PHYSICS_DATA:
-					return this.smallBallScale();
-				case BIG_SCALE_PHYSICS_DATA:
-					return this.bigBallScale();
-			}
-		}
-
-		return NORMAL_SCALE_BONUS;
-	}
-
-	initialBonusScale() {
-		return NORMAL_SCALE_BONUS;
+		return PLAYER_SCALE;
 	}
 
 	smallPlayerScale() {
@@ -183,7 +110,7 @@ export default class GameConfiguration {
 			return this.tournamentMode.smallPlayerScale();
 		}
 
-		return SMALL_SCALE_PLAYER_BONUS;
+		return PLAYER_SMALL_SCALE;
 	}
 
 	bigPlayerScale() {
@@ -191,23 +118,7 @@ export default class GameConfiguration {
 			return this.tournamentMode.bigPlayerScale();
 		}
 
-		return BIG_SCALE_PLAYER_BONUS;
-	}
-
-	smallBallScale() {
-		if (this.hasTournament() && this.tournamentMode.overridesSmallBallScale()) {
-			return this.tournamentMode.smallBallScale();
-		}
-
-		return SMALL_SCALE_BALL_BONUS;
-	}
-
-	bigBallScale() {
-		if (this.hasTournament() && this.tournamentMode.overridesBigBallScale()) {
-			return this.tournamentMode.bigBallScale();
-		}
-
-		return BIG_SCALE_BALL_BONUS;
+		return PLAYER_BIG_SCALE;
 	}
 
 	initialPlayerMass() {
@@ -242,6 +153,30 @@ export default class GameConfiguration {
 		return 0.4;
 	}
 
+	initialBallScale() {
+		if (this.hasTournament() && this.tournamentMode.overridesInitialBallScale()) {
+			return this.tournamentMode.initialBallScale();
+		}
+
+		return BALL_SCALE;
+	}
+
+	smallBallScale() {
+		if (this.hasTournament() && this.tournamentMode.overridesSmallBallScale()) {
+			return this.tournamentMode.smallBallScale();
+		}
+
+		return BALL_SMALL_SCALE;
+	}
+
+	bigBallScale() {
+		if (this.hasTournament() && this.tournamentMode.overridesBigBallScale()) {
+			return this.tournamentMode.bigBallScale();
+		}
+
+		return BALL_BIG_SCALE;
+	}
+
 	initialBallMass() {
 		return BALL_MASS;
 	}
@@ -252,6 +187,10 @@ export default class GameConfiguration {
 
 	bigBallMass() {
 		return BALL_BIG_MASS;
+	}
+
+	initialBonusScale() {
+		return BONUS_SCALE;
 	}
 
 	isHiddenToHimself() {

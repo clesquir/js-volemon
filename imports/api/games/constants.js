@@ -11,21 +11,21 @@ export const PLAYER_MASS = 100;
 export const PLAYER_SMALL_MASS = 70;
 export const PLAYER_BIG_MASS = 200;
 export const PLAYER_FROZEN_MASS = 1000;
-export const PLAYER_GRAVITY_SCALE = 1;
-export const PLAYER_SMALL_GRAVITY_SCALE = 0.7;
-export const PLAYER_BIG_GRAVITY_SCALE = 3.75;
+export const PLAYER_SCALE = 1;
+export const PLAYER_SMALL_SCALE = 0.5;
+export const PLAYER_BIG_SCALE = 1.5;
 
 export const BALL_VERTICAL_SPEED_ON_PLAYER_HIT = -6.75;
 export const BALL_MASS = 0.36;
 export const BALL_SMALL_MASS = 0.27;
 export const BALL_BIG_MASS = 0.50;
-export const BALL_GRAVITY_SCALE = 0.3636363636;
-export const BALL_SMALL_GRAVITY_SCALE = 1;
-export const BALL_BIG_GRAVITY_SCALE = 1000;
+export const BALL_SCALE = 1;
+export const BALL_SMALL_SCALE = 0.75;
+export const BALL_BIG_SCALE = 1.5;
 
 export const BONUS_MASS = 0.36;
 export const BONUS_RADIUS = 15;
-export const BONUS_GRAVITY_SCALE = 0.3636363636;
+export const BONUS_SCALE = 1;
 
 export const WORLD_GRAVITY = 0.6;
 export const WORLD_RESTITUTION = 1;
@@ -34,15 +34,6 @@ export const CONSTRAINED_VELOCITY = 20;
 export const DEPTH_CLOUDS = 1;
 export const DEPTH_ACTIVATED_BONUSES = 2;
 export const DEPTH_ACTIVATION_ANIMATION = 3;
-
-export const NORMAL_SCALE_PHYSICS_DATA = 'physicsData';
-export const SMALL_SCALE_PHYSICS_DATA = 'physicsDataSmall';
-export const BIG_SCALE_PHYSICS_DATA = 'physicsDataBig';
-export const NORMAL_SCALE_BONUS = 1;
-export const SMALL_SCALE_PLAYER_BONUS = 0.5;
-export const BIG_SCALE_PLAYER_BONUS = 1.5;
-export const SMALL_SCALE_BALL_BONUS = 0.75;
-export const BIG_SCALE_BALL_BONUS = 1.5;
 
 export const ONE_VS_COMPUTER_GAME_MODE = '1vsCPU';
 export const ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE = '1vsMLCPU';

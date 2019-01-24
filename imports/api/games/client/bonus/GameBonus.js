@@ -1,12 +1,8 @@
 import RobotBonus from '/imports/api/games/bonus/RobotBonus';
 import BonusFactory from '/imports/api/games/BonusFactory';
 import {
-	BIG_SCALE_PHYSICS_DATA,
-	BONUS_GRAVITY_SCALE,
-	NORMAL_SCALE_BONUS,
-	NORMAL_SCALE_PHYSICS_DATA,
 	PLAYER_FROZEN_MASS,
-	SMALL_SCALE_PHYSICS_DATA
+	PLAYER_SCALE
 } from '/imports/api/games/constants.js';
 import {BONUS_INTERVAL} from '/imports/api/games/emissionConstants.js';
 import {getRandomInt} from '/imports/lib/utils.js';
@@ -68,7 +64,7 @@ export default class GameBonus {
 		let polygonKey = null;
 
 		switch (scale) {
-			case NORMAL_SCALE_BONUS:
+			case PLAYER_SCALE:
 				polygonKey = NORMAL_SCALE_PHYSICS_DATA;
 				break;
 			case this.gameConfiguration.smallPlayerScale():

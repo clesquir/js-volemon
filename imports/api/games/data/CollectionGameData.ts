@@ -87,16 +87,6 @@ export default class CollectionGameData implements GameData {
 		return player.shape;
 	}
 
-	getPlayerPolygonFromKey(playerKey: string): string {
-		let player = this.gamePlayerFromKey(playerKey);
-
-		if (!player || !player.shape) {
-			return PLAYER_DEFAULT_SHAPE;
-		}
-
-		return player.shape;
-	}
-
 	getCurrentPlayerKey(): string {
 		return this.currentPlayerKey;
 	}

@@ -17,7 +17,7 @@ export default class RobotBonus extends MonsterBonus {
 		return this.check(bonuses, currentTimestamp);
 	}
 
-	beforeActivation(payload) {
+	beforeActivation(bonuses: Bonuses, payload) {
 		this.robotId = 'robot-' + Random.id(5);
 	}
 

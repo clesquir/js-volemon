@@ -48,7 +48,7 @@ export default class CalculatedComputer implements Computer {
 		this.jump = false;
 		this.dropshot = false;
 
-		const gravity = Math.abs(gameConfiguration.worldGravity() * ballPosition.gravityScale);
+		const gravity = Math.abs(gameConfiguration.worldGravity());
 		const netWidth = gameConfiguration.netWidth();
 		const netY = groundY - gameConfiguration.netHeight();
 

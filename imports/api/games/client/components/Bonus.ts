@@ -111,7 +111,7 @@ export default class Bonus {
 		};
 	}
 
-	payload(playerKey: string) {
+	payload(bonuses: Bonuses, playerKey: string) {
 		//@todo Bonus - declare type
 		const payload = {
 			identifier: this.identifier,
@@ -122,7 +122,7 @@ export default class Bonus {
 			beforeActivationData: {}
 		};
 
-		this.bonusReference.beforeActivation(payload);
+		this.bonusReference.beforeActivation(bonuses, payload);
 		payload.beforeActivationData = this.bonusReference.beforeActivationData();
 
 		return payload;

@@ -16,7 +16,7 @@ export default class SmokeBombBonus extends BaseBonus {
 		return null;
 	}
 
-	beforeActivation(payload) {
+	beforeActivation(bonuses: Bonuses, payload) {
 		this.xPosition = payload.x;
 		this.yPosition = payload.y;
 		this.angle = getRandomInt(-180, 180);

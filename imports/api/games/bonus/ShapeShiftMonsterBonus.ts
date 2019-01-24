@@ -14,21 +14,21 @@ export default class ShapeShiftMonsterBonus extends MonsterBonus {
 		return bonus instanceof ShapeShiftMonsterBonus && playerKey === this.activatorPlayerKey;
 	}
 
-	beforeActivation(payload) {
-		//@todo Bonus
+	beforeActivation(bonuses: Bonuses, payload) {
 		//Define the player random shape different from the player initial and current one
 		let listOfShapes = Array.from(bonuses.gameConfiguration.listOfShapes());
+		const player = bonuses.players.getPlayerFromKey(payload.player);
 
 		//Remove initial player shape (if not only shape available)
-		const initialPolygonObjectIndex = listOfShapes.indexOf(bonuses.playerInitialPolygonFromKey(payload.player));
-		if (listOfShapes.length > 1 && initialPolygonObjectIndex !== -1) {
-			listOfShapes.splice(initialPolygonObjectIndex, 1);
+		const initialShapeIndex = listOfShapes.indexOf(player.initialShape);
+		if (listOfShapes.length > 1 && initialShapeIndex !== -1) {
+			listOfShapes.splice(initialShapeIndex, 1);
 		}
 
 		//Remove current player shape (if not last shape available)
-		const currentPolygonObjectIndex = listOfShapes.indexOf(bonuses.playerCurrentPolygonFromKey(payload.player));
-		if (listOfShapes.length > 1 && currentPolygonObjectIndex !== -1) {
-			listOfShapes.splice(currentPolygonObjectIndex, 1);
+		const currentShapeIndex = listOfShapes.indexOf(player.currentShape);
+		if (listOfShapes.length > 1 && currentShapeIndex !== -1) {
+			listOfShapes.splice(currentShapeIndex, 1);
 		}
 
 		this.playerShape = Random.choice(listOfShapes);
