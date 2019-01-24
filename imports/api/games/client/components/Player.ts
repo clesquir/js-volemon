@@ -87,7 +87,7 @@ export default class Player {
 	private isJumping: boolean = false;
 	private isJumpingTimer;
 
-	constructor (
+	constructor(
 		scene: MainScene,
 		gameData: GameData,
 		gameConfiguration: GameConfiguration,

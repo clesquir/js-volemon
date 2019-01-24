@@ -5,7 +5,7 @@ import {BonusPositionData} from "../../bonus/data/BonusPositionData";
 import MainScene from "../scene/MainScene";
 import GameConfiguration from "../../configuration/GameConfiguration";
 import Level from "./Level";
-import {BONUS_GRAVITY_SCALE, BONUS_MASS, CONSTRAINED_VELOCITY} from "../../constants";
+import {CONSTRAINED_VELOCITY} from "../../constants";
 import Bonuses from "./Bonuses";
 
 export default class Bonus {
@@ -19,14 +19,7 @@ export default class Bonus {
 
 	bonusObject: Phaser.Physics.Matter.Image;
 
-	initialMass: number;
-	currentMass: number;
-	initialGravity: number;
-	currentGravity: number;
-	initialScale: number;
-	currentScale: number;
-
-	constructor (
+	constructor(
 		scene: MainScene,
 		gameConfiguration: GameConfiguration,
 		serverNormalizedTime: ServerNormalizedTime,
@@ -83,14 +76,6 @@ export default class Bonus {
 		}
 	}
 
-	x(): number {
-		return this.bonusObject.x;
-	}
-
-	y(): number {
-		return this.bonusObject.y;
-	}
-
 	positionData(): BonusPositionData {
 		const positionData = {
 			x: this.bonusObject.x,
@@ -143,20 +128,9 @@ export default class Bonus {
 		this.bonusObject.setData('owner', this);
 		this.bonusObject.setData('isBonus', true);
 
-		this.initialMass = BONUS_MASS;
-		this.currentMass = this.initialMass;
-		this.initialGravity = BONUS_GRAVITY_SCALE;
-		this.currentGravity = this.initialGravity;
-		this.initialScale = this.gameConfiguration.initialBonusScale();
-		this.currentScale = this.initialScale;
-		this.bonusObject.setScale(this.initialScale);
-
-		this.setupBody();
-	}
-
-	private setupBody() {
+		this.bonusObject.setScale(this.gameConfiguration.bonusScale());
 		this.bonusObject.setFriction(0, 0, 0);
-		this.bonusObject.setMass(this.currentMass);
+		this.bonusObject.setMass(this.gameConfiguration.bonusMass());
 
 		this.bonusObject.setCollisionCategory(this.level.collisionCategoryBonus);
 		this.bonusObject.setCollidesWith([
@@ -166,6 +140,14 @@ export default class Bonus {
 			this.level.collisionCategoryBonus,
 			this.level.collisionCategoryBall,
 		]);
+	}
+
+	private x(): number {
+		return this.bonusObject.x;
+	}
+
+	private y(): number {
+		return this.bonusObject.y;
 	}
 
 	private velocityX(): number {
@@ -178,9 +160,5 @@ export default class Bonus {
 		const body = <any>this.bonusObject.body;
 
 		return body.velocity.y;
-	}
-
-	private progress(duration) {
-		return 1 - ((this.serverNormalizedTime.getServerTimestamp() - this.bonusReference.activatedAt) / duration);
 	}
 }

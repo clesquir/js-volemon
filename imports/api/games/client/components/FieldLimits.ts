@@ -22,7 +22,7 @@ export default class FieldLimits {
 	clientGround: MatterJS.Body;
 	ballGround: MatterJS.Body;
 
-	constructor (
+	constructor(
 		scene: MainScene,
 		gameConfiguration: GameConfiguration,
 		level: Level,

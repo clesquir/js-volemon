@@ -36,7 +36,7 @@ export default class Players {
 	lastPlayerPositionData: { [key: string]: PositionData } = {};
 	lastPlayerUpdate: { [key: string]: number } = {};
 
-	constructor (
+	constructor(
 		scene: MainScene,
 		gameData: GameData,
 		gameConfiguration: GameConfiguration,

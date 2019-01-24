@@ -6,7 +6,7 @@ import {
 	BALL_SMALL_MASS,
 	BALL_SMALL_SCALE,
 	BALL_VERTICAL_SPEED_ON_PLAYER_HIT,
-	BONUS_RADIUS,
+	BONUS_MASS,
 	BONUS_SCALE,
 	GAME_FORFEIT_MINIMUM_POINTS,
 	GAME_MAXIMUM_POINTS,
@@ -189,8 +189,12 @@ export default class GameConfiguration {
 		return BALL_BIG_MASS;
 	}
 
-	initialBonusScale() {
+	bonusScale() {
 		return BONUS_SCALE;
+	}
+
+	bonusMass() {
+		return BONUS_MASS;
 	}
 
 	isHiddenToHimself() {
@@ -215,10 +219,6 @@ export default class GameConfiguration {
 		}
 
 		return true;
-	}
-
-	bonusRadius() {
-		return BONUS_RADIUS;
 	}
 
 	worldGravity() {

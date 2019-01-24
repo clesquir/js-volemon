@@ -2,6 +2,7 @@ import Dev from "./Dev";
 import {Random} from 'meteor/random';
 import Ball from "../components/Ball";
 import BonusFactory from "../../BonusFactory";
+import RandomBonus from "../../bonus/RandomBonus";
 
 export default class Environment extends Dev {
 	groundHitEnabled: boolean = false;
@@ -62,6 +63,12 @@ export default class Environment extends Dev {
 
 	createBonus(bonusName) {
 		const bonus = BonusFactory.fromClassName(bonusName);
+
+		if (bonus instanceof RandomBonus) {
+			let availableBonusesForRandom = BonusFactory.availableBonusesForRandom();
+			bonus.setRandomBonus(BonusFactory.fromClassName(Random.choice(availableBonusesForRandom)));
+		}
+
 		this.mainScene.createBonus(
 			Object.assign(
 				{initialX: this.gameConfiguration.width() / 2},

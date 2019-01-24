@@ -13,6 +13,8 @@ import Player from "./Player";
 import Level from "./Level";
 import Players from "./Players";
 import CloudsGenerator from "./CloudsGenerator";
+import BonusIndicator from "./BonusIndicator";
+import Animations from "./Animations";
 
 export default class Bonuses {
 	scene: MainScene;
@@ -20,6 +22,7 @@ export default class Bonuses {
 	gameConfiguration: GameConfiguration;
 	streamBundler: StreamBundler;
 	serverNormalizedTime: ServerNormalizedTime;
+	animations: Animations;
 	level: Level;
 	players: Players;
 	cloudsGenerator: CloudsGenerator;
@@ -38,6 +41,7 @@ export default class Bonuses {
 		gameConfiguration: GameConfiguration,
 		streamBundler: StreamBundler,
 		serverNormalizedTime: ServerNormalizedTime,
+		animations: Animations,
 		level: Level,
 		players: Players
 	) {
@@ -46,6 +50,7 @@ export default class Bonuses {
 		this.gameConfiguration = gameConfiguration;
 		this.streamBundler = streamBundler;
 		this.serverNormalizedTime = serverNormalizedTime;
+		this.animations = animations;
 		this.level = level;
 		this.players = players;
 
@@ -203,8 +208,15 @@ export default class Bonuses {
 		bonusReferenceToActivate.start(this);
 
 		//Show bonus activation animation
-		//@todo Bonus animation - always to top (should be on top of cloud) - activatedBonus.setDepth(DEPTH_ACTIVATION_ANIMATION);
-		// this.engine.activateAnimationBonus(x, y, bonusReferenceToActivate);
+		BonusIndicator.activateAnimation(
+			this.scene,
+			this.gameConfiguration,
+			this.serverNormalizedTime,
+			bonusReferenceToActivate,
+			x,
+			y,
+			this.animations
+		);
 
 		this.deactivateSimilarBonusForPlayerKey(bonus, playerKey);
 
@@ -649,7 +661,7 @@ export default class Bonuses {
 						xModifier = (this.gameConfiguration.width() / 2);
 						break;
 				}
-				const x = xModifier + padding + (sideCount * ((this.gameConfiguration.bonusRadius() * 2) + padding));
+				// const x = xModifier + padding + (sideCount * ((this.gameConfiguration.bonusRadius() * 2) + padding));
 
 				//@todo Bonus
 				// if (bonusSprite === null) {

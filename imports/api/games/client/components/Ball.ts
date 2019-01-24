@@ -22,7 +22,7 @@ export default class Ball {
 	initialScale: number;
 	currentScale: number;
 
-	constructor (
+	constructor(
 		scene: MainScene,
 		gameData: GameData,
 		gameConfiguration: GameConfiguration,

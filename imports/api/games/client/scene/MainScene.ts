@@ -79,6 +79,7 @@ export default class MainScene extends Phaser.Scene {
 			this.gameConfiguration,
 			this.streamBundler,
 			this.serverNormalizedTime,
+			this.animations,
 			this.level,
 			this.players
 		);
