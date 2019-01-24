@@ -165,6 +165,34 @@ export default class Players {
 		}
 	}
 
+	resetHostNumberBallHits() {
+		this.hostNumberBallHits = 0;
+
+		const players = this.hostPlayerKeys();
+
+		for (let playerKey in players) {
+			const player = this.getPlayerFromKey(playerKey);
+
+			if (player) {
+				player.resetBallHits();
+			}
+		}
+	}
+
+	resetClientNumberBallHits() {
+		this.clientNumberBallHits = 0;
+
+		const players = this.clientPlayerKeys();
+
+		for (let playerKey in players) {
+			const player = this.getPlayerFromKey(playerKey);
+
+			if (player) {
+				player.resetBallHits();
+			}
+		}
+	}
+
 	killAndRemovePlayer(playerKey: string) {
 		const player = this.getPlayerFromKey(playerKey);
 
@@ -428,14 +456,6 @@ export default class Players {
 		);
 	}
 
-	private resetHostNumberBallHits() {
-		this.hostNumberBallHits = 0;
-	}
-
-	private resetClientNumberBallHits() {
-		this.clientNumberBallHits = 0;
-	}
-
 	private incrementBallHitsOnBallHitPlayer(player: Player, ball: Ball) {
 		//Threshold to avoid several calculations for the same "touch"
 		if (
@@ -450,16 +470,16 @@ export default class Players {
 			if (player.isHost) {
 				//Increment hit
 				teamNumberBallHits = ++this.hostNumberBallHits;
-				//Reset opponent
+				//Reset opponents
 				this.resetClientNumberBallHits();
 			} else if (!player.isHost) {
 				//Increment hit
 				teamNumberBallHits = ++this.clientNumberBallHits;
-				//Reset opponent
+				//Reset opponents
 				this.resetHostNumberBallHits();
 			}
 
-			//Reset other players
+			//Reset other players (in team or not)
 			this.resetPlayerNumberBallHitsForOthers(player);
 
 			this.killPlayerOnBallHit(player, teamNumberBallHits, playerNumberBallHits);

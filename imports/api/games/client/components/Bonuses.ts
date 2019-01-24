@@ -503,7 +503,15 @@ export default class Bonuses {
 	}
 
 	resetBallHitCount(playerKey: string) {
-		//@todo Bonus
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player) {
+			if (player.isHost) {
+				this.players.resetHostNumberBallHits();
+			} else {
+				this.players.resetClientNumberBallHits();
+			}
+		}
 	}
 
 	scaleSmallBall() {
