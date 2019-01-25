@@ -121,6 +121,7 @@ export default class Dev {
 
 	resumeOnTimerEnd() {
 		this.mainScene.pauseGame();
+		this.mainScene.bonuses.reset();
 		this.resetPlayersAndBall();
 		this.mainScene.startCountdownTimer();
 	}

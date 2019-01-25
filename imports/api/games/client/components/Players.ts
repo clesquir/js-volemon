@@ -27,8 +27,8 @@ export default class Players {
 	player2: Player;
 	player3: Player;
 	player4: Player;
-	robots: {[id: string]: Player};
-	removedRobots: string[];
+	robots: {[id: string]: Player} = {};
+	removedRobots: {[id: string]: boolean} = {};
 
 	hostNumberBallHits: number = 0;
 	clientNumberBallHits: number = 0;
@@ -125,12 +125,11 @@ export default class Players {
 
 		if (!player && data.key.indexOf('robot-') === 0) {
 			//if robot has been removed do not recreate
-			if (this.removedRobots.indexOf(data.key) !== -1) {
+			if (this.removedRobots[data.key] !== true) {
 				return;
 			}
 
-			//@todo Bonus Robot
-			// player = this.gameBonus.createRobot(data.key, data.isHost);
+			player = this.createRobot(data.key, data.isHost);
 		}
 
 		if (!player) {
@@ -218,6 +217,29 @@ export default class Players {
 				teammatePlayer.revive();
 				return;
 			}
+		}
+	}
+
+	robotHasBeenKilled(robotId: string): boolean {
+		return (
+			this.removedRobots[robotId] ||
+			(this.robots[robotId] && this.robots[robotId].killed)
+		);
+	}
+
+	createRobot(robotId: string, isHost: boolean) {
+		this.gameData.addRobot(robotId);
+		this.robots[robotId] = this.createPlayer(robotId, '#ffffff', isHost);
+		this.artificialIntelligence.addComputerWithKey(robotId, false);
+
+		return this.robots[robotId];
+	}
+
+	removeRobot(robotId: string) {
+		if (this.robots[robotId]) {
+			this.killAndRemovePlayer(robotId);
+			delete this.robots[robotId];
+			this.removedRobots[robotId] = true;
 		}
 	}
 
@@ -436,6 +458,10 @@ export default class Players {
 
 		//Creator user controls CPU
 		if (!this.gameData.isUserCreator()) {
+			return;
+		}
+
+		if (player.killed) {
 			return;
 		}
 

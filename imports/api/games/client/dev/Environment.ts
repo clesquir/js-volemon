@@ -30,7 +30,7 @@ export default class Environment extends Dev {
 
 	createPlayersComponents() {
 		this.mainScene.players.player1 = this.mainScene.players.createPlayer('player1', '#a73030', true);
-		this.mainScene.players.player2 = this.mainScene.players.createPlayer('player2', '#a73030', true);
+		this.mainScene.players.player2 = this.mainScene.players.createPlayer('player2', '#274b7a', false);
 	}
 
 	createLevelComponents() {

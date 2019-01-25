@@ -15,6 +15,7 @@ import Players from "./Players";
 import CloudsGenerator from "./CloudsGenerator";
 import BonusIndicator from "./BonusIndicator";
 import Animations from "./Animations";
+import BaseBonus from "../../bonus/BaseBonus";
 
 export default class Bonuses {
 	scene: MainScene;
@@ -32,7 +33,7 @@ export default class Bonuses {
 	bonusFrequenceTime: number = 0;
 	lastGameRespawn: number = 0;
 	bonuses: Bonus[] = [];
-	activeBonuses: Bonus[] = [];
+	activeBonuses: BaseBonus[] = [];
 	removedBonuses: string[] = [];
 
 	constructor(
@@ -84,13 +85,10 @@ export default class Bonuses {
 		this.bonuses = [];
 
 		//Remove active bonuses
-		for (let bonus of this.activeBonuses) {
-			//@todo Bonus
-			// if (bonus instanceof RobotBonus) {
-			// 	this.removedRobots.push(bonus.robotId);
-			// }
-			// bonus.stop(this);
-			//
+		for (let bonusReference of this.activeBonuses) {
+			bonusReference.stop(this);
+
+			//@todo Bonus indicator
 			// this.removeActiveBonusWithIdentifier(bonus.activationIdentifier());
 		}
 		this.activeBonuses = [];
@@ -218,9 +216,9 @@ export default class Bonuses {
 			this.animations
 		);
 
-		this.deactivateSimilarBonusForPlayerKey(bonus, playerKey);
+		this.deactivateSimilarBonusForPlayerKey(bonusReferenceToActivate, playerKey);
 
-		this.activeBonuses.push(bonus);
+		this.activeBonuses.push(bonusReferenceToActivate);
 
 		if (this.gameData.isUserCreator()) {
 			//@todo Add an interface for Meteor.call
@@ -237,12 +235,12 @@ export default class Bonuses {
 	}
 
 	resetBonusesForPlayerKey(playerKey: string) {
-		for (let bonus of this.activeBonuses) {
-			if (bonus.getTargetPlayerKey() === playerKey && bonus.bonusReference.shouldBeRemovedWhenKilling()) {
-				bonus.bonusReference.stop(this);
+		for (let bonusReference of this.activeBonuses) {
+			if (bonusReference.getTargetPlayerKey() === playerKey && bonusReference.shouldBeRemovedWhenKilling()) {
+				bonusReference.stop(this);
 
-				//@todo Bonus
-				// this.removeActiveBonusWithIdentifier(bonus.bonusReference.activationIdentifier());
+				//@todo Bonus indicator
+				// this.removeActiveBonusWithIdentifier(bonusReference.activationIdentifier());
 			}
 		}
 	}
@@ -498,6 +496,18 @@ export default class Bonuses {
 		this.players.reviveTeammatePlayer(playerKey);
 	}
 
+	createRobot(playerKey: string, robotId: string) {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player) {
+			this.players.createRobot(robotId, player.isHost);
+		}
+	}
+
+	removeRobot(robotId: string) {
+		this.players.removeRobot(robotId);
+	}
+
 	shiftPlayerShape(playerKey: string, shape: string) {
 		const player = this.players.getPlayerFromKey(playerKey);
 
@@ -560,10 +570,10 @@ export default class Bonuses {
 		return this.gameData.isGameStatusStarted();
 	}
 
-	private deactivateSimilarBonusForPlayerKey(newBonus: Bonus, playerKey: string) {
-		for (let bonus of this.activeBonuses) {
-			if (bonus.bonusReference.isSimilarBonusForPlayerKey(newBonus.bonusReference, playerKey)) {
-				bonus.bonusReference.deactivate();
+	private deactivateSimilarBonusForPlayerKey(newBonus: BaseBonus, playerKey: string) {
+		for (let bonusReference of this.activeBonuses) {
+			if (bonusReference.isSimilarBonusForPlayerKey(newBonus, playerKey)) {
+				bonusReference.deactivate();
 			}
 		}
 	}
@@ -586,22 +596,17 @@ export default class Bonuses {
 	private checkBonuses() {
 		const stillActiveBonuses = [];
 
-		for (let bonus of this.activeBonuses) {
-			if (bonus.check(this, this.serverNormalizedTime.getServerTimestamp())) {
-				stillActiveBonuses.push(bonus);
+		for (let bonusReference of this.activeBonuses) {
+			if (bonusReference.check(this, this.serverNormalizedTime.getServerTimestamp())) {
+				stillActiveBonuses.push(bonusReference);
 			} else {
-				//@todo Bonus Robot
-				// if (bonus instanceof RobotBonus) {
-				// 	this.removedRobots.push(bonus.robotId);
-				// }
-
 				if (this.gameData.isUserCreator()) {
 					//@todo Add an interface for Meteor.call
-					Meteor.call('removeActiveBonusFromGame', this.gameData.gameId, bonus.bonusReference.getIdentifier());
+					Meteor.call('removeActiveBonusFromGame', this.gameData.gameId, bonusReference.getIdentifier());
 				}
 
-				//@todo Bonus
-				// this.removeActiveBonusWithIdentifier(bonus.activationIdentifier());
+				//@todo Bonus indicator
+				// this.removeActiveBonusWithIdentifier(bonusReference.activationIdentifier());
 			}
 		}
 
@@ -610,16 +615,17 @@ export default class Bonuses {
 
 	private applyActiveBonuses() {
 		for (let activeBonus of this.gameData.activeBonuses()) {
-			let bonus = BonusFactory.fromClassName(activeBonus.activatedBonusClass);
+			let bonusReference = BonusFactory.fromClassName(activeBonus.activatedBonusClass);
 
-			if (this.gameConfiguration.overridesBonusDuration() && bonus.canOverrideDuration()) {
-				bonus.durationMilliseconds = this.gameConfiguration.bonusDuration();
+			if (this.gameConfiguration.overridesBonusDuration() && bonusReference.canOverrideDuration()) {
+				bonusReference.durationMilliseconds = this.gameConfiguration.bonusDuration();
 			}
 
-			bonus.reassignBeforeActivationData(activeBonus.beforeActivationData);
-			bonus.activate(activeBonus.targetPlayerKey, activeBonus.activatedAt);
-			bonus.start(this);
-			this.activeBonuses.push(activeBonus);
+			bonusReference.reassignBeforeActivationData(activeBonus.beforeActivationData);
+			bonusReference.activate(activeBonus.targetPlayerKey, activeBonus.activatedAt);
+			bonusReference.start(this);
+
+			this.activeBonuses.push(bonusReference);
 		}
 	}
 
@@ -630,14 +636,11 @@ export default class Bonuses {
 		let player3Count = 0;
 		let player4Count = 0;
 
-		for (let bonus of this.activeBonuses) {
-			if (bonus.getTargetPlayerKey() && bonus.getTargetPlayerKey().indexOf('robot-') === -1) {
-				//@todo Bonus
-				// let bonusSprite = this.activatedBonusSpriteWithIdentifier(bonus.activationIdentifier());
-
+		for (let bonusReference of this.activeBonuses) {
+			if (bonusReference.getTargetPlayerKey() && bonusReference.getTargetPlayerKey().indexOf('robot-') === -1) {
 				let xModifier = 0;
 				let sideCount = 0;
-				switch (bonus.getTargetPlayerKey()) {
+				switch (bonusReference.getTargetPlayerKey()) {
 					case 'player1':
 						player1Count++;
 						sideCount = player1Count;
@@ -661,23 +664,26 @@ export default class Bonuses {
 						xModifier = (this.gameConfiguration.width() / 2);
 						break;
 				}
-				// const x = xModifier + padding + (sideCount * ((this.gameConfiguration.bonusRadius() * 2) + padding));
 
-				//@todo Bonus
+				//@todo Bonus indicator
+				// const x = xModifier + padding + (sideCount * ((this.gameConfiguration.bonusRadius() * 2) + padding));
+				//
+				// let bonusSprite = this.activatedBonusSpriteWithIdentifier(bonusReference.activationIdentifier());
+				//
 				// if (bonusSprite === null) {
 				// 	const bonusSprite = this.engine.drawBonus(
 				// 		x,
 				// 		this.gameConfiguration.height() - (this.gameConfiguration.groundHeight() / 2),
-				// 		BonusFactory.fromClassName(bonus.classNameToActivate(), this),
-				// 		this.getBonusProgress(bonus, bonus.getDuration())
+				// 		BonusFactory.fromClassName(bonusReference.classNameToActivate(), this),
+				// 		this.getBonusProgress(bonusReference, bonusReference.getDuration())
 				// 	);
-				// 	bonusSprite.activationIdentifier = bonus.activationIdentifier();
+				// 	bonusSprite.activationIdentifier = bonusReference.activationIdentifier();
 				// 	this.bonusesGroup.add(bonusSprite);
 				// } else {
 				// 	this.engine.updateBonusProgress(
 				// 		x,
 				// 		bonusSprite,
-				// 		this.getBonusProgress(bonus, bonus.getDuration())
+				// 		this.getBonusProgress(bonusReference, bonusReference.getDuration())
 				// 	);
 				// }
 			}

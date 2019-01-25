@@ -43,14 +43,6 @@ export default class Bonus {
 		this.bonusObject.destroy();
 	}
 
-	check(bonuses: Bonuses, currentTimestamp: number): boolean {
-		return this.bonusReference.check(bonuses, currentTimestamp);
-	}
-
-	getTargetPlayerKey(): string | null {
-		return this.bonusReference.getTargetPlayerKey();
-	}
-
 	canActivate(): boolean {
 		return this.bonusReference.canActivate();
 	}

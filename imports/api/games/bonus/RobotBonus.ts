@@ -9,12 +9,11 @@ export default class RobotBonus extends MonsterBonus {
 	robotId: string = null;
 
 	check(bonuses: Bonuses, currentTimestamp: number): boolean {
-		//@todo Bonus
-		if (bonuses.robotHasBeenKilled.call(bonuses, this.robotId)) {
+		if (bonuses.players.robotHasBeenKilled(this.robotId)) {
 			return false;
 		}
 
-		return this.check(bonuses, currentTimestamp);
+		return super.check(bonuses, currentTimestamp);
 	}
 
 	beforeActivation(bonuses: Bonuses, payload) {
@@ -34,12 +33,10 @@ export default class RobotBonus extends MonsterBonus {
 	}
 
 	start(bonuses: Bonuses) {
-		//@todo Bonus
-		bonuses.createRobotFromActivatorPlayerKey.call(bonuses, this.activatorPlayerKey, this.robotId);
+		bonuses.createRobot.call(bonuses, this.activatorPlayerKey, this.robotId);
 	}
 
 	stop(bonuses: Bonuses) {
-		//@todo Bonus
 		bonuses.removeRobot.call(bonuses, this.robotId);
 
 		this.deactivate();
