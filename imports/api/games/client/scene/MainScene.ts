@@ -98,7 +98,7 @@ export default class MainScene extends Phaser.Scene {
 	onPointTaken() {
 		if (this.gameInitiated) {
 			this.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
-			this.shakeLevel();
+			this.level.shakeGround();
 			this.resumeOnTimerEnd();
 		}
 	}
@@ -141,10 +141,6 @@ export default class MainScene extends Phaser.Scene {
 		countText.setOrigin(0.5);
 
 		this.animations.disappear(countText);
-	}
-
-	shakeLevel() {
-		//@todo Shake
 	}
 
 	killPlayer(playerKey: string, killedAt: number) {

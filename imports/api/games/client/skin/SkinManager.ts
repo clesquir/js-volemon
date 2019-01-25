@@ -56,7 +56,8 @@ export default class SkinManager {
 		}
 	}
 
-	createGroundComponents(scene: MainScene) {
+	createGroundComponents(scene: MainScene): Phaser.GameObjects.TileSprite[] {
+		const groundTileSprites = [];
 		let groundComponents = [];
 
 		groundComponents = groundComponents.concat(this.skin.groundComponents());
@@ -73,15 +74,19 @@ export default class SkinManager {
 				groundHeight = groundComponent.height;
 			}
 
-			scene.add.tileSprite(
-				this.gameConfiguration.width() / 2,
-				y,
-				this.gameConfiguration.width(),
-				groundHeight,
-				groundComponent.key,
-				groundComponent.frame
+			groundTileSprites.push(
+				scene.add.tileSprite(
+					this.gameConfiguration.width() / 2,
+					y,
+					this.gameConfiguration.width(),
+					groundHeight,
+					groundComponent.key,
+					groundComponent.frame
+				)
 			);
 		}
+
+		return groundTileSprites;
 	}
 
 	createNetComponent(scene: MainScene) {

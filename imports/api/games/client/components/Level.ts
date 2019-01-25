@@ -18,6 +18,7 @@ export default class Level {
 	collisionCategoryBonus: number;
 	collisionCategoryBonusLimit: number;
 	collisionCategoryNet: number;
+	groundComponents: Phaser.GameObjects.TileSprite[] = [];
 	fieldLimits: FieldLimits;
 
 	constructor(
@@ -52,7 +53,11 @@ export default class Level {
 	}
 
 	createGround() {
-		this.skinManager.createGroundComponents(this.scene);
+		this.groundComponents = this.skinManager.createGroundComponents(this.scene);
+	}
+
+	shakeGround() {
+		//@todo Shake
 	}
 
 	createNet() {
