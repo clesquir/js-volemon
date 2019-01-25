@@ -7,7 +7,6 @@
     "@babel/runtime": "^7.1.2",
     "@types/jquery": "^3.3.29",
     "@types/meteor": "^1.4.24",
-    "@types/moment": "^2.13.0",
     "async": "^2.6.1",
     "buffer": "^5.2.1",
     "bufferutil": "^3.0.5",

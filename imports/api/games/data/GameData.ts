@@ -3,6 +3,8 @@ export default interface GameData {
 	hasBonuses: boolean;
 	lastPointAt: number;
 	lastPointTaken: string;
+	hostPoints: number;
+	clientPoints: number;
 
 	init();
 

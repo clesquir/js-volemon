@@ -1,6 +1,4 @@
 import {isTwoVersusTwoGameMode} from '../constants';
-import {Games} from 'imports/api/games/games';
-import {Players} from 'imports/api/games/players';
 import {PLAYER_DEFAULT_SHAPE} from '../shapeConstants';
 import {
 	hasGameAborted,
@@ -9,9 +7,11 @@ import {
 	isGameStatusOnGoing,
 	isGameStatusStarted,
 	isMatchPoint
-} from 'imports/api/games/utils';
-import {Tournaments} from 'imports/api/tournaments/tournaments';
+} from '../utils';
+import {Tournaments} from '../../tournaments/tournaments';
 import GameData from "./GameData";
+import {Players} from "../players";
+import {Games} from "../games";
 
 export default class CollectionGameData implements GameData {
 	gameId: string;

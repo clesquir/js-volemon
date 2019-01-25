@@ -9,7 +9,6 @@ import {
 	TIME_OF_DAY_NIGHT,
 	TIME_OF_DAY_TWILIGHT
 } from '/imports/lib/weatherApi/WeatherApi';
-import {ReactiveVar} from 'meteor/reactive-var';
 import {Template} from 'meteor/templating';
 
 import './skin.html';
@@ -133,8 +132,8 @@ Template.skin.helpers({
 	hostPoints: function() {
 		let points = 0;
 
-		if (skin && skin.game) {
-			points = skin.game.hostPoints;
+		if (skin && skin.gameData) {
+			points = skin.gameData.hostPoints;
 		}
 
 		return padNumber(points);
@@ -143,8 +142,8 @@ Template.skin.helpers({
 	clientPoints: function() {
 		let points = 0;
 
-		if (skin && skin.game) {
-			points = skin.game.clientPoints;
+		if (skin && skin.gameData) {
+			points = skin.gameData.clientPoints;
 		}
 
 		return padNumber(points);
@@ -187,17 +186,21 @@ Template.skin.events({
 	'click [data-action="change-time-of-day"]': function(e) {
 		Session.set('dev.skin.timeOfDay', $(e.currentTarget).attr('data-time-of-day-id'));
 
-		skin.stop();
-		skin = new Skin();
-		skin.start();
+		if (Session.get('dev.skin.pluginEnabled')) {
+			skin.stop();
+			skin = new Skin();
+			skin.start();
+		}
 	},
 
 	'click [data-action="change-condition"]': function(e) {
 		Session.set('dev.skin.condition', $(e.currentTarget).attr('data-condition-id'));
 
-		skin.stop();
-		skin = new Skin();
-		skin.start();
+		if (Session.get('dev.skin.pluginEnabled')) {
+			skin.stop();
+			skin = new Skin();
+			skin.start();
+		}
 	},
 
 	'click [data-action="cheer-host"]': function() {

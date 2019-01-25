@@ -57,7 +57,24 @@ export default class Level {
 	}
 
 	shakeGround() {
-		//@todo Shake
+		const move = 5;
+		const time = 20;
+
+		for (let groundComponent of this.groundComponents) {
+			const initialX = groundComponent.x;
+			const initialY = groundComponent.y;
+
+			this.scene.tweens.createTimeline()
+				.add({targets: groundComponent, x: "-=" + move, y: "-=" + move, duration: time})
+				.add({targets: groundComponent, x: "+=" + move * 2, y: "+=" + move * 2, duration: time * 2})
+				.add({targets: groundComponent, x: "-=" + move * 2, y: "-=" + move * 2, duration: time * 2})
+				.add({targets: groundComponent, x: "+=" + move * 2, y: "+=" + move * 2, duration: time * 2})
+				.add({targets: groundComponent, x: "-=" + move * 1.5, y: "-=" + move * 1.5, duration: time * 2})
+				.add({targets: groundComponent, x: "+=" + move, y: "+=" + move, duration: time * 2})
+				.add({targets: groundComponent, x: "-=" + move / 2, y: "-=" + move / 2, duration: time})
+				.add({targets: groundComponent, x: initialX, y: initialY, duration: time})
+				.play();
+		}
 	}
 
 	createNet() {

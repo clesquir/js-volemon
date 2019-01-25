@@ -1,10 +1,3 @@
-import NullStreamBundler from 'imports/api/games/client/streamBundler/NullStreamBundler';
-import ServerNormalizedTime from 'imports/api/games/client/ServerNormalizedTime';
-import StaticGameConfiguration from 'imports/api/games/configuration/StaticGameConfiguration';
-import StaticGameData from 'imports/api/games/data/StaticGameData';
-import DesktopController from 'imports/api/games/deviceController/DesktopController';
-import {PLAYER_DEFAULT_SHAPE} from 'imports/api/games/shapeConstants';
-import {Random} from 'meteor/random';
 import SkinManager from "../skin/SkinManager";
 import {GameBoot} from "../GameBoot";
 import DeviceController from "../../deviceController/DeviceController";
@@ -13,6 +6,11 @@ import StreamBundler from "../streamBundler/StreamBundler";
 import Ball from "../components/Ball";
 import MainScene from "../scene/MainScene";
 import Countdown from "../components/Countdown";
+import StaticGameData from "../../data/StaticGameData";
+import ServerNormalizedTime from "../ServerNormalizedTime";
+import DesktopController from "../../deviceController/DesktopController";
+import StaticGameConfiguration from "../../configuration/StaticGameConfiguration";
+import NullStreamBundler from "../streamBundler/NullStreamBundler";
 
 export default class Dev {
 	game: GameBoot;
@@ -115,6 +113,7 @@ export default class Dev {
 			this.mainScene.gameResumed = false;
 
 			this.gameData.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
+			this.mainScene.level.shakeGround();
 			this.resumeOnTimerEnd();
 		}
 	}

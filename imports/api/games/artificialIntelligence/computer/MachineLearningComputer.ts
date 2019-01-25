@@ -1,4 +1,3 @@
-import {CLIENT_POINTS_COLUMN, HOST_POINTS_COLUMN} from 'imports/api/games/constants';
 import * as clientGenomes from '/public/assets/artificial-intelligence/client_genomes.json';
 import * as hostGenomes from '/public/assets/artificial-intelligence/host_genomes.json';
 import Computer from "./Computer";
@@ -7,6 +6,7 @@ import SynapticLearner from "../learner/SynapticLearner";
 import {ArtificialIntelligenceData} from "../ArtificialIntelligenceData";
 import GameConfiguration from "../../configuration/GameConfiguration";
 import {ArtificialIntelligencePositionData} from "../ArtificialIntelligencePositionData";
+import {CLIENT_POINTS_COLUMN, HOST_POINTS_COLUMN} from "../../constants";
 
 export default class MachineLearningComputer implements Computer {
 	key: string;

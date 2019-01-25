@@ -1,12 +1,11 @@
 import Dev from "./Dev";
-import LevelConfiguration from 'imports/api/games/levelConfiguration/LevelConfiguration';
 import {Meteor} from 'meteor/meteor';
-import moment from 'moment';
-import {Random} from 'meteor/random';
+import * as moment from 'moment';
 import {Session} from 'meteor/session';
 import SkinManager from "../skin/SkinManager";
 import SkinFactory from "../../../skins/skins/SkinFactory";
 import WeatherPlugin from "../../../skins/plugins/WeatherPlugin";
+import LevelConfiguration from "../../levelConfiguration/LevelConfiguration";
 
 export default class Skin extends Dev {
 	startTime: number = 0;

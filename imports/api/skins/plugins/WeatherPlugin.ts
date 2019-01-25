@@ -1,10 +1,10 @@
-import {locationDetector} from 'imports/lib/geoLocation/LocationDetector.js';
-import {YahooWeatherApi} from 'imports/lib/weatherApi/YahooWeatherApi.js';
 import {
 	CONDITION_CLOUD, CONDITION_FOG, CONDITION_RAIN, CONDITION_THUNDER, CONDITION_SNOW,
 	TIME_OF_DAY_NIGHT, TIME_OF_DAY_DAYLIGHT
-} from 'imports/lib/weatherApi/WeatherApi.js';
+} from '../../../lib/weatherApi/WeatherApi';
 import Plugin from './Plugin';
+import {YahooWeatherApi} from "../../../lib/weatherApi/YahooWeatherApi";
+import {locationDetector} from "../../../lib/geoLocation/LocationDetector";
 
 export default class WeatherPlugin implements Plugin {
 	weatherApi: YahooWeatherApi;

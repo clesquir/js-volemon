@@ -22,6 +22,8 @@ export default class StaticGameData implements GameData {
 	tournamentId: string | null = null;
 	lastPointAt: number;
 	lastPointTaken: string;
+	hostPoints: number = 0;
+	clientPoints: number = 0;
 
 	init() {
 		this.createdBy = Random.id();

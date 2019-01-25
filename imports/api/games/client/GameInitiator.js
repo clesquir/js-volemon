@@ -6,7 +6,7 @@ import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
 import {Meteor} from 'meteor/meteor';
-import {moment} from 'moment';
+import moment from 'moment';
 import {Session} from 'meteor/session';
 
 export default class GameInitiator {

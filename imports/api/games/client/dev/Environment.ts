@@ -49,6 +49,7 @@ export default class Environment extends Dev {
 			this.mainScene.gameResumed = false;
 
 			this.gameData.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
+			this.mainScene.level.shakeGround();
 			this.resumeOnTimerEnd();
 		}
 	}
