@@ -1,4 +1,4 @@
-import SkinManager from "../skin/SkinManager";
+import SkinManager from "./SkinManager";
 import GameConfiguration from "../../configuration/GameConfiguration";
 import {PLAYER_LIST_OF_SHAPES} from "../../shapeConstants";
 import FieldLimits from "./FieldLimits";

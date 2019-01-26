@@ -2,7 +2,7 @@ import Dev from "./Dev";
 import {Meteor} from 'meteor/meteor';
 import * as moment from 'moment';
 import {Session} from 'meteor/session';
-import SkinManager from "../skin/SkinManager";
+import SkinManager from "../components/SkinManager";
 import SkinFactory from "../../../skins/skins/SkinFactory";
 import WeatherPlugin from "../../../skins/plugins/WeatherPlugin";
 import LevelConfiguration from "../../levelConfiguration/LevelConfiguration";

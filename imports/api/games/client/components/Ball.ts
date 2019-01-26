@@ -1,6 +1,6 @@
 import MainScene from "../scene/MainScene";
 import GameConfiguration from "../../configuration/GameConfiguration";
-import SkinManager from "../skin/SkinManager";
+import SkinManager from "./SkinManager";
 import {CLIENT_SIDE, CONSTRAINED_VELOCITY, HOST_SIDE} from "../../constants";
 import Level from "./Level";
 import {ArtificialIntelligencePositionData} from "../../artificialIntelligence/ArtificialIntelligencePositionData";

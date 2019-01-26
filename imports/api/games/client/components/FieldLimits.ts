@@ -1,6 +1,6 @@
 import MainScene from "../scene/MainScene";
 import GameConfiguration from "../../configuration/GameConfiguration";
-import SkinManager from "../skin/SkinManager";
+import SkinManager from "./SkinManager";
 import Level from "./Level";
 
 export default class FieldLimits {

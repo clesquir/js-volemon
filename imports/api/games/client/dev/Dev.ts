@@ -1,4 +1,4 @@
-import SkinManager from "../skin/SkinManager";
+import SkinManager from "../components/SkinManager";
 import {GameBoot} from "../GameBoot";
 import DeviceController from "../../deviceController/DeviceController";
 import GameConfiguration from "../../configuration/GameConfiguration";
