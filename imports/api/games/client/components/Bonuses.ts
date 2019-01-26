@@ -16,6 +16,8 @@ import CloudsGenerator from "./CloudsGenerator";
 import BonusIndicator from "./BonusIndicator";
 import Animations from "./Animations";
 import BaseBonus from "../../bonus/BaseBonus";
+import ServerAdapter from "../serverAdapter/ServerAdapter";
+import {BonusPositionData} from "../../bonus/data/BonusPositionData";
 
 export default class Bonuses {
 	scene: MainScene;
@@ -23,6 +25,7 @@ export default class Bonuses {
 	gameConfiguration: GameConfiguration;
 	streamBundler: StreamBundler;
 	serverNormalizedTime: ServerNormalizedTime;
+	serverAdapter: ServerAdapter;
 	animations: Animations;
 	level: Level;
 	players: Players;
@@ -42,6 +45,7 @@ export default class Bonuses {
 		gameConfiguration: GameConfiguration,
 		streamBundler: StreamBundler,
 		serverNormalizedTime: ServerNormalizedTime,
+		serverAdapter: ServerAdapter,
 		animations: Animations,
 		level: Level,
 		players: Players
@@ -51,6 +55,7 @@ export default class Bonuses {
 		this.gameConfiguration = gameConfiguration;
 		this.streamBundler = streamBundler;
 		this.serverNormalizedTime = serverNormalizedTime;
+		this.serverAdapter = serverAdapter;
 		this.animations = animations;
 		this.level = level;
 		this.players = players;
@@ -135,7 +140,7 @@ export default class Bonuses {
 		return bonus;
 	}
 
-	moveClientBonus(bonusIdentifier: string, data: any) {
+	moveClientBonus(bonusIdentifier: string, data: BonusPositionData) {
 		let correspondingBonus = this.bonusFromIdentifier(bonusIdentifier);
 
 		if (!this.gameIsOnGoing()) {
@@ -221,13 +226,14 @@ export default class Bonuses {
 		this.activeBonuses.push(bonusReferenceToActivate);
 
 		if (this.gameData.isUserCreator()) {
-			//@todo Add an interface for Meteor.call
-			Meteor.call(
+			this.serverAdapter.send(
 				'addActiveBonusToGame',
-				this.gameData.gameId,
-				activatedAt,
-				bonusReference.getClassName(),
-				bonusReferenceToActivate.activationData()
+				[
+					this.gameData.gameId,
+					activatedAt,
+					bonusReference.getClassName(),
+					bonusReferenceToActivate.activationData()
+				]
 			);
 		}
 
@@ -601,8 +607,13 @@ export default class Bonuses {
 				stillActiveBonuses.push(bonusReference);
 			} else {
 				if (this.gameData.isUserCreator()) {
-					//@todo Add an interface for Meteor.call
-					Meteor.call('removeActiveBonusFromGame', this.gameData.gameId, bonusReference.getIdentifier());
+					this.serverAdapter.send(
+						'removeActiveBonusFromGame',
+						[
+							this.gameData.gameId,
+							bonusReference.getIdentifier()
+						]
+					);
 				}
 
 				//@todo Bonus indicator
@@ -737,11 +748,12 @@ export default class Bonuses {
 		//Add to bundled stream to send to client
 		this.streamBundler.addStreamToBundle('createBonus', data);
 
-		//@todo Add an interface for Meteor.call
-		Meteor.call(
+		this.serverAdapter.send(
 			'createBonus',
-			this.gameData.gameId,
-			data
+			[
+				this.gameData.gameId,
+				data
+			]
 		);
 	}
 

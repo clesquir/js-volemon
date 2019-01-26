@@ -15,6 +15,9 @@ import Animations from "../components/Animations";
 import Players from "../components/Players";
 import Bonuses from "../components/Bonuses";
 import {BonusStreamData} from "../../bonus/data/BonusStreamData";
+import ServerAdapter from "../serverAdapter/ServerAdapter";
+import {MainSceneConfigurationData} from "./MainSceneConfigurationData";
+import {BonusPositionData} from "../../bonus/data/BonusPositionData";
 
 const Phaser = require('phaser');
 
@@ -25,6 +28,7 @@ export default class MainScene extends Phaser.Scene {
 	skinManager: SkinManager;
 	streamBundler: StreamBundler;
 	serverNormalizedTime: ServerNormalizedTime;
+	serverAdapter: ServerAdapter;
 
 	animations: Animations;
 	level: Level;
@@ -48,13 +52,14 @@ export default class MainScene extends Phaser.Scene {
 		super('MainScene');
 	}
 
-	init(config) {
+	init(config: MainSceneConfigurationData) {
 		this.deviceController = config.deviceController;
 		this.gameData = config.gameData;
 		this.gameConfiguration = config.gameConfiguration;
 		this.skinManager = config.skinManager;
 		this.streamBundler = config.streamBundler;
 		this.serverNormalizedTime = config.serverNormalizedTime;
+		this.serverAdapter = config.serverAdapter;
 
 		this.animations = new Animations(this);
 		this.level = new Level(
@@ -79,6 +84,7 @@ export default class MainScene extends Phaser.Scene {
 			this.gameConfiguration,
 			this.streamBundler,
 			this.serverNormalizedTime,
+			this.serverAdapter,
 			this.animations,
 			this.level,
 			this.players
@@ -157,7 +163,7 @@ export default class MainScene extends Phaser.Scene {
 		);
 	}
 
-	moveClientPlayer(data: any) {
+	moveClientPlayer(data: PositionData) {
 		if (!this.gameInitiated || !this.gameIsOnGoing()) {
 			return;
 		}
@@ -165,7 +171,7 @@ export default class MainScene extends Phaser.Scene {
 		this.players.moveClientPlayer(data);
 	}
 
-	moveClientBall(data: any) {
+	moveClientBall(data: PositionData) {
 		if (!this.gameInitiated || !this.ball || !this.gameIsOnGoing()) {
 			return;
 		}
@@ -198,7 +204,7 @@ export default class MainScene extends Phaser.Scene {
 		this.bonuses.activateBonus(bonusIdentifier, playerKey, activatedAt, x, y, beforeActivationData);
 	}
 
-	moveClientBonus(bonusIdentifier: string, data: any) {
+	moveClientBonus(bonusIdentifier: string, data: BonusPositionData) {
 		if (!this.gameInitiated || !this.gameIsOnGoing()) {
 			return;
 		}
@@ -444,8 +450,13 @@ export default class MainScene extends Phaser.Scene {
 
 			this.gameResumed = false;
 
-			//@todo Add an interface for Meteor.apply
-			Meteor.apply('addGamePoints', [this.gameData.gameId, pointSide]);
+			this.serverAdapter.send(
+				'addGamePoints',
+				[
+					this.gameData.gameId,
+					pointSide
+				]
+			);
 
 			this.artificialIntelligence.stopPoint(pointSide);
 		}

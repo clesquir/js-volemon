@@ -120,7 +120,7 @@ export default class Players {
 		}
 	}
 
-	moveClientPlayer(data: any) {
+	moveClientPlayer(data: PositionData) {
 		let player = this.getPlayerFromKey(data.key);
 
 		if (!player && data.key.indexOf('robot-') === 0) {

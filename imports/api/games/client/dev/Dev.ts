@@ -11,6 +11,8 @@ import ServerNormalizedTime from "../ServerNormalizedTime";
 import DesktopController from "../../deviceController/DesktopController";
 import StaticGameConfiguration from "../../configuration/StaticGameConfiguration";
 import NullStreamBundler from "../streamBundler/NullStreamBundler";
+import ServerAdapter from "../serverAdapter/ServerAdapter";
+import NullServerAdapter from "../serverAdapter/NullServerAdapter";
 
 export default class Dev {
 	game: GameBoot;
@@ -20,6 +22,7 @@ export default class Dev {
 	skinManager: SkinManager;
 	streamBundler: StreamBundler;
 	serverNormalizedTime: ServerNormalizedTime;
+	serverAdapter: ServerAdapter;
 	mainScene: MainScene | any;
 	renderer: number;
 	initialUpdate: () => void;
@@ -35,6 +38,7 @@ export default class Dev {
 		this.streamBundler = new NullStreamBundler();
 		this.serverNormalizedTime = new ServerNormalizedTime();
 		this.serverNormalizedTime.init();
+		this.serverAdapter = new NullServerAdapter();
 	}
 
 	start() {
@@ -46,7 +50,8 @@ export default class Dev {
 			this.gameConfiguration,
 			this.skinManager,
 			this.streamBundler,
-			this.serverNormalizedTime
+			this.serverNormalizedTime,
+			this.serverAdapter
 		);
 		this.game.init(
 			{

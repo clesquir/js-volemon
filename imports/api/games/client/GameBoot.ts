@@ -5,6 +5,8 @@ import SkinManager from "./components/SkinManager";
 import StreamBundler from "./streamBundler/StreamBundler";
 import ServerNormalizedTime from "./ServerNormalizedTime";
 import GameConfiguration from "../configuration/GameConfiguration";
+import ServerAdapter from "./serverAdapter/ServerAdapter";
+import {MainSceneConfigurationData} from "./scene/MainSceneConfigurationData";
 
 export declare type GameBootConfiguration = {
 	type?: number;
@@ -19,6 +21,7 @@ export class GameBoot {
 	skinManager: SkinManager;
 	streamBundler: StreamBundler;
 	serverNormalizedTime: ServerNormalizedTime;
+	serverAdapter: ServerAdapter;
 	game: Phaser.Game;
 	mainScene: MainScene | any;
 	system: Phaser.Scenes.Systems;
@@ -29,7 +32,8 @@ export class GameBoot {
 		gameConfiguration: GameConfiguration,
 		skinManager: SkinManager,
 		streamBundler: StreamBundler,
-		serverNormalizedTime: ServerNormalizedTime
+		serverNormalizedTime: ServerNormalizedTime,
+		serverAdapter: ServerAdapter
 	) {
 		this.deviceController = deviceController;
 		this.gameData = gameData;
@@ -37,6 +41,7 @@ export class GameBoot {
 		this.skinManager = skinManager;
 		this.streamBundler = streamBundler;
 		this.serverNormalizedTime = serverNormalizedTime;
+		this.serverAdapter = serverAdapter;
 	}
 
 	init(configuration: GameBootConfiguration) {
@@ -80,13 +85,14 @@ export class GameBoot {
 			'MainScene',
 			MainScene,
 			true,
-			{
+			<MainSceneConfigurationData>{
 				deviceController: this.deviceController,
 				gameData: this.gameData,
 				gameConfiguration: this.gameConfiguration,
 				skinManager: this.skinManager,
 				streamBundler: this.streamBundler,
-				serverNormalizedTime: this.serverNormalizedTime
+				serverNormalizedTime: this.serverNormalizedTime,
+				serverAdapter: this.serverAdapter
 			}
 		);
 
