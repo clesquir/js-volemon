@@ -2,6 +2,8 @@ import BaseBonus from './BaseBonus';
 import {BonusActivationData} from "./data/BonusActivationData";
 import Bonuses from "../client/components/Bonuses";
 import {getRandomInt} from "../../../lib/utils";
+import {BonusBeforeActivationData} from "./data/BonusBeforeActivationData";
+import {BonusPayloadData} from "./data/BonusPayloadData";
 
 export default class SmokeBombBonus extends BaseBonus {
 	atlasFrame: string = 'smoke-bomb';
@@ -16,13 +18,13 @@ export default class SmokeBombBonus extends BaseBonus {
 		return null;
 	}
 
-	beforeActivation(bonuses: Bonuses, payload) {
+	beforeActivation(bonuses: Bonuses, payload: BonusPayloadData) {
 		this.xPosition = payload.x;
 		this.yPosition = payload.y;
 		this.angle = getRandomInt(-180, 180);
 	}
 
-	beforeActivationData() {
+	beforeActivationData(): BonusBeforeActivationData {
 		const beforeActivationData = super.beforeActivationData();
 
 		beforeActivationData.xPosition = this.xPosition;
@@ -32,7 +34,7 @@ export default class SmokeBombBonus extends BaseBonus {
 		return beforeActivationData;
 	}
 
-	reassignBeforeActivationData(beforeActivationData) {
+	reassignBeforeActivationData(beforeActivationData: BonusBeforeActivationData) {
 		this.xPosition = beforeActivationData.xPosition;
 		this.yPosition = beforeActivationData.yPosition;
 		this.angle = beforeActivationData.angle;

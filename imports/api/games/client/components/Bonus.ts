@@ -89,7 +89,6 @@ export default class Bonus {
 	}
 
 	payload(bonuses: Bonuses, playerKey: string) {
-		//@todo Bonus - declare type
 		const payload = {
 			identifier: this.identifier,
 			player: playerKey,

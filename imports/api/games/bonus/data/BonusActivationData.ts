@@ -1,10 +1,12 @@
+import {BonusBeforeActivationData} from "./BonusBeforeActivationData";
+
 export declare type BonusActivationData = {
 	bonusIdentifier: string;
 	activatedBonusClass: string;
 	targetPlayerKey: string;
 	bonusClass: string;
 	activatorPlayerKey: string;
-	beforeActivationData: any;
+	beforeActivationData: BonusBeforeActivationData;
 
 	//Shape shift
 	playerShape?: string;

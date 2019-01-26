@@ -3,6 +3,8 @@ import MonsterBonus from './MonsterBonus';
 import {Random} from 'meteor/random';
 import Bonuses from "../client/components/Bonuses";
 import BaseBonus from "./BaseBonus";
+import {BonusBeforeActivationData} from "./data/BonusBeforeActivationData";
+import {BonusPayloadData} from "./data/BonusPayloadData";
 
 export default class ShapeShiftMonsterBonus extends MonsterBonus {
 	atlasFrame: string = 'shape-shift-monster';
@@ -14,7 +16,7 @@ export default class ShapeShiftMonsterBonus extends MonsterBonus {
 		return bonus instanceof ShapeShiftMonsterBonus && playerKey === this.activatorPlayerKey;
 	}
 
-	beforeActivation(bonuses: Bonuses, payload) {
+	beforeActivation(bonuses: Bonuses, payload: BonusPayloadData) {
 		//Define the player random shape different from the player initial and current one
 		let listOfShapes = Array.from(bonuses.gameConfiguration.listOfShapes());
 		const player = bonuses.players.getPlayerFromKey(payload.player);
@@ -34,7 +36,7 @@ export default class ShapeShiftMonsterBonus extends MonsterBonus {
 		this.playerShape = Random.choice(listOfShapes);
 	}
 
-	beforeActivationData() {
+	beforeActivationData(): BonusBeforeActivationData {
 		const beforeActivationData = super.beforeActivationData();
 
 		beforeActivationData.playerShape = this.playerShape;
@@ -42,7 +44,7 @@ export default class ShapeShiftMonsterBonus extends MonsterBonus {
 		return beforeActivationData;
 	}
 
-	reassignBeforeActivationData(beforeActivationData) {
+	reassignBeforeActivationData(beforeActivationData: BonusBeforeActivationData) {
 		this.playerShape = beforeActivationData.playerShape;
 	}
 

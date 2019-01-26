@@ -3,6 +3,8 @@ import {getUTCTimeStamp} from '../../../lib/utils';
 import {BonusStreamData} from "./data/BonusStreamData";
 import {BonusActivationData} from "./data/BonusActivationData";
 import Bonuses from "../client/components/Bonuses";
+import {BonusBeforeActivationData} from "./data/BonusBeforeActivationData";
+import {BonusPayloadData} from "./data/BonusPayloadData";
 
 export default class BaseBonus {
 	className: string;
@@ -86,15 +88,13 @@ export default class BaseBonus {
 		return true;
 	}
 
-	beforeActivation(bonuses: Bonuses, payload) {
-		//@todo Bonus - payload declaration
+	beforeActivation(bonuses: Bonuses, payload: BonusPayloadData) {
 		if (this.bonusToActivate() !== this) {
 			this.bonusToActivate().beforeActivation(bonuses, payload);
 		}
 	}
 
-	beforeActivationData() {
-		//@todo Bonus - activation data declaration
+	beforeActivationData(): BonusBeforeActivationData {
 		if (this.bonusToActivate() !== this) {
 			return this.bonusToActivate().beforeActivationData();
 		}
@@ -102,7 +102,7 @@ export default class BaseBonus {
 		return {};
 	}
 
-	reassignBeforeActivationData(beforeActivationData) {
+	reassignBeforeActivationData(beforeActivationData: BonusBeforeActivationData) {
 	}
 
 	activate(playerKey: string, activatedAt: number) {

@@ -1,5 +1,7 @@
 import MonsterBonus from './MonsterBonus';
 import Bonuses from "../client/components/Bonuses";
+import {BonusBeforeActivationData} from "./data/BonusBeforeActivationData";
+import {BonusPayloadData} from "./data/BonusPayloadData";
 
 export default class RobotBonus extends MonsterBonus {
 	atlasFrame: string = 'robot';
@@ -16,11 +18,11 @@ export default class RobotBonus extends MonsterBonus {
 		return super.check(bonuses, currentTimestamp);
 	}
 
-	beforeActivation(bonuses: Bonuses, payload) {
+	beforeActivation(bonuses: Bonuses, payload: BonusPayloadData) {
 		this.robotId = 'robot-' + Random.id(5);
 	}
 
-	beforeActivationData() {
+	beforeActivationData(): BonusBeforeActivationData {
 		const beforeActivationData = super.beforeActivationData();
 
 		beforeActivationData.robotId = this.robotId;
@@ -28,7 +30,7 @@ export default class RobotBonus extends MonsterBonus {
 		return beforeActivationData;
 	}
 
-	reassignBeforeActivationData(beforeActivationData) {
+	reassignBeforeActivationData(beforeActivationData: BonusBeforeActivationData) {
 		this.robotId = beforeActivationData.robotId;
 	}
 
