@@ -351,8 +351,15 @@ export default class Player {
 	}
 
 	shiftShape(shape: string) {
+		if (
+			this.gameConfiguration.overridesCurrentPlayerShape() &&
+			this.gameData.isCurrentPlayerKey(this.key)
+		) {
+			this.currentTextureKey = 'shape-' + this.gameConfiguration.currentPlayerShape();
+		} else {
+			this.currentTextureKey = 'shape-' + shape;
+		}
 		this.currentShape = shape;
-		this.currentTextureKey = 'shape-' + shape;
 		this.initBody();
 	}
 
@@ -586,7 +593,6 @@ export default class Player {
 	}
 
 	private setupBody() {
-		//@todo check with hidden shape
 		this.playerObject.setTexture(this.currentTextureKey);
 		this.containerPhysics.setIgnoreGravity(this.isFrozen);
 		this.containerPhysics.setFriction(0, 0, 0);
