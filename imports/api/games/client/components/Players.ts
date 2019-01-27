@@ -313,8 +313,6 @@ export default class Players {
 			this.scene,
 			this.gameData,
 			this.gameConfiguration,
-			this.streamBundler,
-			this.serverNormalizedTime,
 			this.animations,
 			this.level,
 			key,

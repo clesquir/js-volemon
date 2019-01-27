@@ -22,16 +22,12 @@ import Level from "./Level";
 import {ArtificialIntelligenceData} from "../../artificialIntelligence/ArtificialIntelligenceData";
 import {ArtificialIntelligencePositionData} from "../../artificialIntelligence/ArtificialIntelligencePositionData";
 import {PositionData} from "./PositionData";
-import StreamBundler from "../streamBundler/StreamBundler";
-import ServerNormalizedTime from "../ServerNormalizedTime";
 import Animations from "./Animations";
 
 export default class Player {
 	scene: MainScene;
 	gameData: GameData;
 	gameConfiguration: GameConfiguration;
-	streamBundler: StreamBundler;
-	serverNormalizedTime: ServerNormalizedTime;
 	animations: Animations;
 	level: Level;
 	key: string;
@@ -91,8 +87,6 @@ export default class Player {
 		scene: MainScene,
 		gameData: GameData,
 		gameConfiguration: GameConfiguration,
-		streamBundler: StreamBundler,
-		serverNormalizedTime: ServerNormalizedTime,
 		animations: Animations,
 		level: Level,
 		key: string,
@@ -102,8 +96,6 @@ export default class Player {
 		this.scene = scene;
 		this.gameConfiguration = gameConfiguration;
 		this.gameData = gameData;
-		this.streamBundler = streamBundler;
-		this.serverNormalizedTime = serverNormalizedTime;
 		this.animations = animations;
 		this.level = level;
 		this.key = key;
