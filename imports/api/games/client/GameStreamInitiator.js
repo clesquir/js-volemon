@@ -105,7 +105,7 @@ export default class GameStreamInitiator {
 		let gameInitiator = this.gameInitiator;
 
 		if (gameInitiator.hasActiveGame()) {
-			gameInitiator.currentGame.killPlayer(playerKey, killedAt);
+			gameInitiator.currentGame.killClientPlayer(playerKey, killedAt);
 		}
 	}
 

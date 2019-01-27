@@ -192,14 +192,6 @@ export default class Players {
 		}
 	}
 
-	killAndRemovePlayer(playerKey: string) {
-		const player = this.getPlayerFromKey(playerKey);
-
-		if (player) {
-			player.killAndRemove();
-		}
-	}
-
 	reviveTeammatePlayer(playerKey: string) {
 		const player = this.getPlayerFromKey(playerKey);
 		let teammatePlayers = [];
@@ -237,7 +229,7 @@ export default class Players {
 
 	removeRobot(robotId: string) {
 		if (this.robots[robotId]) {
-			this.killAndRemovePlayer(robotId);
+			this.scene.removePlayer(robotId);
 			delete this.robots[robotId];
 			this.removedRobots[robotId] = true;
 		}
@@ -546,11 +538,7 @@ export default class Players {
 
 	private delayKillPlayer(key: string) {
 		setTimeout(() => {
-			const player = this.getPlayerFromKey(key);
-
-			if (player) {
-				player.kill();
-			}
+			this.scene.killPlayer(key);
 		}, 100);
 	}
 

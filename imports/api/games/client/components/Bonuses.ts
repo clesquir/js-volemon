@@ -497,11 +497,7 @@ export default class Bonuses {
 	}
 
 	killPlayer(playerKey: string) {
-		const player = this.players.getPlayerFromKey(playerKey);
-
-		if (player) {
-			player.kill();
-		}
+		this.scene.killPlayer(playerKey);
 	}
 
 	revivePlayer(playerKey: string) {

@@ -163,9 +163,41 @@ export default class MainScene extends Phaser.Scene {
 		);
 	}
 
-	killPlayer(playerKey: string, killedAt: number) {
+	killClientPlayer(playerKey: string, killedAt: number) {
 		if (killedAt > this.lastPointAt) {
-			this.players.killAndRemovePlayer(playerKey);
+			this.removePlayer(playerKey);
+		}
+	}
+
+	killPlayer(playerKey: string) {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (this.canAddGamePoint() && player && !player.isInvincible && !player.killed) {
+			this.removePlayer(playerKey);
+
+			//Send to client
+			const serverTimestamp = this.serverNormalizedTime.getServerTimestamp();
+			this.streamBundler.emitStream(
+				'killPlayer-' + this.gameData.gameId,
+				{
+					playerKey: playerKey,
+					killedAt: serverTimestamp
+				},
+				serverTimestamp
+			);
+		}
+	}
+
+	removePlayer(playerKey: string) {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player && !player.killing && !player.killed) {
+			player.killing = true;
+
+			this.bonuses.resetBonusesForPlayerKey(playerKey);
+			player.kill();
+
+			player.killing = false;
 		}
 	}
 

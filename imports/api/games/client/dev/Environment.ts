@@ -55,7 +55,7 @@ export default class Environment extends Dev {
 	}
 
 	killPlayer() {
-		this.mainScene.killPlayer('player1', (new Date()).getTime());
+		this.mainScene.killPlayer('player1');
 	}
 
 	revivePlayer() {

@@ -284,55 +284,32 @@ export default class Player {
 	}
 
 	kill() {
-		if (this.scene.canAddGamePoint() && !this.isInvincible) {
-			this.killAndRemove();
+		const killedImage = this.scene.add.image(0, 0, this.currentTextureKey);
+		killedImage.setTint(Phaser.Display.Color.ValueToColor(this.color).color);
+		const eyeBall = this.createEyeBall();
+		const eyePupil = this.createEyePupil();
 
-			//Send to client
-			const serverTimestamp = this.serverNormalizedTime.getServerTimestamp();
-			this.streamBundler.emitStream(
-				'killPlayer-' + this.gameData.gameId,
-				{
-					playerKey: this.key,
-					killedAt: serverTimestamp
-				},
-				serverTimestamp
-			);
-		}
-	}
-
-	killAndRemove() {
-		if (!this.killing && !this.killed) {
-			this.killing = true;
-
-			const killedImage = this.scene.add.image(0, 0, this.currentTextureKey);
-			killedImage.setTint(Phaser.Display.Color.ValueToColor(this.color).color);
-			const eyeBall = this.createEyeBall();
-			const eyePupil = this.createEyePupil();
-
-			const killingContainer = this.scene.add.container(
-				this.containerPhysics.x,
-				this.containerPhysics.y,
-				[
-					killedImage,
-					eyeBall,
-					eyePupil,
-				]
-			);
-			killingContainer.setScale(this.currentScale);
-			this.animations.disappear(
-				killingContainer,
-				() => {
-					if (killingContainer) {
-						killingContainer.destroy();
-					}
+		const killingContainer = this.scene.add.container(
+			this.containerPhysics.x,
+			this.containerPhysics.y,
+			[
+				killedImage,
+				eyeBall,
+				eyePupil,
+			]
+		);
+		killingContainer.setScale(this.currentScale);
+		this.animations.disappear(
+			killingContainer,
+			() => {
+				if (killingContainer) {
+					killingContainer.destroy();
 				}
-			);
+			}
+		);
 
-			this.container.destroy();
-			this.killed = true;
-
-			this.killing = false;
-		}
+		this.container.destroy();
+		this.killed = true;
 	}
 
 	revive() {
