@@ -308,6 +308,46 @@ export default class Players {
 		return null;
 	}
 
+	hostPlayerKeys(includeRobot = true): string[] {
+		const playerKeys = [
+			'player1'
+		];
+
+		if (this.gameData.isTwoVersusTwo()) {
+			playerKeys.push('player3');
+		}
+
+		if (includeRobot) {
+			for (let robotId in this.robots) {
+				if (this.robots.hasOwnProperty(robotId) && this.robots[robotId].isHost) {
+					playerKeys.push(robotId);
+				}
+			}
+		}
+
+		return playerKeys;
+	}
+
+	clientPlayerKeys(includeRobot = true): string[] {
+		const playerKeys = [
+			'player2'
+		];
+
+		if (this.gameData.isTwoVersusTwo()) {
+			playerKeys.push('player4');
+		}
+
+		if (includeRobot) {
+			for (let robotId in this.robots) {
+				if (this.robots.hasOwnProperty(robotId) && !this.robots[robotId].isHost) {
+					playerKeys.push(robotId);
+				}
+			}
+		}
+
+		return playerKeys;
+	}
+
 	private createPlayer(key, color, isHost): Player {
 		return new Player(
 			this.scene,
@@ -348,46 +388,6 @@ export default class Players {
 		const key = this.gameData.getCurrentPlayerKey();
 
 		return this.getPlayerFromKey(key);
-	}
-
-	private hostPlayerKeys(includeRobot = true): string[] {
-		const playerKeys = [
-			'player1'
-		];
-
-		if (this.gameData.isTwoVersusTwo()) {
-			playerKeys.push('player3');
-		}
-
-		if (includeRobot) {
-			for (let robotId in this.robots) {
-				if (this.robots.hasOwnProperty(robotId) && this.robots[robotId].isHost) {
-					playerKeys.push(robotId);
-				}
-			}
-		}
-
-		return playerKeys;
-	}
-
-	private clientPlayerKeys(includeRobot = true): string[] {
-		const playerKeys = [
-			'player2'
-		];
-
-		if (this.gameData.isTwoVersusTwo()) {
-			playerKeys.push('player4');
-		}
-
-		if (includeRobot) {
-			for (let robotId in this.robots) {
-				if (this.robots.hasOwnProperty(robotId) && !this.robots[robotId].isHost) {
-					playerKeys.push(robotId);
-				}
-			}
-		}
-
-		return playerKeys;
 	}
 
 	private getPlayerKeys(includeRobot = true): string[] {

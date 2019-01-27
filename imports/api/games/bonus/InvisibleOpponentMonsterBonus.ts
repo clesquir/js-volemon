@@ -3,15 +3,22 @@ import MonsterBonus from './MonsterBonus';
 import {BONUS_INVISIBLE_MONSTER} from '../bonusConstants';
 import Bonuses from '../client/components/Bonuses';
 import BaseBonus from "./BaseBonus";
+import {BonusPayloadData} from "./data/BonusPayloadData";
+import {BonusBeforeActivationData} from "./data/BonusBeforeActivationData";
+import {BonusActivationData} from "./data/BonusActivationData";
 
 export default class InvisibleOpponentMonsterBonus extends MonsterBonus {
 	atlasFrame: string = 'invisible-opponent-monster';
 	description: string = 'Invisible opponent player';
 
-	targetPlayerKey: string;
+	targetPlayerKey: string = '';
 
 	classNameToActivate(): string {
 		return BONUS_INVISIBLE_MONSTER;
+	}
+
+	getIndicatorAtlasFrame(): string {
+		return 'invisible-monster';
 	}
 
 	isSimilarBonusForPlayerKey(bonus: BaseBonus, playerKey: string): boolean {
@@ -21,24 +28,48 @@ export default class InvisibleOpponentMonsterBonus extends MonsterBonus {
 		);
 	}
 
-	initTargetPlayerKey(bonuses: Bonuses): string {
-		if (this.activatorPlayerKey === 'player1') {
-			return 'player2';
-		} else if (this.activatorPlayerKey === 'player2') {
-			return 'player1';
-		} else if (this.activatorPlayerKey === 'player3') {
-			return 'player4';
-		} else if (this.activatorPlayerKey === 'player4') {
-			return 'player3';
-		} else {
-			const player = bonuses.players.getPlayerFromKey(this.activatorPlayerKey);
+	beforeActivation(bonuses: Bonuses, payload: BonusPayloadData) {
+		const player = bonuses.players.getPlayerFromKey(payload.player);
+		let opponentKeys = [];
 
-			if (player.isHost) {
-				return 'player2';
-			} else {
-				return 'player1';
+		if (player && !player.isHost) {
+			opponentKeys = bonuses.players.hostPlayerKeys();
+		} else if (player && player.isHost) {
+			opponentKeys = bonuses.players.clientPlayerKeys();
+		}
+
+		const possibleTargetPlayers = [];
+		for (let opponentKey of opponentKeys) {
+			const opponent = bonuses.players.getPlayerFromKey(opponentKey);
+
+			if (!opponent.killed) {
+				possibleTargetPlayers.push(opponentKey);
 			}
 		}
+
+		if (possibleTargetPlayers.length) {
+			this.targetPlayerKey = Random.choice(possibleTargetPlayers);
+		}
+	}
+
+	beforeActivationData(): BonusBeforeActivationData {
+		const beforeActivationData = super.beforeActivationData();
+
+		beforeActivationData.targetPlayerKey = this.targetPlayerKey;
+
+		return beforeActivationData;
+	}
+
+	reassignBeforeActivationData(beforeActivationData: BonusBeforeActivationData) {
+		this.targetPlayerKey = beforeActivationData.targetPlayerKey;
+	}
+
+	activationData(): BonusActivationData {
+		const activationData = super.activationData();
+
+		activationData.targetPlayerKey = this.targetPlayerKey;
+
+		return activationData;
 	}
 
 	getTargetPlayerKey(): string {
@@ -46,7 +77,6 @@ export default class InvisibleOpponentMonsterBonus extends MonsterBonus {
 	}
 
 	start(bonuses: Bonuses) {
-		this.targetPlayerKey = this.initTargetPlayerKey(bonuses);
 		bonuses.hidePlayerFromHimself.call(bonuses, this.getTargetPlayerKey());
 	}
 

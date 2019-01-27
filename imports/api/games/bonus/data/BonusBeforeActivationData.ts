@@ -9,4 +9,7 @@ export declare type BonusBeforeActivationData = {
 
 	//Robot
 	robotId?: string;
+
+	//Invisible opponent
+	targetPlayerKey?: string;
 };

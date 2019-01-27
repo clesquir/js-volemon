@@ -76,6 +76,7 @@ export default class BonusIndicators {
 						y,
 						bonusReference.activationIdentifier()
 					);
+					bonusIndicator.init();
 
 					this.bonusIndicators.push(bonusIndicator);
 				}

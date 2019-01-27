@@ -44,8 +44,6 @@ export default class BonusIndicator {
 		this.initialX = initialX;
 		this.initialY = initialY;
 		this.identifier = identifier;
-
-		this.init();
 	}
 
 	static activateAnimation(
@@ -67,6 +65,27 @@ export default class BonusIndicator {
 			Random.id()
 		);
 		bonusIndicator.showActivateAnimation(animations);
+	}
+
+	init() {
+		this.bonusObject = this.scene.add.image(
+			this.initialX,
+			this.initialY,
+			'bonus-icon',
+			this.bonusReference.getIndicatorAtlasFrame()
+		);
+		this.bonusObject.setDepth(DEPTH_BONUS_INDICATOR);
+
+		const radius = this.radius();
+		this.progressObject = this.scene.add.graphics(
+			{
+				x: this.initialX - radius,
+				y: this.initialY + radius
+			}
+		);
+		this.progressObject.setDepth(DEPTH_BONUS_INDICATOR);
+		this.progressObject.setAngle(-90);
+		this.progressObject.setAlpha(this.currentAlpha);
 	}
 
 	updatePosition(x: number, y: number) {
@@ -120,33 +139,19 @@ export default class BonusIndicator {
 		this.progressObject.destroy();
 	}
 
-	private init() {
+	private showActivateAnimation(animations: Animations) {
 		this.bonusObject = this.scene.add.image(
 			this.initialX,
 			this.initialY,
 			'bonus-icon',
-			this.bonusReference.atlasFrame
+			this.bonusReference.getAtlasFrame()
 		);
-		this.bonusObject.setDepth(DEPTH_BONUS_INDICATOR);
-
-		const radius = this.radius();
-		this.progressObject = this.scene.add.graphics(
-			{
-				x: this.initialX - radius,
-				y: this.initialY + radius
-			}
-		);
-		this.progressObject.setDepth(DEPTH_BONUS_INDICATOR);
-		this.progressObject.setAngle(-90);
-		this.progressObject.setAlpha(this.currentAlpha);
-	}
-
-	private showActivateAnimation(animations: Animations) {
 		this.bonusObject.setDepth(DEPTH_ACTIVATION_ANIMATION);
+
 		animations.activate(
 			this.bonusObject,
 			() => {
-				this.destroy();
+				this.bonusObject.destroy();
 			}
 		);
 	}

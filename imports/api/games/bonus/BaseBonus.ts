@@ -48,6 +48,14 @@ export default class BaseBonus {
 		return this.className;
 	}
 
+	getAtlasFrame(): string {
+		return this.atlasFrame;
+	}
+
+	getIndicatorAtlasFrame(): string {
+		return this.atlasFrame;
+	}
+
 	hasRandomBonus(): boolean {
 		return false;
 	}
