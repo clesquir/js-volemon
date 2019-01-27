@@ -134,7 +134,14 @@ export default class MainScene extends Phaser.Scene {
 		);
 		hitPoint.setDepth(DEPTH_ACTIVATION_ANIMATION);
 
-		this.animations.activate(hitPoint);
+		this.animations.activate(
+			hitPoint,
+			function() {
+				if (hitPoint) {
+					hitPoint.destroy();
+				}
+			}
+		);
 	}
 
 	showBallHitCount(x: number, y: number, ballHitCount: number, color: string) {
@@ -146,12 +153,18 @@ export default class MainScene extends Phaser.Scene {
 		);
 		countText.setOrigin(0.5);
 
-		this.animations.disappear(countText);
+		this.animations.disappear(
+			countText,
+			() => {
+				if (countText) {
+					countText.destroy();
+				}
+			}
+		);
 	}
 
 	killPlayer(playerKey: string, killedAt: number) {
 		if (killedAt > this.lastPointAt) {
-			this.bonuses.resetBonusesForPlayerKey(playerKey);
 			this.players.killAndRemovePlayer(playerKey);
 		}
 	}

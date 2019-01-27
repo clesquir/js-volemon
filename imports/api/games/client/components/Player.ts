@@ -319,7 +319,14 @@ export default class Player {
 				]
 			);
 			killingContainer.setScale(this.currentScale);
-			this.animations.disappear(killingContainer);
+			this.animations.disappear(
+				killingContainer,
+				() => {
+					if (killingContainer) {
+						killingContainer.destroy();
+					}
+				}
+			);
 
 			this.container.destroy();
 			this.killed = true;

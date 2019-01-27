@@ -23,6 +23,7 @@ export const BALL_SCALE = 1;
 export const BALL_SMALL_SCALE = 0.75;
 export const BALL_BIG_SCALE = 1.5;
 
+export const BONUS_RADIUS = 15;
 export const BONUS_MASS = 0.36;
 export const BONUS_SCALE = 1;
 
@@ -31,7 +32,7 @@ export const WORLD_RESTITUTION = 1;
 export const CONSTRAINED_VELOCITY = 20;
 
 export const DEPTH_CLOUDS = 1;
-export const DEPTH_ACTIVATED_BONUSES = 2;
+export const DEPTH_BONUS_INDICATOR = 2;
 export const DEPTH_ACTIVATION_ANIMATION = 3;
 
 export const ONE_VS_COMPUTER_GAME_MODE = '1vsCPU';

@@ -70,7 +70,7 @@ export default class CloudsGenerator {
 					getStart: () => cloud.alpha,
 					getEnd: () => 0
 				},
-				onComplete: function () {
+				onComplete: function() {
 					if (cloud) {
 						cloud.setVisible(false);
 					}
@@ -105,7 +105,7 @@ export default class CloudsGenerator {
 					getStart: () => smokeBomb.alpha,
 					getEnd: () => 0
 				},
-				onComplete: function () {
+				onComplete: function() {
 					if (smokeBomb) {
 						smokeBomb.destroy();
 					}

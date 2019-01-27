@@ -7,6 +7,7 @@ import {
 	BALL_SMALL_SCALE,
 	BALL_VERTICAL_SPEED_ON_PLAYER_HIT,
 	BONUS_MASS,
+	BONUS_RADIUS,
 	BONUS_SCALE,
 	GAME_FORFEIT_MINIMUM_POINTS,
 	GAME_MAXIMUM_POINTS,
@@ -187,6 +188,10 @@ export default class GameConfiguration {
 
 	bigBallMass() {
 		return BALL_BIG_MASS;
+	}
+
+	bonusRadius() {
+		return BONUS_RADIUS;
 	}
 
 	bonusScale() {

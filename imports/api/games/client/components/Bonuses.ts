@@ -18,6 +18,7 @@ import Animations from "./Animations";
 import BaseBonus from "../../bonus/BaseBonus";
 import ServerAdapter from "../serverAdapter/ServerAdapter";
 import {BonusPositionData} from "../../bonus/data/BonusPositionData";
+import BonusIndicators from "./BonusIndicators";
 
 export default class Bonuses {
 	scene: MainScene;
@@ -29,6 +30,7 @@ export default class Bonuses {
 	animations: Animations;
 	level: Level;
 	players: Players;
+	bonusIndicators: BonusIndicators;
 	cloudsGenerator: CloudsGenerator;
 
 	lastBonusUpdate: number = 0;
@@ -60,6 +62,12 @@ export default class Bonuses {
 		this.level = level;
 		this.players = players;
 
+		this.bonusIndicators = new BonusIndicators(
+			this.scene,
+			this.gameData,
+			this.gameConfiguration,
+			this.serverNormalizedTime
+		);
 		this.cloudsGenerator = new CloudsGenerator(
 			this.scene,
 			this.gameData,
@@ -69,7 +77,7 @@ export default class Bonuses {
 
 	update() {
 		this.checkBonuses();
-		this.updatePlayerBonuses();
+		this.bonusIndicators.update(this.activeBonuses);
 
 		for (let bonus of this.bonuses) {
 			bonus.constrainVelocity();
@@ -93,8 +101,7 @@ export default class Bonuses {
 		for (let bonusReference of this.activeBonuses) {
 			bonusReference.stop(this);
 
-			//@todo Bonus indicator
-			// this.removeActiveBonusWithIdentifier(bonus.activationIdentifier());
+			this.bonusIndicators.removeActiveBonusWithIdentifier(bonusReference.activationIdentifier());
 		}
 		this.activeBonuses = [];
 	}
@@ -245,8 +252,7 @@ export default class Bonuses {
 			if (bonusReference.getTargetPlayerKey() === playerKey && bonusReference.shouldBeRemovedWhenKilling()) {
 				bonusReference.stop(this);
 
-				//@todo Bonus indicator
-				// this.removeActiveBonusWithIdentifier(bonusReference.activationIdentifier());
+				this.bonusIndicators.removeActiveBonusWithIdentifier(bonusReference.activationIdentifier());
 			}
 		}
 	}
@@ -616,8 +622,7 @@ export default class Bonuses {
 					);
 				}
 
-				//@todo Bonus indicator
-				// this.removeActiveBonusWithIdentifier(bonusReference.activationIdentifier());
+				this.bonusIndicators.removeActiveBonusWithIdentifier(bonusReference.activationIdentifier());
 			}
 		}
 
@@ -637,67 +642,6 @@ export default class Bonuses {
 			bonusReference.start(this);
 
 			this.activeBonuses.push(bonusReference);
-		}
-	}
-
-	private updatePlayerBonuses() {
-		const padding = 5;
-		let player1Count = 0;
-		let player2Count = 0;
-		let player3Count = 0;
-		let player4Count = 0;
-
-		for (let bonusReference of this.activeBonuses) {
-			if (bonusReference.getTargetPlayerKey() && bonusReference.getTargetPlayerKey().indexOf('robot-') === -1) {
-				let xModifier = 0;
-				let sideCount = 0;
-				switch (bonusReference.getTargetPlayerKey()) {
-					case 'player1':
-						player1Count++;
-						sideCount = player1Count;
-						break;
-					case 'player2':
-						player2Count++;
-						sideCount = player2Count;
-						xModifier = (this.gameConfiguration.width() / 2);
-						if (this.gameData.isTwoVersusTwo()) {
-							xModifier = (this.gameConfiguration.width() / 4 * 3);
-						}
-						break;
-					case 'player3':
-						player3Count++;
-						sideCount = player3Count;
-						xModifier = (this.gameConfiguration.width() / 4);
-						break;
-					case 'player4':
-						player4Count++;
-						sideCount = player4Count;
-						xModifier = (this.gameConfiguration.width() / 2);
-						break;
-				}
-
-				//@todo Bonus indicator
-				// const x = xModifier + padding + (sideCount * ((this.gameConfiguration.bonusRadius() * 2) + padding));
-				//
-				// let bonusSprite = this.activatedBonusSpriteWithIdentifier(bonusReference.activationIdentifier());
-				//
-				// if (bonusSprite === null) {
-				// 	const bonusSprite = this.engine.drawBonus(
-				// 		x,
-				// 		this.gameConfiguration.height() - (this.gameConfiguration.groundHeight() / 2),
-				// 		BonusFactory.fromClassName(bonusReference.classNameToActivate(), this),
-				// 		this.getBonusProgress(bonusReference, bonusReference.getDuration())
-				// 	);
-				// 	bonusSprite.activationIdentifier = bonusReference.activationIdentifier();
-				// 	this.bonusesGroup.add(bonusSprite);
-				// } else {
-				// 	this.engine.updateBonusProgress(
-				// 		x,
-				// 		bonusSprite,
-				// 		this.getBonusProgress(bonusReference, bonusReference.getDuration())
-				// 	);
-				// }
-			}
 		}
 	}
 

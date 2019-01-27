@@ -10,7 +10,7 @@ export default class Animations {
 		this.scene = scene;
 	}
 
-	activate(gameObject: GameObject) {
+	activate(gameObject: GameObject, onComplete: Function) {
 		const duration = 250;
 		const scale = 4;
 
@@ -23,15 +23,11 @@ export default class Animations {
 				getStart: () => 0.5,
 				getEnd: () => 0
 			},
-			onComplete: function () {
-				if (gameObject) {
-					gameObject.destroy();
-				}
-			}
+			onComplete: onComplete
 		});
 	}
 
-	disappear(gameObject: GameObject) {
+	disappear(gameObject: GameObject, onComplete: Function) {
 		const duration = 750;
 		const scale = 0.25;
 		const move = 20;
@@ -50,17 +46,13 @@ export default class Animations {
 					yoyo: true,
 					repeat: 4,
 					getStart: (target, key, value) => value,
-					getEnd: function (target, key, value) {
+					getEnd: function(target, key, value) {
 						isLeft = !isLeft;
 						return value + (isLeft ? move : -move) / 2;
 					}
 				}
 			},
-			onComplete: () => {
-				if (gameObject) {
-					gameObject.destroy();
-				}
-			}
+			onComplete: onComplete
 		});
 	}
 }
