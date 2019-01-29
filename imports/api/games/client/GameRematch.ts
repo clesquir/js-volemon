@@ -1,20 +1,21 @@
-import {Games} from '/imports/api/games/games.js';
+import {Games} from '../games';
+import GameData from "../data/GameData";
 import {Router} from 'meteor/iron:router';
 
 export default class GameRematch {
+	gameId: string;
+	gameData: GameData;
 
-	/**
-	 * @param {string} gameId
-	 * @param {GameData} gameData
-	 */
-	constructor(gameId, gameData) {
+	private gameRematchTracker: Meteor.LiveQueryHandle;
+
+	constructor(gameId: string, gameData: GameData) {
 		this.gameId = gameId;
 		this.gameData = gameData;
 	}
 
 	init() {
 		this.gameRematchTracker = Games.find({_id: this.gameId}).observeChanges({
-			changed: (id, fields) => {
+			changed: (id: string, fields: any) => {
 				if (fields.hasOwnProperty('rematchGameId')) {
 					Session.set('appLoadingMask', true);
 					Session.set('appLoadingMask.text', 'Creating rematch...');
@@ -34,5 +35,4 @@ export default class GameRematch {
 			this.gameRematchTracker.stop();
 		}
 	}
-
 }

@@ -1,35 +1,46 @@
 import {Meteor} from 'meteor/meteor';
-import {isGamePlayer} from '/imports/api/games/utils.js';
+import Stream from "../../../lib/stream/Stream";
+import ClientGameInitiator from "./ClientGameInitiator";
+import {isGamePlayer} from "../utils";
 
 export default class GameCheer {
-	/**
-	 * @param {string} gameId
-	 * @param {Stream} stream
-	 * @param {GameInitiator} gameInitiator
-	 */
-	constructor(gameId, stream, gameInitiator) {
+	gameId: string;
+	stream: Stream;
+	gameInitiator: ClientGameInitiator;
+
+	private cheerFn: {[id: number]: Function} = {};
+	private readonly cheerActivatingTime: 1000;
+	private readonly cheerDisablingTime: 500;
+	private readonly cheerThrottleTime: 5000;
+	private emitCheerFn: Function;
+
+	private cheerHostActivating: number;
+	private cheerClientActivating: number;
+	private cheerHostReanabling: number;
+	private cheerClientReanabling: number;
+
+	constructor(gameId: string, stream: Stream, gameInitiator: ClientGameInitiator) {
 		this.gameId = gameId;
 		this.stream = stream;
 		this.gameInitiator = gameInitiator;
-
-		this.cheerFn = {};
-		this.cheerActivatingTime = 1000;
-		this.cheerDisablingTime = 500;
-		this.cheerThrottleTime = 5000;
 	}
 
 	init() {
-		this.stream.on('cheer-' + this.gameId, (data) => {
+		this.stream.on('cheer-' + this.gameId, (data: {forHost: boolean}) => {
 			this.showCheer(data.forHost, this.disableCheerFromEmission);
 		});
 	}
 
-	cheerPlayer(forHost) {
+	stop() {
+		this.stream.off('cheer-' + this.gameId);
+	}
+
+	cheerPlayer(forHost: boolean) {
 		if (!isGamePlayer(this.gameId)) {
 			//Delay emission, both sides use same timer
 			if (!this.emitCheerFn) {
 				this.emitCheerFn = require('lodash.throttle')(
-					(forHost) => {
+					(forHost: boolean) => {
 						this.stream.emit('cheer-' + this.gameId, {forHost: forHost});
 						this.showCheer(forHost, this.disableCheerFromCurrentViewer);
 					},
@@ -41,16 +52,18 @@ export default class GameCheer {
 		}
 	}
 
-	showCheer(forHost, disableCheerCallback) {
+	private showCheer(forHost: boolean, disableCheerCallback: Function) {
+		const cheerFnIndex = forHost ? 1 : 0;
+
 		//Delay reception, each side uses different timers
-		if (!this.cheerFn[forHost]) {
-			this.cheerFn[forHost] = require('lodash.throttle')(
-				(forHost, disableCheerCallback) => {
+		if (!this.cheerFn[cheerFnIndex]) {
+			this.cheerFn[cheerFnIndex] = require('lodash.throttle')(
+				(forHost: boolean, disableCheerCallback: Function) => {
 					if (!this.gameInitiator) {
 						return;
 					}
 
-					this.gameInitiator.currentGame.cheer(forHost);
+					this.gameInitiator.mainScene.cheer(forHost);
 
 					if (forHost) {
 						Meteor.clearTimeout(this.cheerHostActivating);
@@ -82,10 +95,10 @@ export default class GameCheer {
 			);
 		}
 
-		this.cheerFn[forHost](forHost, disableCheerCallback);
+		this.cheerFn[cheerFnIndex](forHost, disableCheerCallback);
 	}
 
-	disableCheerFromEmission(forHost) {
+	disableCheerFromEmission(forHost: boolean) {
 		if (forHost) {
 			Meteor.clearTimeout(this.cheerHostReanabling);
 		} else {
@@ -104,7 +117,7 @@ export default class GameCheer {
 		}
 	}
 
-	disableCheerFromCurrentViewer(forHost) {
+	disableCheerFromCurrentViewer(forHost: boolean) {
 		Meteor.clearTimeout(this.cheerHostReanabling);
 		Meteor.clearTimeout(this.cheerClientReanabling);
 
@@ -126,7 +139,7 @@ export default class GameCheer {
 		}
 	}
 
-	cheerElement(forHost) {
+	private cheerElement(forHost: boolean) {
 		if (forHost) {
 			return document.getElementById('cheer-host');
 		} else {
@@ -134,19 +147,15 @@ export default class GameCheer {
 		}
 	}
 
-	addDisabledCheerAfterTimeout(element) {
+	private addDisabledCheerAfterTimeout(element: Element) {
 		Meteor.setTimeout(() => {
 			$(element).addClass('cheer-disabled');
 		}, this.cheerDisablingTime);
 	}
 
-	reenableCheerAfterTimeout(element) {
+	private reenableCheerAfterTimeout(element: Element) {
 		return Meteor.setTimeout(() => {
 			$(element).removeClass('cheer-disabled');
 		}, this.cheerThrottleTime);
-	}
-
-	stop() {
-		this.stream.off('cheer-' + this.gameId);
 	}
 }

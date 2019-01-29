@@ -1,9 +1,15 @@
+import Stream from "../../../lib/stream/Stream";
+import ClientGameInitiator from "./ClientGameInitiator";
+import {BonusPositionData} from "../bonus/data/BonusPositionData";
+
 export default class GameStreamInitiator {
-	/**
-	 * @param {GameInitiator} gameInitiator
-	 * @param {Stream} stream
-	 */
-	constructor(gameInitiator, stream) {
+	gameInitiator: ClientGameInitiator;
+	stream: Stream;
+
+	constructor(
+		gameInitiator: ClientGameInitiator,
+		stream: Stream
+	) {
 		this.gameInitiator = gameInitiator;
 		this.stream = stream;
 	}
@@ -36,7 +42,7 @@ export default class GameStreamInitiator {
 		});
 
 		this.stream.on('showBallHitCount-' + gameId, (data) => {
-			this.showBallHitCount(data.x, data.y, data.ballHitCount, data.fontSize, data.color);
+			this.showBallHitCount(data.x, data.y, data.ballHitCount, data.color);
 		});
 
 		this.stream.on('sendBundledData-' + gameId, (bundledData) => {
@@ -69,70 +75,6 @@ export default class GameStreamInitiator {
 		});
 	}
 
-	moveClientBall(ballData) {
-		let gameInitiator = this.gameInitiator;
-
-		if (gameInitiator.hasActiveGame()) {
-			gameInitiator.currentGame.moveClientBall(ballData);
-		}
-	}
-
-	moveClientPlayer(playerData) {
-		let gameInitiator = this.gameInitiator;
-
-		if (gameInitiator.hasActiveGame()) {
-			gameInitiator.currentGame.moveClientPlayer(playerData);
-		}
-	}
-
-	createBonus(bonusData) {
-		let gameInitiator = this.gameInitiator;
-
-		if (gameInitiator.hasActiveGame()) {
-			gameInitiator.currentGame.createBonus(bonusData);
-		}
-	}
-
-	activateBonus(bonusIdentifier, playerKey, activatedAt, x, y, beforeActivationData) {
-		let gameInitiator = this.gameInitiator;
-
-		if (gameInitiator.hasActiveGame()) {
-			gameInitiator.currentGame.activateBonus(bonusIdentifier, playerKey, activatedAt, x, y, beforeActivationData);
-		}
-	}
-
-	killPlayer(playerKey, killedAt) {
-		let gameInitiator = this.gameInitiator;
-
-		if (gameInitiator.hasActiveGame()) {
-			gameInitiator.currentGame.killClientPlayer(playerKey, killedAt);
-		}
-	}
-
-	showBallHitPoint(x, y, diameter) {
-		let gameInitiator = this.gameInitiator;
-
-		if (gameInitiator.hasActiveGame()) {
-			gameInitiator.currentGame.showBallHitPoint(x, y, diameter);
-		}
-	}
-
-	showBallHitCount(x, y, ballHitCount, fontSize, color) {
-		let gameInitiator = this.gameInitiator;
-
-		if (gameInitiator.hasActiveGame()) {
-			gameInitiator.currentGame.showBallHitCount(x, y, ballHitCount, fontSize, color);
-		}
-	}
-
-	moveClientBonus(bonusIdentifier, bonusData) {
-		let gameInitiator = this.gameInitiator;
-
-		if (gameInitiator.hasActiveGame()) {
-			gameInitiator.currentGame.moveClientBonus(bonusIdentifier, bonusData);
-		}
-	}
-
 	stop() {
 		let gameInitiator = this.gameInitiator;
 		let gameId = gameInitiator.gameId;
@@ -143,5 +85,69 @@ export default class GameStreamInitiator {
 		this.stream.off('sendBundledData-' + gameId);
 		this.stream.off('showBallHitPoint-' + gameId);
 		this.stream.off('showBallHitCount-' + gameId);
+	}
+
+	private moveClientBall(ballData) {
+		let gameInitiator = this.gameInitiator;
+
+		if (gameInitiator.hasActiveGame()) {
+			gameInitiator.mainScene.moveClientBall(ballData);
+		}
+	}
+
+	private moveClientPlayer(playerData) {
+		let gameInitiator = this.gameInitiator;
+
+		if (gameInitiator.hasActiveGame()) {
+			gameInitiator.mainScene.moveClientPlayer(playerData);
+		}
+	}
+
+	private createBonus(bonusData) {
+		let gameInitiator = this.gameInitiator;
+
+		if (gameInitiator.hasActiveGame()) {
+			gameInitiator.mainScene.createBonus(bonusData);
+		}
+	}
+
+	private activateBonus(bonusIdentifier, playerKey, activatedAt, x, y, beforeActivationData) {
+		let gameInitiator = this.gameInitiator;
+
+		if (gameInitiator.hasActiveGame()) {
+			gameInitiator.mainScene.activateBonus(bonusIdentifier, playerKey, activatedAt, x, y, beforeActivationData);
+		}
+	}
+
+	private killPlayer(playerKey, killedAt) {
+		let gameInitiator = this.gameInitiator;
+
+		if (gameInitiator.hasActiveGame()) {
+			gameInitiator.mainScene.killClientPlayer(playerKey, killedAt);
+		}
+	}
+
+	private showBallHitPoint(x, y, diameter) {
+		let gameInitiator = this.gameInitiator;
+
+		if (gameInitiator.hasActiveGame()) {
+			gameInitiator.mainScene.showBallHitPoint(x, y, diameter);
+		}
+	}
+
+	private showBallHitCount(x: number, y: number, ballHitCount: number, color: string) {
+		let gameInitiator = this.gameInitiator;
+
+		if (gameInitiator.hasActiveGame()) {
+			gameInitiator.mainScene.showBallHitCount(x, y, ballHitCount, color);
+		}
+	}
+
+	private moveClientBonus(bonusIdentifier: string, bonusData: BonusPositionData) {
+		let gameInitiator = this.gameInitiator;
+
+		if (gameInitiator.hasActiveGame()) {
+			gameInitiator.mainScene.moveClientBonus(bonusIdentifier, bonusData);
+		}
 	}
 }

@@ -3,7 +3,7 @@ import {TimeSync} from 'meteor/mizzao:timesync';
 
 export default class ServerNormalizedTime {
 	serverOffset: number;
-	timeSyncTimeout: number;
+	private timeSyncTimeout: number;
 
 	init() {
 		this.serverOffset = TimeSync.serverOffset();

@@ -1,7 +1,7 @@
+import WindowFocus from "../../../lib/WindowFocus";
+import NotificationSound from "../../../lib/NotificationSound";
+import {UserConfigurations} from "../../users/userConfigurations";
 import {Meteor} from 'meteor/meteor';
-import NotificationSound from '/imports/lib/NotificationSound.js';
-import WindowFocus from '/imports/lib/WindowFocus.js';
-import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 
 export default class GameNotifier {
 	onMatched() {
@@ -44,20 +44,13 @@ export default class GameNotifier {
 		}
 	}
 
-	/**
-	 * @private
-	 * @returns {boolean}
-	 */
-	userMutedNotifications() {
+	private userMutedNotifications(): boolean {
 		const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
 
 		return userConfiguration && userConfiguration.muteNotifications;
 	}
 
-	/**
-	 * @private
-	 */
-	showTitleNotification() {
+	private showTitleNotification() {
 		const title = 'Volemon';
 		document.title = '🔔 ' + title;
 

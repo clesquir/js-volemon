@@ -1,4 +1,4 @@
-import GameNotifier from '/imports/api/games/client/GameNotifier.js';
+import GameNotifier from '/imports/api/games/client/GameNotifier';
 import MatchMakingGameConfiguration from '/imports/api/games/configuration/MatchMakingGameConfiguration.js';
 import {
 	ONE_VS_COMPUTER_GAME_MODE,

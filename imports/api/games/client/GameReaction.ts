@@ -1,17 +1,19 @@
 import {Meteor} from 'meteor/meteor';
+import GameData from "../data/GameData";
+import Stream from "../../../lib/stream/Stream";
 const he = require('he');
 
 export default class GameReaction {
-	/**
-	 * @param {string} gameId
-	 * @param {Stream} stream
-	 * @param {GameData} gameData
-	 */
-	constructor(gameId, stream, gameData) {
+	gameId: string;
+	stream: Stream;
+	gameData: GameData;
+
+	private reactionTimeout: {[id: string]: number} = {};
+
+	constructor(gameId: string, stream: Stream, gameData: GameData) {
 		this.gameId = gameId;
 		this.stream = stream;
 		this.gameData = gameData;
-		this.reactionTimeout = {};
 	}
 
 	init() {
@@ -35,6 +37,11 @@ export default class GameReaction {
 		);
 	}
 
+	stop() {
+		$(document).off('keypress');
+		this.stream.off('reaction-' + this.gameId);
+	}
+
 	toggleSelectorDisplay() {
 		const reactionSelector = document.getElementById('reaction-selector');
 		const chatButton = document.getElementById('chat-button');
@@ -48,10 +55,7 @@ export default class GameReaction {
 		}
 	}
 
-	/**
-	 * @param {Element} reactionButton
-	 */
-	onReactionSelection(reactionButton) {
+	onReactionSelection(reactionButton: JQuery<HTMLElement>) {
 		this.emitReaction(
 			this.gameData.getCurrentPlayerKey(),
 			reactionButton.attr('data-reaction-icon'),
@@ -59,12 +63,7 @@ export default class GameReaction {
 		);
 	}
 
-	/**
-	 * @param {boolean} playerKey
-	 * @param {string} reactionIcon
-	 * @param {string} reactionText
-	 */
-	emitReaction(playerKey, reactionIcon, reactionText) {
+	private emitReaction(playerKey: string, reactionIcon: string, reactionText: string) {
 		this.stream.emit(
 			'reaction-' + this.gameId,
 			{
@@ -76,12 +75,7 @@ export default class GameReaction {
 		this.triggerReaction(playerKey, reactionIcon, reactionText);
 	}
 
-	/**
-	 * @param {boolean} playerKey
-	 * @param {string} reactionIcon
-	 * @param {string} reactionText
-	 */
-	triggerReaction(playerKey, reactionIcon, reactionText) {
+	private triggerReaction(playerKey: string, reactionIcon: string, reactionText: string) {
 		const reactionListItem = $(`#reaction-from-${playerKey} .received-reaction-item`).first();
 
 		Meteor.clearTimeout(this.reactionTimeout[playerKey]);
@@ -97,7 +91,12 @@ export default class GameReaction {
 		}
 	}
 
-	showReaction(reactionListItem, playerKey, reactionIcon, reactionText) {
+	private showReaction(
+		reactionListItem: JQuery<HTMLElement>,
+		playerKey: string,
+		reactionIcon: string,
+		reactionText: string
+	) {
 		reactionListItem.addClass('reaction-shown');
 		reactionListItem.empty();
 
@@ -121,10 +120,5 @@ export default class GameReaction {
 		this.reactionTimeout[playerKey] = Meteor.setTimeout(() => {
 			reactionListItem.removeClass('reaction-shown');
 		}, 2000);
-	}
-
-	stop() {
-		$(document).off('keypress');
-		this.stream.off('reaction-' + this.gameId);
 	}
 }

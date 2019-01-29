@@ -20,6 +20,7 @@ export default class StaticGameData implements GameData {
 	hasBonuses: boolean = false;
 	createdBy: string;
 	tournamentId: string | null = null;
+	startedAt: number;
 	lastPointAt: number;
 	lastPointTaken: string;
 	hostPoints: number = 0;

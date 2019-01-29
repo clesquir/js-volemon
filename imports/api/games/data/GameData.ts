@@ -1,6 +1,8 @@
 export default interface GameData {
 	gameId: string;
 	hasBonuses: boolean;
+	tournamentId: string | null;
+	startedAt: number;
 	lastPointAt: number;
 	lastPointTaken: string;
 	hostPoints: number;

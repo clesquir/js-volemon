@@ -1,54 +1,61 @@
-import Game from '/imports/api/games/client/Game.js';
-import GameNotifier from '/imports/api/games/client/GameNotifier.js';
-import GameStreamInitiator from '/imports/api/games/client/GameStreamInitiator.js';
-import {CLIENT_POINTS_COLUMN, HOST_POINTS_COLUMN} from '/imports/api/games/constants.js';
-import {Games} from '/imports/api/games/games.js';
-import {Players} from '/imports/api/games/players.js';
-import {GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
+import GameNotifier from './GameNotifier';
+import GameStreamInitiator from './GameStreamInitiator';
+import {CLIENT_POINTS_COLUMN, HOST_POINTS_COLUMN} from '../constants';
+import {Games} from '../games';
+import {Players} from '../players';
+import {GAME_STATUS_STARTED} from '../statusConstants';
+import DeviceController from "../deviceController/DeviceController";
+import GameConfiguration from "../configuration/GameConfiguration";
+import GameData from "../data/GameData";
+import SkinManager from "./components/SkinManager";
+import StreamBundler from "./streamBundler/StreamBundler";
+import ServerNormalizedTime from "./ServerNormalizedTime";
+import Stream from "../../../lib/stream/Stream";
+import {GameBoot} from "./GameBoot";
+import MeteorServerAdapter from "./serverAdapter/MeteorServerAdapter";
+import MainScene from "./scene/MainScene";
 import {Meteor} from 'meteor/meteor';
-import moment from 'moment';
+import * as moment from 'moment';
 import {Session} from 'meteor/session';
 
-export default class GameInitiator {
-	gameCreated = false;
+export default class ClientGameInitiator {
+	gameId: string;
+	deviceController: DeviceController;
+	gameData: GameData;
+	gameConfiguration: GameConfiguration;
+	skinManager: SkinManager;
+	streamBundler: StreamBundler;
+	serverNormalizedTime: ServerNormalizedTime;
+	stream: Stream;
+	gameNotifier: GameNotifier;
 
-	/**
-	 * @param {string} gameId
-	 * @param {DeviceController} deviceController
-	 * @param {Engine} engine
-	 * @param {GameData} gameData
-	 * @param {GameConfiguration} gameConfiguration
-	 * @param {GameSkin} gameSkin
-	 * @param {Stream} stream
-	 * @param {StreamBundler} streamBundler
-	 * @param {ServerNormalizedTime} serverNormalizedTime
-	 * @param {GameNotifier} gameNotifier
-	 */
+	private timerUpdater = null;
+	private gameStreamInitiator: GameStreamInitiator;
+	private gameCreated: boolean = false;
+	private gameChangesTracker: Meteor.LiveQueryHandle;
+	private gameBoot: GameBoot;
+	mainScene: MainScene;
+
 	constructor(
-		gameId,
-		deviceController,
-		engine,
-		gameData,
-		gameConfiguration,
-		gameSkin,
-		stream,
-		streamBundler,
-		serverNormalizedTime,
-		gameNotifier
+		gameId: string,
+		deviceController: DeviceController,
+		gameData: GameData,
+		gameConfiguration: GameConfiguration,
+		skinManager: SkinManager,
+		streamBundler: StreamBundler,
+		serverNormalizedTime: ServerNormalizedTime,
+		stream: Stream,
+		gameNotifier: GameNotifier
 	) {
 		this.gameId = gameId;
 		this.deviceController = deviceController;
-		this.engine = engine;
 		this.gameData = gameData;
 		this.gameConfiguration = gameConfiguration;
-		this.gameSkin = gameSkin;
-		this.stream = stream;
+		this.skinManager = skinManager;
 		this.streamBundler = streamBundler;
 		this.serverNormalizedTime = serverNormalizedTime;
+		this.stream = stream;
 		this.gameNotifier = gameNotifier;
-
-		this.currentGame = null;
-		this.timerUpdater = null;
 
 		this.gameStreamInitiator = new GameStreamInitiator(this, this.stream);
 	}
@@ -63,7 +70,7 @@ export default class GameInitiator {
 		this.initTimer();
 
 		this.gameChangesTracker = Games.find({_id: this.gameId}).observeChanges({
-			changed: (id, fields) => {
+			changed: (id: string, fields: any) => {
 				if (fields.hasOwnProperty('status')) {
 					this.gameData.updateStatus(fields.status);
 
@@ -102,7 +109,7 @@ export default class GameInitiator {
 						fields.hasOwnProperty(CLIENT_POINTS_COLUMN)
 					)
 				) {
-					this.currentGame.onPointTaken();
+					this.mainScene.onPointTaken();
 				}
 			}
 		});
@@ -110,8 +117,8 @@ export default class GameInitiator {
 
 	stop() {
 		if (this.hasActiveGame()) {
-			this.currentGame.stop();
-			this.currentGame = null;
+			this.gameBoot.stop();
+			this.mainScene = null;
 		}
 
 		this.gameStreamInitiator.stop();
@@ -128,7 +135,7 @@ export default class GameInitiator {
 
 		//Wait for gameContainer creation before starting game
 		let loopUntilGameContainerIsCreated = () => {
-			if (document.getElementById('gameContainer')) {
+			if (document.getElementById('game-container')) {
 				if (this.gameCreated === false) {
 					this.gameCreated = true;
 					me.createNewGame();
@@ -141,19 +148,29 @@ export default class GameInitiator {
 		loopUntilGameContainerIsCreated();
 	}
 
-	createNewGame() {
+	hasActiveGame() {
+		return this.mainScene !== null;
+	}
+
+	private createNewGame() {
 		this.gameData.init();
-		this.currentGame = new Game(
-			this.gameId,
+
+		this.gameBoot = new GameBoot(
 			this.deviceController,
-			this.engine,
 			this.gameData,
 			this.gameConfiguration,
-			this.gameSkin,
+			this.skinManager,
 			this.streamBundler,
-			this.serverNormalizedTime
+			this.serverNormalizedTime,
+			new MeteorServerAdapter()
 		);
-		this.currentGame.start();
+		this.gameBoot.init(
+			{
+				postBoot: (game: Phaser.Game) => {
+					this.mainScene = <any>game.scene.getScene('MainScene');
+				}
+			}
+		);
 
 		let player = Players.findOne({gameId: this.gameId, userId: Meteor.userId()});
 		if (!player) {
@@ -161,13 +178,13 @@ export default class GameInitiator {
 		}
 	}
 
-	initTimer() {
+	private initTimer() {
 		this.timerUpdater = Meteor.setInterval(() => {
 			this.updateTimer();
 		}, 1000);
 	}
 
-	updateTimer() {
+	private updateTimer() {
 		if (this.gameData.isGameStatusStarted()) {
 			let matchTimer = this.serverNormalizedTime.getServerTimestamp() - this.gameData.startedAt;
 			if (matchTimer < 0 || isNaN(matchTimer)) {
@@ -184,13 +201,9 @@ export default class GameInitiator {
 		}
 	}
 
-	clearTimer() {
+	private clearTimer() {
 		Meteor.clearInterval(this.timerUpdater);
 		Session.set('matchTimer', '00:00');
 		Session.set('pointTimer', '00:00');
-	}
-
-	hasActiveGame() {
-		return this.currentGame !== null;
 	}
 }
