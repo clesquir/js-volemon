@@ -24,7 +24,7 @@ export default class Dev {
 	serverNormalizedTime: ServerNormalizedTime;
 	serverAdapter: ServerAdapter;
 	mainScene: MainScene | any;
-	debug: false;
+	debug: boolean;
 	renderer: number;
 	initialUpdate: () => void;
 

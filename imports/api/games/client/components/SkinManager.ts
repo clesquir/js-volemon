@@ -110,7 +110,8 @@ export default class SkinManager {
 			this.gameConfiguration.ballInitialHostX(),
 			this.gameConfiguration.ballInitialY(),
 			ballComponent.key,
-			frame
+			frame,
+			{shape: 'circle'}
 		);
 
 		if (ballComponent.animation) {

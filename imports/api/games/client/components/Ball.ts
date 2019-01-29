@@ -198,13 +198,6 @@ export default class Ball {
 		this.currentScale = this.initialScale;
 
 		this.ballObject = this.skinManager.createBallComponent(this.scene);
-		this.ballObject.setBody(
-			{
-				type: 'fromVertices',
-				verts: '24, 8, 24, 16, 16, 24, 8, 24, 0, 16, 0, 8, 8, 0, 16, 0'
-			},
-			{}
-		);
 
 		this.ballObject.setDataEnabled();
 		this.ballObject.setData('owner', this);
