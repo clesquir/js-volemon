@@ -98,7 +98,7 @@ export default class MainScene extends Phaser.Scene {
 		//Improve Continuous Collision Detection
 		this.matter.world.engine.positionIterations = 64;
 		this.matter.world.engine.velocityIterations = 64;
-		this.matter.world.engine.constraintIterations = 2;
+		this.matter.world.engine.constraintIterations = 10;
 	}
 
 	onPointTaken() {

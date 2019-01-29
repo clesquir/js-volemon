@@ -24,6 +24,7 @@ export default class Dev {
 	serverNormalizedTime: ServerNormalizedTime;
 	serverAdapter: ServerAdapter;
 	mainScene: MainScene | any;
+	debug: false;
 	renderer: number;
 	initialUpdate: () => void;
 
@@ -55,7 +56,7 @@ export default class Dev {
 		);
 		this.game.init(
 			{
-				debug: false,
+				debug: this.debug,
 				type: this.renderer,
 				postBoot: (game: Phaser.Game) => {
 					this.mainScene = <any>game.scene.getScene('MainScene');

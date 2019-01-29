@@ -75,7 +75,15 @@
 					</a>
 
 					<a href="#" class="button" data-action="speed-up-game">
-						{{#if fullSpeedEnabled}}Full speed{{else}}Normal speed{{/if}}
+						{{#if fullSpeedEnabled}}
+							Full speed
+						{{else}}
+							{{#if slowSpeedEnabled}}
+								Slow speed
+							{{else}}
+								Normal speed
+							{{/if}}
+						{{/if}}
 					</a>
 				</div>
 			</div>
