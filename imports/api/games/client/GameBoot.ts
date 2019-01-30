@@ -7,6 +7,7 @@ import ServerNormalizedTime from "./ServerNormalizedTime";
 import GameConfiguration from "../configuration/GameConfiguration";
 import ServerAdapter from "./serverAdapter/ServerAdapter";
 import {MainSceneConfigurationData} from "./scene/MainSceneConfigurationData";
+const MatterBody = require('phaser/src/physics/matter-js/lib/body/Body');
 
 export declare type GameBootConfiguration = {
 	type?: number;
@@ -102,5 +103,8 @@ export class GameBoot {
 	stop() {
 		this.deviceController.stopMonitoring();
 		this.game.destroy(true);
+
+		//@todo Remove when this will be fixed in Phaser 3.16
+		MatterBody._nextCategory = 0x0001;
 	}
 }
