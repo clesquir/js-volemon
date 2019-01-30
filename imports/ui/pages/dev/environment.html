@@ -1,70 +1,47 @@
 <template name="environment">
-	<style>
-		#dev-environment {
-			position: relative;
-			height: 100%;
-			width: 100%;
-		}
 
-		#dev-environment .app-section-inner {
-			flex-direction: column;
-		}
-
-		#dev-environment .environment-options {
-			margin-bottom: 10px;
-		}
-
-		#dev-environment .environment-options .button {
-			margin-top: 10px;
-			font-size: 10px;
-		}
-
-		#dev-environment .environment-options #bonus-class {
-			margin-left: 5px;
-		}
-
-		#dev-environment #game-container {
-			width: 100%;
-			height: 100%;
-			display: flex;
-			justify-content: center;
-		}
-	</style>
-
-	<div id="dev-environment" class="app-section app-section-min-width game-canvas-container">
+	<div id="dev-environment" class="dev-game-page app-section app-section-min-width game-canvas-container">
 
 		<div class="app-section-inner">
 
-			<div class="environment-options">
-				<a href="#" class="button" data-action="kill-player">
-					Kill player
-				</a>
-				<a href="#" class="button" data-action="revive-player">
-					Revive player
-				</a>
-				<a href="#" class="button" data-action="create-bonus">
-					Create bonus
-				</a>
-				<select id="bonus-class">
-					{{#each bonus in bonuses}}
-						<option value="{{bonus}}">{{bonus}}</option>
-					{{/each}}
-				</select>
-			</div>
+			<div class="dev-buttons">
 
-			<div class="environment-options">
-				<a href="#" class="button" data-action="enable-disable-ground-hit">
-					{{#if groundHitEnabled}}Ground hit enabled{{else}}Ground hit disabled{{/if}}
-				</a>
-				<a href="#" class="button" data-action="enable-ball-hit-count">
-					{{#if ballHitCountEnabled}}Ball hit count enabled{{else}}Ball hit count disabled{{/if}}
-				</a>
-				<a href="#" class="button" data-action="enable-match-point">
-					{{#if matchPointEnabled}}Match point enabled{{else}}Match point disabled{{/if}}
-				</a>
-				<a href="#" class="button" data-action="enable-deuce-point">
-					{{#if deucePointEnabled}}Deuce point enabled{{else}}Deuce point disabled{{/if}}
-				</a>
+				<div class="dev-options">
+					<a href="#" class="button" data-action="kill-player">
+						Kill player
+					</a>
+					<a href="#" class="button" data-action="revive-player">
+						Revive player
+					</a>
+					<a href="#" class="button" data-action="create-bonus">
+						Create bonus
+					</a>
+					<div class="bonus-selector">
+						<span class="styled-single-select">
+							<select>
+								{{#each bonus in bonuses}}
+									<option value="{{bonus}}">{{bonus}}</option>
+								{{/each}}
+							</select>
+						</span>
+					</div>
+				</div>
+
+				<div class="dev-options">
+					<a href="#" class="button" data-action="enable-disable-ground-hit">
+						{{#if groundHitEnabled}}Ground hit enabled{{else}}Ground hit disabled{{/if}}
+					</a>
+					<a href="#" class="button" data-action="enable-ball-hit-count">
+						{{#if ballHitCountEnabled}}Ball hit count enabled{{else}}Ball hit count disabled{{/if}}
+					</a>
+					<a href="#" class="button" data-action="enable-match-point">
+						{{#if matchPointEnabled}}Match point enabled{{else}}Match point disabled{{/if}}
+					</a>
+					<a href="#" class="button" data-action="enable-deuce-point">
+						{{#if deucePointEnabled}}Deuce point enabled{{else}}Deuce point disabled{{/if}}
+					</a>
+				</div>
+
 			</div>
 
 			<div class="game-container">

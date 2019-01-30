@@ -1,47 +1,24 @@
 <template name="engine">
-	<style>
-		#dev-engine {
-			position: relative;
-			height: 100%;
-			width: 100%;
-		}
 
-		#dev-engine .app-section-inner {
-			flex-direction: column;
-		}
-
-		#dev-engine .engine-options {
-			margin-bottom: 10px;
-		}
-
-		#dev-engine .engine-options .button {
-			margin-top: 10px;
-			font-size: 10px;
-		}
-
-		#dev-engine #game-container {
-			width: 100%;
-			height: 100%;
-			display: flex;
-			justify-content: center;
-		}
-	</style>
-
-	<div id="dev-engine" class="app-section app-section-min-width game-canvas-container">
+	<div id="dev-engine" class="dev-game-page app-section app-section-min-width game-canvas-container">
 
 		<div class="app-section-inner">
 
-			<div class="engine-options">
-				<div>
-					<a href="#" class="button" data-action="change-shape">
-						Shape: {{currentShape}}
-					</a>
-				</div>
-			</div>
+			<div class="dev-buttons">
 
-			{{#unless started}}
-				<a href="#" class="button" style="margin-top: 20px;" data-action="start-game">Start</a>
-			{{/unless}}
+				<div class="dev-options">
+					<div>
+						<a href="#" class="button" data-action="change-shape">
+							Shape: {{currentShape}}
+						</a>
+					</div>
+				</div>
+
+				{{#unless started}}
+					<a href="#" class="button" style="margin-top: 20px;" data-action="start-game">Start</a>
+				{{/unless}}
+
+			</div>
 
 			<div class="game-container">
 				<div id="game-container" class="page game"></div>
