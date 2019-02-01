@@ -1,5 +1,5 @@
 import GameNotifier from '/imports/api/games/client/GameNotifier';
-import MatchMakingGameConfiguration from '/imports/api/games/configuration/MatchMakingGameConfiguration.js';
+import MatchMakingGameConfiguration from '/imports/api/games/configuration/MatchMakingGameConfiguration';
 import {
 	ONE_VS_COMPUTER_GAME_MODE,
 	ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE,

@@ -157,7 +157,7 @@ export default class BonusIndicator {
 	}
 
 	private radius(): number {
-		return this.gameConfiguration.bonusRadius();
+		return this.gameConfiguration.bonusIndicatorRadius();
 	}
 
 	private progress(): number {

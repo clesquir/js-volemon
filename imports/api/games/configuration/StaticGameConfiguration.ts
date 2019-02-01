@@ -1,5 +1,5 @@
-import LevelConfiguration from '/imports/api/games/levelConfiguration/LevelConfiguration';
-import GameConfiguration from './GameConfiguration.js';
+import LevelConfiguration from '../levelConfiguration/LevelConfiguration';
+import GameConfiguration from './GameConfiguration';
 
 export default class StaticGameConfiguration extends GameConfiguration {
 	constructor() {

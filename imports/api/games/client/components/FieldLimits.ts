@@ -1,22 +1,20 @@
 import MainScene from "../scene/MainScene";
 import GameConfiguration from "../../configuration/GameConfiguration";
-import SkinManager from "./SkinManager";
 import Level from "./Level";
 
 export default class FieldLimits {
 	scene: MainScene;
 	gameConfiguration: GameConfiguration;
-	skinManager: SkinManager;
 	level: Level;
 	hasNet: boolean;
 
-	private readonly thickness = 128;
+	private readonly thickness: number = 128;
 	private readonly playerFieldOptions = {isStatic: true, friction: 0, frictionStatic: 0};
 	private readonly ballFieldOptions = {isStatic: true, friction: 0, frictionStatic: 0};
 	private readonly bonusFieldOptions = {isStatic: true, friction: 0, frictionStatic: 0};
-	private readonly worldRestitution = 1;
-	private readonly ballNetRestitution = 0.1;
-	private readonly bonusNetRestitution = 0.7;
+	private readonly worldRestitution: number = 1;
+	private readonly ballNetRestitution: number = 0.1;
+	private readonly bonusNetRestitution: number = 0.7;
 
 	hostGround: MatterJS.Body;
 	clientGround: MatterJS.Body;

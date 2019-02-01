@@ -1,25 +1,21 @@
-import {isTwoVersusTwoGameMode} from '/imports/api/games/constants.js';
-import {Games} from '/imports/api/games/games.js';
-import LevelConfiguration from '/imports/api/games/levelConfiguration/LevelConfiguration';
-import TournamentMode from '/imports/api/tournaments/TournamentMode.js';
-import {Tournaments} from '/imports/api/tournaments/tournaments.js';
-import GameConfiguration from './GameConfiguration.js';
+import {isTwoVersusTwoGameMode} from '../constants';
+import {Games} from '../games';
+import LevelConfiguration from '../levelConfiguration/LevelConfiguration';
+import TournamentMode from '../../tournaments/TournamentMode';
+import {Tournaments} from '../../tournaments/tournaments';
+import GameConfiguration from './GameConfiguration';
 
 export default class DefaultGameConfiguration extends GameConfiguration {
-	/**
-	 * @param {string} gameId
-	 */
-	constructor(gameId) {
+	gameId: string;
+
+	constructor(gameId: string) {
 		super();
 		this.gameId = gameId;
 
 		this.init();
 	}
 
-	/**
-	 * @private
-	 */
-	init() {
+	private init() {
 		let game = Games.findOne({_id: this.gameId});
 
 		if (!game) {
@@ -36,20 +32,14 @@ export default class DefaultGameConfiguration extends GameConfiguration {
 		this.initLevelConfiguration();
 	}
 
-	/**
-	 * @private
-	 */
-	initTournament() {
+	private initTournament() {
 		this.tournament = Tournaments.findOne({_id: this.tournamentId});
 
 		/** @type TournamentMode */
 		this.tournamentMode = TournamentMode.fromTournament(this.tournament);
 	}
 
-	/**
-	 * @private
-	 */
-	initLevelConfiguration() {
+	private initLevelConfiguration() {
 		if (this.hasTournament() && this.tournamentMode.overridesLevelSize()) {
 			this.levelConfiguration = LevelConfiguration.defaultConfiguration();
 			this.levelConfiguration = LevelConfiguration.definedSize(

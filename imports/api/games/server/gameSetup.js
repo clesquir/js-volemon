@@ -1,4 +1,4 @@
-import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGameConfiguration.js';
+import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGameConfiguration';
 import {isTwoVersusTwoGameMode, ONE_VS_ONE_GAME_MODE} from '/imports/api/games/constants.js';
 import GameForfeited from '/imports/api/games/events/GameForfeited.js';
 import GameTimedOut from '/imports/api/games/events/GameTimedOut.js';

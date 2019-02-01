@@ -2,7 +2,7 @@ import {ONE_VS_COMPUTER_GAME_MODE, ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE} f
 import {GAME_MAXIMUM_POINTS, isTwoVersusTwoGameMode} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
-import TournamentMode from '/imports/api/tournaments/TournamentMode.js';
+import TournamentMode from '/imports/api/tournaments/TournamentMode';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import Listener from './Listener';
 

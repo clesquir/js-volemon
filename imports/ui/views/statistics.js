@@ -1,5 +1,5 @@
 import {INITIAL_ELO_RATING} from '/imports/api/profiles/constants.js';
-import TournamentMode from '/imports/api/tournaments/TournamentMode.js';
+import TournamentMode from '/imports/api/tournaments/TournamentMode';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {getWinRateFromNumbers} from '/imports/lib/utils.js';
 import {Meteor} from 'meteor/meteor';

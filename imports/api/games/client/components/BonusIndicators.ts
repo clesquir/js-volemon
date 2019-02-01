@@ -61,7 +61,7 @@ export default class BonusIndicators {
 						break;
 				}
 
-				const x = xModifier + padding + (sideCount * ((this.gameConfiguration.bonusRadius() * 2) + padding));
+				const x = xModifier + padding + (sideCount * ((this.gameConfiguration.bonusIndicatorRadius() * 2) + padding));
 				const y = this.gameConfiguration.height() - (this.gameConfiguration.groundHeight() / 2);
 
 				let bonusIndicator = this.bonusIndicatorWithIdentifier(bonusReference.activationIdentifier());

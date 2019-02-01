@@ -35,300 +35,291 @@ export default class TournamentMode {
 	overriddenTeamMaximumBallHit;
 	overriddenForcePracticeWithComputer;
 
-	constructor() {
-	}
-
-	overridesWorldGravity() {
+	overridesWorldGravity(): boolean {
 		return this.overriddenWorldGravity !== undefined;
 	}
 
-	worldGravity() {
+	worldGravity(): number {
 		return this.overriddenWorldGravity;
 	}
 
-	overridesWorldRestitution() {
+	overridesWorldRestitution(): boolean {
 		return this.overriddenWorldRestitution !== undefined;
 	}
 
-	worldRestitution() {
+	worldRestitution(): number {
 		return this.overriddenWorldRestitution;
 	}
 
-	overridesMaximumBonusesOnScreen() {
+	overridesMaximumBonusesOnScreen(): boolean {
 		return this.overriddenMaximumBonusesOnScreen !== undefined;
 	}
 
-	maximumBonusesOnScreen() {
+	maximumBonusesOnScreen(): number {
 		return this.overriddenMaximumBonusesOnScreen;
 	}
 
-	overridesBonusSpawnMinimumFrequence() {
+	overridesBonusSpawnMinimumFrequence(): boolean {
 		return this.overriddenBonusSpawnMinimumFrequence !== undefined;
 	}
 
-	bonusSpawnMinimumFrequence() {
+	bonusSpawnMinimumFrequence(): number {
 		return this.overriddenBonusSpawnMinimumFrequence;
 	}
 
-	overridesBonusSpawnInitialMinimumFrequence() {
+	overridesBonusSpawnInitialMinimumFrequence(): boolean {
 		return this.overriddenBonusSpawnInitialMinimumFrequence !== undefined;
 	}
 
-	bonusSpawnInitialMinimumFrequence() {
+	bonusSpawnInitialMinimumFrequence(): number {
 		return this.overriddenBonusSpawnInitialMinimumFrequence;
 	}
 
-	overridesBonusSpawnInitialMaximumFrequence() {
+	overridesBonusSpawnInitialMaximumFrequence(): boolean {
 		return this.overriddenBonusSpawnInitialMaximumFrequence !== undefined;
 	}
 
-	bonusSpawnInitialMaximumFrequence() {
+	bonusSpawnInitialMaximumFrequence(): number {
 		return this.overriddenBonusSpawnInitialMaximumFrequence;
 	}
 
-	overridesAvailableBonuses() {
+	overridesAvailableBonuses(): boolean {
 		return this.overriddenAvailableBonuses !== undefined;
 	}
 
-	availableBonuses() {
+	availableBonuses(): string[] {
 		return this.overriddenAvailableBonuses;
 	}
 
-	overridesAvailableBonusesForRandom() {
+	overridesAvailableBonusesForRandom(): boolean {
 		return this.overriddenAvailableBonusesForRandom !== undefined;
 	}
 
-	availableBonusesForRandom() {
+	availableBonusesForRandom(): string[] {
 		return this.overriddenAvailableBonusesForRandom;
 	}
 
-	overridesBonusDuration() {
+	overridesBonusDuration(): boolean {
 		return this.overriddenBonusDuration !== undefined;
 	}
 
-	bonusDuration() {
+	bonusDuration(): number {
 		return this.overriddenBonusDuration;
 	}
 
-	overridesForfeitMinimumPoints() {
+	overridesForfeitMinimumPoints(): boolean {
 		return this.overriddenForfeitMinimumPoints !== undefined;
 	}
 
-	forfeitMinimumPoints() {
+	forfeitMinimumPoints(): number {
 		return this.overriddenForfeitMinimumPoints;
 	}
 
-	overridesMaximumPoints() {
+	overridesMaximumPoints(): boolean {
 		return this.overriddenMaximumPoints !== undefined;
 	}
 
-	maximumPoints() {
+	maximumPoints(): number {
 		return this.overriddenMaximumPoints;
 	}
 
-	overridesHasBonuses() {
+	overridesHasBonuses(): boolean {
 		return this.overriddenHasBonuses !== undefined;
 	}
 
-	hasBonuses() {
+	hasBonuses(): boolean {
 		return parseInt(this.overriddenHasBonuses) === 1;
 	}
 
-	overridesInitialPlayerScale() {
+	overridesInitialPlayerScale(): boolean {
 		return this.overriddenInitialPlayerScale !== undefined;
 	}
 
-	initialPlayerScale() {
+	initialPlayerScale(): number {
 		return this.overriddenInitialPlayerScale;
 	}
 
-	overridesSmallPlayerScale() {
+	overridesSmallPlayerScale(): boolean {
 		return this.overriddenSmallPlayerScale !== undefined;
 	}
 
-	smallPlayerScale() {
+	smallPlayerScale(): number {
 		return this.overriddenSmallPlayerScale;
 	}
 
-	overridesBigPlayerScale() {
+	overridesBigPlayerScale(): boolean {
 		return this.overriddenBigPlayerScale !== undefined;
 	}
 
-	bigPlayerScale() {
+	bigPlayerScale(): number {
 		return this.overriddenBigPlayerScale;
 	}
 
-	overridesInitialBallScale() {
+	overridesInitialBallScale(): boolean {
 		return this.overriddenInitialBallScale !== undefined;
 	}
 
-	initialBallScale() {
+	initialBallScale(): number {
 		return this.overriddenInitialBallScale;
 	}
 
-	overridesSmallBallScale() {
+	overridesSmallBallScale(): boolean {
 		return this.overriddenSmallBallScale !== undefined;
 	}
 
-	smallBallScale() {
+	smallBallScale(): number {
 		return this.overriddenSmallBallScale;
 	}
 
-	overridesBigBallScale() {
+	overridesBigBallScale(): boolean {
 		return this.overriddenBigBallScale !== undefined;
 	}
 
-	bigBallScale() {
+	bigBallScale(): number {
 		return this.overriddenBigBallScale;
 	}
 
-	overridesListOfShapes() {
+	overridesListOfShapes(): boolean {
 		return this.overriddenListOfShapes !== undefined;
 	}
 
-	listOfShapes() {
+	listOfShapes(): string[] {
 		return this.overriddenListOfShapes;
 	}
 
-	overridesAllowedListOfShapes() {
+	overridesAllowedListOfShapes(): boolean {
 		return this.overriddenAllowedListOfShapes !== undefined;
 	}
 
-	allowedListOfShapes() {
+	allowedListOfShapes(): string[] {
 		return this.overriddenAllowedListOfShapes;
 	}
 
-	overridesCurrentPlayerShape() {
+	overridesCurrentPlayerShape(): boolean {
 		return this.overriddenCurrentPlayerShape !== undefined;
 	}
 
-	currentPlayerShape() {
+	currentPlayerShape(): string {
 		return this.overriddenCurrentPlayerShape;
 	}
 
-	overridesIsHiddenToHimself() {
+	overridesIsHiddenToHimself(): boolean {
 		return this.overriddenIsHiddenToHimself !== undefined;
 	}
 
-	isHiddenToHimself() {
+	isHiddenToHimself(): boolean {
 		return parseInt(this.overriddenIsHiddenToHimself) === 1;
 	}
 
-	overridesIsHiddenToOpponent() {
+	overridesIsHiddenToOpponent(): boolean {
 		return this.overriddenIsHiddenToOpponent !== undefined;
 	}
 
-	isHiddenToOpponent() {
+	isHiddenToOpponent(): boolean {
 		return parseInt(this.overriddenIsHiddenToOpponent) === 1;
 	}
 
-	overridesNetHeight() {
+	overridesNetHeight(): boolean {
 		return this.overriddenNetHeight !== undefined;
 	}
 
-	netHeight() {
+	netHeight(): number {
 		return parseInt(this.overriddenNetHeight);
 	}
 
-	overridesLevelSize() {
+	overridesLevelSize(): boolean {
 		return this.overridesLevelWidth() || this.overridesLevelHeight();
 	}
 
-	overridesLevelWidth() {
+	overridesLevelWidth(): boolean {
 		return this.overriddenLevelWidth !== undefined;
 	}
 
-	overridesLevelHeight() {
+	overridesLevelHeight(): boolean {
 		return this.overriddenLevelHeight !== undefined;
 	}
 
-	/**
-	 * @returns {int}
-	 */
-	levelWidth() {
+	levelWidth(): number {
 		return parseInt(this.overriddenLevelWidth);
 	}
 
-	/**
-	 * @returns {int}
-	 */
-	levelHeight() {
+	levelHeight(): number {
 		return parseInt(this.overriddenLevelHeight);
 	}
 
-	overridesPlayerXVelocity() {
+	overridesPlayerXVelocity(): boolean {
 		return this.overriddenPlayerXVelocity !== undefined;
 	}
 
-	playerXVelocity() {
+	playerXVelocity(): number {
 		return parseInt(this.overriddenPlayerXVelocity);
 	}
 
-	overridesPlayerYVelocity() {
+	overridesPlayerYVelocity(): boolean {
 		return this.overriddenPlayerYVelocity !== undefined;
 	}
 
-	playerYVelocity() {
+	playerYVelocity(): number {
 		return parseInt(this.overriddenPlayerYVelocity);
 	}
 
-	overridesPlayerDropshotEnabled() {
+	overridesPlayerDropshotEnabled(): boolean {
 		return this.overriddenPlayerDropshotEnabled !== undefined;
 	}
 
-	playerDropshotEnabled() {
+	playerDropshotEnabled(): boolean {
 		return parseInt(this.overriddenPlayerDropshotEnabled) === 1;
 	}
 
-	overridesPlayerSmashEnabled() {
+	overridesPlayerSmashEnabled(): boolean {
 		return this.overriddenPlayerSmashEnabled !== undefined;
 	}
 
-	playerSmashEnabled() {
+	playerSmashEnabled(): boolean {
 		return parseInt(this.overriddenPlayerSmashEnabled) === 1;
 	}
 
-	overridesBallReboundOnPlayerEnabled() {
+	overridesBallReboundOnPlayerEnabled(): boolean {
 		return this.overriddenBallReboundOnPlayerEnabled !== undefined;
 	}
 
-	ballReboundOnPlayerEnabled() {
+	ballReboundOnPlayerEnabled(): boolean {
 		return parseInt(this.overriddenBallReboundOnPlayerEnabled) === 1;
 	}
 
-	overridesBallVelocityOnReboundOnPlayer() {
+	overridesBallVelocityOnReboundOnPlayer(): boolean {
 		return this.overriddenBallVelocityOnReboundOnPlayer !== undefined;
 	}
 
-	ballVelocityOnReboundOnPlayer() {
+	ballVelocityOnReboundOnPlayer(): number {
 		return parseInt(this.overriddenBallVelocityOnReboundOnPlayer);
 	}
 
-	overridesPlayerMaximumBallHit() {
+	overridesPlayerMaximumBallHit(): boolean {
 		return this.overriddenPlayerMaximumBallHit !== undefined;
 	}
 
-	playerMaximumBallHit() {
+	playerMaximumBallHit(): number {
 		return parseInt(this.overriddenPlayerMaximumBallHit);
 	}
 
-	overridesTeamMaximumBallHit() {
+	overridesTeamMaximumBallHit(): boolean {
 		return this.overriddenTeamMaximumBallHit !== undefined;
 	}
 
-	teamMaximumBallHit() {
+	teamMaximumBallHit(): number {
 		return parseInt(this.overriddenTeamMaximumBallHit);
 	}
 
-	overridesForcePracticeWithComputer() {
+	overridesForcePracticeWithComputer(): boolean {
 		return this.overriddenForcePracticeWithComputer !== undefined;
 	}
 
-	forcePracticeWithComputer() {
+	forcePracticeWithComputer(): boolean {
 		return parseInt(this.overriddenForcePracticeWithComputer) === 1;
 	}
 
-	static fromTournament(tournament) {
+	static fromTournament(tournament: any) {
 		const tournamentMode = new TournamentMode();
 		const mode = tournament.mode;
 
