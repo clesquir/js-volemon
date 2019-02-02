@@ -368,6 +368,10 @@ export default abstract class GameConfiguration {
 	}
 
 	netWidth(): number {
+		if (this.hasTournament() && this.tournamentMode.overridesNetWidth()) {
+			return this.tournamentMode.netWidth();
+		}
+
 		return this.levelConfiguration.netWidth;
 	}
 
