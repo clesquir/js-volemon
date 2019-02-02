@@ -72,7 +72,6 @@ export default class Player {
 
 	lastBallHit: number = 0;
 	numberBallHits: number = 0;
-	canJumpOnBodies: any[] = [];
 	isInvincible: boolean = false;
 	canActivateBonuses: boolean = true;
 	killed: boolean = false;
@@ -186,6 +185,10 @@ export default class Player {
 	}
 
 	freeze() {
+		if (this.killed) {
+			return;
+		}
+
 		this.isFrozen = true;
 		this.containerPhysics.setIgnoreGravity(true);
 		this.containerPhysics.setVelocity(0, 0);
