@@ -22,6 +22,7 @@ export default class TournamentMode {
 	overriddenCurrentPlayerShape;
 	overriddenIsHiddenToHimself;
 	overriddenIsHiddenToOpponent;
+	overriddenNetWidth;
 	overriddenNetHeight;
 	overriddenLevelWidth;
 	overriddenLevelHeight;
@@ -219,6 +220,14 @@ export default class TournamentMode {
 		return parseInt(this.overriddenIsHiddenToOpponent) === 1;
 	}
 
+	overridesNetWidth(): boolean {
+		return this.overriddenNetWidth !== undefined;
+	}
+
+	netWidth(): number {
+		return parseInt(this.overriddenNetWidth);
+	}
+
 	overridesNetHeight(): boolean {
 		return this.overriddenNetHeight !== undefined;
 	}
@@ -346,6 +355,7 @@ export default class TournamentMode {
 		tournamentMode.overriddenCurrentPlayerShape = mode.overriddenCurrentPlayerShape;
 		tournamentMode.overriddenIsHiddenToHimself = mode.overriddenIsHiddenToHimself;
 		tournamentMode.overriddenIsHiddenToOpponent = mode.overriddenIsHiddenToOpponent;
+		tournamentMode.overriddenNetWidth = mode.overriddenNetWidth;
 		tournamentMode.overriddenNetHeight = mode.overriddenNetHeight;
 		tournamentMode.overriddenLevelWidth = mode.overriddenLevelWidth;
 		tournamentMode.overriddenLevelHeight = mode.overriddenLevelHeight;

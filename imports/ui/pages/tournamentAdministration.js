@@ -232,6 +232,7 @@ const modeOptions = function() {
 	addToMode(mode, 'player-maximum-ball-hit', 'overriddenPlayerMaximumBallHit');
 	addToMode(mode, 'team-maximum-ball-hit', 'overriddenTeamMaximumBallHit');
 
+	addToMode(mode, 'net-width', 'overriddenNetWidth');
 	addToMode(mode, 'net-height', 'overriddenNetHeight');
 	addToMode(mode, 'level-width', 'overriddenLevelWidth');
 	addToMode(mode, 'level-height', 'overriddenLevelHeight');

@@ -131,7 +131,11 @@
 
 					<h2>Level overrides</h2>
 
-					{{> numberSwitch id="net-height" label="Net height - default 70" isOn=(modeOverridden "overriddenNetHeight") value=(modeOverriddenValue "overriddenNetHeight") isReadOnly=(canOnlyViewTournament tournament)}}
+					<div class="splitted-configuration">
+						{{> numberSwitch id="net-width" label="Net width - default 8" isOn=(modeOverridden "overriddenNetWidth") value=(modeOverriddenValue "overriddenNetWidth") isReadOnly=(canOnlyViewTournament tournament)}}
+
+						{{> numberSwitch id="net-height" label="Net height - default 70" isOn=(modeOverridden "overriddenNetHeight") value=(modeOverriddenValue "overriddenNetHeight") isReadOnly=(canOnlyViewTournament tournament)}}
+					</div>
 
 					<div class="splitted-configuration">
 						{{> numberSwitch id="level-width" label="Level width - default 1v1: 840, 2v2: 1020" isOn=(modeOverridden "overriddenLevelWidth") value=(modeOverriddenValue "overriddenLevelWidth") isReadOnly=(canOnlyViewTournament tournament)}}

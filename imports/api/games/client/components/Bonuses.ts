@@ -678,9 +678,10 @@ export default class Bonuses {
 	}
 
 	private createRandomBonus() {
-		let bonus = BonusFactory.randomBonus(this.gameConfiguration);
-		let data = bonus.dataToStream();
-		data.initialX = this.gameConfiguration.width() / 2 + <number><any>Random.choice([-6, +6]);
+		const bonus = BonusFactory.randomBonus(this.gameConfiguration);
+		const data = bonus.dataToStream();
+		const distanceFromCenter = this.gameConfiguration.netWidth() / 2 + 2;
+		data.initialX = this.gameConfiguration.width() / 2 + <number><any>Random.choice([-distanceFromCenter, distanceFromCenter]);
 
 		//Create the bonus for host
 		this.createBonus(data);

@@ -90,9 +90,11 @@ export default class SkinManager {
 	}
 
 	createNetComponent(scene: MainScene) {
-		scene.add.image(
+		scene.add.tileSprite(
 			this.gameConfiguration.width() / 2,
 			this.gameConfiguration.height() - this.gameConfiguration.groundHeight() - this.gameConfiguration.netHeight() / 2,
+			this.gameConfiguration.netWidth(),
+			this.gameConfiguration.netHeight(),
 			this.skin.netComponent().key,
 			this.skin.netComponent().frame
 		);
