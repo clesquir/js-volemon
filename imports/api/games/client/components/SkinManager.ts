@@ -3,6 +3,7 @@ import DefaultSkin from "../../../skins/skins/DefaultSkin";
 import Plugin from "../../../skins/plugins/Plugin";
 import MainScene from "../scene/MainScene";
 import GameConfiguration from "../../configuration/GameConfiguration";
+const AnimationComponent = require('phaser/src/gameobjects/components/Animation');
 
 export default class SkinManager {
 	gameConfiguration: GameConfiguration;
@@ -230,9 +231,19 @@ export default class SkinManager {
 			repeat: -1
 		});
 
-		if (sprite.anims) {
-			//@todo Animate tilesprite
-			sprite.anims.play(component.animation.frame);
+		if (!sprite.anims) {
+			//@todo https://github.com/photonstorm/phaser/issues/4340
+			sprite.anims = new AnimationComponent(sprite);
+			sprite.setSizeToFrame = function() {
+				return this;
+			};
+			scene.sys.updateList.add(sprite);
+			sprite.preUpdate = function (time, delta) {
+				this.anims.update(time, delta);
+				this.setTexture(this.texture.key, this.frame.name);
+			};
 		}
+
+		sprite.anims.play(component.animation.frame);
 	}
 }

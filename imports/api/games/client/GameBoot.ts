@@ -104,7 +104,7 @@ export class GameBoot {
 		this.deviceController.stopMonitoring();
 		this.game.destroy(true);
 
-		//@todo Remove when this will be fixed in Phaser 3.16
+		//@todo https://github.com/photonstorm/phaser/pull/4334
 		MatterBody._nextCategory = 0x0001;
 	}
 }

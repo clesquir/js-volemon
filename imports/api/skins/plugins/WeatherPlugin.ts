@@ -162,7 +162,7 @@ export default class WeatherPlugin implements Plugin {
 						key: 'weather-plugin',
 						animation: {
 							frame: CONDITION_RAIN,
-							frames: ['rain-1', 'rain-2', 'rain-3', 'rain-4'],
+							frames: ['rain-1', 'rain-2', 'rain-3'],
 							speed: 5
 						},
 						x: 0,
