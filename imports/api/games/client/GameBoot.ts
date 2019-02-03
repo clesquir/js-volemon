@@ -78,7 +78,11 @@ export class GameBoot {
 				}
 			},
 			callbacks: {
-				postBoot: postBoot
+				postBoot: (game: Phaser.Game) => {
+					this.mainScene = <any>game.scene.getScene('MainScene');
+
+					postBoot(game);
+				}
 			}
 		});
 
@@ -96,12 +100,11 @@ export class GameBoot {
 				serverAdapter: this.serverAdapter
 			}
 		);
-
-		this.mainScene = this.game.scene.getScene('MainScene');
 	}
 
 	stop() {
 		this.deviceController.stopMonitoring();
+		this.mainScene.destroy();
 		this.game.destroy(true);
 
 		//@todo https://github.com/photonstorm/phaser/pull/4334

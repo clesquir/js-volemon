@@ -18,6 +18,7 @@ import {BonusStreamData} from "../../bonus/data/BonusStreamData";
 import ServerAdapter from "../serverAdapter/ServerAdapter";
 import {MainSceneConfigurationData} from "./MainSceneConfigurationData";
 import {BonusPositionData} from "../../bonus/data/BonusPositionData";
+import ScaleManager from "../components/ScaleManager";
 
 const Phaser = require('phaser');
 
@@ -36,6 +37,7 @@ export default class MainScene extends Phaser.Scene {
 	players: Players;
 	eventEmitter: Phaser.Events.EventEmitter;
 	bonuses: Bonuses;
+	scaleManager: ScaleManager;
 
 	ball: Ball;
 	countdown: Countdown;
@@ -89,6 +91,10 @@ export default class MainScene extends Phaser.Scene {
 			this.level,
 			this.players
 		);
+		this.scaleManager = new ScaleManager(
+			this,
+			this.gameConfiguration
+		);
 
 		this.eventEmitter = new Phaser.Events.EventEmitter();
 		this.matter.world.on('collisionstart', (event) => this.onCollision(event, 'collisionstart'), this);
@@ -99,6 +105,10 @@ export default class MainScene extends Phaser.Scene {
 		this.matter.world.engine.positionIterations = 64;
 		this.matter.world.engine.velocityIterations = 64;
 		this.matter.world.engine.constraintIterations = 10;
+	}
+
+	destroy() {
+		this.scaleManager.destroy();
 	}
 
 	onPointTaken() {
@@ -263,6 +273,7 @@ export default class MainScene extends Phaser.Scene {
 	}
 
 	private create() {
+		this.scaleManager.init();
 		this.skinManager.createBackgroundComponents(this);
 		this.createComponents();
 		this.deviceController.startMonitoring();
