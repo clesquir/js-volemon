@@ -206,6 +206,7 @@ export default class SkinManager {
 			);
 
 			if (backgroundComponent.animation) {
+				this.addTileSpriteAnimations(scene, background);
 				this.animate(scene, background, backgroundComponent);
 			}
 		}
@@ -231,19 +232,19 @@ export default class SkinManager {
 			repeat: -1
 		});
 
-		if (!sprite.anims) {
-			//@todo https://github.com/photonstorm/phaser/issues/4340
-			sprite.anims = new AnimationComponent(sprite);
-			sprite.setSizeToFrame = function() {
-				return this;
-			};
-			scene.sys.updateList.add(sprite);
-			sprite.preUpdate = function (time, delta) {
-				this.anims.update(time, delta);
-				this.setTexture(this.texture.key, this.frame.name);
-			};
-		}
-
 		sprite.anims.play(component.animation.frame);
+	}
+
+	private addTileSpriteAnimations(scene: MainScene, tileSprite: Phaser.GameObjects.TileSprite | any) {
+		//@todo https://github.com/photonstorm/phaser/issues/4340
+		tileSprite.anims = new AnimationComponent(tileSprite);
+		tileSprite.setSizeToFrame = function() {
+			return this;
+		};
+		scene.sys.updateList.add(tileSprite);
+		tileSprite.preUpdate = function(time, delta) {
+			this.anims.update(time, delta);
+			this.setTexture(this.texture.key, this.frame.name);
+		};
 	}
 }
