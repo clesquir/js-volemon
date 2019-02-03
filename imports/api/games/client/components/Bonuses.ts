@@ -134,6 +134,7 @@ export default class Bonuses {
 
 		const bonus = new Bonus(
 			this.scene,
+			this.gameData,
 			this.gameConfiguration,
 			this.serverNormalizedTime,
 			this.level,
@@ -164,9 +165,7 @@ export default class Bonuses {
 			correspondingBonus = this.createBonus(data);
 		}
 
-		let serverNormalizedTimestamp = this.serverNormalizedTime.getServerTimestamp();
-		//@todo Interpolate client bonuses movements
-		// this.engine.interpolateMoveTo(correspondingBonus, serverNormalizedTimestamp, data, () => {return this.gameIsOnGoing()});
+		correspondingBonus.interpolate(data);
 	}
 
 	onPlayerHitBonus(player: Player, bonus: Bonus) {

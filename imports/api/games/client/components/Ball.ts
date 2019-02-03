@@ -6,13 +6,17 @@ import Level from "./Level";
 import {ArtificialIntelligencePositionData} from "../../artificialIntelligence/ArtificialIntelligencePositionData";
 import {PositionData} from "./PositionData";
 import GameData from "../../data/GameData";
+import Interpolation from "./Interpolation";
+import ServerNormalizedTime from "../ServerNormalizedTime";
 
 export default class Ball {
 	scene: MainScene;
 	gameData: GameData;
 	gameConfiguration: GameConfiguration;
+	serverNormalizedTime: ServerNormalizedTime;
 	skinManager: SkinManager;
 	level: Level;
+	interpolation: Interpolation;
 
 	ballObject: Phaser.Physics.Matter.Image;
 
@@ -26,14 +30,22 @@ export default class Ball {
 		scene: MainScene,
 		gameData: GameData,
 		gameConfiguration: GameConfiguration,
+		serverNormalizedTime: ServerNormalizedTime,
 		skinManager: SkinManager,
 		level: Level
 	) {
 		this.scene = scene;
 		this.gameData = gameData;
 		this.gameConfiguration = gameConfiguration;
+		this.serverNormalizedTime = serverNormalizedTime;
 		this.skinManager = skinManager;
 		this.level = level;
+
+		this.interpolation = new Interpolation(
+			this.scene,
+			this.gameConfiguration,
+			this.serverNormalizedTime
+		);
 
 		this.init();
 	}
@@ -191,6 +203,15 @@ export default class Ball {
 		}
 	}
 
+	interpolate(data: any) {
+		this.interpolation.interpolateMoveTo(
+			this.ballObject,
+			data,
+			() => this.gameIsOnGoing(),
+			false
+		);
+	}
+
 	private init() {
 		this.initialMass = this.gameConfiguration.initialBallMass();
 		this.currentMass = this.initialMass;
@@ -239,5 +260,9 @@ export default class Ball {
 		this.ballObject.setScale(this.currentScale);
 		this.ballObject.setMass(this.currentMass);
 		this.ballObject.setFixedRotation();
+	}
+
+	private gameIsOnGoing(): boolean {
+		return this.gameData.isGameStatusStarted();
 	}
 }

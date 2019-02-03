@@ -138,9 +138,7 @@ export default class Players {
 
 		player.dropShots = data.doingDropShot;
 
-		let serverNormalizedTimestamp = this.serverNormalizedTime.getServerTimestamp();
-		//@todo Interpolate client player movements
-		// this.engine.interpolateMoveTo(player, serverNormalizedTimestamp, data, () => {return this.gameIsOnGoing()}, true);
+		player.interpolate(data);
 	}
 
 	freeze() {
@@ -353,6 +351,7 @@ export default class Players {
 			this.scene,
 			this.gameData,
 			this.gameConfiguration,
+			this.serverNormalizedTime,
 			this.animations,
 			this.level,
 			key,

@@ -231,9 +231,7 @@ export default class MainScene extends Phaser.Scene {
 			return;
 		}
 
-		let serverNormalizedTimestamp = this.serverNormalizedTime.getServerTimestamp();
-		//@todo Interpolate client ball movements - in ball class
-		// this.engine.interpolateMoveTo(this.ball, serverNormalizedTimestamp, data, () => {return this.gameIsOnGoing()});
+		this.ball.interpolate(data);
 	}
 
 	createBonus(data: BonusStreamData) {
@@ -447,6 +445,7 @@ export default class MainScene extends Phaser.Scene {
 			this,
 			this.gameData,
 			this.gameConfiguration,
+			this.serverNormalizedTime,
 			this.skinManager,
 			this.level
 		);

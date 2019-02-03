@@ -7,20 +7,25 @@ import GameConfiguration from "../../configuration/GameConfiguration";
 import Level from "./Level";
 import {CONSTRAINED_VELOCITY} from "../../constants";
 import Bonuses from "./Bonuses";
+import GameData from "../../data/GameData";
+import Interpolation from "./Interpolation";
 
 export default class Bonus {
 	scene: MainScene;
+	gameData: GameData;
 	gameConfiguration: GameConfiguration;
 	serverNormalizedTime: ServerNormalizedTime;
 	level: Level;
 	bonusReference: BaseBonus;
 	initialX: number;
 	identifier: string;
+	interpolation: Interpolation;
 
 	bonusObject: Phaser.Physics.Matter.Image;
 
 	constructor(
 		scene: MainScene,
+		gameData: GameData,
 		gameConfiguration: GameConfiguration,
 		serverNormalizedTime: ServerNormalizedTime,
 		level: Level,
@@ -29,12 +34,19 @@ export default class Bonus {
 		identifier: string
 	) {
 		this.scene = scene;
+		this.gameData = gameData;
 		this.gameConfiguration = gameConfiguration;
 		this.serverNormalizedTime = serverNormalizedTime;
 		this.level = level;
 		this.bonusReference = bonusReference;
 		this.initialX = initialX;
 		this.identifier = identifier;
+
+		this.interpolation = new Interpolation(
+			this.scene,
+			this.gameConfiguration,
+			this.serverNormalizedTime
+		);
 
 		this.init();
 	}
@@ -50,6 +62,15 @@ export default class Bonus {
 	freeze() {
 		this.bonusObject.setIgnoreGravity(true);
 		this.bonusObject.setVelocity(0, 0);
+	}
+
+	interpolate(data: any) {
+		this.interpolation.interpolateMoveTo(
+			this.bonusObject,
+			data,
+			() => this.gameIsOnGoing(),
+			false
+		);
 	}
 
 	constrainVelocity() {
@@ -151,5 +172,9 @@ export default class Bonus {
 		const body = <any>this.bonusObject.body;
 
 		return body.velocity.y;
+	}
+
+	private gameIsOnGoing(): boolean {
+		return this.gameData.isGameStatusStarted();
 	}
 }

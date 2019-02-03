@@ -23,16 +23,20 @@ import {ArtificialIntelligenceData} from "../../artificialIntelligence/Artificia
 import {ArtificialIntelligencePositionData} from "../../artificialIntelligence/ArtificialIntelligencePositionData";
 import {PositionData} from "./PositionData";
 import Animations from "./Animations";
+import Interpolation from "./Interpolation";
+import ServerNormalizedTime from "../ServerNormalizedTime";
 
 export default class Player {
 	scene: MainScene;
 	gameData: GameData;
 	gameConfiguration: GameConfiguration;
+	serverNormalizedTime: ServerNormalizedTime;
 	animations: Animations;
 	level: Level;
 	key: string;
 	color: string;
 	isHost: boolean;
+	interpolation: Interpolation;
 
 	container: Phaser.GameObjects.Container | any;
 	containerPhysics: Phaser.Physics.Matter.MatterPhysics | any;
@@ -86,6 +90,7 @@ export default class Player {
 		scene: MainScene,
 		gameData: GameData,
 		gameConfiguration: GameConfiguration,
+		serverNormalizedTime: ServerNormalizedTime,
 		animations: Animations,
 		level: Level,
 		key: string,
@@ -95,11 +100,18 @@ export default class Player {
 		this.scene = scene;
 		this.gameConfiguration = gameConfiguration;
 		this.gameData = gameData;
+		this.serverNormalizedTime = serverNormalizedTime;
 		this.animations = animations;
 		this.level = level;
 		this.key = key;
 		this.color = color;
 		this.isHost = isHost;
+
+		this.interpolation = new Interpolation(
+			this.scene,
+			this.gameConfiguration,
+			this.serverNormalizedTime
+		);
 
 		scene.matter.world.on("beforeupdate", () => this.hasBottomTouching = false, this);
 		this.scene.eventEmitter.on('collisionstart', this.onCollide, this);
@@ -120,6 +132,19 @@ export default class Player {
 
 	resetBallHits() {
 		this.numberBallHits = 0;
+	}
+
+	interpolate(data: any) {
+		if (this.killed) {
+			return;
+		}
+
+		this.interpolation.interpolateMoveTo(
+			this.containerPhysics,
+			data,
+			() => this.gameIsOnGoing(),
+			true
+		);
 	}
 
 	move(movesLeft: boolean, movesRight: boolean, jumps: boolean, dropshots: boolean) {
@@ -801,5 +826,9 @@ export default class Player {
 		this.container.setScale(this.currentScale);
 		this.containerPhysics.setMass(this.currentMass);
 		this.containerPhysics.setFixedRotation();
+	}
+
+	private gameIsOnGoing(): boolean {
+		return this.gameData.isGameStatusStarted();
 	}
 }
