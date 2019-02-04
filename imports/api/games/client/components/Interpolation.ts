@@ -3,9 +3,12 @@ import ServerNormalizedTime from "../ServerNormalizedTime";
 import GameConfiguration from "../../configuration/GameConfiguration";
 
 export default class Interpolation {
-	scene: MainScene;
-	gameConfiguration: GameConfiguration;
-	serverNormalizedTime: ServerNormalizedTime;
+	private readonly scene: MainScene;
+	private readonly gameConfiguration: GameConfiguration;
+	private readonly serverNormalizedTime: ServerNormalizedTime;
+
+	private readonly minimumForInterpolation = 15;
+	private readonly minimumForSlidingInterpolation = 25;
 
 	constructor(
 		scene: MainScene,
@@ -23,26 +26,27 @@ export default class Interpolation {
 		canMoveCallback: Function,
 		slideToLocation: boolean = false
 	) {
-		let serverNormalizedTimestamp = this.serverNormalizedTime.getServerTimestamp();
+		const serverNormalizedTimestamp = this.serverNormalizedTime.getServerTimestamp();
+		const difference = serverNormalizedTimestamp - data.timestamp;
 
-		let maxTime = 0;
+		if (difference < this.minimumForInterpolation) {
+			this.moveToInterpolatedPosition(gameObject, data, canMoveCallback);
+		} else if (!slideToLocation) {
+			const interpolatedData = Object.assign({}, data);
+			this.interpolateFromTimestamp(serverNormalizedTimestamp, interpolatedData);
 
-		const minimumForInterpolation = 25;
-		if (slideToLocation && serverNormalizedTimestamp - data.timestamp > minimumForInterpolation) {
-			//+25 for fast sliding to interpolated location
-			maxTime = 25;
-		}
+			this.moveToInterpolatedPosition(gameObject, interpolatedData, canMoveCallback);
+		} else {
+			let maxTime = 0;
 
-		const interpolatedData = Object.assign({}, data);
-		this.interpolateFromTimestamp(serverNormalizedTimestamp + maxTime, interpolatedData);
-
-		const moveToInterpolatedPosition = () => {
-			if (gameObject && canMoveCallback.call(this)) {
-				this.move(gameObject, interpolatedData);
+			if (difference > this.minimumForSlidingInterpolation) {
+				//+25 for fast sliding to interpolated location
+				maxTime = 25;
 			}
-		};
 
-		if (slideToLocation) {
+			const interpolatedData = Object.assign({}, data);
+			this.interpolateFromTimestamp(serverNormalizedTimestamp + maxTime, interpolatedData);
+
 			const t = maxTime / 1000;
 			const distanceX = (interpolatedData.x - gameObject.x);
 			const velocityX = distanceX / t;
@@ -55,10 +59,24 @@ export default class Interpolation {
 
 			this.scene.time.delayedCall(
 				maxTime,
-				moveToInterpolatedPosition
+				this.moveToInterpolatedPosition,
+				[
+					gameObject,
+					interpolatedData,
+					canMoveCallback
+				],
+				this
 			);
-		} else {
-			moveToInterpolatedPosition();
+		}
+	}
+
+	private moveToInterpolatedPosition(
+		gameObject: Phaser.Physics.Matter.Image,
+		interpolatedData: any,
+		canMoveCallback: Function
+	) {
+		if (gameObject && canMoveCallback()) {
+			this.move(gameObject, interpolatedData);
 		}
 	}
 
