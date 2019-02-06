@@ -1,5 +1,5 @@
 import BallScaleBonus from './BallScaleBonus';
-import Bonuses from "../client/components/Bonuses";
+import Bonuses from "../client/component/Bonuses";
 
 export default class SmallBallBonus extends BallScaleBonus {
 	atlasFrame: string = 'small-ball';

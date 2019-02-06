@@ -1,6 +1,6 @@
 import MonsterBonus from './MonsterBonus';
 import UnfreezeMonsterBonus from './UnfreezeMonsterBonus';
-import Bonuses from '../client/components/Bonuses';
+import Bonuses from '../client/component/Bonuses';
 import BaseBonus from "./BaseBonus";
 
 export default class FreezeMonsterBonus extends MonsterBonus {

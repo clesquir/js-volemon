@@ -1,6 +1,6 @@
 import Dev from "./Dev";
 import {Random} from 'meteor/random';
-import Ball from "../components/Ball";
+import Ball from "../component/Ball";
 import BonusFactory from "../../BonusFactory";
 import RandomBonus from "../../bonus/RandomBonus";
 

@@ -1,6 +1,6 @@
 import BaseBonus from './BaseBonus';
 import {BonusActivationData} from "./data/BonusActivationData";
-import Bonuses from "../client/components/Bonuses";
+import Bonuses from "../client/component/Bonuses";
 import {getRandomInt} from "../../../lib/utils";
 import {BonusBeforeActivationData} from "./data/BonusBeforeActivationData";
 import {BonusPayloadData} from "./data/BonusPayloadData";

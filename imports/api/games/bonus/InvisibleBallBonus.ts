@@ -1,5 +1,5 @@
 import BallBonus from './BallBonus';
-import Bonuses from '../client/components/Bonuses';
+import Bonuses from '../client/component/Bonuses';
 import BaseBonus from "./BaseBonus";
 
 export default class InvisibleBallBonus extends BallBonus {

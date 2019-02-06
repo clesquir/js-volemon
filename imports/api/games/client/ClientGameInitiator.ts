@@ -11,7 +11,7 @@ import SkinManager from "./components/SkinManager";
 import StreamBundler from "./streamBundler/StreamBundler";
 import ServerNormalizedTime from "./ServerNormalizedTime";
 import Stream from "../../../lib/stream/Stream";
-import {GameBoot} from "./GameBoot";
+import {GameBoot} from "./boot/GameBoot";
 import MeteorServerAdapter from "./serverAdapter/MeteorServerAdapter";
 import MainScene from "./scene/MainScene";
 import {Meteor} from 'meteor/meteor';

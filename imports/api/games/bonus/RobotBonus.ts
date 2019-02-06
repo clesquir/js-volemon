@@ -1,5 +1,5 @@
 import MonsterBonus from './MonsterBonus';
-import Bonuses from "../client/components/Bonuses";
+import Bonuses from "../client/component/Bonuses";
 import {BonusBeforeActivationData} from "./data/BonusBeforeActivationData";
 import {BonusPayloadData} from "./data/BonusPayloadData";
 

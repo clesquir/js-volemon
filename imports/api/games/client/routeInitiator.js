@@ -22,7 +22,7 @@ import ClientStreamFactory from '/imports/lib/stream/client/ClientStreamFactory'
 import StreamConfiguration from '/imports/lib/stream/StreamConfiguration';
 import {onMobileAndTablet} from '/imports/lib/utils';
 import ClientGameInitiator from '/imports/api/games/client/ClientGameInitiator';
-import SkinManager from '/imports/api/games/client/components/SkinManager';
+import SkinManager from '/imports/api/games/client/component/SkinManager';
 import {Meteor} from 'meteor/meteor';
 import {Session} from 'meteor/session';
 

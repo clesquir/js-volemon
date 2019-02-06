@@ -1,5 +1,5 @@
 import MonsterScaleBonus from './MonsterScaleBonus';
-import Bonuses from "../client/components/Bonuses";
+import Bonuses from "../client/component/Bonuses";
 
 export default class BigMonsterBonus extends MonsterScaleBonus {
 	atlasFrame: string = 'big-monster';

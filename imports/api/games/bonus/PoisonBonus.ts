@@ -1,7 +1,7 @@
 import CureBonus from './CureBonus';
 import MonsterBonus from './MonsterBonus';
 import BaseBonus from "./BaseBonus";
-import Bonuses from "../client/components/Bonuses";
+import Bonuses from "../client/component/Bonuses";
 
 export default class PoisonBonus extends MonsterBonus {
 	atlasFrame: string = 'poison';

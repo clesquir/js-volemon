@@ -1,7 +1,7 @@
 import Dev from "./Dev";
 import {PLAYER_LIST_OF_SHAPES} from "../../shapeConstants";
 import LevelConfiguration from "../../levelConfiguration/LevelConfiguration";
-import Player from "../components/Player";
+import Player from "../component/Player";
 
 export default class Shape extends Dev {
 	players: { [key: string]: Player } = {};

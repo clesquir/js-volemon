@@ -23,6 +23,10 @@ export default class ScaleManager {
 	}
 
 	private resize() {
+		if (!this.scene.game.renderer) {
+			return;
+		}
+
 		const canvas = this.scene.game.renderer.canvas;
 		const parent = canvas.parentElement;
 

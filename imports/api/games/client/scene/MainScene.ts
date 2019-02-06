@@ -1,24 +1,24 @@
 import DeviceController from "../../deviceController/DeviceController";
 import GameData from "../../data/GameData";
 import GameConfiguration from "../../configuration/GameConfiguration";
-import SkinManager from "../components/SkinManager";
+import SkinManager from "../component/SkinManager";
 import StreamBundler from "../streamBundler/StreamBundler";
 import ServerNormalizedTime from "../ServerNormalizedTime";
-import Level from "../components/Level";
-import Ball from "../components/Ball";
+import Level from "../component/Level";
+import Ball from "../component/Ball";
 import ArtificialIntelligence from "../../artificialIntelligence/ArtificialIntelligence";
 import {CLIENT_POINTS_COLUMN, DEPTH_ACTIVATION_ANIMATION, HOST_POINTS_COLUMN} from "../../constants";
 import {BALL_INTERVAL} from "../../emissionConstants";
-import {PositionData} from "../components/PositionData";
-import Countdown from "../components/Countdown";
-import Animations from "../components/Animations";
-import Players from "../components/Players";
-import Bonuses from "../components/Bonuses";
+import {PositionData} from "../component/PositionData";
+import Countdown from "../component/Countdown";
+import Animations from "../component/Animations";
+import Players from "../component/Players";
+import Bonuses from "../component/Bonuses";
 import {BonusStreamData} from "../../bonus/data/BonusStreamData";
 import ServerAdapter from "../serverAdapter/ServerAdapter";
 import {MainSceneConfigurationData} from "./MainSceneConfigurationData";
 import {BonusPositionData} from "../../bonus/data/BonusPositionData";
-import ScaleManager from "../components/ScaleManager";
+import ScaleManager from "../component/ScaleManager";
 
 const Phaser = require('phaser');
 
@@ -105,6 +105,68 @@ export default class MainScene extends Phaser.Scene {
 		this.matter.world.engine.positionIterations = 64;
 		this.matter.world.engine.velocityIterations = 64;
 		this.matter.world.engine.constraintIterations = 10;
+	}
+
+	preload() {
+		this.skinManager.preload(this.load);
+		this.level.preload();
+	}
+
+	create() {
+		this.scaleManager.init();
+		this.skinManager.createBackgroundComponents(this);
+		this.createComponents();
+		this.deviceController.startMonitoring();
+
+		if (this.gameData.getCurrentPlayerKey()) {
+			Session.set('userCurrentlyPlaying', true);
+		}
+
+		this.eventEmitter.on('collisionstart', this.onCollisionStart, this);
+		this.eventEmitter.on('collisionactive', this.onCollisionActive, this);
+		this.eventEmitter.on('collisionend', this.onCollisionEnd, this);
+
+		this.gameInitiated = true;
+		this.artificialIntelligence.startGame();
+		this.resumeOnTimerEnd();
+	}
+
+	update() {
+		this.streamBundler.resetBundledStreams();
+		this.players.beforeUpdate();
+		this.players.updateEyes(this.ball);
+
+		//Do not allow ball movement if it is frozen
+		if (this.gameData.isUserCreator() && this.ball.isFrozen) {
+			this.ball.freeze();
+		}
+
+		if (this.gameIsOnGoing()) {
+			this.players.inputs(this.deviceController);
+			this.players.moveComputers(
+				this.ball.artificialIntelligencePositionData(),
+				this.bonuses.artificialIntelligencePositionData()
+			);
+			this.ball.constrainVelocity();
+
+			if (this.gameData.hasBonuses) {
+				this.bonuses.update();
+			}
+
+			this.countdown.update();
+
+			if (this.gameData.isUserCreator()) {
+				this.sendBallPosition();
+			}
+		} else {
+			this.stopGame();
+			this.onGameEnd();
+		}
+
+		this.streamBundler.emitBundledStream(
+			'sendBundledData-' + this.gameData.gameId,
+			this.serverNormalizedTime.getServerTimestamp()
+		);
 	}
 
 	destroy() {
@@ -263,68 +325,6 @@ export default class MainScene extends Phaser.Scene {
 		}
 
 		this.bonuses.moveClientBonus(bonusIdentifier, data);
-	}
-
-	private preload() {
-		this.skinManager.preload(this.load);
-		this.level.preload();
-	}
-
-	private create() {
-		this.scaleManager.init();
-		this.skinManager.createBackgroundComponents(this);
-		this.createComponents();
-		this.deviceController.startMonitoring();
-
-		if (this.gameData.getCurrentPlayerKey()) {
-			Session.set('userCurrentlyPlaying', true);
-		}
-
-		this.eventEmitter.on('collisionstart', this.onCollisionStart, this);
-		this.eventEmitter.on('collisionactive', this.onCollisionActive, this);
-		this.eventEmitter.on('collisionend', this.onCollisionEnd, this);
-
-		this.gameInitiated = true;
-		this.artificialIntelligence.startGame();
-		this.resumeOnTimerEnd();
-	}
-
-	private update() {
-		this.streamBundler.resetBundledStreams();
-		this.players.beforeUpdate();
-		this.players.updateEyes(this.ball);
-
-		//Do not allow ball movement if it is frozen
-		if (this.gameData.isUserCreator() && this.ball.isFrozen) {
-			this.ball.freeze();
-		}
-
-		if (this.gameIsOnGoing()) {
-			this.players.inputs(this.deviceController);
-			this.players.moveComputers(
-				this.ball.artificialIntelligencePositionData(),
-				this.bonuses.artificialIntelligencePositionData()
-			);
-			this.ball.constrainVelocity();
-
-			if (this.gameData.hasBonuses) {
-				this.bonuses.update();
-			}
-
-			this.countdown.update();
-
-			if (this.gameData.isUserCreator()) {
-				this.sendBallPosition();
-			}
-		} else {
-			this.stopGame();
-			this.onGameEnd();
-		}
-
-		this.streamBundler.emitBundledStream(
-			'sendBundledData-' + this.gameData.gameId,
-			this.serverNormalizedTime.getServerTimestamp()
-		);
 	}
 
 	private createComponents() {

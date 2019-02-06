@@ -1,5 +1,5 @@
 import MovementMonsterBonus from './MovementMonsterBonus';
-import Bonuses from '../client/components/Bonuses';
+import Bonuses from '../client/component/Bonuses';
 
 export default class FastMonsterBonus extends MovementMonsterBonus {
 	atlasFrame: string = 'fast-monster';

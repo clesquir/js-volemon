@@ -1,5 +1,5 @@
 import BaseBonus from './BaseBonus';
-import Bonuses from '../client/components/Bonuses';
+import Bonuses from '../client/component/Bonuses';
 
 export default class ResetBallHitCountBonus extends BaseBonus {
 	atlasFrame: string = 'reset-ball-hit-count';

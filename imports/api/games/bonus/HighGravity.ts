@@ -1,5 +1,5 @@
 import GravityBonus from './GravityBonus';
-import Bonuses from '../client/components/Bonuses';
+import Bonuses from '../client/component/Bonuses';
 
 export default class HighGravity extends GravityBonus {
 	atlasFrame: string = 'high-gravity';

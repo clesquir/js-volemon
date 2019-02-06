@@ -1,7 +1,7 @@
 import Dev from "./Dev";
 import {CLIENT_POINTS_COLUMN, CLIENT_SIDE, HOST_POINTS_COLUMN, HOST_SIDE} from '../../constants';
 import {Random} from 'meteor/random';
-import Ball from "../components/Ball";
+import Ball from "../component/Ball";
 
 export default class Ai extends Dev {
 	isStarted: boolean = false;

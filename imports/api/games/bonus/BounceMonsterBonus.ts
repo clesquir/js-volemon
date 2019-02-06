@@ -1,5 +1,5 @@
 import JumpMonsterBonus from './JumpMonsterBonus';
-import Bonuses from '../client/components/Bonuses';
+import Bonuses from '../client/component/Bonuses';
 
 export default class BounceMonsterBonus extends JumpMonsterBonus {
 	atlasFrame: string = 'bounce-monster';

@@ -1,5 +1,5 @@
 import BaseBonus from './BaseBonus';
-import Bonuses from '../client/components/Bonuses';
+import Bonuses from '../client/component/Bonuses';
 
 export default class InstantDeathBonus extends BaseBonus {
 	atlasFrame: string = 'instant-death';

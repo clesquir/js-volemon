@@ -1,10 +1,16 @@
 import GameConfiguration from './GameConfiguration';
+import LevelConfiguration from "../levelConfiguration/LevelConfiguration";
 
 export default class StaticShapesGameConfiguration extends GameConfiguration {
-	private readonly _listOfShapes: string[] = [];
+	_listOfShapes: string[] = [];
 
-	constructor(listOfShapes: string[] = []) {
+	constructor() {
 		super();
+
+		this.levelConfiguration = LevelConfiguration.defaultConfiguration();
+	}
+
+	setListOfShapes(listOfShapes: string[]) {
 		this._listOfShapes = listOfShapes;
 	}
 

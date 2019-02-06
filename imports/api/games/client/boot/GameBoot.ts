@@ -1,16 +1,18 @@
-import MainScene from "./scene/MainScene";
-import DeviceController from "../deviceController/DeviceController";
-import GameData from "../data/GameData";
-import SkinManager from "./components/SkinManager";
-import StreamBundler from "./streamBundler/StreamBundler";
-import ServerNormalizedTime from "./ServerNormalizedTime";
-import GameConfiguration from "../configuration/GameConfiguration";
-import ServerAdapter from "./serverAdapter/ServerAdapter";
-import {MainSceneConfigurationData} from "./scene/MainSceneConfigurationData";
+import MainScene from "../scene/MainScene";
+import DeviceController from "../../deviceController/DeviceController";
+import GameData from "../../data/GameData";
+import SkinManager from "../component/SkinManager";
+import StreamBundler from "../streamBundler/StreamBundler";
+import ServerNormalizedTime from "../ServerNormalizedTime";
+import GameConfiguration from "../../configuration/GameConfiguration";
+import ServerAdapter from "../serverAdapter/ServerAdapter";
+import {MainSceneConfigurationData} from "../scene/MainSceneConfigurationData";
 const MatterBody = require('phaser/src/physics/matter-js/lib/body/Body');
 
 export declare type GameBootConfiguration = {
 	type?: number;
+	parent?: string;
+	banner?: boolean;
 	postBoot?: BootCallback;
 	debug?: boolean;
 };
@@ -23,6 +25,7 @@ export class GameBoot {
 	streamBundler: StreamBundler;
 	serverNormalizedTime: ServerNormalizedTime;
 	serverAdapter: ServerAdapter;
+
 	game: Phaser.Game;
 	mainScene: MainScene | any;
 	system: Phaser.Scenes.Systems;
@@ -47,11 +50,19 @@ export class GameBoot {
 
 	init(configuration: GameBootConfiguration) {
 		let type = Phaser.AUTO;
-		let postBoot = undefined;
+		let parent = 'game-container';
+		let banner = true;
+		let postBoot = (game) => {};
 		let debug = false;
 
 		if (configuration.type !== undefined) {
 			type = configuration.type;
+		}
+		if (configuration.parent !== undefined) {
+			parent = configuration.parent;
+		}
+		if (configuration.banner !== undefined) {
+			banner = configuration.banner;
 		}
 		if (configuration.postBoot !== undefined) {
 			postBoot = configuration.postBoot;
@@ -62,7 +73,8 @@ export class GameBoot {
 
 		this.game = new Phaser.Game({
 			type: type,
-			parent: 'game-container',
+			parent: parent,
+			banner: banner,
 			width: this.gameConfiguration.width(),
 			height: this.gameConfiguration.height(),
 			backgroundColor: this.skinManager.backgroundColor(),
