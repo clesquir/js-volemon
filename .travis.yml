@@ -27,4 +27,4 @@ before_script:
 
 script:
   - meteor npm i --save selenium-webdriver@3.6.0 chromedriver@2.36.0
-  - TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha --port 4000
+  - TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha
