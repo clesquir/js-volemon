@@ -7,9 +7,9 @@ import './ai.html';
 let ai = null;
 let started = new ReactiveVar(false);
 const genomesFromExisting = new ReactiveVar(true);
-const firstPlayerMode = new ReactiveVar('CPU');
+const firstPlayerMode = new ReactiveVar('human');
 const secondPlayerMode = new ReactiveVar('CPU');
-const rendererEnabled = new ReactiveVar(false);
+const rendererEnabled = new ReactiveVar(true);
 const timeScale = new ReactiveVar(1);
 
 Template.ai.rendered = function() {

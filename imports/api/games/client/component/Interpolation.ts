@@ -1,10 +1,8 @@
 import MainScene from "../scene/MainScene";
 import ServerNormalizedTime from "../ServerNormalizedTime";
-import GameConfiguration from "../../configuration/GameConfiguration";
 
 export default class Interpolation {
 	private readonly scene: MainScene;
-	private readonly gameConfiguration: GameConfiguration;
 	private readonly serverNormalizedTime: ServerNormalizedTime;
 
 	private readonly minimumForInterpolation = 15;
@@ -12,11 +10,9 @@ export default class Interpolation {
 
 	constructor(
 		scene: MainScene,
-		gameConfiguration: GameConfiguration,
 		serverNormalizedTime: ServerNormalizedTime
 	) {
 		this.scene = scene;
-		this.gameConfiguration = gameConfiguration;
 		this.serverNormalizedTime = serverNormalizedTime;
 	}
 
@@ -94,7 +90,7 @@ export default class Interpolation {
 	}
 
 	private gravityDistanceAtTime(t) {
-		const gravity = this.gameConfiguration.worldGravity();
+		const gravity = this.scene.matter.world.engine.gravity.y;
 
 		return 0.5 * gravity * t * t;
 	}

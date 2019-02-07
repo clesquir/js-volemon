@@ -25,6 +25,8 @@ export default class Ball {
 	currentMass: number;
 	initialScale: number;
 	currentScale: number;
+	velocityOnReboundOnPlayer: number;
+	airFriction: number;
 
 	constructor(
 		scene: MainScene,
@@ -43,7 +45,6 @@ export default class Ball {
 
 		this.interpolation = new Interpolation(
 			this.scene,
-			this.gameConfiguration,
 			this.serverNormalizedTime
 		);
 
@@ -182,7 +183,7 @@ export default class Ball {
 
 	rebound() {
 		this.ballObject.setVelocityY(
-			this.gameConfiguration.ballVelocityOnReboundOnPlayer() *
+			this.velocityOnReboundOnPlayer *
 			this.initialMass / this.currentMass
 		);
 	}
@@ -217,6 +218,8 @@ export default class Ball {
 		this.currentMass = this.initialMass;
 		this.initialScale = this.gameConfiguration.initialBallScale();
 		this.currentScale = this.initialScale;
+		this.velocityOnReboundOnPlayer = this.gameConfiguration.ballVelocityOnReboundOnPlayer();
+		this.airFriction = this.gameConfiguration.ballAirFriction();
 
 		this.ballObject = this.skinManager.createBallComponent(this.scene);
 
@@ -231,7 +234,7 @@ export default class Ball {
 
 	private setupBody() {
 		this.ballObject.setIgnoreGravity(this.isFrozen);
-		this.ballObject.setFriction(0, 0, 0);
+		this.ballObject.setFriction(0, this.airFriction, 0);
 		this.ballObject.setMass(this.currentMass);
 		this.ballObject.setFixedRotation();
 

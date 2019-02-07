@@ -1,4 +1,5 @@
 import {
+	BALL_AIR_FRICTION,
 	BALL_BIG_MASS,
 	BALL_BIG_SCALE,
 	BALL_MASS,
@@ -179,6 +180,10 @@ export default abstract class GameConfiguration {
 
 	bigBallMass(): number {
 		return BALL_BIG_MASS;
+	}
+
+	ballAirFriction(): number {
+		return BALL_AIR_FRICTION;
 	}
 
 	bonusIndicatorRadius(): number {

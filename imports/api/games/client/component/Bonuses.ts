@@ -41,6 +41,10 @@ export default class Bonuses {
 	activeBonuses: BaseBonus[] = [];
 	removedBonuses: string[] = [];
 
+	private readonly bonusSpawnMinimumFrequence: number;
+	private readonly bonusSpawnInitialMinimumFrequence: number;
+	private readonly bonusSpawnInitialMaximumFrequence: number;
+
 	constructor(
 		scene: MainScene,
 		gameData: GameData,
@@ -73,6 +77,10 @@ export default class Bonuses {
 			this.gameData,
 			this.gameConfiguration
 		);
+
+		this.bonusSpawnMinimumFrequence = this.gameConfiguration.bonusSpawnMinimumFrequence();
+		this.bonusSpawnInitialMinimumFrequence = this.gameConfiguration.bonusSpawnInitialMinimumFrequence();
+		this.bonusSpawnInitialMaximumFrequence = this.gameConfiguration.bonusSpawnInitialMaximumFrequence();
 	}
 
 	update() {
@@ -663,8 +671,8 @@ export default class Bonuses {
 	private createBonusIfTimeHasElapsed() {
 		let frequenceTime = this.bonusFrequenceTime - Math.round((Date.now() - this.lastGameRespawn) / 10);
 
-		if (frequenceTime < this.gameConfiguration.bonusSpawnMinimumFrequence()) {
-			frequenceTime = this.gameConfiguration.bonusSpawnMinimumFrequence();
+		if (frequenceTime < this.bonusSpawnMinimumFrequence) {
+			frequenceTime = this.bonusSpawnMinimumFrequence;
 		}
 
 		if (
@@ -700,8 +708,8 @@ export default class Bonuses {
 	private regenerateLastBonusCreatedAndFrequenceTime() {
 		this.lastBonusCreated = Date.now();
 		this.bonusFrequenceTime = getRandomInt(
-			this.gameConfiguration.bonusSpawnInitialMinimumFrequence(),
-			this.gameConfiguration.bonusSpawnInitialMaximumFrequence()
+			this.bonusSpawnInitialMinimumFrequence,
+			this.bonusSpawnInitialMaximumFrequence
 		);
 	}
 }

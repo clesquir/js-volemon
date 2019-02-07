@@ -109,7 +109,6 @@ export default class Player {
 
 		this.interpolation = new Interpolation(
 			this.scene,
-			this.gameConfiguration,
 			this.serverNormalizedTime
 		);
 

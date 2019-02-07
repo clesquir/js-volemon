@@ -44,7 +44,6 @@ export default class Bonus {
 
 		this.interpolation = new Interpolation(
 			this.scene,
-			this.gameConfiguration,
 			this.serverNormalizedTime
 		);
 

@@ -36,6 +36,10 @@ export default class Players {
 	lastPlayerPositionData: { [key: string]: PositionData } = {};
 	lastPlayerUpdate: { [key: string]: number } = {};
 
+	private readonly playerDropshotEnabled: boolean;
+	private readonly playerSmashEnabled: boolean;
+	private readonly ballReboundOnPlayerEnabled: boolean;
+
 	constructor(
 		scene: MainScene,
 		gameData: GameData,
@@ -54,6 +58,10 @@ export default class Players {
 		this.animations = animations;
 		this.level = level;
 		this.artificialIntelligence = artificialIntelligence;
+
+		this.playerDropshotEnabled = this.gameConfiguration.playerDropshotEnabled();
+		this.playerSmashEnabled = this.gameConfiguration.playerSmashEnabled();
+		this.ballReboundOnPlayerEnabled = this.gameConfiguration.ballReboundOnPlayerEnabled();
 	}
 
 	create() {
@@ -234,16 +242,16 @@ export default class Players {
 	}
 
 	onPlayerHitBall(player: Player, ball: Ball) {
-		if (this.gameConfiguration.playerDropshotEnabled() && player.dropShots) {
+		if (this.playerDropshotEnabled && player.dropShots) {
 			ball.dropshot();
 		} else {
 			if (
-				this.gameConfiguration.playerSmashEnabled() &&
+				this.playerSmashEnabled &&
 				player.isSmashing(ball.x())
 			) {
 				ball.smash(player.isHost);
 			} else if (
-				this.gameConfiguration.ballReboundOnPlayerEnabled() &&
+				this.ballReboundOnPlayerEnabled &&
 				!player.isBallBelow(ball.y())
 			) {
 				ball.rebound();
