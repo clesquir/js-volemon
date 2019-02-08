@@ -213,6 +213,7 @@ const modeOptions = function() {
 	addToMode(mode, 'bonus-spawn-minimum-frequence', 'overriddenBonusSpawnMinimumFrequence');
 	addToMode(mode, 'bonus-spawn-initial-minimum-frequence', 'overriddenBonusSpawnInitialMinimumFrequence');
 	addToMode(mode, 'bonus-spawn-initial-maximum-frequence', 'overriddenBonusSpawnInitialMaximumFrequence');
+	addToMode(mode, 'bonus-scale', 'overriddenBonusScale');
 
 	addToMode(mode, 'allowed-list-of-shapes', 'overriddenAllowedListOfShapes');
 	addToMode(mode, 'list-of-shapes', 'overriddenListOfShapes');
@@ -236,6 +237,7 @@ const modeOptions = function() {
 	addToMode(mode, 'net-height', 'overriddenNetHeight');
 	addToMode(mode, 'level-width', 'overriddenLevelWidth');
 	addToMode(mode, 'level-height', 'overriddenLevelHeight');
+
 	addToMode(mode, 'world-gravity', 'overriddenWorldGravity');
 	addToMode(mode, 'world-restitution', 'overriddenWorldRestitution');
 	addToMode(mode, 'player-x-velocity', 'overriddenPlayerXVelocity');
@@ -244,6 +246,8 @@ const modeOptions = function() {
 	addToMode(mode, 'player-smash-enabled', 'overriddenPlayerSmashEnabled');
 	addToMode(mode, 'ball-rebound-on-player-enabled', 'overriddenBallReboundOnPlayerEnabled');
 	addToMode(mode, 'ball-velocity-on-rebound-on-player', 'overriddenBallVelocityOnReboundOnPlayer');
+	addToMode(mode, 'ball-air-friction', 'overriddenBallAirFriction');
+	addToMode(mode, 'bonus-air-friction', 'overriddenBonusAirFriction');
 
 	return mode;
 };

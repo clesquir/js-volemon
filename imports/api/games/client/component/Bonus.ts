@@ -140,7 +140,7 @@ export default class Bonus {
 		this.bonusObject.setData('isBonus', true);
 
 		this.bonusObject.setScale(this.gameConfiguration.bonusScale());
-		this.bonusObject.setFriction(0, 0, 0);
+		this.bonusObject.setFriction(0, this.gameConfiguration.bonusAirFriction(), 0);
 		this.bonusObject.setMass(this.gameConfiguration.bonusMass());
 
 		this.bonusObject.setCollisionCategory(this.level.collisionCategoryBonus);

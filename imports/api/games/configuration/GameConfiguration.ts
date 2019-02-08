@@ -7,6 +7,7 @@ import {
 	BALL_SMALL_MASS,
 	BALL_SMALL_SCALE,
 	BALL_VERTICAL_SPEED_ON_PLAYER_HIT,
+	BONUS_AIR_FRICTION,
 	BONUS_MASS,
 	BONUS_RADIUS,
 	BONUS_SCALE,
@@ -183,6 +184,10 @@ export default abstract class GameConfiguration {
 	}
 
 	ballAirFriction(): number {
+		if (this.hasTournament() && this.tournamentMode.overridesBallAirFriction()) {
+			return this.tournamentMode.ballAirFriction();
+		}
+
 		return BALL_AIR_FRICTION;
 	}
 
@@ -191,11 +196,23 @@ export default abstract class GameConfiguration {
 	}
 
 	bonusScale(): number {
+		if (this.hasTournament() && this.tournamentMode.overridesBonusScale()) {
+			return this.tournamentMode.bonusScale();
+		}
+
 		return BONUS_SCALE;
 	}
 
 	bonusMass(): number {
 		return BONUS_MASS;
+	}
+
+	bonusAirFriction(): number {
+		if (this.hasTournament() && this.tournamentMode.overridesBonusAirFriction()) {
+			return this.tournamentMode.bonusAirFriction();
+		}
+
+		return BONUS_AIR_FRICTION;
 	}
 
 	isHiddenToHimself(): boolean {

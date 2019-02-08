@@ -79,6 +79,8 @@
 						{{> numberSwitch id="bonus-spawn-initial-maximum-frequence" label="Bonus spawn initial maximum frequence (ms) - default 15,000" isOn=(modeOverridden "overriddenBonusSpawnInitialMaximumFrequence") value=(modeOverriddenValue "overriddenBonusSpawnInitialMaximumFrequence") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
+					{{> numberSwitch id="bonus-scale" label="Bonus scale - default 1" isOn=(modeOverridden "overriddenBonusScale") value=(modeOverriddenValue "overriddenBonusScale") isReadOnly=(canOnlyViewTournament tournament)}}
+
 					<h2>Player overrides</h2>
 
 					{{> multipleShapeSelectSwitch id="allowed-list-of-shapes" label="Available shapes" isOn=(modeOverridden "overriddenAllowedListOfShapes") hasRandom=true values=(modeOverriddenValue "overriddenAllowedListOfShapes") isReadOnly=(canOnlyViewTournament tournament)}}
@@ -146,15 +148,15 @@
 					<h2>Physic overrides</h2>
 
 					<div class="splitted-configuration">
-						{{> numberSwitch id="world-gravity" label="World gravity - default 770" isOn=(modeOverridden "overriddenWorldGravity") value=(modeOverriddenValue "overriddenWorldGravity") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="world-gravity" label="World gravity - default 0.6" isOn=(modeOverridden "overriddenWorldGravity") value=(modeOverriddenValue "overriddenWorldGravity") isReadOnly=(canOnlyViewTournament tournament)}}
 
 						{{> numberSwitch id="world-restitution" label="World restitution - default 1" isOn=(modeOverridden "overriddenWorldRestitution") value=(modeOverriddenValue "overriddenWorldRestitution") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<div class="splitted-configuration">
-						{{> numberSwitch id="player-x-velocity" label="Player X velocity - default 280" isOn=(modeOverridden "overriddenPlayerXVelocity") value=(modeOverriddenValue "overriddenPlayerXVelocity") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="player-x-velocity" label="Player X velocity - default 6" isOn=(modeOverridden "overriddenPlayerXVelocity") value=(modeOverriddenValue "overriddenPlayerXVelocity") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="player-y-velocity" label="Player Y velocity - default 420" isOn=(modeOverridden "overriddenPlayerYVelocity") value=(modeOverriddenValue "overriddenPlayerYVelocity") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="player-y-velocity" label="Player Y velocity - default 6" isOn=(modeOverridden "overriddenPlayerYVelocity") value=(modeOverriddenValue "overriddenPlayerYVelocity") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<div class="splitted-configuration">
@@ -166,7 +168,13 @@
 					<div class="splitted-configuration">
 						{{> selectSwitch id="ball-rebound-on-player-enabled" label="Ball rebounds on player" isOn=(modeOverridden "overriddenBallReboundOnPlayerEnabled") options=booleanOptions value=(modeOverriddenValue "overriddenBallReboundOnPlayerEnabled") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="ball-velocity-on-rebound-on-player" label="Ball velocity on rebound on player - default -280" isOn=(modeOverridden "overriddenBallVelocityOnReboundOnPlayer") value=(modeOverriddenValue "overriddenBallVelocityOnReboundOnPlayer") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="ball-velocity-on-rebound-on-player" label="Ball velocity on rebound on player - default -6.5" isOn=(modeOverridden "overriddenBallVelocityOnReboundOnPlayer") value=(modeOverriddenValue "overriddenBallVelocityOnReboundOnPlayer") isReadOnly=(canOnlyViewTournament tournament)}}
+					</div>
+
+					<div class="splitted-configuration">
+						{{> numberSwitch id="ball-air-friction" label="Ball air friction - default 0" isOn=(modeOverridden "overriddenBallAirFriction") value=(modeOverriddenValue "overriddenBallAirFriction") isReadOnly=(canOnlyViewTournament tournament)}}
+
+						{{> numberSwitch id="bonus-air-friction" label="Bonus air friction - default 0" isOn=(modeOverridden "overriddenBonusAirFriction") value=(modeOverriddenValue "overriddenBonusAirFriction") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 				</div>
