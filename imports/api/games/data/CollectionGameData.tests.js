@@ -4,7 +4,7 @@ import {PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_CROWN, PLAYER_SHAPE_RECTANGLE} from '
 import {assert} from 'chai';
 import StubCollections from 'meteor/hwillson:stub-collections';
 import {Random} from 'meteor/random';
-import CollectionGameData from './CollectionGameData.js';
+import CollectionGameData from './CollectionGameData';
 
 describe('CollectionGameData#getPlayerShapeFromKey', function() {
 	before(function() {

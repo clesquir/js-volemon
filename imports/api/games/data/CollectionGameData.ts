@@ -1,8 +1,7 @@
-import {isTwoVersusTwoGameMode} from '/imports/api/games/constants.js';
-import GameData from '/imports/api/games/data/GameData.js';
-import {Games} from '/imports/api/games/games.js';
-import {Players} from '/imports/api/games/players.js';
-import {PLAYER_DEFAULT_SHAPE} from '/imports/api/games/shapeConstants.js';
+import {isTwoVersusTwoGameMode} from 'imports/api/games/constants';
+import {Games} from 'imports/api/games/games';
+import {Players} from 'imports/api/games/players';
+import {PLAYER_DEFAULT_SHAPE} from 'imports/api/games/shapeConstants';
 import {
 	hasGameAborted,
 	hasGameStatusEndedWithAWinner,
@@ -10,28 +9,50 @@ import {
 	isGameStatusOnGoing,
 	isGameStatusStarted,
 	isMatchPoint
-} from '/imports/api/games/utils.js';
-import {Tournaments} from '/imports/api/tournaments/tournaments.js';
+} from 'imports/api/games/utils';
+import {Tournaments} from 'imports/api/tournaments/tournaments';
+import GameData from "./GameData";
 
-export default class CollectionGameData extends GameData {
-	tournament = null;
+export default class CollectionGameData implements GameData {
+	gameId: string;
+	currentUserId: string;
+	_activeBonuses: any[] = [];
+	robots: {[id: string]: {id: string}} = {};
+	tournament: any = null;
 
-	/**
-	 * @param {string} gameId
-	 * @param {string} currentUserId
-	 */
-	constructor(gameId, currentUserId) {
-		super();
+	gameMode: string;
+	maximumPoints: number;
+	hasBonuses: boolean;
+	createdBy: string;
+	tournamentId: string | null;
+
+	currentPlayerKey: string;
+	currentPlayer;
+	currentGamePlayer;
+	firstGamePlayer;
+	secondGamePlayer;
+	thirdGamePlayer;
+	fourthGamePlayer;
+	firstPlayer;
+	secondPlayer;
+	thirdPlayer;
+	fourthPlayer;
+	hostUserIds: string[];
+	clientUserIds: string[];
+	status: string;
+	hostPoints: number;
+	clientPoints: number;
+	startedAt: number;
+	lastPointAt: number;
+	lastPointTaken: string;
+
+	constructor(gameId: string, currentUserId: string) {
 		this.gameId = gameId;
 		this.currentUserId = currentUserId;
-		this._activeBonuses = [];
-		this.robots = {};
 	}
 
-	/**
-	 * Init before starting game to gather newly joined players
-	 */
 	init() {
+		//Init before starting game to gather newly joined players
 		let game = this.fetchGame();
 
 		this.gameMode = game.gameMode;
@@ -52,11 +73,177 @@ export default class CollectionGameData extends GameData {
 		this.initTournament();
 	}
 
-	addRobot(id) {
+	addRobot(id: string) {
 		this.robots[id] = {id: id};
 	}
 
-	gamePlayerFromKey(playerKey) {
+	getPlayerShapeFromKey(playerKey: string): string {
+		let player = this.gamePlayerFromKey(playerKey);
+
+		if (!player || !player.shape) {
+			return PLAYER_DEFAULT_SHAPE;
+		}
+
+		return player.shape;
+	}
+
+	getPlayerPolygonFromKey(playerKey: string): string {
+		let player = this.gamePlayerFromKey(playerKey);
+
+		if (!player || !player.shape) {
+			return PLAYER_DEFAULT_SHAPE;
+		}
+
+		return player.shape;
+	}
+
+	getCurrentPlayerKey(): string {
+		return this.currentPlayerKey;
+	}
+
+	isCurrentPlayerKey(playerKey: string): boolean {
+		let player = this.playerFromKey(playerKey);
+
+		return player && this.currentPlayer && player._id === this.currentPlayer._id;
+	}
+
+	isFirstPlayerComputer(): boolean {
+		return this.firstGamePlayer && this.firstGamePlayer.id === 'CPU';
+	}
+
+	isSecondPlayerComputer(): boolean {
+		return this.secondGamePlayer && this.secondGamePlayer.id === 'CPU';
+	}
+
+	isThirdPlayerComputer(): boolean {
+		return this.thirdGamePlayer && this.thirdGamePlayer.id === 'CPU';
+	}
+
+	isFourthPlayerComputer(): boolean {
+		return this.fourthGamePlayer && this.fourthGamePlayer.id === 'CPU';
+	}
+
+	isFirstPlayerComputerMachineLearning(): boolean {
+		return this.firstGamePlayer && this.firstGamePlayer.isMachineLearning === true;
+	}
+
+	isSecondPlayerComputerMachineLearning(): boolean {
+		return this.secondGamePlayer && this.secondGamePlayer.isMachineLearning === true;
+	}
+
+	isThirdPlayerComputerMachineLearning(): boolean {
+		return this.thirdGamePlayer && this.thirdGamePlayer.isMachineLearning === true;
+	}
+
+	isFourthPlayerComputerMachineLearning(): boolean {
+		return this.fourthGamePlayer && this.fourthGamePlayer.isMachineLearning === true;
+	}
+
+	isFirstPlayerComputerLearning(): boolean {
+		return false;
+	}
+
+	isSecondPlayerComputerLearning(): boolean {
+		return false;
+	}
+
+	isThirdPlayerComputerLearning(): boolean {
+		return false;
+	}
+
+	isFourthPlayerComputerLearning(): boolean {
+		return false;
+	}
+
+	isTwoVersusTwo(): boolean {
+		return isTwoVersusTwoGameMode(this.gameMode);
+	}
+
+	isUserCreator(): boolean {
+		return (this.createdBy === this.currentUserId);
+	}
+
+	isUserHost(): boolean {
+		return this.currentUserId && this.hostUserIds.indexOf(this.currentUserId) !== -1;
+	}
+
+	isUserClient(): boolean {
+		return this.currentUserId && this.clientUserIds.indexOf(this.currentUserId) !== -1;
+	}
+
+	isUserPlayer(): boolean {
+		return this.isUserHost() || this.isUserClient();
+	}
+
+	isUserViewer(): boolean {
+		return !this.isUserPlayer();
+	}
+
+	isGameStatusOnGoing(): boolean {
+		return isGameStatusOnGoing(this.status);
+	}
+
+	isGameStatusStarted(): boolean {
+		return isGameStatusStarted(this.status);
+	}
+
+	hasGameStatusEndedWithAWinner(): boolean {
+		return hasGameStatusEndedWithAWinner(this.status);
+	}
+
+	hasGameAborted(): boolean {
+		return hasGameAborted(this.status);
+	}
+
+	numberMaximumPoints(): number {
+		return this.maximumPoints;
+	}
+
+	isMatchPoint(): boolean {
+		return isMatchPoint(this.hostPoints, this.clientPoints, this.maximumPoints);
+	}
+
+	isDeucePoint(): boolean {
+		return isDeucePoint(this.hostPoints, this.clientPoints, this.maximumPoints);
+	}
+
+	activeBonuses(): any[] {
+		return this._activeBonuses;
+	}
+
+	hasTournament(): boolean {
+		return !!this.tournamentId;
+	}
+
+	isTournamentPractice(): boolean {
+		return this.hasTournament() && this.tournament.status.id !== 'approved';
+	}
+
+	updateHostPoints(hostPoints: number) {
+		this.hostPoints = hostPoints;
+	}
+
+	updateClientPoints(clientPoints: number) {
+		this.clientPoints = clientPoints;
+	}
+
+	updateLastPointTaken(lastPointTaken: string) {
+		this.lastPointTaken = lastPointTaken;
+	}
+
+	updateLastPointAt(lastPointAt: number) {
+		this.lastPointAt = lastPointAt;
+	}
+
+	updateStatus(status: string) {
+		this.status = status;
+	}
+
+	updateActiveBonuses(activeBonuses) {
+		this._activeBonuses = activeBonuses;
+	}
+
+	private gamePlayerFromKey(playerKey: string) {
 		if (playerKey === 'player1') {
 			return this.firstGamePlayer;
 		} else if (playerKey === 'player2') {
@@ -72,7 +259,7 @@ export default class CollectionGameData extends GameData {
 		return null;
 	}
 
-	playerFromKey(playerKey) {
+	private playerFromKey(playerKey: string) {
 		if (playerKey === 'player1') {
 			return this.firstPlayer;
 		} else if (playerKey === 'player2') {
@@ -88,152 +275,7 @@ export default class CollectionGameData extends GameData {
 		return null;
 	}
 
-	/**
-	 * @param playerKey
-	 * @returns string Returns the player shape or PLAYER_DEFAULT_SHAPE if no game nor player is found
-	 */
-	getPlayerShapeFromKey(playerKey) {
-		let player = this.gamePlayerFromKey(playerKey);
-
-		if (!player || !player.shape) {
-			return PLAYER_DEFAULT_SHAPE;
-		}
-
-		return player.shape;
-	}
-
-	/**
-	 * @param playerKey
-	 * @returns string Returns the player shape or PLAYER_DEFAULT_SHAPE if no game nor player is found
-	 */
-	getPlayerPolygonFromKey(playerKey) {
-		let player = this.gamePlayerFromKey(playerKey);
-
-		if (!player || !player.shape) {
-			return PLAYER_DEFAULT_SHAPE;
-		}
-
-		return player.shape;
-	}
-
-	getCurrentPlayerKey() {
-		return this.currentPlayerKey;
-	}
-
-	isCurrentPlayerKey(playerKey) {
-		let player = this.playerFromKey(playerKey);
-
-		return player && this.currentPlayer && player._id === this.currentPlayer._id;
-	}
-
-	isFirstPlayerComputer() {
-		return this.firstGamePlayer && this.firstGamePlayer.id === 'CPU';
-	}
-
-	isSecondPlayerComputer() {
-		return this.secondGamePlayer && this.secondGamePlayer.id === 'CPU';
-	}
-
-	isThirdPlayerComputer() {
-		return this.thirdGamePlayer && this.thirdGamePlayer.id === 'CPU';
-	}
-
-	isFourthPlayerComputer() {
-		return this.fourthGamePlayer && this.fourthGamePlayer.id === 'CPU';
-	}
-
-	isFirstPlayerComputerMachineLearning() {
-		return this.firstGamePlayer && this.firstGamePlayer.isMachineLearning === true;
-	}
-
-	isSecondPlayerComputerMachineLearning() {
-		return this.secondGamePlayer && this.secondGamePlayer.isMachineLearning === true;
-	}
-
-	isThirdPlayerComputerMachineLearning() {
-		return this.thirdGamePlayer && this.thirdGamePlayer.isMachineLearning === true;
-	}
-
-	isFourthPlayerComputerMachineLearning() {
-		return this.fourthGamePlayer && this.fourthGamePlayer.isMachineLearning === true;
-	}
-
-	isFirstPlayerComputerLearning() {
-		return false;
-	}
-
-	isSecondPlayerComputerLearning() {
-		return false;
-	}
-
-	isThirdPlayerComputerLearning() {
-		return false;
-	}
-
-	isFourthPlayerComputerLearning() {
-		return false;
-	}
-
-	isTwoVersusTwo() {
-		return isTwoVersusTwoGameMode(this.gameMode);
-	}
-
-	isUserCreator() {
-		return (this.createdBy === this.currentUserId);
-	}
-
-	isUserHost() {
-		return this.currentUserId && this.hostUserIds.indexOf(this.currentUserId) !== -1;
-	}
-
-	isUserClient() {
-		return this.currentUserId && this.clientUserIds.indexOf(this.currentUserId) !== -1;
-	}
-
-	isUserPlayer() {
-		return this.isUserHost() || this.isUserClient();
-	}
-
-	isUserViewer() {
-		return !this.isUserPlayer();
-	}
-
-	isGameStatusOnGoing() {
-		return isGameStatusOnGoing(this.status);
-	}
-
-	isGameStatusStarted() {
-		return isGameStatusStarted(this.status);
-	}
-
-	hasGameStatusEndedWithAWinner() {
-		return hasGameStatusEndedWithAWinner(this.status);
-	}
-
-	hasGameAborted() {
-		return hasGameAborted(this.status);
-	}
-
-	numberMaximumPoints() {
-		return this.maximumPoints;
-	}
-
-	isMatchPoint() {
-		return isMatchPoint(this.hostPoints, this.clientPoints, this.maximumPoints);
-	}
-
-	isDeucePoint() {
-		return isDeucePoint(this.hostPoints, this.clientPoints, this.maximumPoints);
-	}
-
-	/**
-	 * @returns Array
-	 */
-	activeBonuses() {
-		return this._activeBonuses;
-	}
-
-	initPlayers(game) {
+	private initPlayers(game) {
 		let players = Players.find({gameId: this.gameId});
 
 		this.currentGamePlayer = null;
@@ -289,47 +331,15 @@ export default class CollectionGameData extends GameData {
 		});
 	}
 
-	fetchGame() {
+	private fetchGame() {
 		return Games.findOne({_id: this.gameId});
 	}
 
-	initTournament() {
+	private initTournament() {
 		this.tournament = Tournaments.findOne({_id: this.tournamentId});
 	}
 
-	hasTournament() {
-		return !!this.tournamentId;
-	}
-
-	isTournamentPractice() {
-		return this.hasTournament() && this.tournament.status.id !== 'approved';
-	}
-
-	updateStartedAt(startedAt) {
+	private updateStartedAt(startedAt: number) {
 		this.startedAt = startedAt;
-	}
-
-	updateHostPoints(hostPoints) {
-		this.hostPoints = hostPoints;
-	}
-
-	updateClientPoints(clientPoints) {
-		this.clientPoints = clientPoints;
-	}
-
-	updateLastPointTaken(lastPointTaken) {
-		this.lastPointTaken = lastPointTaken;
-	}
-
-	updateLastPointAt(lastPointAt) {
-		this.lastPointAt = lastPointAt;
-	}
-
-	updateStatus(status) {
-		this.status = status;
-	}
-
-	updateActiveBonuses(activeBonuses) {
-		this._activeBonuses = activeBonuses;
 	}
 }

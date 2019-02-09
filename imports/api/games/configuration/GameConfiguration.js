@@ -322,6 +322,13 @@ export default class GameConfiguration {
 		return this.tournamentMode.playerMaximumBallHit();
 	}
 
+	exceedsPlayerMaximumBallHit(numberBallHits) {
+		return (
+			this.overridesPlayerMaximumBallHit() &&
+			numberBallHits > this.playerMaximumBallHit()
+		);
+	}
+
 	overridesTeamMaximumBallHit() {
 		return (this.hasTournament() && this.tournamentMode.overridesTeamMaximumBallHit());
 	}
@@ -332,6 +339,13 @@ export default class GameConfiguration {
 		}
 
 		return this.tournamentMode.teamMaximumBallHit();
+	}
+
+	exceedsTeamMaximumBallHit(numberBallHits) {
+		return (
+			this.overridesTeamMaximumBallHit() &&
+			numberBallHits > this.teamMaximumBallHit()
+		);
 	}
 
 	width() {

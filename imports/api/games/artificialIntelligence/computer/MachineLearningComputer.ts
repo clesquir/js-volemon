@@ -4,6 +4,9 @@ import * as hostGenomes from '/public/assets/artificial-intelligence/host_genome
 import Computer from "./Computer";
 import Learner from "../learner/Learner";
 import SynapticLearner from "../learner/SynapticLearner";
+import {ArtificialIntelligenceData} from "../ArtificialIntelligenceData";
+import GameConfiguration from "../../configuration/GameConfiguration";
+import {ArtificialIntelligencePositionData} from "../ArtificialIntelligencePositionData";
 
 export default class MachineLearningComputer implements Computer {
 	key: string;
@@ -88,15 +91,13 @@ export default class MachineLearningComputer implements Computer {
 		}
 	}
 
-	/**
-	 * @param {{key: string, isMoveReversed: boolean, horizontalMoveModifier: Function, verticalMoveModifier: Function, alwaysJump: boolean, canJump: boolean, velocityXOnMove: number, velocityYOnJump: number}} modifiers
-	 * @param {{x: number, y: number, scale: number, velocityX: number, velocityY: number, gravityScale: number, width: number, height: number}} computerPosition
-	 * @param {{x: number, y: number, velocityX: number, velocityY: number, gravityScale: number, width: number, height: number}} ballPosition
-	 * @param {{x: number, y: number, velocityX: number, velocityY: number, gravityScale: number, width: number, height: number}[]} bonusesPosition
-	 * @param {GameConfiguration} gameConfiguration
-	 * @param {Engine} engine
-	 */
-	computeMovement(modifiers, computerPosition, ballPosition, bonusesPosition, gameConfiguration, engine) {
+	computeMovement(
+		modifiers: ArtificialIntelligenceData,
+		computerPosition: ArtificialIntelligencePositionData,
+		ballPosition: ArtificialIntelligencePositionData,
+		bonusesPosition: ArtificialIntelligencePositionData[],
+		gameConfiguration: GameConfiguration
+	) {
 		const isLeft = this.isLeftPlayer(modifiers);
 		const width = gameConfiguration.width();
 		const halfWidth = (width / 2);

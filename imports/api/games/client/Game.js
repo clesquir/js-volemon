@@ -884,10 +884,7 @@ export default class Game {
 	}
 
 	killPlayerOnBallHit(player, teamNumberBallHits, playerNumberBallHits) {
-		if (
-			this.gameConfiguration.overridesTeamMaximumBallHit() &&
-			teamNumberBallHits > this.gameConfiguration.teamMaximumBallHit()
-		) {
+		if (this.gameConfiguration.exceedsTeamMaximumBallHit(teamNumberBallHits)) {
 			//Kill the team
 			if (this.isPlayerHostSide(player)) {
 				setTimeout(() => {
@@ -902,10 +899,7 @@ export default class Game {
 					}
 				}, 100);
 			}
-		} else if (
-			this.gameConfiguration.overridesPlayerMaximumBallHit() &&
-			playerNumberBallHits > this.gameConfiguration.playerMaximumBallHit()
-		) {
+		} else if (this.gameConfiguration.exceedsPlayerMaximumBallHit(playerNumberBallHits)) {
 			setTimeout(() => {
 				this.gameBonus.killPlayer(player.data.key);
 			}, 100);
@@ -1114,8 +1108,7 @@ export default class Game {
 			this.engine.fullPositionData(player),
 			this.engine.fullPositionData(this.ball),
 			this.gameBonus.bonusesFullPositionData(),
-			this.gameConfiguration,
-			this.engine
+			this.gameConfiguration
 		);
 
 		this.movePlayer(
