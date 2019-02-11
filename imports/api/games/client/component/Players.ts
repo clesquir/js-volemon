@@ -228,7 +228,14 @@ export default class Players {
 	createRobot(robotId: string, isHost: boolean) {
 		this.gameData.addRobot(robotId);
 		this.robots[robotId] = this.createPlayer(robotId, '#ffffff', isHost);
-		this.artificialIntelligence.addComputerWithKey(robotId, false);
+		this.artificialIntelligence.addComputerWithKey(
+			robotId,
+			isHost,
+			this.scene,
+			this.gameConfiguration,
+			false,
+			false
+		);
 
 		return this.robots[robotId];
 	}
@@ -467,8 +474,7 @@ export default class Players {
 			player.artificialIntelligenceData(),
 			player.artificialIntelligencePositionData(),
 			ballData,
-			bonusesData,
-			this.gameConfiguration
+			bonusesData
 		);
 
 		player.move(

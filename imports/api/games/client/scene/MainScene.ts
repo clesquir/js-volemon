@@ -330,7 +330,7 @@ export default class MainScene extends Phaser.Scene {
 	private createComponents() {
 		this.level.createCollisionCategories();
 
-		this.artificialIntelligence.initFromData(this.gameData);
+		this.artificialIntelligence.initFromData(this, this.gameData, this.gameConfiguration);
 		this.players.create();
 		this.ball = this.createBall();
 

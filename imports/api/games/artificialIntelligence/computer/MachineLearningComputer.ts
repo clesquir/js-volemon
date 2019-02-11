@@ -9,8 +9,13 @@ import {ArtificialIntelligencePositionData} from "../ArtificialIntelligencePosit
 import {CLIENT_POINTS_COLUMN, HOST_POINTS_COLUMN} from "../../constants";
 
 export default class MachineLearningComputer implements Computer {
-	key: string;
+	private readonly key: string;
+	private readonly isLeft: boolean;
+	private readonly levelWidth: number;
+	private readonly levelHalfWidth: number;
+	private readonly groundY: number;
 	isLearning: boolean = false;
+
 	left: boolean = false;
 	right: boolean = false;
 	jump: boolean = false;
@@ -22,8 +27,18 @@ export default class MachineLearningComputer implements Computer {
 	private numberPointsForCurrentGenome: number = 0;
 	private numberPointsToCalculateGenomes: number = 5;
 
-	constructor(key, isLearning, genomesFromExisting) {
+	constructor(
+		key: string,
+		isLeft: boolean,
+		gameConfiguration: GameConfiguration,
+		isLearning: boolean,
+		genomesFromExisting: boolean
+	) {
 		this.key = key;
+		this.isLeft = isLeft;
+		this.levelWidth = gameConfiguration.width();
+		this.levelHalfWidth = this.levelWidth / 2;
+		this.groundY = gameConfiguration.height() - gameConfiguration.groundHeight();
 		this.isLearning = isLearning;
 
 		this.learner = new SynapticLearner(6, 2, 12, 4, 0.2);
@@ -95,23 +110,16 @@ export default class MachineLearningComputer implements Computer {
 		modifiers: ArtificialIntelligenceData,
 		computerPosition: ArtificialIntelligencePositionData,
 		ballPosition: ArtificialIntelligencePositionData,
-		bonusesPosition: ArtificialIntelligencePositionData[],
-		gameConfiguration: GameConfiguration
+		bonusesPosition: ArtificialIntelligencePositionData[]
 	) {
-		const isLeft = this.isLeftPlayer(modifiers);
-		const width = gameConfiguration.width();
-		const halfWidth = (width / 2);
-		const height = gameConfiguration.height();
-		const groundY = height - gameConfiguration.groundHeight();
-
 		if (
 			Math.round(ballPosition.velocityX) === 0 &&
-			isLeft === (ballPosition.x < halfWidth)
+			this.isLeft === (ballPosition.x < this.levelHalfWidth)
 		) {
 			//Reduce fitness if ball stalled horizontally on player's side
 			this.cumulatedFitness -= 10;
 		}
-		if (isLeft === (ballPosition.x > halfWidth)) {
+		if (this.isLeft === (ballPosition.x > this.levelHalfWidth)) {
 			//Increase fitness if ball is not on player's side
 			this.cumulatedFitness += 1;
 		} else {
@@ -125,8 +133,8 @@ export default class MachineLearningComputer implements Computer {
 				[
 					this.round5(computerPosition.x - ballPosition.x), //Distance X from ball
 					this.round5(computerPosition.y - ballPosition.y), //Distance Y from ball
-					Math.round(ballPosition.x / width * 100),
-					this.round5(groundY - ballPosition.y), //Distance from ground
+					Math.round(ballPosition.x / this.levelWidth * 100), //Ball position percentage
+					this.round5(this.groundY - ballPosition.y), //Distance from ground
 					this.round5(ballPosition.velocityX), //Ball X speed
 					this.round5(ballPosition.velocityY) //Ball Y speed
 				]
@@ -170,10 +178,6 @@ export default class MachineLearningComputer implements Computer {
 	private stopMovingHorizontally() {
 		this.left = false;
 		this.right = false;
-	}
-
-	private isLeftPlayer(modifiers): boolean {
-		return !!modifiers.isHost;
 	}
 
 	private applyModifiers(modifiers: ArtificialIntelligenceData) {

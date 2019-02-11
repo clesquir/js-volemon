@@ -374,12 +374,15 @@ export default class Player {
 		return {
 			key: this.key,
 			isHost: this.isHost,
+			gravity: this.scene.matter.world.engine.gravity.y,
 			isMoveReversed: this.isMoveReversed,
 			horizontalMoveMultiplier: this.horizontalMoveMultiplier,
 			verticalMoveMultiplier: this.verticalMoveMultiplier,
 			canJump: this.canJump,
 			velocityXOnMove: this.velocityXOnMove,
 			velocityYOnJump: this.velocityYOnJump,
+			initialMass: this.initialMass,
+			currentMass: this.currentMass,
 		};
 	}
 

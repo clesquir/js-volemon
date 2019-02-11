@@ -5,15 +5,23 @@ import GameData from "../data/GameData";
 import {ArtificialIntelligenceData} from "./ArtificialIntelligenceData";
 import GameConfiguration from "../configuration/GameConfiguration";
 import {ArtificialIntelligencePositionData} from "./ArtificialIntelligencePositionData";
+import MainScene from "../client/scene/MainScene";
 
 export default class ArtificialIntelligence {
 	computers: { [key: string]: Computer } = {};
 	genomesFromExisting = true;
 
-	initFromData(gameData: GameData) {
+	initFromData(
+		scene: MainScene,
+		gameData: GameData,
+		gameConfiguration: GameConfiguration
+	) {
 		if (gameData.isFirstPlayerComputer()) {
 			this.addComputerWithKey(
 				'player1',
+				true,
+				scene,
+				gameConfiguration,
 				gameData.isFirstPlayerComputerMachineLearning(),
 				gameData.isFirstPlayerComputerLearning()
 			);
@@ -21,6 +29,9 @@ export default class ArtificialIntelligence {
 		if (gameData.isSecondPlayerComputer()) {
 			this.addComputerWithKey(
 				'player2',
+				false,
+				scene,
+				gameConfiguration,
 				gameData.isSecondPlayerComputerMachineLearning(),
 				gameData.isSecondPlayerComputerLearning()
 			);
@@ -28,6 +39,9 @@ export default class ArtificialIntelligence {
 		if (gameData.isThirdPlayerComputer()) {
 			this.addComputerWithKey(
 				'player3',
+				true,
+				scene,
+				gameConfiguration,
 				gameData.isThirdPlayerComputerMachineLearning(),
 				gameData.isThirdPlayerComputerLearning()
 			);
@@ -35,17 +49,27 @@ export default class ArtificialIntelligence {
 		if (gameData.isFourthPlayerComputer()) {
 			this.addComputerWithKey(
 				'player4',
+				false,
+				scene,
+				gameConfiguration,
 				gameData.isFourthPlayerComputerMachineLearning(),
 				gameData.isFourthPlayerComputerLearning()
 			);
 		}
 	}
 
-	addComputerWithKey(key: string, machineLearning: boolean = false, isLearning: boolean = false) {
+	addComputerWithKey(
+		key: string,
+		isLeft: boolean,
+		scene: MainScene,
+		gameConfiguration: GameConfiguration,
+		machineLearning: boolean = false,
+		isLearning: boolean = false
+	) {
 		if (machineLearning) {
-			this.computers[key] = new MachineLearningComputer(key, isLearning, this.genomesFromExisting);
+			this.computers[key] = new MachineLearningComputer(key, isLeft, gameConfiguration, isLearning, this.genomesFromExisting);
 		} else {
-			this.computers[key] = new CalculatedComputer(key);
+			this.computers[key] = new CalculatedComputer(key, isLeft, scene, gameConfiguration);
 		}
 	}
 
@@ -94,16 +118,14 @@ export default class ArtificialIntelligence {
 		modifiers: ArtificialIntelligenceData,
 		computerPosition: ArtificialIntelligencePositionData,
 		ballPosition: ArtificialIntelligencePositionData,
-		bonusesPosition: ArtificialIntelligencePositionData[],
-		gameConfiguration: GameConfiguration
+		bonusesPosition: ArtificialIntelligencePositionData[]
 	) {
 		if (this.computers.hasOwnProperty(key)) {
 			this.computers[key].computeMovement(
 				modifiers,
 				computerPosition,
 				ballPosition,
-				bonusesPosition,
-				gameConfiguration
+				bonusesPosition
 			);
 		}
 	}

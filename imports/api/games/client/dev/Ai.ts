@@ -57,19 +57,8 @@ export default class Ai extends Dev {
 			this.gameData.firstPlayerComputer &&
 			this.gameData.secondPlayerComputer
 		) {
-			this.mainScene.gameResumed = false;
-
-			this.gameData.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
-
 			console.log('point takes too much time!');
-			this.mainScene.artificialIntelligence.stopPoint(null);
-
-			if (this.mainScene.artificialIntelligence.computers['player1'].cumulatedFitness > this.mainScene.artificialIntelligence.computers['player2'].cumulatedFitness) {
-				this.gameData.lastPointTaken = CLIENT_SIDE;
-			} else {
-				this.gameData.lastPointTaken = HOST_SIDE;
-			}
-			this.resumeOnTimerEnd();
+			this.stopPoint();
 		}
 
 		//Output the genomes backend in case the computer crashes
@@ -96,6 +85,21 @@ export default class Ai extends Dev {
 				);
 			}
 		}
+	}
+
+	stopPoint() {
+		this.mainScene.gameResumed = false;
+
+		this.gameData.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
+
+		this.mainScene.artificialIntelligence.stopPoint(null);
+
+		if (this.mainScene.artificialIntelligence.computers['player1'].cumulatedFitness > this.mainScene.artificialIntelligence.computers['player2'].cumulatedFitness) {
+			this.gameData.lastPointTaken = CLIENT_SIDE;
+		} else {
+			this.gameData.lastPointTaken = HOST_SIDE;
+		}
+		this.resumeOnTimerEnd();
 	}
 
 	onBallHitGround(ball: Ball) {
@@ -139,7 +143,14 @@ export default class Ai extends Dev {
 		this.gameData.firstPlayerComputerMachineLearning = isMachineLearning;
 
 		if (this.isStarted) {
-			this.mainScene.artificialIntelligence.addComputerWithKey('player1', isMachineLearning, this.gameData.firstPlayerComputerMachineLearning);
+			this.mainScene.artificialIntelligence.addComputerWithKey(
+				'player1',
+				true,
+				this.mainScene,
+				this.gameConfiguration,
+				isMachineLearning,
+				this.gameData.firstPlayerComputerMachineLearning
+			);
 			this.mainScene.artificialIntelligence.startGame();
 		}
 	}
@@ -148,7 +159,14 @@ export default class Ai extends Dev {
 		this.gameData.firstPlayerComputerLearning = isLearning;
 
 		if (this.isStarted) {
-			this.mainScene.artificialIntelligence.addComputerWithKey('player1', this.gameData.firstPlayerComputerMachineLearning, isLearning);
+			this.mainScene.artificialIntelligence.addComputerWithKey(
+				'player1',
+				true,
+				this.mainScene,
+				this.gameConfiguration,
+				this.gameData.firstPlayerComputerMachineLearning,
+				isLearning
+			);
 			this.mainScene.artificialIntelligence.startGame();
 		}
 	}
@@ -157,7 +175,14 @@ export default class Ai extends Dev {
 		this.gameData.secondPlayerComputerMachineLearning = isMachineLearning;
 
 		if (this.isStarted) {
-			this.mainScene.artificialIntelligence.addComputerWithKey('player2', isMachineLearning, this.gameData.secondPlayerComputerLearning);
+			this.mainScene.artificialIntelligence.addComputerWithKey(
+				'player2',
+				false,
+				this.mainScene,
+				this.gameConfiguration,
+				isMachineLearning,
+				this.gameData.secondPlayerComputerLearning
+			);
 			this.mainScene.artificialIntelligence.startGame();
 		}
 	}
@@ -166,7 +191,14 @@ export default class Ai extends Dev {
 		this.gameData.secondPlayerComputerLearning = isLearning;
 
 		if (this.isStarted) {
-			this.mainScene.artificialIntelligence.addComputerWithKey('player2', this.gameData.secondPlayerComputerMachineLearning, isLearning);
+			this.mainScene.artificialIntelligence.addComputerWithKey(
+				'player2',
+				false,
+				this.mainScene,
+				this.gameConfiguration,
+				this.gameData.secondPlayerComputerMachineLearning,
+				isLearning
+			);
 			this.mainScene.artificialIntelligence.startGame();
 		}
 	}

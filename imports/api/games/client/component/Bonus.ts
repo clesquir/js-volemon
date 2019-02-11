@@ -61,6 +61,7 @@ export default class Bonus {
 	freeze() {
 		this.bonusObject.setIgnoreGravity(true);
 		this.bonusObject.setVelocity(0, 0);
+		this.bonusObject.setFixedRotation();
 	}
 
 	interpolate(data: any) {
