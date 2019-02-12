@@ -46,12 +46,12 @@ export default class Interpolation {
 			const t = maxTime / 1000;
 			const distanceX = (interpolatedData.x - gameObject.x);
 			const velocityX = distanceX / t;
-			gameObject.setVelocityX(velocityX * this.distanceMultiplier());
+			gameObject.setVelocityX(velocityX);
 
 			const distanceY = (interpolatedData.y - gameObject.y);
 			const distanceGravityY = this.gravityDistanceAtTime(t);
 			const velocityY = (distanceY - distanceGravityY) / t;
-			gameObject.setVelocityY(velocityY * this.distanceMultiplier());
+			gameObject.setVelocityY(velocityY);
 
 			this.scene.time.delayedCall(
 				maxTime,
@@ -85,10 +85,6 @@ export default class Interpolation {
 		gameObject.setVelocity(data.velocityX, data.velocityY);
 	}
 
-	private distanceMultiplier() {
-		return 1.502636245994042;
-	}
-
 	private gravityDistanceAtTime(t) {
 		const gravity = this.scene.matter.world.engine.gravity.y;
 
@@ -100,11 +96,11 @@ export default class Interpolation {
 		data: any
 	): any {
 		const t = (currentTimestamp - data.timestamp) / 1000;
-		const distanceX = data.velocityX / this.distanceMultiplier() * t;
+		const distanceX = data.velocityX * t;
 		let distanceY = 0;
 
 		if (data.velocityY != 0) {
-			distanceY = (data.velocityY / this.distanceMultiplier() * t) + this.gravityDistanceAtTime(t);
+			distanceY = (data.velocityY * t) + this.gravityDistanceAtTime(t);
 		}
 
 		data.x = data.x + distanceX;
