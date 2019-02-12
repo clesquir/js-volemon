@@ -30,16 +30,16 @@ export default class ScaleManager {
 		const canvas = this.scene.game.renderer.canvas;
 		const parent = canvas.parentElement;
 
-		const hScale = $(parent).width() / this.gameConfiguration.width();
+		//Set height scale first
 		const vScale = $(parent).height() / this.gameConfiguration.height();
 
-		//Use the smallest scale
-		let scale = hScale;
-		if (vScale < hScale) {
-			scale = vScale;
-		}
+		$(canvas).css('width', (this.gameConfiguration.width() * vScale) + 'px');
+		$(canvas).css('height', (this.gameConfiguration.height() * vScale) + 'px');
 
-		$(canvas).css('width', (this.gameConfiguration.width() * scale) + 'px');
-		$(canvas).css('height', (this.gameConfiguration.height() * scale) + 'px');
+		//Then set width scale
+		const hScale = $(parent).width() / this.gameConfiguration.width();
+
+		$(canvas).css('width', (this.gameConfiguration.width() * hScale) + 'px');
+		$(canvas).css('height', (this.gameConfiguration.height() * hScale) + 'px');
 	}
 }

@@ -145,6 +145,8 @@ Template.gameCanvas.events({
 			zoomedIn = true;
 		}
 
+		window.dispatchEvent(new Event('resize'));
+
 		if (Meteor.userId()) {
 			Meteor.call('saveZoomedInGame', zoomedIn);
 		}
