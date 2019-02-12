@@ -9,9 +9,9 @@ export default class GameCheer {
 	gameInitiator: ClientGameInitiator;
 
 	private cheerFn: {[id: number]: Function} = {};
-	private readonly cheerActivatingTime: 1000;
-	private readonly cheerDisablingTime: 500;
-	private readonly cheerThrottleTime: 5000;
+	private readonly cheerActivatingTime: number = 1000;
+	private readonly cheerDisablingTime: number = 500;
+	private readonly cheerThrottleTime: number = 5000;
 	private emitCheerFn: Function;
 
 	private cheerHostActivating: number;
