@@ -15,6 +15,7 @@ export default class CalculatedComputer implements Computer {
 	private readonly netWidth: number;
 	private readonly netY: number;
 	private readonly debug: boolean;
+	private readonly highVelocity: number = 5;
 
 	//Debug info
 	private zone: Phaser.GameObjects.Graphics;
@@ -82,7 +83,7 @@ export default class CalculatedComputer implements Computer {
 		xAtGround = this.calculateHorizontalRebound(xAtGround);
 		xAtGround = this.calculateNetRebound(xAtGround, ballPosition, gravity);
 
-		const horizontalThreshold = 20;
+		const horizontalThreshold = Math.abs(ballPosition.velocityX) < this.highVelocity ? 20 : 0;
 		const distanceWithTimeToGround = timeToGround * modifiers.velocityXOnMove * modifiers.horizontalMoveMultiplier;
 
 		if (this.debug) {
@@ -193,8 +194,8 @@ export default class CalculatedComputer implements Computer {
 		//Abort calculations
 		if (
 			modifiers.canJump === false ||
-			Math.abs(ballPosition.velocityX) > 5 ||
-			Math.abs(ballPosition.velocityY) > 5
+			Math.abs(ballPosition.velocityX) >= this.highVelocity ||
+			Math.abs(ballPosition.velocityY) >= this.highVelocity
 		) {
 			return false;
 		}
