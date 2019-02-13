@@ -52,6 +52,10 @@ export default class Ball {
 	}
 
 	reset(lastPointTaken: string) {
+		this.ballObject.destroy();
+
+		this.init();
+
 		const hostSide = this.gameConfiguration.ballInitialHostX();
 		const clientSide = this.gameConfiguration.ballInitialClientX();
 		let x;

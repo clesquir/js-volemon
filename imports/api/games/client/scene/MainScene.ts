@@ -20,6 +20,7 @@ import {MainSceneConfigurationData} from "./MainSceneConfigurationData";
 import {BonusPositionData} from "../../bonus/data/BonusPositionData";
 import ScaleManager from "../component/ScaleManager";
 import Player from "../component/Player";
+import Bonus from "../component/Bonus";
 
 const Phaser = require('phaser');
 
@@ -401,6 +402,12 @@ export default class MainScene extends Phaser.Scene {
 					bodyB: pair.bodyB
 				}
 			);
+			this.eventEmitter.emit(
+				eventName, {
+					bodyA: pair.bodyB,
+					bodyB: pair.bodyA
+				}
+			);
 		}
 	}
 
@@ -428,13 +435,18 @@ export default class MainScene extends Phaser.Scene {
 
 	private collidePlayerBonus({bodyA, bodyB}) {
 		if (bodyA.gameObject && bodyA.gameObject.getData('isPlayer') && bodyB.gameObject && bodyB.gameObject.getData('isBonus')) {
-			this.bonuses.onPlayerHitBonus(bodyA.gameObject.getData('owner'), bodyB.gameObject.getData('owner'));
+			const player: Player = bodyA.gameObject.getData('owner');
+			const bonus: Bonus = bodyB.gameObject.getData('owner');
+
+			this.bonuses.onPlayerHitBonus(player, bonus);
 		}
 	}
 
 	private collideBallGround({bodyA, bodyB}) {
 		if (bodyA.gameObject && bodyA.gameObject.getData('isBall') && bodyB === this.level.ballGround()) {
-			this.onBallHitGround(bodyA.gameObject.getData('owner'));
+			const ball: Ball = bodyA.gameObject.getData('owner');
+
+			this.onBallHitGround(ball);
 		}
 	}
 
