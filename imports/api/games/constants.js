@@ -21,7 +21,7 @@ export const BALL_BIG_MASS = 0.2;
 export const BALL_SCALE = 1;
 export const BALL_SMALL_SCALE = 0.75;
 export const BALL_BIG_SCALE = 1.5;
-export const BALL_AIR_FRICTION = 0;
+export const BALL_AIR_FRICTION = 0.001;
 
 export const BONUS_INDICATOR_RADIUS = 15;
 export const BONUS_RADIUS = 17;
