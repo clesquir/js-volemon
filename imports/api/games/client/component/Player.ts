@@ -142,7 +142,7 @@ export default class Player {
 			this.containerPhysics,
 			data,
 			() => this.gameIsOnGoing(),
-			true
+			false
 		);
 	}
 
