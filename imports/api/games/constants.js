@@ -23,7 +23,8 @@ export const BALL_SMALL_SCALE = 0.75;
 export const BALL_BIG_SCALE = 1.5;
 export const BALL_AIR_FRICTION = 0;
 
-export const BONUS_RADIUS = 15;
+export const BONUS_INDICATOR_RADIUS = 15;
+export const BONUS_RADIUS = 17;
 export const BONUS_MASS = 0.36;
 export const BONUS_SCALE = 1;
 export const BONUS_AIR_FRICTION = 0;

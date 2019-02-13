@@ -129,7 +129,7 @@ export default class Bonus {
 	private init() {
 		this.bonusObject = this.scene.matter.add.image(
 			this.initialX,
-			0,
+			this.gameConfiguration.bonusRadius() * this.gameConfiguration.bonusScale(),
 			'bonus-icon',
 			this.bonusReference.atlasFrame,
 			{

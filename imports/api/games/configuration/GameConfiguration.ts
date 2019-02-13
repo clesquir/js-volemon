@@ -8,6 +8,7 @@ import {
 	BALL_SMALL_SCALE,
 	BALL_VERTICAL_SPEED_ON_PLAYER_HIT,
 	BONUS_AIR_FRICTION,
+	BONUS_INDICATOR_RADIUS,
 	BONUS_MASS,
 	BONUS_RADIUS,
 	BONUS_SCALE,
@@ -192,6 +193,10 @@ export default abstract class GameConfiguration {
 	}
 
 	bonusIndicatorRadius(): number {
+		return BONUS_INDICATOR_RADIUS;
+	}
+
+	bonusRadius(): number {
 		return BONUS_RADIUS;
 	}
 
