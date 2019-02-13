@@ -7,7 +7,7 @@ import {GAME_STATUS_STARTED} from '../statusConstants';
 import DeviceController from "../deviceController/DeviceController";
 import GameConfiguration from "../configuration/GameConfiguration";
 import GameData from "../data/GameData";
-import SkinManager from "./components/SkinManager";
+import SkinManager from "./component/SkinManager";
 import StreamBundler from "./streamBundler/StreamBundler";
 import ServerNormalizedTime from "./ServerNormalizedTime";
 import Stream from "../../../lib/stream/Stream";
