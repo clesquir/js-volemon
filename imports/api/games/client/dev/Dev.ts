@@ -68,7 +68,9 @@ export default class Dev {
 	}
 
 	stop() {
-		this.game.stop();
+		if (this.game) {
+			this.game.stop();
+		}
 	}
 
 	beforeStart() {
