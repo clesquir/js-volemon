@@ -115,6 +115,11 @@ export default class Players {
 		ballData: ArtificialIntelligencePositionData,
 		bonusesData: ArtificialIntelligencePositionData[]
 	) {
+		//Creator user controls CPU
+		if (!this.gameData.isUserCreator()) {
+			return;
+		}
+
 		for (let key of this.getComputerPlayerKeys()) {
 			const player = this.getPlayerFromKey(key);
 
@@ -124,6 +129,8 @@ export default class Players {
 					ballData,
 					bonusesData
 				);
+
+				this.sendPlayerPosition(player);
 			}
 		}
 	}
