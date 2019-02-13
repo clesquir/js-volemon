@@ -387,8 +387,18 @@ export default class Player {
 	}
 
 	positionData(): PositionData {
+		if (this.killed) {
+			return {
+				key: this.key,
+				killed: true,
+				isHost: this.isHost,
+				isClient: !this.isHost,
+			};
+		}
+
 		return {
 			key: this.key,
+			killed: false,
 			x: this.containerPhysics.x,
 			y: this.containerPhysics.y,
 			velocityX: this.velocityX(),

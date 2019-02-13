@@ -136,6 +136,10 @@ export default class Players {
 	}
 
 	moveClientPlayer(data: PositionData) {
+		if (data.killed) {
+			return;
+		}
+
 		let player = this.getPlayerFromKey(data.key);
 
 		if (!player && data.key.indexOf('robot-') === 0) {
@@ -383,10 +387,6 @@ export default class Players {
 	}
 
 	private sendPlayerPosition(player: Player) {
-		if (player.killed) {
-			return;
-		}
-
 		let playerPositionData = player.positionData();
 		let playerInterval = PLAYER_INTERVAL;
 
