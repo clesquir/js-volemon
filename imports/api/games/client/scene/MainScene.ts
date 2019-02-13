@@ -19,6 +19,7 @@ import ServerAdapter from "../serverAdapter/ServerAdapter";
 import {MainSceneConfigurationData} from "./MainSceneConfigurationData";
 import {BonusPositionData} from "../../bonus/data/BonusPositionData";
 import ScaleManager from "../component/ScaleManager";
+import Player from "../component/Player";
 
 const Phaser = require('phaser');
 
@@ -400,12 +401,6 @@ export default class MainScene extends Phaser.Scene {
 					bodyB: pair.bodyB
 				}
 			);
-			this.eventEmitter.emit(
-				eventName, {
-					bodyA: pair.bodyB,
-					bodyB: pair.bodyA
-				}
-			);
 		}
 	}
 
@@ -424,7 +419,10 @@ export default class MainScene extends Phaser.Scene {
 
 	private collidePlayerBall({bodyA, bodyB}) {
 		if (bodyA.gameObject && bodyA.gameObject.getData('isPlayer') && bodyB.gameObject && bodyB.gameObject.getData('isBall')) {
-			this.players.onPlayerHitBall(bodyA.gameObject.getData('owner'), bodyB.gameObject.getData('owner'));
+			const player: Player = bodyA.gameObject.getData('owner');
+			const ball: Ball = bodyB.gameObject.getData('owner');
+
+			this.players.onPlayerHitBall(player, ball);
 		}
 	}
 
