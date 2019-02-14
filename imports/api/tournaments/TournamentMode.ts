@@ -14,12 +14,19 @@ export default class TournamentMode {
 	overriddenInitialPlayerScale;
 	overriddenSmallPlayerScale;
 	overriddenBigPlayerScale;
+	overriddenInitialPlayerMass;
+	overriddenSmallPlayerMass;
+	overriddenBigPlayerMass;
 	overriddenInitialBallScale;
 	overriddenSmallBallScale;
 	overriddenBigBallScale;
 	overriddenBallAirFriction;
+	overriddenInitialBallMass;
+	overriddenSmallBallMass;
+	overriddenBigBallMass;
 	overriddenBonusScale;
 	overriddenBonusAirFriction;
+	overriddenBonusMass;
 	overriddenListOfShapes;
 	overriddenAllowedListOfShapes;
 	overriddenCurrentPlayerShape;
@@ -159,6 +166,30 @@ export default class TournamentMode {
 		return this.overriddenBigPlayerScale;
 	}
 
+	overridesInitialPlayerMass(): boolean {
+		return this.overriddenInitialPlayerMass !== undefined;
+	}
+
+	initialPlayerMass(): number {
+		return parseFloat(this.overriddenInitialPlayerMass);
+	}
+
+	overridesSmallPlayerMass(): boolean {
+		return this.overriddenSmallPlayerMass !== undefined;
+	}
+
+	smallPlayerMass(): number {
+		return parseFloat(this.overriddenSmallPlayerMass);
+	}
+
+	overridesBigPlayerMass(): boolean {
+		return this.overriddenBigPlayerMass !== undefined;
+	}
+
+	bigPlayerMass(): number {
+		return parseFloat(this.overriddenBigPlayerMass);
+	}
+
 	overridesInitialBallScale(): boolean {
 		return this.overriddenInitialBallScale !== undefined;
 	}
@@ -188,7 +219,31 @@ export default class TournamentMode {
 	}
 
 	ballAirFriction(): number {
-		return this.overriddenBallAirFriction;
+		return parseFloat(this.overriddenBallAirFriction);
+	}
+
+	overridesInitialBallMass(): boolean {
+		return this.overriddenInitialBallMass !== undefined;
+	}
+
+	initialBallMass(): number {
+		return parseFloat(this.overriddenInitialBallMass);
+	}
+
+	overridesSmallBallMass(): boolean {
+		return this.overriddenSmallBallMass !== undefined;
+	}
+
+	smallBallMass(): number {
+		return parseFloat(this.overriddenSmallBallMass);
+	}
+
+	overridesBigBallMass(): boolean {
+		return this.overriddenBigBallMass !== undefined;
+	}
+
+	bigBallMass(): number {
+		return parseFloat(this.overriddenBigBallMass);
 	}
 
 	overridesBonusScale(): boolean {
@@ -204,7 +259,15 @@ export default class TournamentMode {
 	}
 
 	bonusAirFriction(): number {
-		return this.overriddenBonusAirFriction;
+		return parseFloat(this.overriddenBonusAirFriction);
+	}
+
+	overridesBonusMass(): boolean {
+		return this.overriddenBonusMass !== undefined;
+	}
+
+	bonusMass(): number {
+		return parseFloat(this.overriddenBonusMass);
 	}
 
 	overridesListOfShapes(): boolean {
@@ -374,12 +437,19 @@ export default class TournamentMode {
 		tournamentMode.overriddenInitialPlayerScale = mode.overriddenInitialPlayerScale;
 		tournamentMode.overriddenSmallPlayerScale = mode.overriddenSmallPlayerScale;
 		tournamentMode.overriddenBigPlayerScale = mode.overriddenBigPlayerScale;
+		tournamentMode.overriddenInitialPlayerMass = mode.overriddenInitialPlayerMass;
+		tournamentMode.overriddenSmallPlayerMass = mode.overriddenSmallPlayerMass;
+		tournamentMode.overriddenBigPlayerMass = mode.overriddenBigPlayerMass;
 		tournamentMode.overriddenInitialBallScale = mode.overriddenInitialBallScale;
 		tournamentMode.overriddenSmallBallScale = mode.overriddenSmallBallScale;
 		tournamentMode.overriddenBigBallScale = mode.overriddenBigBallScale;
 		tournamentMode.overriddenBallAirFriction = mode.overriddenBallAirFriction;
+		tournamentMode.overriddenInitialBallMass = mode.overriddenInitialBallMass;
+		tournamentMode.overriddenSmallBallMass = mode.overriddenSmallBallMass;
+		tournamentMode.overriddenBigBallMass = mode.overriddenBigBallMass;
 		tournamentMode.overriddenBonusScale = mode.overriddenBonusScale;
 		tournamentMode.overriddenBonusAirFriction = mode.overriddenBonusAirFriction;
+		tournamentMode.overriddenBonusMass = mode.overriddenBonusMass;
 		tournamentMode.overriddenListOfShapes = mode.overriddenListOfShapes;
 		tournamentMode.overriddenAllowedListOfShapes = mode.overriddenAllowedListOfShapes;
 		tournamentMode.overriddenCurrentPlayerShape = mode.overriddenCurrentPlayerShape;

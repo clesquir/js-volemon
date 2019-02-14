@@ -117,14 +117,26 @@ export default abstract class GameConfiguration {
 	}
 
 	initialPlayerMass(): number {
+		if (this.hasTournament() && this.tournamentMode.overridesInitialPlayerMass()) {
+			return this.tournamentMode.initialPlayerMass();
+		}
+
 		return PLAYER_MASS;
 	}
 
 	smallPlayerMass(): number {
+		if (this.hasTournament() && this.tournamentMode.overridesSmallPlayerMass()) {
+			return this.tournamentMode.smallPlayerMass();
+		}
+
 		return PLAYER_SMALL_MASS;
 	}
 
 	bigPlayerMass(): number {
+		if (this.hasTournament() && this.tournamentMode.overridesBigPlayerMass()) {
+			return this.tournamentMode.bigPlayerMass();
+		}
+
 		return PLAYER_BIG_MASS;
 	}
 
@@ -173,14 +185,26 @@ export default abstract class GameConfiguration {
 	}
 
 	initialBallMass(): number {
+		if (this.hasTournament() && this.tournamentMode.overridesInitialBallMass()) {
+			return this.tournamentMode.initialBallMass();
+		}
+
 		return BALL_MASS;
 	}
 
 	smallBallMass(): number {
+		if (this.hasTournament() && this.tournamentMode.overridesSmallBallMass()) {
+			return this.tournamentMode.smallBallMass();
+		}
+
 		return BALL_SMALL_MASS;
 	}
 
 	bigBallMass(): number {
+		if (this.hasTournament() && this.tournamentMode.overridesBigBallMass()) {
+			return this.tournamentMode.bigBallMass();
+		}
+
 		return BALL_BIG_MASS;
 	}
 
@@ -209,6 +233,10 @@ export default abstract class GameConfiguration {
 	}
 
 	bonusMass(): number {
+		if (this.hasTournament() && this.tournamentMode.overridesBonusMass()) {
+			return this.tournamentMode.bonusMass();
+		}
+
 		return BONUS_MASS;
 	}
 

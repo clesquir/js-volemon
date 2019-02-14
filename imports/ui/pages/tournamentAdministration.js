@@ -248,6 +248,13 @@ const modeOptions = function() {
 	addToMode(mode, 'ball-velocity-on-rebound-on-player', 'overriddenBallVelocityOnReboundOnPlayer');
 	addToMode(mode, 'ball-air-friction', 'overriddenBallAirFriction');
 	addToMode(mode, 'bonus-air-friction', 'overriddenBonusAirFriction');
+	addToMode(mode, 'initial-player-mass', 'overriddenInitialPlayerMass');
+	addToMode(mode, 'small-player-mass', 'overriddenSmallPlayerMass');
+	addToMode(mode, 'big-player-mass', 'overriddenBigPlayerMass');
+	addToMode(mode, 'initial-ball-mass', 'overriddenInitialBallMass');
+	addToMode(mode, 'small-ball-mass', 'overriddenSmallBallMass');
+	addToMode(mode, 'big-ball-mass', 'overriddenBigBallMass');
+	addToMode(mode, 'bonus-mass', 'overriddenBonusMass');
 
 	return mode;
 };

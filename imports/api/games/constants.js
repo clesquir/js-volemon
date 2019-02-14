@@ -7,17 +7,17 @@ export const CLIENT_SIDE = 'client';
 
 export const PLAYER_VELOCITY_X_ON_MOVE = 6;
 export const PLAYER_VELOCITY_Y_ON_JUMP = 6;
-export const PLAYER_MASS = 100;
-export const PLAYER_SMALL_MASS = 70;
-export const PLAYER_BIG_MASS = 200;
+export const PLAYER_MASS = 1000;
+export const PLAYER_SMALL_MASS = 700;
+export const PLAYER_BIG_MASS = 2000;
 export const PLAYER_SCALE = 1;
 export const PLAYER_SMALL_SCALE = 0.5;
 export const PLAYER_BIG_SCALE = 1.5;
 
 export const BALL_VERTICAL_SPEED_ON_PLAYER_HIT = -6.5;
-export const BALL_MASS = 0.1;
-export const BALL_SMALL_MASS = 0.07;
-export const BALL_BIG_MASS = 0.2;
+export const BALL_MASS = 0.0001;
+export const BALL_SMALL_MASS = 0.00007;
+export const BALL_BIG_MASS = 0.0002;
 export const BALL_SCALE = 1;
 export const BALL_SMALL_SCALE = 0.75;
 export const BALL_BIG_SCALE = 1.5;
@@ -25,7 +25,7 @@ export const BALL_AIR_FRICTION = 0.001;
 
 export const BONUS_INDICATOR_RADIUS = 15;
 export const BONUS_RADIUS = 17;
-export const BONUS_MASS = 0.1;
+export const BONUS_MASS = 0.0001;
 export const BONUS_SCALE = 1;
 export const BONUS_AIR_FRICTION = 0;
 
