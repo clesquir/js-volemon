@@ -194,6 +194,8 @@ export default class CalculatedComputer implements Computer {
 		//Abort calculations
 		if (
 			modifiers.canJump === false ||
+			modifiers.verticalMoveMultiplier !== 1 ||
+			modifiers.horizontalMoveMultiplier !== 1 ||
 			Math.abs(ballPosition.velocityX) >= this.highVelocity ||
 			Math.abs(ballPosition.velocityY) >= this.highVelocity
 		) {
