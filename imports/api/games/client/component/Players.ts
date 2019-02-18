@@ -270,7 +270,7 @@ export default class Players {
 				ball.smash(player.isHost);
 			} else if (
 				this.ballReboundOnPlayerEnabled &&
-				!player.isBallBelow(ball.y())
+				!player.isBottomTouchingBall()
 			) {
 				ball.rebound();
 			}

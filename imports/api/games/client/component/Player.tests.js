@@ -216,60 +216,6 @@ describe('Player#isInFrontOfPlayer', function() {
 	});
 });
 
-describe('Player#isBallBelow', function() {
-	const deviceController = new NullDeviceController();
-	const gameConfiguration = new StaticGameConfiguration();
-	const gameData = new StaticGameData();
-	const streamBundler = new CountStreamBundler();
-	const serverNormalizedTime = new ServerNormalizedTime();
-	const skinManager = SkinManager.withDefaults(gameConfiguration);
-	const serverAdapter = new NullServerAdapter();
-
-	const gameBoot = new TestGameBoot(
-		deviceController,
-		gameData,
-		gameConfiguration,
-		skinManager,
-		streamBundler,
-		serverNormalizedTime,
-		serverAdapter
-	);
-	gameBoot.init();
-
-	it('returns false if ball y position is lower than player y position + half its height', function() {
-		const mainScene = gameBoot.gameBoot.mainScene;
-		mainScene.createComponents();
-		const player = mainScene.players.player1;
-
-		player.containerPhysics.x = 200;
-		player.containerPhysics.y = 400;
-
-		assert.isFalse(player.isBallBelow(400));
-	});
-
-	it('returns false if ball y position is equal than player y position + half its height', function() {
-		const mainScene = gameBoot.gameBoot.mainScene;
-		mainScene.createComponents();
-		const player = mainScene.players.player1;
-
-		player.containerPhysics.x = 200;
-		player.containerPhysics.y = 400;
-
-		assert.isFalse(player.isBallBelow(400 + player.playerObject.height / 2));
-	});
-
-	it('returns true if ball y position is greater than player y position + half its height', function() {
-		const mainScene = gameBoot.gameBoot.mainScene;
-		mainScene.createComponents();
-		const player = mainScene.players.player1;
-
-		player.containerPhysics.x = 200;
-		player.containerPhysics.y = 400;
-
-		assert.isTrue(player.isBallBelow(400 + player.playerObject.height / 2 + 0.1));
-	});
-});
-
 describe('Player#move', function() {
 	const deviceController = new NullDeviceController();
 	const gameConfiguration = new StaticGameConfiguration();

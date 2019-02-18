@@ -81,8 +81,11 @@ export default class Player {
 	killed: boolean = false;
 	killing: boolean = false;
 
-	private sensors: any[] = [];
-	private hasBottomTouching: boolean = true;
+	private sensorsJump: any[] = [];
+	private sensorsBall: any[] = [];
+	private hasBottomTouchingGround: boolean = false;
+	private hasBottomTouchingPlayer: boolean = false;
+	private hasBottomTouchingBall: boolean = false;
 	private isJumping: boolean = false;
 	private isJumpingTimer;
 
@@ -112,9 +115,14 @@ export default class Player {
 			this.serverNormalizedTime
 		);
 
-		scene.matter.world.on("beforeupdate", () => this.hasBottomTouching = false, this);
-		this.scene.eventEmitter.on('collisionstart', this.onCollide, this);
-		this.scene.eventEmitter.on('collisionactive', this.onCollide, this);
+		this.scene.eventEmitter.on('beforebeforeupdate', () => {
+			this.hasBottomTouchingGround = false;
+			this.hasBottomTouchingBall = false;
+			this.hasBottomTouchingPlayer = false;
+		}, this);
+		this.scene.eventEmitter.on('beforecollisionstart', this.onCollide, this);
+		this.scene.eventEmitter.on('beforecollisionactive', this.onCollide, this);
+		this.scene.eventEmitter.on('beforecollisionend', this.onCollide, this);
 
 		this.init();
 	}
@@ -167,7 +175,7 @@ export default class Player {
 				this.containerPhysics.setVelocityX(0);
 			}
 
-			if (this.hasBottomTouching && !this.isJumping) {
+			if (this.hasBottomTouchingJumpable() && !this.isJumping) {
 				if (this.alwaysJump || (jumps && this.canJump)) {
 					const verticalMoveMultiplier = this.verticalMoveMultiplier;
 
@@ -227,10 +235,8 @@ export default class Player {
 		return this.isJumpingForward() && this.isInFrontOfPlayer(ballX);
 	}
 
-	isBallBelow(ballY: number): boolean {
-		return (
-			ballY > this.containerPhysics.y + (this.playerObject.height / 2)
-		);
+	isBottomTouchingBall(): boolean {
+		return this.hasBottomTouchingBall;
 	}
 
 	hideFromHimself() {
@@ -500,7 +506,8 @@ export default class Player {
 		const y = this.containerPhysics.y;
 		const bodies = [];
 		const counterweights = [];
-		const sensors = [];
+		let sensorsBottom = [];
+		let sensorsBall = [];
 
 		const matterFromPath = this.scene.matter.verts.fromPath;
 		const matterFromVertices = this.matter().Bodies.fromVertices;
@@ -509,46 +516,61 @@ export default class Player {
 		switch (this.currentShape) {
 			case PLAYER_SHAPE_HALF_CIRCLE:
 				bodies.push(matterFromVertices(x, y, matterFromPath('0 49 0 35 9 20 12 17.5 24 6 40 0 49 0 58 0 74 6 86 17.5 89 20 98 35 98 49')));
-				counterweights.push(matterFromVertices(x, y - 16, matterFromPath('12 20 12 17.5 24 6 40 0 49 0 58 0 74 6 86 17.5 86 20')));
-				sensors.push(matterRectangle(x, y + 20, 98, 2, { isSensor: true }));
+				counterweights.push(matterFromVertices(x, y - 16, matterFromPath('12 20 12 17.5 24 6 40 0 49 0 58 0 74 6 86 17.5 86 20'), { isSensor: true }));
+				sensorsBottom.push(matterRectangle(x, y + 21, 98, 2, { isSensor: true }));
 				break;
 			case PLAYER_SHAPE_TRIANGLE:
 				bodies.push(matterFromVertices(x, y, matterFromPath('0 49 49 0 98 49')));
-				counterweights.push(matterFromVertices(x, y - 12, matterFromPath('25 23 49 0 73 23 49 35')));
-				counterweights.push(matterFromVertices(x, y - 12, matterFromPath('25 23 49 0 73 23 49 35')));
-				counterweights.push(matterFromVertices(x, y - 12, matterFromPath('25 23 49 0 73 23 49 35')));
-				sensors.push(matterRectangle(x, y + 17, 98, 2, { isSensor: true }));
+				counterweights.push(matterFromVertices(x, y - 12, matterFromPath('25 23 49 0 73 23 49 35'), { isSensor: true }));
+				counterweights.push(matterFromVertices(x, y - 12, matterFromPath('25 23 49 0 73 23 49 35'), { isSensor: true }));
+				counterweights.push(matterFromVertices(x, y - 12, matterFromPath('25 23 49 0 73 23 49 35'), { isSensor: true }));
+				counterweights.push(matterFromVertices(x, y - 12, matterFromPath('25 23 49 0 73 23 49 35'), { isSensor: true }));
+				counterweights.push(matterFromVertices(x, y - 12, matterFromPath('25 23 49 0 73 23 49 35'), { isSensor: true }));
+				sensorsBottom.push(matterRectangle(x, y + 17, 98, 2, { isSensor: true }));
 				break;
 			case PLAYER_SHAPE_X:
 				bodies.push(matterFromVertices(x, y, matterFromPath('0 49 0 39 83 0 98 0 98 10 15 49')));
 				bodies.push(matterFromVertices(x, y, matterFromPath('0 10 0 0 15 0 98 39 98 49 83 49')));
-				sensors.push(matterRectangle(x - 39, y + 24, 20, 2, { isSensor: true }));
-				sensors.push(matterRectangle(x, y + 15, 35, 10, { isSensor: true }));
-				sensors.push(matterRectangle(x + 39, y + 24, 20, 2, { isSensor: true }));
+				counterweights.push(matterRectangle(x - 40, y - 20, 13, 8, { isSensor: true }));
+				counterweights.push(matterRectangle(x - 40, y - 20, 13, 8, { isSensor: true }));
+				counterweights.push(matterRectangle(x + 40, y - 20, 13, 8, { isSensor: true }));
+				counterweights.push(matterRectangle(x + 40, y - 20, 13, 8, { isSensor: true }));
+				sensorsBall.push(matterFromVertices(x - 32, y - 6, matterFromPath('0 10 30 24 30 28 0 13'), { isSensor: true }));
+				sensorsBall.push(matterFromVertices(x + 32, y - 6, matterFromPath('98 10 68 24 68 28 98 13'), { isSensor: true }));
+				sensorsBottom.push(matterRectangle(x - 39, y + 25, 20, 2, { isSensor: true }));
+				sensorsBottom.push(matterRectangle(x - 24, y + 20, 14, 10, { isSensor: true }));
+				sensorsBottom.push(matterRectangle(x, y + 15, 35, 10, { isSensor: true }));
+				sensorsBottom.push(matterRectangle(x + 24, y + 20, 14, 10, { isSensor: true }));
+				sensorsBottom.push(matterRectangle(x + 39, y + 25, 20, 2, { isSensor: true }));
 				break;
 			case PLAYER_SHAPE_RECTANGLE:
 				bodies.push(matterRectangle(x, y, 98, 49));
-				sensors.push(matterRectangle(x, y + 24, 98, 2, { isSensor: true }));
+				sensorsBottom.push(matterRectangle(x, y + 25, 98, 2, { isSensor: true }));
 				break;
 			case PLAYER_SHAPE_HYPHEN:
 				bodies.push(matterRectangle(x, y, 48, 11));
-				sensors.push(matterRectangle(x, y + 6, 48, 2, { isSensor: true }));
+				sensorsBottom.push(matterRectangle(x, y + 6, 48, 2, { isSensor: true }));
 				break;
 			case PLAYER_SHAPE_OBELISK:
 				bodies.push(matterRectangle(x, y, 11, 48));
-				sensors.push(matterRectangle(x, y + 24, 11, 2, { isSensor: true }));
+				counterweights.push(matterRectangle(x, y - 12, 9, 2, { isSensor: true }));
+				sensorsBottom.push(matterRectangle(x, y + 25, 11, 2, { isSensor: true }));
 				break;
 			case PLAYER_SHAPE_EQUAL:
-				bodies.push(matterRectangle(x, y - 18, 98, 13));
-				bodies.push(matterRectangle(x, y + 20, 98, 13));
-				sensors.push(matterRectangle(x, y + 26, 98, 2, { isSensor: true }));
+				bodies.push(matterRectangle(x, y - 22, 98, 13));
+				bodies.push(matterRectangle(x, y + 13, 98, 13));
+				counterweights.push(matterRectangle(x, y - 19, 98, 2, { isSensor: true }));
+				sensorsBall.push(matterRectangle(x, y - 4, 94, 30, { isSensor: true }));
+				sensorsBottom.push(matterRectangle(x, y + 20, 98, 2, { isSensor: true }));
 				break;
 			case PLAYER_SHAPE_MAGNET:
-				bodies.push(matterRectangle(x + 12.25, y - 18, 73.5, 13));
-				bodies.push(matterRectangle(x + 12.25, y + 20, 73.5, 13));
-				bodies.push(matterFromVertices(x - 35, y, matterFromPath('0 33 0 16 24.5 0 24.5 49')));
-				sensors.push(matterCircle(x - 37, y + 17, 8, { isSensor: true }));
-				sensors.push(matterRectangle(x + 12.25, y + 26, 73.5, 2, { isSensor: true }));
+				bodies.push(matterRectangle(x + 12.25, y - 19, 73.5, 13));
+				bodies.push(matterRectangle(x + 12.25, y + 17, 73.5, 13));
+				bodies.push(matterFromVertices(x - 35, y - 1, matterFromPath('0 33 0 12 24.5 0 24.5 49')));
+				counterweights.push(matterRectangle(x - 25, y, 24.5, 20, { isSensor: true }));
+				sensorsBall.push(matterRectangle(x + 10, y - 4, 72, 30, { isSensor: true }));
+				sensorsBottom.push(matterCircle(x - 37, y + 17, 8, { isSensor: true }));
+				sensorsBottom.push(matterRectangle(x + 12.25, y + 24, 73.5, 2, { isSensor: true }));
 				break;
 			case PLAYER_SHAPE_CROWN:
 				bodies.push(matterFromVertices(x - 38, y, matterFromPath('0 49 0 0 24.5 24.5 24.5 49')));
@@ -557,55 +579,67 @@ export default class Player {
 				bodies.push(matterFromVertices(x + 41, y - 14, matterFromPath('73.5 24.5 98 0 98 24.5 73.5 24.5')));
 				bodies.push(matterRectangle(x - 24, y + 8, 5, 20));
 				bodies.push(matterRectangle(x + 24, y + 8, 5, 20));
-				counterweights.push(matterFromVertices(x - 41, y - 14, matterFromPath('0 24.5 0 0 24.5 24.5 24.5 24.5')));
-				counterweights.push(matterFromVertices(x, y - 14, matterFromPath('24.5 24.5 24.5 24.5 49 0 73.5 24.5 73.5 24.5')));
-				counterweights.push(matterFromVertices(x, y - 14, matterFromPath('24.5 24.5 24.5 24.5 49 0 73.5 24.5 73.5 24.5')));
-				sensors.push(matterRectangle(x, y + 19, 98, 2, { isSensor: true }));
+				counterweights.push(matterFromVertices(x - 41, y - 14, matterFromPath('0 24.5 0 0 24.5 24.5 24.5 24.5'), { isSensor: true }));
+				counterweights.push(matterFromVertices(x, y - 14, matterFromPath('24.5 24.5 24.5 24.5 49 0 73.5 24.5 73.5 24.5'), { isSensor: true }));
+				counterweights.push(matterFromVertices(x, y - 14, matterFromPath('24.5 24.5 24.5 24.5 49 0 73.5 24.5 73.5 24.5'), { isSensor: true }));
+				counterweights.push(matterFromVertices(x, y - 14, matterFromPath('24.5 24.5 24.5 24.5 49 0 73.5 24.5 73.5 24.5'), { isSensor: true }));
+				sensorsBottom.push(matterRectangle(x, y + 19, 98, 2, { isSensor: true }));
 				break;
 			case PLAYER_SHAPE_RHOMBUS:
 				bodies.push(matterFromVertices(x, y, matterFromPath('0 24.5 49 0 98 24.5 49 49')));
-				sensors.push(matterCircle(x - 25, y + 12.5, 8, { isSensor: true }));
-				sensors.push(matterRectangle(x, y + 23, 10, 5, { isSensor: true }));
-				sensors.push(matterCircle(x + 25, y + 12.5, 8, { isSensor: true }));
+				sensorsBottom.push(matterCircle(x - 25, y + 12.5, 8, { isSensor: true }));
+				sensorsBottom.push(matterRectangle(x, y + 23, 10, 2, { isSensor: true }));
+				sensorsBottom.push(matterCircle(x + 25, y + 12.5, 8, { isSensor: true }));
 				break;
 			case PLAYER_SHAPE_HEXAGON:
 				bodies.push(matterFromVertices(x, y, matterFromPath('24.5 49 0 24.5 24.5 0 73.5 0 98 24.5 73.5 49')));
-				sensors.push(matterCircle(x - 35, y + 12.5, 8, { isSensor: true }));
-				sensors.push(matterRectangle(x, y + 24, 49, 2, { isSensor: true }));
-				sensors.push(matterCircle(x + 35, y + 12.5, 8, { isSensor: true }));
+				sensorsBottom.push(matterCircle(x - 35, y + 12.5, 8, { isSensor: true }));
+				sensorsBottom.push(matterRectangle(x, y + 24, 49, 2, { isSensor: true }));
+				sensorsBottom.push(matterCircle(x + 35, y + 12.5, 8, { isSensor: true }));
 				break;
 			case PLAYER_SHAPE_DOT:
 				bodies.push(matterCircle(x, y, 24.5));
-				sensors.push(matterRectangle(x, y + 24, 28, 5, { isSensor: true }));
+				counterweights.push(matterRectangle(x, y - 16, 16, 8, { isSensor: true }));
+				counterweights.push(matterRectangle(x, y - 16, 16, 8, { isSensor: true }));
+				counterweights.push(matterRectangle(x, y - 16, 16, 8, { isSensor: true }));
+				sensorsBottom.push(matterRectangle(x - 18.25, y + 8, 12.5, 24.5, { isSensor: true }));
+				sensorsBottom.push(matterRectangle(x, y + 24, 28, 6, { isSensor: true }));
+				sensorsBottom.push(matterRectangle(x + 18.25, y + 8, 12.5, 24.5, { isSensor: true }));
 				break;
 			case PLAYER_SHAPE_ELLIPSE:
 				bodies.push(matterFromVertices(x, y, matterFromPath('0 24.5 7.5 11 15 7 32 1.5 49 0 66 1.5 83 7 90.5 11 98 24.5 90.5 38 83 42 66 47.5 49 49 32 47.5 15 42 7.5 38')));
-				counterweights.push(matterFromVertices(x, y - 18, matterFromPath('7.5 11 15 7 32 1.5 49 0 66 1.5 83 7 90.5 11')));
-				sensors.push(matterRectangle(x, y + 21, 80, 10, { isSensor: true }));
+				counterweights.push(matterFromVertices(x, y - 18, matterFromPath('7.5 11 15 7 32 1.5 49 0 66 1.5 83 7 90.5 11'), { isSensor: true }));
+				sensorsBottom.push(matterRectangle(x - 42, y + 9, 12, 17, { isSensor: true }));
+				sensorsBottom.push(matterRectangle(x, y + 22, 80, 8, { isSensor: true }));
+				sensorsBottom.push(matterRectangle(x + 42, y + 9, 12, 17, { isSensor: true }));
 				break;
 			case PLAYER_SHAPE_TRIPLE_COLON:
-				bodies.push(matterRectangle(x - 42.5, y - 18, 13, 13));
-				bodies.push(matterRectangle(x - 42.5, y + 20, 13, 13));
-				bodies.push(matterRectangle(x, y - 18, 13, 13));
-				bodies.push(matterRectangle(x, y + 20, 13, 13));
-				bodies.push(matterRectangle(x + 42.5, y - 18, 13, 13));
-				bodies.push(matterRectangle(x + 42.5, y + 20, 13, 13));
-				counterweights.push(matterRectangle(x - 42.5, y - 18, 13, 4));
-				counterweights.push(matterRectangle(x, y - 18, 13, 4));
-				counterweights.push(matterRectangle(x + 42.5, y - 18, 13, 4));
-				sensors.push(matterRectangle(x - 42.5, y + 25, 13, 5, { isSensor: true }));
-				sensors.push(matterRectangle(x, y + 25, 13, 5, { isSensor: true }));
-				sensors.push(matterRectangle(x + 42.5, y + 25, 13, 5, { isSensor: true }));
+				bodies.push(matterRectangle(x - 42.5, y - 22, 13, 13));
+				bodies.push(matterRectangle(x - 42.5, y + 14, 13, 13));
+				bodies.push(matterRectangle(x, y - 22, 13, 13));
+				bodies.push(matterRectangle(x, y + 14, 13, 13));
+				bodies.push(matterRectangle(x + 42.5, y - 22, 13, 13));
+				bodies.push(matterRectangle(x + 42.5, y + 14, 13, 13));
+				counterweights.push(matterRectangle(x - 42.5, y - 18, 13, 2, { isSensor: true }));
+				counterweights.push(matterRectangle(x, y - 18, 13, 2, { isSensor: true }));
+				counterweights.push(matterRectangle(x + 42.5, y - 18, 13, 2, { isSensor: true }));
+				sensorsBall.push(matterRectangle(x - 42.5, y - 15, 13, 2, { isSensor: true }));
+				sensorsBall.push(matterRectangle(x, y - 15, 13, 2, { isSensor: true }));
+				sensorsBall.push(matterRectangle(x + 42.5, y - 15, 13, 2, { isSensor: true }));
+				sensorsBottom.push(matterRectangle(x - 42.5, y + 21, 13, 2, { isSensor: true }));
+				sensorsBottom.push(matterRectangle(x, y + 21, 13, 2, { isSensor: true }));
+				sensorsBottom.push(matterRectangle(x + 42.5, y + 21, 13, 2, { isSensor: true }));
 				break;
 		}
 
 		this.containerPhysics.setExistingBody(
 			this.matter().Body.create({
-				parts: bodies.concat(counterweights, sensors)
+				parts: [].concat(sensorsBottom, sensorsBall, bodies, counterweights)
 			})
 		);
 
-		this.sensors = sensors;
+		this.sensorsJump = sensorsBottom;
+		this.sensorsBall = sensorsBall.concat(sensorsBottom);
 	}
 
 	private setupBody() {
@@ -784,24 +818,34 @@ export default class Player {
 	}
 
 	private onCollide({bodyA, bodyB}) {
-		for (let sensor of this.sensors) {
-			if (
-				bodyA === sensor &&
-				(
-					bodyB === this.level.hostGround() ||
-					bodyB === this.level.clientGround() ||
-					(bodyB.gameObject && bodyB.gameObject.getData('isHost') === this.isHost)
-				)
-			) {
-				this.hasBottomTouching = true;
+		for (let sensor of this.sensorsJump) {
+			if (bodyA === sensor) {
+				if (bodyB === this.level.hostGround() || bodyB === this.level.clientGround()) {
+					this.hasBottomTouchingGround = true;
+				}
+				if (bodyB.gameObject && bodyB.gameObject.getData('isHost') === this.isHost) {
+					this.hasBottomTouchingPlayer = true;
+				}
 			}
 		}
+
+		for (let sensor of this.sensorsBall) {
+			if (bodyA === sensor) {
+				if (bodyB.gameObject && bodyB.gameObject.getData('isBall')) {
+					this.hasBottomTouchingBall = true;
+				}
+			}
+		}
+	}
+
+	private hasBottomTouchingJumpable(): boolean {
+		return this.hasBottomTouchingGround || this.hasBottomTouchingPlayer;
 	}
 
 	private isJumpingForward(): boolean {
 		return (
 			Math.round(this.velocityY()) < 0 &&
-			!this.hasBottomTouching &&
+			!this.hasBottomTouchingJumpable() &&
 			(
 				(this.isHost && Math.round(this.velocityX()) > 0) ||
 				(!this.isHost && Math.round(this.velocityX()) < 0)

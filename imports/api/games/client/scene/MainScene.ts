@@ -99,6 +99,7 @@ export default class MainScene extends Phaser.Scene {
 		);
 
 		this.eventEmitter = new Phaser.Events.EventEmitter();
+		this.matter.world.on('beforeupdate', () => this.onBeforeUpdate(), this);
 		this.matter.world.on('collisionstart', (event) => this.onCollision(event, 'collisionstart'), this);
 		this.matter.world.on('collisionactive', (event) => this.onCollision(event, 'collisionactive'), this);
 		this.matter.world.on('collisionend', (event) => this.onCollision(event, 'collisionend'), this);
@@ -394,20 +395,29 @@ export default class MainScene extends Phaser.Scene {
 		}
 	}
 
+	private onBeforeUpdate() {
+		this.eventEmitter.emit('beforebeforeupdate');
+		this.eventEmitter.emit('beforeupdate');
+		this.eventEmitter.emit('afterbeforeupdate');
+	}
+
 	private onCollision(event, eventName) {
 		for (let pair of event.pairs) {
-			this.eventEmitter.emit(
-				eventName, {
-					bodyA: pair.bodyA,
-					bodyB: pair.bodyB
-				}
-			);
-			this.eventEmitter.emit(
-				eventName, {
-					bodyA: pair.bodyB,
-					bodyB: pair.bodyA
-				}
-			);
+			const bodiesAB = {
+				bodyA: pair.bodyA,
+				bodyB: pair.bodyB
+			};
+			this.eventEmitter.emit('before' + eventName, bodiesAB);
+			this.eventEmitter.emit(eventName, bodiesAB);
+			this.eventEmitter.emit('after' + eventName, bodiesAB);
+
+			const bodiesBA = {
+				bodyA: pair.bodyB,
+				bodyB: pair.bodyA
+			};
+			this.eventEmitter.emit('before' + eventName, bodiesBA);
+			this.eventEmitter.emit(eventName, bodiesBA);
+			this.eventEmitter.emit('after' + eventName, bodiesBA);
 		}
 	}
 
@@ -425,7 +435,10 @@ export default class MainScene extends Phaser.Scene {
 	}
 
 	private collidePlayerBall({bodyA, bodyB}) {
-		if (bodyA.gameObject && bodyA.gameObject.getData('isPlayer') && bodyB.gameObject && bodyB.gameObject.getData('isBall')) {
+		if (
+			bodyA.gameObject && bodyA.gameObject.getData('isPlayer') && !bodyA.isSensor &&
+			bodyB.gameObject && bodyB.gameObject.getData('isBall')
+		) {
 			const player: Player = bodyA.gameObject.getData('owner');
 			const ball: Ball = bodyB.gameObject.getData('owner');
 
@@ -434,7 +447,10 @@ export default class MainScene extends Phaser.Scene {
 	}
 
 	private collidePlayerBonus({bodyA, bodyB}) {
-		if (bodyA.gameObject && bodyA.gameObject.getData('isPlayer') && bodyB.gameObject && bodyB.gameObject.getData('isBonus')) {
+		if (
+			bodyA.gameObject && bodyA.gameObject.getData('isPlayer') && !bodyA.isSensor &&
+			bodyB.gameObject && bodyB.gameObject.getData('isBonus')
+		) {
 			const player: Player = bodyA.gameObject.getData('owner');
 			const bonus: Bonus = bodyB.gameObject.getData('owner');
 
@@ -443,7 +459,10 @@ export default class MainScene extends Phaser.Scene {
 	}
 
 	private collideBallGround({bodyA, bodyB}) {
-		if (bodyA.gameObject && bodyA.gameObject.getData('isBall') && bodyB === this.level.ballGround()) {
+		if (
+			bodyA.gameObject && bodyA.gameObject.getData('isBall') &&
+			bodyB === this.level.ballGround()
+		) {
 			const ball: Ball = bodyA.gameObject.getData('owner');
 
 			this.onBallHitGround(ball);

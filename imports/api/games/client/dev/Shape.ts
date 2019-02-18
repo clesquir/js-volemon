@@ -7,7 +7,7 @@ export default class Shape extends Dev {
 	players: { [key: string]: Player } = {};
 
 	beforeStart() {
-		this.gameConfiguration.levelConfiguration = LevelConfiguration.definedSize(1450, 560);
+		this.gameConfiguration.levelConfiguration = LevelConfiguration.definedSize(1525, 200);
 	}
 
 	overrideGame() {
@@ -19,7 +19,7 @@ export default class Shape extends Dev {
 		this.gameConfiguration.playerInitialXFromKey = (playerKey) => {
 			return (
 				this.gameConfiguration.playerWidth() / 2 +
-				(this.gameConfiguration.playerWidth() + 5) * (this.shapeKey(playerKey))
+				(this.gameConfiguration.playerWidth() + 10) * (this.shapeKey(playerKey)) + 10
 			);
 		};
 		let countPlayers = 0;
@@ -29,7 +29,7 @@ export default class Shape extends Dev {
 			if (countPlayers <= PLAYER_LIST_OF_SHAPES.length) {
 				return this.gameConfiguration.levelConfiguration.playerInitialY();
 			} else {
-				return this.gameConfiguration.levelConfiguration.playerInitialY() - this.gameConfiguration.playerHeight() - 5;
+				return this.gameConfiguration.levelConfiguration.playerInitialY() - this.gameConfiguration.playerHeight() - 20;
 			}
 		};
 		this.mainScene.players.getPlayerFromKey = (playerKey) => {
