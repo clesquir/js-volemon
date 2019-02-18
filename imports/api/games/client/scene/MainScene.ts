@@ -145,6 +145,7 @@ export default class MainScene extends Phaser.Scene {
 		}
 
 		if (this.gameIsOnGoing()) {
+			//@todo Move this to `this.players.update();`
 			this.players.inputs(this.deviceController);
 			this.players.moveComputers(
 				this.ball.artificialIntelligencePositionData(),
@@ -157,13 +158,13 @@ export default class MainScene extends Phaser.Scene {
 			}
 
 			this.countdown.update();
-
-			if (this.gameData.isUserCreator()) {
-				this.sendBallPosition();
-			}
 		} else {
 			this.stopGame();
 			this.onGameEnd();
+		}
+
+		if (this.gameData.isUserCreator()) {
+			this.sendBallPosition();
 		}
 
 		this.streamBundler.emitBundledStream(
