@@ -9,9 +9,9 @@ export default class FieldLimits {
 	hasNet: boolean;
 
 	private readonly thickness: number = 128;
-	private readonly playerFieldOptions = {isStatic: true, friction: 0, frictionStatic: 0};
-	private readonly ballFieldOptions = {isStatic: true, friction: 0, frictionStatic: 0};
-	private readonly bonusFieldOptions = {isStatic: true, friction: 0, frictionStatic: 0};
+	private readonly playerFieldOptions = {isStatic: true, friction: 0, frictionAir: 0, frictionStatic: 0};
+	private readonly ballFieldOptions = {isStatic: true, friction: 0, frictionAir: 0, frictionStatic: 0};
+	private readonly bonusFieldOptions = {isStatic: true, friction: 0, frictionAir: 0, frictionStatic: 0};
 	private readonly worldRestitution: number = 1;
 	private readonly ballNetRestitution: number = 0.1;
 	private readonly bonusNetRestitution: number = 0.7;
