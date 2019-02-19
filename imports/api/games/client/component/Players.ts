@@ -12,9 +12,11 @@ import {PositionData} from "./PositionData";
 import ServerNormalizedTime from "../ServerNormalizedTime";
 import Animations from "./Animations";
 import {ArtificialIntelligencePositionData} from "../../artificialIntelligence/ArtificialIntelligencePositionData";
+import Bonuses from "./Bonuses";
 
 export default class Players {
 	scene: MainScene;
+	deviceController: DeviceController;
 	gameData: GameData;
 	gameConfiguration: GameConfiguration;
 	streamBundler: StreamBundler;
@@ -42,6 +44,7 @@ export default class Players {
 
 	constructor(
 		scene: MainScene,
+		deviceController: DeviceController,
 		gameData: GameData,
 		gameConfiguration: GameConfiguration,
 		streamBundler: StreamBundler,
@@ -51,6 +54,7 @@ export default class Players {
 		artificialIntelligence: ArtificialIntelligence
 	) {
 		this.scene = scene;
+		this.deviceController = deviceController;
 		this.gameData = gameData;
 		this.gameConfiguration = gameConfiguration;
 		this.streamBundler = streamBundler;
@@ -84,55 +88,13 @@ export default class Players {
 		}
 	}
 
-	updateEyes(ball: Ball) {
-		for (let key of this.getPlayerKeys()) {
-			const player = this.getPlayerFromKey(key);
-
-			if (player) {
-				player.updateEye(ball);
-			}
-		}
-	}
-
-	inputs(deviceController: DeviceController) {
-		const player = this.getCurrentPlayer();
-
-		if (!player) {
-			return;
-		}
-
-		player.move(
-			deviceController.leftPressed(),
-			deviceController.rightPressed(),
-			deviceController.upPressed(),
-			deviceController.downPressed()
+	update(ball: Ball, bonuses: Bonuses) {
+		this.updateEyes(ball);
+		this.inputs();
+		this.moveComputers(
+			ball.artificialIntelligencePositionData(),
+			bonuses.artificialIntelligencePositionData()
 		);
-
-		this.sendPlayerPosition(player);
-	}
-
-	moveComputers(
-		ballData: ArtificialIntelligencePositionData,
-		bonusesData: ArtificialIntelligencePositionData[]
-	) {
-		//Creator user controls CPU
-		if (!this.gameData.isUserCreator()) {
-			return;
-		}
-
-		for (let key of this.getComputerPlayerKeys()) {
-			const player = this.getPlayerFromKey(key);
-
-			if (player) {
-				this.moveComputer(
-					player,
-					ballData,
-					bonusesData
-				);
-
-				this.sendPlayerPosition(player);
-			}
-		}
 	}
 
 	moveClientPlayer(data: PositionData) {
@@ -386,6 +348,35 @@ export default class Players {
 		);
 	}
 
+	private updateEyes(ball: Ball) {
+		for (let key of this.getPlayerKeys()) {
+			const player = this.getPlayerFromKey(key);
+
+			if (player) {
+				player.updateEye(ball);
+			}
+		}
+	}
+
+	private inputs() {
+		const player = this.getCurrentPlayer();
+
+		if (!player) {
+			return;
+		}
+
+		if (this.gameIsOnGoing()) {
+			player.move(
+				this.deviceController.leftPressed(),
+				this.deviceController.rightPressed(),
+				this.deviceController.upPressed(),
+				this.deviceController.downPressed()
+			);
+		}
+
+		this.sendPlayerPosition(player);
+	}
+
 	private sendPlayerPosition(player: Player) {
 		let playerPositionData = player.positionData();
 		let playerInterval = PLAYER_INTERVAL;
@@ -460,21 +451,42 @@ export default class Players {
 		return playerKeys;
 	}
 
-	private moveComputer(
-		player: Player,
+	private moveComputers(
 		ballData: ArtificialIntelligencePositionData,
 		bonusesData: ArtificialIntelligencePositionData[]
 	) {
-		const key = player.key;
-
 		//Creator user controls CPU
 		if (!this.gameData.isUserCreator()) {
 			return;
 		}
 
+		for (let key of this.getComputerPlayerKeys()) {
+			const player = this.getPlayerFromKey(key);
+
+			if (player) {
+				if (this.gameIsOnGoing()) {
+					this.moveComputer(
+						player,
+						ballData,
+						bonusesData
+					);
+				}
+
+				this.sendPlayerPosition(player);
+			}
+		}
+	}
+
+	private moveComputer(
+		player: Player,
+		ballData: ArtificialIntelligencePositionData,
+		bonusesData: ArtificialIntelligencePositionData[]
+	) {
 		if (player.killed) {
 			return;
 		}
+
+		const key = player.key;
 
 		this.artificialIntelligence.computeMovement(
 			key,
@@ -581,5 +593,9 @@ export default class Players {
 				serverTimestamp
 			);
 		}
+	}
+
+	private gameIsOnGoing(): boolean {
+		return this.gameData.isGameStatusStarted();
 	}
 }

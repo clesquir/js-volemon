@@ -84,6 +84,10 @@ export default class Bonuses {
 	}
 
 	update() {
+		if (!this.gameData.hasBonuses || !this.gameIsOnGoing()) {
+			return;
+		}
+
 		this.checkBonuses();
 		this.bonusIndicators.update(this.activeBonuses);
 

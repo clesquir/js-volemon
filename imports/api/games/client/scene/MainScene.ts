@@ -74,6 +74,7 @@ export default class MainScene extends Phaser.Scene {
 		this.artificialIntelligence = new ArtificialIntelligence();
 		this.players = new Players(
 			this,
+			this.deviceController,
 			this.gameData,
 			this.gameConfiguration,
 			this.streamBundler,
@@ -137,28 +138,18 @@ export default class MainScene extends Phaser.Scene {
 	update() {
 		this.streamBundler.resetBundledStreams();
 		this.players.beforeUpdate();
-		this.players.updateEyes(this.ball);
 
 		//Do not allow ball movement if it is frozen
 		if (this.gameData.isUserCreator() && this.ball.isFrozen) {
 			this.ball.freeze();
 		}
 
-		if (this.gameIsOnGoing()) {
-			//@todo Move this to `this.players.update();`
-			this.players.inputs(this.deviceController);
-			this.players.moveComputers(
-				this.ball.artificialIntelligencePositionData(),
-				this.bonuses.artificialIntelligencePositionData()
-			);
-			this.ball.constrainVelocity();
+		this.players.update(this.ball, this.bonuses);
+		this.bonuses.update();
+		this.countdown.update();
+		this.ball.constrainVelocity();
 
-			if (this.gameData.hasBonuses) {
-				this.bonuses.update();
-			}
-
-			this.countdown.update();
-		} else {
+		if (!this.gameIsOnGoing()) {
 			this.stopGame();
 			this.onGameEnd();
 		}
