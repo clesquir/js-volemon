@@ -10,8 +10,8 @@ export default class FieldLimits {
 
 	private readonly thickness: number = 128;
 	private readonly playerFieldOptions = {isStatic: true, friction: 0, frictionAir: 0, frictionStatic: 0};
-	private readonly ballFieldOptions = {isStatic: true, friction: 0, frictionAir: 0, frictionStatic: 0};
-	private readonly bonusFieldOptions = {isStatic: true, friction: 0, frictionAir: 0, frictionStatic: 0};
+	private readonly ballFieldOptions = {isStatic: true, friction: 0, frictionAir: 0, frictionStatic: 0, slop: 0};
+	private readonly bonusFieldOptions = {isStatic: true, friction: 0, frictionAir: 0, frictionStatic: 0, slop: 0};
 	private readonly worldRestitution: number = 1;
 	private readonly ballNetRestitution: number = 0.1;
 	private readonly bonusNetRestitution: number = 0.7;
@@ -165,6 +165,7 @@ export default class FieldLimits {
 			this.thickness,
 			this.ballFieldOptions
 		);
+		this.applyNoFriction(this.ballGround);
 		this.applyWorldRestitution(this.ballGround);
 		this.applyCollisionCategory(
 			this.ballGround,
@@ -179,6 +180,7 @@ export default class FieldLimits {
 			this.thickness,
 			this.ballFieldOptions
 		);
+		this.applyNoFriction(ceiling);
 		this.applyWorldRestitution(ceiling);
 		this.applyCollisionCategory(
 			ceiling,
@@ -193,6 +195,7 @@ export default class FieldLimits {
 			this.gameConfiguration.height() + this.thickness * 2,
 			this.ballFieldOptions
 		);
+		this.applyNoFriction(leftWall);
 		this.applyWorldRestitution(leftWall);
 		this.applyCollisionCategory(
 			leftWall,
@@ -207,6 +210,7 @@ export default class FieldLimits {
 			this.gameConfiguration.height() + this.thickness * 2,
 			this.ballFieldOptions
 		);
+		this.applyNoFriction(rightWall);
 		this.applyWorldRestitution(rightWall);
 		this.applyCollisionCategory(
 			rightWall,
@@ -220,8 +224,9 @@ export default class FieldLimits {
 				this.gameConfiguration.height() - (this.gameConfiguration.groundHeight() + this.gameConfiguration.netHeight()) / 2,
 				this.gameConfiguration.netWidth(),
 				this.gameConfiguration.groundHeight() + this.gameConfiguration.netHeight(),
-				{isStatic: true, friction: 0, frictionStatic: 0, restitution: 0}
+				this.ballFieldOptions
 			);
+			this.applyNoFriction(net);
 			this.applyRestitution(net, this.ballNetRestitution);
 			this.applyCollisionCategory(
 				net,
@@ -239,6 +244,7 @@ export default class FieldLimits {
 			this.thickness,
 			this.bonusFieldOptions
 		);
+		this.applyNoFriction(ground);
 		this.applyWorldRestitution(ground);
 		this.applyCollisionCategory(
 			ground,
@@ -253,6 +259,7 @@ export default class FieldLimits {
 			this.thickness,
 			this.bonusFieldOptions
 		);
+		this.applyNoFriction(ceiling);
 		this.applyWorldRestitution(ceiling);
 		this.applyCollisionCategory(
 			ceiling,
@@ -267,6 +274,7 @@ export default class FieldLimits {
 			this.gameConfiguration.height() + this.thickness * 2,
 			this.bonusFieldOptions
 		);
+		this.applyNoFriction(rightWall);
 		this.applyWorldRestitution(rightWall);
 		this.applyCollisionCategory(
 			rightWall,
@@ -281,6 +289,7 @@ export default class FieldLimits {
 			this.gameConfiguration.height() + this.thickness * 2,
 			this.bonusFieldOptions
 		);
+		this.applyNoFriction(leftWall);
 		this.applyWorldRestitution(leftWall);
 		this.applyCollisionCategory(
 			leftWall,
@@ -296,6 +305,7 @@ export default class FieldLimits {
 				this.gameConfiguration.groundHeight() + this.gameConfiguration.netHeight(),
 				this.bonusFieldOptions
 			);
+			this.applyNoFriction(net);
 			this.applyRestitution(net, this.bonusNetRestitution);
 			this.applyCollisionCategory(
 				net,
@@ -311,6 +321,10 @@ export default class FieldLimits {
 
 	private applyRestitution(limit: any, restitution: number) {
 		limit.restitution = restitution;
+	}
+
+	private applyNoFriction(limit: any) {
+		limit.friction = 0;
 	}
 
 	private applyCollisionCategory(limit: MatterJS.Body, category: number, colliders: number[]) {
