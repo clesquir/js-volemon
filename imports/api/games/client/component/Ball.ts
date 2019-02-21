@@ -1,7 +1,13 @@
 import MainScene from "../scene/MainScene";
 import GameConfiguration from "../../configuration/GameConfiguration";
 import SkinManager from "./SkinManager";
-import {CLIENT_SIDE, CONSTRAINED_VELOCITY, HOST_SIDE, SMASH_MINIMUM_VELOCITY} from "../../constants";
+import {
+	CLIENT_SIDE,
+	CONSTRAINED_VELOCITY,
+	HOST_SIDE,
+	SMASH_MAXIMUM_VELOCITY_Y,
+	SMASH_MINIMUM_VELOCITY_X
+} from "../../constants";
 import Level from "./Level";
 import {ArtificialIntelligencePositionData} from "../../artificialIntelligence/ArtificialIntelligencePositionData";
 import {PositionData} from "./PositionData";
@@ -182,8 +188,12 @@ export default class Ball {
 		newVelocityX = newVelocityX * 2;
 		newVelocityY = newVelocityY / 4;
 
-		if (Math.abs(newVelocityX) < SMASH_MINIMUM_VELOCITY) {
-			newVelocityX = (newVelocityX > 0 ? 1 : -1) * SMASH_MINIMUM_VELOCITY;
+		if (Math.abs(newVelocityX) < SMASH_MINIMUM_VELOCITY_X) {
+			newVelocityX = (newVelocityX > 0 ? 1 : -1) * SMASH_MINIMUM_VELOCITY_X;
+		}
+
+		if (Math.abs(newVelocityY) > SMASH_MAXIMUM_VELOCITY_Y) {
+			newVelocityY = -SMASH_MAXIMUM_VELOCITY_Y;
 		}
 
 		this.ballObject.setVelocity(newVelocityX, newVelocityY);

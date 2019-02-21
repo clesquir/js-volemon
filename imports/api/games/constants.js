@@ -32,7 +32,8 @@ export const BONUS_AIR_FRICTION = 0;
 export const WORLD_GRAVITY = 0.6;
 export const WORLD_RESTITUTION = 1;
 export const CONSTRAINED_VELOCITY = 17;
-export const SMASH_MINIMUM_VELOCITY = 12;
+export const SMASH_MINIMUM_VELOCITY_X = 15;
+export const SMASH_MAXIMUM_VELOCITY_Y = 1.5;
 
 export const DEPTH_CLOUDS = 1;
 export const DEPTH_BONUS_INDICATOR = 2;
