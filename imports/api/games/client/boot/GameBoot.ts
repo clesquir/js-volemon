@@ -8,6 +8,7 @@ import GameConfiguration from "../../configuration/GameConfiguration";
 import ServerAdapter from "../serverAdapter/ServerAdapter";
 import {MainSceneConfigurationData} from "../scene/MainSceneConfigurationData";
 const MatterBody = require('phaser/src/physics/matter-js/lib/body/Body');
+const MatterResolver = require('phaser/src/physics/matter-js/lib/collision/Resolver');
 
 export declare type GameBootConfiguration = {
 	type?: number;
@@ -92,6 +93,9 @@ export class GameBoot {
 			callbacks: {
 				postBoot: (game: Phaser.Game) => {
 					this.mainScene = <any>game.scene.getScene('MainScene');
+
+					//@todo https://github.com/liabru/matter-js/issues/394
+					MatterResolver._restingThresh = 0.001;
 
 					postBoot(game);
 				}

@@ -114,7 +114,7 @@ export default class SkinManager {
 			this.gameConfiguration.ballInitialY(),
 			ballComponent.key,
 			frame,
-			{shape: 'circle'}
+			{shape: {type: 'polygon', sides: 10}, slop: 0}
 		);
 
 		if (ballComponent.animation) {

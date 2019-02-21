@@ -106,9 +106,9 @@ export default class MainScene extends Phaser.Scene {
 		this.matter.world.on('collisionend', (event) => this.onCollision(event, 'collisionend'), this);
 
 		//Improve Continuous Collision Detection
-		this.matter.world.engine.positionIterations = 64;
-		this.matter.world.engine.velocityIterations = 64;
-		this.matter.world.engine.constraintIterations = 10;
+		this.matter.world.engine.positionIterations = 1000;
+		this.matter.world.engine.velocityIterations = 1000;
+		this.matter.world.engine.constraintIterations = 1000;
 	}
 
 	preload() {
