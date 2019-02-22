@@ -189,7 +189,7 @@ export default class Ball {
 		newVelocityY = newVelocityY / 4;
 
 		if (Math.abs(newVelocityX) < SMASH_MINIMUM_VELOCITY_X) {
-			newVelocityX = (newVelocityX > 0 ? 1 : -1) * SMASH_MINIMUM_VELOCITY_X;
+			newVelocityX = (isSmashedByHost ? 1 : -1) * SMASH_MINIMUM_VELOCITY_X;
 		}
 
 		if (Math.abs(newVelocityY) > SMASH_MAXIMUM_VELOCITY_Y) {
