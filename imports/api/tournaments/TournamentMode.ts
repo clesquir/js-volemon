@@ -51,7 +51,7 @@ export default class TournamentMode {
 	}
 
 	worldGravity(): number {
-		return this.overriddenWorldGravity;
+		return parseFloat(this.overriddenWorldGravity);
 	}
 
 	overridesWorldRestitution(): boolean {
@@ -59,7 +59,7 @@ export default class TournamentMode {
 	}
 
 	worldRestitution(): number {
-		return this.overriddenWorldRestitution;
+		return parseFloat(this.overriddenWorldRestitution);
 	}
 
 	overridesMaximumBonusesOnScreen(): boolean {
@@ -67,7 +67,7 @@ export default class TournamentMode {
 	}
 
 	maximumBonusesOnScreen(): number {
-		return this.overriddenMaximumBonusesOnScreen;
+		return parseInt(this.overriddenMaximumBonusesOnScreen);
 	}
 
 	overridesBonusSpawnMinimumFrequence(): boolean {
@@ -75,7 +75,7 @@ export default class TournamentMode {
 	}
 
 	bonusSpawnMinimumFrequence(): number {
-		return this.overriddenBonusSpawnMinimumFrequence;
+		return parseInt(this.overriddenBonusSpawnMinimumFrequence);
 	}
 
 	overridesBonusSpawnInitialMinimumFrequence(): boolean {
@@ -83,7 +83,7 @@ export default class TournamentMode {
 	}
 
 	bonusSpawnInitialMinimumFrequence(): number {
-		return this.overriddenBonusSpawnInitialMinimumFrequence;
+		return parseInt(this.overriddenBonusSpawnInitialMinimumFrequence);
 	}
 
 	overridesBonusSpawnInitialMaximumFrequence(): boolean {
@@ -91,7 +91,7 @@ export default class TournamentMode {
 	}
 
 	bonusSpawnInitialMaximumFrequence(): number {
-		return this.overriddenBonusSpawnInitialMaximumFrequence;
+		return parseInt(this.overriddenBonusSpawnInitialMaximumFrequence);
 	}
 
 	overridesAvailableBonuses(): boolean {
@@ -115,7 +115,7 @@ export default class TournamentMode {
 	}
 
 	bonusDuration(): number {
-		return this.overriddenBonusDuration;
+		return parseInt(this.overriddenBonusDuration);
 	}
 
 	overridesForfeitMinimumPoints(): boolean {
@@ -123,7 +123,7 @@ export default class TournamentMode {
 	}
 
 	forfeitMinimumPoints(): number {
-		return this.overriddenForfeitMinimumPoints;
+		return parseInt(this.overriddenForfeitMinimumPoints);
 	}
 
 	overridesMaximumPoints(): boolean {
@@ -131,7 +131,7 @@ export default class TournamentMode {
 	}
 
 	maximumPoints(): number {
-		return this.overriddenMaximumPoints;
+		return parseInt(this.overriddenMaximumPoints);
 	}
 
 	overridesHasBonuses(): boolean {
@@ -147,7 +147,7 @@ export default class TournamentMode {
 	}
 
 	initialPlayerScale(): number {
-		return this.overriddenInitialPlayerScale;
+		return parseFloat(this.overriddenInitialPlayerScale);
 	}
 
 	overridesSmallPlayerScale(): boolean {
@@ -155,7 +155,7 @@ export default class TournamentMode {
 	}
 
 	smallPlayerScale(): number {
-		return this.overriddenSmallPlayerScale;
+		return parseFloat(this.overriddenSmallPlayerScale);
 	}
 
 	overridesBigPlayerScale(): boolean {
@@ -163,7 +163,7 @@ export default class TournamentMode {
 	}
 
 	bigPlayerScale(): number {
-		return this.overriddenBigPlayerScale;
+		return parseFloat(this.overriddenBigPlayerScale);
 	}
 
 	overridesInitialPlayerMass(): boolean {
@@ -195,7 +195,7 @@ export default class TournamentMode {
 	}
 
 	initialBallScale(): number {
-		return this.overriddenInitialBallScale;
+		return parseFloat(this.overriddenInitialBallScale);
 	}
 
 	overridesSmallBallScale(): boolean {
@@ -203,7 +203,7 @@ export default class TournamentMode {
 	}
 
 	smallBallScale(): number {
-		return this.overriddenSmallBallScale;
+		return parseFloat(this.overriddenSmallBallScale);
 	}
 
 	overridesBigBallScale(): boolean {
@@ -211,7 +211,7 @@ export default class TournamentMode {
 	}
 
 	bigBallScale(): number {
-		return this.overriddenBigBallScale;
+		return parseFloat(this.overriddenBigBallScale);
 	}
 
 	overridesBallAirFriction(): boolean {
@@ -251,7 +251,7 @@ export default class TournamentMode {
 	}
 
 	bonusScale(): number {
-		return this.overriddenBonusScale;
+		return parseFloat(this.overriddenBonusScale);
 	}
 
 	overridesBonusAirFriction(): boolean {
