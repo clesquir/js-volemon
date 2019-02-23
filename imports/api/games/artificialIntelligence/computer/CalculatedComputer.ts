@@ -74,8 +74,11 @@ export default class CalculatedComputer implements Computer {
 		this.dropshot = false;
 
 		const gravity = Math.abs(modifiers.gravity);
+
 		let timeToGround = this.timeToReachY(
-			ballPosition.velocityY, gravity, Math.abs(ballPosition.y - this.groundY + computerPosition.height / 2)
+			ballPosition.velocityY,
+			gravity,
+			Math.abs(ballPosition.y - this.groundY + computerPosition.height / 2)
 		);
 		let xAtGround = ballPosition.x + ballPosition.velocityX * timeToGround;
 
@@ -90,7 +93,7 @@ export default class CalculatedComputer implements Computer {
 			this.ballGroundPrediction.clear();
 			this.ballGroundPrediction.lineStyle(1, this.isLeft ? 0xc94141 : 0x3363a1);
 			this.ballGroundPrediction.strokeCircle(
-				xAtGround - ballPosition.width / 2,
+				xAtGround,
 				this.groundY,
 				ballPosition.width / 2
 			);
@@ -246,8 +249,8 @@ export default class CalculatedComputer implements Computer {
 			this.ballSmashPrediction.clear();
 			this.ballSmashPrediction.lineStyle(1, this.isLeft ? 0xc94141 : 0x3363a1);
 			this.ballSmashPrediction.strokeCircle(
-				ballX - ballPosition.width / 2,
-				ballY - ballPosition.height / 2,
+				ballX,
+				ballY,
 				ballPosition.width / 2
 			);
 		}
@@ -272,19 +275,22 @@ export default class CalculatedComputer implements Computer {
 	}
 
 	private timeToReachY(velocityY: number, gravity: number, distance: number): number {
-		let delta = Math.sqrt((velocityY * velocityY) + (2 * gravity * distance));
+		//Reverse velocity
+		velocityY = -velocityY;
 
-		if (delta === 0) {
-			return 0;
+		//Max height
+		let maxHeight = distance + velocityY * velocityY / (2 * gravity);
+
+		//Time to max height
+		let upTime = velocityY / gravity;
+		if (maxHeight < 0) {
+			upTime = 0;
 		}
 
-		const t = (-velocityY + delta) / gravity;
+		//Time from max height to impact
+		let downTime = Math.sqrt(2 * maxHeight / gravity);
 
-		if (t < 0) {
-			return 0;
-		}
-
-		return t;
+		return upTime + downTime;
 	}
 
 	private calculateVerticalRebound(xAtGround: number, ballPosition, gravity: number): number {
