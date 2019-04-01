@@ -1,108 +1,272 @@
-{"frames": [
-
 {
-	"filename": "cloud",
-	"frame": {"x":1,"y":523,"w":840,"h":177},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":840,"h":177},
-	"sourceSize": {"w":840,"h":177}
-},
-{
-	"filename": "fog",
-	"frame": {"x":1,"y":283,"w":840,"h":238},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":840,"h":238},
-	"sourceSize": {"w":840,"h":238}
-},
-{
-	"filename": "rain-1",
-	"frame": {"x":183,"y":702,"w":180,"h":312},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":180,"h":312},
-	"sourceSize": {"w":180,"h":312}
-},
-{
-	"filename": "rain-2",
-	"frame": {"x":365,"y":702,"w":180,"h":312},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":180,"h":312},
-	"sourceSize": {"w":180,"h":312}
-},
-{
-	"filename": "rain-3",
-	"frame": {"x":547,"y":702,"w":180,"h":312},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":180,"h":312},
-	"sourceSize": {"w":180,"h":312}
-},
-{
-	"filename": "rain-ground",
-	"frame": {"x":871,"y":723,"w":140,"h":25},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":140,"h":25},
-	"sourceSize": {"w":140,"h":25}
-},
-{
-	"filename": "snow-1",
-	"frame": {"x":843,"y":1,"w":180,"h":359},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":180,"h":359},
-	"sourceSize": {"w":180,"h":359}
-},
-{
-	"filename": "snow-2",
-	"frame": {"x":843,"y":362,"w":180,"h":359},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":180,"h":359},
-	"sourceSize": {"w":180,"h":359}
-},
-{
-	"filename": "snow-3",
-	"frame": {"x":1,"y":702,"w":180,"h":359},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":180,"h":359},
-	"sourceSize": {"w":180,"h":359}
-},
-{
-	"filename": "snow-ground",
-	"frame": {"x":729,"y":723,"w":140,"h":26},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":140,"h":26},
-	"sourceSize": {"w":140,"h":26}
-},
-{
-	"filename": "thunder-1",
-	"frame": {"x":1,"y":1,"w":840,"h":280},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":840,"h":280},
-	"sourceSize": {"w":840,"h":280}
-},
-{
-	"filename": "thunder-2",
-	"frame": {"x":729,"y":702,"w":3,"h":3},
-	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":0,"y":0,"w":3,"h":3},
-	"sourceSize": {"w":1,"h":1}
-}],
-"meta": {
-	"app": "http://www.codeandweb.com/texturepacker",
-	"version": "1.0",
-	"image": "texture-atlas.png",
-	"format": "RGBA8888",
-	"size": {"w":1024,"h":1062},
-	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:e0ef9b652b4cdae105392716779af446:a5c2f54bd408ee6337e501fdc71eac4b:a973cd4a72d4c90ced76930eac7fdc63$"
-}
+	"textures": [
+		{
+			"image": "texture-atlas.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 1974,
+				"h": 555
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "snow-1",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 180,
+						"h": 359
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 180,
+						"h": 359
+					},
+					"frame": {
+						"x": 6,
+						"y": 6,
+						"w": 180,
+						"h": 359
+					}
+				},
+				{
+					"filename": "cloud",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 840,
+						"h": 177
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 840,
+						"h": 177
+					},
+					"frame": {
+						"x": 6,
+						"y": 372,
+						"w": 840,
+						"h": 177
+					}
+				},
+				{
+					"filename": "snow-2",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 180,
+						"h": 359
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 180,
+						"h": 359
+					},
+					"frame": {
+						"x": 193,
+						"y": 6,
+						"w": 180,
+						"h": 359
+					}
+				},
+				{
+					"filename": "snow-3",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 180,
+						"h": 359
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 180,
+						"h": 359
+					},
+					"frame": {
+						"x": 380,
+						"y": 6,
+						"w": 180,
+						"h": 359
+					}
+				},
+				{
+					"filename": "rain-1",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 180,
+						"h": 312
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 180,
+						"h": 312
+					},
+					"frame": {
+						"x": 567,
+						"y": 6,
+						"w": 180,
+						"h": 312
+					}
+				},
+				{
+					"filename": "snow-ground",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 140,
+						"h": 26
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 140,
+						"h": 26
+					},
+					"frame": {
+						"x": 567,
+						"y": 325,
+						"w": 140,
+						"h": 26
+					}
+				},
+				{
+					"filename": "thunder-2",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 1,
+						"h": 1
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 567,
+						"y": 358,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
+					"filename": "rain-ground",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 140,
+						"h": 25
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 140,
+						"h": 25
+					},
+					"frame": {
+						"x": 714,
+						"y": 325,
+						"w": 140,
+						"h": 25
+					}
+				},
+				{
+					"filename": "rain-2",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 180,
+						"h": 312
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 180,
+						"h": 312
+					},
+					"frame": {
+						"x": 754,
+						"y": 6,
+						"w": 180,
+						"h": 312
+					}
+				},
+				{
+					"filename": "thunder-1",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 840,
+						"h": 280
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 840,
+						"h": 280
+					},
+					"frame": {
+						"x": 941,
+						"y": 6,
+						"w": 840,
+						"h": 280
+					}
+				},
+				{
+					"filename": "rain-3",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 180,
+						"h": 312
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 180,
+						"h": 312
+					},
+					"frame": {
+						"x": 1788,
+						"y": 6,
+						"w": 180,
+						"h": 312
+					}
+				},
+				{
+					"filename": "fog",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 840,
+						"h": 238
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 840,
+						"h": 238
+					},
+					"frame": {
+						"x": 941,
+						"y": 293,
+						"w": 840,
+						"h": 238
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:bcc8d27608bbb2950c906b1fc5fe40b7:8b44842ccff4df05830fcce3fd8a160f:a973cd4a72d4c90ced76930eac7fdc63$"
+	}
 }

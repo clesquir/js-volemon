@@ -1,5 +1,5 @@
 import {Meteor} from 'meteor/meteor';
-import * as Moment from 'meteor/momentjs:moment';
+import moment from 'moment';
 import {Games} from '/imports/api/games/games.js';
 import {
 	GAME_STATUS_REGISTRATION,
@@ -24,7 +24,7 @@ export default class TournamentFinish {
 		const tournaments = Tournaments.find({'status.id': 'approved', isPublished: false});
 
 		tournaments.forEach((tournament) => {
-			if (Moment.moment(tournament.endDate, "YYYY-MM-DD ZZ").diff(new Date()) < 0) {
+			if (moment(tournament.endDate, "YYYY-MM-DD ZZ").diff(new Date()) < 0) {
 				this.onFinish(tournament._id);
 			}
 		});

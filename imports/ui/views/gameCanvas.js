@@ -145,6 +145,8 @@ Template.gameCanvas.events({
 			zoomedIn = true;
 		}
 
+		window.dispatchEvent(new Event('resize'));
+
 		if (Meteor.userId()) {
 			Meteor.call('saveZoomedInGame', zoomedIn);
 		}
@@ -152,7 +154,7 @@ Template.gameCanvas.events({
 });
 
 Template.gameCanvas.rendered = function() {
-	$(this.find('.game-container')).on('mousemove', '#gameContainer', mouseMoveShowsCursor);
+	$(this.find('.game-container')).on('mousemove', '#game-container', mouseMoveShowsCursor);
 };
 
 let mouseHideTimer;
@@ -168,8 +170,8 @@ const mouseMoveShowsCursor = function(e) {
 const gameContainer = function(e) {
 	let gameContainer = $(e.target);
 
-	if (!gameContainer.is('#gameContainer')) {
-		gameContainer = gameContainer.parent('#gameContainer');
+	if (!gameContainer.is('#game-container')) {
+		gameContainer = gameContainer.parent('#game-container');
 	}
 
 	return gameContainer;

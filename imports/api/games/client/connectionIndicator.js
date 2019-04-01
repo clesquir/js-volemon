@@ -1,9 +1,8 @@
 import {Meteor} from 'meteor/meteor';
 import {Session} from 'meteor/session';
-import {stream} from '/imports/api/games/client/routeInitiator.js';
 
 let connectionIndicatorTimer;
-export const updateConnectionIndicator = function() {
+export const updateConnectionIndicator = function(stream) {
 	const setConnectionIndicatorClass = function() {
 		let connectionIndicatorClass = 'connection-indicator-light-red';
 

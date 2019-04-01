@@ -1,60 +1,36 @@
 <template name="skin">
 
-	<style>
-		#devSkin {
-			position: relative;
-			height: 100%;
-			width: 100%;
-		}
-
-		#devSkin .app-section-inner {
-			flex-direction: column;
-			padding-bottom: 85px;
-		}
-
-		#devSkin .skin-buttons {
-			margin-bottom: 10px;
-		}
-
-		#devSkin .skin-options {
-			margin-top: 10px;
-		}
-
-		#devSkin .skin-options .button {
-			font-size: 10px;
-		}
-
-		.option-selected {
-			background: #b0b0b0;
-		}
-
-		.option-selected:hover {
-			background: #a0a0a0;
-		}
-
-		#devGameContainer {
-			width: 100%;
-			height: 100%;
-			display: flex;
-			justify-content: center;
-		}
-	</style>
-
-	<div id="devSkin" class="app-section app-section-min-width game-canvas-container">
+	<div id="dev-skin" class="dev-game-page app-section app-section-min-width game-canvas-container">
 
 		<div class="app-section-inner">
 
-			<div class="skin-buttons">
+			<div class="dev-buttons">
 
-				<div class="skin-options">
+				<div class="dev-options">
 					{{#each skins}}
 						<a href="#" class="button {{#if skinIsSelected _id}}option-selected{{/if}}" data-action="change-skin" data-skin-id="{{_id}}">{{name}}</a>
 					{{/each}}
 				</div>
 
-				<div class="skin-options">
+				<div class="dev-options">
 					<a href="#" class="button {{#if modeIsSelected '1vs1'}}option-selected{{/if}}" data-action="change-mode" data-mode-id="1vs1">1 VS 1</a>
 					<a href="#" class="button {{#if modeIsSelected '2vs2'}}option-selected{{/if}}" data-action="change-mode" data-mode-id="2vs2">2 VS 2</a>
+				</div>
+
+				<div class="dev-options">
+					<a href="#" class="button {{#if pluginEnabled}}option-selected{{/if}}" data-action="switch-plugin">
+						Weather plugin {{#if pluginEnabled}}enabled{{else}}disabled{{/if}}
+					</a>
+					<a href="#" class="button {{#if timeOfDayTwilightSelected }}option-selected{{/if}}" data-action="change-time-of-day" data-time-of-day-id="{{timeOfDayTwilight}}">Twilight</a>
+					<a href="#" class="button {{#if timeOfDayDaylightSelected }}option-selected{{/if}}" data-action="change-time-of-day" data-time-of-day-id="{{timeOfDayDaylight}}">Daylight</a>
+					<a href="#" class="button {{#if timeOfDayNightSelected }}option-selected{{/if}}" data-action="change-time-of-day" data-time-of-day-id="{{timeOfDayNight}}">Night</a>
+					<a href="#" class="button {{#if conditionClearSelected }}option-selected{{/if}}" data-action="change-condition" data-condition-id="{{conditionClear}}">Clear</a>
+					<a href="#" class="button {{#if conditionRainSelected }}option-selected{{/if}}" data-action="change-condition" data-condition-id="{{conditionRain}}">Rain</a>
+					<a href="#" class="button {{#if conditionThunderSelected }}option-selected{{/if}}" data-action="change-condition" data-condition-id="{{conditionThunder}}">Thunder</a>
+					<a href="#" class="button {{#if conditionSnowSelected }}option-selected{{/if}}" data-action="change-condition" data-condition-id="{{conditionSnow}}">Snow</a>
+					<a href="#" class="button {{#if conditionFogSelected }}option-selected{{/if}}" data-action="change-condition" data-condition-id="{{conditionFog}}">Fog</a>
+					<a href="#" class="button {{#if conditionWindSelected }}option-selected{{/if}}" data-action="change-condition" data-condition-id="{{conditionWind}}">Wind</a>
+					<a href="#" class="button {{#if conditionCloudSelected }}option-selected{{/if}}" data-action="change-condition" data-condition-id="{{conditionCloud}}">Cloud</a>
 				</div>
 
 			</div>
@@ -82,7 +58,7 @@
 					<div class="point-timer">{{pointTimer}}</div>
 				</div>
 
-				<div id="devGameContainer" class="page game"></div>
+				<div id="game-container" class="page game"></div>
 
 				<div id="cheer-host" class="cheer-item cheer-host cheer-for-viewer" data-action="cheer-host">
 					<div class="cheer-icon"></div>

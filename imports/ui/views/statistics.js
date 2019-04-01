@@ -1,9 +1,9 @@
 import {INITIAL_ELO_RATING} from '/imports/api/profiles/constants.js';
-import TournamentMode from '/imports/api/tournaments/TournamentMode.js';
+import TournamentMode from '/imports/api/tournaments/TournamentMode';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {getWinRateFromNumbers} from '/imports/lib/utils.js';
 import {Meteor} from 'meteor/meteor';
-import * as Moment from 'meteor/momentjs:moment';
+import moment from 'moment';
 import {Session} from 'meteor/session';
 import {Template} from 'meteor/templating';
 
@@ -134,7 +134,7 @@ Template.statistics.helpers({
 	longestGameInformation: function(statisticName) {
 		if (Session.get(statisticName)) {
 			if (Object.keys(Session.get(statisticName)).length > 0) {
-				return 'Game date: ' + Moment.moment(Session.get(statisticName).startedAt).format('YYYY-MM-DD HH:mm') + '<br />' +
+				return 'Game date: ' + moment(Session.get(statisticName).startedAt).format('YYYY-MM-DD HH:mm') + '<br />' +
 					'Opponent: ' + Session.get(statisticName).playerName;
 			} else {
 				return '';
@@ -146,7 +146,7 @@ Template.statistics.helpers({
 	longestGameDuration: function(statisticName) {
 		if (Session.get(statisticName)) {
 			if (Object.keys(Session.get(statisticName)).length > 0) {
-				return Moment.moment(Session.get(statisticName).duration).format('mm:ss');
+				return moment(Session.get(statisticName).duration).format('mm:ss');
 			} else {
 				return '-';
 			}
@@ -159,7 +159,7 @@ Template.statistics.helpers({
 			if (!Session.get(statisticName)) {
 				return '';
 			}
-			return 'Game date: ' + Moment.moment(Session.get(statisticName).timestamp).format('YYYY-MM-DD HH:mm');
+			return 'Game date: ' + moment(Session.get(statisticName).timestamp).format('YYYY-MM-DD HH:mm');
 		}
 		return '<div class="loading-icon fa fa-spinner fa-pulse" />';
 	},
@@ -208,8 +208,8 @@ Template.statistics.helpers({
 	totalPlayingTimeTooltip: function() {
 		if (Session.get('totalPlayingTime')) {
 			if (Object.keys(Session.get('totalPlayingTime')).length > 0 && Session.get('totalPlayingTime').firstGame) {
-				return 'First game: ' + Moment.moment(Session.get('totalPlayingTime').firstGame).format('YYYY-MM-DD HH:mm') + '<br />' +
-					'Last game: ' + Moment.moment(Session.get('totalPlayingTime').lastGame).format('YYYY-MM-DD HH:mm');
+				return 'First game: ' + moment(Session.get('totalPlayingTime').firstGame).format('YYYY-MM-DD HH:mm') + '<br />' +
+					'Last game: ' + moment(Session.get('totalPlayingTime').lastGame).format('YYYY-MM-DD HH:mm');
 			} else {
 				return '';
 			}

@@ -9,7 +9,7 @@ import {
 	validateFieldsPresenceAndMarkInvalid
 } from '/imports/ui/util/form.js';
 import {Meteor} from 'meteor/meteor';
-import * as Moment from 'meteor/momentjs:moment';
+import moment from 'moment';
 import {Session} from 'meteor/session';
 import {Template} from 'meteor/templating';
 
@@ -36,7 +36,7 @@ Template.username.helpers({
 		const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
 
 		if (userConfiguration && userConfiguration.lastUsernameUpdate) {
-			return Moment.moment(userConfiguration.lastUsernameUpdate).format('YYYY-MM-DD');
+			return moment(userConfiguration.lastUsernameUpdate).format('YYYY-MM-DD');
 		}
 
 		return '';

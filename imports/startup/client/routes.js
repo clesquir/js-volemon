@@ -26,6 +26,7 @@ import '/imports/ui/components/textSwitch.js';
 
 import '/imports/ui/pages/app.js';
 import '/imports/ui/pages/dev/ai.js';
+import '/imports/ui/pages/dev/engine.js';
 import '/imports/ui/pages/dev/environment.js';
 import '/imports/ui/pages/dev/shape.js';
 import '/imports/ui/pages/dev/skin.js';
@@ -100,6 +101,9 @@ Router.map(function() {
 	if (Meteor.isDevelopment) {
 		this.route('ai', {
 			path: '/dev/ai'
+		});
+		this.route('engine', {
+			path: '/dev/engine'
 		});
 		this.route('environment', {
 			path: '/dev/environment'

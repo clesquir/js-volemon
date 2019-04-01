@@ -1,10 +1,10 @@
-import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGameConfiguration.js';
+import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGameConfiguration';
 import {isTwoVersusTwoGameMode, ONE_VS_ONE_GAME_MODE} from '/imports/api/games/constants.js';
 import GameForfeited from '/imports/api/games/events/GameForfeited.js';
 import GameTimedOut from '/imports/api/games/events/GameTimedOut.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import GameInitiator from '/imports/api/games/server/GameInitiator.js';
+import ServerGameInitiator from '/imports/api/games/server/ServerGameInitiator';
 import {finishGame} from '/imports/api/games/server/onGameFinished.js';
 import {PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
 import {
@@ -24,7 +24,7 @@ import {Random} from 'meteor/random';
 
 /**
  * @param {string} userId
- * @param {GameInitiator[]} gameInitiators
+ * @param {ServerGameInitiator[]} gameInitiators
  * @param modeSelection
  * @param {boolean} isPrivate
  * @param {boolean} isPractice
@@ -96,7 +96,7 @@ export const createGame = function(
 		Games.update({_id: id}, {$set: {isPracticeGame: true}});
 	}
 
-	gameInitiators[id] = new GameInitiator(id);
+	gameInitiators[id] = new ServerGameInitiator(id);
 	gameInitiators[id].init();
 
 	return id;
@@ -183,7 +183,7 @@ export const joinGame = function(user, gameId, isReady = false) {
 
 /**
  * @param {string} gameId
- * @param {GameInitiator[]} gameInitiators
+ * @param {ServerGameInitiator[]} gameInitiators
  */
 export const startGame = function(gameId, gameInitiators) {
 	let game = Games.findOne(gameId);
@@ -218,7 +218,7 @@ const gameRematchInCreation = {};
  * @param {string} userId
  * @param {string} gameId
  * @param {boolean} accepted
- * @param {GameInitiator[]} gameInitiators
+ * @param {ServerGameInitiator[]} gameInitiators
  */
 export const replyRematch = function(userId, gameId, accepted, gameInitiators) {
 	const game = Games.findOne(gameId);

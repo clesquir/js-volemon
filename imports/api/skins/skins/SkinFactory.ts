@@ -6,7 +6,7 @@ import {
 	SKIN_MARIO_BROS,
 	SKIN_SPACE,
 	SKIN_XMAS
-} from 'imports/api/skins/skinConstants';
+} from '../skinConstants';
 import DefaultSkin from './DefaultSkin';
 import DevaltoSkin from './DevaltoSkin';
 import HalloweenSkin from './HalloweenSkin';

@@ -1,7 +1,7 @@
 import {isTwoVersusTwoGameMode} from '/imports/api/games/constants.js';
 import {padNumber, timeElapsedSince} from '/imports/lib/utils.js';
 import {Meteor} from 'meteor/meteor';
-import * as Moment from 'meteor/momentjs:moment';
+import moment from 'moment';
 import {Mongo} from 'meteor/mongo';
 import {ReactiveDict} from 'meteor/reactive-dict';
 import {Session} from 'meteor/session';
@@ -28,7 +28,7 @@ Template.recentGames.helpers({
 	},
 
 	getStartedAtDateTime: function() {
-		return Moment.moment(this.startedAt).format('YYYY-MM-DD HH:mm');
+		return moment(this.startedAt).format('YYYY-MM-DD HH:mm');
 	},
 
 	wonOrLoss: function(userId) {

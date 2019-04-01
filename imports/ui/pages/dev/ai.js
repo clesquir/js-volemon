@@ -1,4 +1,4 @@
-import Ai from '/imports/api/games/client/dev/Ai.js';
+import Ai from '/imports/api/games/client/dev/Ai';
 import {Template} from 'meteor/templating';
 
 import './ai.html';
@@ -9,8 +9,8 @@ let started = new ReactiveVar(false);
 const genomesFromExisting = new ReactiveVar(true);
 const firstPlayerMode = new ReactiveVar('CPU');
 const secondPlayerMode = new ReactiveVar('CPU');
-const rendererEnabled = new ReactiveVar(false);
-const fullSpeedEnabled = new ReactiveVar(true);
+const rendererEnabled = new ReactiveVar(true);
+const timeScale = new ReactiveVar(1);
 
 Template.ai.rendered = function() {
 	ai = new Ai();
@@ -18,7 +18,7 @@ Template.ai.rendered = function() {
 	setupFirstPlayerMode();
 	setupSecondPlayerMode();
 	enableRenderer();
-	enableFullSpeed();
+	setupTimeScale();
 };
 
 Template.ai.destroyed = function() {
@@ -63,7 +63,10 @@ Template.ai.helpers({
 		return rendererEnabled.get();
 	},
 	fullSpeedEnabled: function() {
-		return fullSpeedEnabled.get();
+		return timeScale.get() === 2;
+	},
+	slowSpeedEnabled: function() {
+		return timeScale.get() === 0.5;
 	}
 });
 
@@ -119,9 +122,22 @@ Template.ai.events({
 		enableRenderer();
 	},
 	'click [data-action="speed-up-game"]': function() {
-		fullSpeedEnabled.set(!fullSpeedEnabled.get());
+		switch(timeScale.get()) {
+			case 0.5:
+				timeScale.set(1);
+				break;
+			case 1:
+				timeScale.set(2);
+				break;
+			case 2:
+				timeScale.set(0.5);
+				break;
+		}
 
-		enableFullSpeed();
+		setupTimeScale();
+	},
+	'click [data-action="stop-point"]': function() {
+		ai.stopPoint();
 	}
 });
 
@@ -192,10 +208,16 @@ const enableRenderer = function() {
 	}
 };
 
-const enableFullSpeed = function() {
-	if (fullSpeedEnabled.get()) {
-		ai.speedUpGame();
-	} else {
-		ai.normalGameSpeed();
+const setupTimeScale = function() {
+	switch (timeScale.get()) {
+		case 0.5:
+			ai.slowDownGame();
+			break;
+		case 1:
+			ai.normalGameSpeed();
+			break;
+		case 2:
+			ai.speedUpGame();
+			break;
 	}
 };

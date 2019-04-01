@@ -1,0 +1,35 @@
+<template name="engine">
+
+	<div id="dev-engine" class="dev-game-page app-section app-section-min-width game-canvas-container">
+
+		<div class="app-section-inner">
+
+			<div class="dev-buttons">
+
+				<div class="dev-options">
+					<div>
+						<a href="#" class="button" data-action="change-shape">
+							Shape: {{currentShape}}
+						</a>
+
+						<a href="#" class="button" data-action="change-player-scale">
+							Scale: {{currentPlayerScale}}
+						</a>
+					</div>
+				</div>
+
+				{{#unless started}}
+					<a href="#" class="button" style="margin-top: 20px;" data-action="start-game">Start</a>
+				{{/unless}}
+
+			</div>
+
+			<div class="game-container">
+				<div id="game-container" class="page game"></div>
+			</div>
+
+		</div>
+
+	</div>
+
+</template>

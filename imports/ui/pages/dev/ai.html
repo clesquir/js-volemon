@@ -1,83 +1,69 @@
 <template name="ai">
 
-	<style>
-		#devAi {
-			position: relative;
-			height: 100%;
-			width: 100%;
-		}
-
-		#devAi .app-section-inner {
-			flex-direction: column;
-		}
-
-		#devAi .ai-options {
-			margin-bottom: 10px;
-		}
-
-		#devAi .ai-options .button {
-			margin-top: 10px;
-			font-size: 10px;
-		}
-
-		#devGameContainer {
-			width: 100%;
-			height: 100%;
-			display: flex;
-			justify-content: center;
-		}
-	</style>
-
-	<div id="devAi" class="app-section app-section-min-width game-canvas-container">
+	<div id="dev-ai" class="dev-game-page app-section app-section-min-width game-canvas-container">
 
 		<div class="app-section-inner">
 
-			<div class="ai-options">
-				<div>
-					<a href="#" class="button" data-action="start-genomes-from-existing">
-						{{#if genomesFromExisting}}Genomes from existing{{else}}Genomes from scratch{{/if}}
-					</a>
+			<div class="dev-buttons">
 
-					<a href="#" class="button" data-action="switch-first-player">
-						{{#if firstPlayerHuman}}
-							You are first player
-						{{else}}
-							{{#if firstPlayerMLLearning}}
-								First player ML learning
+				<div class="dev-options">
+					<div>
+						<a href="#" class="button" data-action="start-genomes-from-existing">
+							{{#if genomesFromExisting}}Genomes from existing{{else}}Genomes from scratch{{/if}}
+						</a>
+
+						<a href="#" class="button" data-action="switch-first-player">
+							{{#if firstPlayerHuman}}
+								You are first player
 							{{else}}
-								{{#if firstPlayerMLNotLearning}}
-									First player ML not learning
+								{{#if firstPlayerMLLearning}}
+									First player ML learning
 								{{else}}
-									First player CPU
+									{{#if firstPlayerMLNotLearning}}
+										First player ML not learning
+									{{else}}
+										First player CPU
+									{{/if}}
 								{{/if}}
 							{{/if}}
-						{{/if}}
-					</a>
+						</a>
 
-					<a href="#" class="button" data-action="switch-second-player">
-						{{#if secondPlayerHuman}}
-							You are second player
-						{{else}}
-							{{#if secondPlayerMLLearning}}
-								Second player ML learning
+						<a href="#" class="button" data-action="switch-second-player">
+							{{#if secondPlayerHuman}}
+								You are second player
 							{{else}}
-								{{#if secondPlayerMLNotLearning}}
-									Second player ML not learning
+								{{#if secondPlayerMLLearning}}
+									Second player ML learning
 								{{else}}
-									Second player CPU
+									{{#if secondPlayerMLNotLearning}}
+										Second player ML not learning
+									{{else}}
+										Second player CPU
+									{{/if}}
 								{{/if}}
 							{{/if}}
-						{{/if}}
-					</a>
+						</a>
 
-					<a href="#" class="button" data-action="enable-renderer">
-						{{#if rendererEnabled}}Auto renderer{{else}}Headless renderer{{/if}}
-					</a>
+						<a href="#" class="button" data-action="enable-renderer">
+							{{#if rendererEnabled}}Auto renderer{{else}}Headless renderer{{/if}}
+						</a>
 
-					<a href="#" class="button" data-action="speed-up-game">
-						{{#if fullSpeedEnabled}}Full speed{{else}}Normal speed{{/if}}
-					</a>
+						<a href="#" class="button" data-action="speed-up-game">
+							{{#if fullSpeedEnabled}}
+								Full speed
+							{{else}}
+								{{#if slowSpeedEnabled}}
+									Slow speed
+								{{else}}
+									Normal speed
+								{{/if}}
+							{{/if}}
+						</a>
+
+						<a href="#" class="button" data-action="stop-point">Stop point</a>
+					</div>
 				</div>
+
 			</div>
 
 			{{#unless started}}
@@ -85,7 +71,7 @@
 			{{/unless}}
 
 			<div class="game-container">
-				<div id="devGameContainer" class="page game"></div>
+				<div id="game-container" class="page game"></div>
 			</div>
 
 		</div>

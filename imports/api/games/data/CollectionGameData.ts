@@ -1,7 +1,5 @@
-import {isTwoVersusTwoGameMode} from 'imports/api/games/constants';
-import {Games} from 'imports/api/games/games';
-import {Players} from 'imports/api/games/players';
-import {PLAYER_DEFAULT_SHAPE} from 'imports/api/games/shapeConstants';
+import {isTwoVersusTwoGameMode} from '../constants';
+import {PLAYER_DEFAULT_SHAPE} from '../shapeConstants';
 import {
 	hasGameAborted,
 	hasGameStatusEndedWithAWinner,
@@ -9,9 +7,11 @@ import {
 	isGameStatusOnGoing,
 	isGameStatusStarted,
 	isMatchPoint
-} from 'imports/api/games/utils';
-import {Tournaments} from 'imports/api/tournaments/tournaments';
+} from '../utils';
+import {Tournaments} from '../../tournaments/tournaments';
 import GameData from "./GameData";
+import {Players} from "../players";
+import {Games} from "../games";
 
 export default class CollectionGameData implements GameData {
 	gameId: string;
@@ -78,16 +78,6 @@ export default class CollectionGameData implements GameData {
 	}
 
 	getPlayerShapeFromKey(playerKey: string): string {
-		let player = this.gamePlayerFromKey(playerKey);
-
-		if (!player || !player.shape) {
-			return PLAYER_DEFAULT_SHAPE;
-		}
-
-		return player.shape;
-	}
-
-	getPlayerPolygonFromKey(playerKey: string): string {
 		let player = this.gamePlayerFromKey(playerKey);
 
 		if (!player || !player.shape) {

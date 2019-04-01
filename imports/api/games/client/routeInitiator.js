@@ -1,11 +1,9 @@
 import {destroyConnectionIndicator, updateConnectionIndicator} from '/imports/api/games/client/connectionIndicator';
 import GameCheer from '/imports/api/games/client/GameCheer';
-import GameInitiator from '/imports/api/games/client/GameInitiator';
 import GameNotifier from '/imports/api/games/client/GameNotifier';
 import GameReaction from '/imports/api/games/client/GameReaction';
 import GameRematch from '/imports/api/games/client/GameRematch';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime';
-import GameSkin from '/imports/api/games/client/skin/GameSkin';
 import GameStreamBundler from '/imports/api/games/client/streamBundler/GameStreamBundler';
 import NullStreamBundler from '/imports/api/games/client/streamBundler/NullStreamBundler';
 import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGameConfiguration';
@@ -13,7 +11,6 @@ import CollectionGameData from '/imports/api/games/data/CollectionGameData';
 import GameData from '/imports/api/games/data/GameData';
 import DesktopController from '/imports/api/games/deviceController/DesktopController';
 import MobileController from '/imports/api/games/deviceController/MobileController';
-import PhaserEngine from '/imports/api/games/engine/client/PhaserEngine';
 import PluginFactory from '/imports/api/skins/plugins/PluginFactory';
 import SkinFactory from '/imports/api/skins/skins/SkinFactory';
 import {UserConfigurations} from '/imports/api/users/userConfigurations';
@@ -24,18 +21,20 @@ import CustomKeymaps from '/imports/lib/keymaps/CustomKeymaps';
 import ClientStreamFactory from '/imports/lib/stream/client/ClientStreamFactory';
 import StreamConfiguration from '/imports/lib/stream/StreamConfiguration';
 import {onMobileAndTablet} from '/imports/lib/utils';
+import ClientGameInitiator from '/imports/api/games/client/ClientGameInitiator';
+import SkinManager from '/imports/api/games/client/component/SkinManager';
 import {Meteor} from 'meteor/meteor';
 import {Session} from 'meteor/session';
 
-/** @type {Stream} */
-export let stream = null;
+/** @type {DeviceController} */
+let deviceController = null;
 /** @type {GameData} */
 export let gameData = null;
 /** @type {ServerNormalizedTime} */
 export let serverNormalizedTime = null;
-/** @type {DeviceController} */
-let deviceController = null;
-/** @type {GameInitiator}|null */
+/** @type {Stream} */
+let stream = null;
+/** @type {ClientGameInitiator}|null */
 let gameInitiator = null;
 /** @type {GameRematch}|null */
 let gameRematch = null;
@@ -44,26 +43,9 @@ export let gameReaction = null;
 /** @type {GameCheer} */
 export let gameCheer = null;
 
-const isLeavingUserGame = function() {
-	return gameData && gameData.isGameStatusStarted() && gameData.isUserPlayer();
-};
-
-const beforeActiveGameUnload = function(e) {
-	if (isLeavingUserGame()) {
-		e.returnValue = `Are you sure you want to leave the game?`;
-
-		return e.returnValue;
-	}
-};
-
-const unbindOnPageLeft = function() {
-	quitGame(Session.get('game'));
-	destroyGame(Session.get('game'));
-};
-
 export const onRenderGameController = function() {
 	initGame(Session.get('game'));
-	updateConnectionIndicator();
+	updateConnectionIndicator(stream);
 
 	EventPublisher.on(
 		PageUnload.prototype.constructor.name,
@@ -96,6 +78,23 @@ export const onStopGameController = function() {
 	);
 };
 
+const isLeavingUserGame = function() {
+	return gameData && gameData.isGameStatusStarted() && gameData.isUserPlayer();
+};
+
+const beforeActiveGameUnload = function(e) {
+	if (isLeavingUserGame()) {
+		e.returnValue = `Are you sure you want to leave the game?`;
+
+		return e.returnValue;
+	}
+};
+
+const unbindOnPageLeft = function() {
+	quitGame(Session.get('game'));
+	destroyGame(Session.get('game'));
+};
+
 const initGame = function(gameId) {
 	//Destroy if existent
 	destroyGame(gameId);
@@ -103,8 +102,10 @@ const initGame = function(gameId) {
 	stream = ClientStreamFactory.fromConfiguration(StreamConfiguration.alias());
 	stream.init();
 	stream.connect(gameId);
+
 	gameData = new CollectionGameData(gameId, Meteor.userId());
 	gameData.init();
+
 	const gameConfiguration = new DefaultGameConfiguration(gameId);
 
 	let streamBundler = new GameStreamBundler(stream);
@@ -120,33 +121,36 @@ const initGame = function(gameId) {
 	}
 	deviceController.init();
 
-	const engine = new PhaserEngine();
 	const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
-	const gameSkin = new GameSkin(
+	const skinManager = new SkinManager(
+		gameConfiguration,
 		SkinFactory.fromId(userConfiguration ? userConfiguration.skinId : null),
 		PluginFactory.fromConfiguration(userConfiguration)
 	);
-	gameSkin.init();
+	skinManager.init();
+
 	serverNormalizedTime = new ServerNormalizedTime();
 	serverNormalizedTime.init();
 
-	gameInitiator = new GameInitiator(
+	gameInitiator = new ClientGameInitiator(
 		gameId,
 		deviceController,
-		engine,
 		gameData,
 		gameConfiguration,
-		gameSkin,
-		stream,
+		skinManager,
 		streamBundler,
 		serverNormalizedTime,
+		stream,
 		new GameNotifier()
 	);
 	gameInitiator.init();
+
 	gameRematch = new GameRematch(gameId, gameData);
 	gameRematch.init();
+
 	gameReaction = new GameReaction(gameId, stream, gameData);
 	gameReaction.init();
+
 	gameCheer = new GameCheer(gameId, stream, gameInitiator);
 	gameCheer.init();
 };

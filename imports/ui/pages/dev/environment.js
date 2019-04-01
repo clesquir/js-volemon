@@ -1,22 +1,20 @@
+import {ALL_BONUSES} from '/imports/api/games/bonusConstants';
 import {Template} from 'meteor/templating';
 import {ReactiveVar} from 'meteor/reactive-var';
-import Environment from '/imports/api/games/client/dev/Environment.js';
+import Environment from '/imports/api/games/client/dev/Environment';
 
 import './environment.html';
 
 /** @type {Environment}|null */
 let environment = null;
 const groundHitEnabled = new ReactiveVar(false);
-const playerJumpCanOnEnabled = new ReactiveVar(false);
-const opponentMoveEnabled = new ReactiveVar(false);
+const ballHitCountEnabled = new ReactiveVar(false);
+const matchPointEnabled = new ReactiveVar(false);
+const deucePointEnabled = new ReactiveVar(false);
 
 Template.environment.rendered = function() {
 	environment = new Environment();
 	environment.start();
-
-	environment.onGameCreated = () => {
-		environment.disableGroundHit();
-	};
 };
 
 Template.environment.destroyed = function() {
@@ -26,14 +24,20 @@ Template.environment.destroyed = function() {
 };
 
 Template.environment.helpers({
+	bonuses: function() {
+		return ALL_BONUSES;
+	},
 	groundHitEnabled: function() {
 		return groundHitEnabled.get();
 	},
-	playerJumpCanOnEnabled: function() {
-		return playerJumpCanOnEnabled.get();
+	ballHitCountEnabled: function() {
+		return ballHitCountEnabled.get();
 	},
-	opponentMoveEnabled: function() {
-		return opponentMoveEnabled.get();
+	matchPointEnabled: function() {
+		return matchPointEnabled.get();
+	},
+	deucePointEnabled: function() {
+		return deucePointEnabled.get();
 	}
 });
 
@@ -42,8 +46,12 @@ Template.environment.events({
 		environment.killPlayer();
 	},
 
-	'click [data-action="create-random-bonus"]': function() {
-		environment.createRandomBonus();
+	'click [data-action="revive-player"]': function() {
+		environment.revivePlayer();
+	},
+
+	'click [data-action="create-bonus"]': function() {
+		environment.createBonus($('#bonus-class')[0].value);
 	},
 
 	'click [data-action="enable-disable-ground-hit"]': function() {
@@ -56,23 +64,33 @@ Template.environment.events({
 		groundHitEnabled.set(!groundHitEnabled.get());
 	},
 
-	'click [data-action="enable-disable-player-can-jump-on"]': function() {
-		if (playerJumpCanOnEnabled.get()) {
-			environment.disablePlayerCanJumpOnPlayer();
+	'click [data-action="enable-ball-hit-count"]': function() {
+		if (ballHitCountEnabled.get()) {
+			environment.disableBallHitCount();
 		} else {
-			environment.enablePlayerCanJumpOnPlayer();
+			environment.enableBallHitCount();
 		}
 
-		playerJumpCanOnEnabled.set(!playerJumpCanOnEnabled.get());
+		ballHitCountEnabled.set(!ballHitCountEnabled.get());
 	},
 
-	'click [data-action="enable-randomly-opponent-move"]': function() {
-		if (opponentMoveEnabled.get()) {
-			environment.disableOpponentMoveEnabled();
+	'click [data-action="enable-match-point"]': function() {
+		if (matchPointEnabled.get()) {
+			environment.disableMatchPoint();
 		} else {
-			environment.enableOpponentMoveEnabled();
+			environment.enableMatchPoint();
 		}
 
-		opponentMoveEnabled.set(!opponentMoveEnabled.get());
+		matchPointEnabled.set(!matchPointEnabled.get());
+	},
+
+	'click [data-action="enable-deuce-point"]': function() {
+		if (deucePointEnabled.get()) {
+			environment.disableDeucePoint();
+		} else {
+			environment.enableDeucePoint();
+		}
+
+		deucePointEnabled.set(!deucePointEnabled.get());
 	}
 });

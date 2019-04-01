@@ -1,6 +1,15 @@
+sudo: required
+addons:
+  chrome: stable
+
 language: node_js
+
 node_js:
-  - "stable"
+  - "8.9.1"
+
+before_install:
+  - curl https://install.meteor.com | /bin/sh
+  - export PATH="$HOME/.meteor:$PATH"
 
 cache:
   directories:
@@ -8,9 +17,14 @@ cache:
     - $HOME/.npm
     - node_modules
 
-before_install:
-  - curl https://install.meteor.com | /bin/sh
-  - export PATH="$HOME/.meteor:$PATH"
+notifications:
+  email: false
 
 before_script:
+  - "export DISPLAY=:99.0"
   - meteor npm install
+  - sleep 3
+
+script:
+  - meteor npm i --save selenium-webdriver@3.6.0 chromedriver@2.36.0
+  - TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha

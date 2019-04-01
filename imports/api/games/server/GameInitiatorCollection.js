@@ -1,4 +1,4 @@
-/** @type {GameInitiator[]} */
+/** @type {ServerGameInitiator[]} */
 let gameInitiators = {};
 
 export default class GameInitiatorCollection {

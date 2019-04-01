@@ -3,7 +3,7 @@ import {isTournamentAdministrator, isTournamentEditor} from '/imports/api/users/
 import {timeDifference, timeElapsedSince} from '/imports/lib/utils.js';
 import {Router} from 'meteor/iron:router';
 import {Meteor} from 'meteor/meteor';
-import * as Moment from 'meteor/momentjs:moment';
+import moment from 'moment';
 import {Mongo} from 'meteor/mongo';
 import {ReactiveDict} from 'meteor/reactive-dict';
 import {ReactiveVar} from 'meteor/reactive-var';
@@ -86,19 +86,19 @@ Template.tournaments.helpers({
 
 	timeLeft: function() {
 		Template.instance().uptime.get();
-		const date = Moment.moment(this.endDate, "YYYY-MM-DD ZZ");
+		const date = moment(this.endDate, "YYYY-MM-DD ZZ");
 		return timeDifference(date.valueOf(), 'Ends in ');
 	},
 
 	timeBefore: function() {
 		Template.instance().uptime.get();
-		const date = Moment.moment(this.startDate, "YYYY-MM-DD ZZ");
+		const date = moment(this.startDate, "YYYY-MM-DD ZZ");
 		return timeDifference(date.valueOf(), 'Starts in ');
 	},
 
 	timeFinished: function() {
 		Template.instance().uptime.get();
-		const date = Moment.moment(this.endDate, "YYYY-MM-DD ZZ");
+		const date = moment(this.endDate, "YYYY-MM-DD ZZ");
 		return 'Ended: ' + timeElapsedSince(date.valueOf());
 	},
 

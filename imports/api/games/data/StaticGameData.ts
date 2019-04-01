@@ -1,4 +1,4 @@
-import {PLAYER_DEFAULT_SHAPE} from 'imports/api/games/shapeConstants';
+import {PLAYER_DEFAULT_SHAPE} from '../shapeConstants';
 import GameData from "./GameData";
 
 export default class StaticGameData implements GameData {
@@ -20,8 +20,11 @@ export default class StaticGameData implements GameData {
 	hasBonuses: boolean = false;
 	createdBy: string;
 	tournamentId: string | null = null;
+	startedAt: number;
 	lastPointAt: number;
 	lastPointTaken: string;
+	hostPoints: number = 0;
+	clientPoints: number = 0;
 
 	init() {
 		this.createdBy = Random.id();
@@ -34,16 +37,12 @@ export default class StaticGameData implements GameData {
 		return PLAYER_DEFAULT_SHAPE;
 	}
 
-	getPlayerPolygonFromKey(playerKey: string): string {
-		return PLAYER_DEFAULT_SHAPE;
-	}
-
 	getCurrentPlayerKey(): string {
 		return this.currentPlayerKey;
 	}
 
 	isCurrentPlayerKey(playerKey: string): boolean {
-		return false;
+		return this.getCurrentPlayerKey() === playerKey;
 	}
 
 	isFirstPlayerComputer(): boolean {
@@ -103,7 +102,7 @@ export default class StaticGameData implements GameData {
 	}
 
 	isUserHost(): boolean {
-		return false;
+		return true;
 	}
 
 	isUserClient(): boolean {
@@ -135,7 +134,7 @@ export default class StaticGameData implements GameData {
 	}
 
 	numberMaximumPoints(): number {
-		return 1;
+		return 5;
 	}
 
 	isMatchPoint(): boolean {

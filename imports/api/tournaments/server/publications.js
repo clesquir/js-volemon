@@ -7,13 +7,13 @@ import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {canPlayTournament} from '/imports/api/tournaments/utils.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 import {Meteor} from 'meteor/meteor';
-import * as Moment from 'meteor/momentjs:moment';
+import moment from 'moment';
 
 Meteor.publish('playableTournaments', function(userId) {
 	Tournaments.find({'status.id': 'approved'}).forEach((tournament) => {
 		if (
-			Moment.moment(tournament.startDate, "YYYY-MM-DD ZZ").diff(new Date()) <= 0 &&
-			Moment.moment(tournament.endDate, "YYYY-MM-DD ZZ").diff(new Date()) >= 0 &&
+			moment(tournament.startDate, "YYYY-MM-DD ZZ").diff(new Date()) <= 0 &&
+			moment(tournament.endDate, "YYYY-MM-DD ZZ").diff(new Date()) >= 0 &&
 			canPlayTournament(tournament._id, userId)
 		) {
 			this.added('playableTournaments', tournament._id, tournament);
@@ -26,8 +26,8 @@ Meteor.publish('playableTournaments', function(userId) {
 Meteor.publish('activeTournaments', function() {
 	Tournaments.find({'status.id': 'approved'}).forEach((tournament) => {
 		if (
-			Moment.moment(tournament.startDate, "YYYY-MM-DD ZZ").diff(new Date()) <= 0 &&
-			Moment.moment(tournament.endDate, "YYYY-MM-DD ZZ").diff(new Date()) >= 0
+			moment(tournament.startDate, "YYYY-MM-DD ZZ").diff(new Date()) <= 0 &&
+			moment(tournament.endDate, "YYYY-MM-DD ZZ").diff(new Date()) >= 0
 		) {
 			this.added('activeTournaments', tournament._id, tournament);
 		}
@@ -38,7 +38,7 @@ Meteor.publish('activeTournaments', function() {
 
 Meteor.publish('futureTournaments', function() {
 	Tournaments.find({'status.id': 'approved'}).forEach((tournament) => {
-		if (Moment.moment(tournament.startDate, "YYYY-MM-DD ZZ").diff(new Date()) > 0) {
+		if (moment(tournament.startDate, "YYYY-MM-DD ZZ").diff(new Date()) > 0) {
 			this.added('futureTournaments', tournament._id, tournament);
 		}
 	});

@@ -1,6 +1,6 @@
 import {ACHIEVEMENT_ALL_BONUSES_IN_A_GAME} from '/imports/api/achievements/constants.js';
 import {BONUS_NOTHING} from '/imports/api/games/bonusConstants.js';
-import BonusFactory from '/imports/api/games/BonusFactory.js';
+import BonusFactory from '/imports/api/games/BonusFactory';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import GameListener from './GameListener.js';
 

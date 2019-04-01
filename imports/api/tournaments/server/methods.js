@@ -7,7 +7,7 @@ import {
 } from '/imports/api/users/userConfigurations.js';
 import {Meteor} from 'meteor/meteor';
 import {Random} from 'meteor/random';
-import * as Moment from 'meteor/momentjs:moment';
+import moment from 'moment';
 
 Meteor.methods({
 	createTournament: function() {
@@ -23,7 +23,7 @@ Meteor.methods({
 
 		const userConfiguration = UserConfigurations.findOne({userId: userId});
 		const id = Random.id(5);
-		const today = Moment.moment(new Date());
+		const today = moment(new Date());
 
 		Tournaments.insert(
 			{
@@ -35,7 +35,7 @@ Meteor.methods({
 				status: {id: 'draft', name: 'Draft'},
 				editor: {id: userId, name: userConfiguration.name},
 				startDate: today.format('YYYY-MM-DD') + ' -04:00',
-				endDate: today.add(Moment.moment.duration({'days': 1})).format('YYYY-MM-DD') + ' -04:00',
+				endDate: today.add(moment.duration({'days': 1})).format('YYYY-MM-DD') + ' -04:00',
 				mode: {},
 				votes: [],
 				isPublished: false
@@ -220,7 +220,7 @@ Meteor.methods({
 			{_id: id},
 			{$set:
 				{
-					submittedAt: Moment.moment(new Date()).valueOf(),
+					submittedAt: moment(new Date()).valueOf(),
 					status: {id: 'submitted', name: 'Submitted'}
 				}
 			}

@@ -1,16 +1,18 @@
 export default interface GameData {
 	gameId: string;
 	hasBonuses: boolean;
+	tournamentId: string | null;
+	startedAt: number;
 	lastPointAt: number;
 	lastPointTaken: string;
+	hostPoints: number;
+	clientPoints: number;
 
 	init();
 
 	addRobot(id: string);
 
 	getPlayerShapeFromKey(playerKey: string): string;
-
-	getPlayerPolygonFromKey(playerKey: string): string;
 
 	getCurrentPlayerKey(): string;
 

@@ -1,6 +1,6 @@
 import './multipleBonusSelectSwitch.html';
 import {ALL_BONUSES_FOR_RANDOM} from '/imports/api/games/bonusConstants';
-import BonusFactory from '/imports/api/games/BonusFactory.js';
+import BonusFactory from '/imports/api/games/BonusFactory';
 import {ALL_BONUSES} from '/imports/api/games/bonusConstants.js';
 
 let textureAtlasFrames = [];
@@ -49,7 +49,7 @@ Template.multipleBonusSelectSwitch.helpers({
 
 		const options = [];
 		for (let bonusClassName of bonusClassNames) {
-			const bonus = BonusFactory.fromClassName(bonusClassName, null);
+			const bonus = BonusFactory.fromClassName(bonusClassName);
 
 			let x = 0;
 			let y = 0;

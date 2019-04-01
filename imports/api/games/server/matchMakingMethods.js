@@ -1,4 +1,4 @@
-import MatchMakingGameConfiguration from '/imports/api/games/configuration/MatchMakingGameConfiguration.js';
+import MatchMakingGameConfiguration from '/imports/api/games/configuration/MatchMakingGameConfiguration';
 import {Games} from '/imports/api/games/games.js';
 import EloMatchMaker from '/imports/api/games/server/matchMaking/EloMatchMaker.js';
 import {PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';

@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "target": "ES6",
-    "allowJs": true
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node"
   }
 }
