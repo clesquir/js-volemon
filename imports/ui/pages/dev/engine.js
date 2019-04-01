@@ -1,10 +1,12 @@
 import Engine from '/imports/api/games/client/dev/Engine';
-import './engine.html';
+import {PLAYER_BIG_SCALE, PLAYER_SCALE, PLAYER_SMALL_SCALE} from '/imports/api/games/constants.js';
 import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js';
+import './engine.html';
 
 /** @var {Engine} */
 let engine;
 const currentShape = new ReactiveVar('half-circle');
+const currentPlayerScale = new ReactiveVar(PLAYER_SCALE);
 let started = new ReactiveVar(false);
 
 Template.engine.rendered = function() {
@@ -24,6 +26,9 @@ Template.engine.helpers({
 	},
 	currentShape: function() {
 		return currentShape.get();
+	},
+	currentPlayerScale: function() {
+		return currentPlayerScale.get();
 	}
 });
 
@@ -43,6 +48,26 @@ Template.engine.events({
 		currentShape.set(newShape);
 
 		engine.changeDefaultShape(currentShape.get());
+
+		if (started.get()) {
+			engine.stop();
+			engine.start();
+		}
+	},
+	'click [data-action="change-player-scale"]': function() {
+		switch (currentPlayerScale.get()) {
+			case PLAYER_SCALE:
+				currentPlayerScale.set(PLAYER_BIG_SCALE);
+				break;
+			case PLAYER_BIG_SCALE:
+				currentPlayerScale.set(PLAYER_SMALL_SCALE);
+				break;
+			case PLAYER_SMALL_SCALE:
+				currentPlayerScale.set(PLAYER_SCALE);
+				break;
+		}
+
+		engine.changeDefaultScale(currentPlayerScale.get());
 
 		if (started.get()) {
 			engine.stop();

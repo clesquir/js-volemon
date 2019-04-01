@@ -227,12 +227,12 @@ export default class Players {
 		} else {
 			if (
 				this.playerSmashEnabled &&
-				player.isSmashing(ball.x())
+				player.isSmashingBall()
 			) {
 				ball.smash(player.isHost);
 			} else if (
 				this.ballReboundOnPlayerEnabled &&
-				!player.isBottomTouchingBall()
+				player.isReboundingBall()
 			) {
 				ball.rebound();
 			}
