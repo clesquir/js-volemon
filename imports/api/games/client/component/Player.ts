@@ -435,9 +435,9 @@ export default class Player {
 
 		this.initialXLocation = x;
 		this.initialYLocation = y;
-		this.initialScale = this.gameConfiguration.initialPlayerScale();
+		this.initialScale = this.gameConfiguration.initialPlayerScale(this.key);
 		this.currentScale = this.initialScale;
-		this.initialMass = this.gameConfiguration.initialPlayerMass();
+		this.initialMass = this.gameConfiguration.initialPlayerMass(this.key);
 		this.currentMass = this.initialMass;
 		this.velocityXOnMove = this.gameConfiguration.playerXVelocity();
 		this.velocityYOnJump = this.gameConfiguration.playerYVelocity();

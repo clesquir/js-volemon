@@ -92,9 +92,9 @@ export default abstract class GameConfiguration {
 		return this.tournamentMode.currentPlayerShape();
 	}
 
-	initialPlayerScale(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesInitialPlayerScale()) {
-			return this.tournamentMode.initialPlayerScale();
+	initialPlayerScale(key: string): number {
+		if (this.hasTournament() && this.tournamentMode.overridesInitialPlayerScale(key)) {
+			return this.tournamentMode.initialPlayerScale(key);
 		}
 
 		return PLAYER_SCALE;
@@ -116,9 +116,9 @@ export default abstract class GameConfiguration {
 		return PLAYER_BIG_SCALE;
 	}
 
-	initialPlayerMass(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesInitialPlayerMass()) {
-			return this.tournamentMode.initialPlayerMass();
+	initialPlayerMass(key: string): number {
+		if (this.hasTournament() && this.tournamentMode.overridesInitialPlayerMass(key)) {
+			return this.tournamentMode.initialPlayerMass(key);
 		}
 
 		return PLAYER_MASS;

@@ -214,6 +214,8 @@ const modeOptions = function() {
 	addToMode(mode, 'bonus-spawn-initial-minimum-frequence', 'overriddenBonusSpawnInitialMinimumFrequence');
 	addToMode(mode, 'bonus-spawn-initial-maximum-frequence', 'overriddenBonusSpawnInitialMaximumFrequence');
 	addToMode(mode, 'bonus-scale', 'overriddenBonusScale');
+	addToMode(mode, 'bonus-mass', 'overriddenBonusMass');
+	addToMode(mode, 'bonus-air-friction', 'overriddenBonusAirFriction');
 
 	addToMode(mode, 'allowed-list-of-shapes', 'overriddenAllowedListOfShapes');
 	addToMode(mode, 'list-of-shapes', 'overriddenListOfShapes');
@@ -221,12 +223,28 @@ const modeOptions = function() {
 	addToMode(mode, 'is-hidden-to-himself', 'overriddenIsHiddenToHimself');
 	addToMode(mode, 'is-hidden-to-opponent', 'overriddenIsHiddenToOpponent');
 	addToMode(mode, 'initial-player-scale', 'overriddenInitialPlayerScale');
+	addToMode(mode, 'initial-player-scale-player1', 'overriddenInitialPlayerScale_player1');
+	addToMode(mode, 'initial-player-scale-player2', 'overriddenInitialPlayerScale_player2');
+	addToMode(mode, 'initial-player-scale-player3', 'overriddenInitialPlayerScale_player3');
+	addToMode(mode, 'initial-player-scale-player4', 'overriddenInitialPlayerScale_player4');
 	addToMode(mode, 'small-player-scale', 'overriddenSmallPlayerScale');
 	addToMode(mode, 'big-player-scale', 'overriddenBigPlayerScale');
 	addToMode(mode, 'initial-ball-scale', 'overriddenInitialBallScale');
 	addToMode(mode, 'small-ball-scale', 'overriddenSmallBallScale');
 	addToMode(mode, 'big-ball-scale', 'overriddenBigBallScale');
+	addToMode(mode, 'initial-player-mass', 'overriddenInitialPlayerMass');
+	addToMode(mode, 'initial-player-mass-player1', 'overriddenInitialPlayerMass_player1');
+	addToMode(mode, 'initial-player-mass-player2', 'overriddenInitialPlayerMass_player2');
+	addToMode(mode, 'initial-player-mass-player3', 'overriddenInitialPlayerMass_player3');
+	addToMode(mode, 'initial-player-mass-player4', 'overriddenInitialPlayerMass_player4');
+	addToMode(mode, 'small-player-mass', 'overriddenSmallPlayerMass');
+	addToMode(mode, 'big-player-mass', 'overriddenBigPlayerMass');
 	addToMode(mode, 'force-practice-with-computer', 'overriddenForcePracticeWithComputer');
+
+	addToMode(mode, 'initial-ball-mass', 'overriddenInitialBallMass');
+	addToMode(mode, 'small-ball-mass', 'overriddenSmallBallMass');
+	addToMode(mode, 'big-ball-mass', 'overriddenBigBallMass');
+	addToMode(mode, 'ball-air-friction', 'overriddenBallAirFriction');
 
 	addToMode(mode, 'forfeit-minimum-points', 'overriddenForfeitMinimumPoints');
 	addToMode(mode, 'maximum-points', 'overriddenMaximumPoints');
@@ -246,15 +264,6 @@ const modeOptions = function() {
 	addToMode(mode, 'player-smash-enabled', 'overriddenPlayerSmashEnabled');
 	addToMode(mode, 'ball-rebound-on-player-enabled', 'overriddenBallReboundOnPlayerEnabled');
 	addToMode(mode, 'ball-velocity-on-rebound-on-player', 'overriddenBallVelocityOnReboundOnPlayer');
-	addToMode(mode, 'ball-air-friction', 'overriddenBallAirFriction');
-	addToMode(mode, 'bonus-air-friction', 'overriddenBonusAirFriction');
-	addToMode(mode, 'initial-player-mass', 'overriddenInitialPlayerMass');
-	addToMode(mode, 'small-player-mass', 'overriddenSmallPlayerMass');
-	addToMode(mode, 'big-player-mass', 'overriddenBigPlayerMass');
-	addToMode(mode, 'initial-ball-mass', 'overriddenInitialBallMass');
-	addToMode(mode, 'small-ball-mass', 'overriddenSmallBallMass');
-	addToMode(mode, 'big-ball-mass', 'overriddenBigBallMass');
-	addToMode(mode, 'bonus-mass', 'overriddenBonusMass');
 
 	return mode;
 };

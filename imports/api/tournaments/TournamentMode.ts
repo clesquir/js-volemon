@@ -12,9 +12,17 @@ export default class TournamentMode {
 	overriddenMaximumPoints;
 	overriddenHasBonuses;
 	overriddenInitialPlayerScale;
+	overriddenInitialPlayerScale_player1;
+	overriddenInitialPlayerScale_player2;
+	overriddenInitialPlayerScale_player3;
+	overriddenInitialPlayerScale_player4;
 	overriddenSmallPlayerScale;
 	overriddenBigPlayerScale;
 	overriddenInitialPlayerMass;
+	overriddenInitialPlayerMass_player1;
+	overriddenInitialPlayerMass_player2;
+	overriddenInitialPlayerMass_player3;
+	overriddenInitialPlayerMass_player4;
 	overriddenSmallPlayerMass;
 	overriddenBigPlayerMass;
 	overriddenInitialBallScale;
@@ -142,11 +150,18 @@ export default class TournamentMode {
 		return parseInt(this.overriddenHasBonuses) === 1;
 	}
 
-	overridesInitialPlayerScale(): boolean {
-		return this.overriddenInitialPlayerScale !== undefined;
+	overridesInitialPlayerScale(key: string): boolean {
+		return (
+			this['overriddenInitialPlayerScale_' + key] !== undefined ||
+			this.overriddenInitialPlayerScale !== undefined
+		);
 	}
 
-	initialPlayerScale(): number {
+	initialPlayerScale(key: string): number {
+		if (this['overriddenInitialPlayerScale_' + key] !== undefined) {
+			return parseFloat(this['overriddenInitialPlayerScale_' + key]);
+		}
+
 		return parseFloat(this.overriddenInitialPlayerScale);
 	}
 
@@ -166,11 +181,18 @@ export default class TournamentMode {
 		return parseFloat(this.overriddenBigPlayerScale);
 	}
 
-	overridesInitialPlayerMass(): boolean {
-		return this.overriddenInitialPlayerMass !== undefined;
+	overridesInitialPlayerMass(key: string): boolean {
+		return (
+			this['overriddenInitialPlayerMass_' + key] !== undefined ||
+			this.overriddenInitialPlayerMass !== undefined
+		);
 	}
 
-	initialPlayerMass(): number {
+	initialPlayerMass(key: string): number {
+		if (this['overriddenInitialPlayerMass_' + key] !== undefined) {
+			return parseFloat(this['overriddenInitialPlayerMass_' + key]);
+		}
+
 		return parseFloat(this.overriddenInitialPlayerMass);
 	}
 
@@ -435,9 +457,17 @@ export default class TournamentMode {
 		tournamentMode.overriddenMaximumPoints = mode.overriddenMaximumPoints;
 		tournamentMode.overriddenHasBonuses = mode.overriddenHasBonuses;
 		tournamentMode.overriddenInitialPlayerScale = mode.overriddenInitialPlayerScale;
+		tournamentMode.overriddenInitialPlayerScale_player1 = mode.overriddenInitialPlayerScale_player1;
+		tournamentMode.overriddenInitialPlayerScale_player2 = mode.overriddenInitialPlayerScale_player2;
+		tournamentMode.overriddenInitialPlayerScale_player3 = mode.overriddenInitialPlayerScale_player3;
+		tournamentMode.overriddenInitialPlayerScale_player4 = mode.overriddenInitialPlayerScale_player4;
 		tournamentMode.overriddenSmallPlayerScale = mode.overriddenSmallPlayerScale;
 		tournamentMode.overriddenBigPlayerScale = mode.overriddenBigPlayerScale;
 		tournamentMode.overriddenInitialPlayerMass = mode.overriddenInitialPlayerMass;
+		tournamentMode.overriddenInitialPlayerMass_player1 = mode.overriddenInitialPlayerMass_player1;
+		tournamentMode.overriddenInitialPlayerMass_player2 = mode.overriddenInitialPlayerMass_player2;
+		tournamentMode.overriddenInitialPlayerMass_player3 = mode.overriddenInitialPlayerMass_player3;
+		tournamentMode.overriddenInitialPlayerMass_player4 = mode.overriddenInitialPlayerMass_player4;
 		tournamentMode.overriddenSmallPlayerMass = mode.overriddenSmallPlayerMass;
 		tournamentMode.overriddenBigPlayerMass = mode.overriddenBigPlayerMass;
 		tournamentMode.overriddenInitialBallScale = mode.overriddenInitialBallScale;
