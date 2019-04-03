@@ -731,9 +731,9 @@ export default class Player {
 					reboundSensors.push(matterFromVertices(x + 47, y + 17, matterFromPath('91.5 42.5 98 36 98 49')));
 				}
 
-				reboundSensors.push(matterFromVertices(x - 42.5, y - 23, matterFromPath('0 0 6.5 6.5 13 0')));
-				reboundSensors.push(matterFromVertices(x + 0, y - 23, matterFromPath('42.5 0 49 6.5 55.5 0')));
-				reboundSensors.push(matterFromVertices(x + 42.5, y - 23, matterFromPath('85 0 91.5 6.5 98 0')));
+				smashSensors.push(matterFromVertices(x - 42.5, y - 22, matterFromPath('0 0 6.5 6.5 13 0')));
+				smashSensors.push(matterFromVertices(x + 0, y - 22, matterFromPath('42.5 0 49 6.5 55.5 0')));
+				smashSensors.push(matterFromVertices(x + 42.5, y - 22, matterFromPath('85 0 91.5 6.5 98 0')));
 
 				reboundSensors.push(matterFromVertices(x - 38, y - 17, matterFromPath('6.5 6.5 13 0 13 13')));
 				reboundSensors.push(matterFromVertices(x - 4, y - 17, matterFromPath('42.5 0 49 6.5 42.5 13')));
@@ -753,9 +753,24 @@ export default class Player {
 				noReboundSensors.push(matterFromVertices(x + 4, y + 17, matterFromPath('55.5 36 55.5 49 49 42.5')));
 				noReboundSensors.push(matterFromVertices(x + 38, y + 17, matterFromPath('85 36 91.5 42.5 85 49')));
 
-				jumpSensors.push(matterFromVertices(x - 42.5, y + 23, matterFromPath('0 49 6.5 42.5 13 49')));
-				jumpSensors.push(matterFromVertices(x + 0, y + 23, matterFromPath('42.5 49 49 42.5 55.5 49')));
-				jumpSensors.push(matterFromVertices(x + 42.5, y + 23, matterFromPath('85 49 91.5 42.5 98 49')));
+				noReboundSensors.push(matterFromVertices(x - 42.5, y + 22, matterFromPath('0 49 6.5 42.5 13 49')));
+				noReboundSensors.push(matterFromVertices(x + 0, y + 22, matterFromPath('42.5 49 49 42.5 55.5 49')));
+				noReboundSensors.push(matterFromVertices(x + 42.5, y + 22, matterFromPath('85 49 91.5 42.5 98 49')));
+
+				fillers.push(matterRectangle(x - 42.5, y - 17.5, 8, 8));
+				fillers.push(matterRectangle(x - 42.5, y + 17.5, 8, 8));
+				fillers.push(matterRectangle(x, y - 17.5, 8, 8));
+				fillers.push(matterRectangle(x, y + 17.5, 8, 8));
+				fillers.push(matterRectangle(x + 42.5, y - 17.5, 8, 8));
+				fillers.push(matterRectangle(x + 42.5, y + 17.5, 8, 8));
+
+				jumpSensors.push(matterRectangle(x - 43, y + 25, 8, 4, { isSensor: true }));
+				jumpSensors.push(matterRectangle(x, y + 25, 8, 4, { isSensor: true }));
+				jumpSensors.push(matterRectangle(x + 43, y + 25, 8, 4, { isSensor: true }));
+
+				counterweights.push(matterRectangle(x - 43, y - 25, 8, 4, { isSensor: true }));
+				counterweights.push(matterRectangle(x, y - 25, 8, 4, { isSensor: true }));
+				counterweights.push(matterRectangle(x + 43, y - 25, 8, 4, { isSensor: true }));
 				break;
 		}
 
