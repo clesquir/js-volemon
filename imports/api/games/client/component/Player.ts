@@ -510,6 +510,7 @@ export default class Player {
 		const reboundSensors = [];
 		const jumpSensors = [];
 		const noReboundSensors = [];
+		const fillers = [];
 		const counterweights = [];
 
 		const matterFromPath = this.scene.matter.verts.fromPath;
@@ -519,40 +520,39 @@ export default class Player {
 		switch (this.currentShape) {
 			case PLAYER_SHAPE_HALF_CIRCLE:
 				if (this.isHost) {
-					reboundSensors.push(matterFromVertices(x - 21, y, matterFromPath('0 49 0 35 9 20 12 17.5 24 6 40 0 49 0 49 39')));
-					smashSensors.push(matterFromVertices(x + 21, y, matterFromPath('49 0 58 0 74 6 86 17.5 89 20 98 35 98 49 49 39')));
+					reboundSensors.push(matterFromVertices(x - 21, y, matterFromPath('0 44 0 35 9 20 12 17.5 24 6 40 0 49 0 49 39')));
+					smashSensors.push(matterFromVertices(x + 21, y, matterFromPath('49 0 58 0 74 6 86 17.5 89 20 98 35 98 44 49 39')));
 				} else {
-					smashSensors.push(matterFromVertices(x - 21, y, matterFromPath('0 49 0 35 9 20 12 17.5 24 6 40 0 49 0 49 39')));
-					reboundSensors.push(matterFromVertices(x + 21, y, matterFromPath('49 0 58 0 74 6 86 17.5 89 20 98 35 98 49 49 39')));
+					smashSensors.push(matterFromVertices(x - 21, y, matterFromPath('0 44 0 35 9 20 12 17.5 24 6 40 0 49 0 49 39')));
+					reboundSensors.push(matterFromVertices(x + 21, y, matterFromPath('49 0 58 0 74 6 86 17.5 89 20 98 35 98 44 49 39')));
 				}
-				jumpSensors.push(matterFromVertices(x, y + 20, matterFromPath('0 49 49 39 98 49')));
+				noReboundSensors.push(matterFromVertices(x, y + 20, matterFromPath('0 49 0 44 10 44 10 39 49 39 88 39 88 44 98 44 98 49')));
+				fillers.push(matterRectangle(x, y - 6, 10, 35));
 				counterweights.push(matterRectangle(x, y - 16, 20, 10, { isSensor: true }));
 				counterweights.push(matterRectangle(x, y - 16, 20, 10, { isSensor: true }));
 				counterweights.push(matterRectangle(x, y - 16, 20, 10, { isSensor: true }));
 				counterweights.push(matterRectangle(x, y - 16, 20, 10, { isSensor: true }));
+				counterweights.push(matterRectangle(x, y - 16, 20, 10, { isSensor: true }));
+				counterweights.push(matterRectangle(x, y - 16, 20, 10, { isSensor: true }));
+				jumpSensors.push(matterRectangle(x, y + 25, 88, 4, { isSensor: true }));
 				break;
 			case PLAYER_SHAPE_TRIANGLE:
 				if (this.isHost) {
-					reboundSensors.push(matterFromVertices(x - 17, y, matterFromPath('0 49 49 0 49 39')));
-					smashSensors.push(matterFromVertices(x + 17, y, matterFromPath('49 0 98 49 49 39')));
+					reboundSensors.push(matterFromVertices(x - 16, y, matterFromPath('0 49 49 0 49 39')));
+					smashSensors.push(matterFromVertices(x + 16, y, matterFromPath('49 0 98 49 49 39')));
 				} else {
-					smashSensors.push(matterFromVertices(x - 17, y, matterFromPath('0 49 49 0 49 39')));
-					reboundSensors.push(matterFromVertices(x + 17, y, matterFromPath('49 0 98 49 49 39')));
+					smashSensors.push(matterFromVertices(x - 16, y, matterFromPath('0 49 49 0 49 39')));
+					reboundSensors.push(matterFromVertices(x + 16, y, matterFromPath('49 0 98 49 49 39')));
 				}
-				jumpSensors.push(matterFromVertices(x, y + 17, matterFromPath('0 49 49 39 98 49')));
-				counterweights.push(matterRectangle(x, y - 16, 15, 10, { isSensor: true }));
-				counterweights.push(matterRectangle(x, y - 16, 15, 10, { isSensor: true }));
-				counterweights.push(matterRectangle(x, y - 16, 15, 10, { isSensor: true }));
-				counterweights.push(matterRectangle(x, y - 16, 15, 10, { isSensor: true }));
-				counterweights.push(matterRectangle(x, y - 16, 15, 10, { isSensor: true }));
-				counterweights.push(matterRectangle(x, y - 16, 15, 10, { isSensor: true }));
-				counterweights.push(matterRectangle(x, y - 16, 15, 10, { isSensor: true }));
-				counterweights.push(matterRectangle(x, y - 16, 15, 10, { isSensor: true }));
-				counterweights.push(matterRectangle(x, y - 16, 15, 10, { isSensor: true }));
+				noReboundSensors.push(matterFromVertices(x, y + 15, matterFromPath('0 49 20 44 20 39 49 39 78 39 78 44 98 49')));
+				fillers.push(matterRectangle(x, y - 15, 8, 20));
+				counterweights.push(matterRectangle(x, y - 20, 49, 20, { isSensor: true }));
+				counterweights.push(matterRectangle(x, y - 20, 49, 20, { isSensor: true }));
+				jumpSensors.push(matterRectangle(x, y + 20, 88, 4, { isSensor: true }));
 				break;
 			case PLAYER_SHAPE_X:
-				reboundSensors.push(matterFromVertices(x - 21, y - 14, matterFromPath('0 0 15 0 49 16 49 24.5')));
-				reboundSensors.push(matterFromVertices(x + 21, y - 14, matterFromPath('49 16 83 0 98 0 49 24.5')));
+				smashSensors.push(matterFromVertices(x - 21, y - 14, matterFromPath('0 0 15 0 49 16 49 24.5')));
+				smashSensors.push(matterFromVertices(x + 21, y - 14, matterFromPath('49 16 83 0 98 0 49 24.5')));
 				if (this.isHost) {
 					noReboundSensors.push(matterFromVertices(x - 29, y - 10, matterFromPath('0 10 0 0 49 24.5 30 24.5')));
 					noReboundSensors.push(matterFromVertices(x - 29, y + 10, matterFromPath('0 49 0 39 30 24.5 49 24.5')));
@@ -570,54 +570,68 @@ export default class Player {
 				}
 				jumpSensors.push(matterFromVertices(x - 21, y + 14, matterFromPath('0 49 49 24.5 49 33 15 49')));
 				jumpSensors.push(matterFromVertices(x + 21, y + 14, matterFromPath('49 24.5 98 49 83 49 49 33')));
+				fillers.push(matterFromVertices(x, y, matterFromPath('0 49 0 39 83 0 98 0 98 10 15 49')));
+				fillers.push(matterFromVertices(x, y, matterFromPath('0 10 0 0 15 0 98 39 98 49 83 49')));
 				break;
 			case PLAYER_SHAPE_RECTANGLE:
 				if (this.isHost) {
-					reboundSensors.push(matterFromVertices(x - 16, y - 8, matterFromPath('0 49 0 0 98 0')));
-					smashSensors.push(matterFromVertices(x + 33, y, matterFromPath('49 24.5 98 0 98 49')));
+					reboundSensors.push(matterFromVertices(x - 33, y, matterFromPath('0 0 49 24.5 0 49')));
+					smashSensors.push(matterFromVertices(x + 16, y - 8, matterFromPath('0 0 98 0 98 49')));
 				} else {
-					reboundSensors.push(matterFromVertices(x + 16, y - 8, matterFromPath('0 0 98 0 98 49')));
-					smashSensors.push(matterFromVertices(x - 33, y, matterFromPath('0 0 49 24.5 0 49')));
+					smashSensors.push(matterFromVertices(x - 16, y - 8, matterFromPath('0 49 0 0 98 0')));
+					reboundSensors.push(matterFromVertices(x + 33, y, matterFromPath('49 24.5 98 0 98 49')));
 				}
-				jumpSensors.push(matterFromVertices(x, y + 17, matterFromPath('0 49 49 24.5 98 49')));
+				noReboundSensors.push(matterFromVertices(x, y + 17, matterFromPath('0 49 49 24.5 98 49')));
+				fillers.push(matterRectangle(x, y, 93, 44));
+				jumpSensors.push(matterRectangle(x, y + 25, 88, 4, { isSensor: true }));
 				break;
 			case PLAYER_SHAPE_HYPHEN:
 				if (this.isHost) {
-					reboundSensors.push(matterFromVertices(x - 8, y - 2, matterFromPath('0 11 0 0 48 0')));
-					smashSensors.push(matterFromVertices(x + 17, y, matterFromPath('24 5.5 48 0 48 11')));
+					reboundSensors.push(matterFromVertices(x - 17, y, matterFromPath('0 0 24 5.5 0 11')));
+					smashSensors.push(matterFromVertices(x + 8, y - 2, matterFromPath('0 0 48 0 48 11')));
 				} else {
-					reboundSensors.push(matterFromVertices(x + 8, y - 2, matterFromPath('0 0 48 0 48 11')));
-					smashSensors.push(matterFromVertices(x - 17, y, matterFromPath('0 0 24 5.5 0 11')));
+					smashSensors.push(matterFromVertices(x - 8, y - 2, matterFromPath('0 11 0 0 48 0')));
+					reboundSensors.push(matterFromVertices(x + 17, y, matterFromPath('24 5.5 48 0 48 11')));
 				}
-				jumpSensors.push(matterFromVertices(x, y + 4, matterFromPath('0 11 24 5.5 48 11')));
+				noReboundSensors.push(matterFromVertices(x, y + 4, matterFromPath('0 11 24 5.5 48 11')));
+				fillers.push(matterRectangle(x, y, 43, 6));
+				jumpSensors.push(matterRectangle(x, y + 6, 38, 4, { isSensor: true }));
 				break;
 			case PLAYER_SHAPE_OBELISK:
 				if (this.isHost) {
-					reboundSensors.push(matterFromVertices(x - 6, y - 8, matterFromPath('0 48 0 0 11 0')));
-					smashSensors.push(matterFromVertices(x, y, matterFromPath('5.5 24 11 0 11 48')));
-					jumpSensors.push(matterFromVertices(x - 4, y + 16, matterFromPath('0 48 5.5 24 11 48')));
+					reboundSensors.push(matterFromVertices(x - 3, y, matterFromPath('0 48 0 0 5.5 24')));
+					smashSensors.push(matterFromVertices(x + 2, y - 8, matterFromPath('0 0 11 0 11 48')));
+					noReboundSensors.push(matterFromVertices(x, y + 16, matterFromPath('0 48 5.5 24 11 48')));
+					fillers.push(matterRectangle(x, y, 6, 43));
+					jumpSensors.push(matterRectangle(x, y + 24, 6, 4, { isSensor: true }));
 				} else {
-					reboundSensors.push(matterFromVertices(x + 6, y - 8, matterFromPath('0 0 11 0 11 48')));
-					smashSensors.push(matterFromVertices(x, y, matterFromPath('0 48 0 0 5.5 24')));
-					jumpSensors.push(matterFromVertices(x + 4, y + 16, matterFromPath('0 48 5.5 24 11 48')));
+					smashSensors.push(matterFromVertices(x - 2, y - 8, matterFromPath('0 48 0 0 11 0')));
+					reboundSensors.push(matterFromVertices(x + 3, y, matterFromPath('5.5 24 11 0 11 48')));
+					noReboundSensors.push(matterFromVertices(x, y + 16, matterFromPath('0 48 5.5 24 11 48')));
+					fillers.push(matterRectangle(x, y, 6, 43));
+					jumpSensors.push(matterRectangle(x, y + 24, 6, 4, { isSensor: true }));
 				}
 				break;
 			case PLAYER_SHAPE_EQUAL:
 				if (this.isHost) {
-					reboundSensors.push(matterFromVertices(x - 2, y - 22, matterFromPath('0 0 0 6.5 91.5 6.5 98 0')));
+					smashSensors.push(matterFromVertices(x - 2, y - 22, matterFromPath('0 0 0 6.5 91.5 6.5 98 0')));
 					noReboundSensors.push(matterFromVertices(x - 2, y - 15, matterFromPath('0 13 0 6.5 91.5 6.5 98 13')));
 					smashSensors.push(matterFromVertices(x + 46, y - 18, matterFromPath('91.5 6.5 98 0 98 13')));
 					smashSensors.push(matterFromVertices(x + 46, y + 18, matterFromPath('91.5 42.5 98 36 98 49')));
 					noReboundSensors.push(matterFromVertices(x - 2, y + 15, matterFromPath('0 36 0 42.5 91.5 42.5 98 36')));
-					jumpSensors.push(matterFromVertices(x - 2, y + 22, matterFromPath('0 49 0 42.5 91.5 42.5 98 49')));
+					noReboundSensors.push(matterFromVertices(x - 2, y + 22, matterFromPath('0 49 0 42.5 91.5 42.5 98 49')));
 				} else {
-					reboundSensors.push(matterFromVertices(x + 2, y - 22, matterFromPath('0 0 6.5 6.5 98 6.5 98 0')));
+					smashSensors.push(matterFromVertices(x + 2, y - 22, matterFromPath('0 0 6.5 6.5 98 6.5 98 0')));
 					noReboundSensors.push(matterFromVertices(x + 2, y - 15, matterFromPath('0 13 6.5 6.5 98 6.5 98 13')));
 					smashSensors.push(matterFromVertices(x - 46, y - 18, matterFromPath('0 0 6.5 6.5 0 13')));
 					smashSensors.push(matterFromVertices(x - 46, y + 18, matterFromPath('0 36 6.5 42.5 0 49')));
 					noReboundSensors.push(matterFromVertices(x + 2, y + 15, matterFromPath('0 36 6.5 42.5 98 42.5 98 36')));
-					jumpSensors.push(matterFromVertices(x + 2, y + 22, matterFromPath('0 49 6.5 42.5 98 42.5 98 49')));
+					noReboundSensors.push(matterFromVertices(x + 2, y + 22, matterFromPath('0 49 6.5 42.5 98 42.5 98 49')));
 				}
+				fillers.push(matterRectangle(x, y - 18, 93, 8));
+				fillers.push(matterRectangle(x, y + 18, 93, 8));
+				counterweights.push(matterRectangle(x, y - 25, 88, 4, { isSensor: true }));
+				jumpSensors.push(matterRectangle(x, y + 25, 88, 4, { isSensor: true }));
 				break;
 			case PLAYER_SHAPE_MAGNET:
 				if (this.isHost) {
@@ -631,30 +645,32 @@ export default class Player {
 					smashSensors.push(matterFromVertices(x - 31, y - 16, matterFromPath('0 13 24.5 0 24.5 13')));
 					smashSensors.push(matterFromVertices(x - 40, y, matterFromPath('0 36 0 13 13 13 13 36')));
 				}
-				reboundSensors.push(matterFromVertices(x + 12.25, y - 21, matterFromPath('24.5 6.5 24.5 0 98 0 91.5 6.5')));
+				smashSensors.push(matterFromVertices(x + 12.25, y - 21, matterFromPath('24.5 6.5 24.5 0 98 0 91.5 6.5')));
 				noReboundSensors.push(matterFromVertices(x - 29, y, matterFromPath('13 36 13 13 24.5 13 24.5 36')));
 				noReboundSensors.push(matterFromVertices(x + 12.25, y - 15, matterFromPath('24.5 13 24.5 6.5 91.5 6.5 98 13')));
 				noReboundSensors.push(matterFromVertices(x + 12.25, y + 15, matterFromPath('24.5 42.5 24.5 36 98 36 91.5 42.5')));
-				jumpSensors.push(matterFromVertices(x - 31, y + 16, matterFromPath('0 36 24.5 36 24.5 49')));
-				jumpSensors.push(matterFromVertices(x + 12.25, y + 21, matterFromPath('24.5 49 24.5 42.5 91.5 42.5 98 49')));
+				noReboundSensors.push(matterFromVertices(x - 31, y + 16, matterFromPath('0 36 24.5 36 24.5 49')));
+				noReboundSensors.push(matterFromVertices(x + 12.25, y + 21, matterFromPath('24.5 49 24.5 42.5 91.5 42.5 98 49')));
 				counterweights.push(matterFromVertices(x + 13, y - 18, matterFromPath('30 0 49 0 49 13 30 13'), { isSensor: true }));
 				counterweights.push(matterFromVertices(x + 13, y + 18, matterFromPath('30 36 49 36 49 49 30 49'), { isSensor: true }));
 				break;
 			case PLAYER_SHAPE_CROWN:
 				if (this.isHost) {
-					reboundSensors.push(matterFromVertices(x - 45, y + 5, matterFromPath('0 49 0 0 12.25 36.75 0 49')));
+					reboundSensors.push(matterFromVertices(x - 45, y + 5, matterFromPath('0 49 0 0 12.25 36.75')));
 					smashSensors.push(matterFromVertices(x + 45, y + 5, matterFromPath('85.75 36.75 98 0 98 49')));
 				} else {
-					smashSensors.push(matterFromVertices(x - 45, y + 5, matterFromPath('0 49 0 0 12.25 36.75 0 49')));
+					smashSensors.push(matterFromVertices(x - 45, y + 5, matterFromPath('0 49 0 0 12.25 36.75')));
 					reboundSensors.push(matterFromVertices(x + 45, y + 5, matterFromPath('85.75 36.75 98 0 98 49')));
 				}
 				reboundSensors.push(matterFromVertices(x - 36, y - 4, matterFromPath('0 0 24.5 24.5 12.25 36.75')));
-				reboundSensors.push(matterFromVertices(x + 0, y - 8, matterFromPath('24.5 24.5 49 0 73.5 24.5')));
+				smashSensors.push(matterFromVertices(x + 0, y - 8, matterFromPath('24.5 24.5 49 0 73.5 24.5')));
 				reboundSensors.push(matterFromVertices(x + 36, y - 4, matterFromPath('73.5 24.5 98 0 85.75 36.75')));
-				jumpSensors.push(matterFromVertices(x + 0, y + 15, matterFromPath('0 49 24.5 24.5 73.5 24.5 98 49')));
-				counterweights.push(matterFromVertices(x + 0, y - 8, matterFromPath('24.5 24.5 49 0 73.5 24.5'), { isSensor: true }));
-				counterweights.push(matterFromVertices(x + 0, y - 8, matterFromPath('24.5 24.5 49 0 73.5 24.5'), { isSensor: true }));
-				counterweights.push(matterFromVertices(x + 0, y - 8, matterFromPath('24.5 24.5 49 0 73.5 24.5'), { isSensor: true }));
+				noReboundSensors.push(matterFromVertices(x + 0, y + 15, matterFromPath('0 49 24.5 24.5 73.5 24.5 98 49')));
+				fillers.push(matterFromVertices(x - 33, y + 9, matterFromPath('5 44 5 5 44 44')));
+				fillers.push(matterFromVertices(x, y, matterFromPath('24.5 29.5 49 5 73.5 29.5')));
+				fillers.push(matterFromVertices(x + 33, y + 9, matterFromPath('54 44 93 5 93 44')));
+				counterweights.push(matterRectangle(x, y - 10, 98, 30, { isSensor: true }));
+				jumpSensors.push(matterRectangle(x, y + 26, 88, 4, { isSensor: true }));
 				break;
 			case PLAYER_SHAPE_RHOMBUS:
 				if (this.isHost) {
@@ -665,6 +681,7 @@ export default class Player {
 					reboundSensors.push(matterFromVertices(x + 16, y - 8, matterFromPath('49 0 98 24.5 49 24.5')));
 				}
 				jumpSensors.push(matterFromVertices(x, y + 8, matterFromPath('0 24.5 98 24.5 49 49')));
+				fillers.push(matterFromVertices(x, y, matterFromPath('5 24.5 49 5 93 24.5 49 44')));
 				break;
 			case PLAYER_SHAPE_HEXAGON:
 				if (this.isHost) {
@@ -675,32 +692,31 @@ export default class Player {
 					reboundSensors.push(matterFromVertices(x + 6, y - 11, matterFromPath('24.5 0 73.5 0 98 24.5 24.5 24.5')));
 				}
 				jumpSensors.push(matterFromVertices(x, y + 11, matterFromPath('0 24.5 98 24.5 73.5 49 24.5 49')));
+				fillers.push(matterFromVertices(x, y, matterFromPath('24.5 44 5 24.5 24.5 5 73.5 5 93 24.5 73.5 44')));
 				break;
 			case PLAYER_SHAPE_DOT:
 				if (this.isHost) {
 					reboundSensors.push(matterFromVertices(x - 10, y - 10, matterFromPath('0 24.5 7 7 24.5 0 24.5 24.5')));
 					smashSensors.push(matterFromVertices(x + 11, y - 5, matterFromPath('24.5 0 42 7 49 24.5 42 42 24.5 24.5')));
-					jumpSensors.push(matterFromVertices(x + 6, y + 14, matterFromPath('24.5 24.5 42 42 24.5 49')));
-					jumpSensors.push(matterFromVertices(x - 10, y + 10, matterFromPath('0 24.5 24.5 24.5 24.5 49 7 42')));
+					jumpSensors.push(matterFromVertices(x - 5, y + 11, matterFromPath('0 24.5 24.5 24.5 42 42 24.5 49 7 42')));
 				} else {
 					smashSensors.push(matterFromVertices(x - 11, y - 5, matterFromPath('7 42 0 24.5 7 7 24.5 0 24.5 24.5')));
 					reboundSensors.push(matterFromVertices(x + 10, y - 10, matterFromPath('24.5 0 42 7 49 24.5 24.5 24.5')));
-					jumpSensors.push(matterFromVertices(x + 10, y + 10, matterFromPath('24.5 24.5 49 24.5 42 42 24.5 49')));
-					jumpSensors.push(matterFromVertices(x - 6, y + 14, matterFromPath('7 42 24.5 24.5 24.5 49')));
+					jumpSensors.push(matterFromVertices(x + 5, y + 11, matterFromPath('7 42 24.5 24.5 49 24.5 42 42 24.5 49')));
 				}
+				fillers.push(matterCircle(x, y, 20));
 				break;
 			case PLAYER_SHAPE_ELLIPSE:
 				if (this.isHost) {
 					reboundSensors.push(matterFromVertices(x - 20, y - 10, matterFromPath('0 24.5 7.5 11 15 7 32 1.5 49 0 49 24.5')));
-					jumpSensors.push(matterFromVertices(x - 20, y + 10, matterFromPath('49 24.5 49 49 32 47.5 15 42 7.5 38 0 24.5')));
 					smashSensors.push(matterFromVertices(x + 24, y - 6, matterFromPath('49 0 66 1.5 83 7 90.5 11 98 24.5 90.5 38 49 24.5')));
-					jumpSensors.push(matterFromVertices(x + 16, y + 13, matterFromPath('90.5 38 83 42 66 47.5 49 49 49 24.5')));
+					jumpSensors.push(matterFromVertices(x - 5.5, y + 12.5, matterFromPath('49 24.5 90.5 38 83 42 66 47.5 49 49 32 47.5 15 42 7.5 38 0 24.5')));
 				} else {
 					smashSensors.push(matterFromVertices(x - 24, y - 6, matterFromPath('0 24.5 7.5 11 15 7 32 1.5 49 0 49 24.5 7.5 38')));
-					jumpSensors.push(matterFromVertices(x - 16, y + 13, matterFromPath('7.5 38 49 24.5 49 49 32 47.5 15 42')));
 					reboundSensors.push(matterFromVertices(x + 20, y - 10, matterFromPath('49 0 66 1.5 83 7 90.5 11 98 24.5 49 24.5')));
-					jumpSensors.push(matterFromVertices(x + 20, y + 10, matterFromPath('98 24.5 90.5 38 83 42 66 47.5 49 49 49 24.5')));
+					jumpSensors.push(matterFromVertices(x + 5.5, y + 12.5, matterFromPath('7.5 38 49 24.5 98 24.5 90.5 38 83 42 66 47.5 49 49 32 47.5 15 42')));
 				}
+				fillers.push(matterFromVertices(x, y, matterFromPath('5 24.5 49 5 93 24.5 49 44')));
 				break;
 			case PLAYER_SHAPE_TRIPLE_COLON:
 				if (this.isHost) {
@@ -745,7 +761,7 @@ export default class Player {
 
 		this.containerPhysics.setExistingBody(
 			this.matter().Body.create({
-				parts: [].concat(smashSensors, reboundSensors, jumpSensors, noReboundSensors, counterweights)
+				parts: [].concat(smashSensors, reboundSensors, jumpSensors, noReboundSensors, fillers, counterweights)
 			})
 		);
 
