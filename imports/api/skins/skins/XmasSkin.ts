@@ -25,10 +25,6 @@ export default class XmasSkin implements Skin {
 		];
 	}
 
-	spriteSheetsToLoad(): { key: string; path: string; width: number; height: number }[] {
-		return [];
-	}
-
 	backgroundColor(): string {
 		return '#00ccff';
 	}

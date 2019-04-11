@@ -30,10 +30,6 @@ export default class JujuWorldSkin implements Skin {
 		return '#000000';
 	}
 
-	spriteSheetsToLoad(): { key: string; path: string; width: number; height: number }[] {
-		return [];
-	}
-
 	backgroundComponents(xSize: number, ySize: number): { key: string, frame?: string, animation?: { frame: string, frames: string[], speed: number }, x: number, y: number, width: number, height: number }[] {
 		return [
 			{key: 'background', x: 0, y: 0, width: xSize, height: ySize}

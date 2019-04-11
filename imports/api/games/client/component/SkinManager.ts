@@ -3,7 +3,6 @@ import DefaultSkin from "../../../skins/skins/DefaultSkin";
 import Plugin from "../../../skins/plugins/Plugin";
 import MainScene from "../scene/MainScene";
 import GameConfiguration from "../../configuration/GameConfiguration";
-const AnimationComponent = require('phaser/src/gameobjects/components/Animation');
 
 export default class SkinManager {
 	gameConfiguration: GameConfiguration;
@@ -32,32 +31,27 @@ export default class SkinManager {
 		return this.skin.backgroundColor();
 	}
 
-	preload(loader: Phaser.Loader.LoaderPlugin) {
+	preload(loader: Phaser.Loader) {
 		let atlasJSONHash = this.skin.atlasJSONHash();
 		let imagesToLoad = this.skin.imagesToLoad(
 			this.gameConfiguration.width(),
 			this.gameConfiguration.height()
 		);
-		let spriteSheetToLoad = this.skin.spriteSheetsToLoad();
 
 		for (let plugin of this.plugins) {
 			atlasJSONHash = atlasJSONHash.concat(plugin.atlasJSONHash());
 			imagesToLoad = imagesToLoad.concat(plugin.imagesToLoad());
-			spriteSheetToLoad = spriteSheetToLoad.concat(plugin.spriteSheetsToLoad());
 		}
 
 		for (let atlas of atlasJSONHash) {
-			loader.atlas(atlas.key, atlas.imagePath, atlas.jsonPath);
+			loader.atlasJSONHash(atlas.key, atlas.imagePath, atlas.jsonPath);
 		}
 		for (let image of imagesToLoad) {
 			loader.image(image.key, image.path);
 		}
-		for (let spriteSheet of spriteSheetToLoad) {
-			loader.spritesheet(spriteSheet.key, spriteSheet.path, { frameWidth: spriteSheet.width, frameHeight: spriteSheet.height });
-		}
 	}
 
-	createGroundComponents(scene: MainScene): Phaser.GameObjects.TileSprite[] {
+	createGroundComponents(scene: MainScene): Phaser.TileSprite[] {
 		const groundTileSprites = [];
 		let groundComponents = [];
 
@@ -68,16 +62,15 @@ export default class SkinManager {
 		}
 
 		for (let groundComponent of groundComponents) {
-			let y = this.gameConfiguration.height() - this.gameConfiguration.groundHeight() / 2;
+			let y = this.gameConfiguration.height() - this.gameConfiguration.groundHeight();
 			let groundHeight = this.gameConfiguration.groundHeight();
 			if (groundComponent.height) {
-				y = this.gameConfiguration.height() - this.gameConfiguration.groundHeight() + groundComponent.height / 2;
 				groundHeight = groundComponent.height;
 			}
 
 			groundTileSprites.push(
-				scene.add.tileSprite(
-					this.gameConfiguration.width() / 2,
+				scene.game.add.tileSprite(
+					0,
 					y,
 					this.gameConfiguration.width(),
 					groundHeight,
@@ -91,9 +84,9 @@ export default class SkinManager {
 	}
 
 	createNetComponent(scene: MainScene) {
-		scene.add.tileSprite(
-			this.gameConfiguration.width() / 2,
-			this.gameConfiguration.height() - this.gameConfiguration.groundHeight() - this.gameConfiguration.netHeight() / 2,
+		scene.game.add.tileSprite(
+			this.gameConfiguration.width() / 2 - this.gameConfiguration.netWidth() / 2,
+			this.gameConfiguration.height() - this.gameConfiguration.groundHeight() - this.gameConfiguration.netHeight(),
 			this.gameConfiguration.netWidth(),
 			this.gameConfiguration.netHeight(),
 			this.skin.netComponent().key,
@@ -101,7 +94,7 @@ export default class SkinManager {
 		);
 	}
 
-	createBallComponent(scene: MainScene): Phaser.Physics.Matter.Sprite {
+	createBallComponent(scene: MainScene): Phaser.Sprite {
 		const ballComponent = this.skin.ballComponent();
 
 		let frame = ballComponent.frame;
@@ -109,43 +102,39 @@ export default class SkinManager {
 			frame = ballComponent.animation.frames[0];
 		}
 
-		const ballObject = scene.matter.add.sprite(
+		const ballObject = scene.game.add.sprite(
 			this.gameConfiguration.ballInitialHostX(),
 			this.gameConfiguration.ballInitialY(),
 			ballComponent.key,
-			frame,
-			{shape: {type: 'polygon', sides: 10}, slop: 0}
+			frame
 		);
 
 		if (ballComponent.animation) {
-			this.animate(scene, ballObject, ballComponent);
+			this.animate(ballObject, ballComponent);
 		}
 
 		return ballObject;
 	}
 
-	createBackgroundComponents(scene: MainScene) {
+	createBackgroundComponents(gameObjectFactory: Phaser.GameObjectFactory) {
 		let backgroundComponents = this.skin.backgroundComponents(
 			this.gameConfiguration.width(),
 			this.gameConfiguration.height()
 		);
 
-		this.renderBackgroundComponents(scene, backgroundComponents);
+		this.renderBackgroundComponents(gameObjectFactory, backgroundComponents);
 
 		for (let plugin of this.plugins) {
 			for (let modifier of plugin.backgroundColorModifier()) {
-				scene.add.rectangle(
-					this.gameConfiguration.width() / 2,
-					this.gameConfiguration.height() / 2,
-					this.gameConfiguration.width(),
-					this.gameConfiguration.height(),
-					modifier.color,
-					modifier.opacity
-				);
+				const graphics = gameObjectFactory.graphics(0, 0);
+
+				graphics.beginFill(modifier.color, modifier.opacity);
+				graphics.drawRect(0, 0, this.gameConfiguration.width(), this.gameConfiguration.height());
+				graphics.endFill();
 			}
 
 			this.renderBackgroundComponents(
-				scene,
+				gameObjectFactory,
 				plugin.backgroundComponents(
 					this.gameConfiguration.width(),
 					this.gameConfiguration.height()
@@ -155,39 +144,23 @@ export default class SkinManager {
 	}
 
 	cheer(
-		scene: MainScene,
+		gameObjectFactory: Phaser.GameObjectFactory,
 		forHost: boolean
 	) {
 		const confettis = this.skin.confettisComponent();
 		const x = forHost ? 0 : this.gameConfiguration.width();
 		const y = this.gameConfiguration.height() * 0.10 + 25;
 
-		const particles = scene.add.particles(confettis.key);
-		let emittedParticles = 0;
-		const maxParticles = 50;
-		const emitter = particles.createEmitter({
-			frame: (forHost ? confettis.hostFrames : confettis.clientFrames),
-			x: x,
-			y: y,
-			lifespan: 5000,
-			maxParticles: maxParticles,
-			angle: {min: (forHost ? 10 : 120), max: (forHost ? 60 : 170)},
-			speed: {min: (forHost ? 1 : -1) * 25, max: (forHost ? 1 : -1) * 300},
-			rotate: {min: 0, max: 360},
-			gravityY: 100,
-			emitCallback: () => {
-				emittedParticles++;
-
-				if (emittedParticles > maxParticles) {
-					emitter.stop();
-					particles.destroy();
-				}
-			},
-		});
+		const emitter = gameObjectFactory.emitter(x, y);
+		emitter.bounce.setTo(0.5);
+		emitter.setXSpeed((forHost ? 1 : -1) * 50, (forHost ? 1 : -1) * 250);
+		emitter.setYSpeed(25, 150);
+		emitter.makeParticles(confettis.key, (forHost ? confettis.hostFrames : confettis.clientFrames), 50);
+		emitter.start(false, 3000, 0, 500);
 	}
 
 	private renderBackgroundComponents(
-		scene: MainScene,
+		gameObjectFactory: Phaser.GameObjectFactory,
 		backgroundComponents: { key: string, frame?: string, animation?: { frame: string, frames: string[], speed: number }, x: number, y: number, width: number, height: number }[]
 	) {
 		for (let backgroundComponent of backgroundComponents) {
@@ -196,9 +169,9 @@ export default class SkinManager {
 				frame = backgroundComponent.animation.frames[0];
 			}
 
-			const background = scene.add.tileSprite(
-				backgroundComponent.x + backgroundComponent.width / 2,
-				backgroundComponent.y + backgroundComponent.height / 2,
+			const background = gameObjectFactory.tileSprite(
+				backgroundComponent.x,
+				backgroundComponent.y,
 				backgroundComponent.width,
 				backgroundComponent.height,
 				backgroundComponent.key,
@@ -206,45 +179,21 @@ export default class SkinManager {
 			);
 
 			if (backgroundComponent.animation) {
-				this.addTileSpriteAnimations(scene, background);
-				this.animate(scene, background, backgroundComponent);
+				this.animate(background, backgroundComponent);
 			}
 		}
 	}
 
 	private animate(
-		scene: MainScene,
-		sprite: Phaser.GameObjects.Sprite,
+		sprite: Phaser.Sprite | Phaser.TileSprite,
 		component: { key: string, frame?: string, animation?: { frame: string, frames: string[], speed: number } }
 	) {
-		const frames = [];
-		for (let frame of component.animation.frames) {
-			frames.push({
-				key: component.key,
-				frame: frame
-			});
-		}
-
-		scene.anims.create({
-			key: component.animation.frame,
-			frames: frames,
-			frameRate: component.animation.speed,
-			repeat: -1
-		});
-
-		sprite.anims.play(component.animation.frame);
-	}
-
-	private addTileSpriteAnimations(scene: MainScene, tileSprite: Phaser.GameObjects.TileSprite | any) {
-		//@todo https://github.com/photonstorm/phaser/issues/4340
-		tileSprite.anims = new AnimationComponent(tileSprite);
-		tileSprite.setSizeToFrame = function() {
-			return this;
-		};
-		scene.sys.updateList.add(tileSprite);
-		tileSprite.preUpdate = function(time, delta) {
-			this.anims.update(time, delta);
-			this.setTexture(this.texture.key, this.frame.name);
-		};
+		sprite.animations.add(
+			component.animation.frame,
+			component.animation.frames,
+			component.animation.speed,
+			true
+		);
+		sprite.animations.play(component.animation.frame);
 	}
 }

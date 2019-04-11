@@ -1,164 +1,153 @@
 {
-	"textures": [
-		{
-			"image": "texture-atlas.png",
-			"format": "RGBA8888",
-			"size": {
-				"w": 246,
-				"h": 82
-			},
-			"scale": 1,
-			"frames": [
-				{
-					"filename": "ground",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 173,
-						"h": 70
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 173,
-						"h": 70
-					},
-					"frame": {
-						"x": 6,
-						"y": 6,
-						"w": 173,
-						"h": 70
-					}
-				},
-				{
-					"filename": "net",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 8,
-						"h": 70
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 8,
-						"h": 70
-					},
-					"frame": {
-						"x": 186,
-						"y": 6,
-						"w": 8,
-						"h": 70
-					}
-				},
-				{
-					"filename": "ball",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 24,
-						"h": 24
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 24,
-						"h": 24
-					},
-					"frame": {
-						"x": 201,
-						"y": 6,
-						"w": 24,
-						"h": 24
-					}
-				},
-				{
-					"filename": "confettis-1",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 16,
-						"h": 15
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 16,
-						"h": 15
-					},
-					"frame": {
-						"x": 201,
-						"y": 37,
-						"w": 16,
-						"h": 15
-					}
-				},
-				{
-					"filename": "confettis-2",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 16,
-						"h": 15
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 16,
-						"h": 15
-					},
-					"frame": {
-						"x": 224,
-						"y": 37,
-						"w": 16,
-						"h": 15
-					}
-				},
-				{
-					"filename": "confettis-4",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 14,
-						"h": 16
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 14,
-						"h": 16
-					},
-					"frame": {
-						"x": 201,
-						"y": 59,
-						"w": 14,
-						"h": 16
-					}
-				},
-				{
-					"filename": "confettis-3",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 16,
-						"h": 15
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 16,
-						"h": 15
-					},
-					"frame": {
-						"x": 222,
-						"y": 59,
-						"w": 16,
-						"h": 15
-					}
-				}
-			]
-		}
-	],
+    "frames": [
+        {
+            "filename": "ground",
+            "rotated": false,
+            "trimmed": false,
+            "sourceSize": {
+                "w": 173,
+                "h": 70
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 173,
+                "h": 70
+            },
+            "frame": {
+                "x": 6,
+                "y": 6,
+                "w": 173,
+                "h": 70
+            }
+        },
+        {
+            "filename": "net",
+            "rotated": false,
+            "trimmed": false,
+            "sourceSize": {
+                "w": 8,
+                "h": 70
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 8,
+                "h": 70
+            },
+            "frame": {
+                "x": 186,
+                "y": 6,
+                "w": 8,
+                "h": 70
+            }
+        },
+        {
+            "filename": "ball",
+            "rotated": false,
+            "trimmed": false,
+            "sourceSize": {
+                "w": 24,
+                "h": 24
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 24,
+                "h": 24
+            },
+            "frame": {
+                "x": 201,
+                "y": 6,
+                "w": 24,
+                "h": 24
+            }
+        },
+        {
+            "filename": "confettis-1",
+            "rotated": false,
+            "trimmed": false,
+            "sourceSize": {
+                "w": 16,
+                "h": 15
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 15
+            },
+            "frame": {
+                "x": 201,
+                "y": 37,
+                "w": 16,
+                "h": 15
+            }
+        },
+        {
+            "filename": "confettis-2",
+            "rotated": false,
+            "trimmed": false,
+            "sourceSize": {
+                "w": 16,
+                "h": 15
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 15
+            },
+            "frame": {
+                "x": 224,
+                "y": 37,
+                "w": 16,
+                "h": 15
+            }
+        },
+        {
+            "filename": "confettis-4",
+            "rotated": false,
+            "trimmed": false,
+            "sourceSize": {
+                "w": 14,
+                "h": 16
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 14,
+                "h": 16
+            },
+            "frame": {
+                "x": 201,
+                "y": 59,
+                "w": 14,
+                "h": 16
+            }
+        },
+        {
+            "filename": "confettis-3",
+            "rotated": false,
+            "trimmed": false,
+            "sourceSize": {
+                "w": 16,
+                "h": 15
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 16,
+                "h": 15
+            },
+            "frame": {
+                "x": 222,
+                "y": 59,
+                "w": 16,
+                "h": 15
+            }
+        }
+    ],
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",

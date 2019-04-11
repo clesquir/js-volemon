@@ -1,269 +1,258 @@
 {
-	"textures": [
-		{
-			"image": "texture-atlas.png",
-			"format": "RGBA8888",
-			"size": {
-				"w": 1974,
-				"h": 555
-			},
-			"scale": 1,
-			"frames": [
-				{
-					"filename": "snow-1",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 180,
-						"h": 359
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 180,
-						"h": 359
-					},
-					"frame": {
-						"x": 6,
-						"y": 6,
-						"w": 180,
-						"h": 359
-					}
-				},
-				{
-					"filename": "cloud",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 840,
-						"h": 177
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 840,
-						"h": 177
-					},
-					"frame": {
-						"x": 6,
-						"y": 372,
-						"w": 840,
-						"h": 177
-					}
-				},
-				{
-					"filename": "snow-2",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 180,
-						"h": 359
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 180,
-						"h": 359
-					},
-					"frame": {
-						"x": 193,
-						"y": 6,
-						"w": 180,
-						"h": 359
-					}
-				},
-				{
-					"filename": "snow-3",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 180,
-						"h": 359
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 180,
-						"h": 359
-					},
-					"frame": {
-						"x": 380,
-						"y": 6,
-						"w": 180,
-						"h": 359
-					}
-				},
-				{
-					"filename": "rain-1",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 180,
-						"h": 312
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 180,
-						"h": 312
-					},
-					"frame": {
-						"x": 567,
-						"y": 6,
-						"w": 180,
-						"h": 312
-					}
-				},
-				{
-					"filename": "snow-ground",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 140,
-						"h": 26
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 140,
-						"h": 26
-					},
-					"frame": {
-						"x": 567,
-						"y": 325,
-						"w": 140,
-						"h": 26
-					}
-				},
-				{
-					"filename": "thunder-2",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 1,
-						"h": 1
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 3,
-						"h": 3
-					},
-					"frame": {
-						"x": 567,
-						"y": 358,
-						"w": 3,
-						"h": 3
-					}
-				},
-				{
-					"filename": "rain-ground",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 140,
-						"h": 25
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 140,
-						"h": 25
-					},
-					"frame": {
-						"x": 714,
-						"y": 325,
-						"w": 140,
-						"h": 25
-					}
-				},
-				{
-					"filename": "rain-2",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 180,
-						"h": 312
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 180,
-						"h": 312
-					},
-					"frame": {
-						"x": 754,
-						"y": 6,
-						"w": 180,
-						"h": 312
-					}
-				},
-				{
-					"filename": "thunder-1",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 840,
-						"h": 280
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 840,
-						"h": 280
-					},
-					"frame": {
-						"x": 941,
-						"y": 6,
-						"w": 840,
-						"h": 280
-					}
-				},
-				{
-					"filename": "rain-3",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 180,
-						"h": 312
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 180,
-						"h": 312
-					},
-					"frame": {
-						"x": 1788,
-						"y": 6,
-						"w": 180,
-						"h": 312
-					}
-				},
-				{
-					"filename": "fog",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 840,
-						"h": 238
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 840,
-						"h": 238
-					},
-					"frame": {
-						"x": 941,
-						"y": 293,
-						"w": 840,
-						"h": 238
-					}
-				}
-			]
-		}
-	],
+    "frames": [
+        {
+            "filename": "snow-1",
+            "rotated": false,
+            "trimmed": false,
+            "sourceSize": {
+                "w": 180,
+                "h": 359
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 180,
+                "h": 359
+            },
+            "frame": {
+                "x": 6,
+                "y": 6,
+                "w": 180,
+                "h": 359
+            }
+        },
+        {
+            "filename": "cloud",
+            "rotated": false,
+            "trimmed": false,
+            "sourceSize": {
+                "w": 840,
+                "h": 177
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 840,
+                "h": 177
+            },
+            "frame": {
+                "x": 6,
+                "y": 372,
+                "w": 840,
+                "h": 177
+            }
+        },
+        {
+            "filename": "snow-2",
+            "rotated": false,
+            "trimmed": false,
+            "sourceSize": {
+                "w": 180,
+                "h": 359
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 180,
+                "h": 359
+            },
+            "frame": {
+                "x": 193,
+                "y": 6,
+                "w": 180,
+                "h": 359
+            }
+        },
+        {
+            "filename": "snow-3",
+            "rotated": false,
+            "trimmed": false,
+            "sourceSize": {
+                "w": 180,
+                "h": 359
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 180,
+                "h": 359
+            },
+            "frame": {
+                "x": 380,
+                "y": 6,
+                "w": 180,
+                "h": 359
+            }
+        },
+        {
+            "filename": "rain-1",
+            "rotated": false,
+            "trimmed": false,
+            "sourceSize": {
+                "w": 180,
+                "h": 312
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 180,
+                "h": 312
+            },
+            "frame": {
+                "x": 567,
+                "y": 6,
+                "w": 180,
+                "h": 312
+            }
+        },
+        {
+            "filename": "snow-ground",
+            "rotated": false,
+            "trimmed": false,
+            "sourceSize": {
+                "w": 140,
+                "h": 26
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 140,
+                "h": 26
+            },
+            "frame": {
+                "x": 567,
+                "y": 325,
+                "w": 140,
+                "h": 26
+            }
+        },
+        {
+            "filename": "thunder-2",
+            "rotated": false,
+            "trimmed": true,
+            "sourceSize": {
+                "w": 1,
+                "h": 1
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 3,
+                "h": 3
+            },
+            "frame": {
+                "x": 567,
+                "y": 358,
+                "w": 3,
+                "h": 3
+            }
+        },
+        {
+            "filename": "rain-ground",
+            "rotated": false,
+            "trimmed": false,
+            "sourceSize": {
+                "w": 140,
+                "h": 25
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 140,
+                "h": 25
+            },
+            "frame": {
+                "x": 714,
+                "y": 325,
+                "w": 140,
+                "h": 25
+            }
+        },
+        {
+            "filename": "rain-2",
+            "rotated": false,
+            "trimmed": false,
+            "sourceSize": {
+                "w": 180,
+                "h": 312
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 180,
+                "h": 312
+            },
+            "frame": {
+                "x": 754,
+                "y": 6,
+                "w": 180,
+                "h": 312
+            }
+        },
+        {
+            "filename": "thunder-1",
+            "rotated": false,
+            "trimmed": false,
+            "sourceSize": {
+                "w": 840,
+                "h": 280
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 840,
+                "h": 280
+            },
+            "frame": {
+                "x": 941,
+                "y": 6,
+                "w": 840,
+                "h": 280
+            }
+        },
+        {
+            "filename": "rain-3",
+            "rotated": false,
+            "trimmed": false,
+            "sourceSize": {
+                "w": 180,
+                "h": 312
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 180,
+                "h": 312
+            },
+            "frame": {
+                "x": 1788,
+                "y": 6,
+                "w": 180,
+                "h": 312
+            }
+        },
+        {
+            "filename": "fog",
+            "rotated": false,
+            "trimmed": false,
+            "sourceSize": {
+                "w": 840,
+                "h": 238
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 840,
+                "h": 238
+            },
+            "frame": {
+                "x": 941,
+                "y": 293,
+                "w": 840,
+                "h": 238
+            }
+        }
+    ],
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",

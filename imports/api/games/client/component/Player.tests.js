@@ -7,7 +7,6 @@ import CountStreamBundler from '/imports/api/games/client/streamBundler/CountStr
 import StaticGameConfiguration from '/imports/api/games/configuration/StaticGameConfiguration';
 import StaticGameData from '/imports/api/games/data/StaticGameData';
 import NullDeviceController from '/imports/api/games/deviceController/NullDeviceController';
-import {Random} from 'meteor/random';
 
 describe('Player#isJumpingForward', function() {
 	const deviceController = new NullDeviceController();
@@ -34,8 +33,8 @@ describe('Player#isJumpingForward', function() {
 		mainScene.createComponents();
 		const player = mainScene.players.player1;
 
-		player.containerPhysics.setVelocity(25, 0);
-		player.hasBottomTouching = false;
+		player.playerObject.body.velocity.setTo(25, 0);
+		player.hasBottomTouchingJumpable = () => false;
 
 		assert.isFalse(player.isJumpingForward());
 	});
@@ -45,8 +44,8 @@ describe('Player#isJumpingForward', function() {
 		mainScene.createComponents();
 		const player = mainScene.players.player1;
 
-		player.containerPhysics.setVelocity(25, 25);
-		player.hasBottomTouching = false;
+		player.playerObject.body.velocity.setTo(25, 25);
+		player.hasBottomTouchingJumpable = () => false;
 
 		assert.isFalse(player.isJumpingForward());
 	});
@@ -56,8 +55,8 @@ describe('Player#isJumpingForward', function() {
 		mainScene.createComponents();
 		const player = mainScene.players.player1;
 
-		player.containerPhysics.setVelocity(25, -25);
-		player.hasBottomTouching = true;
+		player.playerObject.body.velocity.setTo(25, -25);
+		player.hasBottomTouchingJumpable = () => true;
 
 		assert.isFalse(player.isJumpingForward());
 	});
@@ -67,8 +66,8 @@ describe('Player#isJumpingForward', function() {
 		mainScene.createComponents();
 		const player = mainScene.players.player1;
 
-		player.containerPhysics.setVelocity(0, -25);
-		player.hasBottomTouching = false;
+		player.playerObject.body.velocity.setTo(0, -25);
+		player.hasBottomTouchingJumpable = () => false;
 
 		assert.isFalse(player.isJumpingForward());
 	});
@@ -78,8 +77,8 @@ describe('Player#isJumpingForward', function() {
 		mainScene.createComponents();
 		const player = mainScene.players.player1;
 
-		player.containerPhysics.setVelocity(-25, -25);
-		player.hasBottomTouching = false;
+		player.playerObject.body.velocity.setTo(-25, -25);
+		player.hasBottomTouchingJumpable = () => false;
 
 		assert.isFalse(player.isJumpingForward());
 	});
@@ -89,8 +88,8 @@ describe('Player#isJumpingForward', function() {
 		mainScene.createComponents();
 		const player = mainScene.players.player1;
 
-		player.containerPhysics.setVelocity(25, -25);
-		player.hasBottomTouching = false;
+		player.playerObject.body.velocity.setTo(25, -25);
+		player.hasBottomTouchingJumpable = () => false;
 
 		assert.isTrue(player.isJumpingForward());
 	});
@@ -100,8 +99,8 @@ describe('Player#isJumpingForward', function() {
 		mainScene.createComponents();
 		const player = mainScene.players.player2;
 
-		player.containerPhysics.setVelocity(0, -25);
-		player.hasBottomTouching = false;
+		player.playerObject.body.velocity.setTo(0, -25);
+		player.hasBottomTouchingJumpable = () => false;
 
 		assert.isFalse(player.isJumpingForward());
 	});
@@ -111,8 +110,8 @@ describe('Player#isJumpingForward', function() {
 		mainScene.createComponents();
 		const player = mainScene.players.player2;
 
-		player.containerPhysics.setVelocity(25, -25);
-		player.hasBottomTouching = false;
+		player.playerObject.body.velocity.setTo(25, -25);
+		player.hasBottomTouchingJumpable = () => false;
 
 		assert.isFalse(player.isJumpingForward());
 	});
@@ -122,8 +121,8 @@ describe('Player#isJumpingForward', function() {
 		mainScene.createComponents();
 		const player = mainScene.players.player2;
 
-		player.containerPhysics.setVelocity(-25, -25);
-		player.hasBottomTouching = false;
+		player.playerObject.body.velocity.setTo(-25, -25);
+		player.hasBottomTouchingJumpable = () => false;
 
 		assert.isTrue(player.isJumpingForward());
 	});
@@ -154,8 +153,8 @@ describe('Player#isInFrontOfPlayer', function() {
 		mainScene.createComponents();
 		const player = mainScene.players.player1;
 
-		player.containerPhysics.x = 200;
-		player.containerPhysics.y = 400;
+		player.playerObject.x = 200;
+		player.playerObject.y = 400;
 
 		assert.isFalse(player.isInFrontOfPlayer(200));
 	});
@@ -165,8 +164,8 @@ describe('Player#isInFrontOfPlayer', function() {
 		mainScene.createComponents();
 		const player = mainScene.players.player1;
 
-		player.containerPhysics.x = 200;
-		player.containerPhysics.y = 400;
+		player.playerObject.x = 200;
+		player.playerObject.y = 400;
 
 		assert.isFalse(player.isInFrontOfPlayer(198));
 	});
@@ -176,8 +175,8 @@ describe('Player#isInFrontOfPlayer', function() {
 		mainScene.createComponents();
 		const player = mainScene.players.player1;
 
-		player.containerPhysics.x = 200;
-		player.containerPhysics.y = 400;
+		player.playerObject.x = 200;
+		player.playerObject.y = 400;
 
 		assert.isTrue(player.isInFrontOfPlayer(202));
 	});
@@ -187,8 +186,8 @@ describe('Player#isInFrontOfPlayer', function() {
 		mainScene.createComponents();
 		const player = mainScene.players.player2;
 
-		player.containerPhysics.x = 200;
-		player.containerPhysics.y = 400;
+		player.playerObject.x = 200;
+		player.playerObject.y = 400;
 
 		assert.isFalse(player.isInFrontOfPlayer(200));
 	});
@@ -198,8 +197,8 @@ describe('Player#isInFrontOfPlayer', function() {
 		mainScene.createComponents();
 		const player = mainScene.players.player2;
 
-		player.containerPhysics.x = 200;
-		player.containerPhysics.y = 400;
+		player.playerObject.x = 200;
+		player.playerObject.y = 400;
 
 		assert.isFalse(player.isInFrontOfPlayer(202));
 	});
@@ -209,8 +208,8 @@ describe('Player#isInFrontOfPlayer', function() {
 		mainScene.createComponents();
 		const player = mainScene.players.player2;
 
-		player.containerPhysics.x = 200;
-		player.containerPhysics.y = 400;
+		player.playerObject.x = 200;
+		player.playerObject.y = 400;
 
 		assert.isTrue(player.isInFrontOfPlayer(198));
 	});
@@ -287,7 +286,7 @@ describe('Player#move', function() {
 		mainScene.createComponents();
 		const player = mainScene.players.player1;
 
-		player.hasBottomTouching = true;
+		player.hasBottomTouchingJumpable = () => true;
 		player.move(false, false, true, false);
 
 		assert.equal(0, player.positionData().velocityX);
@@ -299,7 +298,7 @@ describe('Player#move', function() {
 		mainScene.createComponents();
 		const player = mainScene.players.player1;
 
-		player.hasBottomTouching = true;
+		player.hasBottomTouchingJumpable = () => true;
 		player.move(false, false, false, false);
 
 		assert.equal(0, player.positionData().velocityX);
@@ -311,7 +310,7 @@ describe('Player#move', function() {
 		mainScene.createComponents();
 		const player = mainScene.players.player1;
 
-		player.hasBottomTouching = false;
+		player.hasBottomTouchingJumpable = () => false;
 		player.move(false, false, true, false);
 
 		assert.equal(0, player.positionData().velocityX);

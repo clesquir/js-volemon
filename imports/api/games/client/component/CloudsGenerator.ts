@@ -7,9 +7,10 @@ export default class CloudsGenerator {
 	scene: MainScene;
 	gameData: GameData;
 	gameConfiguration: GameConfiguration;
+	private readonly fadeInOutDuration = 250;
 
-	clouds: Phaser.GameObjects.Image[] = [];
-	smokeBombs: {[id: string]: Phaser.GameObjects.Image} = {};
+	private clouds: Phaser.Image[] = [];
+	private smokeBombs: {[id: string]: Phaser.Image} = {};
 
 	constructor(
 		scene: MainScene,
@@ -49,47 +50,31 @@ export default class CloudsGenerator {
 		}
 
 		for (let cloud of this.clouds) {
-			cloud.setVisible(true);
-			this.scene.tweens.add({
-				targets: cloud,
-				duration: 250,
-				alpha: {
-					getStart: () => cloud.alpha,
-					getEnd: () => cloud.getData('finalAlpha')
-				}
-			});
+			cloud.visible = true;
+			this.scene.game.add.tween(cloud).to({alpha: cloud.data.finalAlpha}, this.fadeInOutDuration).start();
 		}
 	}
 
 	hideClouds() {
 		for (let cloud of this.clouds) {
-			this.scene.tweens.add({
-				targets: cloud,
-				duration: 250,
-				alpha: {
-					getStart: () => cloud.alpha,
-					getEnd: () => 0
-				},
-				onComplete: function() {
-					if (cloud) {
-						cloud.setVisible(false);
-					}
+			cloud.alpha = 1;
+
+			this.scene.game.add.tween(cloud)
+				.to({alpha: 0}, this.fadeInOutDuration)
+				.start();
+
+			setTimeout(() => {
+				if (cloud) {
+					cloud.visible = false;
 				}
-			});
+			}, this.fadeInOutDuration);
 		}
 	}
 
 	showSmokeBomb(smokeBombIdentifier: string, xPosition: number, yPosition: number, angle: number) {
 		const smokeBomb = this.createCloud(xPosition, yPosition, angle, 0.925);
 
-		this.scene.tweens.add({
-			targets: smokeBomb,
-			duration: 250,
-			alpha: {
-				getStart: () => smokeBomb.alpha,
-				getEnd: () => smokeBomb.getData('finalAlpha')
-			}
-		});
+		this.scene.game.add.tween(smokeBomb).to({alpha: smokeBomb.data.finalAlpha}, this.fadeInOutDuration).start();
 
 		this.smokeBombs[smokeBombIdentifier] = smokeBomb;
 	}
@@ -98,19 +83,15 @@ export default class CloudsGenerator {
 		if (this.smokeBombs[smokeBombIdentifier]) {
 			const smokeBomb = this.smokeBombs[smokeBombIdentifier];
 
-			this.scene.tweens.add({
-				targets: smokeBomb,
-				duration: 250,
-				alpha: {
-					getStart: () => smokeBomb.alpha,
-					getEnd: () => 0
-				},
-				onComplete: function() {
-					if (smokeBomb) {
-						smokeBomb.destroy();
-					}
+			this.scene.game.add.tween(smokeBomb)
+				.to({alpha: 0}, this.fadeInOutDuration)
+				.start();
+
+			setTimeout(() => {
+				if (smokeBomb) {
+					smokeBomb.destroy();
 				}
-			});
+			}, this.fadeInOutDuration);
 		}
 	}
 
@@ -120,19 +101,20 @@ export default class CloudsGenerator {
 		angle: number,
 		finalAlpha: number,
 		scale?: number
-	): Phaser.GameObjects.Image {
-		const cloud = this.scene.add.image(xPosition, yPosition, 'cloud');
+	): Phaser.Image {
+		const cloud = this.scene.game.add.image(xPosition, yPosition, 'cloud');
 
-		cloud.setDepth(DEPTH_CLOUDS);
-		cloud.setAlpha(0);
-		cloud.setOrigin(0.5);
-		cloud.setAngle(angle);
+		// @ts-ignore
+		cloud.depth = DEPTH_CLOUDS;
+
+		cloud.alpha = 0;
+		cloud.anchor.setTo(0.5);
+		cloud.angle = angle;
 		if (scale) {
-			cloud.setScale(scale);
+			cloud.scale.setTo(scale);
 		}
 
-		cloud.setDataEnabled();
-		cloud.setData('finalAlpha', finalAlpha);
+		cloud.data.finalAlpha = finalAlpha;
 
 		return cloud;
 	}

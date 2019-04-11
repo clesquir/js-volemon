@@ -18,6 +18,11 @@ export default class TournamentMode {
 	overriddenInitialPlayerScale_player4;
 	overriddenSmallPlayerScale;
 	overriddenBigPlayerScale;
+	overriddenInitialPlayerGravityScale;
+	overriddenInitialPlayerGravityScale_player1;
+	overriddenInitialPlayerGravityScale_player2;
+	overriddenInitialPlayerGravityScale_player3;
+	overriddenInitialPlayerGravityScale_player4;
 	overriddenInitialPlayerMass;
 	overriddenInitialPlayerMass_player1;
 	overriddenInitialPlayerMass_player2;
@@ -28,12 +33,12 @@ export default class TournamentMode {
 	overriddenInitialBallScale;
 	overriddenSmallBallScale;
 	overriddenBigBallScale;
-	overriddenBallAirFriction;
+	overriddenInitialBallGravityScale;
 	overriddenInitialBallMass;
 	overriddenSmallBallMass;
 	overriddenBigBallMass;
 	overriddenBonusScale;
-	overriddenBonusAirFriction;
+	overriddenBonusGravityScale;
 	overriddenBonusMass;
 	overriddenListOfShapes;
 	overriddenAllowedListOfShapes;
@@ -181,6 +186,21 @@ export default class TournamentMode {
 		return parseFloat(this.overriddenBigPlayerScale);
 	}
 
+	overridesInitialPlayerGravityScale(key: string): boolean {
+		return (
+			this['overriddenInitialPlayerGravityScale_' + key] !== undefined ||
+			this.overriddenInitialPlayerGravityScale !== undefined
+		);
+	}
+
+	initialPlayerGravityScale(key: string): number {
+		if (this['overriddenInitialPlayerGravityScale_' + key] !== undefined) {
+			return parseFloat(this['overriddenInitialPlayerGravityScale_' + key]);
+		}
+
+		return parseFloat(this.overriddenInitialPlayerGravityScale);
+	}
+
 	overridesInitialPlayerMass(key: string): boolean {
 		return (
 			this['overriddenInitialPlayerMass_' + key] !== undefined ||
@@ -236,12 +256,12 @@ export default class TournamentMode {
 		return parseFloat(this.overriddenBigBallScale);
 	}
 
-	overridesBallAirFriction(): boolean {
-		return this.overriddenBallAirFriction !== undefined;
+	overridesInitialBallGravityScale(): boolean {
+		return this.overriddenInitialBallGravityScale !== undefined;
 	}
 
-	ballAirFriction(): number {
-		return parseFloat(this.overriddenBallAirFriction);
+	initialBallGravityScale(): number {
+		return parseFloat(this.overriddenInitialBallGravityScale);
 	}
 
 	overridesInitialBallMass(): boolean {
@@ -276,12 +296,12 @@ export default class TournamentMode {
 		return parseFloat(this.overriddenBonusScale);
 	}
 
-	overridesBonusAirFriction(): boolean {
-		return this.overriddenBonusAirFriction !== undefined;
+	overridesBonusGravityScale(): boolean {
+		return this.overriddenBonusGravityScale !== undefined;
 	}
 
-	bonusAirFriction(): number {
-		return parseFloat(this.overriddenBonusAirFriction);
+	bonusGravityScale(): number {
+		return parseFloat(this.overriddenBonusGravityScale);
 	}
 
 	overridesBonusMass(): boolean {
@@ -463,6 +483,11 @@ export default class TournamentMode {
 		tournamentMode.overriddenInitialPlayerScale_player4 = mode.overriddenInitialPlayerScale_player4;
 		tournamentMode.overriddenSmallPlayerScale = mode.overriddenSmallPlayerScale;
 		tournamentMode.overriddenBigPlayerScale = mode.overriddenBigPlayerScale;
+		tournamentMode.overriddenInitialPlayerGravityScale = mode.overriddenInitialPlayerGravityScale;
+		tournamentMode.overriddenInitialPlayerGravityScale_player1 = mode.overriddenInitialPlayerGravityScale_player1;
+		tournamentMode.overriddenInitialPlayerGravityScale_player2 = mode.overriddenInitialPlayerGravityScale_player2;
+		tournamentMode.overriddenInitialPlayerGravityScale_player3 = mode.overriddenInitialPlayerGravityScale_player3;
+		tournamentMode.overriddenInitialPlayerGravityScale_player4 = mode.overriddenInitialPlayerGravityScale_player4;
 		tournamentMode.overriddenInitialPlayerMass = mode.overriddenInitialPlayerMass;
 		tournamentMode.overriddenInitialPlayerMass_player1 = mode.overriddenInitialPlayerMass_player1;
 		tournamentMode.overriddenInitialPlayerMass_player2 = mode.overriddenInitialPlayerMass_player2;
@@ -473,12 +498,12 @@ export default class TournamentMode {
 		tournamentMode.overriddenInitialBallScale = mode.overriddenInitialBallScale;
 		tournamentMode.overriddenSmallBallScale = mode.overriddenSmallBallScale;
 		tournamentMode.overriddenBigBallScale = mode.overriddenBigBallScale;
-		tournamentMode.overriddenBallAirFriction = mode.overriddenBallAirFriction;
+		tournamentMode.overriddenInitialBallGravityScale = mode.overriddenInitialBallGravityScale;
 		tournamentMode.overriddenInitialBallMass = mode.overriddenInitialBallMass;
 		tournamentMode.overriddenSmallBallMass = mode.overriddenSmallBallMass;
 		tournamentMode.overriddenBigBallMass = mode.overriddenBigBallMass;
 		tournamentMode.overriddenBonusScale = mode.overriddenBonusScale;
-		tournamentMode.overriddenBonusAirFriction = mode.overriddenBonusAirFriction;
+		tournamentMode.overriddenBonusGravityScale = mode.overriddenBonusGravityScale;
 		tournamentMode.overriddenBonusMass = mode.overriddenBonusMass;
 		tournamentMode.overriddenListOfShapes = mode.overriddenListOfShapes;
 		tournamentMode.overriddenAllowedListOfShapes = mode.overriddenAllowedListOfShapes;

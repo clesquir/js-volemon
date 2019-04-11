@@ -19,10 +19,6 @@ export default class MarioBrosSkin implements Skin {
 		return [];
 	}
 
-	spriteSheetsToLoad(): { key: string; path: string; width: number; height: number }[] {
-		return [];
-	}
-
 	backgroundColor(): string {
 		return '#6b8cff';
 	}

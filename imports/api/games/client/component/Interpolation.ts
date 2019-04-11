@@ -5,7 +5,7 @@ export default class Interpolation {
 	private readonly scene: MainScene;
 	private readonly serverNormalizedTime: ServerNormalizedTime;
 
-	private readonly minimumForInterpolation = 15;
+	private readonly minimumForInterpolation = 10;
 	private readonly minimumForSlidingInterpolation = 25;
 
 	constructor(
@@ -17,7 +17,7 @@ export default class Interpolation {
 	}
 
 	interpolateMoveTo(
-		gameObject: Phaser.Physics.Matter.Image,
+		gameObject: Phaser.Sprite,
 		data: any,
 		canMoveCallback: Function,
 		slideToLocation: boolean = false
@@ -29,7 +29,7 @@ export default class Interpolation {
 			this.moveToInterpolatedPosition(gameObject, data, canMoveCallback);
 		} else if (!slideToLocation) {
 			const interpolatedData = Object.assign({}, data);
-			this.interpolateFromTimestamp(serverNormalizedTimestamp, interpolatedData);
+			this.interpolateFromTimestamp(gameObject, serverNormalizedTimestamp, interpolatedData);
 
 			this.moveToInterpolatedPosition(gameObject, interpolatedData, canMoveCallback);
 		} else {
@@ -41,19 +41,17 @@ export default class Interpolation {
 			}
 
 			const interpolatedData = Object.assign({}, data);
-			this.interpolateFromTimestamp(serverNormalizedTimestamp + maxTime, interpolatedData);
+			this.interpolateFromTimestamp(gameObject, serverNormalizedTimestamp + maxTime, interpolatedData);
 
 			const t = maxTime / 1000;
 			const distanceX = (interpolatedData.x - gameObject.x);
-			const velocityX = distanceX / t;
-			gameObject.setVelocityX(velocityX);
+			gameObject.body.velocity.x = distanceX / t * this.distanceMultiplier();
 
 			const distanceY = (interpolatedData.y - gameObject.y);
-			const distanceGravityY = this.gravityDistanceAtTime(t);
-			const velocityY = (distanceY - distanceGravityY) / t;
-			gameObject.setVelocityY(velocityY);
+			const distanceGravityY = this.gravityDistanceAtTime(gameObject, t);
+			gameObject.body.velocity.y = (distanceY - distanceGravityY) / t * this.distanceMultiplier();
 
-			this.scene.time.delayedCall(
+			this.scene.game.time.events.add(
 				maxTime,
 				this.moveToInterpolatedPosition,
 				[
@@ -67,7 +65,7 @@ export default class Interpolation {
 	}
 
 	private moveToInterpolatedPosition(
-		gameObject: Phaser.Physics.Matter.Image,
+		gameObject: Phaser.Sprite,
 		interpolatedData: any,
 		canMoveCallback: Function
 	) {
@@ -76,36 +74,42 @@ export default class Interpolation {
 		}
 	}
 
-	private move(gameObject: Phaser.Physics.Matter.Image, data: any) {
+	private move(gameObject: Phaser.Sprite, data: any) {
 		if (!gameObject.body) {
 			return;
 		}
 
-		gameObject.setPosition(data.x, data.y);
-		gameObject.setVelocity(data.velocityX, data.velocityY);
+		gameObject.position.setTo(data.x, data.y);
+		gameObject.body.velocity.x = data.velocityX;
+		gameObject.body.velocity.y = data.velocityY;
 	}
 
-	private gravityDistanceAtTime(t) {
-		const gravity = this.scene.matter.world.engine.gravity.y;
+	private gravityDistanceAtTime(gameObject: Phaser.Sprite, t: number) {
+		const gravity = this.scene.game.physics.p2.gravity.y * gameObject.body.data.gravityScale;
 
 		return 0.5 * gravity * t * t;
 	}
 
 	private interpolateFromTimestamp(
+		gameObject: Phaser.Sprite,
 		currentTimestamp: number,
 		data: any
 	): any {
 		const t = (currentTimestamp - data.timestamp) / 1000;
-		const distanceX = data.velocityX * t;
+		const distanceX = data.velocityX / this.distanceMultiplier() * t;
 		let distanceY = 0;
 
 		if (data.velocityY != 0) {
-			distanceY = (data.velocityY * t) + this.gravityDistanceAtTime(t);
+			distanceY = (data.velocityY / this.distanceMultiplier() * t) + this.gravityDistanceAtTime(gameObject, t);
 		}
 
 		data.x = data.x + distanceX;
 		data.y = data.y + distanceY;
 
 		return data;
+	}
+
+	private distanceMultiplier() {
+		return 1.502636245994042;
 	}
 }

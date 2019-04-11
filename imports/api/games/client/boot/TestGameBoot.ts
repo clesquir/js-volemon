@@ -51,10 +51,9 @@ export class TestGameBoot {
 		const element = document.createElement('div');
 		element.setAttribute('id', parent);
 
-		this.gameBoot.init({
-			type: Phaser.HEADLESS,
+		this.gameBoot.start({
+			renderer: Phaser.HEADLESS,
 			parent: parent,
-			banner: false,
 		});
 	}
 }

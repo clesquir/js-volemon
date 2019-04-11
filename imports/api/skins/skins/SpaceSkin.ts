@@ -26,10 +26,6 @@ export default class SpaceSkin implements Skin {
 		];
 	}
 
-	spriteSheetsToLoad(): { key: string; path: string; width: number; height: number }[] {
-		return [];
-	}
-
 	backgroundColor(): string {
 		return '#000000';
 	}

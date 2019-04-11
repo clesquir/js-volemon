@@ -9,8 +9,8 @@ export default class Countdown {
 	gameConfiguration: GameConfiguration;
 	serverNormalizedTime: ServerNormalizedTime;
 
-	countdownText: Phaser.GameObjects.Text;
-	countdownTimer: Phaser.Time.TimerEvent;
+	countdownText: Phaser.Text;
+	countdownTimer: Phaser.Timer;
 	lastCountdownText: string = '';
 
 	constructor(
@@ -42,25 +42,27 @@ export default class Countdown {
 		}
 
 		if (timerLeft > 0) {
-			this.countdownTimer = this.scene.time.delayedCall(
-				timerLeft * 1000,
+			this.countdownTimer = this.scene.game.time.create();
+
+			this.countdownTimer.add(
+				Phaser.Timer.SECOND * timerLeft,
 				() => {
 					this.countdownText.text = '';
+					this.countdownTimer.stop();
 					onFinished();
 				},
-				[],
 				this
 			);
+
+			this.countdownTimer.start();
 		} else {
 			onFinished();
 		}
 	}
 
 	update() {
-		if (this.countdownTimer && this.countdownTimer.getProgress() < 1) {
-			let countdownText = Math.ceil(
-				(this.countdownTimer.delay - this.countdownTimer.elapsed) / 1000
-			).toString();
+		if (this.countdownTimer && this.countdownTimer.running) {
+			let countdownText = Math.ceil(this.countdownTimer.duration / 1000).toString();
 			let scaleTo = 7;
 
 			if (countdownText === '4' && this.gameData.numberMaximumPoints() > 1 && this.gameData.isMatchPoint()) {
@@ -74,17 +76,18 @@ export default class Countdown {
 
 			if (countdownText !== this.lastCountdownText) {
 				this.countdownText.setText(countdownText);
-				this.countdownText.setScale(1);
-				this.countdownText.setAlpha(1);
+				this.countdownText.scale.setTo(1);
+				this.countdownText.alpha = 1;
 
 				//Zoom numbers
-				this.scene.tweens.add({
-					targets: this.countdownText,
-					duration: 500,
-					scaleX: scaleTo,
-					scaleY: scaleTo,
-					alpha: 0
-				});
+				this.scene.game.add
+					.tween(this.countdownText.scale)
+					.to({x: scaleTo, y: scaleTo}, 500)
+					.start();
+				this.scene.game.add
+					.tween(this.countdownText)
+					.to({alpha: 0}, 500)
+					.start();
 			}
 
 			this.lastCountdownText = countdownText;
@@ -92,12 +95,17 @@ export default class Countdown {
 	}
 
 	private init() {
-		this.countdownText = this.scene.add.text(
+		this.countdownText = this.scene.game.add.text(
 			this.gameConfiguration.width() / 2,
 			this.gameConfiguration.height() / 2,
 			'',
-			{fontFamily: "'Oxygen Mono', sans-serif", fontSize: 75, color: '#363636', align: 'center'}
+			{
+				font: "75px 'Oxygen Mono', sans-serif",
+				fill: '#363636',
+				align: 'center'
+			}
 		);
-		this.countdownText.setOrigin(0.5);
+		this.countdownText.smoothed = true;
+		this.countdownText.anchor.setTo(0.5);
 	}
 }

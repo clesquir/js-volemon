@@ -164,10 +164,10 @@ export default class ClientGameInitiator {
 			this.serverNormalizedTime,
 			new MeteorServerAdapter()
 		);
-		this.gameBoot.init(
+		this.gameBoot.start(
 			{
-				postBoot: (game: Phaser.Game) => {
-					this.mainScene = <any>game.scene.getScene('MainScene');
+				postBoot: () => {
+					this.mainScene = this.gameBoot.mainScene;
 				}
 			}
 		);

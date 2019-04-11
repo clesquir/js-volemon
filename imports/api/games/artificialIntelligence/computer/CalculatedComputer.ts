@@ -3,7 +3,6 @@ import {ArtificialIntelligenceData} from "../ArtificialIntelligenceData";
 import GameConfiguration from "../../configuration/GameConfiguration";
 import {ArtificialIntelligencePositionData} from "../ArtificialIntelligencePositionData";
 import MainScene from "../../client/scene/MainScene";
-import {DEPTH_ACTIVATION_ANIMATION} from "../../constants";
 
 export default class CalculatedComputer implements Computer {
 	private readonly key: string;
@@ -18,9 +17,9 @@ export default class CalculatedComputer implements Computer {
 	private readonly highVelocity: number = 5;
 
 	//Debug info
-	private zone: Phaser.GameObjects.Graphics;
-	private ballGroundPrediction: Phaser.GameObjects.Graphics;
-	private ballSmashPrediction: Phaser.GameObjects.Graphics;
+	private zone: Phaser.Graphics;
+	private ballGroundPrediction: Phaser.Graphics;
+	private ballSmashPrediction: Phaser.Graphics;
 
 	left: boolean = false;
 	right: boolean = false;
@@ -37,14 +36,11 @@ export default class CalculatedComputer implements Computer {
 		this.groundY = gameConfiguration.height() - gameConfiguration.groundHeight();
 		this.netWidth = gameConfiguration.netWidth();
 		this.netY = this.groundY - gameConfiguration.netHeight();
-		this.debug = this.scene.matter.config.debug;
+		this.debug = this.scene.game.config.enableDebug;
 
-		this.zone = this.scene.add.graphics();
-		this.zone.setDepth(DEPTH_ACTIVATION_ANIMATION);
-		this.ballGroundPrediction = this.scene.add.graphics();
-		this.ballGroundPrediction.setDepth(DEPTH_ACTIVATION_ANIMATION);
-		this.ballSmashPrediction = this.scene.add.graphics();
-		this.ballSmashPrediction.setDepth(DEPTH_ACTIVATION_ANIMATION);
+		this.zone = this.scene.game.add.graphics();
+		this.ballGroundPrediction = this.scene.game.add.graphics();
+		this.ballSmashPrediction = this.scene.game.add.graphics();
 	}
 
 	currentGeneration(): number {
@@ -92,7 +88,7 @@ export default class CalculatedComputer implements Computer {
 		if (this.debug) {
 			this.ballGroundPrediction.clear();
 			this.ballGroundPrediction.lineStyle(1, this.isLeft ? 0xc94141 : 0x3363a1);
-			this.ballGroundPrediction.strokeCircle(
+			this.ballGroundPrediction.drawCircle(
 				xAtGround,
 				this.groundY,
 				ballPosition.width / 2
@@ -113,7 +109,7 @@ export default class CalculatedComputer implements Computer {
 
 					if (
 						this.ballWillFallAhead(xAtGround, computerPosition) &&
-						this.playerAtTheNet(computerPosition, ballPosition, ballPosition.width) === false
+						this.playerAtTheNet(computerPosition, ballPosition.width) === false
 					) {
 						if (computerPosition.x + distanceWithTimeToGround > xAtGround - horizontalThreshold) {
 							this.stopMovingHorizontally();
@@ -148,7 +144,7 @@ export default class CalculatedComputer implements Computer {
 
 					if (
 						this.ballWillFallAhead(xAtGround, computerPosition) &&
-						this.playerAtTheNet(computerPosition, ballPosition, ballPosition.width) === false
+						this.playerAtTheNet(computerPosition, ballPosition.width) === false
 					) {
 						if (computerPosition.x - distanceWithTimeToGround < xAtGround + horizontalThreshold) {
 							this.stopMovingHorizontally();
@@ -223,7 +219,7 @@ export default class CalculatedComputer implements Computer {
 		if (this.debug) {
 			this.zone.clear();
 			this.zone.lineStyle(1, this.isLeft ? 0xc94141 : 0x3363a1);
-			this.zone.strokeRect(
+			this.zone.drawRect(
 				zoneMinimumX,
 				zoneMinimumY,
 				zoneMaximumX - zoneMinimumX,
@@ -242,13 +238,13 @@ export default class CalculatedComputer implements Computer {
 			ballX < zoneMaximumX &&
 			ballY > zoneMinimumY &&
 			ballY < zoneMaximumY &&
-			this.playerAtTheNet(computerPosition, ballPosition, computerPosition.width) === false
+			this.playerAtTheNet(computerPosition, computerPosition.width) === false
 		);
 
 		if (shouldSmash && this.debug) {
 			this.ballSmashPrediction.clear();
 			this.ballSmashPrediction.lineStyle(1, this.isLeft ? 0xc94141 : 0x3363a1);
-			this.ballSmashPrediction.strokeCircle(
+			this.ballSmashPrediction.drawCircle(
 				ballX,
 				ballY,
 				ballPosition.width / 2
@@ -368,11 +364,9 @@ export default class CalculatedComputer implements Computer {
 
 	private playerAtTheNet(
 		computerPosition: ArtificialIntelligencePositionData,
-		ballPosition: ArtificialIntelligencePositionData,
 		distance: number = 0
 	): boolean {
 		const halfPlayerWidth = computerPosition.width / 2;
-		const halfBallWidth = ballPosition.width / 2;
 
 		if (this.isLeft) {
 			return computerPosition.x + halfPlayerWidth - distance >= this.levelHalfWidth - this.netWidth;
