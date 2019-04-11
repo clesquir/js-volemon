@@ -6,15 +6,18 @@ import StreamBundler from "../streamBundler/StreamBundler";
 import ServerNormalizedTime from "../ServerNormalizedTime";
 import GameConfiguration from "../../configuration/GameConfiguration";
 import ServerAdapter from "../serverAdapter/ServerAdapter";
-import {MainSceneConfigurationData} from "../scene/MainSceneConfigurationData";
-const MatterBody = require('phaser/src/physics/matter-js/lib/body/Body');
-const MatterResolver = require('phaser/src/physics/matter-js/lib/collision/Resolver');
+
+// @ts-ignore
+window.PIXI = require('phaser-ce/build/custom/pixi');
+// @ts-ignore
+window.p2 = require('phaser-ce/build/custom/p2');
+// @ts-ignore
+window.Phaser = require('phaser-ce/build/custom/phaser-split');
 
 export declare type GameBootConfiguration = {
-	type?: number;
+	renderer?: number;
 	parent?: string;
-	banner?: boolean;
-	postBoot?: BootCallback;
+	postBoot?: () => void;
 	debug?: boolean;
 };
 
@@ -28,8 +31,7 @@ export class GameBoot {
 	serverAdapter: ServerAdapter;
 
 	game: Phaser.Game;
-	mainScene: MainScene | any;
-	system: Phaser.Scenes.Systems;
+	mainScene: MainScene;
 
 	constructor(
 		deviceController: DeviceController,
@@ -49,21 +51,17 @@ export class GameBoot {
 		this.serverAdapter = serverAdapter;
 	}
 
-	init(configuration: GameBootConfiguration) {
-		let type = Phaser.AUTO;
+	start(configuration: GameBootConfiguration) {
+		let renderer = Phaser.AUTO;
 		let parent = 'game-container';
-		let banner = true;
-		let postBoot = (game) => {};
+		let postBoot = () => {};
 		let debug = false;
 
-		if (configuration.type !== undefined) {
-			type = configuration.type;
+		if (configuration.renderer !== undefined) {
+			renderer = configuration.renderer;
 		}
 		if (configuration.parent !== undefined) {
 			parent = configuration.parent;
-		}
-		if (configuration.banner !== undefined) {
-			banner = configuration.banner;
 		}
 		if (configuration.postBoot !== undefined) {
 			postBoot = configuration.postBoot;
@@ -73,57 +71,70 @@ export class GameBoot {
 		}
 
 		this.game = new Phaser.Game({
-			type: type,
+			renderer: renderer,
+			enableDebug: debug,
 			parent: parent,
-			banner: banner,
 			width: this.gameConfiguration.width(),
 			height: this.gameConfiguration.height(),
-			backgroundColor: this.skinManager.backgroundColor(),
-			physics: {
-				default: 'matter',
-				matter: {
-					gravity: {
-						x: 0,
-						y: this.gameConfiguration.worldGravity()
-					},
-					setBounds: false,
-					debug: debug
-				}
-			},
-			callbacks: {
-				postBoot: (game: Phaser.Game) => {
-					this.mainScene = <any>game.scene.getScene('MainScene');
+			backgroundColor: this.skinManager.backgroundColor()
+		});
 
-					//@todo https://github.com/liabru/matter-js/issues/394
-					MatterResolver._restingThresh = 0.001;
+		this.mainScene = new MainScene(
+			this.game,
+			this.deviceController,
+			this.gameData,
+			this.gameConfiguration,
+			this.skinManager,
+			this.streamBundler,
+			this.serverNormalizedTime,
+			this.serverAdapter
+		);
 
-					postBoot(game);
-				}
+		this.game.state.add('boot', {
+			create: () => {
+				this.game.physics.startSystem(Phaser.Physics.P2JS);
+				this.game.physics.p2.setImpactEvents(true);
+				this.game.physics.p2.gravity.y = this.gameConfiguration.worldGravity();
+				this.game.physics.p2.world.defaultContactMaterial.friction = 0;
+				this.game.physics.p2.world.setGlobalStiffness(1e10);
+				this.game.physics.p2.restitution = 0;
+				this.game.stage.disableVisibilityChange = true;
+
+				postBoot();
+				this.game.state.start('load');
 			}
 		});
 
-		this.game.scene.add(
-			'MainScene',
-			MainScene,
-			true,
-			<MainSceneConfigurationData>{
-				deviceController: this.deviceController,
-				gameData: this.gameData,
-				gameConfiguration: this.gameConfiguration,
-				skinManager: this.skinManager,
-				streamBundler: this.streamBundler,
-				serverNormalizedTime: this.serverNormalizedTime,
-				serverAdapter: this.serverAdapter
+		this.game.state.add('load', {
+			create: () => {
+				this.mainScene.preload.call(this.mainScene);
+
+				this.game.load.onLoadComplete.add(() => {
+					if (this.game.state) {
+						this.game.state.start('play');
+					}
+				}, this);
+				this.game.load.start();
 			}
-		);
+		});
+
+		this.game.state.add('play', {
+			preload: () => {},
+			create: () => {
+				this.mainScene.create.call(this.mainScene);
+			},
+			update: () => {
+				this.mainScene.update.call(this.mainScene);
+			}
+		});
+
+		this.game.state.start('boot');
 	}
 
 	stop() {
 		this.deviceController.stopMonitoring();
 		this.mainScene.destroy();
-		this.game.destroy(true);
-
-		//@todo https://github.com/photonstorm/phaser/pull/4334
-		MatterBody._nextCategory = 0x0001;
+		this.game.state.destroy();
+		this.game.destroy();
 	}
 }

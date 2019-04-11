@@ -215,7 +215,6 @@ const modeOptions = function() {
 	addToMode(mode, 'bonus-spawn-initial-maximum-frequence', 'overriddenBonusSpawnInitialMaximumFrequence');
 	addToMode(mode, 'bonus-scale', 'overriddenBonusScale');
 	addToMode(mode, 'bonus-mass', 'overriddenBonusMass');
-	addToMode(mode, 'bonus-air-friction', 'overriddenBonusAirFriction');
 
 	addToMode(mode, 'allowed-list-of-shapes', 'overriddenAllowedListOfShapes');
 	addToMode(mode, 'list-of-shapes', 'overriddenListOfShapes');
@@ -244,7 +243,6 @@ const modeOptions = function() {
 	addToMode(mode, 'initial-ball-mass', 'overriddenInitialBallMass');
 	addToMode(mode, 'small-ball-mass', 'overriddenSmallBallMass');
 	addToMode(mode, 'big-ball-mass', 'overriddenBigBallMass');
-	addToMode(mode, 'ball-air-friction', 'overriddenBallAirFriction');
 
 	addToMode(mode, 'forfeit-minimum-points', 'overriddenForfeitMinimumPoints');
 	addToMode(mode, 'maximum-points', 'overriddenMaximumPoints');

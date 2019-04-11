@@ -8,6 +8,7 @@ import WeatherPlugin from "../../../skins/plugins/WeatherPlugin";
 import LevelConfiguration from "../../levelConfiguration/LevelConfiguration";
 
 export default class Skin extends Dev {
+	debug: boolean = false;
 	startTime: number = 0;
 	timerUpdater: number;
 

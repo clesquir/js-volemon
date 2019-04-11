@@ -18,10 +18,6 @@ export default class DefaultSkin implements Skin {
 		return [];
 	}
 
-	spriteSheetsToLoad(): { key: string, path: string, width: number, height: number }[] {
-		return [];
-	}
-
 	backgroundColor(): string {
 		return '#9ad3de';
 	}

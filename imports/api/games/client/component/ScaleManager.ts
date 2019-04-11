@@ -11,35 +11,26 @@ export default class ScaleManager {
 	}
 
 	init() {
-		$(parent).on('resize', () => {
-			this.resize();
-		});
+		this.scene.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+		this.scene.game.scale.setResizeCallback(
+			() => {
+				const hScale = $(this.scene.game.scale.parentNode).width() / this.scene.game.width;
+				const vScale = $(this.scene.game.scale.parentNode).height() / this.scene.game.height;
 
-		this.resize();
+				if (
+					!this.scene.game.scale.scaleFactorInversed ||
+					(this.scene.game.scale.scaleFactorInversed.x !== hScale &&  this.scene.game.scale.scaleFactorInversed.y !== vScale)
+				) {
+					this.scene.game.scale.setUserScale(
+						hScale,
+						vScale
+					);
+				}
+			},
+			undefined
+		);
 	}
 
 	destroy() {
-		$(parent).off('resize');
-	}
-
-	private resize() {
-		if (!this.scene.game.renderer) {
-			return;
-		}
-
-		const canvas = this.scene.game.renderer.canvas;
-		const parent = canvas.parentElement;
-
-		//Set height scale first
-		const vScale = $(parent).height() / this.gameConfiguration.height();
-
-		$(canvas).css('width', (this.gameConfiguration.width() * vScale) + 'px');
-		$(canvas).css('height', (this.gameConfiguration.height() * vScale) + 'px');
-
-		//Then set width scale
-		const hScale = $(parent).width() / this.gameConfiguration.width();
-
-		$(canvas).css('width', (this.gameConfiguration.width() * hScale) + 'px');
-		$(canvas).css('height', (this.gameConfiguration.height() * hScale) + 'px');
 	}
 }

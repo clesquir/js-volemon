@@ -32,11 +32,7 @@ export default class WeatherPlugin implements Plugin {
 		return [];
 	}
 
-	spriteSheetsToLoad(): { key: string, path: string, width: number, height: number }[] {
-		return [];
-	}
-
-	backgroundColorModifier(): { color: string, opacity: number }[] {
+	backgroundColorModifier(): { color: number, opacity: number }[] {
 		const modifiers = [];
 
 		switch (this.weatherApi.timeOfDay()) {

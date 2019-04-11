@@ -1,19 +1,14 @@
 import MainScene from "../scene/MainScene";
 import GameConfiguration from "../../configuration/GameConfiguration";
 import SkinManager from "./SkinManager";
-import {
-	CLIENT_SIDE,
-	CONSTRAINED_VELOCITY,
-	HOST_SIDE,
-	SMASH_MAXIMUM_VELOCITY_Y,
-	SMASH_MINIMUM_VELOCITY_X
-} from "../../constants";
+import {CLIENT_SIDE, DEPTH_ALL, HOST_SIDE, SMASH_MAXIMUM_VELOCITY_Y, SMASH_MINIMUM_VELOCITY_X} from "../../constants";
 import Level from "./Level";
 import {ArtificialIntelligencePositionData} from "../../artificialIntelligence/ArtificialIntelligencePositionData";
 import {PositionData} from "./PositionData";
 import GameData from "../../data/GameData";
 import Interpolation from "./Interpolation";
 import ServerNormalizedTime from "../ServerNormalizedTime";
+import VelocityConstraint from "./VelocityConstraint";
 
 export default class Ball {
 	scene: MainScene;
@@ -23,16 +18,18 @@ export default class Ball {
 	skinManager: SkinManager;
 	level: Level;
 	interpolation: Interpolation;
+	velocityConstraint: VelocityConstraint;
 
-	ballObject: Phaser.Physics.Matter.Image;
+	ballObject: Phaser.Sprite;
 
 	isFrozen: boolean = false;
+	initialGravityScale: number;
+	currentGravityScale: number;
 	initialMass: number;
 	currentMass: number;
 	initialScale: number;
 	currentScale: number;
 	velocityOnReboundOnPlayer: number;
-	airFriction: number;
 
 	constructor(
 		scene: MainScene,
@@ -53,6 +50,7 @@ export default class Ball {
 			this.scene,
 			this.serverNormalizedTime
 		);
+		this.velocityConstraint = new VelocityConstraint();
 
 		this.init();
 	}
@@ -84,50 +82,52 @@ export default class Ball {
 				break;
 		}
 
-		this.ballObject.setVelocity(0, 0);
-		this.ballObject.setX(x);
-		this.ballObject.setY(this.gameConfiguration.ballInitialY());
+		this.ballObject.body.setZeroVelocity();
+		this.ballObject.position.setTo(x, this.gameConfiguration.ballInitialY());
 	}
 
 	freeze() {
 		this.isFrozen = true;
-		this.ballObject.setIgnoreGravity(true);
-		this.ballObject.setVelocity(0, 0);
+		this.ballObject.body.data.gravityScale = 0;
+		this.ballObject.body.setZeroVelocity();
 	}
 
 	unfreeze() {
 		this.isFrozen = false;
-		this.ballObject.setIgnoreGravity(false);
+		this.ballObject.body.data.gravityScale = this.currentGravityScale;
 	}
 
 	scaleSmall() {
 		this.currentScale = this.gameConfiguration.smallBallScale();
 		this.currentMass = this.gameConfiguration.smallBallMass();
+		this.currentGravityScale = this.gameConfiguration.smallBallGravityScale();
 		this.applyScale();
 	}
 
 	scaleBig() {
 		this.currentScale = this.gameConfiguration.bigBallScale();
 		this.currentMass = this.gameConfiguration.bigBallMass();
+		this.currentGravityScale = this.gameConfiguration.bigBallGravityScale();
 		this.applyScale();
 	}
 
 	resetScale() {
 		this.currentScale = this.initialScale;
 		this.currentMass = this.initialMass;
+		this.currentGravityScale = this.initialGravityScale;
 		this.applyScale();
 	}
 
 	hide() {
 		if (!this.gameData.isUserViewer()) {
-			this.ballObject.setAlpha(0);
+			this.ballObject.alpha = 0;
 		} else {
-			this.ballObject.setAlpha(0.5);
+			this.ballObject.alpha = 0.5;
 		}
 	}
 
 	unhide() {
-		this.ballObject.setAlpha(1);
+		this.ballObject.alpha = 1;
 	}
 
 	x(): number {
@@ -196,30 +196,16 @@ export default class Ball {
 			newVelocityY = -SMASH_MAXIMUM_VELOCITY_Y;
 		}
 
-		this.ballObject.setVelocity(newVelocityX, newVelocityY);
+		this.ballObject.body.velocity.x = newVelocityX;
+		this.ballObject.body.velocity.y = newVelocityY;
 	}
 
 	rebound() {
-		this.ballObject.setVelocityY(
-			this.velocityOnReboundOnPlayer *
-			this.initialMass / this.currentMass
-		);
+		this.ballObject.body.velocity.y = this.velocityOnReboundOnPlayer;
 	}
 
 	constrainVelocity() {
-		const maxVelocity = CONSTRAINED_VELOCITY;
-		let vx = this.velocityX();
-		let vy = this.velocityY();
-		let currVelocitySqr = vx * vx + vy * vy;
-
-		if (currVelocitySqr > maxVelocity * maxVelocity) {
-			let angle = Math.atan2(vy, vx);
-
-			vx = Math.cos(angle) * maxVelocity;
-			vy = Math.sin(angle) * maxVelocity;
-
-			this.ballObject.setVelocity(vx, vy);
-		}
+		this.velocityConstraint.constrain(this.ballObject.body);
 	}
 
 	interpolate(data: any) {
@@ -232,55 +218,63 @@ export default class Ball {
 	}
 
 	private init() {
+		this.initialGravityScale = this.gameConfiguration.initialBallGravityScale();
+		this.currentGravityScale = this.initialGravityScale;
 		this.initialMass = this.gameConfiguration.initialBallMass();
 		this.currentMass = this.initialMass;
 		this.initialScale = this.gameConfiguration.initialBallScale();
 		this.currentScale = this.initialScale;
 		this.velocityOnReboundOnPlayer = this.gameConfiguration.ballVelocityOnReboundOnPlayer();
-		this.airFriction = this.gameConfiguration.ballAirFriction();
 
 		this.ballObject = this.skinManager.createBallComponent(this.scene);
+		this.scene.game.physics.p2.enable(this.ballObject, this.scene.game.config.enableDebug);
+		this.ballObject.data.owner = this;
+		this.ballObject.data.isBall = true;
 
-		this.ballObject.setDataEnabled();
-		this.ballObject.setData('owner', this);
-		this.ballObject.setData('isBall', true);
+		// @ts-ignore
+		this.ballObject.depth = DEPTH_ALL;
 
-		this.ballObject.setScale(this.initialScale);
+		this.ballObject.scale.setTo(this.initialScale);
+		this.ballObject.body.clearShapes();
+		this.ballObject.body.loadPolygon('physicsData', 'ball', this.initialScale);
 
 		this.setupBody();
 	}
 
 	private setupBody() {
-		this.ballObject.setIgnoreGravity(this.isFrozen);
-		this.ballObject.setFriction(0, this.airFriction, 0);
-		this.ballObject.setMass(this.currentMass);
-		this.ballObject.setFixedRotation();
+		this.ballObject.body.fixedRotation = true;
+		this.ballObject.body.damping = 0.1;
+		this.ballObject.body.mass = this.currentMass;
 
-		this.ballObject.setCollisionCategory(this.level.collisionCategoryBall);
-		this.ballObject.setCollidesWith([
-			this.level.collisionCategoryHost,
-			this.level.collisionCategoryClient,
-			this.level.collisionCategoryBallLimit,
-			this.level.collisionCategoryBonus,
-		]);
+		if (this.isFrozen) {
+			this.ballObject.body.data.gravityScale = 0;
+		} else {
+			this.ballObject.body.data.gravityScale = this.currentGravityScale;
+		}
+
+		this.ballObject.body.setMaterial(this.level.materialBall);
+		this.ballObject.body.setCollisionGroup(this.level.collisionCategoryBall);
+		this.ballObject.body.collides(this.level.collisionCategoryBallLimit, this.scene.collideBallGround, this.scene);
+		this.ballObject.body.collides(this.level.collisionCategoryBall);
+		this.ballObject.body.collides(this.level.collisionCategoryHost, this.scene.collidePlayerBall, this.scene);
+		this.ballObject.body.collides(this.level.collisionCategoryClient, this.scene.collidePlayerBall, this.scene);
+		this.ballObject.body.collides(this.level.collisionCategoryBonus);
 	}
 
 	private velocityX(): number {
-		const body = <any>this.ballObject.body;
-
-		return body.velocity.x;
+		return this.ballObject.body.velocity.x;
 	}
 
 	private velocityY(): number {
-		const body = <any>this.ballObject.body;
-
-		return body.velocity.y;
+		return this.ballObject.body.velocity.y;
 	}
 
 	private applyScale() {
-		this.ballObject.setScale(this.currentScale);
-		this.ballObject.setMass(this.currentMass);
-		this.ballObject.setFixedRotation();
+		this.ballObject.scale.setTo(this.currentScale);
+		this.ballObject.body.clearShapes();
+		this.ballObject.body.loadPolygon('physicsData', 'ball', this.currentScale);
+
+		this.setupBody();
 	}
 
 	private gameIsOnGoing(): boolean {

@@ -157,6 +157,8 @@ export default class Bonuses {
 
 		this.bonuses.push(bonus);
 
+		this.scene.sortWorldComponents();
+
 		return bonus;
 	}
 
@@ -270,6 +272,8 @@ export default class Bonuses {
 
 	showClouds() {
 		this.cloudsGenerator.showClouds();
+
+		this.scene.sortWorldComponents();
 	}
 
 	hideClouds() {
@@ -278,6 +282,8 @@ export default class Bonuses {
 
 	showSmokeBomb(smokeBombIdentifier: string, xPosition: number, yPosition: number, angle: number) {
 		this.cloudsGenerator.showSmokeBomb(smokeBombIdentifier, xPosition, yPosition, angle);
+
+		this.scene.sortWorldComponents();
 	}
 
 	hideSmokeBomb(smokeBombIdentifier: string) {
@@ -285,24 +291,15 @@ export default class Bonuses {
 	}
 
 	applyHighGravity() {
-		this.scene.matter.world.setGravity(
-			0,
-			this.gameConfiguration.worldGravity() * this.gameConfiguration.highGravityMultiplier()
-		);
+		this.scene.game.physics.p2.gravity.y = this.gameConfiguration.worldGravity() * this.gameConfiguration.highGravityMultiplier();
 	}
 
 	applyLowGravity() {
-		this.scene.matter.world.setGravity(
-			0,
-			this.gameConfiguration.worldGravity() * this.gameConfiguration.lowGravityMultiplier()
-		);
+		this.scene.game.physics.p2.gravity.y = this.gameConfiguration.worldGravity() * this.gameConfiguration.lowGravityMultiplier();
 	}
 
 	resetGravity() {
-		this.scene.matter.world.setGravity(
-			0,
-			this.gameConfiguration.worldGravity()
-		);
+		this.scene.game.physics.p2.gravity.y = this.gameConfiguration.worldGravity();
 	}
 
 	scaleSmallPlayer(playerKey: string) {

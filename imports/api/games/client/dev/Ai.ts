@@ -1,11 +1,10 @@
 import Dev from "./Dev";
 import {CLIENT_POINTS_COLUMN, CLIENT_SIDE, HOST_POINTS_COLUMN, HOST_SIDE} from '../../constants';
-import {Random} from 'meteor/random';
 import Ball from "../component/Ball";
 
 export default class Ai extends Dev {
 	isStarted: boolean = false;
-	timeScale: number = 1;
+	slowMotion: number = 1;
 	genomesFromExisting: boolean = true;
 
 	lastHostGenerationSaved: number = 0;
@@ -30,7 +29,7 @@ export default class Ai extends Dev {
 	overrideGame() {
 		super.overrideGame();
 
-		this.mainScene.matter.world.engine.timing.timeScale = this.timeScale;
+		this.mainScene.game.time.slowMotion = this.slowMotion;
 		this.mainScene.artificialIntelligence.genomesFromExisting = this.genomesFromExisting;
 
 		this.mainScene.startCountdownTimer = function() {
@@ -204,27 +203,26 @@ export default class Ai extends Dev {
 	}
 
 	slowDownGame() {
-		this.timeScale = 0.5;
+		this.slowMotion = 5;
 
 		if (this.isStarted) {
-			this.mainScene.matter.world.engine.timing.timeScale = this.timeScale;
+			this.mainScene.game.time.slowMotion = this.slowMotion;
 		}
 	}
 
 	speedUpGame() {
-		this.timeScale = 2;
+		this.slowMotion = 0.000001;
 
 		if (this.isStarted) {
-			//@todo Timescale should not change gravity...
-			this.mainScene.matter.Runner.world.engine.run.timing.timeScale = this.timeScale;
+			this.mainScene.game.time.slowMotion = this.slowMotion;
 		}
 	}
 
 	normalGameSpeed() {
-		this.timeScale = 1;
+		this.slowMotion = 1;
 
 		if (this.isStarted) {
-			this.mainScene.matter.world.engine.timing.timeScale = this.timeScale;
+			this.mainScene.game.time.slowMotion = this.slowMotion;
 		}
 	}
 }

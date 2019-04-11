@@ -5,10 +5,11 @@ import {BonusPositionData} from "../../bonus/data/BonusPositionData";
 import MainScene from "../scene/MainScene";
 import GameConfiguration from "../../configuration/GameConfiguration";
 import Level from "./Level";
-import {CONSTRAINED_VELOCITY} from "../../constants";
 import Bonuses from "./Bonuses";
 import GameData from "../../data/GameData";
 import Interpolation from "./Interpolation";
+import VelocityConstraint from "./VelocityConstraint";
+import {DEPTH_ALL} from "../../constants";
 
 export default class Bonus {
 	scene: MainScene;
@@ -20,8 +21,9 @@ export default class Bonus {
 	initialX: number;
 	identifier: string;
 	interpolation: Interpolation;
+	velocityConstraint: VelocityConstraint;
 
-	bonusObject: Phaser.Physics.Matter.Image;
+	bonusObject: Phaser.Sprite;
 
 	constructor(
 		scene: MainScene,
@@ -46,6 +48,7 @@ export default class Bonus {
 			this.scene,
 			this.serverNormalizedTime
 		);
+		this.velocityConstraint = new VelocityConstraint();
 
 		this.init();
 	}
@@ -59,10 +62,9 @@ export default class Bonus {
 	}
 
 	freeze() {
-		this.bonusObject.setIgnoreGravity(true);
-		this.bonusObject.setVelocity(0, 0);
-		this.bonusObject.setFixedRotation();
-		this.bonusObject.setAngularVelocity(0);
+		this.bonusObject.body.data.gravityScale = 0;
+		this.bonusObject.body.setZeroVelocity();
+		this.bonusObject.body.fixedRotation = true;
 	}
 
 	interpolate(data: any) {
@@ -75,19 +77,7 @@ export default class Bonus {
 	}
 
 	constrainVelocity() {
-		const maxVelocity = CONSTRAINED_VELOCITY;
-		let vx = this.velocityX();
-		let vy = this.velocityY();
-		let currVelocitySqr = vx * vx + vy * vy;
-
-		if (currVelocitySqr > maxVelocity * maxVelocity) {
-			let angle = Math.atan2(vy, vx);
-
-			vx = Math.cos(angle) * maxVelocity;
-			vy = Math.sin(angle) * maxVelocity;
-
-			this.bonusObject.setVelocity(vx, vy);
-		}
+		this.velocityConstraint.constrain(this.bonusObject.body);
 	}
 
 	positionData(): BonusPositionData {
@@ -127,32 +117,34 @@ export default class Bonus {
 	}
 
 	private init() {
-		this.bonusObject = this.scene.matter.add.image(
+		this.bonusObject = this.scene.game.add.sprite(
 			this.initialX,
 			this.gameConfiguration.bonusRadius() * this.gameConfiguration.bonusScale(),
 			'bonus-icon',
-			this.bonusReference.atlasFrame,
-			{
-				shape: 'circle'
-			}
+			this.bonusReference.atlasFrame
 		);
+		this.scene.game.physics.p2.enable(this.bonusObject, this.scene.game.config.enableDebug);
 
-		this.bonusObject.setDataEnabled();
-		this.bonusObject.setData('owner', this);
-		this.bonusObject.setData('isBonus', true);
+		// @ts-ignore
+		this.bonusObject.depth = DEPTH_ALL;
 
-		this.bonusObject.setScale(this.gameConfiguration.bonusScale());
-		this.bonusObject.setFriction(0, this.gameConfiguration.bonusAirFriction(), 0);
-		this.bonusObject.setMass(this.gameConfiguration.bonusMass());
+		this.bonusObject.scale.setTo(this.gameConfiguration.bonusScale());
+		this.bonusObject.body.clearShapes();
+		this.bonusObject.body.addCircle(this.gameConfiguration.bonusRadius() * this.gameConfiguration.bonusScale());
 
-		this.bonusObject.setCollisionCategory(this.level.collisionCategoryBonus);
-		this.bonusObject.setCollidesWith([
-			this.level.collisionCategoryHost,
-			this.level.collisionCategoryClient,
-			this.level.collisionCategoryBonusLimit,
-			this.level.collisionCategoryBonus,
-			this.level.collisionCategoryBall,
-		]);
+		this.bonusObject.data.owner = this;
+		this.bonusObject.data.isBonus = true;
+
+		this.bonusObject.body.mass = this.gameConfiguration.bonusMass();
+		this.bonusObject.body.data.gravityScale = this.gameConfiguration.bonusGravityScale();
+
+		this.bonusObject.body.setMaterial(this.level.materialBonus);
+		this.bonusObject.body.setCollisionGroup(this.level.collisionCategoryBonus);
+		this.bonusObject.body.collides(this.level.collisionCategoryBonusLimit);
+		this.bonusObject.body.collides(this.level.collisionCategoryBonus);
+		this.bonusObject.body.collides(this.level.collisionCategoryHost, this.scene.collidePlayerBonus, this.scene);
+		this.bonusObject.body.collides(this.level.collisionCategoryClient, this.scene.collidePlayerBonus, this.scene);
+		this.bonusObject.body.collides(this.level.collisionCategoryBall);
 	}
 
 	private x(): number {
@@ -164,15 +156,11 @@ export default class Bonus {
 	}
 
 	private velocityX(): number {
-		const body = <any>this.bonusObject.body;
-
-		return body.velocity.x;
+		return this.bonusObject.body.velocity.x;
 	}
 
 	private velocityY(): number {
-		const body = <any>this.bonusObject.body;
-
-		return body.velocity.y;
+		return this.bonusObject.body.velocity.y;
 	}
 
 	private gameIsOnGoing(): boolean {

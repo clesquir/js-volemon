@@ -1,23 +1,25 @@
 import {
-	BALL_AIR_FRICTION,
+	BALL_BIG_GRAVITY_SCALE,
 	BALL_BIG_MASS,
 	BALL_BIG_SCALE,
+	BALL_GRAVITY_SCALE,
 	BALL_MASS,
-	BALL_SCALE,
+	BALL_SCALE, BALL_SMALL_GRAVITY_SCALE,
 	BALL_SMALL_MASS,
 	BALL_SMALL_SCALE,
 	BALL_VERTICAL_SPEED_ON_PLAYER_HIT,
-	BONUS_AIR_FRICTION,
+	BONUS_GRAVITY_SCALE,
 	BONUS_INDICATOR_RADIUS,
 	BONUS_MASS,
 	BONUS_RADIUS,
 	BONUS_SCALE,
 	GAME_FORFEIT_MINIMUM_POINTS,
-	GAME_MAXIMUM_POINTS,
+	GAME_MAXIMUM_POINTS, PLAYER_BIG_GRAVITY_SCALE,
 	PLAYER_BIG_MASS,
 	PLAYER_BIG_SCALE,
+	PLAYER_GRAVITY_SCALE,
 	PLAYER_MASS,
-	PLAYER_SCALE,
+	PLAYER_SCALE, PLAYER_SMALL_GRAVITY_SCALE,
 	PLAYER_SMALL_MASS,
 	PLAYER_SMALL_SCALE,
 	PLAYER_VELOCITY_X_ON_MOVE,
@@ -116,6 +118,22 @@ export default abstract class GameConfiguration {
 		return PLAYER_BIG_SCALE;
 	}
 
+	initialPlayerGravityScale(key: string): number {
+		if (this.hasTournament() && this.tournamentMode.overridesInitialPlayerGravityScale(key)) {
+			return this.tournamentMode.initialPlayerGravityScale(key);
+		}
+
+		return PLAYER_GRAVITY_SCALE;
+	}
+
+	smallPlayerGravityScale(): number {
+		return PLAYER_SMALL_GRAVITY_SCALE;
+	}
+
+	bigPlayerGravityScale(): number {
+		return PLAYER_BIG_GRAVITY_SCALE;
+	}
+
 	initialPlayerMass(key: string): number {
 		if (this.hasTournament() && this.tournamentMode.overridesInitialPlayerMass(key)) {
 			return this.tournamentMode.initialPlayerMass(key);
@@ -184,6 +202,22 @@ export default abstract class GameConfiguration {
 		return BALL_BIG_SCALE;
 	}
 
+	initialBallGravityScale(): number {
+		if (this.hasTournament() && this.tournamentMode.overridesInitialBallGravityScale()) {
+			return this.tournamentMode.initialBallGravityScale();
+		}
+
+		return BALL_GRAVITY_SCALE;
+	}
+
+	smallBallGravityScale(): number {
+		return BALL_SMALL_GRAVITY_SCALE;
+	}
+
+	bigBallGravityScale(): number {
+		return BALL_BIG_GRAVITY_SCALE;
+	}
+
 	initialBallMass(): number {
 		if (this.hasTournament() && this.tournamentMode.overridesInitialBallMass()) {
 			return this.tournamentMode.initialBallMass();
@@ -208,14 +242,6 @@ export default abstract class GameConfiguration {
 		return BALL_BIG_MASS;
 	}
 
-	ballAirFriction(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesBallAirFriction()) {
-			return this.tournamentMode.ballAirFriction();
-		}
-
-		return BALL_AIR_FRICTION;
-	}
-
 	bonusIndicatorRadius(): number {
 		return BONUS_INDICATOR_RADIUS;
 	}
@@ -232,20 +258,20 @@ export default abstract class GameConfiguration {
 		return BONUS_SCALE;
 	}
 
+	bonusGravityScale(): number {
+		if (this.hasTournament() && this.tournamentMode.overridesBonusGravityScale()) {
+			return this.tournamentMode.bonusGravityScale();
+		}
+
+		return BONUS_GRAVITY_SCALE;
+	}
+
 	bonusMass(): number {
 		if (this.hasTournament() && this.tournamentMode.overridesBonusMass()) {
 			return this.tournamentMode.bonusMass();
 		}
 
 		return BONUS_MASS;
-	}
-
-	bonusAirFriction(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesBonusAirFriction()) {
-			return this.tournamentMode.bonusAirFriction();
-		}
-
-		return BONUS_AIR_FRICTION;
 	}
 
 	isHiddenToHimself(): boolean {

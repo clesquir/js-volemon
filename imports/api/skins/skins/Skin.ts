@@ -5,8 +5,6 @@ export default interface Skin {
 
 	imagesToLoad(xSize: number, ySize: number): { key: string, path: string }[];
 
-	spriteSheetsToLoad(): { key: string, path: string, width: number, height: number }[];
-
 	backgroundColor(): string;
 
 	backgroundComponents(xSize: number, ySize: number): { key: string, frame?: string, animation?: { frame: string, frames: string[], speed: number }, x: number, y: number, width: number, height: number }[];

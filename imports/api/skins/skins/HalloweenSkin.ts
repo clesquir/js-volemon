@@ -30,10 +30,6 @@ export default class HalloweenSkin implements Skin {
 		return '#000000';
 	}
 
-	spriteSheetsToLoad(): { key: string; path: string; width: number; height: number }[] {
-		return [];
-	}
-
 	backgroundComponents(xSize: number, ySize: number): { key: string, frame?: string, animation?: { frame: string, frames: string[], speed: number }, x: number, y: number, width: number, height: number }[] {
 		return [
 			{

@@ -15,7 +15,7 @@ import ServerAdapter from "../serverAdapter/ServerAdapter";
 import NullServerAdapter from "../serverAdapter/NullServerAdapter";
 
 export default class Dev {
-	game: GameBoot;
+	gameBoot: GameBoot;
 	deviceController: DeviceController;
 	gameData: StaticGameData;
 	gameConfiguration: GameConfiguration;
@@ -45,7 +45,7 @@ export default class Dev {
 	start() {
 		this.beforeStart();
 
-		this.game = new GameBoot(
+		this.gameBoot = new GameBoot(
 			this.deviceController,
 			this.gameData,
 			this.gameConfiguration,
@@ -54,12 +54,12 @@ export default class Dev {
 			this.serverNormalizedTime,
 			this.serverAdapter
 		);
-		this.game.init(
+		this.gameBoot.start(
 			{
 				debug: this.debug,
-				type: this.renderer,
-				postBoot: (game: Phaser.Game) => {
-					this.mainScene = <any>game.scene.getScene('MainScene');
+				renderer: this.renderer,
+				postBoot: () => {
+					this.mainScene = this.gameBoot.mainScene;
 
 					this.overrideGame();
 				}
@@ -68,8 +68,8 @@ export default class Dev {
 	}
 
 	stop() {
-		if (this.game) {
-			this.game.stop();
+		if (this.gameBoot) {
+			this.gameBoot.stop();
 		}
 	}
 
@@ -90,7 +90,9 @@ export default class Dev {
 	}
 
 	createComponents() {
-		this.mainScene.level.createCollisionCategories();
+		this.mainScene.level.createCollisionGroups();
+		this.mainScene.level.createMaterials();
+		this.mainScene.level.createContactMaterials();
 
 		this.mainScene.artificialIntelligence.initFromData(this.mainScene, this.gameData, this.gameConfiguration);
 		this.createPlayersComponents();

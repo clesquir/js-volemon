@@ -69,12 +69,12 @@ export default class Players {
 	}
 
 	create() {
-		this.player1 = this.createPlayer('player1', '#a73030', true);
-		this.player2 = this.createPlayer('player2', '#274b7a', false);
+		this.player1 = this.createPlayer('player1', true, '#a73030');
+		this.player2 = this.createPlayer('player2', false, '#274b7a');
 
 		if (this.gameData.isTwoVersusTwo()) {
-			this.player3 = this.createPlayer('player3', '#d46969', true);
-			this.player4 = this.createPlayer('player4', '#437bc4', false);
+			this.player3 = this.createPlayer('player3', true, '#d46969');
+			this.player4 = this.createPlayer('player4', false, '#437bc4');
 		}
 	}
 
@@ -200,7 +200,7 @@ export default class Players {
 
 	createRobot(robotId: string, isHost: boolean) {
 		this.gameData.addRobot(robotId);
-		this.robots[robotId] = this.createPlayer(robotId, '#ffffff', isHost);
+		this.robots[robotId] = this.createPlayer(robotId, isHost, null);
 		this.artificialIntelligence.addComputerWithKey(
 			robotId,
 			isHost,
@@ -227,12 +227,12 @@ export default class Players {
 		} else {
 			if (
 				this.playerSmashEnabled &&
-				player.isSmashingBall()
+				player.isSmashingBall(ball.x())
 			) {
 				ball.smash(player.isHost);
 			} else if (
 				this.ballReboundOnPlayerEnabled &&
-				player.isReboundingBall()
+				player.isReboundingBall(ball.y())
 			) {
 				ball.rebound();
 			}
@@ -334,8 +334,8 @@ export default class Players {
 		return playerKeys;
 	}
 
-	private createPlayer(key, color, isHost): Player {
-		return new Player(
+	private createPlayer(key: string, isHost: boolean, color?: string): Player {
+		const player = new Player(
 			this.scene,
 			this.gameData,
 			this.gameConfiguration,
@@ -343,9 +343,13 @@ export default class Players {
 			this.animations,
 			this.level,
 			key,
-			color,
-			isHost
+			isHost,
+			color
 		);
+
+		this.scene.sortWorldComponents();
+
+		return player;
 	}
 
 	private updateEyes(ball: Ball) {

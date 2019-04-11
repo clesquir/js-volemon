@@ -23,6 +23,7 @@ Clone this repository, go into it, install dependencies and start the meteor ser
 git clone git@github.com:clesquir/js-volemon.git
 cd js-volemon
 meteor npm install
+meteor npm run get-phaser-typings
 ```
 
 Copy settings.json to settings-dev.json and modify the following values:
@@ -45,6 +46,7 @@ Have fun!
 Several dev pages have been developed to better test:
 
  * AI - Machine Learning: http://localhost:3000/dev/ai
- * Skins: http://localhost:3000/dev/skin
- * Shapes: http://localhost:3000/dev/shape
+ * Engine: http://localhost:3000/dev/engine
  * Environment: http://localhost:3000/dev/environment
+ * Shape: http://localhost:3000/dev/shape
+ * Skin: http://localhost:3000/dev/skin
