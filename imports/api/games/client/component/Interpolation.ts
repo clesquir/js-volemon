@@ -53,12 +53,13 @@ export default class Interpolation {
 
 			this.scene.game.time.events.add(
 				maxTime,
-				this.moveToInterpolatedPosition,
-				[
-					gameObject,
-					interpolatedData,
-					canMoveCallback
-				],
+				() => {
+					this.moveToInterpolatedPosition(
+						gameObject,
+						interpolatedData,
+						canMoveCallback
+					);
+				},
 				this
 			);
 		}
@@ -79,7 +80,8 @@ export default class Interpolation {
 			return;
 		}
 
-		gameObject.position.setTo(data.x, data.y);
+		gameObject.body.x = data.x;
+		gameObject.body.y = data.y;
 		gameObject.body.velocity.x = data.velocityX;
 		gameObject.body.velocity.y = data.velocityY;
 	}
