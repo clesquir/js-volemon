@@ -7,7 +7,6 @@ import StaticGameConfiguration from '/imports/api/games/configuration/StaticGame
 import StaticGameData from '/imports/api/games/data/StaticGameData';
 import NullDeviceController from '/imports/api/games/deviceController/NullDeviceController';
 import {assert} from 'chai';
-import {Random} from 'meteor/random';
 
 describe('Ball#smash', function() {
 	const deviceController = new NullDeviceController();
@@ -29,6 +28,10 @@ describe('Ball#smash', function() {
 	);
 	gameBoot.init();
 
+	before(function() {
+		gameBoot.warmUpCache();
+	});
+
 	it('normal smash calculations for host', function() {
 		const mainScene = gameBoot.gameBoot.mainScene;
 		mainScene.createComponents();
@@ -37,7 +40,8 @@ describe('Ball#smash', function() {
 		let horizontalSpeed = 300;
 		let verticalSpeed = 200;
 
-		ball.ballObject.setVelocity(horizontalSpeed, verticalSpeed);
+		ball.ballObject.body.velocity.x = horizontalSpeed;
+		ball.ballObject.body.velocity.y = verticalSpeed;
 
 		ball.smash(true);
 
@@ -53,7 +57,8 @@ describe('Ball#smash', function() {
 		let horizontalSpeed = -300;
 		let verticalSpeed = 200;
 
-		ball.ballObject.setVelocity(horizontalSpeed, verticalSpeed);
+		ball.ballObject.body.velocity.x = horizontalSpeed;
+		ball.ballObject.body.velocity.y = verticalSpeed;
 
 		ball.smash(false);
 
@@ -69,7 +74,8 @@ describe('Ball#smash', function() {
 		let horizontalSpeed = 300;
 		let verticalSpeed = -200;
 
-		ball.ballObject.setVelocity(horizontalSpeed, verticalSpeed);
+		ball.ballObject.body.velocity.x = horizontalSpeed;
+		ball.ballObject.body.velocity.y = verticalSpeed;
 
 		ball.smash(true);
 
@@ -85,7 +91,8 @@ describe('Ball#smash', function() {
 		let horizontalSpeed = -300;
 		let verticalSpeed = -200;
 
-		ball.ballObject.setVelocity(horizontalSpeed, verticalSpeed);
+		ball.ballObject.body.velocity.x = horizontalSpeed;
+		ball.ballObject.body.velocity.y = verticalSpeed;
 
 		ball.smash(false);
 
@@ -101,7 +108,8 @@ describe('Ball#smash', function() {
 		let horizontalSpeed = -300;
 		let verticalSpeed = -200;
 
-		ball.ballObject.setVelocity(horizontalSpeed, verticalSpeed);
+		ball.ballObject.body.velocity.x = horizontalSpeed;
+		ball.ballObject.body.velocity.y = verticalSpeed;
 
 		ball.smash(true);
 
@@ -117,7 +125,8 @@ describe('Ball#smash', function() {
 		let horizontalSpeed = 300;
 		let verticalSpeed = -200;
 
-		ball.ballObject.setVelocity(horizontalSpeed, verticalSpeed);
+		ball.ballObject.body.velocity.x = horizontalSpeed;
+		ball.ballObject.body.velocity.y = verticalSpeed;
 
 		ball.smash(false);
 

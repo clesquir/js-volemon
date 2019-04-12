@@ -48,54 +48,10 @@ export default class Level {
 		this.scene.game.load.physics('physicsData', '/assets/component/shape/physicsData.json');
 	}
 
-	createCollisionGroups() {
-		this.collisionCategoryHost = this.scene.game.physics.p2.createCollisionGroup();
-		this.collisionCategoryHostLimit = this.scene.game.physics.p2.createCollisionGroup();
-		this.collisionCategoryClient = this.scene.game.physics.p2.createCollisionGroup();
-		this.collisionCategoryClientLimit = this.scene.game.physics.p2.createCollisionGroup();
-		this.collisionCategoryBall = this.scene.game.physics.p2.createCollisionGroup();
-		this.collisionCategoryBallLimit = this.scene.game.physics.p2.createCollisionGroup();
-		this.collisionCategoryBonus = this.scene.game.physics.p2.createCollisionGroup();
-		this.collisionCategoryBonusLimit = this.scene.game.physics.p2.createCollisionGroup();
-		this.collisionCategoryNet = this.scene.game.physics.p2.createCollisionGroup();
-	}
-
-	createMaterials() {
-		this.materialPlayer = this.scene.game.physics.p2.createMaterial('player');
-		this.materialBall = this.scene.game.physics.p2.createMaterial('ball');
-		this.materialBonus = this.scene.game.physics.p2.createMaterial('bonus');
-		this.materialLimit = this.scene.game.physics.p2.createMaterial('limit');
-		this.materialNet = this.scene.game.physics.p2.createMaterial('net');
-	}
-
-	createContactMaterials() {
-		this.scene.game.physics.p2.createContactMaterial(
-			this.materialBall,
-			this.materialLimit,
-			<p2.ContactMaterialOptions>{restitution: this.gameConfiguration.worldRestitution()}
-		);
-
-		this.scene.game.physics.p2.createContactMaterial(
-			this.materialPlayer,
-			this.materialPlayer,
-			<p2.ContactMaterialOptions>{stiffness: 1e20, relaxation: 3, friction: 0}
-		);
-		this.scene.game.physics.p2.createContactMaterial(
-			this.materialPlayer,
-			this.materialLimit,
-			<p2.ContactMaterialOptions>{stiffness: 1e20, relaxation: 3, friction: 0}
-		);
-
-		this.scene.game.physics.p2.createContactMaterial(
-			this.materialBonus,
-			this.materialLimit,
-			<p2.ContactMaterialOptions>{restitution: this.gameConfiguration.worldRestitution()}
-		);
-		this.scene.game.physics.p2.createContactMaterial(
-			this.materialBonus,
-			this.materialNet,
-			<p2.ContactMaterialOptions>{restitution: 0.7}
-		);
+	createComponentsPrerequisites() {
+		this.createCollisionGroups();
+		this.createMaterials();
+		this.createContactMaterials();
 	}
 
 	createGround() {
@@ -149,5 +105,55 @@ export default class Level {
 				.to({x: initialX}, time)
 				.start();
 		}
+	}
+
+	private createCollisionGroups() {
+		this.collisionCategoryHost = this.scene.game.physics.p2.createCollisionGroup();
+		this.collisionCategoryHostLimit = this.scene.game.physics.p2.createCollisionGroup();
+		this.collisionCategoryClient = this.scene.game.physics.p2.createCollisionGroup();
+		this.collisionCategoryClientLimit = this.scene.game.physics.p2.createCollisionGroup();
+		this.collisionCategoryBall = this.scene.game.physics.p2.createCollisionGroup();
+		this.collisionCategoryBallLimit = this.scene.game.physics.p2.createCollisionGroup();
+		this.collisionCategoryBonus = this.scene.game.physics.p2.createCollisionGroup();
+		this.collisionCategoryBonusLimit = this.scene.game.physics.p2.createCollisionGroup();
+		this.collisionCategoryNet = this.scene.game.physics.p2.createCollisionGroup();
+	}
+
+	private createMaterials() {
+		this.materialPlayer = this.scene.game.physics.p2.createMaterial('player');
+		this.materialBall = this.scene.game.physics.p2.createMaterial('ball');
+		this.materialBonus = this.scene.game.physics.p2.createMaterial('bonus');
+		this.materialLimit = this.scene.game.physics.p2.createMaterial('limit');
+		this.materialNet = this.scene.game.physics.p2.createMaterial('net');
+	}
+
+	private createContactMaterials() {
+		this.scene.game.physics.p2.createContactMaterial(
+			this.materialBall,
+			this.materialLimit,
+			<p2.ContactMaterialOptions>{restitution: this.gameConfiguration.worldRestitution()}
+		);
+
+		this.scene.game.physics.p2.createContactMaterial(
+			this.materialPlayer,
+			this.materialPlayer,
+			<p2.ContactMaterialOptions>{stiffness: 1e20, relaxation: 3, friction: 0}
+		);
+		this.scene.game.physics.p2.createContactMaterial(
+			this.materialPlayer,
+			this.materialLimit,
+			<p2.ContactMaterialOptions>{stiffness: 1e20, relaxation: 3, friction: 0}
+		);
+
+		this.scene.game.physics.p2.createContactMaterial(
+			this.materialBonus,
+			this.materialLimit,
+			<p2.ContactMaterialOptions>{restitution: this.gameConfiguration.worldRestitution()}
+		);
+		this.scene.game.physics.p2.createContactMaterial(
+			this.materialBonus,
+			this.materialNet,
+			<p2.ContactMaterialOptions>{restitution: 0.7}
+		);
 	}
 }

@@ -7,12 +7,12 @@ import StaticGameConfiguration from '/imports/api/games/configuration/StaticGame
 import StaticGameData from '/imports/api/games/data/StaticGameData';
 import NullDeviceController from '/imports/api/games/deviceController/NullDeviceController';
 import {assert} from 'chai';
-import {Random} from 'meteor/random';
 
 describe('Bonuses#createBonusIfTimeHasElapsed', function() {
 	const deviceController = new NullDeviceController();
 	const gameConfiguration = new StaticGameConfiguration();
 	const gameData = new StaticGameData();
+	gameData.hasBonuses = true;
 	const streamBundler = new CountStreamBundler();
 	const serverNormalizedTime = new ServerNormalizedTime();
 	const skinManager = SkinManager.withDefaults(gameConfiguration);
@@ -28,6 +28,11 @@ describe('Bonuses#createBonusIfTimeHasElapsed', function() {
 		serverAdapter
 	);
 	gameBoot.init();
+
+	before(function() {
+		gameBoot.warmUpCache();
+		gameBoot.gameBoot.mainScene.level.createComponentsPrerequisites();
+	});
 
 	it('creates bonus if time has elapsed', function() {
 		const mainScene = gameBoot.gameBoot.mainScene;

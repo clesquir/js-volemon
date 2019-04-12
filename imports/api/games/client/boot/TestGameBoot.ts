@@ -1,3 +1,4 @@
+import * as physicsData from '/public/assets/component/shape/physicsData.json';
 import DeviceController from "../../deviceController/DeviceController";
 import GameData from "../../data/GameData";
 import SkinManager from "../component/SkinManager";
@@ -6,6 +7,7 @@ import ServerNormalizedTime from "../ServerNormalizedTime";
 import GameConfiguration from "../../configuration/GameConfiguration";
 import ServerAdapter from "../serverAdapter/ServerAdapter";
 import {GameBoot} from "./GameBoot";
+import {PLAYER_LIST_OF_SHAPES} from "../../shapeConstants";
 
 export class TestGameBoot {
 	deviceController: DeviceController;
@@ -51,9 +53,25 @@ export class TestGameBoot {
 		const element = document.createElement('div');
 		element.setAttribute('id', parent);
 
+		// @ts-ignore
+		window.PhaserGlobal = {
+			disableAudio: true,
+			disableWebAudio: true,
+			hideBanner: true,
+		};
+
 		this.gameBoot.start({
 			renderer: Phaser.HEADLESS,
 			parent: parent,
 		});
+	}
+
+	warmUpCache() {
+		for (let shape of PLAYER_LIST_OF_SHAPES) {
+			this.gameBoot.game.cache.addImage('shape-' + shape, '', {});
+		}
+		this.gameBoot.game.cache.addImage('default-skin', '', {});
+		this.gameBoot.game.cache.addImage('bonus-icon', '', {});
+		this.gameBoot.game.load.physics('physicsData', undefined, physicsData);
 	}
 }

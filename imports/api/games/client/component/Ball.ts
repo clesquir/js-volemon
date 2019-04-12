@@ -1,7 +1,7 @@
 import MainScene from "../scene/MainScene";
 import GameConfiguration from "../../configuration/GameConfiguration";
 import SkinManager from "./SkinManager";
-import {CLIENT_SIDE, DEPTH_ALL, HOST_SIDE, SMASH_MAXIMUM_VELOCITY_Y, SMASH_MINIMUM_VELOCITY_X} from "../../constants";
+import {CLIENT_SIDE, DEPTH_ALL, HOST_SIDE} from "../../constants";
 import Level from "./Level";
 import {ArtificialIntelligencePositionData} from "../../artificialIntelligence/ArtificialIntelligencePositionData";
 import {PositionData} from "./PositionData";
@@ -187,14 +187,6 @@ export default class Ball {
 		//Ball should go faster and down
 		newVelocityX = newVelocityX * 2;
 		newVelocityY = newVelocityY / 4;
-
-		if (Math.abs(newVelocityX) < SMASH_MINIMUM_VELOCITY_X) {
-			newVelocityX = (isSmashedByHost ? 1 : -1) * SMASH_MINIMUM_VELOCITY_X;
-		}
-
-		if (Math.abs(newVelocityY) > SMASH_MAXIMUM_VELOCITY_Y) {
-			newVelocityY = -SMASH_MAXIMUM_VELOCITY_Y;
-		}
 
 		this.ballObject.body.velocity.x = newVelocityX;
 		this.ballObject.body.velocity.y = newVelocityY;

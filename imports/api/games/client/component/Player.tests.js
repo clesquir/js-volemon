@@ -28,12 +28,17 @@ describe('Player#isJumpingForward', function() {
 	);
 	gameBoot.init();
 
+	before(function() {
+		gameBoot.warmUpCache();
+	});
+
 	it('returns false if vertical speed is 0', function() {
 		const mainScene = gameBoot.gameBoot.mainScene;
 		mainScene.createComponents();
 		const player = mainScene.players.player1;
 
-		player.playerObject.body.velocity.setTo(25, 0);
+		player.playerObject.body.velocity.x = 25;
+		player.playerObject.body.velocity.y = 0;
 		player.hasBottomTouchingJumpable = () => false;
 
 		assert.isFalse(player.isJumpingForward());
@@ -44,7 +49,8 @@ describe('Player#isJumpingForward', function() {
 		mainScene.createComponents();
 		const player = mainScene.players.player1;
 
-		player.playerObject.body.velocity.setTo(25, 25);
+		player.playerObject.body.velocity.x = 25;
+		player.playerObject.body.velocity.y = 25;
 		player.hasBottomTouchingJumpable = () => false;
 
 		assert.isFalse(player.isJumpingForward());
@@ -55,7 +61,8 @@ describe('Player#isJumpingForward', function() {
 		mainScene.createComponents();
 		const player = mainScene.players.player1;
 
-		player.playerObject.body.velocity.setTo(25, -25);
+		player.playerObject.body.velocity.x = 25;
+		player.playerObject.body.velocity.y = -25;
 		player.hasBottomTouchingJumpable = () => true;
 
 		assert.isFalse(player.isJumpingForward());
@@ -66,7 +73,8 @@ describe('Player#isJumpingForward', function() {
 		mainScene.createComponents();
 		const player = mainScene.players.player1;
 
-		player.playerObject.body.velocity.setTo(0, -25);
+		player.playerObject.body.velocity.x = 0;
+		player.playerObject.body.velocity.y = -25;
 		player.hasBottomTouchingJumpable = () => false;
 
 		assert.isFalse(player.isJumpingForward());
@@ -77,7 +85,8 @@ describe('Player#isJumpingForward', function() {
 		mainScene.createComponents();
 		const player = mainScene.players.player1;
 
-		player.playerObject.body.velocity.setTo(-25, -25);
+		player.playerObject.body.velocity.x = -25;
+		player.playerObject.body.velocity.y = -25;
 		player.hasBottomTouchingJumpable = () => false;
 
 		assert.isFalse(player.isJumpingForward());
@@ -88,7 +97,8 @@ describe('Player#isJumpingForward', function() {
 		mainScene.createComponents();
 		const player = mainScene.players.player1;
 
-		player.playerObject.body.velocity.setTo(25, -25);
+		player.playerObject.body.velocity.x = 25;
+		player.playerObject.body.velocity.y = -25;
 		player.hasBottomTouchingJumpable = () => false;
 
 		assert.isTrue(player.isJumpingForward());
@@ -99,7 +109,8 @@ describe('Player#isJumpingForward', function() {
 		mainScene.createComponents();
 		const player = mainScene.players.player2;
 
-		player.playerObject.body.velocity.setTo(0, -25);
+		player.playerObject.body.velocity.x = 0;
+		player.playerObject.body.velocity.y = -25;
 		player.hasBottomTouchingJumpable = () => false;
 
 		assert.isFalse(player.isJumpingForward());
@@ -110,7 +121,8 @@ describe('Player#isJumpingForward', function() {
 		mainScene.createComponents();
 		const player = mainScene.players.player2;
 
-		player.playerObject.body.velocity.setTo(25, -25);
+		player.playerObject.body.velocity.x = 25;
+		player.playerObject.body.velocity.y = -25;
 		player.hasBottomTouchingJumpable = () => false;
 
 		assert.isFalse(player.isJumpingForward());
@@ -121,7 +133,8 @@ describe('Player#isJumpingForward', function() {
 		mainScene.createComponents();
 		const player = mainScene.players.player2;
 
-		player.playerObject.body.velocity.setTo(-25, -25);
+		player.playerObject.body.velocity.x = -25;
+		player.playerObject.body.velocity.y = -25;
 		player.hasBottomTouchingJumpable = () => false;
 
 		assert.isTrue(player.isJumpingForward());
@@ -147,6 +160,10 @@ describe('Player#isInFrontOfPlayer', function() {
 		serverAdapter
 	);
 	gameBoot.init();
+
+	before(function() {
+		gameBoot.warmUpCache();
+	});
 
 	it('returns false if player1 x position is equal to ball x position', function() {
 		const mainScene = gameBoot.gameBoot.mainScene;
@@ -234,6 +251,10 @@ describe('Player#move', function() {
 		serverAdapter
 	);
 	gameBoot.init();
+
+	before(function() {
+		gameBoot.warmUpCache();
+	});
 
 	it('sets Horizontal and Vertical speed to 0 if player is frozen', function() {
 		const mainScene = gameBoot.gameBoot.mainScene;

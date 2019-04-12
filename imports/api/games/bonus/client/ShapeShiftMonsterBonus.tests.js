@@ -7,7 +7,6 @@ import StaticShapesGameConfiguration from '/imports/api/games/configuration/Stat
 import StaticGameData from '/imports/api/games/data/StaticGameData';
 import NullDeviceController from '/imports/api/games/deviceController/NullDeviceController';
 import {assert} from 'chai';
-import {Random} from 'meteor/random';
 import {BONUS_SHAPE_SHIFT} from '../../bonusConstants';
 import ShapeShiftMonsterBonus from '../ShapeShiftMonsterBonus';
 
@@ -30,6 +29,10 @@ describe('ShapeShiftMonsterBonus', function() {
 		serverAdapter
 	);
 	gameBoot.init();
+
+	before(function() {
+		gameBoot.warmUpCache();
+	});
 
 	it('activates a shape different that the initial one', function() {
 		const mainScene = gameBoot.gameBoot.mainScene;

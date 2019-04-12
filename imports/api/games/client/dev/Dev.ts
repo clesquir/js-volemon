@@ -90,9 +90,7 @@ export default class Dev {
 	}
 
 	createComponents() {
-		this.mainScene.level.createCollisionGroups();
-		this.mainScene.level.createMaterials();
-		this.mainScene.level.createContactMaterials();
+		this.mainScene.level.createComponentsPrerequisites();
 
 		this.mainScene.artificialIntelligence.initFromData(this.mainScene, this.gameData, this.gameConfiguration);
 		this.createPlayersComponents();

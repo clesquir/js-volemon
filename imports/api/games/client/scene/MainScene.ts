@@ -340,9 +340,7 @@ export default class MainScene {
 	}
 
 	private createComponents() {
-		this.level.createCollisionGroups();
-		this.level.createMaterials();
-		this.level.createContactMaterials();
+		this.level.createComponentsPrerequisites();
 
 		this.artificialIntelligence.initFromData(this, this.gameData, this.gameConfiguration);
 		this.players.create();

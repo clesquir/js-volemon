@@ -37,8 +37,6 @@ export const BONUS_GRAVITY_SCALE = 0.3636363636;
 export const WORLD_GRAVITY = 770;
 export const WORLD_RESTITUTION = 1;
 export const CONSTRAINED_VELOCITY = 1000;
-export const SMASH_MINIMUM_VELOCITY_X = 15;
-export const SMASH_MAXIMUM_VELOCITY_Y = 1.5;
 
 export const DEPTH_ALL = 0;
 export const DEPTH_CLOUDS = 1;

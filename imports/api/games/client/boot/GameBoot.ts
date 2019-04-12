@@ -74,6 +74,10 @@ export class GameBoot {
 			renderer: renderer,
 			enableDebug: debug,
 			parent: parent,
+			disableVisibilityChange: true,
+			physicsConfig: {
+				p2: true
+			},
 			width: this.gameConfiguration.width(),
 			height: this.gameConfiguration.height(),
 			backgroundColor: this.skinManager.backgroundColor()
@@ -98,7 +102,6 @@ export class GameBoot {
 				this.game.physics.p2.world.defaultContactMaterial.friction = 0;
 				this.game.physics.p2.world.setGlobalStiffness(1e10);
 				this.game.physics.p2.restitution = 0;
-				this.game.stage.disableVisibilityChange = true;
 
 				postBoot();
 				this.game.state.start('load');
