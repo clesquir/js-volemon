@@ -83,7 +83,7 @@ export default class Ball {
 		}
 
 		this.ballObject.body.setZeroVelocity();
-		this.ballObject.position.setTo(x, this.gameConfiguration.ballInitialY());
+		this.ballObject.reset(x, this.gameConfiguration.ballInitialY());
 	}
 
 	freeze() {

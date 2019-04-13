@@ -668,7 +668,7 @@ export default class Player {
 
 	private resetPosition() {
 		this.playerObject.body.setZeroVelocity();
-		this.playerObject.position.setTo(this.initialXLocation, this.initialYLocation);
+		this.playerObject.reset(this.initialXLocation, this.initialYLocation);
 	}
 
 	private isJumpingForward(): boolean {

@@ -36,8 +36,7 @@ export default class Interpolation {
 			let maxTime = 0;
 
 			if (difference > this.minimumForSlidingInterpolation) {
-				//+25 for fast sliding to interpolated location
-				maxTime = 25;
+				maxTime = this.minimumForSlidingInterpolation;
 			}
 
 			const interpolatedData = Object.assign({}, data);
