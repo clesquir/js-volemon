@@ -12,6 +12,10 @@ export default class Environment extends Dev {
 	isDeucePoint: boolean = false;
 
 	beforeStart() {
+		this.groundHitEnabled = Session.get('dev.environment.groundHitEnabled');
+		this.showBallHitCount = Session.get('dev.environment.ballHitCountEnabled');
+		this.isMatchPoint = Session.get('dev.environment.matchPointEnabled');
+		this.isDeucePoint = Session.get('dev.environment.deucePointEnabled');
 		this.gameConfiguration.levelConfiguration = LevelConfiguration.fromMode(Session.get('dev.environment.currentMode'));
 	}
 

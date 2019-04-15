@@ -17,6 +17,10 @@ const deucePointEnabled = new ReactiveVar(false);
 Template.environment.rendered = function() {
 	Session.set('dev.environment.currentMode', ONE_VS_ONE_GAME_MODE);
 	Session.set('dev.environment.hasNet', netEnabled.get());
+	Session.set('dev.environment.groundHitEnabled', groundHitEnabled.get());
+	Session.set('dev.environment.ballHitCountEnabled', groundHitEnabled.get());
+	Session.set('dev.environment.matchPointEnabled', groundHitEnabled.get());
+	Session.set('dev.environment.deucePointEnabled', groundHitEnabled.get());
 	environment = new Environment();
 	environment.start();
 };
@@ -73,6 +77,15 @@ Template.environment.events({
 	},
 
 	'click [data-action="enable-disable-has-net"]': function() {
+		netEnabled.set(!netEnabled.get());
+		Session.set('dev.environment.hasNet', netEnabled.get());
+
+		environment.stop();
+		environment = new Environment();
+		environment.start();
+	},
+
+	'click [data-action="enable-disable-ground-hit"]': function() {
 		if (groundHitEnabled.get()) {
 			environment.disableGroundHit();
 		} else {
@@ -80,15 +93,8 @@ Template.environment.events({
 		}
 
 		groundHitEnabled.set(!groundHitEnabled.get());
-	},
 
-	'click [data-action="enable-disable-ground-hit"]': function() {
-		netEnabled.set(!netEnabled.get());
-		Session.set('dev.environment.hasNet', netEnabled.get());
-
-		environment.stop();
-		environment = new Environment();
-		environment.start();
+		Session.set('dev.environment.groundHitEnabled', groundHitEnabled.get());
 	},
 
 	'click [data-action="enable-ball-hit-count"]': function() {
@@ -99,6 +105,8 @@ Template.environment.events({
 		}
 
 		ballHitCountEnabled.set(!ballHitCountEnabled.get());
+
+		Session.set('dev.environment.ballHitCountEnabled', groundHitEnabled.get());
 	},
 
 	'click [data-action="enable-match-point"]': function() {
@@ -109,6 +117,8 @@ Template.environment.events({
 		}
 
 		matchPointEnabled.set(!matchPointEnabled.get());
+
+		Session.set('dev.environment.matchPointEnabled', groundHitEnabled.get());
 	},
 
 	'click [data-action="enable-deuce-point"]': function() {
@@ -119,5 +129,7 @@ Template.environment.events({
 		}
 
 		deucePointEnabled.set(!deucePointEnabled.get());
+
+		Session.set('dev.environment.deucePointEnabled', groundHitEnabled.get());
 	}
 });
