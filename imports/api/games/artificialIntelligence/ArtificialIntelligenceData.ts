@@ -2,6 +2,7 @@ export declare type ArtificialIntelligenceData = {
 	key: string;
 	isHost: boolean;
 	gravity: number;
+	gravityScale: number;
 	isMoveReversed: boolean;
 	horizontalMoveMultiplier: number;
 	verticalMoveMultiplier: number;

@@ -25,6 +25,8 @@ export default class Bonus {
 
 	bonusObject: Phaser.Sprite;
 
+	currentGravityScale: number;
+
 	constructor(
 		scene: MainScene,
 		gameData: GameData,
@@ -95,6 +97,7 @@ export default class Bonus {
 		return {
 			x: this.bonusObject.x,
 			y: this.bonusObject.y,
+			gravityScale: this.currentGravityScale,
 			velocityX: this.velocityX(),
 			velocityY: this.velocityY(),
 		};
@@ -117,6 +120,8 @@ export default class Bonus {
 	}
 
 	private init() {
+		this.currentGravityScale = this.gameConfiguration.bonusGravityScale();
+
 		this.bonusObject = this.scene.game.add.sprite(
 			this.initialX,
 			this.gameConfiguration.bonusRadius() * this.gameConfiguration.bonusScale(),
@@ -136,7 +141,7 @@ export default class Bonus {
 		this.bonusObject.data.isBonus = true;
 
 		this.bonusObject.body.mass = this.gameConfiguration.bonusMass();
-		this.bonusObject.body.data.gravityScale = this.gameConfiguration.bonusGravityScale();
+		this.bonusObject.body.data.gravityScale = this.currentGravityScale;
 
 		this.bonusObject.body.setMaterial(this.level.materialBonus);
 		this.bonusObject.body.setCollisionGroup(this.level.collisionCategoryBonus);

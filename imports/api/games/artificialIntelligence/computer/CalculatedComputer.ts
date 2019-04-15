@@ -14,7 +14,7 @@ export default class CalculatedComputer implements Computer {
 	private readonly netWidth: number;
 	private readonly netY: number;
 	private readonly debug: boolean;
-	private readonly highVelocity: number = 5;
+	private readonly highVelocity: number = 225;
 
 	//Debug info
 	private zone: Phaser.Graphics;
@@ -69,18 +69,18 @@ export default class CalculatedComputer implements Computer {
 		this.jump = false;
 		this.dropshot = false;
 
-		const gravity = Math.abs(modifiers.gravity);
+		const ballGravity = Math.abs(modifiers.gravity * ballPosition.gravityScale);
 
 		let timeToGround = this.timeToReachY(
 			ballPosition.velocityY,
-			gravity,
+			ballGravity,
 			Math.abs(ballPosition.y - this.groundY + computerPosition.height / 2)
 		);
 		let xAtGround = ballPosition.x + ballPosition.velocityX * timeToGround;
 
-		xAtGround = this.calculateVerticalRebound(xAtGround, ballPosition, gravity);
+		xAtGround = this.calculateVerticalRebound(xAtGround, ballPosition, ballGravity);
 		xAtGround = this.calculateHorizontalRebound(xAtGround);
-		xAtGround = this.calculateNetRebound(xAtGround, ballPosition, gravity);
+		xAtGround = this.calculateNetRebound(xAtGround, ballPosition, ballGravity);
 
 		const horizontalThreshold = Math.abs(ballPosition.velocityX) < this.highVelocity ? 20 : 0;
 		const distanceWithTimeToGround = timeToGround * modifiers.velocityXOnMove * modifiers.horizontalMoveMultiplier;
@@ -201,19 +201,20 @@ export default class CalculatedComputer implements Computer {
 			return false;
 		}
 
-		const verticalVelocity = modifiers.verticalMoveMultiplier * modifiers.velocityYOnJump * modifiers.initialMass / modifiers.currentMass;
-		const gravity = Math.abs(modifiers.gravity);
+		const verticalVelocity = modifiers.verticalMoveMultiplier * modifiers.velocityYOnJump;
+		const computerGravity = Math.abs(modifiers.gravity * modifiers.gravityScale);
 		let zoneMinimumX;
 		let zoneMaximumX;
-		let zoneMinimumY = computerPosition.y - (Math.exp(verticalVelocity * Math.sin(90)) / (2 * gravity)) + computerPosition.height;
-		let zoneMaximumY = this.netY - ballPosition.height;
+
+		const zoneMinimumY = (this.groundY - computerPosition.height / 2) - verticalVelocity * verticalVelocity / (2 * computerGravity);
+		const zoneMaximumY = this.netY - ballPosition.height;
 
 		if (this.isLeft) {
-			zoneMinimumX = computerPosition.x + computerPosition.width;
-			zoneMaximumX = computerPosition.x + computerPosition.width * 2;
+			zoneMinimumX = computerPosition.x + computerPosition.width * 0.75;
+			zoneMaximumX = computerPosition.x + computerPosition.width * 1.25;
 		} else {
-			zoneMinimumX = computerPosition.x - computerPosition.width * 2;
-			zoneMaximumX = computerPosition.x - computerPosition.width;
+			zoneMinimumX = computerPosition.x - computerPosition.width * 1.25;
+			zoneMaximumX = computerPosition.x - computerPosition.width * 0.75;
 		}
 
 		if (this.debug) {
@@ -228,7 +229,7 @@ export default class CalculatedComputer implements Computer {
 		}
 
 		let timeToY = this.timeToReachY(
-			verticalVelocity, gravity, computerPosition.y - zoneMinimumY + (zoneMaximumY - zoneMinimumY) / 2
+			verticalVelocity, computerGravity, computerPosition.y - zoneMinimumY + (zoneMaximumY - zoneMinimumY) / 2
 		);
 		const ballX = ballPosition.x + ballPosition.velocityX * timeToY;
 		const ballY = ballPosition.y + ballPosition.velocityY * timeToY;

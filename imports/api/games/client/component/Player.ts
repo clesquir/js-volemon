@@ -378,6 +378,7 @@ export default class Player {
 			key: this.key,
 			isHost: this.isHost,
 			gravity: this.scene.game.physics.p2.gravity.y,
+			gravityScale: this.currentGravityScale,
 			isMoveReversed: this.isMoveReversed,
 			horizontalMoveMultiplier: this.horizontalMoveMultiplier,
 			verticalMoveMultiplier: this.verticalMoveMultiplier,
@@ -416,6 +417,7 @@ export default class Player {
 		return {
 			x: this.playerObject.x,
 			y: this.playerObject.y,
+			gravityScale: this.currentGravityScale,
 			scale: this.currentScale,
 			velocityX: this.velocityX(),
 			velocityY: this.velocityY(),

@@ -155,6 +155,7 @@ export default class Ball {
 		return {
 			x: this.x(),
 			y: this.y(),
+			gravityScale: this.currentGravityScale,
 			scale: this.currentScale,
 			velocityX: this.velocityX(),
 			velocityY: this.velocityY(),
