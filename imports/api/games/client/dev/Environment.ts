@@ -3,12 +3,17 @@ import {Random} from 'meteor/random';
 import Ball from "../component/Ball";
 import BonusFactory from "../../BonusFactory";
 import RandomBonus from "../../bonus/RandomBonus";
+import LevelConfiguration from "../../levelConfiguration/LevelConfiguration";
 
 export default class Environment extends Dev {
 	groundHitEnabled: boolean = false;
 	showBallHitCount: boolean = false;
 	isMatchPoint: boolean = false;
 	isDeucePoint: boolean = false;
+
+	beforeStart() {
+		this.gameConfiguration.levelConfiguration = LevelConfiguration.fromMode(Session.get('dev.environment.currentMode'));
+	}
 
 	overrideGame() {
 		super.overrideGame();
@@ -28,14 +33,9 @@ export default class Environment extends Dev {
 		this.gameData.hasBonuses = true;
 	}
 
-	createPlayersComponents() {
-		this.mainScene.players.player1 = this.mainScene.players.createPlayer('player1', true, '#a73030');
-		this.mainScene.players.player2 = this.mainScene.players.createPlayer('player2', false, '#274b7a');
-	}
-
 	createLevelComponents() {
 		this.mainScene.level.createGround();
-		this.mainScene.level.createFieldLimits(false);
+		this.mainScene.level.createFieldLimits(Session.get('dev.environment.hasNet'));
 	}
 
 	onBallHitGround(ball: Ball) {
@@ -70,12 +70,12 @@ export default class Environment extends Dev {
 			bonus.setRandomBonus(BonusFactory.fromClassName(Random.choice(availableBonusesForRandom)));
 		}
 
-		this.mainScene.createBonus(
-			Object.assign(
-				{initialX: this.gameConfiguration.width() / 2},
-				bonus.dataToStream()
-			)
-		);
+		const distanceFromCenter = this.gameConfiguration.netWidth() / 2 + 2;
+		const data = {
+			initialX: this.gameConfiguration.width() / 2 + <number><any>Random.choice([-distanceFromCenter, distanceFromCenter])
+		};
+
+		this.mainScene.createBonus(Object.assign(data, bonus.dataToStream()));
 	}
 
 	enableGroundHit() {

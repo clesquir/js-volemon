@@ -29,7 +29,7 @@ export const BALL_BIG_GRAVITY_SCALE = 0.6;
 export const BALL_SMALL_GRAVITY_SCALE = 0.2;
 
 export const BONUS_INDICATOR_RADIUS = 15;
-export const BONUS_RADIUS = 17;
+export const BONUS_RADIUS = 15;
 export const BONUS_MASS = 1;
 export const BONUS_SCALE = 1;
 export const BONUS_GRAVITY_SCALE = 0.3636363636;

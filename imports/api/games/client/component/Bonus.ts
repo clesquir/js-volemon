@@ -128,6 +128,7 @@ export default class Bonus {
 			'bonus-icon',
 			this.bonusReference.atlasFrame
 		);
+		this.bonusObject.anchor.setTo(0.5);
 		this.scene.game.physics.p2.enable(this.bonusObject, this.scene.game.config.enableDebug);
 
 		// @ts-ignore

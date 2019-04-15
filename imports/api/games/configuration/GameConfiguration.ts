@@ -323,7 +323,7 @@ export default abstract class GameConfiguration {
 	}
 
 	lowGravityMultiplier(): number {
-		return 0.55;
+		return 0.6;
 	}
 
 	worldRestitution(): number {
