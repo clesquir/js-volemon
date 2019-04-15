@@ -356,11 +356,12 @@ export default class Player {
 	}
 
 	shiftShape(shape: string) {
-		if (
-			this.gameConfiguration.overridesCurrentPlayerShape() &&
-			this.gameData.isCurrentPlayerKey(this.key)
-		) {
-			this.currentTextureKey = 'shape-' + this.gameConfiguration.currentPlayerShape();
+		if (this.overrideShapeDisplay()) {
+			if (this.gameData.isCurrentPlayerKey(this.key)) {
+				this.currentTextureKey = 'shape-' + this.gameConfiguration.currentPlayerShape();
+			} else {
+				this.currentTextureKey = 'shape-' + this.gameConfiguration.opponentPlayerShape();
+			}
 		} else {
 			this.currentTextureKey = 'shape-' + shape;
 		}
@@ -484,11 +485,14 @@ export default class Player {
 	private playerShapeFromKey(): string {
 		//Override shape only if game is running and for current player (hidden shape)
 		if (
-			this.gameConfiguration.overridesCurrentPlayerShape() &&
-			this.gameData.isGameStatusStarted() &&
-			this.gameData.isCurrentPlayerKey(this.key)
+			this.overrideShapeDisplay() &&
+			this.gameData.isGameStatusStarted()
 		) {
-			return this.gameConfiguration.currentPlayerShape();
+			if (this.gameData.isCurrentPlayerKey(this.key)) {
+				return this.gameConfiguration.currentPlayerShape();
+			} else {
+				return this.gameConfiguration.opponentPlayerShape();
+			}
 		} else {
 			return this.gameData.getPlayerShapeFromKey(this.key);
 		}
@@ -741,5 +745,12 @@ export default class Player {
 
 	private gameIsOnGoing(): boolean {
 		return this.gameData.isGameStatusStarted();
+	}
+
+	private overrideShapeDisplay() {
+		return (
+			(this.gameConfiguration.overridesCurrentPlayerShape() && this.gameData.isCurrentPlayerKey(this.key)) ||
+			(this.gameConfiguration.overridesOpponentPlayerShape() && !this.gameData.isCurrentPlayerKey(this.key))
+		);
 	}
 }

@@ -91,7 +91,11 @@
 
 					{{> multipleShapeSelectSwitch id="list-of-shapes" label="Available shapes for random" isOn=(modeOverridden "overriddenListOfShapes") hasRandom=false values=(modeOverriddenValue "overriddenListOfShapes") isReadOnly=(canOnlyViewTournament tournament)}}
 
-					{{> selectSwitch id="current-player-shape" label="Visual player shape" isOn=(modeOverridden "overriddenCurrentPlayerShape") options=visualPlayerShapes value=(modeOverriddenValue "overriddenCurrentPlayerShape") isReadOnly=(canOnlyViewTournament tournament)}}
+					<div class="splitted-configuration">
+						{{> selectSwitch id="current-player-shape" label="Current player shape display" isOn=(modeOverridden "overriddenCurrentPlayerShape") options=playerShapeDisplays value=(modeOverriddenValue "overriddenCurrentPlayerShape") isReadOnly=(canOnlyViewTournament tournament)}}
+
+						{{> selectSwitch id="opponent-player-shape" label="Opponent player shape display" isOn=(modeOverridden "overriddenOpponentPlayerShape") options=playerShapeDisplays value=(modeOverriddenValue "overriddenOpponentPlayerShape") isReadOnly=(canOnlyViewTournament tournament)}}
+					</div>
 
 					<div class="splitted-configuration">
 						{{> selectSwitch id="is-hidden-to-himself" label="Player hidden to himself" isOn=(modeOverridden "overriddenIsHiddenToHimself") options=booleanOptions value=(modeOverriddenValue "overriddenIsHiddenToHimself") isReadOnly=(canOnlyViewTournament tournament)}}

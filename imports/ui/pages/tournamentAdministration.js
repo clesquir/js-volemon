@@ -53,7 +53,7 @@ Template.tournamentAdministration.helpers({
 		return [{id: "1", name: 'Yes'}, {id: "0", name: 'No'}];
 	},
 
-	visualPlayerShapes: function() {
+	playerShapeDisplays: function() {
 		return [{id: 'hidden', name: 'Hidden'}];
 	},
 
@@ -219,6 +219,7 @@ const modeOptions = function() {
 	addToMode(mode, 'allowed-list-of-shapes', 'overriddenAllowedListOfShapes');
 	addToMode(mode, 'list-of-shapes', 'overriddenListOfShapes');
 	addToMode(mode, 'current-player-shape', 'overriddenCurrentPlayerShape');
+	addToMode(mode, 'opponent-player-shape', 'overriddenOpponentPlayerShape');
 	addToMode(mode, 'is-hidden-to-himself', 'overriddenIsHiddenToHimself');
 	addToMode(mode, 'is-hidden-to-opponent', 'overriddenIsHiddenToOpponent');
 	addToMode(mode, 'initial-player-scale', 'overriddenInitialPlayerScale');

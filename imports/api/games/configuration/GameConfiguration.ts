@@ -94,6 +94,18 @@ export default abstract class GameConfiguration {
 		return this.tournamentMode.currentPlayerShape();
 	}
 
+	overridesOpponentPlayerShape(): boolean {
+		return (this.hasTournament() && this.tournamentMode.overridesOpponentPlayerShape());
+	}
+
+	opponentPlayerShape(): string {
+		if (!this.overridesOpponentPlayerShape()) {
+			throw 'The shape is not overridden';
+		}
+
+		return this.tournamentMode.opponentPlayerShape();
+	}
+
 	initialPlayerScale(key: string): number {
 		if (this.hasTournament() && this.tournamentMode.overridesInitialPlayerScale(key)) {
 			return this.tournamentMode.initialPlayerScale(key);
