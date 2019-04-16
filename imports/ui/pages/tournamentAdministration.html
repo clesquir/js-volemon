@@ -121,20 +121,20 @@
 					</div>
 
 					<div class="splitted-configuration">
-						{{> numberSwitch id="initial-player-mass" label="Initial player mass - default 1,000,000" isOn=(modeOverridden "overriddenInitialPlayerMass") value=(modeOverriddenValue "overriddenInitialPlayerMass") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="initial-player-mass" label="Initial player mass - default 200" isOn=(modeOverridden "overriddenInitialPlayerMass") value=(modeOverriddenValue "overriddenInitialPlayerMass") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="small-player-mass" label="Small player mass - default 700,000" isOn=(modeOverridden "overriddenSmallPlayerMass") value=(modeOverriddenValue "overriddenSmallPlayerMass") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="small-player-mass" label="Small player mass - default 140" isOn=(modeOverridden "overriddenSmallPlayerMass") value=(modeOverriddenValue "overriddenSmallPlayerMass") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="big-player-mass" label="Big player mass - default 2,000,000" isOn=(modeOverridden "overriddenBigPlayerMass") value=(modeOverriddenValue "overriddenBigPlayerMass") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="big-player-mass" label="Big player mass - default 400" isOn=(modeOverridden "overriddenBigPlayerMass") value=(modeOverriddenValue "overriddenBigPlayerMass") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<div class="splitted-configuration">
-						{{> numberSwitch id="initial-player-mass-player1" label="Player 1 mass - default 1,000,000" isOn=(modeOverridden "overriddenInitialPlayerMass_player1") value=(modeOverriddenValue "overriddenInitialPlayerMass_player1") isReadOnly=(canOnlyViewTournament tournament)}}
-						{{> numberSwitch id="initial-player-mass-player2" label="Player 2 mass - default 1,000,000" isOn=(modeOverridden "overriddenInitialPlayerMass_player2") value=(modeOverriddenValue "overriddenInitialPlayerMass_player2") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="initial-player-mass-player1" label="Player 1 mass - default 200" isOn=(modeOverridden "overriddenInitialPlayerMass_player1") value=(modeOverriddenValue "overriddenInitialPlayerMass_player1") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="initial-player-mass-player2" label="Player 2 mass - default 200" isOn=(modeOverridden "overriddenInitialPlayerMass_player2") value=(modeOverriddenValue "overriddenInitialPlayerMass_player2") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 					<div class="splitted-configuration">
-						{{> numberSwitch id="initial-player-mass-player3" label="Player 3 mass - default 1,000,000" isOn=(modeOverridden "overriddenInitialPlayerMass_player3") value=(modeOverriddenValue "overriddenInitialPlayerMass_player3") isReadOnly=(canOnlyViewTournament tournament)}}
-						{{> numberSwitch id="initial-player-mass-player4" label="Player 4 mass - default 1,000,000" isOn=(modeOverridden "overriddenInitialPlayerMass_player4") value=(modeOverriddenValue "overriddenInitialPlayerMass_player4") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="initial-player-mass-player3" label="Player 3 mass - default 200" isOn=(modeOverridden "overriddenInitialPlayerMass_player3") value=(modeOverriddenValue "overriddenInitialPlayerMass_player3") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="initial-player-mass-player4" label="Player 4 mass - default 200" isOn=(modeOverridden "overriddenInitialPlayerMass_player4") value=(modeOverriddenValue "overriddenInitialPlayerMass_player4") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					{{> selectSwitch id="force-practice-with-computer" label="Force practice when there is a computer" isOn=(modeOverridden "overriddenForcePracticeWithComputer") options=booleanOptions value=(modeOverriddenValue "overriddenForcePracticeWithComputer") isReadOnly=(canOnlyViewTournament tournament)}}
@@ -190,15 +190,15 @@
 					<h2>Physic overrides</h2>
 
 					<div class="splitted-configuration">
-						{{> numberSwitch id="world-gravity" label="World gravity - default 0.6" isOn=(modeOverridden "overriddenWorldGravity") value=(modeOverriddenValue "overriddenWorldGravity") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="world-gravity" label="World gravity - default 770" isOn=(modeOverridden "overriddenWorldGravity") value=(modeOverriddenValue "overriddenWorldGravity") isReadOnly=(canOnlyViewTournament tournament)}}
 
 						{{> numberSwitch id="world-restitution" label="World restitution - default 1" isOn=(modeOverridden "overriddenWorldRestitution") value=(modeOverriddenValue "overriddenWorldRestitution") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<div class="splitted-configuration">
-						{{> numberSwitch id="player-x-velocity" label="Player X velocity - default 6" isOn=(modeOverridden "overriddenPlayerXVelocity") value=(modeOverriddenValue "overriddenPlayerXVelocity") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="player-x-velocity" label="Player X velocity - default 280" isOn=(modeOverridden "overriddenPlayerXVelocity") value=(modeOverriddenValue "overriddenPlayerXVelocity") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="player-y-velocity" label="Player Y velocity - default 6" isOn=(modeOverridden "overriddenPlayerYVelocity") value=(modeOverriddenValue "overriddenPlayerYVelocity") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="player-y-velocity" label="Player Y velocity - default 420" isOn=(modeOverridden "overriddenPlayerYVelocity") value=(modeOverriddenValue "overriddenPlayerYVelocity") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<div class="splitted-configuration">
@@ -210,7 +210,7 @@
 					<div class="splitted-configuration">
 						{{> selectSwitch id="ball-rebound-on-player-enabled" label="Ball rebounds on player" isOn=(modeOverridden "overriddenBallReboundOnPlayerEnabled") options=booleanOptions value=(modeOverriddenValue "overriddenBallReboundOnPlayerEnabled") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="ball-velocity-on-rebound-on-player" label="Ball velocity on rebound on player - default -6.5" isOn=(modeOverridden "overriddenBallVelocityOnReboundOnPlayer") value=(modeOverriddenValue "overriddenBallVelocityOnReboundOnPlayer") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="ball-velocity-on-rebound-on-player" label="Ball velocity on rebound on player - default -280" isOn=(modeOverridden "overriddenBallVelocityOnReboundOnPlayer") value=(modeOverriddenValue "overriddenBallVelocityOnReboundOnPlayer") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 				</div>
