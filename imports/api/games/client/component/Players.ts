@@ -122,12 +122,12 @@ export default class Players {
 		player.interpolate(data);
 	}
 
-	freeze() {
+	stopGame() {
 		for (let key of this.getPlayerKeys(true)) {
 			const player = this.getPlayerFromKey(key);
 
 			if (player) {
-				player.freeze();
+				player.stopGame();
 			}
 		}
 	}

@@ -86,6 +86,10 @@ export default class Ball {
 		this.ballObject.reset(x, this.gameConfiguration.ballInitialY());
 	}
 
+	stopGame() {
+		this.freeze();
+	}
+
 	freeze() {
 		this.isFrozen = true;
 		this.ballObject.body.data.gravityScale = 0;

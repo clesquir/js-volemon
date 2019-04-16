@@ -124,7 +124,7 @@ export default class Bonuses {
 		this.lastGameRespawn = Date.now();
 	}
 
-	freeze() {
+	stopGame() {
 		for (let bonus of this.bonuses) {
 			bonus.freeze();
 		}

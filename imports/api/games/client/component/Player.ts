@@ -82,6 +82,7 @@ export default class Player {
 	canActivateBonuses: boolean = true;
 	killed: boolean = false;
 	killing: boolean = false;
+	stopped: boolean = false;
 
 	private isJumping: boolean = false;
 	private isJumpingTimer;
@@ -196,6 +197,21 @@ export default class Player {
 		const x = (r < max) ? dx : dx * max / r;
 		const y = (r < max) ? dy : dy * max / r;
 		this.eyePupil.position.setTo(x * -1, y * -1);
+	}
+
+	stopGame() {
+		if (this.killed) {
+			return;
+		}
+
+		this.freeze();
+
+		if (!this.stopped) {
+			//Restore look
+			this.shiftShape(this.currentShape);
+		}
+
+		this.stopped = true;
 	}
 
 	freeze() {
@@ -484,10 +500,7 @@ export default class Player {
 
 	private playerShapeFromKey(): string {
 		//Override shape only if game is running and for current player (hidden shape)
-		if (
-			this.overrideShapeDisplay() &&
-			this.gameData.isGameStatusStarted()
-		) {
+		if (this.overrideShapeDisplay()) {
 			if (this.gameData.isCurrentPlayerKey(this.key)) {
 				return this.gameConfiguration.currentPlayerShape();
 			} else {
@@ -749,8 +762,11 @@ export default class Player {
 
 	private overrideShapeDisplay() {
 		return (
-			(this.gameConfiguration.overridesCurrentPlayerShape() && this.gameData.isCurrentPlayerKey(this.key)) ||
-			(this.gameConfiguration.overridesOpponentPlayerShape() && !this.gameData.isCurrentPlayerKey(this.key))
+			(
+				(this.gameConfiguration.overridesCurrentPlayerShape() && this.gameData.isCurrentPlayerKey(this.key)) ||
+				(this.gameConfiguration.overridesOpponentPlayerShape() && !this.gameData.isCurrentPlayerKey(this.key))
+			) &&
+			this.gameData.isGameStatusStarted()
 		);
 	}
 }

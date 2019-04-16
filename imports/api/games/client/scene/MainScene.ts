@@ -386,9 +386,9 @@ export default class MainScene {
 	}
 
 	private stopGame() {
-		this.players.freeze();
-		this.ball.freeze();
-		this.bonuses.freeze();
+		this.players.stopGame();
+		this.ball.stopGame();
+		this.bonuses.stopGame();
 	}
 
 	private resumeGame() {
