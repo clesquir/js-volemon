@@ -64,25 +64,25 @@
 					<div class="splitted-configuration">
 						{{> selectSwitch id="has-bonuses" label="Has bonuses" isOn=(modeOverridden "overriddenHasBonuses") options=booleanOptions value=(modeOverriddenValue "overriddenHasBonuses") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="bonus-duration" label="Bonus duration (ms) - default 10,000" isOn=(modeOverridden "overriddenBonusDuration") value=(modeOverriddenValue "overriddenBonusDuration") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="bonus-duration" label="Bonus duration (ms)" default="10,000" isOn=(modeOverridden "overriddenBonusDuration") value=(modeOverriddenValue "overriddenBonusDuration") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<div class="splitted-configuration">
-						{{> numberSwitch id="maximum-bonuses-on-screen" label="Maximum bonuses on screen - default 30" isOn=(modeOverridden "overriddenMaximumBonusesOnScreen") value=(modeOverriddenValue "overriddenMaximumBonusesOnScreen") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="maximum-bonuses-on-screen" label="Maximum bonuses on screen" default="30" isOn=(modeOverridden "overriddenMaximumBonusesOnScreen") value=(modeOverriddenValue "overriddenMaximumBonusesOnScreen") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="bonus-spawn-minimum-frequence" label="Bonus spawn minimum frequence (ms) - default 2,000" isOn=(modeOverridden "overriddenBonusSpawnMinimumFrequence") value=(modeOverriddenValue "overriddenBonusSpawnMinimumFrequence") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="bonus-spawn-minimum-frequence" label="Bonus spawn minimum frequence (ms)" default="2,000" isOn=(modeOverridden "overriddenBonusSpawnMinimumFrequence") value=(modeOverriddenValue "overriddenBonusSpawnMinimumFrequence") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<div class="splitted-configuration">
-						{{> numberSwitch id="bonus-spawn-initial-minimum-frequence" label="Bonus spawn initial minimum frequence (ms) - default 10,000" isOn=(modeOverridden "overriddenBonusSpawnInitialMinimumFrequence") value=(modeOverriddenValue "overriddenBonusSpawnInitialMinimumFrequence") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="bonus-spawn-initial-minimum-frequence" label="Bonus spawn initial minimum frequence (ms)" default="10,000" isOn=(modeOverridden "overriddenBonusSpawnInitialMinimumFrequence") value=(modeOverriddenValue "overriddenBonusSpawnInitialMinimumFrequence") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="bonus-spawn-initial-maximum-frequence" label="Bonus spawn initial maximum frequence (ms) - default 15,000" isOn=(modeOverridden "overriddenBonusSpawnInitialMaximumFrequence") value=(modeOverriddenValue "overriddenBonusSpawnInitialMaximumFrequence") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="bonus-spawn-initial-maximum-frequence" label="Bonus spawn initial maximum frequence (ms)" default="15,000" isOn=(modeOverridden "overriddenBonusSpawnInitialMaximumFrequence") value=(modeOverriddenValue "overriddenBonusSpawnInitialMaximumFrequence") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<div class="splitted-configuration">
-						{{> numberSwitch id="bonus-scale" label="Bonus scale - default 1" isOn=(modeOverridden "overriddenBonusScale") value=(modeOverriddenValue "overriddenBonusScale") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="bonus-scale" label="Bonus scale" default="1" isOn=(modeOverridden "overriddenBonusScale") value=(modeOverriddenValue "overriddenBonusScale") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="bonus-mass" label="Bonus mass - default 1" isOn=(modeOverridden "overriddenBonusMass") value=(modeOverriddenValue "overriddenBonusMass") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="bonus-mass" label="Bonus mass" default="1" isOn=(modeOverridden "overriddenBonusMass") value=(modeOverriddenValue "overriddenBonusMass") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<h2>Player overrides</h2>
@@ -104,37 +104,37 @@
 					</div>
 
 					<div class="splitted-configuration">
-						{{> numberSwitch id="initial-player-scale" label="Initial player scale - default 1" isOn=(modeOverridden "overriddenInitialPlayerScale") value=(modeOverriddenValue "overriddenInitialPlayerScale") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="initial-player-scale" label="Initial player scale" default="1" isOn=(modeOverridden "overriddenInitialPlayerScale") value=(modeOverriddenValue "overriddenInitialPlayerScale") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="small-player-scale" label="Small player scale - default 0.5" isOn=(modeOverridden "overriddenSmallPlayerScale") value=(modeOverriddenValue "overriddenSmallPlayerScale") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="small-player-scale" label="Small player scale" default="0.5" isOn=(modeOverridden "overriddenSmallPlayerScale") value=(modeOverriddenValue "overriddenSmallPlayerScale") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="big-player-scale" label="Big player scale - default 1.5" isOn=(modeOverridden "overriddenBigPlayerScale") value=(modeOverriddenValue "overriddenBigPlayerScale") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="big-player-scale" label="Big player scale" default="1.5" isOn=(modeOverridden "overriddenBigPlayerScale") value=(modeOverriddenValue "overriddenBigPlayerScale") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<div class="splitted-configuration">
-						{{> numberSwitch id="initial-player-scale-player1" label="Player 1 scale - default 1" isOn=(modeOverridden "overriddenInitialPlayerScale_player1") value=(modeOverriddenValue "overriddenInitialPlayerScale_player1") isReadOnly=(canOnlyViewTournament tournament)}}
-						{{> numberSwitch id="initial-player-scale-player2" label="Player 2 scale - default 1" isOn=(modeOverridden "overriddenInitialPlayerScale_player2") value=(modeOverriddenValue "overriddenInitialPlayerScale_player2") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="initial-player-scale-player1" label="Player 1 scale" default="1" isOn=(modeOverridden "overriddenInitialPlayerScale_player1") value=(modeOverriddenValue "overriddenInitialPlayerScale_player1") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="initial-player-scale-player2" label="Player 2 scale" default="1" isOn=(modeOverridden "overriddenInitialPlayerScale_player2") value=(modeOverriddenValue "overriddenInitialPlayerScale_player2") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 					<div class="splitted-configuration">
-						{{> numberSwitch id="initial-player-scale-player3" label="Player 3 scale - default 1" isOn=(modeOverridden "overriddenInitialPlayerScale_player3") value=(modeOverriddenValue "overriddenInitialPlayerScale_player3") isReadOnly=(canOnlyViewTournament tournament)}}
-						{{> numberSwitch id="initial-player-scale-player4" label="Player 4 scale - default 1" isOn=(modeOverridden "overriddenInitialPlayerScale_player4") value=(modeOverriddenValue "overriddenInitialPlayerScale_player4") isReadOnly=(canOnlyViewTournament tournament)}}
-					</div>
-
-					<div class="splitted-configuration">
-						{{> numberSwitch id="initial-player-mass" label="Initial player mass - default 200" isOn=(modeOverridden "overriddenInitialPlayerMass") value=(modeOverriddenValue "overriddenInitialPlayerMass") isReadOnly=(canOnlyViewTournament tournament)}}
-
-						{{> numberSwitch id="small-player-mass" label="Small player mass - default 140" isOn=(modeOverridden "overriddenSmallPlayerMass") value=(modeOverriddenValue "overriddenSmallPlayerMass") isReadOnly=(canOnlyViewTournament tournament)}}
-
-						{{> numberSwitch id="big-player-mass" label="Big player mass - default 400" isOn=(modeOverridden "overriddenBigPlayerMass") value=(modeOverriddenValue "overriddenBigPlayerMass") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="initial-player-scale-player3" label="Player 3 scale" default="1" isOn=(modeOverridden "overriddenInitialPlayerScale_player3") value=(modeOverriddenValue "overriddenInitialPlayerScale_player3") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="initial-player-scale-player4" label="Player 4 scale" default="1" isOn=(modeOverridden "overriddenInitialPlayerScale_player4") value=(modeOverriddenValue "overriddenInitialPlayerScale_player4") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<div class="splitted-configuration">
-						{{> numberSwitch id="initial-player-mass-player1" label="Player 1 mass - default 200" isOn=(modeOverridden "overriddenInitialPlayerMass_player1") value=(modeOverriddenValue "overriddenInitialPlayerMass_player1") isReadOnly=(canOnlyViewTournament tournament)}}
-						{{> numberSwitch id="initial-player-mass-player2" label="Player 2 mass - default 200" isOn=(modeOverridden "overriddenInitialPlayerMass_player2") value=(modeOverriddenValue "overriddenInitialPlayerMass_player2") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="initial-player-mass" label="Initial player mass" default="200" isOn=(modeOverridden "overriddenInitialPlayerMass") value=(modeOverriddenValue "overriddenInitialPlayerMass") isReadOnly=(canOnlyViewTournament tournament)}}
+
+						{{> numberSwitch id="small-player-mass" label="Small player mass" default="140" isOn=(modeOverridden "overriddenSmallPlayerMass") value=(modeOverriddenValue "overriddenSmallPlayerMass") isReadOnly=(canOnlyViewTournament tournament)}}
+
+						{{> numberSwitch id="big-player-mass" label="Big player mass" default="400" isOn=(modeOverridden "overriddenBigPlayerMass") value=(modeOverriddenValue "overriddenBigPlayerMass") isReadOnly=(canOnlyViewTournament tournament)}}
+					</div>
+
+					<div class="splitted-configuration">
+						{{> numberSwitch id="initial-player-mass-player1" label="Player 1 mass" default="200" isOn=(modeOverridden "overriddenInitialPlayerMass_player1") value=(modeOverriddenValue "overriddenInitialPlayerMass_player1") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="initial-player-mass-player2" label="Player 2 mass" default="200" isOn=(modeOverridden "overriddenInitialPlayerMass_player2") value=(modeOverriddenValue "overriddenInitialPlayerMass_player2") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 					<div class="splitted-configuration">
-						{{> numberSwitch id="initial-player-mass-player3" label="Player 3 mass - default 200" isOn=(modeOverridden "overriddenInitialPlayerMass_player3") value=(modeOverriddenValue "overriddenInitialPlayerMass_player3") isReadOnly=(canOnlyViewTournament tournament)}}
-						{{> numberSwitch id="initial-player-mass-player4" label="Player 4 mass - default 200" isOn=(modeOverridden "overriddenInitialPlayerMass_player4") value=(modeOverriddenValue "overriddenInitialPlayerMass_player4") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="initial-player-mass-player3" label="Player 3 mass" default="200" isOn=(modeOverridden "overriddenInitialPlayerMass_player3") value=(modeOverriddenValue "overriddenInitialPlayerMass_player3") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="initial-player-mass-player4" label="Player 4 mass" default="200" isOn=(modeOverridden "overriddenInitialPlayerMass_player4") value=(modeOverriddenValue "overriddenInitialPlayerMass_player4") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					{{> selectSwitch id="force-practice-with-computer" label="Force practice when there is a computer" isOn=(modeOverridden "overriddenForcePracticeWithComputer") options=booleanOptions value=(modeOverriddenValue "overriddenForcePracticeWithComputer") isReadOnly=(canOnlyViewTournament tournament)}}
@@ -142,19 +142,19 @@
 					<h2>Ball overrides</h2>
 
 					<div class="splitted-configuration">
-						{{> numberSwitch id="initial-ball-scale" label="Initial ball scale - default 1" isOn=(modeOverridden "overriddenInitialBallScale") value=(modeOverriddenValue "overriddenInitialBallScale") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="initial-ball-scale" label="Initial ball scale" default="1" isOn=(modeOverridden "overriddenInitialBallScale") value=(modeOverriddenValue "overriddenInitialBallScale") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="small-ball-scale" label="Small ball scale - default 0.75" isOn=(modeOverridden "overriddenSmallBallScale") value=(modeOverriddenValue "overriddenSmallBallScale") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="small-ball-scale" label="Small ball scale" default="0.75" isOn=(modeOverridden "overriddenSmallBallScale") value=(modeOverriddenValue "overriddenSmallBallScale") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="big-ball-scale" label="Big ball scale - default 1.5" isOn=(modeOverridden "overriddenBigBallScale") value=(modeOverriddenValue "overriddenBigBallScale") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="big-ball-scale" label="Big ball scale" default="1.5" isOn=(modeOverridden "overriddenBigBallScale") value=(modeOverriddenValue "overriddenBigBallScale") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<div class="splitted-configuration">
-						{{> numberSwitch id="initial-ball-mass" label="Initial ball mass - default 1" isOn=(modeOverridden "overriddenInitialBallMass") value=(modeOverriddenValue "overriddenInitialBallMass") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="initial-ball-mass" label="Initial ball mass" default="1" isOn=(modeOverridden "overriddenInitialBallMass") value=(modeOverriddenValue "overriddenInitialBallMass") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="small-ball-mass" label="Small ball mass - default 0.7" isOn=(modeOverridden "overriddenSmallBallMass") value=(modeOverriddenValue "overriddenSmallBallMass") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="small-ball-mass" label="Small ball mass" default="0.7" isOn=(modeOverridden "overriddenSmallBallMass") value=(modeOverriddenValue "overriddenSmallBallMass") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="big-ball-mass" label="Big ball mass - default 2" isOn=(modeOverridden "overriddenBigBallMass") value=(modeOverriddenValue "overriddenBigBallMass") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="big-ball-mass" label="Big ball mass" default="2" isOn=(modeOverridden "overriddenBigBallMass") value=(modeOverriddenValue "overriddenBigBallMass") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<h2>Points overrides</h2>
@@ -162,9 +162,9 @@
 					{{> numberSwitch id="number-of-lost-allowed" label="Number of lost allowed" isOn=overridesNumberOfLostAllowed value=numberOfLostAllowed isReadOnly=(canOnlyViewTournament tournament)}}
 
 					<div class="splitted-configuration">
-						{{> numberSwitch id="forfeit-minimum-points" label="Forfeit minimum points - default 3" isOn=(modeOverridden "overriddenForfeitMinimumPoints") value=(modeOverriddenValue "overriddenForfeitMinimumPoints") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="forfeit-minimum-points" label="Forfeit minimum points" default="3" isOn=(modeOverridden "overriddenForfeitMinimumPoints") value=(modeOverriddenValue "overriddenForfeitMinimumPoints") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="maximum-points" label="Maximum points - default 5" isOn=(modeOverridden "overriddenMaximumPoints") value=(modeOverriddenValue "overriddenMaximumPoints") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="maximum-points" label="Maximum points" default="5" isOn=(modeOverridden "overriddenMaximumPoints") value=(modeOverriddenValue "overriddenMaximumPoints") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<div class="splitted-configuration">
@@ -176,29 +176,29 @@
 					<h2>Level overrides</h2>
 
 					<div class="splitted-configuration">
-						{{> numberSwitch id="net-width" label="Net width - default 8" isOn=(modeOverridden "overriddenNetWidth") value=(modeOverriddenValue "overriddenNetWidth") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="net-width" label="Net width" default="8" isOn=(modeOverridden "overriddenNetWidth") value=(modeOverriddenValue "overriddenNetWidth") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="net-height" label="Net height - default 70" isOn=(modeOverridden "overriddenNetHeight") value=(modeOverriddenValue "overriddenNetHeight") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="net-height" label="Net height" default="70" isOn=(modeOverridden "overriddenNetHeight") value=(modeOverriddenValue "overriddenNetHeight") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<div class="splitted-configuration">
-						{{> numberSwitch id="level-width" label="Level width - default 1v1: 840, 2v2: 1020" isOn=(modeOverridden "overriddenLevelWidth") value=(modeOverriddenValue "overriddenLevelWidth") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="level-width" label="Level width" default="1v1: 840, 2v2: 1020" isOn=(modeOverridden "overriddenLevelWidth") value=(modeOverriddenValue "overriddenLevelWidth") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="level-height" label="Level height - default 1v1: 560, 2v2: 680" isOn=(modeOverridden "overriddenLevelHeight") value=(modeOverriddenValue "overriddenLevelHeight") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="level-height" label="Level height" default="1v1: 560, 2v2: 680" isOn=(modeOverridden "overriddenLevelHeight") value=(modeOverriddenValue "overriddenLevelHeight") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<h2>Physic overrides</h2>
 
 					<div class="splitted-configuration">
-						{{> numberSwitch id="world-gravity" label="World gravity - default 770" isOn=(modeOverridden "overriddenWorldGravity") value=(modeOverriddenValue "overriddenWorldGravity") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="world-gravity" label="World gravity" default="770" isOn=(modeOverridden "overriddenWorldGravity") value=(modeOverriddenValue "overriddenWorldGravity") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="world-restitution" label="World restitution - default 1" isOn=(modeOverridden "overriddenWorldRestitution") value=(modeOverriddenValue "overriddenWorldRestitution") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="world-restitution" label="World restitution" default="1" isOn=(modeOverridden "overriddenWorldRestitution") value=(modeOverriddenValue "overriddenWorldRestitution") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<div class="splitted-configuration">
-						{{> numberSwitch id="player-x-velocity" label="Player X velocity - default 280" isOn=(modeOverridden "overriddenPlayerXVelocity") value=(modeOverriddenValue "overriddenPlayerXVelocity") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="player-x-velocity" label="Player X velocity" default="280" isOn=(modeOverridden "overriddenPlayerXVelocity") value=(modeOverriddenValue "overriddenPlayerXVelocity") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="player-y-velocity" label="Player Y velocity - default 420" isOn=(modeOverridden "overriddenPlayerYVelocity") value=(modeOverriddenValue "overriddenPlayerYVelocity") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="player-y-velocity" label="Player Y velocity" default="420" isOn=(modeOverridden "overriddenPlayerYVelocity") value=(modeOverriddenValue "overriddenPlayerYVelocity") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<div class="splitted-configuration">
@@ -210,7 +210,7 @@
 					<div class="splitted-configuration">
 						{{> selectSwitch id="ball-rebound-on-player-enabled" label="Ball rebounds on player" isOn=(modeOverridden "overriddenBallReboundOnPlayerEnabled") options=booleanOptions value=(modeOverriddenValue "overriddenBallReboundOnPlayerEnabled") isReadOnly=(canOnlyViewTournament tournament)}}
 
-						{{> numberSwitch id="ball-velocity-on-rebound-on-player" label="Ball velocity on rebound on player - default -280" isOn=(modeOverridden "overriddenBallVelocityOnReboundOnPlayer") value=(modeOverriddenValue "overriddenBallVelocityOnReboundOnPlayer") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="ball-velocity-on-rebound-on-player" label="Ball velocity on rebound on player" default="-280" isOn=(modeOverridden "overriddenBallVelocityOnReboundOnPlayer") value=(modeOverriddenValue "overriddenBallVelocityOnReboundOnPlayer") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 				</div>
