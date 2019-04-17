@@ -133,6 +133,7 @@ export default class Bonus {
 
 		// @ts-ignore
 		this.bonusObject.depth = DEPTH_ALL;
+		this.scene.zIndexGroup.add(this.bonusObject);
 
 		this.bonusObject.scale.setTo(this.gameConfiguration.bonusScale());
 		this.bonusObject.body.clearShapes();

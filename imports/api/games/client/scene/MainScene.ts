@@ -38,6 +38,7 @@ export default class MainScene {
 	bonuses: Bonuses;
 	scaleManager: ScaleManager;
 
+	zIndexGroup: Phaser.Group;
 	ball: Ball;
 	countdown: Countdown;
 
@@ -109,6 +110,7 @@ export default class MainScene {
 	}
 
 	create() {
+		this.zIndexGroup = this.game.add.group();
 		this.scaleManager.init();
 		this.skinManager.createBackgroundComponents(this.game.add);
 		this.createComponents();
@@ -187,6 +189,7 @@ export default class MainScene {
 
 		// @ts-ignore
 		hitPoint.depth = DEPTH_ACTIVATION_ANIMATION;
+		this.zIndexGroup.add(hitPoint);
 
 		this.animations.activate(
 			hitPoint,
@@ -210,6 +213,7 @@ export default class MainScene {
 
 		// @ts-ignore
 		countText.depth = DEPTH_ACTIVATION_ANIMATION;
+		this.zIndexGroup.add(countText);
 
 		this.animations.disappear(
 			countText,
@@ -336,7 +340,7 @@ export default class MainScene {
 	}
 
 	sortWorldComponents() {
-		this.game.world.sort('depth', Phaser.Group.SORT_ASCENDING);
+		this.zIndexGroup.sort('depth', Phaser.Group.SORT_ASCENDING);
 	}
 
 	private createComponents() {

@@ -230,6 +230,7 @@ export default class Ball {
 
 		// @ts-ignore
 		this.ballObject.depth = DEPTH_ALL;
+		this.scene.zIndexGroup.add(this.ballObject);
 
 		this.ballObject.scale.setTo(this.initialScale);
 		this.ballObject.body.clearShapes();

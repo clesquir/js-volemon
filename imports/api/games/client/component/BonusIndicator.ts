@@ -78,6 +78,7 @@ export default class BonusIndicator {
 
 		// @ts-ignore
 		this.bonusObject.depth = DEPTH_BONUS_INDICATOR;
+		this.scene.zIndexGroup.add(this.bonusObject);
 
 		const radius = this.radius();
 		this.progressObject = this.scene.game.add.graphics(
@@ -89,6 +90,7 @@ export default class BonusIndicator {
 
 		// @ts-ignore
 		this.progressObject.depth = DEPTH_BONUS_INDICATOR;
+		this.scene.zIndexGroup.add(this.progressObject);
 	}
 
 	updatePosition(x: number, y: number) {
@@ -155,6 +157,7 @@ export default class BonusIndicator {
 
 		// @ts-ignore
 		this.bonusObject.depth = DEPTH_ACTIVATION_ANIMATION;
+		this.scene.zIndexGroup.add(this.bonusObject);
 
 		animations.activate(
 			this.bonusObject,

@@ -332,6 +332,7 @@ export default class Player {
 
 		// @ts-ignore
 		killingContainer.depth = DEPTH_ACTIVATION_ANIMATION;
+		this.scene.zIndexGroup.add(killingContainer);
 
 		this.animations.disappear(
 			killingContainer,
@@ -486,6 +487,7 @@ export default class Player {
 
 		// @ts-ignore
 		this.playerObject.depth = DEPTH_ALL;
+		this.scene.zIndexGroup.add(this.playerObject);
 
 		this.playerObject.scale.setTo(this.initialScale);
 		this.initBody();
@@ -667,9 +669,6 @@ export default class Player {
 		eyeBall.lineStyle(1, 0x363636);
 		eyeBall.drawCircle(0, 0, this.eyeBallRadius * 2);
 
-		// @ts-ignore
-		eyeBall.depth = DEPTH_ALL;
-
 		return eyeBall;
 	}
 
@@ -678,9 +677,6 @@ export default class Player {
 		eyePupil.beginFill(0x363636);
 		eyePupil.drawCircle(0, 0, this.eyePupilRadius * 2);
 		eyePupil.beginFill(0x363636);
-
-		// @ts-ignore
-		eyePupil.depth = DEPTH_ALL;
 
 		return eyePupil;
 	}

@@ -106,6 +106,7 @@ export default class CloudsGenerator {
 
 		// @ts-ignore
 		cloud.depth = DEPTH_CLOUDS;
+		this.scene.zIndexGroup.add(cloud);
 
 		cloud.alpha = 0;
 		cloud.anchor.setTo(0.5);
