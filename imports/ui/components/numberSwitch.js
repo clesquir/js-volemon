@@ -22,6 +22,9 @@ Template.numberSwitch.helpers({
 		}
 
 		return !isOn;
+	},
+	hasDefault: function() {
+		return this.default !== undefined;
 	}
 });
 

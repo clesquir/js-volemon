@@ -4,7 +4,7 @@
 			<input type="checkbox" id="check-{{id}}" data-checkbox-action="enable-number-switch" disabled="{{#if isReadOnly}}disabled{{/if}}">
 			<label for="check-{{id}}">
 				<div>{{label}}</div>
-				<div class="switch-default-value">default {{default}}</div>
+				{{#if hasDefault}}<div class="switch-default-value">default {{default}}</div>{{/if}}
 			</label>
 		</h3>
 
