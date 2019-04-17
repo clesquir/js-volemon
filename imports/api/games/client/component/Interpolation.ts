@@ -5,7 +5,6 @@ export default class Interpolation {
 	private readonly scene: MainScene;
 	private readonly serverNormalizedTime: ServerNormalizedTime;
 
-	private readonly minimumForInterpolation = 10;
 	private readonly minimumForSlidingInterpolation = 25;
 
 	constructor(
@@ -25,23 +24,17 @@ export default class Interpolation {
 		const serverNormalizedTimestamp = this.serverNormalizedTime.getServerTimestamp();
 		const difference = serverNormalizedTimestamp - data.timestamp;
 
-		if (difference < this.minimumForInterpolation) {
-			this.moveToInterpolatedPosition(gameObject, data, canMoveCallback);
-		} else if (!slideToLocation) {
-			const interpolatedData = Object.assign({}, data);
-			this.interpolateFromTimestamp(gameObject, serverNormalizedTimestamp, interpolatedData);
+		let maxTime = 0;
+		if (slideToLocation && difference > this.minimumForSlidingInterpolation) {
+			maxTime = this.minimumForSlidingInterpolation;
+		}
 
+		const interpolatedData = Object.assign({}, data);
+		this.interpolateFromTimestamp(gameObject, serverNormalizedTimestamp + maxTime, interpolatedData);
+
+		if (!slideToLocation) {
 			this.moveToInterpolatedPosition(gameObject, interpolatedData, canMoveCallback);
 		} else {
-			let maxTime = 0;
-
-			if (difference > this.minimumForSlidingInterpolation) {
-				maxTime = this.minimumForSlidingInterpolation;
-			}
-
-			const interpolatedData = Object.assign({}, data);
-			this.interpolateFromTimestamp(gameObject, serverNormalizedTimestamp + maxTime, interpolatedData);
-
 			const t = maxTime / 1000;
 			const distanceX = (interpolatedData.x - gameObject.x);
 			gameObject.body.velocity.x = distanceX / t * this.distanceMultiplier();
