@@ -5,6 +5,7 @@ export default class Interpolation {
 	private readonly scene: MainScene;
 	private readonly serverNormalizedTime: ServerNormalizedTime;
 
+	private readonly minimumForInterpolation = 10;
 	private readonly minimumForSlidingInterpolation = 25;
 
 	constructor(
@@ -24,36 +25,40 @@ export default class Interpolation {
 		const serverNormalizedTimestamp = this.serverNormalizedTime.getServerTimestamp();
 		const difference = serverNormalizedTimestamp - data.timestamp;
 
-		let maxTime = 0;
-		if (slideToLocation && difference > this.minimumForSlidingInterpolation) {
-			maxTime = this.minimumForSlidingInterpolation;
-		}
-
-		const interpolatedData = Object.assign({}, data);
-		this.interpolateFromTimestamp(gameObject, serverNormalizedTimestamp + maxTime, interpolatedData);
-
-		if (!slideToLocation) {
-			this.moveToInterpolatedPosition(gameObject, interpolatedData, canMoveCallback);
+		if (difference < this.minimumForInterpolation) {
+			this.moveToInterpolatedPosition(gameObject, data, canMoveCallback);
 		} else {
-			const t = maxTime / 1000;
-			const distanceX = (interpolatedData.x - gameObject.x);
-			gameObject.body.velocity.x = distanceX / t * this.distanceMultiplier();
+			let maxTime = 0;
+			if (slideToLocation && difference > this.minimumForSlidingInterpolation) {
+				maxTime = this.minimumForSlidingInterpolation;
+			}
 
-			const distanceY = (interpolatedData.y - gameObject.y);
-			const distanceGravityY = this.gravityDistanceAtTime(gameObject, t);
-			gameObject.body.velocity.y = (distanceY - distanceGravityY) / t * this.distanceMultiplier();
+			const interpolatedData = Object.assign({}, data);
+			this.interpolateFromTimestamp(gameObject, serverNormalizedTimestamp + maxTime, interpolatedData);
 
-			this.scene.game.time.events.add(
-				maxTime,
-				() => {
-					this.moveToInterpolatedPosition(
-						gameObject,
-						interpolatedData,
-						canMoveCallback
-					);
-				},
-				this
-			);
+			if (!slideToLocation) {
+				this.moveToInterpolatedPosition(gameObject, interpolatedData, canMoveCallback);
+			} else {
+				const t = maxTime / 1000;
+				const distanceX = (interpolatedData.x - gameObject.x);
+				gameObject.body.velocity.x = distanceX / t * this.distanceMultiplier();
+
+				const distanceY = (interpolatedData.y - gameObject.y);
+				const distanceGravityY = this.gravityDistanceAtTime(gameObject, t);
+				gameObject.body.velocity.y = (distanceY - distanceGravityY) / t * this.distanceMultiplier();
+
+				this.scene.game.time.events.add(
+					maxTime,
+					() => {
+						this.moveToInterpolatedPosition(
+							gameObject,
+							interpolatedData,
+							canMoveCallback
+						);
+					},
+					this
+				);
+			}
 		}
 	}
 
