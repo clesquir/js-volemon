@@ -17,26 +17,28 @@ export const PLAYER_GRAVITY_SCALE = 1;
 export const PLAYER_BIG_GRAVITY_SCALE = 3.75;
 export const PLAYER_SMALL_GRAVITY_SCALE = 0.7;
 
-export const BALL_VERTICAL_SPEED_ON_PLAYER_HIT = -280;
+export const BALL_VERTICAL_SPEED_ON_PLAYER_HIT = -410;
 export const BALL_MASS = 1;
 export const BALL_SMALL_MASS = 0.7;
 export const BALL_BIG_MASS = 2;
 export const BALL_SCALE = 1;
 export const BALL_SMALL_SCALE = 0.75;
 export const BALL_BIG_SCALE = 1.5;
-export const BALL_GRAVITY_SCALE = 0.3636363636;
-export const BALL_BIG_GRAVITY_SCALE = 0.6;
-export const BALL_SMALL_GRAVITY_SCALE = 0.2;
+export const BALL_GRAVITY_SCALE = 0.75;
+export const BALL_BIG_GRAVITY_SCALE = 1.2;
+export const BALL_SMALL_GRAVITY_SCALE = 0.5;
 
 export const BONUS_INDICATOR_RADIUS = 15;
 export const BONUS_RADIUS = 15;
 export const BONUS_MASS = 1;
 export const BONUS_SCALE = 1;
-export const BONUS_GRAVITY_SCALE = 0.3636363636;
+export const BONUS_GRAVITY_SCALE = 0.5;
 
 export const WORLD_GRAVITY = 770;
 export const WORLD_RESTITUTION = 1;
 export const CONSTRAINED_VELOCITY = 1000;
+export const HIGH_GRAVITY_MULTIPLIER = 2.71;
+export const LOW_GRAVITY_MULTIPLIER = 0.54;
 
 export const DEPTH_ALL = 0;
 export const DEPTH_CLOUDS = 1;

@@ -11,6 +11,12 @@ export default class Environment extends Dev {
 	isMatchPoint: boolean = false;
 	isDeucePoint: boolean = false;
 
+	constructor() {
+		super();
+
+		this.gameData.secondPlayerComputer = true;
+	}
+
 	beforeStart() {
 		this.groundHitEnabled = Session.get('dev.environment.groundHitEnabled');
 		this.showBallHitCount = Session.get('dev.environment.ballHitCountEnabled');

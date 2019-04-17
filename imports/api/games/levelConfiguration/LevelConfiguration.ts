@@ -26,7 +26,7 @@ export default class LevelConfiguration {
 			840,
 			560,
 			70,
-			70,
+			71,
 			8
 		);
 	}
