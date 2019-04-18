@@ -44,6 +44,7 @@ Template.afterGame.onRendered(function() {
 				'.after-game-swiper-container',
 				{
 					'after-game-elo-scores': AfterGameViews.viewEloScores,
+					'after-game-tournament-elo-scores': AfterGameViews.viewTournamentEloScores,
 					'after-game-durations': AfterGameViews.viewGameDurations,
 				}
 			);
@@ -291,11 +292,15 @@ Template.afterGame.events({
 		cardSwitcher.slideTo(0);
 	},
 
+	'click [data-action=view-tournament-elo-scores]': function() {
+		cardSwitcher.slideTo(1);
+	},
+
 	'click [data-action=view-game-durations]': function() {
 		const game = Games.findOne(Session.get('game'));
 
 		if (!game.isPracticeGame) {
-			cardSwitcher.slideTo(1);
+			cardSwitcher.slideTo(2);
 		}
 	}
 });
@@ -310,6 +315,15 @@ class AfterGameViews {
 		}
 	}
 
+	static viewTournamentEloScores() {
+		const gameStatisticsContents = document.getElementById('game-statistics-contents');
+
+		if (!$(gameStatisticsContents).is('.after-game-tournament-elo-scores-shown')) {
+			AfterGameViews.removeShownClasses(gameStatisticsContents);
+			$(gameStatisticsContents).addClass('after-game-tournament-elo-scores-shown');
+		}
+	}
+
 	static viewGameDurations() {
 		const gameStatisticsContents = document.getElementById('game-statistics-contents');
 
@@ -321,6 +335,7 @@ class AfterGameViews {
 
 	static removeShownClasses(gameStatisticsContents) {
 		$(gameStatisticsContents).removeClass('after-game-elo-scores-shown');
+		$(gameStatisticsContents).removeClass('after-game-tournament-elo-scores-shown');
 		$(gameStatisticsContents).removeClass('after-game-durations-shown');
 	}
 }

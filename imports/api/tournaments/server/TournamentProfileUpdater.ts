@@ -1,16 +1,18 @@
-import ProfileUpdater from '/imports/api/profiles/server/ProfileUpdater.js';
-import {DEFAULT_PROFILE_DATA, INITIAL_ELO_RATING} from '/imports/api/profiles/constants.js';
-import {TournamentEloScores} from '/imports/api/tournaments/tournamentEloScores.js';
-import {TournamentProfiles} from '/imports/api/tournaments/tournamentProfiles.js';
-import {getUTCTimeStamp} from '/imports/lib/utils.js';
+import {getUTCTimeStamp} from '../../../lib/utils';
+import {DEFAULT_PROFILE_DATA, INITIAL_ELO_RATING} from '../../profiles/constants';
+import ProfileUpdater from '../../profiles/server/ProfileUpdater';
+import {TournamentEloScores} from '../tournamentEloScores';
+import {TournamentProfiles} from '../tournamentProfiles';
 
 export default class TournamentProfileUpdater extends ProfileUpdater {
-	constructor(tournamentId) {
+	tournamentId: string;
+
+	constructor(tournamentId: string) {
 		super();
 		this.tournamentId = tournamentId;
 	}
 
-	findOrCreate(userId) {
+	findOrCreate(userId: string) {
 		if (userId === 'CPU') {
 			return this.defaultProfileData(userId);
 		}
@@ -39,7 +41,7 @@ export default class TournamentProfileUpdater extends ProfileUpdater {
 		return profile;
 	}
 
-	update(userId, data) {
+	update(userId: string, data) {
 		const profile = this.findOrCreate(userId);
 
 		if (data.userId !== 'CPU') {
@@ -47,12 +49,7 @@ export default class TournamentProfileUpdater extends ProfileUpdater {
 		}
 	}
 
-	/**
-	 * @private
-	 * @param userId
-	 * @returns mixed
-	 */
-	defaultProfileData(userId) {
+	protected defaultProfileData(userId: string) {
 		return Object.assign(
 			{
 				userId: userId,

@@ -1,4 +1,4 @@
-import {EloScores} from '/imports/api/games/eloscores.js';
+import {EloScores} from '../eloscores';
 
 export default class EloScoreCreator {
 	insert(data) {

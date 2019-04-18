@@ -1,16 +1,21 @@
 import {EloScores} from '/imports/api/games/eloscores.js';
 import {Games} from '/imports/api/games/games.js';
-import EloScoreCreator from '/imports/api/games/server/EloScoreCreator.js';
+import EloScoreCreator from '/imports/api/games/server/EloScoreCreator';
 import {GAME_STATUS_FINISHED} from '/imports/api/games/statusConstants.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
-import ProfileUpdater from '/imports/api/profiles/server/ProfileUpdater.js';
+import ProfileUpdater from '/imports/api/profiles/server/ProfileUpdater';
 import {assert} from 'chai'
 import StubCollections from 'meteor/hwillson:stub-collections';
 import {Random} from 'meteor/random';
-import FinishedGameUpdater from './FinishedGameUpdater.js';
+import FinishedGameUpdater from './FinishedGameUpdater';
 
 describe('FinishedGameUpdater', function() {
-	const finishedGameUpdater = new FinishedGameUpdater(new ProfileUpdater(), new EloScoreCreator());
+	const finishedGameUpdater = new FinishedGameUpdater(
+		new ProfileUpdater(),
+		new EloScoreCreator(),
+		null,
+		null
+	);
 
 	before(function() {
 		StubCollections.add([Profiles, EloScores, Games]);
