@@ -32,6 +32,7 @@ describe('Bonuses#createBonusIfTimeHasElapsed', function() {
 	before(function() {
 		gameBoot.warmUpCache();
 		gameBoot.gameBoot.mainScene.level.createComponentsPrerequisites();
+		gameBoot.gameBoot.mainScene.zIndexGroup = gameBoot.gameBoot.mainScene.game.add.group();
 	});
 
 	it('creates bonus if time has elapsed', function() {

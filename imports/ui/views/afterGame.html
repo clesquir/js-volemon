@@ -11,6 +11,11 @@
 								<div class="view-elo-scores" data-action="view-elo-scores">
 									<i class="fa fa-arrow-circle-up"></i><span>ELO</span>
 								</div>
+								{{#if isTournament}}
+									<div class="view-tournament-elo-scores" data-action="view-tournament-elo-scores">
+										<img src="/assets/tournament-icon.png" style="height: 22px;"><span>Tournament ELO</span>
+									</div>
+								{{/if}}
 							{{/if}}
 							<div class="view-game-durations" data-action="view-game-durations">
 								<i class="fa fa-clock-o"></i><span>Durations</span>
@@ -31,6 +36,20 @@
 											{{/each}}
 										</div>
 									</div>
+
+									{{#if isTournament}}
+										<div class="view-selector-content swiper-slide after-game-tournament-elo-scores" data-slide="after-game-tournament-elo-scores">
+											<div class="after-game-elo">
+												{{#each playersList playersCollection}}
+													<div>
+														<div class="player-name">{{name}}</div>
+														<div>{{getPlayerEloRating this ../tournamentEloScoresCollection}}</div>
+														<div>{{> eloRatingChange eloRatingChange=(getPlayerGameEloRatingChange this ../tournamentEloScoresCollection)}}</div>
+													</div>
+												{{/each}}
+											</div>
+										</div>
+									{{/if}}
 								{{/if}}
 
 								<div class="view-selector-content swiper-slide after-game-durations" data-slide="after-game-durations">

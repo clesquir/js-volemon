@@ -1,8 +1,10 @@
-import EloScoreCreator from '/imports/api/games/server/EloScoreCreator.js';
-import {TournamentEloScores} from '/imports/api/tournaments/tournamentEloScores.js';
+import EloScoreCreator from '../../games/server/EloScoreCreator';
+import {TournamentEloScores} from '../tournamentEloScores';
 
 export default class TournamentEloScoreCreator extends EloScoreCreator {
-	constructor(tournamentId) {
+	tournamentId: string;
+
+	constructor(tournamentId: string) {
 		super();
 		this.tournamentId = tournamentId;
 	}

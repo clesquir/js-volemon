@@ -1,12 +1,12 @@
-import {Meteor} from 'meteor/meteor';
-import EloScoreCreator from '/imports/api/games/server/EloScoreCreator.js';
 import {Games} from '/imports/api/games/games.js';
+import EloScoreCreator from '/imports/api/games/server/EloScoreCreator';
 import {hasGameStatusEndedWithAWinner} from '/imports/api/games/utils.js';
-import ProfileUpdater from '/imports/api/profiles/server/ProfileUpdater.js';
+import ProfileUpdater from '/imports/api/profiles/server/ProfileUpdater';
 import TournamentEloScoreCreator from '/imports/api/tournaments/server/TournamentEloScoreCreator';
-import TournamentProfileUpdater from '/imports/api/tournaments/server/TournamentProfileUpdater.js';
+import TournamentProfileUpdater from '/imports/api/tournaments/server/TournamentProfileUpdater';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
-import FinishedGameUpdater from './FinishedGameUpdater.js';
+import {Meteor} from 'meteor/meteor';
+import FinishedGameUpdater from './FinishedGameUpdater';
 
 export const finishGame = function(gameId, winnerUserIds, loserUserIds) {
 	const game = Games.findOne(gameId);
@@ -39,11 +39,18 @@ export const finishGame = function(gameId, winnerUserIds, loserUserIds) {
 
 	let profileUpdater = new ProfileUpdater();
 	let eloScoreCreator = new EloScoreCreator();
+	let tournamentProfileUpdater = null;
+	let tournamentEloScoreCreator = null;
 	if (game.tournamentId) {
-		profileUpdater = new TournamentProfileUpdater(game.tournamentId);
-		eloScoreCreator = new TournamentEloScoreCreator(game.tournamentId);
+		tournamentProfileUpdater = new TournamentProfileUpdater(game.tournamentId);
+		tournamentEloScoreCreator = new TournamentEloScoreCreator(game.tournamentId);
 	}
-	const finishedGameUpdater = new FinishedGameUpdater(profileUpdater, eloScoreCreator);
+	const finishedGameUpdater = new FinishedGameUpdater(
+		profileUpdater,
+		eloScoreCreator,
+		tournamentProfileUpdater,
+		tournamentEloScoreCreator
+	);
 
 	if (!game.isPracticeGame) {
 		finishedGameUpdater.updateStatistics(gameId, winnerUserIds, loserUserIds);

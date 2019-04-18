@@ -1,10 +1,10 @@
-import {EloScores} from '/imports/api/games/eloscores.js';
-import {DEFAULT_PROFILE_DATA, INITIAL_ELO_RATING} from '/imports/api/profiles/constants.js';
-import {Profiles} from '/imports/api/profiles/profiles.js';
-import {getUTCTimeStamp} from '/imports/lib/utils.js';
+import {EloScores} from "../../games/eloscores";
+import {Profiles} from "../profiles";
+import {DEFAULT_PROFILE_DATA, INITIAL_ELO_RATING} from "../constants";
+import {getUTCTimeStamp} from "../../../lib/utils";
 
 export default class ProfileUpdater {
-	findOrCreate(userId) {
+	findOrCreate(userId: string) {
 		if (userId === 'CPU') {
 			return this.defaultProfileData(userId);
 		}
@@ -25,7 +25,7 @@ export default class ProfileUpdater {
 		return profile;
 	}
 
-	update(userId, data) {
+	update(userId: string, data) {
 		const profile = this.findOrCreate(userId);
 
 		if (userId !== 'CPU') {
@@ -33,12 +33,7 @@ export default class ProfileUpdater {
 		}
 	}
 
-	/**
-	 * @private
-	 * @param userId
-	 * @returns mixed
-	 */
-	defaultProfileData(userId) {
+	protected defaultProfileData(userId: string) {
 		return Object.assign(
 			{
 				userId: userId

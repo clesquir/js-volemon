@@ -6,6 +6,7 @@ import {TournamentProfiles} from '/imports/api/tournaments/tournamentProfiles.js
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {canPlayTournament} from '/imports/api/tournaments/utils.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
+import {EloScores} from '/imports/api/games/eloscores';
 import {Meteor} from 'meteor/meteor';
 import moment from 'moment';
 
@@ -133,6 +134,7 @@ Meteor.publish('tournamentGame', function(tournamentId, gameId) {
 		TournamentProfiles.find({tournamentId: tournamentId}),
 		Games.find({_id: gameId}),
 		Players.find({gameId: gameId}),
+		EloScores.find({gameId: gameId}),
 		TournamentEloScores.find({gameId: gameId})
 	];
 });
