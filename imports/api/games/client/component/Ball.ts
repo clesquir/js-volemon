@@ -1,7 +1,7 @@
 import MainScene from "../scene/MainScene";
 import GameConfiguration from "../../configuration/GameConfiguration";
 import SkinManager from "./SkinManager";
-import {CLIENT_SIDE, DEPTH_ALL, HOST_SIDE} from "../../constants";
+import {CLIENT_SIDE, DEPTH_COMPONENTS, HOST_SIDE} from "../../constants";
 import Level from "./Level";
 import {ArtificialIntelligencePositionData} from "../../artificialIntelligence/ArtificialIntelligencePositionData";
 import {PositionData} from "./PositionData";
@@ -229,7 +229,7 @@ export default class Ball {
 		this.ballObject.data.isBall = true;
 
 		// @ts-ignore
-		this.ballObject.depth = DEPTH_ALL;
+		this.ballObject.depth = DEPTH_COMPONENTS;
 		this.scene.zIndexGroup.add(this.ballObject);
 
 		this.ballObject.scale.setTo(this.initialScale);

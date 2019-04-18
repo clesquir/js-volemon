@@ -40,10 +40,11 @@ export const CONSTRAINED_VELOCITY = 1000;
 export const HIGH_GRAVITY_MULTIPLIER = 2.71;
 export const LOW_GRAVITY_MULTIPLIER = 0.54;
 
-export const DEPTH_ALL = 0;
-export const DEPTH_CLOUDS = 1;
-export const DEPTH_BONUS_INDICATOR = 2;
-export const DEPTH_ACTIVATION_ANIMATION = 3;
+export const DEPTH_COMPONENTS = 0;
+export const DEPTH_LEVEL = 1;
+export const DEPTH_CLOUDS = 2;
+export const DEPTH_BONUS_INDICATOR = 3;
+export const DEPTH_ACTIVATION_ANIMATION = 4;
 
 export const ONE_VS_COMPUTER_GAME_MODE = '1vsCPU';
 export const ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE = '1vsMLCPU';

@@ -345,11 +345,12 @@ export default class MainScene {
 	private createComponents() {
 		this.level.createComponentsPrerequisites();
 
-		this.level.createGround();
-		this.level.createNet();
 		this.level.createFieldLimits(true);
 
 		this.zIndexGroup = this.game.add.group();
+		this.level.createGround();
+		this.level.createNet();
+
 		this.artificialIntelligence.initFromData(this, this.gameData, this.gameConfiguration);
 		this.players.create();
 		this.ball = this.createBall();

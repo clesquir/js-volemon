@@ -3,6 +3,7 @@ import DefaultSkin from "../../../skins/skins/DefaultSkin";
 import Plugin from "../../../skins/plugins/Plugin";
 import MainScene from "../scene/MainScene";
 import GameConfiguration from "../../configuration/GameConfiguration";
+import {DEPTH_LEVEL} from "../../constants";
 
 export default class SkinManager {
 	gameConfiguration: GameConfiguration;
@@ -68,23 +69,26 @@ export default class SkinManager {
 				groundHeight = groundComponent.height;
 			}
 
-			groundTileSprites.push(
-				scene.game.add.tileSprite(
-					0,
-					y,
-					this.gameConfiguration.width(),
-					groundHeight,
-					groundComponent.key,
-					groundComponent.frame
-				)
+			const ground = scene.game.add.tileSprite(
+				0,
+				y,
+				this.gameConfiguration.width(),
+				groundHeight,
+				groundComponent.key,
+				groundComponent.frame
 			);
+			groundTileSprites.push(ground);
+
+			// @ts-ignore
+			ground.depth = DEPTH_LEVEL;
+			scene.zIndexGroup.add(ground);
 		}
 
 		return groundTileSprites;
 	}
 
 	createNetComponent(scene: MainScene) {
-		scene.game.add.tileSprite(
+		const net = scene.game.add.tileSprite(
 			this.gameConfiguration.width() / 2 - this.gameConfiguration.netWidth() / 2,
 			this.gameConfiguration.height() - this.gameConfiguration.groundHeight() - this.gameConfiguration.netHeight(),
 			this.gameConfiguration.netWidth(),
@@ -92,6 +96,10 @@ export default class SkinManager {
 			this.skin.netComponent().key,
 			this.skin.netComponent().frame
 		);
+
+		// @ts-ignore
+		net.depth = DEPTH_LEVEL;
+		scene.zIndexGroup.add(net);
 	}
 
 	createBallComponent(scene: MainScene): Phaser.Sprite {

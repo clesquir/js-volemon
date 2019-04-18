@@ -9,7 +9,7 @@ import Bonuses from "./Bonuses";
 import GameData from "../../data/GameData";
 import Interpolation from "./Interpolation";
 import VelocityConstraint from "./VelocityConstraint";
-import {DEPTH_ALL} from "../../constants";
+import {DEPTH_COMPONENTS} from "../../constants";
 
 export default class Bonus {
 	scene: MainScene;
@@ -132,7 +132,7 @@ export default class Bonus {
 		this.scene.game.physics.p2.enable(this.bonusObject, this.scene.game.config.enableDebug);
 
 		// @ts-ignore
-		this.bonusObject.depth = DEPTH_ALL;
+		this.bonusObject.depth = DEPTH_COMPONENTS;
 		this.scene.zIndexGroup.add(this.bonusObject);
 
 		this.bonusObject.scale.setTo(this.gameConfiguration.bonusScale());

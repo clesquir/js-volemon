@@ -25,7 +25,7 @@ import {PositionData} from "./PositionData";
 import Animations from "./Animations";
 import Interpolation from "./Interpolation";
 import ServerNormalizedTime from "../ServerNormalizedTime";
-import {DEPTH_ACTIVATION_ANIMATION, DEPTH_ALL} from "../../constants";
+import {DEPTH_ACTIVATION_ANIMATION, DEPTH_COMPONENTS} from "../../constants";
 
 export default class Player {
 	scene: MainScene;
@@ -486,7 +486,7 @@ export default class Player {
 		}
 
 		// @ts-ignore
-		this.playerObject.depth = DEPTH_ALL;
+		this.playerObject.depth = DEPTH_COMPONENTS;
 		this.scene.zIndexGroup.add(this.playerObject);
 
 		this.playerObject.scale.setTo(this.initialScale);
