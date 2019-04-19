@@ -127,9 +127,7 @@ Template.gameCanvas.helpers({
 	},
 
 	showMobileController() {
-		const player = Players.findOne({gameId: Session.get('game'), userId: Meteor.userId()});
-
-		return player && onMobileAndTablet();
+		return Session.get('userCurrentlyPlaying') && onMobileAndTablet();
 	}
 });
 
