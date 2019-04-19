@@ -29,6 +29,9 @@ meteor npm run get-phaser-typings
 Copy settings.json to settings-dev.json and modify the following values:
  * smtpUrl
  * SOCKET_URL
+ * YAHOO_WEATHER_APP_ID
+ * YAHOO_WEATHER_CONSUMER_KEY
+ * YAHOO_WEATHER_CONSUMER_SECRET
 
 Edit package.json to enter your ip address in scripts.meteor-dev. Then: 
 ```

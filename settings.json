@@ -10,6 +10,9 @@
     "ROLLBAR_SERVER_ACCESS_TOKEN": "",
     "ROLLBAR_CLIENT_ACCESS_TOKEN": "",
     "ROLLBAR_ENVIRONMENT": "production",
+    "YAHOO_WEATHER_APP_ID": "",
+    "YAHOO_WEATHER_CONSUMER_KEY": "",
+    "YAHOO_WEATHER_CONSUMER_SECRET": "",
     "DEFAULT_COORDINATES": {
       "latitude": 46.8139,
       "longitude": -71.2080

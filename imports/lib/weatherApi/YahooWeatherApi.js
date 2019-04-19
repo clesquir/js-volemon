@@ -13,6 +13,7 @@ import {
 	WeatherApi
 } from '/imports/lib/weatherApi/WeatherApi.js';
 import moment from 'moment';
+import CryptoJS from 'crypto-js';
 
 const maximumAge = 15 * 60 * 1000;
 
@@ -35,21 +36,55 @@ export class YahooWeatherApi extends WeatherApi {
 	}
 
 	init() {
-		if (this.delayRequest()) {
+		if (this.delayRequest() || !Meteor.settings.public.YAHOO_WEATHER_APP_ID) {
 			return;
 		}
 
-		const url = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22({latitude}%2C%20{longitude})%22)&format=json";
-		const coordinates = locationDetector.currentCoordinates();
-		const urlWithCoordinates = url.replace(/\{latitude\}/g, coordinates.latitude).replace(/\{longitude\}/g, coordinates.longitude);
+		const appId = Meteor.settings.public.YAHOO_WEATHER_APP_ID;
+		const consumerKey = Meteor.settings.public.YAHOO_WEATHER_CONSUMER_KEY;
+		const consumerSecret = Meteor.settings.public.YAHOO_WEATHER_CONSUMER_SECRET;
 
-		$.getJSON(
-			urlWithCoordinates,
-			{},
-			(data) => {
+		const coordinates = locationDetector.currentCoordinates();
+		const url = 'https://weather-ydn-yql.media.yahoo.com/forecastrss';
+		const method = 'GET';
+		const query = {
+			'lat': coordinates.latitude,
+			'lon': coordinates.longitude,
+			'format': 'json'
+		};
+		const oauth = {
+			'oauth_consumer_key': consumerKey,
+			'oauth_nonce': Math.random().toString(36).substring(2),
+			'oauth_signature_method': 'HMAC-SHA1',
+			'oauth_timestamp': parseInt(new Date().getTime() / 1000).toString(),
+			'oauth_version': '1.0'
+		};
+
+		const merged = {};
+		$.extend(merged, query, oauth);
+		//Sorting is required
+		const mergedParameters = Object.keys(merged).sort().map(function(k) {
+			return [k + '=' + encodeURIComponent(merged[k])];
+		});
+		const signatureBase = method + '&' + encodeURIComponent(url) + '&' + encodeURIComponent(mergedParameters.join('&'));
+		const hash = CryptoJS.HmacSHA1(signatureBase, encodeURIComponent(consumerSecret) + '&');
+
+		oauth['oauth_signature'] = hash.toString(CryptoJS.enc.Base64);
+		const authHeader = 'OAuth ' + Object.keys(oauth).map(function(k) {
+			return [k + '="' + oauth[k] + '"'];
+		}).join(',');
+
+		$.ajax({
+			url: url + '?' + $.param(query),
+			headers: {
+				'Authorization': authHeader,
+				'X-Yahoo-App-Id': appId
+			},
+			method: method,
+			success: (data) => {
 				this.onApiResponse(data);
 			}
-		);
+		});
 	}
 
 	condition() {
@@ -113,10 +148,10 @@ export class YahooWeatherApi extends WeatherApi {
 	 * @param data
 	 */
 	onApiResponse(data) {
-		if (data.query.results) {
-			this.conditionCode = parseInt(data.query.results.channel.item.condition.code);
-			this.timeOfSunrise = data.query.results.channel.astronomy.sunrise;
-			this.timeOfSunset = data.query.results.channel.astronomy.sunset;
+		if (data.current_observation) {
+			this.conditionCode = parseInt(data.current_observation.condition.code);
+			this.timeOfSunrise = data.current_observation.astronomy.sunrise;
+			this.timeOfSunset = data.current_observation.astronomy.sunset;
 
 			localStorage.setItem('lastWeatherResult.conditionCode', this.conditionCode);
 			localStorage.setItem('lastWeatherResult.timeOfSunrise', this.timeOfSunrise);
