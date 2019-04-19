@@ -1,7 +1,7 @@
 import {TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import {MatchMakers} from '/imports/api/games/matchMakers.js';
 import EloMatchMaker from '/imports/api/games/server/matchMaking/EloMatchMaker.js';
-import {TournamentProfiles} from '/imports/api/tournaments/tournamentProfiles.js';
+import {Profiles} from '/imports/api/profiles/profiles';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {assert} from 'chai';
 import StubCollections from 'meteor/hwillson:stub-collections';
@@ -84,7 +84,7 @@ describe('EloMatchMaker', function() {
 	const tournamentId = Random.id(5);
 
 	before(function() {
-		StubCollections.add([Tournaments, TournamentProfiles, MatchMakers]);
+		StubCollections.add([Tournaments, Profiles, MatchMakers]);
 	});
 
 	beforeEach(function() {
@@ -117,13 +117,13 @@ describe('EloMatchMaker', function() {
 		it('match 2v2 users depending on their elo scores - ' + test.name, function() {
 			const matchMaker = new EloMatchMaker();
 
-			TournamentProfiles.insert({tournamentId: tournamentId, userId: test.users[0].id, eloRating: test.users[0].eloRating});
+			Profiles.insert({userId: test.users[0].id, eloRating: test.users[0].eloRating});
 			matchMaker.subscribe(test.users[0], TWO_VS_TWO_GAME_MODE, tournamentId);
-			TournamentProfiles.insert({tournamentId: tournamentId, userId: test.users[1].id, eloRating: test.users[1].eloRating});
+			Profiles.insert({userId: test.users[1].id, eloRating: test.users[1].eloRating});
 			matchMaker.subscribe(test.users[1], TWO_VS_TWO_GAME_MODE, tournamentId);
-			TournamentProfiles.insert({tournamentId: tournamentId, userId: test.users[2].id, eloRating: test.users[2].eloRating});
+			Profiles.insert({userId: test.users[2].id, eloRating: test.users[2].eloRating});
 			matchMaker.subscribe(test.users[2], TWO_VS_TWO_GAME_MODE, tournamentId);
-			TournamentProfiles.insert({tournamentId: tournamentId, userId: test.users[3].id, eloRating: test.users[3].eloRating});
+			Profiles.insert({userId: test.users[3].id, eloRating: test.users[3].eloRating});
 			matchMaker.subscribe(test.users[3], TWO_VS_TWO_GAME_MODE, tournamentId);
 
 			const match = MatchMakers.findOne({modeSelection: TWO_VS_TWO_GAME_MODE, tournamentId: tournamentId});

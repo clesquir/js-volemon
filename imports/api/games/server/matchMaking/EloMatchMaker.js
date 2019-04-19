@@ -127,15 +127,7 @@ export default class EloMatchMaker extends MatchMaker {
 	 * @returns {Number}
 	 */
 	getEloRating(tournamentId, userId) {
-		let profile;
-
-		if (tournamentId) {
-			profile = TournamentProfiles.findOne({tournamentId: tournamentId, userId: userId});
-		}
-
-		if (!profile) {
-			profile = Profiles.findOne({userId: userId});
-		}
+		let profile = Profiles.findOne({userId: userId});
 
 		if (profile) {
 			return profile.eloRating;
