@@ -92,9 +92,9 @@ export default class Dev {
 	createComponents() {
 		this.mainScene.level.createComponentsPrerequisites();
 
+		this.mainScene.zIndexGroup = this.mainScene.game.add.group();
 		this.createLevelComponents();
 
-		this.mainScene.zIndexGroup = this.mainScene.game.add.group();
 		this.mainScene.artificialIntelligence.initFromData(this.mainScene, this.gameData, this.gameConfiguration);
 		this.createPlayersComponents();
 		this.mainScene.ball = this.mainScene.createBall();
