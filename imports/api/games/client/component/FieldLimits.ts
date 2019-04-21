@@ -36,7 +36,7 @@ export default class FieldLimits {
 		this.applyCollisionCategory(
 			this.addBound(
 				(
-					this.hasNet ?
+					this.hasNet && this.gameConfiguration.hasPlayerNetLimit() ?
 					this.gameConfiguration.width() - (this.gameConfiguration.netWidth() / 2) :
 					this.gameConfiguration.width() * 1.5
 				),
@@ -95,7 +95,7 @@ export default class FieldLimits {
 		this.applyCollisionCategory(
 			this.addBound(
 				(
-					this.hasNet ?
+					this.hasNet && this.gameConfiguration.hasPlayerNetLimit() ?
 					this.gameConfiguration.netWidth() / 2 :
 					-this.gameConfiguration.width() / 2
 				),

@@ -580,6 +580,22 @@ export default abstract class GameConfiguration {
 		}
 	}
 
+	hasPlayerNetLimit(): boolean {
+		if (this.hasTournament() && this.tournamentMode.overridesHasPlayerNetLimit()) {
+			return this.tournamentMode.hasPlayerNetLimit();
+		}
+
+		return true;
+	}
+
+	collidesWithOpponent(): boolean {
+		if (this.hasTournament() && this.tournamentMode.overridesCollidesWithOpponent()) {
+			return this.tournamentMode.collidesWithOpponent();
+		}
+
+		return false;
+	}
+
 	private player1InitialX(): number {
 		return this.levelConfiguration.player1InitialX();
 	}

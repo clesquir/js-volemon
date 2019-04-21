@@ -545,6 +545,11 @@ export default class Player {
 		this.playerObject.body.setCollisionGroup(collisionCategory);
 		this.playerObject.body.collides(collisionLimit);
 		this.playerObject.body.collides(collisionCategory);
+
+		if (this.gameConfiguration.collidesWithOpponent()) {
+			this.playerObject.body.collides(this.isHost ? this.level.collisionCategoryClient : this.level.collisionCategoryHost);
+		}
+
 		this.playerObject.body.collides(this.level.collisionCategoryBall);
 		this.playerObject.body.collides(this.level.collisionCategoryBonus);
 	}
@@ -733,8 +738,12 @@ export default class Player {
 			return this.isHost;
 		} else if (contactBody === this.scene.level.clientGround()) {
 			return !this.isHost;
-		} else if (contactBody.sprite) {
-			return (contactBody.sprite.data && contactBody.sprite.data.isHost === this.isHost);
+		} else if (contactBody.sprite && contactBody.sprite.data && contactBody.sprite.data.isPlayer) {
+			if (this.gameConfiguration.collidesWithOpponent()) {
+				return true;
+			} else {
+				return contactBody.sprite.data.isHost === this.isHost;
+			}
 		}
 	}
 

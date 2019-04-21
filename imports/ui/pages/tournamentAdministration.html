@@ -187,6 +187,8 @@
 						{{> numberSwitch id="level-height" label="Level height" default="1v1: 560, 2v2: 680" isOn=(modeOverridden "overriddenLevelHeight") value=(modeOverriddenValue "overriddenLevelHeight") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
+					{{> selectSwitch id="has-player-net-limit" label="Player net limit" isOn=(modeOverridden "overriddenHasPlayerNetLimit") options=booleanOptions value=(modeOverriddenValue "overriddenHasPlayerNetLimit") isReadOnly=(canOnlyViewTournament tournament)}}
+
 					<h2>Physic overrides</h2>
 
 					<div class="splitted-configuration">
@@ -212,6 +214,8 @@
 
 						{{> numberSwitch id="ball-velocity-on-rebound-on-player" label="Ball velocity on rebound on player" default="-280" isOn=(modeOverridden "overriddenBallVelocityOnReboundOnPlayer") value=(modeOverriddenValue "overriddenBallVelocityOnReboundOnPlayer") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
+
+					{{> selectSwitch id="collides-with-opponent" label="Collide with opponent" isOn=(modeOverridden "overriddenCollidesWithOpponent") options=booleanOptions value=(modeOverriddenValue "overriddenCollidesWithOpponent") isReadOnly=(canOnlyViewTournament tournament)}}
 
 				</div>
 

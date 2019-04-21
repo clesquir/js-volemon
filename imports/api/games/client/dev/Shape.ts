@@ -13,6 +13,9 @@ export default class Shape extends Dev {
 	overrideGame() {
 		super.overrideGame();
 
+		this.gameConfiguration.hasPlayerNetLimit = () => {
+			return false;
+		};
 		this.gameData.getPlayerShapeFromKey = (playerKey) => {
 			return PLAYER_LIST_OF_SHAPES[this.shapeKey(playerKey)];
 		};

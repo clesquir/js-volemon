@@ -254,6 +254,7 @@ const modeOptions = function() {
 	addToMode(mode, 'net-height', 'overriddenNetHeight');
 	addToMode(mode, 'level-width', 'overriddenLevelWidth');
 	addToMode(mode, 'level-height', 'overriddenLevelHeight');
+	addToMode(mode, 'has-player-net-limit', 'overriddenHasPlayerNetLimit');
 
 	addToMode(mode, 'world-gravity', 'overriddenWorldGravity');
 	addToMode(mode, 'world-restitution', 'overriddenWorldRestitution');
@@ -263,6 +264,7 @@ const modeOptions = function() {
 	addToMode(mode, 'player-smash-enabled', 'overriddenPlayerSmashEnabled');
 	addToMode(mode, 'ball-rebound-on-player-enabled', 'overriddenBallReboundOnPlayerEnabled');
 	addToMode(mode, 'ball-velocity-on-rebound-on-player', 'overriddenBallVelocityOnReboundOnPlayer');
+	addToMode(mode, 'collides-with-opponent', 'overriddenCollidesWithOpponent');
 
 	return mode;
 };

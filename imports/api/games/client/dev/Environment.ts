@@ -28,6 +28,9 @@ export default class Environment extends Dev {
 	overrideGame() {
 		super.overrideGame();
 
+		this.gameConfiguration.hasPlayerNetLimit = () => {
+			return Session.get('dev.environment.hasNet');
+		};
 		this.gameConfiguration.overridesTeamMaximumBallHit = () => {
 			return this.showBallHitCount;
 		};

@@ -59,6 +59,8 @@ export default class TournamentMode {
 	overriddenPlayerMaximumBallHit;
 	overriddenTeamMaximumBallHit;
 	overriddenForcePracticeWithComputer;
+	overriddenHasPlayerNetLimit;
+	overriddenCollidesWithOpponent;
 
 	overridesWorldGravity(): boolean {
 		return this.overriddenWorldGravity !== undefined;
@@ -469,6 +471,22 @@ export default class TournamentMode {
 		return parseInt(this.overriddenForcePracticeWithComputer) === 1;
 	}
 
+	overridesHasPlayerNetLimit(): boolean {
+		return this.overriddenHasPlayerNetLimit !== undefined;
+	}
+
+	hasPlayerNetLimit(): boolean {
+		return parseInt(this.overriddenHasPlayerNetLimit) === 1;
+	}
+
+	overridesCollidesWithOpponent(): boolean {
+		return this.overriddenCollidesWithOpponent !== undefined;
+	}
+
+	collidesWithOpponent(): boolean {
+		return parseInt(this.overriddenCollidesWithOpponent) === 1;
+	}
+
 	static fromTournament(tournament: any) {
 		const tournamentMode = new TournamentMode();
 		const mode = tournament.mode;
@@ -533,6 +551,8 @@ export default class TournamentMode {
 		tournamentMode.overriddenPlayerMaximumBallHit = mode.overriddenPlayerMaximumBallHit;
 		tournamentMode.overriddenTeamMaximumBallHit = mode.overriddenTeamMaximumBallHit;
 		tournamentMode.overriddenForcePracticeWithComputer = mode.overriddenForcePracticeWithComputer;
+		tournamentMode.overriddenHasPlayerNetLimit = mode.overriddenHasPlayerNetLimit;
+		tournamentMode.overriddenCollidesWithOpponent = mode.overriddenCollidesWithOpponent;
 
 		return tournamentMode;
 	}
