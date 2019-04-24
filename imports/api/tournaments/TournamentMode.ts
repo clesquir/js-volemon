@@ -30,6 +30,9 @@ export default class TournamentMode {
 	overriddenInitialPlayerMass_player4;
 	overriddenSmallPlayerMass;
 	overriddenBigPlayerMass;
+	overriddenPlayerVerticalMoveMultiplierBig;
+	overriddenPlayerHorizontalMoveMultiplierSlow;
+	overriddenPlayerHorizontalMoveMultiplierFast;
 	overriddenInitialBallScale;
 	overriddenSmallBallScale;
 	overriddenBigBallScale;
@@ -233,6 +236,30 @@ export default class TournamentMode {
 
 	bigPlayerMass(): number {
 		return parseFloat(this.overriddenBigPlayerMass);
+	}
+
+	overridesPlayerVerticalMoveMultiplierBig(): boolean {
+		return this.overriddenPlayerVerticalMoveMultiplierBig !== undefined;
+	}
+
+	playerVerticalMoveMultiplierBig(): number {
+		return parseFloat(this.overriddenPlayerVerticalMoveMultiplierBig);
+	}
+
+	overridesPlayerHorizontalMoveMultiplierSlow(): boolean {
+		return this.overriddenPlayerHorizontalMoveMultiplierSlow !== undefined;
+	}
+
+	playerHorizontalMoveMultiplierSlow(): number {
+		return parseFloat(this.overriddenPlayerHorizontalMoveMultiplierSlow);
+	}
+
+	overridesPlayerHorizontalMoveMultiplierFast(): boolean {
+		return this.overriddenPlayerHorizontalMoveMultiplierFast !== undefined;
+	}
+
+	playerHorizontalMoveMultiplierFast(): number {
+		return parseFloat(this.overriddenPlayerHorizontalMoveMultiplierFast);
 	}
 
 	overridesInitialBallScale(): boolean {
@@ -522,6 +549,9 @@ export default class TournamentMode {
 		tournamentMode.overriddenInitialPlayerMass_player4 = mode.overriddenInitialPlayerMass_player4;
 		tournamentMode.overriddenSmallPlayerMass = mode.overriddenSmallPlayerMass;
 		tournamentMode.overriddenBigPlayerMass = mode.overriddenBigPlayerMass;
+		tournamentMode.overriddenPlayerVerticalMoveMultiplierBig = mode.overriddenPlayerVerticalMoveMultiplierBig;
+		tournamentMode.overriddenPlayerHorizontalMoveMultiplierSlow = mode.overriddenPlayerHorizontalMoveMultiplierSlow;
+		tournamentMode.overriddenPlayerHorizontalMoveMultiplierFast = mode.overriddenPlayerHorizontalMoveMultiplierFast;
 		tournamentMode.overriddenInitialBallScale = mode.overriddenInitialBallScale;
 		tournamentMode.overriddenSmallBallScale = mode.overriddenSmallBallScale;
 		tournamentMode.overriddenBigBallScale = mode.overriddenBigBallScale;

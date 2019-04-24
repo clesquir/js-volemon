@@ -239,6 +239,9 @@ const modeOptions = function() {
 	addToMode(mode, 'initial-player-mass-player4', 'overriddenInitialPlayerMass_player4');
 	addToMode(mode, 'small-player-mass', 'overriddenSmallPlayerMass');
 	addToMode(mode, 'big-player-mass', 'overriddenBigPlayerMass');
+	addToMode(mode, 'player-vertical-move-multiplayer-big', 'overriddenPlayerVerticalMoveMultiplierBig');
+	addToMode(mode, 'player-horizontal-move-multiplayer-slow', 'overriddenPlayerHorizontalMoveMultiplierSlow');
+	addToMode(mode, 'player-horizontal-move-multiplayer-fast', 'overriddenPlayerHorizontalMoveMultiplierFast');
 	addToMode(mode, 'force-practice-with-computer', 'overriddenForcePracticeWithComputer');
 
 	addToMode(mode, 'initial-ball-mass', 'overriddenInitialBallMass');

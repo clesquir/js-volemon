@@ -137,6 +137,12 @@
 						{{> numberSwitch id="initial-player-mass-player4" label="Player 4 mass" default="200" isOn=(modeOverridden "overriddenInitialPlayerMass_player4") value=(modeOverriddenValue "overriddenInitialPlayerMass_player4") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
+					<div class="splitted-configuration">
+						{{> numberSwitch id="player-vertical-move-multiplayer-big" label="Vertical multiplier big" default="1.35" isOn=(modeOverridden "overriddenPlayerVerticalMoveMultiplierBig") value=(modeOverriddenValue "overriddenPlayerVerticalMoveMultiplierBig") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="player-horizontal-move-multiplayer-slow" label="Horizontal multiplier slow" default="0.4" isOn=(modeOverridden "overriddenPlayerHorizontalMoveMultiplierSlow") value=(modeOverriddenValue "overriddenPlayerHorizontalMoveMultiplierSlow") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="player-horizontal-move-multiplayer-fast" label="Horizontal multiplier fast" default="2" isOn=(modeOverridden "overriddenPlayerHorizontalMoveMultiplierFast") value=(modeOverriddenValue "overriddenPlayerHorizontalMoveMultiplierFast") isReadOnly=(canOnlyViewTournament tournament)}}
+					</div>
+
 					{{> selectSwitch id="force-practice-with-computer" label="Force practice when there is a computer" isOn=(modeOverridden "overriddenForcePracticeWithComputer") options=booleanOptions value=(modeOverriddenValue "overriddenForcePracticeWithComputer") isReadOnly=(canOnlyViewTournament tournament)}}
 
 					<h2>Ball overrides</h2>

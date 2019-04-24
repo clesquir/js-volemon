@@ -22,6 +22,9 @@ import {
 	PLAYER_BIG_MASS,
 	PLAYER_BIG_SCALE,
 	PLAYER_GRAVITY_SCALE,
+	PLAYER_HORIZONTAL_MOVE_MULTIPLIER_FAST,
+	PLAYER_HORIZONTAL_MOVE_MULTIPLIER_INITIAL,
+	PLAYER_HORIZONTAL_MOVE_MULTIPLIER_SLOW,
 	PLAYER_MASS,
 	PLAYER_SCALE,
 	PLAYER_SMALL_GRAVITY_SCALE,
@@ -29,6 +32,8 @@ import {
 	PLAYER_SMALL_SCALE,
 	PLAYER_VELOCITY_X_ON_MOVE,
 	PLAYER_VELOCITY_Y_ON_JUMP,
+	PLAYER_VERTICAL_MOVE_MULTIPLIER_BIG,
+	PLAYER_VERTICAL_MOVE_MULTIPLIER_INITIAL,
 	TWO_VS_TWO_GAME_MODE,
 	TWO_VS_TWO_HUMAN_CPU_GAME_MODE,
 	WORLD_GRAVITY,
@@ -176,23 +181,35 @@ export default abstract class GameConfiguration {
 	}
 
 	initialVerticalMoveMultiplier(): number {
-		return 1;
+		return PLAYER_VERTICAL_MOVE_MULTIPLIER_INITIAL;
 	}
 
 	bigVerticalMoveMultiplier(): number {
-		return 1.35;
+		if (this.hasTournament() && this.tournamentMode.overridesPlayerVerticalMoveMultiplierBig()) {
+			return this.tournamentMode.playerVerticalMoveMultiplierBig();
+		}
+
+		return PLAYER_VERTICAL_MOVE_MULTIPLIER_BIG;
 	}
 
 	initialHorizontalMoveMultiplier(): number {
-		return 1;
-	}
-
-	fastHorizontalMoveMultiplier(): number {
-		return 2;
+		return PLAYER_HORIZONTAL_MOVE_MULTIPLIER_INITIAL;
 	}
 
 	slowHorizontalMoveMultiplier(): number {
-		return 0.4;
+		if (this.hasTournament() && this.tournamentMode.overridesPlayerHorizontalMoveMultiplierSlow()) {
+			return this.tournamentMode.playerHorizontalMoveMultiplierSlow();
+		}
+
+		return PLAYER_HORIZONTAL_MOVE_MULTIPLIER_SLOW;
+	}
+
+	fastHorizontalMoveMultiplier(): number {
+		if (this.hasTournament() && this.tournamentMode.overridesPlayerHorizontalMoveMultiplierFast()) {
+			return this.tournamentMode.playerHorizontalMoveMultiplierFast();
+		}
+
+		return PLAYER_HORIZONTAL_MOVE_MULTIPLIER_FAST;
 	}
 
 	initialBallScale(): number {

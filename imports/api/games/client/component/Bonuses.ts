@@ -342,19 +342,19 @@ export default class Bonuses {
 		}
 	}
 
-	applyFastHorizontalMoveMultiplier(playerKey: string) {
-		const player = this.players.getPlayerFromKey(playerKey);
-
-		if (player) {
-			player.horizontalMoveMultiplier = this.gameConfiguration.fastHorizontalMoveMultiplier();
-		}
-	}
-
 	applySlowHorizontalMoveMultiplier(playerKey: string) {
 		const player = this.players.getPlayerFromKey(playerKey);
 
 		if (player) {
 			player.horizontalMoveMultiplier = this.gameConfiguration.slowHorizontalMoveMultiplier();
+		}
+	}
+
+	applyFastHorizontalMoveMultiplier(playerKey: string) {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player) {
+			player.horizontalMoveMultiplier = this.gameConfiguration.fastHorizontalMoveMultiplier();
 		}
 	}
 
