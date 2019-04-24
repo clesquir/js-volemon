@@ -5,7 +5,7 @@ addons:
 language: node_js
 
 node_js:
-  - "8.9.1"
+  - "11.14.0"
 
 before_install:
   - curl https://install.meteor.com | /bin/sh
@@ -26,5 +26,4 @@ before_script:
   - sleep 3
 
 script:
-  - meteor npm i --save selenium-webdriver@3.6.0 chromedriver@2.36.0
   - TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha
