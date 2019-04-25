@@ -2,7 +2,10 @@
 	<div class="select-switch">
 		<h3>
 			<input type="checkbox" id="check-{{id}}" data-checkbox-action="enable-select-switch" disabled="{{#if isReadOnly}}disabled{{/if}}">
-			<label for="check-{{id}}"> {{label}}</label>
+			<label for="check-{{id}}">
+				<div>{{label}}</div>
+				{{#if hasDefault}}<div class="switch-default-value">default {{default}}</div>{{/if}}
+			</label>
 		</h3>
 
 		<span class="styled-single-select">

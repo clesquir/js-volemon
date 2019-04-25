@@ -544,7 +544,10 @@ export default class Player {
 		this.playerObject.body.setMaterial(this.level.materialPlayer);
 		this.playerObject.body.setCollisionGroup(collisionCategory);
 		this.playerObject.body.collides(collisionLimit);
-		this.playerObject.body.collides(collisionCategory);
+
+		if (this.gameConfiguration.collidesWithTeammate()) {
+			this.playerObject.body.collides(collisionCategory);
+		}
 
 		if (this.gameConfiguration.collidesWithOpponent()) {
 			this.playerObject.body.collides(this.isHost ? this.level.collisionCategoryClient : this.level.collisionCategoryHost);
@@ -739,10 +742,10 @@ export default class Player {
 		} else if (contactBody === this.scene.level.clientGround()) {
 			return !this.isHost;
 		} else if (contactBody.sprite && contactBody.sprite.data && contactBody.sprite.data.isPlayer) {
-			if (this.gameConfiguration.collidesWithOpponent()) {
-				return true;
-			} else {
-				return contactBody.sprite.data.isHost === this.isHost;
+			if (contactBody.sprite.data.isHost === this.isHost) {
+				return this.gameConfiguration.collidesWithTeammate();
+			} else if (contactBody.sprite.data.isHost !== this.isHost) {
+				return this.gameConfiguration.collidesWithOpponent();
 			}
 		}
 	}

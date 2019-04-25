@@ -63,6 +63,7 @@ export default class TournamentMode {
 	overriddenTeamMaximumBallHit;
 	overriddenForcePracticeWithComputer;
 	overriddenHasPlayerNetLimit;
+	overriddenCollidesWithTeammate;
 	overriddenCollidesWithOpponent;
 
 	overridesWorldGravity(): boolean {
@@ -506,6 +507,14 @@ export default class TournamentMode {
 		return parseInt(this.overriddenHasPlayerNetLimit) === 1;
 	}
 
+	overridesCollidesWithTeammate(): boolean {
+		return this.overriddenCollidesWithTeammate !== undefined;
+	}
+
+	collidesWithTeammate(): boolean {
+		return parseInt(this.overriddenCollidesWithTeammate) === 1;
+	}
+
 	overridesCollidesWithOpponent(): boolean {
 		return this.overriddenCollidesWithOpponent !== undefined;
 	}
@@ -582,6 +591,7 @@ export default class TournamentMode {
 		tournamentMode.overriddenTeamMaximumBallHit = mode.overriddenTeamMaximumBallHit;
 		tournamentMode.overriddenForcePracticeWithComputer = mode.overriddenForcePracticeWithComputer;
 		tournamentMode.overriddenHasPlayerNetLimit = mode.overriddenHasPlayerNetLimit;
+		tournamentMode.overriddenCollidesWithTeammate = mode.overriddenCollidesWithTeammate;
 		tournamentMode.overriddenCollidesWithOpponent = mode.overriddenCollidesWithOpponent;
 
 		return tournamentMode;

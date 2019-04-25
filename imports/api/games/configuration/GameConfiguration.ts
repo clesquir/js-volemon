@@ -605,6 +605,14 @@ export default abstract class GameConfiguration {
 		return true;
 	}
 
+	collidesWithTeammate(): boolean {
+		if (this.hasTournament() && this.tournamentMode.overridesCollidesWithTeammate()) {
+			return this.tournamentMode.collidesWithTeammate();
+		}
+
+		return true;
+	}
+
 	collidesWithOpponent(): boolean {
 		if (this.hasTournament() && this.tournamentMode.overridesCollidesWithOpponent()) {
 			return this.tournamentMode.collidesWithOpponent();

@@ -24,7 +24,9 @@ Template.selectSwitch.helpers({
 
 		return !isOn;
 	},
-
+	hasDefault: function() {
+		return this.default !== undefined;
+	},
 	isSelected: function(isOn, option, value) {
 		return isOn && option === value;
 	}
