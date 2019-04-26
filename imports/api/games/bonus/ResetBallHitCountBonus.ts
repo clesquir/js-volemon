@@ -3,18 +3,20 @@ import Bonuses from '../client/component/Bonuses';
 
 export default class ResetBallHitCountBonus extends BaseBonus {
 	atlasFrame: string = 'reset-ball-hit-count';
-	description: string = 'Reset team ball hit count';
-	durationMilliseconds: number = 0;
+	description: string = 'Resets and stops ball hit count for 5s';
+	durationMilliseconds: number = 5000;
 
 	isSimilarBonusForPlayerKey(bonus: BaseBonus, playerKey: string): boolean {
-		return bonus instanceof ResetBallHitCountBonus;
-	}
-
-	canOverrideDuration(): boolean {
-		return false;
+		return bonus instanceof ResetBallHitCountBonus && playerKey === this.activatorPlayerKey;
 	}
 
 	start(bonuses: Bonuses) {
-		bonuses.resetBallHitCount.call(bonuses, this.activatorPlayerKey);
+		bonuses.stopBallHitCount.call(bonuses, this.activatorPlayerKey);
+	}
+
+	stop(bonuses: Bonuses) {
+		bonuses.restartBallHitCount.call(bonuses, this.activatorPlayerKey);
+
+		this.deactivate();
 	}
 };

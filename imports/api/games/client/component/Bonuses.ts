@@ -540,7 +540,7 @@ export default class Bonuses {
 		}
 	}
 
-	resetBallHitCount(playerKey: string) {
+	stopBallHitCount(playerKey: string) {
 		const player = this.players.getPlayerFromKey(playerKey);
 
 		if (player) {
@@ -549,6 +549,16 @@ export default class Bonuses {
 			} else {
 				this.players.resetClientNumberBallHits();
 			}
+
+			player.ballHitsStopped = true;
+		}
+	}
+
+	restartBallHitCount(playerKey: string) {
+		const player = this.players.getPlayerFromKey(playerKey);
+
+		if (player) {
+			player.ballHitsStopped = false;
 		}
 	}
 

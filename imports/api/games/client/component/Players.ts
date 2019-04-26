@@ -517,16 +517,22 @@ export default class Players {
 		) {
 			player.lastBallHit = (new Date()).getTime();
 
-			let playerNumberBallHits = ++player.numberBallHits;
+			let playerNumberBallHits = 0;
 			let teamNumberBallHits = 0;
 			if (player.isHost) {
-				//Increment hit
-				teamNumberBallHits = ++this.hostNumberBallHits;
+				if (this.teamBallHitsStopped(player) === false) {
+					//Increment hit
+					playerNumberBallHits = ++player.numberBallHits;
+					teamNumberBallHits = ++this.hostNumberBallHits;
+				}
 				//Reset opponents
 				this.resetClientNumberBallHits();
 			} else if (!player.isHost) {
-				//Increment hit
-				teamNumberBallHits = ++this.clientNumberBallHits;
+				if (this.teamBallHitsStopped(player) === false) {
+					//Increment hit
+					playerNumberBallHits = ++player.numberBallHits;
+					teamNumberBallHits = ++this.clientNumberBallHits;
+				}
 				//Reset opponents
 				this.resetHostNumberBallHits();
 			}
@@ -538,6 +544,26 @@ export default class Players {
 
 			this.showTeamBallHitCount(player, ball, teamNumberBallHits);
 		}
+	}
+
+	private teamBallHitsStopped(player: Player): boolean {
+		let teammatePlayers = [];
+
+		if (player.isHost) {
+			teammatePlayers = this.hostPlayerKeys(true);
+		} else {
+			teammatePlayers = this.clientPlayerKeys(true);
+		}
+
+		for (let teammatePlayerKey of teammatePlayers) {
+			const teammatePlayer = this.getPlayerFromKey(teammatePlayerKey);
+
+			if (teammatePlayer && teammatePlayer.ballHitsStopped) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private resetPlayerNumberBallHitsForOthers(player: Player) {
