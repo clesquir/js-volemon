@@ -1,3 +1,4 @@
+import {isTwoVersusTwoGameMode} from '/imports/api/games/constants';
 import {
 	ONE_VS_COMPUTER_GAME_MODE,
 	ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE,
@@ -9,10 +10,7 @@ import {
 import MatchMaker from '/imports/api/games/server/matchMaking/MatchMaker.js';
 import {INITIAL_ELO_RATING} from '/imports/api/profiles/constants.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
-import {TournamentProfiles} from '/imports/api/tournaments/tournamentProfiles.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
-import {Meteor} from "meteor/meteor";
-import {Random} from 'meteor/random';
 
 export default class EloMatchMaker extends MatchMaker {
 	/**
@@ -39,7 +37,11 @@ export default class EloMatchMaker extends MatchMaker {
 				return [match.usersToMatch[0], {id: 'CPU', isMachineLearning: true, name: 'ML CPU'}];
 			case ONE_VS_ONE_GAME_MODE:
 				if (match.usersToMatch.length === 2) {
-					const matchedUsers = this.sortByEloRating(match.usersToMatch, match.tournamentId);
+					const matchedUsers = this.sortByEloRating(
+						gameMode,
+						match.usersToMatch,
+						match.tournamentId
+					);
 
 					//Highest is host
 					return [matchedUsers[1], matchedUsers[0]];
@@ -52,6 +54,7 @@ export default class EloMatchMaker extends MatchMaker {
 					if (this.numberOfMatchedComputers(match.usersToMatch) === 2) {
 						const matchedComputers = this.getMatchedComputers(match.usersToMatch);
 						const matchedHumans = this.sortByEloRating(
+							gameMode,
 							this.getMatchedHumans(match.usersToMatch),
 							match.tournamentId
 						);
@@ -63,7 +66,11 @@ export default class EloMatchMaker extends MatchMaker {
 							matchedHumans[1],
 						];
 					} else {
-						matchedUsers = this.sortByEloRating(match.usersToMatch, match.tournamentId);
+						matchedUsers = this.sortByEloRating(
+							gameMode,
+							match.usersToMatch,
+							match.tournamentId
+						);
 					}
 
 					//Match highest 3 with lowest 0 and both middle together
@@ -73,7 +80,11 @@ export default class EloMatchMaker extends MatchMaker {
 				break;
 			case TWO_VS_TWO_HUMAN_CPU_GAME_MODE:
 				if (match.usersToMatch.length === 2) {
-					const matchedUsers = this.sortByEloRating(match.usersToMatch, match.tournamentId);
+					const matchedUsers = this.sortByEloRating(
+						gameMode,
+						match.usersToMatch,
+						match.tournamentId
+					);
 
 					return [
 						matchedUsers[1],
@@ -89,11 +100,12 @@ export default class EloMatchMaker extends MatchMaker {
 
 	/**
 	 * @private
+	 * @param gameMode
 	 * @param usersToMatch
 	 * @param tournamentId
 	 * @returns {{id: {string}, name: {string}}[]}
 	 */
-	sortByEloRating(usersToMatch, tournamentId) {
+	sortByEloRating(gameMode, usersToMatch, tournamentId) {
 		const randomize = arr => arr
 			.map(a => [Math.random(), a])
 			.sort((a, b) => a[0] - b[0])
@@ -102,7 +114,7 @@ export default class EloMatchMaker extends MatchMaker {
 		const randomizedUsers = randomize(usersToMatch);
 		const unsortedUsers = {};
 		for (let user of randomizedUsers) {
-			const eloRating = this.getEloRating(tournamentId, user.id);
+			const eloRating = this.getEloRating(gameMode, tournamentId, user.id);
 
 			if (unsortedUsers[eloRating] === undefined) {
 				unsortedUsers[eloRating] = [];
@@ -122,15 +134,20 @@ export default class EloMatchMaker extends MatchMaker {
 
 	/**
 	 * @private
+	 * @param gameMode
 	 * @param tournamentId
 	 * @param userId
 	 * @returns {Number}
 	 */
-	getEloRating(tournamentId, userId) {
+	getEloRating(gameMode, tournamentId, userId) {
 		let profile = Profiles.findOne({userId: userId});
 
 		if (profile) {
-			return profile.eloRating;
+			if (isTwoVersusTwoGameMode(gameMode)) {
+				return profile.teamEloRating || INITIAL_ELO_RATING;
+			} else {
+				return profile.eloRating || INITIAL_ELO_RATING;
+			}
 		} else {
 			return INITIAL_ELO_RATING;
 		}

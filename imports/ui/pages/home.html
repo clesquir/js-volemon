@@ -62,12 +62,16 @@
 
 								<h2>ELO line chart</h2>
 
+								<div class="display-elo-mode">
+									<span data-action="display-chart-elo-mode" data-chart-elo-mode="solo">Solo</span> |
+									<span data-action="display-chart-elo-mode" data-chart-elo-mode="team">Team</span>
+								</div>
 								<div class="display-chart-period">
-									<span data-action="display-chart-all-time">All time</span> |
-									<span data-action="display-chart-60-days">60 days</span> |
-									<span data-action="display-chart-30-days">30 days</span> |
-									<span data-action="display-chart-14-days">14 days</span> |
-									<span data-action="display-chart-7-days">7 days</span>
+									<span data-action="display-chart-period" data-chart-label="Oldest" data-chart-days="false">All time</span> |
+									<span data-action="display-chart-period" data-chart-label="60 days ago" data-chart-days="60">60 days</span> |
+									<span data-action="display-chart-period" data-chart-label="30 days ago" data-chart-days="30">30 days</span> |
+									<span data-action="display-chart-period" data-chart-label="14 days ago" data-chart-days="14">14 days</span> |
+									<span data-action="display-chart-period" data-chart-label="7 days ago" data-chart-days="7">7 days</span>
 								</div>
 								<div>
 									<div id="rank-line-chart">

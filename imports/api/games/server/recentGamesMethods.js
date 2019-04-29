@@ -1,9 +1,9 @@
-import {Meteor} from 'meteor/meteor';
 import {EloScores} from '/imports/api/games/eloscores.js';
-import {Players} from '/imports/api/games/players.js';
 import {Games} from '/imports/api/games/games.js';
 import {GAME_STATUS_FINISHED} from '/imports/api/games/statusConstants.js';
+import {TeamEloScores} from '/imports/api/games/teameloscores';
 import {TournamentEloScores} from '/imports/api/tournaments/tournamentEloScores.js';
+import {Meteor} from 'meteor/meteor';
 
 Meteor.methods({
 	recentGames: function(userId, tournamentId, skip, limit) {
@@ -41,8 +41,10 @@ Meteor.methods({
 		});
 
 		let eloScores = [];
+		let teamEloScores = [];
+		let tournamentEloScores = [];
 		if (tournamentId) {
-			eloScores = TournamentEloScores.find(
+			tournamentEloScores = TournamentEloScores.find(
 				{
 					userId: userId,
 					tournamentId: tournamentId,
@@ -56,13 +58,35 @@ Meteor.methods({
 					gameId: {$in: Object.keys(gamesById)}
 				}
 			);
-		}
-		for (let gameId in gamesById) {
-			eloScores.forEach(function(eloScore) {
-				if (gameId === eloScore.gameId) {
-					gamesById[gameId].eloRatingChange = eloScore.eloRatingChange;
+			teamEloScores = TeamEloScores.find(
+				{
+					userId: userId,
+					gameId: {$in: Object.keys(gamesById)}
 				}
-			});
+			);
+		}
+
+		for (let gameId in gamesById) {
+			if (gamesById.hasOwnProperty(gameId)) {
+				if (tournamentId) {
+					tournamentEloScores.forEach(function(eloScore) {
+						if (gameId === eloScore.gameId) {
+							gamesById[gameId].eloRatingChange = eloScore.eloRatingChange;
+						}
+					});
+				} else {
+					eloScores.forEach(function(eloScore) {
+						if (gameId === eloScore.gameId) {
+							gamesById[gameId].eloRatingChange = eloScore.eloRatingChange;
+						}
+					});
+					teamEloScores.forEach(function(eloScore) {
+						if (gameId === eloScore.gameId) {
+							gamesById[gameId].eloRatingChange = eloScore.eloRatingChange;
+						}
+					});
+				}
+			}
 		}
 
 		return Object.values(gamesById);

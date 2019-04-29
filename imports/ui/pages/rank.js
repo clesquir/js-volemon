@@ -1,4 +1,5 @@
 import RankChart from '/imports/api/ranks/client/RankChart.js';
+import {highlightSelectedEloModeItem} from '/imports/api/ranks/utils';
 import {highlightSelectedChartPeriodItem} from '/imports/api/ranks/utils.js';
 import CardSwitcher from '/imports/lib/client/CardSwitcher.js';
 import {Meteor} from 'meteor/meteor';
@@ -9,8 +10,10 @@ import './rank.html';
 
 class RankingsCollection extends Mongo.Collection {}
 const Rankings = new RankingsCollection('rankings');
+class TeamRankingsCollection extends Mongo.Collection {}
+const TeamRankings = new TeamRankingsCollection('teamrankings');
 class RankChartCollection extends Mongo.Collection {}
-const RankChartData = new RankChartCollection('rankchartdata');
+const RankChartData = new RankChartCollection(null);
 class AchievementsRankingCollection extends Mongo.Collection {}
 const AchievementsRanking = new AchievementsRankingCollection('achievementsranking');
 
@@ -29,14 +32,20 @@ Template.rank.onRendered(function() {
 
 /** @type {RankChart}|null */
 let rankChart = null;
+const rankingEloMode = new ReactiveVar('solo');
 
 Template.rank.destroyed = function() {
 	rankChart = null;
+	rankingEloMode.set('solo');
 };
 
 Template.rank.helpers({
 	getRankings: function() {
-		return Rankings.find({}, {sort: [['eloRating', 'desc']]});
+		if (rankingEloMode.get() === 'solo') {
+			return Rankings.find({}, {sort: [['eloRating', 'desc']]});
+		} else {
+			return TeamRankings.find({}, {sort: [['eloRating', 'desc']]});
+		}
 	},
 
 	getAchievementRankings: function() {
@@ -57,36 +66,25 @@ Template.rank.events({
 		cardSwitcher.slideTo(2);
 	},
 
-	'click [data-action=display-chart-all-time]': function(e) {
-		updateRankChart(e, 'Oldest', false);
+	'click [data-action=display-ranking-elo-mode]': function(e) {
+		const eloModeNode = $(e.target);
+
+		rankingEloMode.set(eloModeNode.attr('data-chart-elo-mode'));
+		highlightSelectedEloModeItem(eloModeNode);
 	},
 
-	'click [data-action=display-chart-60-days]': function(e) {
-		const minDate = new Date();
-		minDate.setDate(minDate.getDate() - 60);
+	'click [data-action=display-chart-elo-mode]': function(e) {
+		const eloModeNode = $(e.target);
+		const periodNode = $('span.active[data-action="display-chart-period"]').first();
 
-		updateRankChart(e, '60 days ago', minDate);
+		updateRankChart(eloModeNode, periodNode);
 	},
 
-	'click [data-action=display-chart-30-days]': function(e) {
-		const minDate = new Date();
-		minDate.setDate(minDate.getDate() - 30);
+	'click [data-action=display-chart-period]': function(e) {
+		const eloModeNode = $('span.active[data-action="display-chart-elo-mode"][data-action="display-chart-elo-mode"]').first();
+		const periodNode = $(e.target);
 
-		updateRankChart(e, '30 days ago', minDate);
-	},
-
-	'click [data-action=display-chart-14-days]': function(e) {
-		const minDate = new Date();
-		minDate.setDate(minDate.getDate() - 14);
-
-		updateRankChart(e, '14 days ago', minDate);
-	},
-
-	'click [data-action=display-chart-7-days]': function(e) {
-		const minDate = new Date();
-		minDate.setDate(minDate.getDate() - 7);
-
-		updateRankChart(e, '7 days ago', minDate);
+		updateRankChart(eloModeNode, periodNode);
 	}
 });
 
@@ -97,6 +95,9 @@ class RankViews {
 		if (!$(rankDisplay).is('.rank-elo-ranking-shown')) {
 			RankViews.removeShownClasses(rankDisplay);
 			$(rankDisplay).addClass('rank-elo-ranking-shown');
+
+			rankingEloMode.set('solo');
+			highlightSelectedEloModeItem($('span[data-action="display-ranking-elo-mode"][data-chart-elo-mode="solo"]').first());
 		}
 	}
 
@@ -107,8 +108,11 @@ class RankViews {
 			RankViews.removeShownClasses(rankDisplay);
 			$(rankDisplay).addClass('rank-line-chart-display-shown');
 
-			//Select the 7 days by default
-			$('span[data-action="display-chart-7-days"]').first().trigger('click');
+			//Select the solo / 7 days by default
+			updateRankChart(
+				$('span[data-action="display-chart-elo-mode"][data-chart-elo-mode="solo"]').first(),
+				$('span[data-chart-days="7"]').first()
+			);
 		}
 	}
 
@@ -133,11 +137,18 @@ class RankViews {
 	}
 }
 
-const updateRankChart = function(e, minDateLabel, minDate) {
-	highlightSelectedChartPeriodItem(e);
+const updateRankChart = function(eloModeNode, periodNode) {
+	highlightSelectedEloModeItem(eloModeNode);
+	highlightSelectedChartPeriodItem(periodNode);
+
+	const chartMinimumLabel = periodNode.attr('data-chart-label');
+	const chartDays = periodNode.attr('data-chart-days');
 
 	let minDateTime = 0;
-	if (minDate) {
+	let minDate = false;
+	if (chartDays !== 'false') {
+		minDate = new Date();
+		minDate.setDate(minDate.getDate() - chartDays);
 		minDateTime = minDate.getTime();
 	}
 
@@ -150,8 +161,19 @@ const updateRankChart = function(e, minDateLabel, minDate) {
 		);
 	}
 
-	Meteor.subscribe('ranks-chart', minDateTime, () => {
-		rankChart.update(minDateLabel, minDate);
-		Session.set('lineChartDisplayLoadingMask', false);
-	});
+	Meteor.call(
+		'ranksChart',
+		eloModeNode.attr('data-chart-elo-mode'),
+		minDateTime,
+		(error, data) => {
+			RankChartData.remove({});
+
+			for (let datum of data) {
+				RankChartData.insert(datum);
+			}
+
+			rankChart.update(chartMinimumLabel, minDate);
+			Session.set('lineChartDisplayLoadingMask', false);
+		}
+	);
 };

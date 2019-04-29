@@ -19,6 +19,9 @@ export const loadStatistics = function(userId, tournamentId) {
 	Session.set('lowestElo', null);
 	Session.set('highestElo', null);
 	Session.set('currentElo', null);
+	Session.set('lowestTeamElo', null);
+	Session.set('highestTeamElo', null);
+	Session.set('currentTeamElo', null);
 	Session.set('totalPlayingTime', null);
 	Session.set('statisticFavouriteShapes', null);
 
@@ -52,6 +55,18 @@ export const loadStatistics = function(userId, tournamentId) {
 			Session.set('highestElo', data);
 		}
 	});
+	if (!tournamentId) {
+		Meteor.call('lowestTeamElo', userId, tournamentId, function(error, data) {
+			if (!error) {
+				Session.set('lowestTeamElo', data);
+			}
+		});
+		Meteor.call('highestTeamElo', userId, tournamentId, function(error, data) {
+			if (!error) {
+				Session.set('highestTeamElo', data);
+			}
+		});
+	}
 	Meteor.call('currentElo', userId, tournamentId, function(error, data) {
 		if (!error) {
 			Session.set('currentElo', data);
@@ -190,6 +205,26 @@ Template.statistics.helpers({
 				return null;
 			}
 			return Session.get('currentElo').eloRatingLastChange;
+		}
+		return '<div class="loading-icon fa fa-spinner fa-pulse" />';
+	},
+
+	teamEloRating: function() {
+		if (Session.get('currentElo') !== null) {
+			if (!Session.get('currentElo')) {
+				return INITIAL_ELO_RATING;
+			}
+			return Session.get('currentElo').teamEloRating;
+		}
+		return '<div class="loading-icon fa fa-spinner fa-pulse" />';
+	},
+
+	teamEloRatingLastChange: function() {
+		if (Session.get('currentElo') !== null) {
+			if (!Session.get('currentElo')) {
+				return null;
+			}
+			return Session.get('currentElo').teamEloRatingLastChange;
 		}
 		return '<div class="loading-icon fa fa-spinner fa-pulse" />';
 	},

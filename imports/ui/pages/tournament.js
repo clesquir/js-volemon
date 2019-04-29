@@ -8,10 +8,10 @@ import {timeElapsedSince} from '/imports/lib/utils.js';
 import {loadStatistics} from '/imports/ui/views/statistics.js';
 import {Router} from 'meteor/iron:router';
 import {Meteor} from 'meteor/meteor';
-import moment from 'moment';
 import {Mongo} from "meteor/mongo";
 import {Session} from 'meteor/session';
 import {Template} from 'meteor/templating';
+import moment from 'moment';
 import './tournament.html';
 
 const he = require('he');
@@ -20,7 +20,7 @@ class TournamentRankingsCollection extends Mongo.Collection {}
 const TournamentRankings = new TournamentRankingsCollection('tournamentrankings');
 
 class RankChartCollection extends Mongo.Collection {}
-const RankChartData = new RankChartCollection('tournamentrankchartdata');
+const RankChartData = new RankChartCollection(null);
 
 Template.tournament.onCreated(function() {
 	loadStatistics(Meteor.userId(), Session.get('tournament'));
@@ -286,18 +286,25 @@ const updateRankChart = function() {
 		);
 	}
 
-	if (rankChartSubscriptionHandler) {
-		rankChartSubscriptionHandler.stop();
-	}
-	rankChartSubscriptionHandler = Meteor.subscribe('tournamentRanksChart', Session.get('tournament'), () => {
-		const tournament = Tournaments.findOne({_id: Session.get('tournament')});
+	Meteor.call(
+		'tournamentRanksChart',
+		Session.get('tournament'),
+		(error, data) => {
+			RankChartData.remove({});
 
-		if (!tournament) {
-			return;
+			for (let datum of data) {
+				RankChartData.insert(datum);
+			}
+
+			const tournament = Tournaments.findOne({_id: Session.get('tournament')});
+
+			if (!tournament) {
+				return;
+			}
+
+			const date = moment(tournament.startDate, 'YYYY-MM-DD ZZ');
+			rankChart.update(timeElapsedSince(date.valueOf()));
+			Session.set('lineChartDisplayLoadingMask', false);
 		}
-
-		const date = moment(tournament.startDate, 'YYYY-MM-DD ZZ');
-		rankChart.update(timeElapsedSince(date.valueOf()));
-		Session.set('lineChartDisplayLoadingMask', false);
-	});
+	);
 };

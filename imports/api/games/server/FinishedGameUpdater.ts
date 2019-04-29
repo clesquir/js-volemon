@@ -75,36 +75,22 @@ export default class FinishedGameUpdater {
 
 	private updateWinnerStatistics(profileUpdater: ProfileUpdater, game, points, winnerUserIds: string[]) {
 		for (let userId of winnerUserIds) {
-			const winnerProfile = this.profileByUserId(profileUpdater, userId);
-			const winnerProfileData = {};
-
-			winnerProfileData['numberOfWin'] = winnerProfile.numberOfWin + 1;
+			profileUpdater.increateNumberOfWin(userId);
 
 			if (game.maximumPoints > 1 && points.winnerPoints === game.maximumPoints && points.loserPoints === 0) {
-				winnerProfileData['numberOfShutouts'] = winnerProfile.numberOfShutouts + 1;
+				profileUpdater.increateNumberOfShutouts(userId);
 			}
-
-			profileUpdater.update(userId, winnerProfileData);
 		}
 	}
 
 	private updateLoserStatistics(profileUpdater: ProfileUpdater, game, points, loserUserIds: string[]) {
 		for (let userId of loserUserIds) {
-			const loserProfile = this.profileByUserId(profileUpdater, userId);
-			const loserProfileData = {};
-
-			loserProfileData['numberOfLost'] = loserProfile.numberOfLost + 1;
+			profileUpdater.increateNumberOfLost(userId);
 
 			if (game.maximumPoints > 1 && points.winnerPoints === game.maximumPoints && points.loserPoints === 0) {
-				loserProfileData['numberOfShutoutLosses'] = loserProfile.numberOfShutoutLosses + 1;
+				profileUpdater.increateNumberOfShutoutLosses(userId);
 			}
-
-			profileUpdater.update(userId, loserProfileData);
 		}
-	}
-
-	private profileByUserId(profileUpdater: ProfileUpdater, userId: string) {
-		return profileUpdater.findOrCreate(userId);
 	}
 
 	private gameById(gameId: string) {
@@ -134,11 +120,11 @@ export default class FinishedGameUpdater {
 	) {
 		const winnersCurrentEloRating = [];
 		for (let userId of winnerUserIds) {
-			winnersCurrentEloRating.push({id: userId, eloRating: this.profileByUserId(profileUpdater, userId).eloRating});
+			winnersCurrentEloRating.push({id: userId, eloRating: profileUpdater.getEloRating(userId)});
 		}
 		const losersCurrentEloRating = [];
 		for (let userId of loserUserIds) {
-			losersCurrentEloRating.push({id: userId, eloRating: this.profileByUserId(profileUpdater, userId).eloRating});
+			losersCurrentEloRating.push({id: userId, eloRating: profileUpdater.getEloRating(userId)});
 		}
 
 		const eloRatingCalculator = new EloRatingCalculator();
@@ -153,12 +139,10 @@ export default class FinishedGameUpdater {
 		eloRatings: {id: string, eloRating: number, lastChange: number}[]
 	) {
 		for (let rating of eloRatings) {
-			profileUpdater.update(
+			profileUpdater.updateElo(
 				rating.id,
-				{
-					eloRating: rating.eloRating,
-					eloRatingLastChange: rating.lastChange
-				}
+				rating.eloRating,
+				rating.lastChange
 			);
 		}
 	}

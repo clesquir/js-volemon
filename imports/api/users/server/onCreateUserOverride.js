@@ -1,9 +1,10 @@
-import {Accounts} from 'meteor/accounts-base';
-import {Random} from 'meteor/random';
 import TournamentListeners from '/imports/api/achievements/server/TournamentListeners.js';
 import InitialEloScoreCreator from '/imports/api/games/server/InitialEloScoreCreator.js';
+import InitialTeamEloScoreCreator from '/imports/api/games/server/InitialTeamEloScoreCreator';
 import ProfileCreator from '/imports/api/profiles/server/ProfileCreator.js';
 import UserConfigurationCreator from '/imports/api/users/server/UserConfigurationCreator.js';
+import {Accounts} from 'meteor/accounts-base';
+import {Random} from 'meteor/random';
 
 Accounts.onCreateUser((options, user) => {
 	const configuration = options.configuration || {};
@@ -26,6 +27,7 @@ Accounts.onCreateUser((options, user) => {
 	UserConfigurationCreator.create(user._id, configuration.name);
 	ProfileCreator.create(user._id);
 	InitialEloScoreCreator.create(user._id);
+	InitialTeamEloScoreCreator.create(user._id);
 	const tournamentListeners = new TournamentListeners();
 	tournamentListeners.init(user._id);
 
