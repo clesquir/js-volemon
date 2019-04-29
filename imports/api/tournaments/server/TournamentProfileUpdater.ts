@@ -1,5 +1,5 @@
 import {getUTCTimeStamp} from '../../../lib/utils';
-import {DEFAULT_PROFILE_DATA, INITIAL_ELO_RATING} from '../../profiles/constants';
+import {DEFAULT_TOURNAMENT_PROFILE_DATA, INITIAL_ELO_RATING} from '../../profiles/constants';
 import ProfileUpdater from '../../profiles/server/ProfileUpdater';
 import {TournamentEloScores} from '../tournamentEloScores';
 import {TournamentProfiles} from '../tournamentProfiles';
@@ -12,50 +12,88 @@ export default class TournamentProfileUpdater extends ProfileUpdater {
 		this.tournamentId = tournamentId;
 	}
 
-	findOrCreate(userId: string) {
-		if (userId === 'CPU') {
-			return this.defaultProfileData(userId);
-		}
+	updateElo(userId: string, eloRating: number, eloRatingLastChange: number) {
+		if (userId !== 'CPU') {
+			const profile = this.findOrCreate(userId);
 
-		let profile = TournamentProfiles.findOne({
+			TournamentProfiles.update(
+				{_id: profile._id},
+				{$set: {eloRating: eloRating, eloRatingLastChange: eloRatingLastChange}}
+			);
+		}
+	}
+
+	increateNumberOfWin(userId: string) {
+		if (userId !== 'CPU') {
+			const profile = this.findOrCreate(userId);
+
+			TournamentProfiles.update(
+				{_id: profile._id},
+				{$set: {numberOfWin: profile.numberOfWin + 1}}
+			);
+		}
+	}
+
+	increateNumberOfLost(userId: string) {
+		if (userId !== 'CPU') {
+			const profile = this.findOrCreate(userId);
+
+			TournamentProfiles.update(
+				{_id: profile._id},
+				{$set: {numberOfLost: profile.numberOfLost + 1}}
+			);
+		}
+	}
+
+	increateNumberOfShutouts(userId: string) {
+		if (userId !== 'CPU') {
+			const profile = this.findOrCreate(userId);
+
+			TournamentProfiles.update(
+				{_id: profile._id},
+				{$set: {numberOfShutouts: profile.numberOfShutouts + 1}}
+			);
+		}
+	}
+
+	increateNumberOfShutoutLosses(userId: string) {
+		if (userId !== 'CPU') {
+			const profile = this.findOrCreate(userId);
+
+			TournamentProfiles.update(
+				{_id: profile._id},
+				{$set: {numberOfShutoutLosses: profile.numberOfShutoutLosses + 1}}
+			);
+		}
+	}
+
+	protected findProfile(userId: string) {
+		return TournamentProfiles.findOne({
 			userId: userId,
 			tournamentId: this.tournamentId
 		});
-
-		if (!profile) {
-			TournamentProfiles.insert(this.defaultProfileData(userId));
-
-			profile = TournamentProfiles.findOne({
-				userId: userId,
-				tournamentId: this.tournamentId
-			});
-
-			TournamentEloScores.insert({
-				timestamp: getUTCTimeStamp(),
-				userId: userId,
-				tournamentId: this.tournamentId,
-				eloRating: INITIAL_ELO_RATING
-			});
-		}
-
-		return profile;
 	}
 
-	update(userId: string, data) {
-		const profile = this.findOrCreate(userId);
-
-		if (data.userId !== 'CPU') {
-			TournamentProfiles.update({_id: profile._id}, {$set: data});
-		}
-	}
-
-	protected defaultProfileData(userId: string) {
+	protected defaultProfileData(userId: string): Object {
 		return Object.assign(
 			{
 				userId: userId,
 				tournamentId: this.tournamentId
 			},
-			DEFAULT_PROFILE_DATA
+			DEFAULT_TOURNAMENT_PROFILE_DATA
 		);
+	}
+
+	protected createInitialProfile(userId: string) {
+		TournamentProfiles.insert(this.defaultProfileData(userId));
+	}
+
+	protected createInitialEloScore(userId: string) {
+		TournamentEloScores.insert({
+			timestamp: getUTCTimeStamp(),
+			userId: userId,
+			tournamentId: this.tournamentId,
+			eloRating: INITIAL_ELO_RATING
+		});
 	}
 }

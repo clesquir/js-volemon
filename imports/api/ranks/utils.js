@@ -1,10 +1,21 @@
-export const highlightSelectedChartPeriodItem = function(e) {
-	const parent = $(e.target).parents('.display-chart-period')[0];
+export const highlightSelectedEloModeItem = function(node) {
+	const parent = node.parents('.display-elo-mode')[0];
+	const displayEloModeItems = $(parent).find('span');
+
+	displayEloModeItems.each(function(index, field) {
+		$(field).removeClass('active');
+	});
+
+	node.addClass('active');
+};
+
+export const highlightSelectedChartPeriodItem = function(node) {
+	const parent = node.parents('.display-chart-period')[0];
 	const displayChartPeriodItems = $(parent).find('span');
 
 	displayChartPeriodItems.each(function(index, field) {
 		$(field).removeClass('active');
 	});
 
-	$(e.target).addClass('active');
+	node.addClass('active');
 };

@@ -26,16 +26,6 @@ export default class NumberOfShutouts {
 				numberOfShutouts += profile.numberOfShutouts;
 				numberOfShutoutLosses += profile.numberOfShutoutLosses;
 			}
-
-			const tournamentProfiles = TournamentProfiles.find(
-				{userId: userId},
-				{fields: {numberOfShutouts: 1, numberOfShutoutLosses: 1}}
-			);
-
-			tournamentProfiles.forEach(function(tournamentProfile) {
-				numberOfShutouts += tournamentProfile.numberOfShutouts;
-				numberOfShutoutLosses += tournamentProfile.numberOfShutoutLosses;
-			});
 		}
 
 		return {

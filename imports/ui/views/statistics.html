@@ -24,6 +24,7 @@
 				</div>
 			</div>
 		{{/if}}
+
 		<div class="statistics-item">
 			<div data-tooltip="{{longestGameInformation 'longestGame'}}">
 				<div class="statistics-item-data">{{{longestGameDuration 'longestGame'}}}</div>
@@ -37,15 +38,30 @@
 			</div>
 		</div>
 		<div class="statistics-item">
+			<div data-tooltip="{{totalPlayingTimeTooltip}}">
+				<div class="statistics-item-data">{{{totalPlayingTime}}}</div>
+				<div class="statistics-item-title">total playing time</div>
+			</div>
+		</div>
+
+		<div class="statistics-item">
 			<div data-tooltip="{{eloStatInformation 'lowestElo'}}">
 				<div class="statistics-item-data">{{{eloStat 'lowestElo'}}}</div>
-				<div class="statistics-item-title">lowest ELO</div>
+				{{#if this.tournamentId}}
+					<div class="statistics-item-title">lowest ELO</div>
+				{{else}}
+					<div class="statistics-item-title">lowest solo ELO</div>
+				{{/if}}
 			</div>
 		</div>
 		<div class="statistics-item">
 			<div data-tooltip="{{eloStatInformation 'highestElo'}}">
 				<div class="statistics-item-data">{{{eloStat 'highestElo'}}}</div>
-				<div class="statistics-item-title">highest ELO</div>
+				{{#if this.tournamentId}}
+					<div class="statistics-item-title">highest ELO</div>
+				{{else}}
+					<div class="statistics-item-title">highest solo ELO</div>
+				{{/if}}
 			</div>
 		</div>
 		<div class="statistics-item elo-rating-statistic">
@@ -54,15 +70,38 @@
 					<div>{{{eloRating}}}</div>
 					{{> eloRatingChange eloRatingChange=eloRatingLastChange}}
 				</div>
-				<div class="statistics-item-title">ELO</div>
+				{{#if this.tournamentId}}
+					<div class="statistics-item-title">ELO</div>
+				{{else}}
+					<div class="statistics-item-title">Solo ELO</div>
+				{{/if}}
 			</div>
 		</div>
-		<div class="statistics-item">
-			<div data-tooltip="{{totalPlayingTimeTooltip}}">
-				<div class="statistics-item-data">{{{totalPlayingTime}}}</div>
-				<div class="statistics-item-title">total playing time</div>
+
+		{{#unless this.tournamentId}}
+			<div class="statistics-item">
+				<div data-tooltip="{{eloStatInformation 'lowestElo'}}">
+					<div class="statistics-item-data">{{{eloStat 'lowestTeamElo'}}}</div>
+					<div class="statistics-item-title">lowest team ELO</div>
+				</div>
 			</div>
-		</div>
+			<div class="statistics-item">
+				<div data-tooltip="{{eloStatInformation 'highestElo'}}">
+					<div class="statistics-item-data">{{{eloStat 'highestTeamElo'}}}</div>
+					<div class="statistics-item-title">highest team ELO</div>
+				</div>
+			</div>
+			<div class="statistics-item elo-rating-statistic">
+				<div>
+					<div class="statistics-item-data">
+						<div>{{{teamEloRating}}}</div>
+						{{> eloRatingChange eloRatingChange=teamEloRatingLastChange}}
+					</div>
+					<div class="statistics-item-title">Team ELO</div>
+				</div>
+			</div>
+		{{/unless}}
+
 		<div class="statistics-item favourite-shape-statistic">
 			<div data-tooltip="
 				{{#if hasFavouriteShapesLoaded}}

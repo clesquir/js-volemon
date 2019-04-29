@@ -26,16 +26,6 @@ export default class NumberOfGamesPlayed {
 				numberOfWin += profile.numberOfWin;
 				numberOfLost += profile.numberOfLost;
 			}
-
-			const tournamentProfiles = TournamentProfiles.find(
-				{userId: userId},
-				{fields: {numberOfWin: 1, numberOfLost: 1}}
-			);
-
-			tournamentProfiles.forEach(function(tournamentProfile) {
-				numberOfWin += tournamentProfile.numberOfWin;
-				numberOfLost += tournamentProfile.numberOfLost;
-			});
 		}
 
 		return {

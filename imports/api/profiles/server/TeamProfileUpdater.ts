@@ -1,20 +1,23 @@
-import {EloScores} from "../../games/eloscores";
 import {Profiles} from "../profiles";
-import {DEFAULT_PROFILE_DATA, INITIAL_ELO_RATING} from "../constants";
+import {INITIAL_ELO_RATING} from "../constants";
 import {getUTCTimeStamp} from "../../../lib/utils";
+import {TeamEloScores} from "../../games/teameloscores";
+import ProfileUpdater from "./ProfileUpdater";
 
-export default class ProfileUpdater {
+export default class TeamProfileUpdater extends ProfileUpdater {
 	getEloRating(userId: string): number {
-		return this.findOrCreate(userId).eloRating;
+		const profile = this.findOrCreate(userId);
+
+		return profile.teamEloRating || INITIAL_ELO_RATING;
 	}
 
 	updateElo(userId: string, eloRating: number, eloRatingLastChange: number) {
-		if (userId !== 'CPU') {
-			const profile = this.findOrCreate(userId);
+		const profile = this.findOrCreate(userId);
 
+		if (userId !== 'CPU') {
 			Profiles.update(
 				{_id: profile._id},
-				{$set: {eloRating: eloRating, eloRatingLastChange: eloRatingLastChange}}
+				{$set: {teamEloRating: eloRating, teamEloRatingLastChange: eloRatingLastChange}}
 			);
 		}
 	}
@@ -24,12 +27,12 @@ export default class ProfileUpdater {
 			const profile = this.findOrCreate(userId);
 
 			const numberOfWin = profile.numberOfWin + 1;
-			const soloNumberOfWin = profile.soloNumberOfWin + 1;
+			const teamNumberOfWin = profile.teamNumberOfWin + 1;
 			Profiles.update(
 				{_id: profile._id},
 				{$set: {
 					numberOfWin: numberOfWin,
-					soloNumberOfWin: soloNumberOfWin,
+					teamNumberOfWin: teamNumberOfWin,
 				}}
 			);
 		}
@@ -40,12 +43,12 @@ export default class ProfileUpdater {
 			const profile = this.findOrCreate(userId);
 
 			const numberOfLost = profile.numberOfLost + 1;
-			const soloNumberOfLost = profile.soloNumberOfLost + 1;
+			const teamNumberOfLost = profile.teamNumberOfLost + 1;
 			Profiles.update(
 				{_id: profile._id},
 				{$set: {
 					numberOfLost: numberOfLost,
-					soloNumberOfLost: soloNumberOfLost,
+					teamNumberOfLost: teamNumberOfLost,
 				}}
 			);
 		}
@@ -56,12 +59,12 @@ export default class ProfileUpdater {
 			const profile = this.findOrCreate(userId);
 
 			const numberOfShutouts = profile.numberOfShutouts + 1;
-			const soloNumberOfShutouts = profile.soloNumberOfShutouts + 1;
+			const teamNumberOfShutouts = profile.teamNumberOfShutouts + 1;
 			Profiles.update(
 				{_id: profile._id},
 				{$set: {
 					numberOfShutouts: numberOfShutouts,
-					soloNumberOfShutouts: soloNumberOfShutouts,
+					teamNumberOfShutouts: teamNumberOfShutouts,
 				}}
 			);
 		}
@@ -72,53 +75,19 @@ export default class ProfileUpdater {
 			const profile = this.findOrCreate(userId);
 
 			const numberOfShutoutLosses = profile.numberOfShutoutLosses + 1;
-			const soloNumberOfShutoutLosses = profile.soloNumberOfShutoutLosses + 1;
+			const teamNumberOfShutoutLosses = profile.teamNumberOfShutoutLosses + 1;
 			Profiles.update(
 				{_id: profile._id},
 				{$set: {
 					numberOfShutoutLosses: numberOfShutoutLosses,
-					soloNumberOfShutoutLosses: soloNumberOfShutoutLosses,
+					teamNumberOfShutoutLosses: teamNumberOfShutoutLosses,
 				}}
 			);
 		}
 	}
 
-	protected findOrCreate(userId: string) {
-		if (userId === 'CPU') {
-			return this.defaultProfileData(userId);
-		}
-
-		let profile = this.findProfile(userId);
-
-		if (!profile) {
-			this.createInitialProfile(userId);
-			profile = this.findProfile(userId);
-
-			this.createInitialEloScore(userId);
-		}
-
-		return profile;
-	}
-
-	protected findProfile(userId: string) {
-		return Profiles.findOne({userId: userId});
-	}
-
-	protected defaultProfileData(userId: string): Object {
-		return Object.assign(
-			{
-				userId: userId
-			},
-			DEFAULT_PROFILE_DATA
-		);
-	}
-
-	protected createInitialProfile(userId: string) {
-		Profiles.insert(this.defaultProfileData(userId));
-	}
-
 	protected createInitialEloScore(userId: string) {
-		EloScores.insert({
+		TeamEloScores.insert({
 			timestamp: getUTCTimeStamp(),
 			userId: userId,
 			eloRating: INITIAL_ELO_RATING

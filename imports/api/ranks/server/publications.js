@@ -1,75 +1,44 @@
-import {Meteor} from 'meteor/meteor';
-import {EloScores} from '/imports/api/games/eloscores.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
 import {TournamentProfiles} from '/imports/api/tournaments/tournamentProfiles.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
+import {Meteor} from 'meteor/meteor';
 
 Meteor.publish('ranks', function() {
-	const rankingsByUserId = {};
-	const usernameByUserId = {};
-	const updateRankings = function(userId, profile) {
-		rankingsByUserId[userId] = profile;
-		rankingsByUserId[userId].username = usernameByUserId[userId];
-	};
+	rankings(
+		'rankings',
+		function(rankings, usernameByUserId, userId, profile) {
+			rankings[userId] = profile;
+			rankings[userId].username = usernameByUserId[userId];
+			rankings[userId].numberOfWin = profile.soloNumberOfWin;
+			rankings[userId].numberOfLost = profile.soloNumberOfLost;
 
-	UserConfigurations.find().forEach((userConfiguration) => {
-		usernameByUserId[userConfiguration.userId] = userConfiguration.name;
-	});
-
-	Profiles.find().forEach((profile) => {
-		const userId = profile.userId;
-
-		updateRankings(userId, profile);
-
-		this.added('rankings', userId, rankingsByUserId[userId]);
-	});
-
-	this.profilesTracker = Profiles.find().observe({
-		added: (profile) => {
-			const userId = profile.userId;
-			const isNew = (rankingsByUserId[userId] === undefined);
-
-			updateRankings(userId, profile);
-
-			if (isNew) {
-				this.added('rankings', userId, rankingsByUserId[userId]);
-			} else {
-				this.changed('rankings', userId, rankingsByUserId[userId]);
+			if (profile.soloNumberOfWin === 0 && profile.soloNumberOfLost === 0) {
+				rankings[userId].eloRating = undefined;
+				rankings[userId].eloRatingLastChange = undefined;
 			}
 		},
-		changed: (profile) => {
-			const userId = profile.userId;
+		this
+	);
+});
 
-			updateRankings(userId, profile);
+Meteor.publish('teamRanks', function() {
+	rankings(
+		'teamrankings',
+		function(rankings, usernameByUserId, userId, profile) {
+			rankings[userId] = profile;
+			rankings[userId].username = usernameByUserId[userId];
+			rankings[userId].numberOfWin = profile.teamNumberOfWin;
+			rankings[userId].numberOfLost = profile.teamNumberOfLost;
+			rankings[userId].eloRating = profile.teamEloRating;
+			rankings[userId].eloRatingLastChange = profile.teamEloRatingLastChange;
 
-			this.changed('rankings', userId, rankingsByUserId[userId]);
-		}
-	});
-
-	this.userConfigurationsTracker = UserConfigurations.find().observe({
-		added: (userConfiguration) => {
-			const userId = userConfiguration.userId;
-			usernameByUserId[userId] = userConfiguration.name;
-		},
-		changed: (userConfiguration, oldUserConfiguration) => {
-			if (userConfiguration.name !== oldUserConfiguration.name) {
-				const userId = userConfiguration.userId;
-
-				if (rankingsByUserId[userId]) {
-					rankingsByUserId[userId].username = userConfiguration.name;
-
-					this.changed('rankings', userId, rankingsByUserId[userId]);
-				}
+			if (profile.teamNumberOfWin === 0 && profile.teamNumberOfLost === 0) {
+				rankings[userId].eloRating = undefined;
+				rankings[userId].eloRatingLastChange = undefined;
 			}
-		}
-	});
-
-	this.ready();
-
-	this.onStop(() => {
-		this.userConfigurationsTracker.stop();
-		this.profilesTracker.stop();
-	});
+		},
+		this
+	);
 });
 
 Meteor.publish('tournamentRanks', function(tournamentId) {
@@ -140,26 +109,66 @@ Meteor.publish('tournamentRanks', function(tournamentId) {
 	});
 });
 
-Meteor.publish('ranks-chart', function(minDate) {
+const rankings = function(collectionName, updateRankings, scope) {
+	const rankings = {};
 	const usernameByUserId = {};
 
 	UserConfigurations.find().forEach((userConfiguration) => {
 		usernameByUserId[userConfiguration.userId] = userConfiguration.name;
 	});
 
-	EloScores.find({timestamp: {$gt: minDate}}).forEach((eloScore) => {
-		const key = eloScore.userId + '_' + eloScore.timestamp;
-		this.added(
-			'rankchartdata',
-			key,
-			Object.assign(
-				eloScore,
-				{
-					username: usernameByUserId[eloScore.userId]
-				}
-			)
-		);
+	Profiles.find().forEach((profile) => {
+		const userId = profile.userId;
+
+		updateRankings(rankings, usernameByUserId, userId, profile);
+
+		scope.added(collectionName, userId, rankings[userId]);
 	});
 
-	this.ready();
-});
+	scope.profilesTracker = Profiles.find().observe({
+		added: (profile) => {
+			const userId = profile.userId;
+			const isNew = (rankings[userId] === undefined);
+
+			updateRankings(rankings, usernameByUserId, userId, profile);
+
+			if (isNew) {
+				scope.added(collectionName, userId, rankings[userId]);
+			} else {
+				scope.changed(collectionName, userId, rankings[userId]);
+			}
+		},
+		changed: (profile) => {
+			const userId = profile.userId;
+
+			updateRankings(rankings, usernameByUserId, userId, profile);
+
+			scope.changed(collectionName, userId, rankings[userId]);
+		}
+	});
+
+	scope.userConfigurationsTracker = UserConfigurations.find().observe({
+		added: (userConfiguration) => {
+			const userId = userConfiguration.userId;
+			usernameByUserId[userId] = userConfiguration.name;
+		},
+		changed: (userConfiguration, oldUserConfiguration) => {
+			if (userConfiguration.name !== oldUserConfiguration.name) {
+				const userId = userConfiguration.userId;
+
+				if (rankings[userId]) {
+					rankings[userId].username = userConfiguration.name;
+
+					scope.changed(collectionName, userId, rankings[userId]);
+				}
+			}
+		}
+	});
+
+	scope.ready();
+
+	scope.onStop(() => {
+		scope.userConfigurationsTracker.stop();
+		scope.profilesTracker.stop();
+	});
+};

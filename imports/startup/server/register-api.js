@@ -7,6 +7,7 @@ import '/imports/api/games/server/matchMakingPublications.js';
 import '/imports/api/games/server/recentGamesMethods.js';
 import '/imports/api/profiles/server/methods.js';
 import '/imports/api/profiles/server/publications.js';
+import '/imports/api/ranks/server/methods';
 import '/imports/api/ranks/server/publications.js';
 import '/imports/api/skins/server/publications.js';
 import '/imports/api/tournaments/server/methods.js';

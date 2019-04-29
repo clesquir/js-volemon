@@ -1,5 +1,6 @@
-import {Meteor} from 'meteor/meteor';
 import {EloScores} from '/imports/api/games/eloscores.js';
+import {TeamEloScores} from '/imports/api/games/teameloscores';
+import {Profiles} from '/imports/api/profiles/profiles.js';
 import FavouriteShapes from '/imports/api/profiles/server/statistics/FavouriteShapes.js';
 import LongestGame from '/imports/api/profiles/server/statistics/LongestGame.js';
 import LongestPoint from '/imports/api/profiles/server/statistics/LongestPoint.js';
@@ -8,7 +9,8 @@ import NumberOfShutouts from '/imports/api/profiles/server/statistics/NumberOfSh
 import TotalPlayingTime from '/imports/api/profiles/server/statistics/TotalPlayingTime.js';
 import {TournamentEloScores} from '/imports/api/tournaments/tournamentEloScores.js';
 import {TournamentProfiles} from '/imports/api/tournaments/tournamentProfiles.js';
-import {Profiles} from '/imports/api/profiles/profiles.js';
+import {UserConfigurations} from '/imports/api/users/userConfigurations';
+import {Meteor} from 'meteor/meteor';
 
 Meteor.methods({
 	numberOfGamesPlayed: function(userId, tournamentId) {
@@ -49,6 +51,14 @@ Meteor.methods({
 		}
 	},
 
+	lowestTeamElo: function(userId) {
+		return TeamEloScores.findOne({userId: userId}, {sort: [['eloRating', 'asc']], limit: 1});
+	},
+
+	highestTeamElo: function(userId) {
+		return TeamEloScores.findOne({userId: userId}, {sort: [['eloRating', 'desc']], limit: 1});
+	},
+
 	currentElo: function(userId, tournamentId) {
 		if (tournamentId) {
 			return TournamentProfiles.findOne({userId: userId, tournamentId: tournamentId});
@@ -63,5 +73,90 @@ Meteor.methods({
 
 	favouriteShapes: function(userId, tournamentId) {
 		return FavouriteShapes.get(userId, tournamentId);
+	},
+
+	userRanksChart: function(eloMode, minDate, users) {
+		const usernameByUserId = {};
+
+		UserConfigurations.find({userId: {'$in': users}}).forEach((userConfiguration) => {
+			usernameByUserId[userConfiguration.userId] = userConfiguration.name;
+		});
+
+		let eloScores;
+		if (eloMode === 'solo') {
+			eloScores = EloScores;
+		} else {
+			eloScores = TeamEloScores;
+		}
+
+		const ranksChartData = [];
+		eloScores.find({timestamp: {$gt: minDate}, userId: {'$in': users}}).forEach((eloScore) => {
+			ranksChartData.push(
+				Object.assign(
+					eloScore,
+					{
+						username: usernameByUserId[eloScore.userId]
+					}
+				)
+			);
+		});
+
+		return ranksChartData;
+	},
+
+	userProfileRanksChart: function(eloMode, minDate, users, tournamentId) {
+		const usernameByUserId = {};
+
+		UserConfigurations.find({userId: {'$in': users}}).forEach((userConfiguration) => {
+			usernameByUserId[userConfiguration.userId] = userConfiguration.name;
+		});
+
+		let eloScores;
+		if (tournamentId) {
+			eloScores = TournamentEloScores.find({timestamp: {$gt: minDate}, userId: {'$in': users}, tournamentId: tournamentId});
+		} else {
+			if (eloMode === 'solo') {
+				eloScores = EloScores;
+			} else {
+				eloScores = TeamEloScores;
+			}
+			eloScores = eloScores.find({timestamp: {$gt: minDate}, userId: {'$in': users}});
+		}
+
+		const ranksChartData = [];
+		eloScores.forEach((eloScore) => {
+			ranksChartData.push(
+				Object.assign(
+					eloScore,
+					{
+						username: usernameByUserId[eloScore.userId]
+					}
+				)
+			);
+		});
+
+		return ranksChartData;
+	},
+
+	tournamentRanksChart: function(tournamentId) {
+		const usernameByUserId = {};
+
+		UserConfigurations.find().forEach((userConfiguration) => {
+			usernameByUserId[userConfiguration.userId] = userConfiguration.name;
+		});
+
+		const ranksChartData = [];
+		TournamentEloScores.find({tournamentId: tournamentId}).forEach((eloScore) => {
+			ranksChartData.push(
+				Object.assign(
+					eloScore,
+					{
+						username: usernameByUserId[eloScore.userId]
+					}
+				)
+			);
+		});
+
+		return ranksChartData;
 	}
 });

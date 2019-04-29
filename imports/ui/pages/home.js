@@ -1,4 +1,5 @@
 import RankChart from '/imports/api/ranks/client/RankChart.js';
+import {highlightSelectedEloModeItem} from '/imports/api/ranks/utils';
 import {highlightSelectedChartPeriodItem} from '/imports/api/ranks/utils.js';
 import CardSwitcher from '/imports/lib/client/CardSwitcher.js';
 import {browserSupportsWebRTC, onMobileAndTablet} from '/imports/lib/utils.js';
@@ -11,7 +12,7 @@ import {Template} from 'meteor/templating';
 import './home.html';
 
 class RankChartCollection extends Mongo.Collection {}
-const RankChartData = new RankChartCollection('userrankchartdata');
+const RankChartData = new RankChartCollection(null);
 
 Template.home.onCreated(function() {
 	loadStatistics(Meteor.userId());
@@ -73,36 +74,18 @@ Template.home.events({
 		cardSwitcher.slideTo(3);
 	},
 
-	'click [data-action=display-chart-all-time]': function(e) {
-		updateRankChart(e, 'Oldest', false);
+	'click [data-action=display-chart-elo-mode]': function(e) {
+		const eloModeNode = $(e.target);
+		const periodNode = $('span.active[data-action="display-chart-period"]').first();
+
+		updateRankChart(eloModeNode, periodNode);
 	},
 
-	'click [data-action=display-chart-60-days]': function(e) {
-		const minDate = new Date();
-		minDate.setDate(minDate.getDate() - 60);
+	'click [data-action=display-chart-period]': function(e) {
+		const eloModeNode = $('span.active[data-action="display-chart-elo-mode"]').first();
+		const periodNode = $(e.target);
 
-		updateRankChart(e, '60 days ago', minDate);
-	},
-
-	'click [data-action=display-chart-30-days]': function(e) {
-		const minDate = new Date();
-		minDate.setDate(minDate.getDate() - 30);
-
-		updateRankChart(e, '30 days ago', minDate);
-	},
-
-	'click [data-action=display-chart-14-days]': function(e) {
-		const minDate = new Date();
-		minDate.setDate(minDate.getDate() - 14);
-
-		updateRankChart(e, '14 days ago', minDate);
-	},
-
-	'click [data-action=display-chart-7-days]': function(e) {
-		const minDate = new Date();
-		minDate.setDate(minDate.getDate() - 7);
-
-		updateRankChart(e, '7 days ago', minDate);
+		updateRankChart(eloModeNode, periodNode);
 	}
 });
 
@@ -145,8 +128,11 @@ class HomeViews {
 			HomeViews.removeShownClasses(homeContents);
 			$(homeContents).addClass('user-line-chart-shown');
 
-			//Select the 7 days by default
-			$('span[data-action="display-chart-7-days"]').first().trigger('click');
+			//Select the solo / 7 days by default
+			updateRankChart(
+				$('span[data-chart-elo-mode="solo"]').first(),
+				$('span[data-chart-days="7"]').first()
+			);
 		}
 	}
 
@@ -158,11 +144,18 @@ class HomeViews {
 	}
 }
 
-const updateRankChart = function(e, minDateLabel, minDate) {
-	highlightSelectedChartPeriodItem(e);
+const updateRankChart = function(eloModeNode, periodNode) {
+	highlightSelectedEloModeItem(eloModeNode);
+	highlightSelectedChartPeriodItem(periodNode);
+
+	const chartMinimumLabel = periodNode.attr('data-chart-label');
+	const chartDays = periodNode.attr('data-chart-days');
 
 	let minDateTime = 0;
-	if (minDate) {
+	let minDate = false;
+	if (chartDays !== 'false') {
+		minDate = new Date();
+		minDate.setDate(minDate.getDate() - chartDays);
 		minDateTime = minDate.getTime();
 	}
 
@@ -175,11 +168,20 @@ const updateRankChart = function(e, minDateLabel, minDate) {
 		);
 	}
 
-	if (rankChartSubscriptionHandler) {
-		rankChartSubscriptionHandler.stop();
-	}
-	rankChartSubscriptionHandler = Meteor.subscribe('userRanksChart', minDateTime, [Meteor.userId()], () => {
-		rankChart.update(minDateLabel, minDate);
-		Session.set('lineChartDisplayLoadingMask', false);
-	});
+	Meteor.call(
+		'userRanksChart',
+		eloModeNode.attr('data-chart-elo-mode'),
+		minDateTime,
+		[Meteor.userId()],
+		(error, data) => {
+			RankChartData.remove({});
+
+			for (let datum of data) {
+				RankChartData.insert(datum);
+			}
+
+			rankChart.update(chartMinimumLabel, minDate);
+			Session.set('lineChartDisplayLoadingMask', false);
+		}
+	);
 };

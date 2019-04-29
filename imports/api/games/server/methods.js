@@ -24,7 +24,6 @@ import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 import {EventPublisher} from '/imports/lib/EventPublisher.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 import {Meteor} from 'meteor/meteor';
-import {Random} from 'meteor/random';
 
 const writeFile = require('write');
 
@@ -343,9 +342,7 @@ Meteor.methods({
 
 					if (game.gameMode === ONE_VS_ONE_GAME_MODE) {
 						loserUserIds.push(game.players[1].id);
-					}
-
-					if (isTwoVersusTwoGameMode(game.gameMode)) {
+					} else if (isTwoVersusTwoGameMode(game.gameMode)) {
 						loserUserIds.push(game.players[1].id);
 						winnerUserIds.push(game.players[2].id);
 						loserUserIds.push(game.players[3].id);
@@ -356,9 +353,7 @@ Meteor.methods({
 
 					if (game.gameMode === ONE_VS_ONE_GAME_MODE) {
 						winnerUserIds.push(game.players[1].id);
-					}
-
-					if (isTwoVersusTwoGameMode(game.gameMode)) {
+					} else if (isTwoVersusTwoGameMode(game.gameMode)) {
 						winnerUserIds.push(game.players[1].id);
 						winnerUserIds.push(game.players[3].id);
 						loserUserIds.push(game.players[2].id);

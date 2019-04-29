@@ -1,9 +1,11 @@
 import {onRenderGameController, onStopGameController} from '/imports/api/games/client/routeInitiator.js';
+import {isTwoVersusTwoGameMode} from '/imports/api/games/constants';
+import {EloScores} from '/imports/api/games/eloscores';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
+import {TeamEloScores} from '/imports/api/games/teameloscores';
 import {TournamentEloScores} from '/imports/api/tournaments/tournamentEloScores.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
-import {EloScores} from '/imports/api/games/eloscores';
 import {Router} from 'meteor/iron:router';
 import {Meteor} from 'meteor/meteor';
 import {Session} from 'meteor/session';
@@ -16,11 +18,20 @@ export const TournamentGameController = RouteController.extend({
 		];
 	},
 	data: function() {
+		const game = Games.findOne(this.params.gameId);
+		let eloScores;
+
+		if (isTwoVersusTwoGameMode(game.gameMode)) {
+			eloScores = TeamEloScores.find({gameId: this.params.gameId});
+		} else {
+			eloScores = EloScores.find({gameId: this.params.gameId});
+		}
+
 		return {
-			tournament: Tournaments.findOne(this.params.tournamentId),
-			game: Games.findOne(this.params.gameId),
+			game: game,
 			players: Players.find({gameId: this.params.gameId}, {sort: ['joinedAt']}),
-			eloScores: EloScores.find({gameId: this.params.gameId}),
+			eloScores: eloScores,
+			tournament: Tournaments.findOne(this.params.tournamentId),
 			tournamentEloScores: TournamentEloScores.find({gameId: this.params.gameId})
 		};
 	},
