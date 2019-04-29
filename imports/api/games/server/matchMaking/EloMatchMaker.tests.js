@@ -117,13 +117,13 @@ describe('EloMatchMaker', function() {
 		it('match 2v2 users depending on their elo scores - ' + test.name, function() {
 			const matchMaker = new EloMatchMaker();
 
-			Profiles.insert({userId: test.users[0].id, eloRating: test.users[0].eloRating});
+			Profiles.insert({userId: test.users[0].id, teamEloRating: test.users[0].eloRating});
 			matchMaker.subscribe(test.users[0], TWO_VS_TWO_GAME_MODE, tournamentId);
-			Profiles.insert({userId: test.users[1].id, eloRating: test.users[1].eloRating});
+			Profiles.insert({userId: test.users[1].id, teamEloRating: test.users[1].eloRating});
 			matchMaker.subscribe(test.users[1], TWO_VS_TWO_GAME_MODE, tournamentId);
-			Profiles.insert({userId: test.users[2].id, eloRating: test.users[2].eloRating});
+			Profiles.insert({userId: test.users[2].id, teamEloRating: test.users[2].eloRating});
 			matchMaker.subscribe(test.users[2], TWO_VS_TWO_GAME_MODE, tournamentId);
-			Profiles.insert({userId: test.users[3].id, eloRating: test.users[3].eloRating});
+			Profiles.insert({userId: test.users[3].id, teamEloRating: test.users[3].eloRating});
 			matchMaker.subscribe(test.users[3], TWO_VS_TWO_GAME_MODE, tournamentId);
 
 			const match = MatchMakers.findOne({modeSelection: TWO_VS_TWO_GAME_MODE, tournamentId: tournamentId});
