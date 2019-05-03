@@ -1,4 +1,3 @@
-import * as physicsData from '/public/assets/component/shape/physicsData.json';
 import DeviceController from "../../deviceController/DeviceController";
 import GameData from "../../data/GameData";
 import SkinManager from "../component/SkinManager";
@@ -68,10 +67,10 @@ export class TestGameBoot {
 
 	warmUpCache() {
 		for (let shape of PLAYER_LIST_OF_SHAPES) {
-			this.gameBoot.game.cache.addImage('shape-' + shape, '', {});
+			this.gameBoot.game.cache.addImage('shape-' + shape + '-host', '', {});
+			this.gameBoot.game.cache.addImage('shape-' + shape + '-client', '', {});
 		}
 		this.gameBoot.game.cache.addImage('default-skin', '', {});
 		this.gameBoot.game.cache.addImage('bonus-icon', '', {});
-		this.gameBoot.game.load.physics('physicsData', undefined, physicsData);
 	}
 }

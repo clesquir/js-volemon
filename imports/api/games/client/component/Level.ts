@@ -1,6 +1,6 @@
 import SkinManager from "./SkinManager";
 import GameConfiguration from "../../configuration/GameConfiguration";
-import {PLAYER_LIST_OF_SHAPES} from "../../shapeConstants";
+import {PLAYER_LIST_OF_SHAPES, PLAYER_LIST_OF_SHAPES_CLIENT} from "../../shapeConstants";
 import FieldLimits from "./FieldLimits";
 import MainScene from "../scene/MainScene";
 
@@ -40,12 +40,18 @@ export default class Level {
 
 	preload() {
 		for (let shape of PLAYER_LIST_OF_SHAPES) {
-			this.scene.game.load.image('shape-' + shape, '/assets/component/shape/player-' + shape + '.png');
+			this.scene.game.load.image('shape-' + shape + '-host', '/assets/component/shape/player-' + shape + '.png');
+
+			if (PLAYER_LIST_OF_SHAPES_CLIENT.indexOf(shape) === -1) {
+				this.scene.game.load.image('shape-' + shape + '-client', '/assets/component/shape/player-' + shape + '.png');
+			} else {
+				this.scene.game.load.image('shape-' + shape + '-client', '/assets/component/shape/player-' + shape + '-client.png');
+			}
 		}
 		this.scene.game.load.atlas('bonus-icon', '/assets/bonus/texture-atlas.png', '/assets/bonus/texture-atlas.json');
 		this.scene.game.load.image('cloud', '/assets/bonus/cloud.png');
-		this.scene.game.load.image('shape-hidden', '/assets/component/shape/player-hidden.png');
-		this.scene.game.load.physics('physicsData', '/assets/component/shape/physicsData.json');
+		this.scene.game.load.image('shape-hidden-host', '/assets/component/shape/player-hidden.png');
+		this.scene.game.load.image('shape-hidden-client', '/assets/component/shape/player-hidden.png');
 	}
 
 	createComponentsPrerequisites() {

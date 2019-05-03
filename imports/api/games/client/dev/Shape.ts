@@ -7,7 +7,7 @@ export default class Shape extends Dev {
 	players: { [key: string]: Player } = {};
 
 	beforeStart() {
-		this.gameConfiguration.levelConfiguration = LevelConfiguration.definedSize(1525, 200);
+		this.gameConfiguration.levelConfiguration = LevelConfiguration.definedSize(1741, 200);
 	}
 
 	overrideGame() {

@@ -9,6 +9,7 @@ import GameData from "../../data/GameData";
 import Interpolation from "./Interpolation";
 import ServerNormalizedTime from "../ServerNormalizedTime";
 import VelocityConstraint from "./VelocityConstraint";
+import ShapeFactory from "./ShapeFactory";
 
 export default class Ball {
 	scene: MainScene;
@@ -232,9 +233,9 @@ export default class Ball {
 		this.ballObject.depth = DEPTH_COMPONENTS;
 		this.scene.zIndexGroup.add(this.ballObject);
 
-		this.ballObject.scale.setTo(this.initialScale);
+		this.ballObject.scale.setTo(this.currentScale);
 		this.ballObject.body.clearShapes();
-		this.ballObject.body.loadPolygon('physicsData', 'ball', this.initialScale);
+		this.ballObject.body.loadPolygon(null, ShapeFactory.ball(), this.currentScale);
 
 		this.setupBody();
 	}
@@ -270,7 +271,7 @@ export default class Ball {
 	private applyScale() {
 		this.ballObject.scale.setTo(this.currentScale);
 		this.ballObject.body.clearShapes();
-		this.ballObject.body.loadPolygon('physicsData', 'ball', this.currentScale);
+		this.ballObject.body.loadPolygon(null, ShapeFactory.ball(), this.currentScale);
 
 		this.setupBody();
 	}

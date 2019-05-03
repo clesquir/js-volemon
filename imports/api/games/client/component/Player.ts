@@ -1,22 +1,6 @@
 import GameData from "../../data/GameData";
 import GameConfiguration from "../../configuration/GameConfiguration";
 import MainScene from "../scene/MainScene";
-import {
-	PLAYER_SHAPE_CROWN,
-	PLAYER_SHAPE_DOT,
-	PLAYER_SHAPE_ELLIPSE,
-	PLAYER_SHAPE_EQUAL,
-	PLAYER_SHAPE_HALF_CIRCLE,
-	PLAYER_SHAPE_HEXAGON,
-	PLAYER_SHAPE_HYPHEN,
-	PLAYER_SHAPE_MAGNET,
-	PLAYER_SHAPE_OBELISK,
-	PLAYER_SHAPE_RECTANGLE,
-	PLAYER_SHAPE_RHOMBUS,
-	PLAYER_SHAPE_TRIANGLE,
-	PLAYER_SHAPE_TRIPLE_COLON,
-	PLAYER_SHAPE_X
-} from "../../shapeConstants";
 import Ball from "./Ball";
 import Level from "./Level";
 import {ArtificialIntelligenceData} from "../../artificialIntelligence/ArtificialIntelligenceData";
@@ -26,6 +10,7 @@ import Animations from "./Animations";
 import Interpolation from "./Interpolation";
 import ServerNormalizedTime from "../ServerNormalizedTime";
 import {DEPTH_ACTIVATION_ANIMATION, DEPTH_COMPONENTS} from "../../constants";
+import ShapeFactory from "./ShapeFactory";
 
 export default class Player {
 	scene: MainScene;
@@ -375,15 +360,17 @@ export default class Player {
 	}
 
 	shiftShape(shape: string) {
+		let shapeTexture;
 		if (this.overrideShapeDisplay()) {
 			if (this.gameData.isCurrentPlayerKey(this.key)) {
-				this.currentTextureKey = 'shape-' + this.gameConfiguration.currentPlayerShape();
+				shapeTexture = this.gameConfiguration.currentPlayerShape();
 			} else {
-				this.currentTextureKey = 'shape-' + this.gameConfiguration.opponentPlayerShape();
+				shapeTexture = this.gameConfiguration.opponentPlayerShape();
 			}
 		} else {
-			this.currentTextureKey = 'shape-' + shape;
+			shapeTexture = shape;
 		}
+		this.currentTextureKey = 'shape-' + shapeTexture + this.shapeTextureKeySuffix();
 		this.currentShape = shape;
 		this.initBody();
 		this.initBody(); //Calling this twice fix a bug where sprite and body are not in sync
@@ -469,7 +456,7 @@ export default class Player {
 		this.initialIsHiddenToOpponent = this.gameConfiguration.isHiddenToOpponent();
 		this.isHiddenToOpponent = this.gameConfiguration.isHiddenToOpponent();
 
-		this.initialTextureKey = 'shape-' + this.playerShapeFromKey();
+		this.initialTextureKey = 'shape-' + this.playerShapeFromKey() + this.shapeTextureKeySuffix();
 		this.currentTextureKey = this.initialTextureKey;
 		this.initialShape = this.gameData.getPlayerShapeFromKey(this.key);
 		this.currentShape = this.initialShape;
@@ -477,7 +464,7 @@ export default class Player {
 		let shapeKey = this.playerShapeFromKey();
 
 		//Create components
-		this.playerObject = this.scene.game.add.sprite(x, y, 'shape-' + shapeKey);
+		this.playerObject = this.scene.game.add.sprite(x, y, 'shape-' + shapeKey + this.shapeTextureKeySuffix());
 		this.scene.game.physics.p2.enable(this.playerObject, this.scene.game.config.enableDebug);
 		this.playerObject.data.owner = this;
 		this.playerObject.data.isPlayer = true;
@@ -527,7 +514,7 @@ export default class Player {
 
 	private initBodyShape() {
 		this.playerObject.body.clearShapes();
-		this.playerObject.body.loadPolygon('physicsData', 'player-' + this.currentShape, this.currentScale);
+		this.playerObject.body.loadPolygon(null, ShapeFactory.player(this.currentShape, this.isHost), this.currentScale);
 	}
 
 	private setupBody() {
@@ -560,102 +547,11 @@ export default class Player {
 	}
 
 	private initEye(playerObject: Phaser.Sprite) {
-		let eyeBallXOffset;
-		let eyeBallYOffset;
-		let eyeBallRadius;
-		let eyePupilRadius;
-
-		switch (this.currentShape) {
-			case PLAYER_SHAPE_HALF_CIRCLE:
-				eyeBallXOffset = 26.5;
-				eyeBallYOffset = -2;
-				eyeBallRadius = 7.5;
-				eyePupilRadius = 2.5;
-				break;
-			case PLAYER_SHAPE_TRIANGLE:
-				eyeBallXOffset = 15;
-				eyeBallYOffset = 5;
-				eyeBallRadius = 7.5;
-				eyePupilRadius = 2.5;
-				break;
-			case PLAYER_SHAPE_X:
-				eyeBallXOffset = 28;
-				eyeBallYOffset = -14;
-				eyeBallRadius = 6.25;
-				eyePupilRadius = 2.5;
-				break;
-			case PLAYER_SHAPE_RECTANGLE:
-				eyeBallXOffset = 34;
-				eyeBallYOffset = -11;
-				eyeBallRadius = 7.5;
-				eyePupilRadius = 2.5;
-				break;
-			case PLAYER_SHAPE_HYPHEN:
-				eyeBallXOffset = 14;
-				eyeBallYOffset = -0.5;
-				eyeBallRadius = 4;
-				eyePupilRadius = 2;
-				break;
-			case PLAYER_SHAPE_OBELISK:
-				eyeBallXOffset = 0;
-				eyeBallYOffset = -15;
-				eyeBallRadius = 4;
-				eyePupilRadius = 2;
-				break;
-			case PLAYER_SHAPE_EQUAL:
-				eyeBallXOffset = 28;
-				eyeBallYOffset = -18.5;
-				eyeBallRadius = 5;
-				eyePupilRadius = 2.5;
-				break;
-			case PLAYER_SHAPE_MAGNET:
-				eyeBallXOffset = 28;
-				eyeBallYOffset = -18.5;
-				eyeBallRadius = 5;
-				eyePupilRadius = 2.5;
-				break;
-			case PLAYER_SHAPE_CROWN:
-				eyeBallXOffset = 38;
-				eyeBallYOffset = 0;
-				eyeBallRadius = 7.5;
-				eyePupilRadius = 2.5;
-				break;
-			case PLAYER_SHAPE_RHOMBUS:
-				eyeBallXOffset = 19;
-				eyeBallYOffset = -3;
-				eyeBallRadius = 7.5;
-				eyePupilRadius = 2.5;
-				break;
-			case PLAYER_SHAPE_HEXAGON:
-				eyeBallXOffset = 26.5;
-				eyeBallYOffset = -7;
-				eyeBallRadius = 7.5;
-				eyePupilRadius = 2.5;
-				break;
-			case PLAYER_SHAPE_DOT:
-				eyeBallXOffset = 11;
-				eyeBallYOffset = -6;
-				eyeBallRadius = 7.5;
-				eyePupilRadius = 2.5;
-				break;
-			case PLAYER_SHAPE_ELLIPSE:
-				eyeBallXOffset = 26.5;
-				eyeBallYOffset = -9;
-				eyeBallRadius = 7.5;
-				eyePupilRadius = 2.5;
-				break;
-			case PLAYER_SHAPE_TRIPLE_COLON:
-				eyeBallXOffset = 42.5;
-				eyeBallYOffset = -18.5;
-				eyeBallRadius = 5;
-				eyePupilRadius = 2.5;
-				break;
-		}
-
-		this.eyeBallXOffset = (this.isHost ? 1 : -1) * eyeBallXOffset;
-		this.eyeBallYOffset = eyeBallYOffset;
-		this.eyeBallRadius = eyeBallRadius;
-		this.eyePupilRadius = eyePupilRadius;
+		const eyeConfig = ShapeFactory.playerEye(this.currentShape, this.isHost);
+		this.eyeBallXOffset = eyeConfig.xOffset;
+		this.eyeBallYOffset = eyeConfig.yOffset;
+		this.eyeBallRadius = eyeConfig.eyeBallRadius;
+		this.eyePupilRadius = eyeConfig.pupilRadius;
 
 		if (this.eyeBall) {
 			this.eyeBall.destroy();
@@ -778,5 +674,9 @@ export default class Player {
 			) &&
 			this.gameData.isGameStatusStarted()
 		);
+	}
+
+	private shapeTextureKeySuffix(): string {
+		return '-' + (this.isHost ? 'host' : 'client');
 	}
 }
