@@ -429,8 +429,8 @@ export default class ShapeFactory {
 						{
 							'shape': [
 								0, 49,
-								0, 24.5,
-								17, 24.5,
+								0, 17,
+								17, 17,
 								17, 49,
 							]
 						},
@@ -460,10 +460,10 @@ export default class ShapeFactory {
 						},
 						{
 							'shape': [
-								81, 24.5,
+								81, 32,
 								81, 0,
 								98, 0,
-								98, 24.5,
+								98, 32,
 							]
 						},
 					];
@@ -471,10 +471,10 @@ export default class ShapeFactory {
 					return [
 						{
 							'shape': [
-								0, 24.5,
+								0, 32,
 								0, 0,
 								17, 0,
-								17, 24.5,
+								17, 32,
 							]
 						},
 						{
@@ -504,8 +504,8 @@ export default class ShapeFactory {
 						{
 							'shape': [
 								81, 49,
-								81, 24.5,
-								98, 24.5,
+								81, 17,
+								98, 17,
 								98, 49,
 							]
 						},
