@@ -53,36 +53,6 @@
 				</div>
 			{{/if}}
 
-			<h2>Past</h2>
-
-			<div class="cards-list constrained-width">
-				{{> loading loadingMask="pastTournamentsLoadingMask"}}
-
-				{{#each pastTournaments}}
-					<div class="card clickable-card" data-action="go-to-tournament">
-						<div class="card-row card-row-top">
-							<div class="card-cell card-title card-cell-ellipsis">{{name}}</div>
-						</div>
-						<div class="card-row">
-							<div class="card-cell card-cell-ellipsis">{{description}}</div>
-						</div>
-						<div class="card-row card-row-bottom">
-							<div class="card-cell card-left">{{timeFinished}}</div>
-						</div>
-					</div>
-				{{else}}
-					<div class="card empty-card">
-						<div class="card-cell">There are no past tournaments...</div>
-					</div>
-				{{/each}}
-
-				{{#if hasMorePastTournaments}}
-					<div class="button show-more" data-action="show-more-past-tournaments">
-						Show more tournaments
-					</div>
-				{{/if}}
-			</div>
-
 			{{#if showSubmittedTournaments}}
 				<h2>Submitted</h2>
 
@@ -175,6 +145,36 @@
 					{{/each}}
 				</div>
 			{{/if}}
+
+			<h2>Past</h2>
+
+			<div class="cards-list constrained-width">
+				{{> loading loadingMask="pastTournamentsLoadingMask"}}
+
+				{{#each pastTournaments}}
+					<div class="card clickable-card" data-action="go-to-tournament">
+						<div class="card-row card-row-top">
+							<div class="card-cell card-title card-cell-ellipsis">{{name}}</div>
+						</div>
+						<div class="card-row">
+							<div class="card-cell card-cell-ellipsis">{{description}}</div>
+						</div>
+						<div class="card-row card-row-bottom">
+							<div class="card-cell card-left">{{timeFinished}}</div>
+						</div>
+					</div>
+				{{else}}
+					<div class="card empty-card">
+						<div class="card-cell">There are no past tournaments...</div>
+					</div>
+				{{/each}}
+
+				{{#if hasMorePastTournaments}}
+					<div class="button show-more" data-action="show-more-past-tournaments">
+						Show more tournaments
+					</div>
+				{{/if}}
+			</div>
 
 		</div>
 
