@@ -84,8 +84,8 @@ export default class Dev {
 		this.mainScene.resumeOnTimerEnd = () => {this.resumeOnTimerEnd();};
 		this.initialUpdate = this.mainScene.update;
 		this.mainScene.update = () => {this.updateGame();};
-		this.mainScene.onBallHitGround = (ball: Ball) => {
-			this.onBallHitGround(ball);
+		this.mainScene.onBallHitScoreZone = (ball: Ball) => {
+			this.onBallHitScoreZone(ball);
 		};
 	}
 
@@ -117,7 +117,7 @@ export default class Dev {
 		this.mainScene.level.createFieldLimits(true);
 	}
 
-	onBallHitGround(ball: Ball) {
+	onBallHitScoreZone(ball: Ball) {
 		if (this.mainScene.gameResumed === true) {
 			this.mainScene.gameResumed = false;
 

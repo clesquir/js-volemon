@@ -330,11 +330,11 @@ export default class MainScene {
 		this.bonuses.onPlayerHitBonus(player, bonus);
 	}
 
-	collideBallGround(ballBody: Phaser.Physics.P2.Body, levelBody: Phaser.Physics.P2.Body) {
-		if (levelBody === this.level.ballGround()) {
+	collideBallLimit(ballBody: Phaser.Physics.P2.Body, levelBody: Phaser.Physics.P2.Body) {
+		if (levelBody === this.level.ballGround() && this.gameConfiguration.groundHitEnabled()) {
 			const ball: Ball = ballBody.sprite.data.owner;
 
-			this.onBallHitGround(ball);
+			this.onBallHitScoreZone(ball);
 		}
 	}
 
@@ -446,7 +446,7 @@ export default class MainScene {
 		this.ball.reset(this.gameData.lastPointTaken);
 	}
 
-	private onBallHitGround(ball: Ball) {
+	private onBallHitScoreZone(ball: Ball) {
 		let pointSide;
 
 		if (ball.x() < this.gameConfiguration.width() / 2) {

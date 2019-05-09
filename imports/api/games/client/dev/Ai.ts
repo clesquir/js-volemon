@@ -101,7 +101,7 @@ export default class Ai extends Dev {
 		this.resumeOnTimerEnd();
 	}
 
-	onBallHitGround(ball: Ball) {
+	onBallHitScoreZone(ball: Ball) {
 		if (this.mainScene.gameResumed === true) {
 			this.mainScene.gameResumed = false;
 

@@ -462,6 +462,10 @@ export default abstract class GameConfiguration {
 		);
 	}
 
+	groundHitEnabled(): boolean {
+		return true;
+	}
+
 	width(): number {
 		return this.levelConfiguration.width;
 	}

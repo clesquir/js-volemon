@@ -31,6 +31,9 @@ export default class Environment extends Dev {
 		this.gameConfiguration.hasPlayerNetLimit = () => {
 			return Session.get('dev.environment.hasNet');
 		};
+		this.gameConfiguration.groundHitEnabled = () => {
+			return this.groundHitEnabled;
+		};
 		this.gameConfiguration.overridesTeamMaximumBallHit = () => {
 			return this.showBallHitCount;
 		};
@@ -51,8 +54,8 @@ export default class Environment extends Dev {
 		this.mainScene.level.createFieldLimits(Session.get('dev.environment.hasNet'));
 	}
 
-	onBallHitGround(ball: Ball) {
-		if (this.groundHitEnabled && this.mainScene.gameResumed === true) {
+	onBallHitScoreZone(ball: Ball) {
+		if (this.mainScene.gameResumed === true) {
 			this.mainScene.showBallHitPoint(
 				ball.x(),
 				ball.y(),

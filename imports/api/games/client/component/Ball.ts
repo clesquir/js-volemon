@@ -253,7 +253,7 @@ export default class Ball {
 
 		this.ballObject.body.setMaterial(this.level.materialBall);
 		this.ballObject.body.setCollisionGroup(this.level.collisionCategoryBall);
-		this.ballObject.body.collides(this.level.collisionCategoryBallLimit, this.scene.collideBallGround, this.scene);
+		this.ballObject.body.collides(this.level.collisionCategoryBallLimit, this.scene.collideBallLimit, this.scene);
 		this.ballObject.body.collides(this.level.collisionCategoryBall);
 		this.ballObject.body.collides(this.level.collisionCategoryHost, this.scene.collidePlayerBall, this.scene);
 		this.ballObject.body.collides(this.level.collisionCategoryClient, this.scene.collidePlayerBall, this.scene);
