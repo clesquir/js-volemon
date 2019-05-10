@@ -4,7 +4,7 @@
         <key>fileFormatVersion</key>
         <int>4</int>
         <key>texturePackerVersion</key>
-        <string>4.8.0</string>
+        <string>4.12.0</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -26,15 +26,15 @@
             </struct>
         </array>
         <key>allowRotation</key>
-        <true/>
+        <false/>
         <key>shapeDebug</key>
         <false/>
         <key>dpi</key>
         <uint>72</uint>
         <key>dataFormat</key>
-        <string>json-array</string>
+        <string>phaser-json-array</string>
         <key>textureFileName</key>
-        <filename>texture-atlas.png</filename>
+        <filename></filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrCompressionQuality</key>
@@ -132,7 +132,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>texture-atlas.json</filename>
+                <filename>../../public/assets/skin/default/texture-atlas.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -149,9 +149,9 @@
             <string></string>
         </struct>
         <key>autoAliasEnabled</key>
-        <false/>
+        <true/>
         <key>trimSpriteNames</key>
-        <false/>
+        <true/>
         <key>prependSmartFolderName</key>
         <false/>
         <key>autodetectAnimations</key>
@@ -181,7 +181,7 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">ball.png</key>
+            <key type="filename">default/ball.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -194,20 +194,42 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">ground.png</key>
+            <key type="filename">default/confettis-blue-1.png</key>
+            <key type="filename">default/confettis-blue-2.png</key>
+            <key type="filename">default/confettis-blue-3.png</key>
+            <key type="filename">default/confettis-blue-4.png</key>
+            <key type="filename">default/confettis-blue-5.png</key>
+            <key type="filename">default/confettis-red-1.png</key>
+            <key type="filename">default/confettis-red-2.png</key>
+            <key type="filename">default/confettis-red-3.png</key>
+            <key type="filename">default/confettis-red-4.png</key>
+            <key type="filename">default/confettis-red-5.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>210,18,420,35</rect>
+                <rect>3,3,5,5</rect>
                 <key>scale9Paddings</key>
-                <rect>210,18,420,35</rect>
+                <rect>3,3,5,5</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">net.png</key>
+            <key type="filename">default/ground.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>1,1,3,3</rect>
+                <key>scale9Paddings</key>
+                <rect>1,1,3,3</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">default/net.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -217,15 +239,41 @@
                 <rect>2,18,4,35</rect>
                 <key>scale9Paddings</key>
                 <rect>2,18,4,35</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">default/soccer-client-net.png</key>
+            <key type="filename">default/soccer-host-net.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>10,43,20,85</rect>
+                <key>scale9Paddings</key>
+                <rect>10,43,20,85</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
         </map>
         <key>fileList</key>
         <array>
-            <filename>ball.png</filename>
-            <filename>ground.png</filename>
-            <filename>net.png</filename>
+            <filename>default/ball.png</filename>
+            <filename>default/confettis-blue-1.png</filename>
+            <filename>default/confettis-blue-2.png</filename>
+            <filename>default/confettis-blue-3.png</filename>
+            <filename>default/confettis-blue-4.png</filename>
+            <filename>default/confettis-blue-5.png</filename>
+            <filename>default/confettis-red-1.png</filename>
+            <filename>default/confettis-red-2.png</filename>
+            <filename>default/confettis-red-3.png</filename>
+            <filename>default/confettis-red-4.png</filename>
+            <filename>default/confettis-red-5.png</filename>
+            <filename>default/ground.png</filename>
+            <filename>default/net.png</filename>
+            <filename>default/soccer-client-net.png</filename>
+            <filename>default/soccer-host-net.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

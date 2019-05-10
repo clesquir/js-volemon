@@ -13,6 +13,10 @@ export default interface Skin {
 
 	netComponent(): { key: string, frame: string };
 
+	soccerHostNetComponent(): { key: string; frame: string };
+
+	soccerClientNetComponent(): { key: string; frame: string };
+
 	groundComponents(): { key: string, frame: string, height?: number }[];
 
 	confettisComponent(): { key: string, hostFrames: string[], clientFrames: string[] };

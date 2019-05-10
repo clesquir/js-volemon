@@ -1,365 +1,140 @@
+{"frames": [
+
 {
-  "frames": [
-    {
-      "filename": "ground",
-      "frame": {
-        "x": 0,
-        "y": 0,
-        "w": 840,
-        "h": 70
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 840,
-        "h": 70
-      },
-      "sourceSize": {
-        "w": 840,
-        "h": 70
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "net",
-      "frame": {
-        "x": 840,
-        "y": 0,
-        "w": 8,
-        "h": 70
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 8,
-        "h": 70
-      },
-      "sourceSize": {
-        "w": 8,
-        "h": 70
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-1",
-      "frame": {
-        "x": 848,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-2",
-      "frame": {
-        "x": 848,
-        "y": 24,
-        "w": 24,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-3",
-      "frame": {
-        "x": 848,
-        "y": 48,
-        "w": 24,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-4",
-      "frame": {
-        "x": 0,
-        "y": 70,
-        "w": 24,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-5",
-      "frame": {
-        "x": 24,
-        "y": 70,
-        "w": 24,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-6",
-      "frame": {
-        "x": 48,
-        "y": 70,
-        "w": 24,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-7",
-      "frame": {
-        "x": 72,
-        "y": 72,
-        "w": 24,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-8",
-      "frame": {
-        "x": 0,
-        "y": 94,
-        "w": 24,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "confettis-chateau-beard",
-      "frame": {
-        "x": 24,
-        "y": 94,
-        "w": 10,
-        "h": 10
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 10,
-        "h": 10
-      },
-      "sourceSize": {
-        "w": 10,
-        "h": 10
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "confettis-chateau-nipple",
-      "frame": {
-        "x": 34,
-        "y": 94,
-        "w": 10,
-        "h": 10
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 10,
-        "h": 10
-      },
-      "sourceSize": {
-        "w": 10,
-        "h": 10
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "confettis-juju-nipple",
-      "frame": {
-        "x": 44,
-        "y": 94,
-        "w": 10,
-        "h": 10
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 10,
-        "h": 10
-      },
-      "sourceSize": {
-        "w": 10,
-        "h": 10
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "confettis-kwak",
-      "frame": {
-        "x": 54,
-        "y": 94,
-        "w": 10,
-        "h": 10
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 10,
-        "h": 10
-      },
-      "sourceSize": {
-        "w": 10,
-        "h": 10
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    }
-  ],
-  "meta": {
-    "app": "http://free-tex-packer.com/",
-    "version": "0.3.0",
-    "image": "texture-atlas.png",
-    "format": "RGBA8888",
-    "size": {
-      "w": 872,
-      "h": 118
-    },
-    "scale": 1
-  }
+	"filename": "ball-1",
+	"frame": {"x":49,"y":1,"w":24,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
+	"sourceSize": {"w":24,"h":24}
+},
+{
+	"filename": "ball-2",
+	"frame": {"x":75,"y":1,"w":24,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
+	"sourceSize": {"w":24,"h":24}
+},
+{
+	"filename": "ball-3",
+	"frame": {"x":101,"y":1,"w":24,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
+	"sourceSize": {"w":24,"h":24}
+},
+{
+	"filename": "ball-4",
+	"frame": {"x":127,"y":1,"w":24,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
+	"sourceSize": {"w":24,"h":24}
+},
+{
+	"filename": "ball-5",
+	"frame": {"x":153,"y":1,"w":24,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
+	"sourceSize": {"w":24,"h":24}
+},
+{
+	"filename": "ball-6",
+	"frame": {"x":179,"y":1,"w":24,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
+	"sourceSize": {"w":24,"h":24}
+},
+{
+	"filename": "ball-7",
+	"frame": {"x":205,"y":1,"w":24,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
+	"sourceSize": {"w":24,"h":24}
+},
+{
+	"filename": "ball-8",
+	"frame": {"x":231,"y":1,"w":24,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
+	"sourceSize": {"w":24,"h":24}
+},
+{
+	"filename": "confettis-chateau-beard",
+	"frame": {"x":1,"y":1,"w":10,"h":10},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
+	"sourceSize": {"w":10,"h":10}
+},
+{
+	"filename": "confettis-chateau-nipple",
+	"frame": {"x":13,"y":1,"w":10,"h":10},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
+	"sourceSize": {"w":10,"h":10}
+},
+{
+	"filename": "confettis-juju-nipple",
+	"frame": {"x":25,"y":1,"w":10,"h":10},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
+	"sourceSize": {"w":10,"h":10}
+},
+{
+	"filename": "confettis-kwak",
+	"frame": {"x":37,"y":1,"w":10,"h":10},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
+	"sourceSize": {"w":10,"h":10}
+},
+{
+	"filename": "ground",
+	"frame": {"x":1,"y":73,"w":840,"h":70},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":840,"h":70},
+	"sourceSize": {"w":840,"h":70}
+},
+{
+	"filename": "net",
+	"frame": {"x":257,"y":1,"w":8,"h":70},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":8,"h":70},
+	"sourceSize": {"w":8,"h":70}
+},
+{
+	"filename": "soccer-client-net",
+	"frame": {"x":843,"y":1,"w":40,"h":170},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":170},
+	"sourceSize": {"w":40,"h":170}
+},
+{
+	"filename": "soccer-host-net",
+	"frame": {"x":885,"y":1,"w":40,"h":170},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":170},
+	"sourceSize": {"w":40,"h":170}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "texture-atlas.png",
+	"format": "RGBA8888",
+	"size": {"w":926,"h":172},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:fc9e5831f1d6e0b6273c4e6d7ed2472e:b2bb5d11b81cb8f5597e2a04eeb71be3:a973cd4a72d4c90ced76930eac7fdc63$"
+}
 }

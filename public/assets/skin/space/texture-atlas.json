@@ -1,190 +1,84 @@
+{"frames": [
+
 {
-  "frames": [
-    {
-      "filename": "explosion-1",
-      "frame": {
-        "x": 1,
-        "y": 1,
-        "w": 250,
-        "h": 250
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 250,
-        "h": 250
-      },
-      "sourceSize": {
-        "w": 250,
-        "h": 250
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "explosion-2",
-      "frame": {
-        "x": 1,
-        "y": 253,
-        "w": 250,
-        "h": 250
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 250,
-        "h": 250
-      },
-      "sourceSize": {
-        "w": 250,
-        "h": 250
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-1",
-      "frame": {
-        "x": 253,
-        "y": 1,
-        "w": 25,
-        "h": 25
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 25,
-        "h": 25
-      },
-      "sourceSize": {
-        "w": 25,
-        "h": 25
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "net",
-      "frame": {
-        "x": 1,
-        "y": 505,
-        "w": 8,
-        "h": 71
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 8,
-        "h": 71
-      },
-      "sourceSize": {
-        "w": 8,
-        "h": 71
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-2",
-      "frame": {
-        "x": 253,
-        "y": 28,
-        "w": 25,
-        "h": 25
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 25,
-        "h": 25
-      },
-      "sourceSize": {
-        "w": 25,
-        "h": 25
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-3",
-      "frame": {
-        "x": 280,
-        "y": 1,
-        "w": 25,
-        "h": 25
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 25,
-        "h": 25
-      },
-      "sourceSize": {
-        "w": 25,
-        "h": 25
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ground",
-      "frame": {
-        "x": 1,
-        "y": 578,
-        "w": 25,
-        "h": 70
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 25,
-        "h": 70
-      },
-      "sourceSize": {
-        "w": 25,
-        "h": 70
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    }
-  ],
-  "meta": {
-    "app": "http://free-tex-packer.com/",
-    "version": "0.3.0",
-    "image": "texture-atlas.png",
-    "format": "RGBA8888",
-    "size": {
-      "w": 306,
-      "h": 649
-    },
-    "scale": 1
-  }
+	"filename": "ball-1",
+	"frame": {"x":270,"y":345,"w":25,"h":25},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":25,"h":25},
+	"sourceSize": {"w":25,"h":25}
+},
+{
+	"filename": "ball-2",
+	"frame": {"x":270,"y":372,"w":25,"h":25},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":25,"h":25},
+	"sourceSize": {"w":25,"h":25}
+},
+{
+	"filename": "ball-3",
+	"frame": {"x":243,"y":373,"w":25,"h":25},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":25,"h":25},
+	"sourceSize": {"w":25,"h":25}
+},
+{
+	"filename": "explosion-1",
+	"frame": {"x":1,"y":1,"w":250,"h":200},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":3,"w":250,"h":200},
+	"sourceSize": {"w":250,"h":250}
+},
+{
+	"filename": "explosion-2",
+	"frame": {"x":1,"y":203,"w":240,"h":198},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":10,"y":3,"w":240,"h":198},
+	"sourceSize": {"w":250,"h":250}
+},
+{
+	"filename": "ground",
+	"frame": {"x":243,"y":345,"w":25,"h":26},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":25,"h":26},
+	"sourceSize": {"w":25,"h":70}
+},
+{
+	"filename": "net",
+	"frame": {"x":243,"y":203,"w":8,"h":71},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":8,"h":71},
+	"sourceSize": {"w":8,"h":71}
+},
+{
+	"filename": "soccer-client-net",
+	"frame": {"x":253,"y":1,"w":40,"h":170},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":170},
+	"sourceSize": {"w":40,"h":170}
+},
+{
+	"filename": "soccer-host-net",
+	"frame": {"x":253,"y":173,"w":40,"h":170},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":170},
+	"sourceSize": {"w":40,"h":170}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "texture-atlas.png",
+	"format": "RGBA8888",
+	"size": {"w":296,"h":402},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:801a6e9c01b6f8efc061f5d3c23f8eed:b1e539be39337655aeb7cd3f846893d1:a973cd4a72d4c90ced76930eac7fdc63$"
+}
 }

@@ -68,6 +68,12 @@ export default class Level {
 		this.skinManager.createNetComponent(this.scene);
 	}
 
+	createSoccerNet() {
+		if (this.gameConfiguration.hasSoccerNet()) {
+			this.skinManager.createSoccerNetComponent(this.scene);
+		}
+	}
+
 	createFieldLimits(hasNet: boolean) {
 		this.fieldLimits = new FieldLimits(
 			this.scene,
@@ -87,6 +93,14 @@ export default class Level {
 
 	ballGround(): Phaser.Physics.P2.Body {
 		return this.fieldLimits.ballGround;
+	}
+
+	soccerNetHostPointZone(): Phaser.Physics.P2.Body {
+		return this.fieldLimits.soccerNetHostPointZone;
+	}
+
+	soccerNetClientPointZone(): Phaser.Physics.P2.Body {
+		return this.fieldLimits.soccerNetClientPointZone;
 	}
 
 	shakeGround() {

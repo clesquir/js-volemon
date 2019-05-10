@@ -331,7 +331,11 @@ export default class MainScene {
 	}
 
 	collideBallLimit(ballBody: Phaser.Physics.P2.Body, levelBody: Phaser.Physics.P2.Body) {
-		if (levelBody === this.level.ballGround() && this.gameConfiguration.groundHitEnabled()) {
+		if (
+			(levelBody === this.level.ballGround() && this.gameConfiguration.groundHitEnabled()) ||
+			(levelBody === this.level.soccerNetHostPointZone() && this.gameConfiguration.hasSoccerNet()) ||
+			(levelBody === this.level.soccerNetClientPointZone() && this.gameConfiguration.hasSoccerNet())
+		) {
 			const ball: Ball = ballBody.sprite.data.owner;
 
 			this.onBallHitScoreZone(ball);
@@ -350,6 +354,7 @@ export default class MainScene {
 		this.zIndexGroup = this.game.add.group();
 		this.level.createGround();
 		this.level.createNet();
+		this.level.createSoccerNet();
 
 		this.artificialIntelligence.initFromData(this, this.gameData, this.gameConfiguration);
 		this.players.create();

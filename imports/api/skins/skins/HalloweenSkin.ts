@@ -72,6 +72,20 @@ export default class HalloweenSkin implements Skin {
 		};
 	}
 
+	soccerHostNetComponent(): { key: string; frame: string } {
+		return {
+			key: 'halloween-skin',
+			frame: 'soccer-host-net'
+		};
+	}
+
+	soccerClientNetComponent(): { key: string; frame: string } {
+		return {
+			key: 'halloween-skin',
+			frame: 'soccer-client-net'
+		};
+	}
+
 	groundComponents(): { key: string; frame: string, height?: number }[] {
 		return [
 			{

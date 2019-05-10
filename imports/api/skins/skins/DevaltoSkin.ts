@@ -74,6 +74,20 @@ export default class DevaltoSkin implements Skin {
 		};
 	}
 
+	soccerHostNetComponent(): { key: string; frame: string } {
+		return {
+			key: 'devalto-skin',
+			frame: 'soccer-host-net'
+		};
+	}
+
+	soccerClientNetComponent(): { key: string; frame: string } {
+		return {
+			key: 'devalto-skin',
+			frame: 'soccer-client-net'
+		};
+	}
+
 	groundComponents(): { key: string; frame: string, height?: number }[] {
 		return [
 			{

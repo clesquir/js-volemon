@@ -74,7 +74,7 @@
         <key>jpgQuality</key>
         <uint>80</uint>
         <key>pngOptimizationLevel</key>
-        <uint>7</uint>
+        <uint>1</uint>
         <key>webpQualityLevel</key>
         <uint>101</uint>
         <key>textureSubPath</key>
@@ -132,7 +132,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../../public/assets/skin/halloween/texture-atlas.json</filename>
+                <filename>../../public/assets/skin/industrial/texture-atlas.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -181,7 +181,7 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">halloween/ball.png</key>
+            <key type="filename">industrial/ball.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -194,37 +194,20 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">halloween/confettis-1.png</key>
-            <key type="filename">halloween/confettis-2.png</key>
-            <key type="filename">halloween/confettis-3.png</key>
-            <key type="filename">halloween/confettis-4.png</key>
-            <key type="filename">halloween/confettis-5.png</key>
+            <key type="filename">industrial/ground.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>6,7,11,13</rect>
+                <rect>210,18,420,35</rect>
                 <key>scale9Paddings</key>
-                <rect>6,7,11,13</rect>
+                <rect>210,18,420,35</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">halloween/ground.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>71,18,141,35</rect>
-                <key>scale9Paddings</key>
-                <rect>71,18,141,35</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">halloween/net.png</key>
+            <key type="filename">industrial/net.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -237,8 +220,8 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">halloween/soccer-client-net.png</key>
-            <key type="filename">halloween/soccer-host-net.png</key>
+            <key type="filename">industrial/soccer-client-net.png</key>
+            <key type="filename">industrial/soccer-host-net.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -251,47 +234,70 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">halloween/tombs-1.png</key>
+            <key type="filename">industrial/spark-1.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>39,31,77,61</rect>
+                <rect>4,5,9,10</rect>
                 <key>scale9Paddings</key>
-                <rect>39,31,77,61</rect>
+                <rect>4,5,9,10</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">halloween/tombs-2.png</key>
+            <key type="filename">industrial/spark-2.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>41,25,81,50</rect>
+                <rect>7,9,15,17</rect>
                 <key>scale9Paddings</key>
-                <rect>41,25,81,50</rect>
+                <rect>7,9,15,17</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">industrial/spark-3.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>10,11,19,22</rect>
+                <key>scale9Paddings</key>
+                <rect>10,11,19,22</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">industrial/spark-4.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>10,13,21,25</rect>
+                <key>scale9Paddings</key>
+                <rect>10,13,21,25</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
         </map>
         <key>fileList</key>
         <array>
-            <filename>halloween/ball.png</filename>
-            <filename>halloween/confettis-1.png</filename>
-            <filename>halloween/confettis-2.png</filename>
-            <filename>halloween/confettis-3.png</filename>
-            <filename>halloween/confettis-4.png</filename>
-            <filename>halloween/confettis-5.png</filename>
-            <filename>halloween/ground.png</filename>
-            <filename>halloween/net.png</filename>
-            <filename>halloween/tombs-1.png</filename>
-            <filename>halloween/tombs-2.png</filename>
-            <filename>halloween/soccer-client-net.png</filename>
-            <filename>halloween/soccer-host-net.png</filename>
+            <filename>industrial/ball.png</filename>
+            <filename>industrial/ground.png</filename>
+            <filename>industrial/net.png</filename>
+            <filename>industrial/soccer-client-net.png</filename>
+            <filename>industrial/soccer-host-net.png</filename>
+            <filename>industrial/spark-1.png</filename>
+            <filename>industrial/spark-2.png</filename>
+            <filename>industrial/spark-3.png</filename>
+            <filename>industrial/spark-4.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

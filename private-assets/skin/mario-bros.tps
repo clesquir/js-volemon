@@ -74,7 +74,7 @@
         <key>jpgQuality</key>
         <uint>80</uint>
         <key>pngOptimizationLevel</key>
-        <uint>7</uint>
+        <uint>1</uint>
         <key>webpQualityLevel</key>
         <uint>101</uint>
         <key>textureSubPath</key>
@@ -132,7 +132,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../../public/assets/skin/halloween/texture-atlas.json</filename>
+                <filename>../../public/assets/skin/mario-bros/texture-atlas.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -181,7 +181,49 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">halloween/ball.png</key>
+            <key type="filename">mario-bros/background-bush.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>30,10,60,20</rect>
+                <key>scale9Paddings</key>
+                <rect>30,10,60,20</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">mario-bros/background-cloud.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>40,15,80,30</rect>
+                <key>scale9Paddings</key>
+                <rect>40,15,80,30</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">mario-bros/background-mountain.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>50,22,100,44</rect>
+                <key>scale9Paddings</key>
+                <rect>50,22,100,44</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">mario-bros/ball-1.png</key>
+            <key type="filename">mario-bros/ball-2.png</key>
+            <key type="filename">mario-bros/ball-3.png</key>
+            <key type="filename">mario-bros/ball-4.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -194,37 +236,34 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">halloween/confettis-1.png</key>
-            <key type="filename">halloween/confettis-2.png</key>
-            <key type="filename">halloween/confettis-3.png</key>
-            <key type="filename">halloween/confettis-4.png</key>
-            <key type="filename">halloween/confettis-5.png</key>
+            <key type="filename">mario-bros/confettis-goomba-dark.png</key>
+            <key type="filename">mario-bros/confettis-goomba-light.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>6,7,11,13</rect>
+                <rect>3,3,5,5</rect>
                 <key>scale9Paddings</key>
-                <rect>6,7,11,13</rect>
+                <rect>3,3,5,5</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">halloween/ground.png</key>
+            <key type="filename">mario-bros/ground.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>71,18,141,35</rect>
+                <rect>10,10,20,20</rect>
                 <key>scale9Paddings</key>
-                <rect>71,18,141,35</rect>
+                <rect>10,10,20,20</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">halloween/net.png</key>
+            <key type="filename">mario-bros/net.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -237,8 +276,8 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">halloween/soccer-client-net.png</key>
-            <key type="filename">halloween/soccer-host-net.png</key>
+            <key type="filename">mario-bros/soccer-client-net.png</key>
+            <key type="filename">mario-bros/soccer-host-net.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -248,50 +287,25 @@
                 <rect>10,43,20,85</rect>
                 <key>scale9Paddings</key>
                 <rect>10,43,20,85</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">halloween/tombs-1.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>39,31,77,61</rect>
-                <key>scale9Paddings</key>
-                <rect>39,31,77,61</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">halloween/tombs-2.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>41,25,81,50</rect>
-                <key>scale9Paddings</key>
-                <rect>41,25,81,50</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
         </map>
         <key>fileList</key>
         <array>
-            <filename>halloween/ball.png</filename>
-            <filename>halloween/confettis-1.png</filename>
-            <filename>halloween/confettis-2.png</filename>
-            <filename>halloween/confettis-3.png</filename>
-            <filename>halloween/confettis-4.png</filename>
-            <filename>halloween/confettis-5.png</filename>
-            <filename>halloween/ground.png</filename>
-            <filename>halloween/net.png</filename>
-            <filename>halloween/tombs-1.png</filename>
-            <filename>halloween/tombs-2.png</filename>
-            <filename>halloween/soccer-client-net.png</filename>
-            <filename>halloween/soccer-host-net.png</filename>
+            <filename>mario-bros/background-bush.png</filename>
+            <filename>mario-bros/background-cloud.png</filename>
+            <filename>mario-bros/background-mountain.png</filename>
+            <filename>mario-bros/ball-1.png</filename>
+            <filename>mario-bros/ball-2.png</filename>
+            <filename>mario-bros/ball-3.png</filename>
+            <filename>mario-bros/ball-4.png</filename>
+            <filename>mario-bros/confettis-goomba-dark.png</filename>
+            <filename>mario-bros/confettis-goomba-light.png</filename>
+            <filename>mario-bros/ground.png</filename>
+            <filename>mario-bros/net.png</filename>
+            <filename>mario-bros/soccer-client-net.png</filename>
+            <filename>mario-bros/soccer-host-net.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

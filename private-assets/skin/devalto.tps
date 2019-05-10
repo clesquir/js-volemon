@@ -74,7 +74,7 @@
         <key>jpgQuality</key>
         <uint>80</uint>
         <key>pngOptimizationLevel</key>
-        <uint>7</uint>
+        <uint>1</uint>
         <key>webpQualityLevel</key>
         <uint>101</uint>
         <key>textureSubPath</key>
@@ -132,7 +132,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../../public/assets/skin/halloween/texture-atlas.json</filename>
+                <filename>../../public/assets/skin/devalto/texture-atlas.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -181,7 +181,25 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">halloween/ball.png</key>
+            <key type="filename">devalto/ball-abdellah.png</key>
+            <key type="filename">devalto/ball-cedric.png</key>
+            <key type="filename">devalto/ball-christian.png</key>
+            <key type="filename">devalto/ball-christophe.png</key>
+            <key type="filename">devalto/ball-david.png</key>
+            <key type="filename">devalto/ball-eugenie.png</key>
+            <key type="filename">devalto/ball-francois.png</key>
+            <key type="filename">devalto/ball-jeff.png</key>
+            <key type="filename">devalto/ball-jm.png</key>
+            <key type="filename">devalto/ball-julien.png</key>
+            <key type="filename">devalto/ball-luc.png</key>
+            <key type="filename">devalto/ball-macarena.png</key>
+            <key type="filename">devalto/ball-mathieu.png</key>
+            <key type="filename">devalto/ball-sarah.png</key>
+            <key type="filename">devalto/ball-stephane.png</key>
+            <key type="filename">devalto/ball-sylvain.png</key>
+            <key type="filename">devalto/ball-vincent.png</key>
+            <key type="filename">devalto/ball-yanick.png</key>
+            <key type="filename">devalto/ball-yannick.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -194,37 +212,33 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">halloween/confettis-1.png</key>
-            <key type="filename">halloween/confettis-2.png</key>
-            <key type="filename">halloween/confettis-3.png</key>
-            <key type="filename">halloween/confettis-4.png</key>
-            <key type="filename">halloween/confettis-5.png</key>
+            <key type="filename">devalto/confettis-logalto.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>6,7,11,13</rect>
+                <rect>3,3,5,5</rect>
                 <key>scale9Paddings</key>
-                <rect>6,7,11,13</rect>
+                <rect>3,3,5,5</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">halloween/ground.png</key>
+            <key type="filename">devalto/ground.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>71,18,141,35</rect>
+                <rect>1,1,3,3</rect>
                 <key>scale9Paddings</key>
-                <rect>71,18,141,35</rect>
+                <rect>1,1,3,3</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">halloween/net.png</key>
+            <key type="filename">devalto/net.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -237,8 +251,8 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">halloween/soccer-client-net.png</key>
-            <key type="filename">halloween/soccer-host-net.png</key>
+            <key type="filename">devalto/soccer-client-net.png</key>
+            <key type="filename">devalto/soccer-host-net.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -248,50 +262,36 @@
                 <rect>10,43,20,85</rect>
                 <key>scale9Paddings</key>
                 <rect>10,43,20,85</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">halloween/tombs-1.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>39,31,77,61</rect>
-                <key>scale9Paddings</key>
-                <rect>39,31,77,61</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">halloween/tombs-2.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>41,25,81,50</rect>
-                <key>scale9Paddings</key>
-                <rect>41,25,81,50</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
         </map>
         <key>fileList</key>
         <array>
-            <filename>halloween/ball.png</filename>
-            <filename>halloween/confettis-1.png</filename>
-            <filename>halloween/confettis-2.png</filename>
-            <filename>halloween/confettis-3.png</filename>
-            <filename>halloween/confettis-4.png</filename>
-            <filename>halloween/confettis-5.png</filename>
-            <filename>halloween/ground.png</filename>
-            <filename>halloween/net.png</filename>
-            <filename>halloween/tombs-1.png</filename>
-            <filename>halloween/tombs-2.png</filename>
-            <filename>halloween/soccer-client-net.png</filename>
-            <filename>halloween/soccer-host-net.png</filename>
+            <filename>devalto/ball-abdellah.png</filename>
+            <filename>devalto/ball-cedric.png</filename>
+            <filename>devalto/ball-christian.png</filename>
+            <filename>devalto/ball-christophe.png</filename>
+            <filename>devalto/ball-david.png</filename>
+            <filename>devalto/ball-eugenie.png</filename>
+            <filename>devalto/ball-francois.png</filename>
+            <filename>devalto/ball-jeff.png</filename>
+            <filename>devalto/ball-jm.png</filename>
+            <filename>devalto/ball-julien.png</filename>
+            <filename>devalto/ball-luc.png</filename>
+            <filename>devalto/ball-macarena.png</filename>
+            <filename>devalto/ball-mathieu.png</filename>
+            <filename>devalto/ball-sarah.png</filename>
+            <filename>devalto/ball-stephane.png</filename>
+            <filename>devalto/ball-sylvain.png</filename>
+            <filename>devalto/ball-vincent.png</filename>
+            <filename>devalto/ball-yanick.png</filename>
+            <filename>devalto/ball-yannick.png</filename>
+            <filename>devalto/confettis-logalto.png</filename>
+            <filename>devalto/ground.png</filename>
+            <filename>devalto/net.png</filename>
+            <filename>devalto/soccer-client-net.png</filename>
+            <filename>devalto/soccer-host-net.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

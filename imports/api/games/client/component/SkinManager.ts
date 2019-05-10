@@ -102,6 +102,34 @@ export default class SkinManager {
 		scene.zIndexGroup.add(net);
 	}
 
+	createSoccerNetComponent(scene: MainScene) {
+		const hostNet = scene.game.add.tileSprite(
+			0,
+			this.gameConfiguration.height() - this.gameConfiguration.groundHeight() - this.gameConfiguration.soccerNetHeight(),
+			this.gameConfiguration.soccerNetWidth(),
+			this.gameConfiguration.soccerNetHeight(),
+			this.skin.soccerHostNetComponent().key,
+			this.skin.soccerHostNetComponent().frame
+		);
+
+		// @ts-ignore
+		hostNet.depth = DEPTH_LEVEL;
+		scene.zIndexGroup.add(hostNet);
+
+		const clientNet = scene.game.add.tileSprite(
+			this.gameConfiguration.width() - this.gameConfiguration.soccerNetWidth(),
+			this.gameConfiguration.height() - this.gameConfiguration.groundHeight() - this.gameConfiguration.soccerNetHeight(),
+			this.gameConfiguration.soccerNetWidth(),
+			this.gameConfiguration.soccerNetHeight(),
+			this.skin.soccerClientNetComponent().key,
+			this.skin.soccerClientNetComponent().frame
+		);
+
+		// @ts-ignore
+		clientNet.depth = DEPTH_LEVEL;
+		scene.zIndexGroup.add(clientNet);
+	}
+
 	createBallComponent(scene: MainScene): Phaser.Sprite {
 		const ballComponent = this.skin.ballComponent();
 

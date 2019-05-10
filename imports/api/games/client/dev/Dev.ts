@@ -114,11 +114,18 @@ export default class Dev {
 	createLevelComponents() {
 		this.mainScene.level.createGround();
 		this.mainScene.level.createNet();
+		this.mainScene.level.createSoccerNet();
 		this.mainScene.level.createFieldLimits(true);
 	}
 
 	onBallHitScoreZone(ball: Ball) {
 		if (this.mainScene.gameResumed === true) {
+			this.mainScene.showBallHitPoint(
+				ball.x(),
+				ball.y(),
+				ball.diameter()
+			);
+
 			this.mainScene.gameResumed = false;
 
 			this.gameData.lastPointAt = this.serverNormalizedTime.getServerTimestamp();

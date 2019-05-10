@@ -463,7 +463,13 @@ export default abstract class GameConfiguration {
 	}
 
 	groundHitEnabled(): boolean {
+		//@todo Add tournament configuration
 		return true;
+	}
+
+	hasSoccerNet(): boolean {
+		//@todo Add tournament configuration
+		return false;
 	}
 
 	width(): number {
@@ -476,6 +482,26 @@ export default abstract class GameConfiguration {
 
 	groundHeight(): number {
 		return this.levelConfiguration.groundHeight;
+	}
+
+	soccerNetPointZoneWidth(): number {
+		return this.levelConfiguration.soccerNetPointZoneWidth;
+	}
+
+	soccerNetPointZoneHeight(): number {
+		return this.levelConfiguration.soccerNetPointZoneHeight;
+	}
+
+	soccerNetPostThickness(): number {
+		return this.levelConfiguration.soccerNetPostThickness;
+	}
+
+	soccerNetWidth(): number {
+		return this.levelConfiguration.soccerNetWidth;
+	}
+
+	soccerNetHeight(): number {
+		return this.levelConfiguration.soccerNetHeight;
 	}
 
 	netHeight(): number {

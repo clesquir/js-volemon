@@ -1,565 +1,204 @@
+{"frames": [
+
 {
-  "frames": [
-    {
-      "filename": "ball-abdellah",
-      "frame": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "net",
-      "frame": {
-        "x": 24,
-        "y": 0,
-        "w": 8,
-        "h": 70
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 8,
-        "h": 70
-      },
-      "sourceSize": {
-        "w": 8,
-        "h": 70
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-cedric",
-      "frame": {
-        "x": 0,
-        "y": 24,
-        "w": 24,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-christian",
-      "frame": {
-        "x": 0,
-        "y": 48,
-        "w": 24,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-christophe",
-      "frame": {
-        "x": 24,
-        "y": 70,
-        "w": 24,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-david",
-      "frame": {
-        "x": 0,
-        "y": 72,
-        "w": 24,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-eugenie",
-      "frame": {
-        "x": 32,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-francois",
-      "frame": {
-        "x": 32,
-        "y": 24,
-        "w": 24,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-jeff",
-      "frame": {
-        "x": 48,
-        "y": 48,
-        "w": 24,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "confettis-logalto",
-      "frame": {
-        "x": 32,
-        "y": 48,
-        "w": 10,
-        "h": 10
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 10,
-        "h": 10
-      },
-      "sourceSize": {
-        "w": 10,
-        "h": 10
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ground",
-      "frame": {
-        "x": 33,
-        "y": 59,
-        "w": 3,
-        "h": 3
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 1,
-        "y": 1,
-        "w": 3,
-        "h": 3
-      },
-      "sourceSize": {
-        "w": 3,
-        "h": 3
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-jm",
-      "frame": {
-        "x": 56,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-julien",
-      "frame": {
-        "x": 56,
-        "y": 24,
-        "w": 24,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-luc",
-      "frame": {
-        "x": 48,
-        "y": 72,
-        "w": 24,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-macarena",
-      "frame": {
-        "x": 24,
-        "y": 94,
-        "w": 24,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-mathieu",
-      "frame": {
-        "x": 0,
-        "y": 96,
-        "w": 24,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-sarah",
-      "frame": {
-        "x": 48,
-        "y": 96,
-        "w": 24,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-stephane",
-      "frame": {
-        "x": 24,
-        "y": 118,
-        "w": 24,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-sylvain",
-      "frame": {
-        "x": 0,
-        "y": 120,
-        "w": 24,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-vincent",
-      "frame": {
-        "x": 48,
-        "y": 120,
-        "w": 24,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-yanick",
-      "frame": {
-        "x": 24,
-        "y": 142,
-        "w": 24,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "ball-yannick",
-      "frame": {
-        "x": 0,
-        "y": 144,
-        "w": 24,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 24,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    }
-  ],
-  "meta": {
-    "app": "http://free-tex-packer.com/",
-    "version": "0.3.0",
-    "image": "texture-atlas.png",
-    "format": "RGBA8888",
-    "size": {
-      "w": 80,
-      "h": 168
-    },
-    "scale": 1
-  }
+	"filename": "ball-abdellah",
+	"frame": {"x":1,"y":173,"w":24,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
+	"sourceSize": {"w":24,"h":24}
+},
+{
+	"filename": "ball-cedric",
+	"frame": {"x":95,"y":1,"w":24,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
+	"sourceSize": {"w":24,"h":24}
+},
+{
+	"filename": "ball-christian",
+	"frame": {"x":121,"y":1,"w":24,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
+	"sourceSize": {"w":24,"h":24}
+},
+{
+	"filename": "ball-christophe",
+	"frame": {"x":27,"y":173,"w":24,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
+	"sourceSize": {"w":24,"h":24}
+},
+{
+	"filename": "ball-david",
+	"frame": {"x":95,"y":27,"w":24,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
+	"sourceSize": {"w":24,"h":24}
+},
+{
+	"filename": "ball-eugenie",
+	"frame": {"x":121,"y":27,"w":24,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
+	"sourceSize": {"w":24,"h":24}
+},
+{
+	"filename": "ball-francois",
+	"frame": {"x":53,"y":173,"w":24,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
+	"sourceSize": {"w":24,"h":24}
+},
+{
+	"filename": "ball-jeff",
+	"frame": {"x":95,"y":53,"w":24,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
+	"sourceSize": {"w":24,"h":24}
+},
+{
+	"filename": "ball-jm",
+	"frame": {"x":121,"y":53,"w":24,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
+	"sourceSize": {"w":24,"h":24}
+},
+{
+	"filename": "ball-julien",
+	"frame": {"x":85,"y":79,"w":24,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
+	"sourceSize": {"w":24,"h":24}
+},
+{
+	"filename": "ball-luc",
+	"frame": {"x":85,"y":105,"w":24,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
+	"sourceSize": {"w":24,"h":24}
+},
+{
+	"filename": "ball-macarena",
+	"frame": {"x":111,"y":79,"w":24,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
+	"sourceSize": {"w":24,"h":24}
+},
+{
+	"filename": "ball-mathieu",
+	"frame": {"x":85,"y":131,"w":24,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
+	"sourceSize": {"w":24,"h":24}
+},
+{
+	"filename": "ball-sarah",
+	"frame": {"x":111,"y":105,"w":24,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
+	"sourceSize": {"w":24,"h":24}
+},
+{
+	"filename": "ball-stephane",
+	"frame": {"x":111,"y":131,"w":24,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
+	"sourceSize": {"w":24,"h":24}
+},
+{
+	"filename": "ball-sylvain",
+	"frame": {"x":85,"y":157,"w":24,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
+	"sourceSize": {"w":24,"h":24}
+},
+{
+	"filename": "ball-vincent",
+	"frame": {"x":79,"y":183,"w":24,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
+	"sourceSize": {"w":24,"h":24}
+},
+{
+	"filename": "ball-yanick",
+	"frame": {"x":105,"y":183,"w":24,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
+	"sourceSize": {"w":24,"h":24}
+},
+{
+	"filename": "ball-yannick",
+	"frame": {"x":111,"y":157,"w":24,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
+	"sourceSize": {"w":24,"h":24}
+},
+{
+	"filename": "confettis-logalto",
+	"frame": {"x":131,"y":183,"w":10,"h":10},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
+	"sourceSize": {"w":10,"h":10}
+},
+{
+	"filename": "ground",
+	"frame": {"x":1,"y":199,"w":5,"h":5},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":5,"h":5},
+	"sourceSize": {"w":5,"h":5}
+},
+{
+	"filename": "net",
+	"frame": {"x":85,"y":1,"w":8,"h":70},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":8,"h":70},
+	"sourceSize": {"w":8,"h":70}
+},
+{
+	"filename": "soccer-client-net",
+	"frame": {"x":1,"y":1,"w":40,"h":170},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":170},
+	"sourceSize": {"w":40,"h":170}
+},
+{
+	"filename": "soccer-host-net",
+	"frame": {"x":43,"y":1,"w":40,"h":170},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":170},
+	"sourceSize": {"w":40,"h":170}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "texture-atlas.png",
+	"format": "RGBA8888",
+	"size": {"w":146,"h":208},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:1424b5fcbeb4add5a422d6e8a6186d65:9ae81491f5daaa49e0d8f95ba22d50a3:a973cd4a72d4c90ced76930eac7fdc63$"
+}
 }

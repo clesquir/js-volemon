@@ -49,6 +49,20 @@ export default class XmasSkin implements Skin {
 		};
 	}
 
+	soccerHostNetComponent(): { key: string; frame: string } {
+		return {
+			key: 'xmas-skin',
+			frame: 'soccer-host-net'
+		};
+	}
+
+	soccerClientNetComponent(): { key: string; frame: string } {
+		return {
+			key: 'xmas-skin',
+			frame: 'soccer-client-net'
+		};
+	}
+
 	groundComponents(): { key: string; frame: string, height?: number }[] {
 		return [
 			{
