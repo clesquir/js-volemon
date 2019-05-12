@@ -62,6 +62,8 @@ export default class TournamentMode {
 	overriddenPlayerMaximumBallHit;
 	overriddenTeamMaximumBallHit;
 	overriddenForcePracticeWithComputer;
+	overriddenGroundHitEnabled;
+	overriddenSoccerNetEnabled;
 	overriddenHasPlayerNetLimit;
 	overriddenCollidesWithTeammate;
 	overriddenCollidesWithOpponent;
@@ -499,6 +501,22 @@ export default class TournamentMode {
 		return parseInt(this.overriddenForcePracticeWithComputer) === 1;
 	}
 
+	overridesGroundHitEnabled(): boolean {
+		return this.overriddenGroundHitEnabled !== undefined;
+	}
+
+	groundHitEnabled(): boolean {
+		return parseInt(this.overriddenGroundHitEnabled) === 1;
+	}
+
+	overridesSoccerNetEnabled(): boolean {
+		return this.overriddenSoccerNetEnabled !== undefined;
+	}
+
+	soccerNetEnabled(): boolean {
+		return parseInt(this.overriddenSoccerNetEnabled) === 1;
+	}
+
 	overridesHasPlayerNetLimit(): boolean {
 		return this.overriddenHasPlayerNetLimit !== undefined;
 	}
@@ -590,6 +608,8 @@ export default class TournamentMode {
 		tournamentMode.overriddenPlayerMaximumBallHit = mode.overriddenPlayerMaximumBallHit;
 		tournamentMode.overriddenTeamMaximumBallHit = mode.overriddenTeamMaximumBallHit;
 		tournamentMode.overriddenForcePracticeWithComputer = mode.overriddenForcePracticeWithComputer;
+		tournamentMode.overriddenGroundHitEnabled = mode.overriddenGroundHitEnabled;
+		tournamentMode.overriddenSoccerNetEnabled = mode.overriddenSoccerNetEnabled;
 		tournamentMode.overriddenHasPlayerNetLimit = mode.overriddenHasPlayerNetLimit;
 		tournamentMode.overriddenCollidesWithTeammate = mode.overriddenCollidesWithTeammate;
 		tournamentMode.overriddenCollidesWithOpponent = mode.overriddenCollidesWithOpponent;

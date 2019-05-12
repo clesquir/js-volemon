@@ -462,16 +462,6 @@ export default abstract class GameConfiguration {
 		);
 	}
 
-	groundHitEnabled(): boolean {
-		//@todo Add tournament configuration
-		return true;
-	}
-
-	hasSoccerNet(): boolean {
-		//@todo Add tournament configuration
-		return false;
-	}
-
 	width(): number {
 		return this.levelConfiguration.width;
 	}
@@ -482,6 +472,22 @@ export default abstract class GameConfiguration {
 
 	groundHeight(): number {
 		return this.levelConfiguration.groundHeight;
+	}
+
+	groundHitEnabled(): boolean {
+		if (this.hasTournament() && this.tournamentMode.overridesGroundHitEnabled()) {
+			return this.tournamentMode.groundHitEnabled();
+		}
+
+		return true;
+	}
+
+	hasSoccerNet(): boolean {
+		if (this.hasTournament() && this.tournamentMode.overridesSoccerNetEnabled()) {
+			return this.tournamentMode.soccerNetEnabled();
+		}
+
+		return false;
 	}
 
 	soccerNetPointZoneWidth(): number {
