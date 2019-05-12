@@ -1,5 +1,4 @@
 import Skin from './Skin';
-import {Random} from 'meteor/random';
 
 export default class HalloweenSkin implements Skin {
 	init() {
@@ -72,17 +71,17 @@ export default class HalloweenSkin implements Skin {
 		};
 	}
 
-	soccerHostNetComponent(): { key: string; frame: string } {
+	soccerNetComponent(): { key: string; frame: string } {
 		return {
 			key: 'halloween-skin',
-			frame: 'soccer-host-net'
+			frame: 'soccer-net'
 		};
 	}
 
-	soccerClientNetComponent(): { key: string; frame: string } {
+	soccerPostComponent(): { key: string; frame: string } {
 		return {
 			key: 'halloween-skin',
-			frame: 'soccer-client-net'
+			frame: 'soccer-post'
 		};
 	}
 

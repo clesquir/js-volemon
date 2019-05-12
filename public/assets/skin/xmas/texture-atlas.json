@@ -2,7 +2,7 @@
 
 {
 	"filename": "ball",
-	"frame": {"x":85,"y":73,"w":24,"h":24},
+	"frame": {"x":201,"y":6,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -10,7 +10,7 @@
 },
 {
 	"filename": "confettis-1",
-	"frame": {"x":111,"y":73,"w":16,"h":15},
+	"frame": {"x":224,"y":46,"w":16,"h":15},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":15},
@@ -18,7 +18,7 @@
 },
 {
 	"filename": "confettis-2",
-	"frame": {"x":129,"y":73,"w":16,"h":15},
+	"frame": {"x":201,"y":60,"w":16,"h":15},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":15},
@@ -26,7 +26,7 @@
 },
 {
 	"filename": "confettis-3",
-	"frame": {"x":147,"y":73,"w":16,"h":15},
+	"frame": {"x":224,"y":68,"w":16,"h":15},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":15},
@@ -34,7 +34,7 @@
 },
 {
 	"filename": "confettis-4",
-	"frame": {"x":111,"y":90,"w":14,"h":16},
+	"frame": {"x":232,"y":6,"w":14,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":14,"h":16},
@@ -42,7 +42,7 @@
 },
 {
 	"filename": "ground",
-	"frame": {"x":1,"y":1,"w":173,"h":70},
+	"frame": {"x":6,"y":6,"w":173,"h":70},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":173,"h":70},
@@ -50,35 +50,35 @@
 },
 {
 	"filename": "net",
-	"frame": {"x":165,"y":73,"w":8,"h":70},
+	"frame": {"x":186,"y":6,"w":8,"h":70},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":8,"h":70},
 	"sourceSize": {"w":8,"h":70}
 },
 {
-	"filename": "soccer-client-net",
-	"frame": {"x":1,"y":73,"w":40,"h":170},
+	"filename": "soccer-net",
+	"frame": {"x":201,"y":37,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":170},
-	"sourceSize": {"w":40,"h":170}
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "soccer-host-net",
-	"frame": {"x":43,"y":73,"w":40,"h":170},
+	"filename": "soccer-post",
+	"frame": {"x":232,"y":29,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":170},
-	"sourceSize": {"w":40,"h":170}
+	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
+	"sourceSize": {"w":10,"h":10}
 }],
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
 	"version": "1.0",
 	"image": "texture-atlas.png",
 	"format": "RGBA8888",
-	"size": {"w":175,"h":244},
+	"size": {"w":252,"h":89},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:a274be974531855e2f54af0f2d2399ba:175e7e3bd1dbb9a815cfc3f62cf4d341:a973cd4a72d4c90ced76930eac7fdc63$"
+	"smartupdate": "$TexturePacker:SmartUpdate:8ce5bd4eee91120ad237c3a74ffbb25a:947cfda4335a4afd672b57edacbe6a6d:a973cd4a72d4c90ced76930eac7fdc63$"
 }
 }

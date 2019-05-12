@@ -2,7 +2,7 @@
 
 {
 	"filename": "background-bush",
-	"frame": {"x":105,"y":153,"w":120,"h":40},
+	"frame": {"x":244,"y":73,"w":120,"h":40},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":120,"h":40},
@@ -10,7 +10,7 @@
 },
 {
 	"filename": "background-cloud",
-	"frame": {"x":95,"y":91,"w":160,"h":60},
+	"frame": {"x":228,"y":6,"w":160,"h":60},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":160,"h":60},
@@ -18,7 +18,7 @@
 },
 {
 	"filename": "background-mountain",
-	"frame": {"x":85,"y":1,"w":200,"h":88},
+	"frame": {"x":6,"y":6,"w":200,"h":88},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":88},
@@ -26,7 +26,7 @@
 },
 {
 	"filename": "ball-1",
-	"frame": {"x":1,"y":173,"w":24,"h":24},
+	"frame": {"x":213,"y":83,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -34,7 +34,7 @@
 },
 {
 	"filename": "ball-2",
-	"frame": {"x":27,"y":173,"w":24,"h":24},
+	"frame": {"x":418,"y":6,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -42,7 +42,7 @@
 },
 {
 	"filename": "ball-3",
-	"frame": {"x":53,"y":173,"w":24,"h":24},
+	"frame": {"x":418,"y":37,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -50,7 +50,7 @@
 },
 {
 	"filename": "ball-4",
-	"frame": {"x":79,"y":173,"w":24,"h":24},
+	"frame": {"x":418,"y":68,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -58,7 +58,7 @@
 },
 {
 	"filename": "confettis-goomba-dark",
-	"frame": {"x":269,"y":91,"w":10,"h":10},
+	"frame": {"x":6,"y":101,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -66,7 +66,7 @@
 },
 {
 	"filename": "confettis-goomba-light",
-	"frame": {"x":257,"y":91,"w":10,"h":10},
+	"frame": {"x":23,"y":101,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -74,7 +74,7 @@
 },
 {
 	"filename": "ground",
-	"frame": {"x":227,"y":153,"w":40,"h":40},
+	"frame": {"x":371,"y":73,"w":40,"h":40},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":40},
@@ -82,35 +82,35 @@
 },
 {
 	"filename": "net",
-	"frame": {"x":85,"y":91,"w":8,"h":70},
+	"frame": {"x":213,"y":6,"w":8,"h":70},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":8,"h":70},
 	"sourceSize": {"w":8,"h":70}
 },
 {
-	"filename": "soccer-client-net",
-	"frame": {"x":1,"y":1,"w":40,"h":170},
+	"filename": "soccer-net",
+	"frame": {"x":395,"y":6,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":170},
-	"sourceSize": {"w":40,"h":170}
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "soccer-host-net",
-	"frame": {"x":43,"y":1,"w":40,"h":170},
+	"filename": "soccer-post",
+	"frame": {"x":40,"y":101,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":170},
-	"sourceSize": {"w":40,"h":170}
+	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
+	"sourceSize": {"w":10,"h":10}
 }],
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
 	"version": "1.0",
 	"image": "texture-atlas.png",
 	"format": "RGBA8888",
-	"size": {"w":286,"h":198},
+	"size": {"w":448,"h":119},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:739b565637b99dba0366dad716186edd:69ff5b5d74efd5c89eca3ea9e7724c7a:a973cd4a72d4c90ced76930eac7fdc63$"
+	"smartupdate": "$TexturePacker:SmartUpdate:965a2e1fc3e263dc3f00b7c4ad1d34ca:f7a04576b9354bcdc4d741aa9094f2cc:a973cd4a72d4c90ced76930eac7fdc63$"
 }
 }

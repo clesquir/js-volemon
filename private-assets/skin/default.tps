@@ -4,7 +4,7 @@
         <key>fileFormatVersion</key>
         <int>4</int>
         <key>texturePackerVersion</key>
-        <string>4.12.0</string>
+        <string>4.12.1</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -56,7 +56,7 @@
         <key>jxrCompressionLevel</key>
         <uint>0</uint>
         <key>ditherType</key>
-        <enum type="SettingsBase::DitherType">NearestNeighbour</enum>
+        <enum type="SettingsBase::DitherType">PngQuantLow</enum>
         <key>backgroundColor</key>
         <uint>0</uint>
         <key>libGdx</key>
@@ -70,7 +70,7 @@
             </struct>
         </struct>
         <key>shapePadding</key>
-        <uint>0</uint>
+        <uint>5</uint>
         <key>jpgQuality</key>
         <uint>80</uint>
         <key>pngOptimizationLevel</key>
@@ -82,9 +82,9 @@
         <key>atfFormats</key>
         <string></string>
         <key>textureFormat</key>
-        <enum type="SettingsBase::TextureFormat">png</enum>
+        <enum type="SettingsBase::TextureFormat">png8</enum>
         <key>borderPadding</key>
-        <uint>0</uint>
+        <uint>5</uint>
         <key>maxTextureSize</key>
         <QSize>
             <key>width</key>
@@ -204,6 +204,7 @@
             <key type="filename">default/confettis-red-3.png</key>
             <key type="filename">default/confettis-red-4.png</key>
             <key type="filename">default/confettis-red-5.png</key>
+            <key type="filename">default/soccer-post.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -242,17 +243,16 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">default/soccer-client-net.png</key>
-            <key type="filename">default/soccer-host-net.png</key>
+            <key type="filename">default/soccer-net.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>10,43,20,85</rect>
+                <rect>4,4,8,8</rect>
                 <key>scale9Paddings</key>
-                <rect>10,43,20,85</rect>
+                <rect>4,4,8,8</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -272,8 +272,8 @@
             <filename>default/confettis-red-5.png</filename>
             <filename>default/ground.png</filename>
             <filename>default/net.png</filename>
-            <filename>default/soccer-client-net.png</filename>
-            <filename>default/soccer-host-net.png</filename>
+            <filename>default/soccer-net.png</filename>
+            <filename>default/soccer-post.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

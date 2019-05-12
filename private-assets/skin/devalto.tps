@@ -56,7 +56,7 @@
         <key>jxrCompressionLevel</key>
         <uint>0</uint>
         <key>ditherType</key>
-        <enum type="SettingsBase::DitherType">NearestNeighbour</enum>
+        <enum type="SettingsBase::DitherType">PngQuantLow</enum>
         <key>backgroundColor</key>
         <uint>0</uint>
         <key>libGdx</key>
@@ -70,7 +70,7 @@
             </struct>
         </struct>
         <key>shapePadding</key>
-        <uint>0</uint>
+        <uint>5</uint>
         <key>jpgQuality</key>
         <uint>80</uint>
         <key>pngOptimizationLevel</key>
@@ -82,9 +82,9 @@
         <key>atfFormats</key>
         <string></string>
         <key>textureFormat</key>
-        <enum type="SettingsBase::TextureFormat">png</enum>
+        <enum type="SettingsBase::TextureFormat">png8</enum>
         <key>borderPadding</key>
-        <uint>0</uint>
+        <uint>5</uint>
         <key>maxTextureSize</key>
         <QSize>
             <key>width</key>
@@ -213,6 +213,7 @@
                 <false/>
             </struct>
             <key type="filename">devalto/confettis-logalto.png</key>
+            <key type="filename">devalto/soccer-post.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -251,17 +252,16 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">devalto/soccer-client-net.png</key>
-            <key type="filename">devalto/soccer-host-net.png</key>
+            <key type="filename">devalto/soccer-net.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>10,43,20,85</rect>
+                <rect>4,4,8,8</rect>
                 <key>scale9Paddings</key>
-                <rect>10,43,20,85</rect>
+                <rect>4,4,8,8</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -290,8 +290,8 @@
             <filename>devalto/confettis-logalto.png</filename>
             <filename>devalto/ground.png</filename>
             <filename>devalto/net.png</filename>
-            <filename>devalto/soccer-client-net.png</filename>
-            <filename>devalto/soccer-host-net.png</filename>
+            <filename>devalto/soccer-net.png</filename>
+            <filename>devalto/soccer-post.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

@@ -2,7 +2,7 @@
 
 {
 	"filename": "ball-1",
-	"frame": {"x":49,"y":1,"w":24,"h":24},
+	"frame": {"x":868,"y":6,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -10,7 +10,7 @@
 },
 {
 	"filename": "ball-2",
-	"frame": {"x":75,"y":1,"w":24,"h":24},
+	"frame": {"x":868,"y":37,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -18,7 +18,7 @@
 },
 {
 	"filename": "ball-3",
-	"frame": {"x":101,"y":1,"w":24,"h":24},
+	"frame": {"x":899,"y":6,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -26,7 +26,7 @@
 },
 {
 	"filename": "ball-4",
-	"frame": {"x":127,"y":1,"w":24,"h":24},
+	"frame": {"x":899,"y":37,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -34,7 +34,7 @@
 },
 {
 	"filename": "ball-5",
-	"frame": {"x":153,"y":1,"w":24,"h":24},
+	"frame": {"x":930,"y":6,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -42,7 +42,7 @@
 },
 {
 	"filename": "ball-6",
-	"frame": {"x":179,"y":1,"w":24,"h":24},
+	"frame": {"x":930,"y":37,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -50,7 +50,7 @@
 },
 {
 	"filename": "ball-7",
-	"frame": {"x":205,"y":1,"w":24,"h":24},
+	"frame": {"x":961,"y":6,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -58,7 +58,7 @@
 },
 {
 	"filename": "ball-8",
-	"frame": {"x":231,"y":1,"w":24,"h":24},
+	"frame": {"x":961,"y":37,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -66,7 +66,7 @@
 },
 {
 	"filename": "confettis-chateau-beard",
-	"frame": {"x":1,"y":1,"w":10,"h":10},
+	"frame": {"x":868,"y":68,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -74,7 +74,7 @@
 },
 {
 	"filename": "confettis-chateau-nipple",
-	"frame": {"x":13,"y":1,"w":10,"h":10},
+	"frame": {"x":885,"y":68,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -82,7 +82,7 @@
 },
 {
 	"filename": "confettis-juju-nipple",
-	"frame": {"x":25,"y":1,"w":10,"h":10},
+	"frame": {"x":902,"y":68,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -90,7 +90,7 @@
 },
 {
 	"filename": "confettis-kwak",
-	"frame": {"x":37,"y":1,"w":10,"h":10},
+	"frame": {"x":919,"y":68,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -98,7 +98,7 @@
 },
 {
 	"filename": "ground",
-	"frame": {"x":1,"y":73,"w":840,"h":70},
+	"frame": {"x":6,"y":6,"w":840,"h":70},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":840,"h":70},
@@ -106,35 +106,35 @@
 },
 {
 	"filename": "net",
-	"frame": {"x":257,"y":1,"w":8,"h":70},
+	"frame": {"x":853,"y":6,"w":8,"h":70},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":8,"h":70},
 	"sourceSize": {"w":8,"h":70}
 },
 {
-	"filename": "soccer-client-net",
-	"frame": {"x":843,"y":1,"w":40,"h":170},
+	"filename": "soccer-net",
+	"frame": {"x":992,"y":6,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":170},
-	"sourceSize": {"w":40,"h":170}
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
 },
 {
-	"filename": "soccer-host-net",
-	"frame": {"x":885,"y":1,"w":40,"h":170},
+	"filename": "soccer-post",
+	"frame": {"x":936,"y":68,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":170},
-	"sourceSize": {"w":40,"h":170}
+	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
+	"sourceSize": {"w":10,"h":10}
 }],
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
 	"version": "1.0",
 	"image": "texture-atlas.png",
 	"format": "RGBA8888",
-	"size": {"w":926,"h":172},
+	"size": {"w":1014,"h":84},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:fc9e5831f1d6e0b6273c4e6d7ed2472e:b2bb5d11b81cb8f5597e2a04eeb71be3:a973cd4a72d4c90ced76930eac7fdc63$"
+	"smartupdate": "$TexturePacker:SmartUpdate:21109e28f5e14ddbadf9450edaba625f:cf52ad89f1f555afbc04c7bc8feccdd0:a973cd4a72d4c90ced76930eac7fdc63$"
 }
 }

@@ -13,9 +13,9 @@ export default interface Skin {
 
 	netComponent(): { key: string, frame: string };
 
-	soccerHostNetComponent(): { key: string; frame: string };
+	soccerNetComponent(): { key: string; frame: string };
 
-	soccerClientNetComponent(): { key: string; frame: string };
+	soccerPostComponent(): { key: string; frame: string };
 
 	groundComponents(): { key: string, frame: string, height?: number }[];
 

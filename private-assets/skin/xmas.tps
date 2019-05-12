@@ -56,7 +56,7 @@
         <key>jxrCompressionLevel</key>
         <uint>0</uint>
         <key>ditherType</key>
-        <enum type="SettingsBase::DitherType">NearestNeighbour</enum>
+        <enum type="SettingsBase::DitherType">PngQuantLow</enum>
         <key>backgroundColor</key>
         <uint>0</uint>
         <key>libGdx</key>
@@ -70,7 +70,7 @@
             </struct>
         </struct>
         <key>shapePadding</key>
-        <uint>0</uint>
+        <uint>5</uint>
         <key>jpgQuality</key>
         <uint>80</uint>
         <key>pngOptimizationLevel</key>
@@ -82,9 +82,9 @@
         <key>atfFormats</key>
         <string></string>
         <key>textureFormat</key>
-        <enum type="SettingsBase::TextureFormat">png</enum>
+        <enum type="SettingsBase::TextureFormat">png8</enum>
         <key>borderPadding</key>
-        <uint>0</uint>
+        <uint>5</uint>
         <key>maxTextureSize</key>
         <QSize>
             <key>width</key>
@@ -248,17 +248,29 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">xmas/soccer-client-net.png</key>
-            <key type="filename">xmas/soccer-host-net.png</key>
+            <key type="filename">xmas/soccer-net.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>10,43,20,85</rect>
+                <rect>4,4,8,8</rect>
                 <key>scale9Paddings</key>
-                <rect>10,43,20,85</rect>
+                <rect>4,4,8,8</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">xmas/soccer-post.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>3,3,5,5</rect>
+                <key>scale9Paddings</key>
+                <rect>3,3,5,5</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -272,8 +284,8 @@
             <filename>xmas/confettis-4.png</filename>
             <filename>xmas/ground.png</filename>
             <filename>xmas/net.png</filename>
-            <filename>xmas/soccer-client-net.png</filename>
-            <filename>xmas/soccer-host-net.png</filename>
+            <filename>xmas/soccer-net.png</filename>
+            <filename>xmas/soccer-post.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
