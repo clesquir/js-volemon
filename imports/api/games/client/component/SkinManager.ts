@@ -102,6 +102,76 @@ export default class SkinManager {
 		scene.zIndexGroup.add(net);
 	}
 
+	createSoccerNetComponent(scene: MainScene) {
+		const hostNet = scene.game.add.tileSprite(
+			0,
+			this.gameConfiguration.height() - this.gameConfiguration.groundHeight() - this.gameConfiguration.soccerNetHeight(),
+			this.gameConfiguration.soccerNetWidth(),
+			this.gameConfiguration.soccerNetHeight(),
+			this.skin.soccerNetComponent().key,
+			this.skin.soccerNetComponent().frame
+		);
+		// @ts-ignore
+		hostNet.depth = DEPTH_LEVEL;
+		scene.zIndexGroup.add(hostNet);
+		const hostHorizontalPost = scene.game.add.tileSprite(
+			0,
+			this.gameConfiguration.height() - this.gameConfiguration.groundHeight() - this.gameConfiguration.soccerNetHeight(),
+			this.gameConfiguration.soccerNetWidth(),
+			this.gameConfiguration.soccerNetPostThickness(),
+			this.skin.soccerPostComponent().key,
+			this.skin.soccerPostComponent().frame
+		);
+		// @ts-ignore
+		hostHorizontalPost.depth = DEPTH_LEVEL;
+		scene.zIndexGroup.add(hostHorizontalPost);
+		const hostVerticalPost = scene.game.add.tileSprite(
+			this.gameConfiguration.soccerNetWidth() - this.gameConfiguration.soccerNetPostThickness(),
+			this.gameConfiguration.height() - this.gameConfiguration.groundHeight() - this.gameConfiguration.soccerNetHeight(),
+			this.gameConfiguration.soccerNetPostThickness(),
+			this.gameConfiguration.soccerNetHeight(),
+			this.skin.soccerPostComponent().key,
+			this.skin.soccerPostComponent().frame
+		);
+		// @ts-ignore
+		hostVerticalPost.depth = DEPTH_LEVEL;
+		scene.zIndexGroup.add(hostVerticalPost);
+
+		const clientNet = scene.game.add.tileSprite(
+			this.gameConfiguration.width() - this.gameConfiguration.soccerNetWidth(),
+			this.gameConfiguration.height() - this.gameConfiguration.groundHeight() - this.gameConfiguration.soccerNetHeight(),
+			this.gameConfiguration.soccerNetWidth(),
+			this.gameConfiguration.soccerNetHeight(),
+			this.skin.soccerNetComponent().key,
+			this.skin.soccerNetComponent().frame
+		);
+		// @ts-ignore
+		clientNet.depth = DEPTH_LEVEL;
+		scene.zIndexGroup.add(clientNet);
+		const clientHorizontalPost = scene.game.add.tileSprite(
+			this.gameConfiguration.width() - this.gameConfiguration.soccerNetWidth(),
+			this.gameConfiguration.height() - this.gameConfiguration.groundHeight() - this.gameConfiguration.soccerNetHeight(),
+			this.gameConfiguration.soccerNetWidth(),
+			this.gameConfiguration.soccerNetPostThickness(),
+			this.skin.soccerPostComponent().key,
+			this.skin.soccerPostComponent().frame
+		);
+		// @ts-ignore
+		clientHorizontalPost.depth = DEPTH_LEVEL;
+		scene.zIndexGroup.add(clientHorizontalPost);
+		const clientVerticalPost = scene.game.add.tileSprite(
+			this.gameConfiguration.width() - this.gameConfiguration.soccerNetWidth(),
+			this.gameConfiguration.height() - this.gameConfiguration.groundHeight() - this.gameConfiguration.soccerNetHeight(),
+			this.gameConfiguration.soccerNetPostThickness(),
+			this.gameConfiguration.soccerNetHeight(),
+			this.skin.soccerPostComponent().key,
+			this.skin.soccerPostComponent().frame
+		);
+		// @ts-ignore
+		clientVerticalPost.depth = DEPTH_LEVEL;
+		scene.zIndexGroup.add(clientVerticalPost);
+	}
+
 	createBallComponent(scene: MainScene): Phaser.Sprite {
 		const ballComponent = this.skin.ballComponent();
 

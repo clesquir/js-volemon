@@ -1,5 +1,4 @@
 import Skin from './Skin';
-import {Random} from 'meteor/random';
 
 export default class MarioBrosSkin implements Skin {
 	init() {
@@ -67,6 +66,20 @@ export default class MarioBrosSkin implements Skin {
 		return {
 			key: 'mario-bros-skin',
 			frame: 'net'
+		};
+	}
+
+	soccerNetComponent(): { key: string; frame: string } {
+		return {
+			key: 'mario-bros-skin',
+			frame: 'soccer-net'
+		};
+	}
+
+	soccerPostComponent(): { key: string; frame: string } {
+		return {
+			key: 'mario-bros-skin',
+			frame: 'soccer-post'
 		};
 	}
 

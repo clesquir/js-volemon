@@ -1,5 +1,4 @@
 import Skin from './Skin';
-import {Random} from 'meteor/random';
 
 export default class IndustrialSkin implements Skin {
 	init() {
@@ -47,6 +46,20 @@ export default class IndustrialSkin implements Skin {
 		return {
 			key: 'industrial-skin',
 			frame: 'net'
+		};
+	}
+
+	soccerNetComponent(): { key: string; frame: string } {
+		return {
+			key: 'industrial-skin',
+			frame: 'soccer-net'
+		};
+	}
+
+	soccerPostComponent(): { key: string; frame: string } {
+		return {
+			key: 'industrial-skin',
+			frame: 'soccer-post'
 		};
 	}
 

@@ -1,5 +1,4 @@
 import Skin from './Skin';
-import {Random} from 'meteor/random';
 
 export default class JujuWorldSkin implements Skin {
 	init() {
@@ -51,6 +50,20 @@ export default class JujuWorldSkin implements Skin {
 		return {
 			key: 'juju-world-skin',
 			frame: 'net'
+		};
+	}
+
+	soccerNetComponent(): { key: string; frame: string } {
+		return {
+			key: 'juju-world-skin',
+			frame: 'soccer-net'
+		};
+	}
+
+	soccerPostComponent(): { key: string; frame: string } {
+		return {
+			key: 'juju-world-skin',
+			frame: 'soccer-post'
 		};
 	}
 

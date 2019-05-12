@@ -49,6 +49,20 @@ export default class DefaultSkin implements Skin {
 		];
 	}
 
+	soccerNetComponent(): { key: string; frame: string } {
+		return {
+			key: 'default-skin',
+			frame: 'soccer-net'
+		};
+	}
+
+	soccerPostComponent(): { key: string; frame: string } {
+		return {
+			key: 'default-skin',
+			frame: 'soccer-post'
+		};
+	}
+
 	confettisComponent(): { clientFrames: string[]; hostFrames: string[]; key: string } {
 		return {
 			key: 'default-skin',

@@ -2,7 +2,7 @@
 
 {
 	"filename": "ball",
-	"frame": {"x":1,"y":73,"w":24,"h":24},
+	"frame": {"x":21,"y":6,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -10,7 +10,7 @@
 },
 {
 	"filename": "confettis-blue-1",
-	"frame": {"x":1,"y":99,"w":10,"h":10},
+	"frame": {"x":21,"y":60,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -18,7 +18,7 @@
 },
 {
 	"filename": "confettis-blue-2",
-	"frame": {"x":11,"y":1,"w":10,"h":10},
+	"frame": {"x":6,"y":83,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -26,7 +26,7 @@
 },
 {
 	"filename": "confettis-blue-3",
-	"frame": {"x":1,"y":111,"w":10,"h":10},
+	"frame": {"x":6,"y":100,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -34,7 +34,7 @@
 },
 {
 	"filename": "confettis-blue-4",
-	"frame": {"x":13,"y":99,"w":10,"h":10},
+	"frame": {"x":23,"y":77,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -42,7 +42,7 @@
 },
 {
 	"filename": "confettis-blue-5",
-	"frame": {"x":11,"y":13,"w":10,"h":10},
+	"frame": {"x":23,"y":94,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -50,7 +50,7 @@
 },
 {
 	"filename": "confettis-red-1",
-	"frame": {"x":13,"y":111,"w":10,"h":10},
+	"frame": {"x":44,"y":37,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -58,7 +58,7 @@
 },
 {
 	"filename": "confettis-red-2",
-	"frame": {"x":11,"y":25,"w":10,"h":10},
+	"frame": {"x":38,"y":60,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -66,7 +66,7 @@
 },
 {
 	"filename": "confettis-red-3",
-	"frame": {"x":11,"y":37,"w":10,"h":10},
+	"frame": {"x":40,"y":77,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -74,7 +74,7 @@
 },
 {
 	"filename": "confettis-red-4",
-	"frame": {"x":11,"y":49,"w":10,"h":10},
+	"frame": {"x":40,"y":94,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -82,7 +82,7 @@
 },
 {
 	"filename": "confettis-red-5",
-	"frame": {"x":11,"y":61,"w":10,"h":10},
+	"frame": {"x":23,"y":111,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -90,7 +90,7 @@
 },
 {
 	"filename": "ground",
-	"frame": {"x":23,"y":1,"w":5,"h":5},
+	"frame": {"x":6,"y":117,"w":5,"h":5},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":5,"h":5},
@@ -98,19 +98,35 @@
 },
 {
 	"filename": "net",
-	"frame": {"x":1,"y":1,"w":8,"h":70},
+	"frame": {"x":6,"y":6,"w":8,"h":70},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":8,"h":70},
 	"sourceSize": {"w":8,"h":70}
+},
+{
+	"filename": "soccer-net",
+	"frame": {"x":21,"y":37,"w":16,"h":16},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "soccer-post",
+	"frame": {"x":40,"y":111,"w":10,"h":10},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
+	"sourceSize": {"w":10,"h":10}
 }],
 "meta": {
-	"app": "http://www.codeandweb.com/texturepacker",
+	"app": "https://www.codeandweb.com/texturepacker",
 	"version": "1.0",
 	"image": "texture-atlas.png",
 	"format": "RGBA8888",
-	"size": {"w":29,"h":122},
+	"size": {"w":60,"h":128},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:4155b8e899f7c4eeb4f265636f319d7e:ba6ab1ac3e12135d699673d42b8dea14:a973cd4a72d4c90ced76930eac7fdc63$"
+	"smartupdate": "$TexturePacker:SmartUpdate:5e22c709de558ac5a0d3c180e0a5b3ff:d9152da0fbb6897cf5c4afcfdfc702d4:a973cd4a72d4c90ced76930eac7fdc63$"
 }
 }

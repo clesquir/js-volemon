@@ -8,11 +8,13 @@ export default class FieldLimits {
 	level: Level;
 	hasNet: boolean;
 
-	private readonly thickness: number = 128;
+	private readonly wallsThickness: number = 128;
 
 	hostGround: Phaser.Physics.P2.Body;
 	clientGround: Phaser.Physics.P2.Body;
 	ballGround: Phaser.Physics.P2.Body;
+	soccerNetHostPointZone: Phaser.Physics.P2.Body;
+	soccerNetClientPointZone: Phaser.Physics.P2.Body;
 
 	constructor(
 		scene: MainScene,
@@ -42,7 +44,7 @@ export default class FieldLimits {
 				),
 				this.gameConfiguration.height() / 2,
 				this.gameConfiguration.width(),
-				this.gameConfiguration.height() + this.thickness * 2
+				this.gameConfiguration.height() + this.wallsThickness * 2
 			),
 			this.level.materialLimit,
 			this.level.collisionCategoryHostLimit,
@@ -52,10 +54,10 @@ export default class FieldLimits {
 		//Wall
 		this.applyCollisionCategory(
 			this.addBound(
-				-this.thickness / 2,
+				-this.wallsThickness / 2,
 				this.gameConfiguration.height() / 2,
-				this.thickness,
-				this.gameConfiguration.height() + this.thickness * 2
+				this.wallsThickness,
+				this.gameConfiguration.height() + this.wallsThickness * 2
 			),
 			this.level.materialLimit,
 			this.level.collisionCategoryHostLimit,
@@ -65,9 +67,9 @@ export default class FieldLimits {
 		//Ground
 		this.hostGround = this.addBound(
 			this.gameConfiguration.width() / 2,
-			this.gameConfiguration.height() - this.gameConfiguration.groundHeight() + this.thickness / 2,
-			this.gameConfiguration.width() + this.thickness * 2,
-			this.thickness
+			this.gameConfiguration.height() - this.gameConfiguration.groundHeight() + this.wallsThickness / 2,
+			this.gameConfiguration.width() + this.wallsThickness * 2,
+			this.wallsThickness
 		);
 		this.applyCollisionCategory(
 			this.hostGround,
@@ -80,9 +82,9 @@ export default class FieldLimits {
 		this.applyCollisionCategory(
 			this.addBound(
 				this.gameConfiguration.width() / 2,
-				-this.thickness / 2,
-				this.gameConfiguration.width() + this.thickness * 2,
-				this.thickness
+				-this.wallsThickness / 2,
+				this.gameConfiguration.width() + this.wallsThickness * 2,
+				this.wallsThickness
 			),
 			this.level.materialLimit,
 			this.level.collisionCategoryHostLimit,
@@ -101,7 +103,7 @@ export default class FieldLimits {
 				),
 				this.gameConfiguration.height() / 2,
 				this.gameConfiguration.width(),
-				this.gameConfiguration.height() + this.thickness * 2
+				this.gameConfiguration.height() + this.wallsThickness * 2
 			),
 			this.level.materialLimit,
 			this.level.collisionCategoryClientLimit,
@@ -111,10 +113,10 @@ export default class FieldLimits {
 		//Wall
 		this.applyCollisionCategory(
 			this.addBound(
-				this.gameConfiguration.width() + this.thickness / 2,
+				this.gameConfiguration.width() + this.wallsThickness / 2,
 				this.gameConfiguration.height() / 2,
-				this.thickness,
-				this.gameConfiguration.height() + this.thickness * 2
+				this.wallsThickness,
+				this.gameConfiguration.height() + this.wallsThickness * 2
 			),
 			this.level.materialLimit,
 			this.level.collisionCategoryClientLimit,
@@ -124,9 +126,9 @@ export default class FieldLimits {
 		//Ground
 		this.clientGround = this.addBound(
 			this.gameConfiguration.width() / 2,
-			this.gameConfiguration.height() - this.gameConfiguration.groundHeight() + this.thickness / 2,
-			this.gameConfiguration.width() + this.thickness * 2,
-			this.thickness
+			this.gameConfiguration.height() - this.gameConfiguration.groundHeight() + this.wallsThickness / 2,
+			this.gameConfiguration.width() + this.wallsThickness * 2,
+			this.wallsThickness
 		);
 		this.applyCollisionCategory(
 			this.clientGround,
@@ -139,9 +141,9 @@ export default class FieldLimits {
 		this.applyCollisionCategory(
 			this.addBound(
 				this.gameConfiguration.width() / 2,
-				-this.thickness / 2,
-				this.gameConfiguration.width() + this.thickness * 2,
-				this.thickness
+				-this.wallsThickness / 2,
+				this.gameConfiguration.width() + this.wallsThickness * 2,
+				this.wallsThickness
 			),
 			this.level.materialLimit,
 			this.level.collisionCategoryClientLimit,
@@ -152,9 +154,9 @@ export default class FieldLimits {
 	private ballLimits() {
 		this.ballGround = this.addBound(
 			this.gameConfiguration.width() / 2,
-			this.gameConfiguration.height() - this.gameConfiguration.groundHeight() + this.thickness / 2,
-			this.gameConfiguration.width() + this.thickness * 2,
-			this.thickness
+			this.gameConfiguration.height() - this.gameConfiguration.groundHeight() + this.wallsThickness / 2,
+			this.gameConfiguration.width() + this.wallsThickness * 2,
+			this.wallsThickness
 		);
 		this.applyCollisionCategory(
 			this.ballGround,
@@ -163,11 +165,68 @@ export default class FieldLimits {
 			[this.level.collisionCategoryBall]
 		);
 
+		if (this.gameConfiguration.hasSoccerNet()) {
+			const soccerNetPointZoneWidth = this.gameConfiguration.soccerNetPointZoneWidth();
+			const soccerNetPointZoneHeight = this.gameConfiguration.soccerNetPointZoneHeight();
+			const soccerNetPointZoneY = this.gameConfiguration.height() - this.gameConfiguration.groundHeight() - (soccerNetPointZoneHeight / 2);
+			const soccerNetWidth = this.gameConfiguration.soccerNetWidth();
+			const soccerNetPostThickness = this.gameConfiguration.soccerNetPostThickness();
+			const soccerNetPostY = this.gameConfiguration.height() - this.gameConfiguration.groundHeight() - soccerNetPointZoneHeight - (soccerNetPostThickness / 2);
+			this.soccerNetHostPointZone = this.addBound(
+				soccerNetPointZoneWidth / 2,
+				soccerNetPointZoneY,
+				soccerNetPointZoneWidth,
+				soccerNetPointZoneHeight
+			);
+			this.applyCollisionCategory(
+				this.soccerNetHostPointZone,
+				this.level.materialLimit,
+				this.level.collisionCategoryBallLimit,
+				[this.level.collisionCategoryBall]
+			);
+			const soccerNetHostPost = this.addBound(
+				soccerNetWidth / 2,
+				soccerNetPostY,
+				soccerNetWidth,
+				soccerNetPostThickness
+			);
+			this.applyCollisionCategory(
+				soccerNetHostPost,
+				this.level.materialLimit,
+				this.level.collisionCategoryBallLimit,
+				[this.level.collisionCategoryBall]
+			);
+			this.soccerNetClientPointZone = this.addBound(
+				this.gameConfiguration.width() - soccerNetPointZoneWidth / 2,
+				soccerNetPointZoneY,
+				soccerNetPointZoneWidth,
+				soccerNetPointZoneHeight
+			);
+			this.applyCollisionCategory(
+				this.soccerNetClientPointZone,
+				this.level.materialLimit,
+				this.level.collisionCategoryBallLimit,
+				[this.level.collisionCategoryBall]
+			);
+			const soccerNetClientPost = this.addBound(
+				this.gameConfiguration.width() - soccerNetWidth / 2,
+				soccerNetPostY,
+				soccerNetWidth,
+				soccerNetPostThickness
+			);
+			this.applyCollisionCategory(
+				soccerNetClientPost,
+				this.level.materialLimit,
+				this.level.collisionCategoryBallLimit,
+				[this.level.collisionCategoryBall]
+			);
+		}
+
 		const ceiling = this.addBound(
 			this.gameConfiguration.width() / 2,
-			-this.thickness / 2,
-			this.gameConfiguration.width() + this.thickness * 2,
-			this.thickness
+			-this.wallsThickness / 2,
+			this.gameConfiguration.width() + this.wallsThickness * 2,
+			this.wallsThickness
 		);
 		this.applyCollisionCategory(
 			ceiling,
@@ -177,10 +236,10 @@ export default class FieldLimits {
 		);
 
 		const leftWall = this.addBound(
-			-this.thickness / 2,
+			-this.wallsThickness / 2,
 			this.gameConfiguration.height() / 2,
-			this.thickness,
-			this.gameConfiguration.height() + this.thickness * 2
+			this.wallsThickness,
+			this.gameConfiguration.height() + this.wallsThickness * 2
 		);
 		this.applyCollisionCategory(
 			leftWall,
@@ -190,10 +249,10 @@ export default class FieldLimits {
 		);
 
 		const rightWall = this.addBound(
-			this.gameConfiguration.width() + this.thickness / 2,
+			this.gameConfiguration.width() + this.wallsThickness / 2,
 			this.gameConfiguration.height() / 2,
-			this.thickness,
-			this.gameConfiguration.height() + this.thickness * 2
+			this.wallsThickness,
+			this.gameConfiguration.height() + this.wallsThickness * 2
 		);
 		this.applyCollisionCategory(
 			rightWall,
@@ -221,9 +280,9 @@ export default class FieldLimits {
 	private bonusLimits() {
 		const ground = this.addBound(
 			this.gameConfiguration.width() / 2,
-			this.gameConfiguration.height() - this.gameConfiguration.groundHeight() + this.thickness / 2,
-			this.gameConfiguration.width() + this.thickness * 2,
-			this.thickness
+			this.gameConfiguration.height() - this.gameConfiguration.groundHeight() + this.wallsThickness / 2,
+			this.gameConfiguration.width() + this.wallsThickness * 2,
+			this.wallsThickness
 		);
 		this.applyCollisionCategory(
 			ground,
@@ -234,9 +293,9 @@ export default class FieldLimits {
 
 		const ceiling = this.addBound(
 			this.gameConfiguration.width() / 2,
-			-this.thickness / 2,
-			this.gameConfiguration.width() + this.thickness * 2,
-			this.thickness
+			-this.wallsThickness / 2,
+			this.gameConfiguration.width() + this.wallsThickness * 2,
+			this.wallsThickness
 		);
 		this.applyCollisionCategory(
 			ceiling,
@@ -246,10 +305,10 @@ export default class FieldLimits {
 		);
 
 		const rightWall = this.addBound(
-			-this.thickness / 2,
+			-this.wallsThickness / 2,
 			this.gameConfiguration.height() / 2,
-			this.thickness,
-			this.gameConfiguration.height() + this.thickness * 2
+			this.wallsThickness,
+			this.gameConfiguration.height() + this.wallsThickness * 2
 		);
 		this.applyCollisionCategory(
 			rightWall,
@@ -259,10 +318,10 @@ export default class FieldLimits {
 		);
 
 		const leftWall = this.addBound(
-			this.gameConfiguration.width() + this.thickness / 2,
+			this.gameConfiguration.width() + this.wallsThickness / 2,
 			this.gameConfiguration.height() / 2,
-			this.thickness,
-			this.gameConfiguration.height() + this.thickness * 2
+			this.wallsThickness,
+			this.gameConfiguration.height() + this.wallsThickness * 2
 		);
 		this.applyCollisionCategory(
 			leftWall,

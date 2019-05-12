@@ -85,6 +85,8 @@ export default class Ball {
 
 		this.ballObject.body.setZeroVelocity();
 		this.ballObject.reset(x, this.gameConfiguration.ballInitialY());
+
+		this.scene.sortWorldComponents();
 	}
 
 	stopGame() {

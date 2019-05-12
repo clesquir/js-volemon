@@ -462,10 +462,6 @@ export default abstract class GameConfiguration {
 		);
 	}
 
-	groundHitEnabled(): boolean {
-		return true;
-	}
-
 	width(): number {
 		return this.levelConfiguration.width;
 	}
@@ -476,6 +472,42 @@ export default abstract class GameConfiguration {
 
 	groundHeight(): number {
 		return this.levelConfiguration.groundHeight;
+	}
+
+	groundHitEnabled(): boolean {
+		if (this.hasTournament() && this.tournamentMode.overridesGroundHitEnabled()) {
+			return this.tournamentMode.groundHitEnabled();
+		}
+
+		return true;
+	}
+
+	hasSoccerNet(): boolean {
+		if (this.hasTournament() && this.tournamentMode.overridesSoccerNetEnabled()) {
+			return this.tournamentMode.soccerNetEnabled();
+		}
+
+		return false;
+	}
+
+	soccerNetPointZoneWidth(): number {
+		return this.levelConfiguration.soccerNetPointZoneWidth;
+	}
+
+	soccerNetPointZoneHeight(): number {
+		return this.levelConfiguration.soccerNetPointZoneHeight;
+	}
+
+	soccerNetPostThickness(): number {
+		return this.levelConfiguration.soccerNetPostThickness;
+	}
+
+	soccerNetWidth(): number {
+		return this.levelConfiguration.soccerNetWidth;
+	}
+
+	soccerNetHeight(): number {
+		return this.levelConfiguration.soccerNetHeight;
 	}
 
 	netHeight(): number {

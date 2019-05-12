@@ -38,6 +38,14 @@ export default class Skin extends Dev {
 		);
 	}
 
+	overrideGame() {
+		super.overrideGame();
+
+		this.gameConfiguration.hasSoccerNet = () => {
+			return true;
+		};
+	}
+
 	start() {
 		super.start();
 

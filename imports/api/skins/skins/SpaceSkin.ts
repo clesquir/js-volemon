@@ -1,5 +1,4 @@
 import Skin from './Skin';
-import {Random} from 'meteor/random';
 
 export default class SpaceSkin implements Skin {
 	init() {
@@ -51,6 +50,20 @@ export default class SpaceSkin implements Skin {
 		return {
 			key: 'space-skin',
 			frame: 'net'
+		};
+	}
+
+	soccerNetComponent(): { key: string; frame: string } {
+		return {
+			key: 'space-skin',
+			frame: 'soccer-net'
+		};
+	}
+
+	soccerPostComponent(): { key: string; frame: string } {
+		return {
+			key: 'space-skin',
+			frame: 'soccer-post'
 		};
 	}
 

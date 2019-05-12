@@ -9,6 +9,7 @@ import './environment.html';
 /** @type {Environment}|null */
 let environment = null;
 const netEnabled = new ReactiveVar(true);
+const soccerNetEnabled = new ReactiveVar(false);
 const groundHitEnabled = new ReactiveVar(false);
 const ballHitCountEnabled = new ReactiveVar(false);
 const matchPointEnabled = new ReactiveVar(false);
@@ -17,6 +18,7 @@ const deucePointEnabled = new ReactiveVar(false);
 Template.environment.rendered = function() {
 	Session.set('dev.environment.currentMode', ONE_VS_ONE_GAME_MODE);
 	Session.set('dev.environment.hasNet', netEnabled.get());
+	Session.set('dev.environment.soccerNetEnabled', soccerNetEnabled.get());
 	Session.set('dev.environment.groundHitEnabled', groundHitEnabled.get());
 	Session.set('dev.environment.ballHitCountEnabled', groundHitEnabled.get());
 	Session.set('dev.environment.matchPointEnabled', groundHitEnabled.get());
@@ -40,6 +42,9 @@ Template.environment.helpers({
 	},
 	netEnabled: function() {
 		return netEnabled.get();
+	},
+	soccerNetEnabled: function() {
+		return soccerNetEnabled.get();
 	},
 	groundHitEnabled: function() {
 		return groundHitEnabled.get();
@@ -79,6 +84,15 @@ Template.environment.events({
 	'click [data-action="enable-disable-has-net"]': function() {
 		netEnabled.set(!netEnabled.get());
 		Session.set('dev.environment.hasNet', netEnabled.get());
+
+		environment.stop();
+		environment = new Environment();
+		environment.start();
+	},
+
+	'click [data-action="enable-disable-soccer-net"]': function() {
+		soccerNetEnabled.set(!soccerNetEnabled.get());
+		Session.set('dev.environment.soccerNetEnabled', soccerNetEnabled.get());
 
 		environment.stop();
 		environment = new Environment();

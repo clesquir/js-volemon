@@ -6,6 +6,7 @@ import RandomBonus from "../../bonus/RandomBonus";
 import LevelConfiguration from "../../levelConfiguration/LevelConfiguration";
 
 export default class Environment extends Dev {
+	soccerNetEnabled: boolean = false;
 	groundHitEnabled: boolean = false;
 	showBallHitCount: boolean = false;
 	isMatchPoint: boolean = false;
@@ -18,6 +19,7 @@ export default class Environment extends Dev {
 	}
 
 	beforeStart() {
+		this.soccerNetEnabled = Session.get('dev.environment.soccerNetEnabled');
 		this.groundHitEnabled = Session.get('dev.environment.groundHitEnabled');
 		this.showBallHitCount = Session.get('dev.environment.ballHitCountEnabled');
 		this.isMatchPoint = Session.get('dev.environment.matchPointEnabled');
@@ -30,6 +32,9 @@ export default class Environment extends Dev {
 
 		this.gameConfiguration.hasPlayerNetLimit = () => {
 			return Session.get('dev.environment.hasNet');
+		};
+		this.gameConfiguration.hasSoccerNet = () => {
+			return Session.get('dev.environment.soccerNetEnabled');
 		};
 		this.gameConfiguration.groundHitEnabled = () => {
 			return this.groundHitEnabled;
@@ -51,23 +56,8 @@ export default class Environment extends Dev {
 
 	createLevelComponents() {
 		this.mainScene.level.createGround();
+		this.mainScene.level.createSoccerNet();
 		this.mainScene.level.createFieldLimits(Session.get('dev.environment.hasNet'));
-	}
-
-	onBallHitScoreZone(ball: Ball) {
-		if (this.mainScene.gameResumed === true) {
-			this.mainScene.showBallHitPoint(
-				ball.x(),
-				ball.y(),
-				ball.diameter()
-			);
-
-			this.mainScene.gameResumed = false;
-
-			this.gameData.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
-			this.mainScene.level.shakeGround();
-			this.resumeOnTimerEnd();
-		}
 	}
 
 	killPlayer() {
