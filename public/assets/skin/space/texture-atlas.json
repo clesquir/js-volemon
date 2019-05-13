@@ -2,7 +2,7 @@
 
 {
 	"filename": "ball-1",
-	"frame": {"x":253,"y":246,"w":25,"h":25},
+	"frame": {"x":253,"y":290,"w":25,"h":25},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":25,"h":25},
@@ -10,7 +10,7 @@
 },
 {
 	"filename": "ball-2",
-	"frame": {"x":253,"y":278,"w":25,"h":25},
+	"frame": {"x":253,"y":322,"w":25,"h":25},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":25,"h":25},
@@ -18,7 +18,7 @@
 },
 {
 	"filename": "ball-3",
-	"frame": {"x":253,"y":310,"w":25,"h":25},
+	"frame": {"x":253,"y":354,"w":25,"h":25},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":25,"h":25},
@@ -42,10 +42,10 @@
 },
 {
 	"filename": "ground",
-	"frame": {"x":253,"y":213,"w":25,"h":26},
+	"frame": {"x":253,"y":213,"w":25,"h":70},
 	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":0,"y":0,"w":25,"h":26},
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":25,"h":70},
 	"sourceSize": {"w":25,"h":70}
 },
 {
@@ -58,7 +58,7 @@
 },
 {
 	"filename": "soccer-net",
-	"frame": {"x":253,"y":342,"w":16,"h":16},
+	"frame": {"x":253,"y":386,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
@@ -79,6 +79,6 @@
 	"format": "RGBA8888",
 	"size": {"w":284,"h":417},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:9b1c7807f899cfee60c35fca5d9a542a:d80ed49eed7c725b86ab74b14e044f5a:a973cd4a72d4c90ced76930eac7fdc63$"
+	"smartupdate": "$TexturePacker:SmartUpdate:241c499ab1871a728b72aa92cbd25326:a34153daaed248d7a33ec1489964d33c:a973cd4a72d4c90ced76930eac7fdc63$"
 }
 }
