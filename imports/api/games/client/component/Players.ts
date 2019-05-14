@@ -97,6 +97,26 @@ export default class Players {
 		);
 	}
 
+	freeze() {
+		for (let key of this.getPlayerKeys()) {
+			const player = this.getPlayerFromKey(key);
+
+			if (player) {
+				player.freeze();
+			}
+		}
+	}
+
+	unfreeze() {
+		for (let key of this.getPlayerKeys()) {
+			const player = this.getPlayerFromKey(key);
+
+			if (player) {
+				player.unfreeze();
+			}
+		}
+	}
+
 	moveClientPlayer(data: PositionData) {
 		if (data.killed) {
 			return;

@@ -392,7 +392,9 @@ export default class MainScene {
 	}
 
 	private pauseGame() {
+		this.gameResumed = false;
 		this.ball.freeze();
+		this.players.freeze();
 	}
 
 	private stopGame() {
@@ -403,6 +405,7 @@ export default class MainScene {
 
 	private resumeGame() {
 		this.ball.unfreeze();
+		this.players.unfreeze();
 		this.gameResumed = true;
 	}
 
