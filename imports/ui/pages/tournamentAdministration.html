@@ -79,13 +79,18 @@
 					</div>
 
 					<div class="splitted-configuration">
+						{{> numberSwitch id="level-width" label="Level width" default="1v1: 840, 2v2: 1020" isOn=(modeOverridden "overriddenLevelWidth") value=(modeOverriddenValue "overriddenLevelWidth") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="level-height" label="Level height" default="1v1: 560, 2v2: 680" isOn=(modeOverridden "overriddenLevelHeight") value=(modeOverriddenValue "overriddenLevelHeight") isReadOnly=(canOnlyViewTournament tournament)}}
+					</div>
+
+					<div class="splitted-configuration">
 						{{> numberSwitch id="net-width" label="Net width" default="8" isOn=(modeOverridden "overriddenNetWidth") value=(modeOverriddenValue "overriddenNetWidth") isReadOnly=(canOnlyViewTournament tournament)}}
 						{{> numberSwitch id="net-height" label="Net height" default="70" isOn=(modeOverridden "overriddenNetHeight") value=(modeOverriddenValue "overriddenNetHeight") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<div class="splitted-configuration">
-						{{> numberSwitch id="level-width" label="Level width" default="1v1: 840, 2v2: 1020" isOn=(modeOverridden "overriddenLevelWidth") value=(modeOverriddenValue "overriddenLevelWidth") isReadOnly=(canOnlyViewTournament tournament)}}
-						{{> numberSwitch id="level-height" label="Level height" default="1v1: 560, 2v2: 680" isOn=(modeOverridden "overriddenLevelHeight") value=(modeOverriddenValue "overriddenLevelHeight") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="soccer-net-height" label="Soccer net height" default="160" isOn=(modeOverridden "overriddenSoccerNetHeight") value=(modeOverriddenValue "overriddenSoccerNetHeight") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="soccer-net-distance-from-ground" label="Soccer net distance from ground" default="0" isOn=(modeOverridden "overriddenSoccerNetDistanceFromGround") value=(modeOverriddenValue "overriddenSoccerNetDistanceFromGround") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<div class="splitted-configuration">

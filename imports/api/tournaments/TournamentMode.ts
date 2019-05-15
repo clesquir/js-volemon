@@ -1,6 +1,18 @@
 export default class TournamentMode {
 	overriddenWorldGravity;
 	overriddenWorldRestitution;
+	overriddenLevelWidth;
+	overriddenLevelHeight;
+	overriddenNetWidth;
+	overriddenNetHeight;
+	overriddenSoccerNetHeight;
+	overriddenSoccerNetDistanceFromGround;
+	overriddenGroundHitEnabled;
+	overriddenSoccerNetEnabled;
+	overriddenHasPlayerNetLimit;
+	overriddenCollidesWithTeammate;
+	overriddenCollidesWithOpponent;
+
 	overriddenMaximumBonusesOnScreen;
 	overriddenBonusSpawnMinimumFrequence;
 	overriddenBonusSpawnInitialMinimumFrequence;
@@ -49,10 +61,7 @@ export default class TournamentMode {
 	overriddenOpponentPlayerShape;
 	overriddenIsHiddenToHimself;
 	overriddenIsHiddenToOpponent;
-	overriddenNetWidth;
-	overriddenNetHeight;
-	overriddenLevelWidth;
-	overriddenLevelHeight;
+
 	overriddenPlayerXVelocity;
 	overriddenPlayerYVelocity;
 	overriddenPlayerDropshotEnabled;
@@ -62,11 +71,6 @@ export default class TournamentMode {
 	overriddenPlayerMaximumBallHit;
 	overriddenTeamMaximumBallHit;
 	overriddenForcePracticeWithComputer;
-	overriddenGroundHitEnabled;
-	overriddenSoccerNetEnabled;
-	overriddenHasPlayerNetLimit;
-	overriddenCollidesWithTeammate;
-	overriddenCollidesWithOpponent;
 
 	overridesWorldGravity(): boolean {
 		return this.overriddenWorldGravity !== undefined;
@@ -393,22 +397,6 @@ export default class TournamentMode {
 		return parseInt(this.overriddenIsHiddenToOpponent) === 1;
 	}
 
-	overridesNetWidth(): boolean {
-		return this.overriddenNetWidth !== undefined;
-	}
-
-	netWidth(): number {
-		return parseInt(this.overriddenNetWidth);
-	}
-
-	overridesNetHeight(): boolean {
-		return this.overriddenNetHeight !== undefined;
-	}
-
-	netHeight(): number {
-		return parseInt(this.overriddenNetHeight);
-	}
-
 	overridesLevelSize(): boolean {
 		return this.overridesLevelWidth() || this.overridesLevelHeight();
 	}
@@ -427,6 +415,38 @@ export default class TournamentMode {
 
 	levelHeight(): number {
 		return parseInt(this.overriddenLevelHeight);
+	}
+
+	overridesNetWidth(): boolean {
+		return this.overriddenNetWidth !== undefined;
+	}
+
+	netWidth(): number {
+		return parseInt(this.overriddenNetWidth);
+	}
+
+	overridesNetHeight(): boolean {
+		return this.overriddenNetHeight !== undefined;
+	}
+
+	netHeight(): number {
+		return parseInt(this.overriddenNetHeight);
+	}
+
+	overridesSoccerNetHeight(): boolean {
+		return this.overriddenSoccerNetHeight !== undefined;
+	}
+
+	soccerNetHeight(): number {
+		return parseInt(this.overriddenSoccerNetHeight);
+	}
+
+	overridesSoccerNetDistanceFromGround(): boolean {
+		return this.overriddenSoccerNetDistanceFromGround !== undefined;
+	}
+
+	soccerNetDistanceFromGround(): number {
+		return parseInt(this.overriddenSoccerNetDistanceFromGround);
 	}
 
 	overridesPlayerXVelocity(): boolean {
@@ -547,6 +567,18 @@ export default class TournamentMode {
 
 		tournamentMode.overriddenWorldGravity = mode.overriddenWorldGravity;
 		tournamentMode.overriddenWorldRestitution = mode.overriddenWorldRestitution;
+		tournamentMode.overriddenNetWidth = mode.overriddenNetWidth;
+		tournamentMode.overriddenNetHeight = mode.overriddenNetHeight;
+		tournamentMode.overriddenLevelWidth = mode.overriddenLevelWidth;
+		tournamentMode.overriddenLevelHeight = mode.overriddenLevelHeight;
+		tournamentMode.overriddenSoccerNetHeight = mode.overriddenSoccerNetHeight;
+		tournamentMode.overriddenSoccerNetDistanceFromGround = mode.overriddenSoccerNetDistanceFromGround;
+		tournamentMode.overriddenGroundHitEnabled = mode.overriddenGroundHitEnabled;
+		tournamentMode.overriddenSoccerNetEnabled = mode.overriddenSoccerNetEnabled;
+		tournamentMode.overriddenHasPlayerNetLimit = mode.overriddenHasPlayerNetLimit;
+		tournamentMode.overriddenCollidesWithTeammate = mode.overriddenCollidesWithTeammate;
+		tournamentMode.overriddenCollidesWithOpponent = mode.overriddenCollidesWithOpponent;
+
 		tournamentMode.overriddenMaximumBonusesOnScreen = mode.overriddenMaximumBonusesOnScreen;
 		tournamentMode.overriddenBonusSpawnMinimumFrequence = mode.overriddenBonusSpawnMinimumFrequence;
 		tournamentMode.overriddenBonusSpawnInitialMinimumFrequence = mode.overriddenBonusSpawnInitialMinimumFrequence;
@@ -595,10 +627,6 @@ export default class TournamentMode {
 		tournamentMode.overriddenOpponentPlayerShape = mode.overriddenOpponentPlayerShape;
 		tournamentMode.overriddenIsHiddenToHimself = mode.overriddenIsHiddenToHimself;
 		tournamentMode.overriddenIsHiddenToOpponent = mode.overriddenIsHiddenToOpponent;
-		tournamentMode.overriddenNetWidth = mode.overriddenNetWidth;
-		tournamentMode.overriddenNetHeight = mode.overriddenNetHeight;
-		tournamentMode.overriddenLevelWidth = mode.overriddenLevelWidth;
-		tournamentMode.overriddenLevelHeight = mode.overriddenLevelHeight;
 		tournamentMode.overriddenPlayerXVelocity = mode.overriddenPlayerXVelocity;
 		tournamentMode.overriddenPlayerYVelocity = mode.overriddenPlayerYVelocity;
 		tournamentMode.overriddenPlayerDropshotEnabled = mode.overriddenPlayerDropshotEnabled;
@@ -608,11 +636,6 @@ export default class TournamentMode {
 		tournamentMode.overriddenPlayerMaximumBallHit = mode.overriddenPlayerMaximumBallHit;
 		tournamentMode.overriddenTeamMaximumBallHit = mode.overriddenTeamMaximumBallHit;
 		tournamentMode.overriddenForcePracticeWithComputer = mode.overriddenForcePracticeWithComputer;
-		tournamentMode.overriddenGroundHitEnabled = mode.overriddenGroundHitEnabled;
-		tournamentMode.overriddenSoccerNetEnabled = mode.overriddenSoccerNetEnabled;
-		tournamentMode.overriddenHasPlayerNetLimit = mode.overriddenHasPlayerNetLimit;
-		tournamentMode.overriddenCollidesWithTeammate = mode.overriddenCollidesWithTeammate;
-		tournamentMode.overriddenCollidesWithOpponent = mode.overriddenCollidesWithOpponent;
 
 		return tournamentMode;
 	}

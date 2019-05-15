@@ -167,11 +167,22 @@ export default class FieldLimits {
 
 		if (this.gameConfiguration.hasSoccerNet()) {
 			const soccerNetPointZoneWidth = this.gameConfiguration.soccerNetPointZoneWidth();
-			const soccerNetPointZoneHeight = this.gameConfiguration.soccerNetPointZoneHeight();
-			const soccerNetPointZoneY = this.gameConfiguration.height() - this.gameConfiguration.groundHeight() - (soccerNetPointZoneHeight / 2);
+			const soccerNetPointZoneHeight = this.gameConfiguration.soccerNetHeight();
+			const soccerNetPointZoneY = this.gameConfiguration.height() -
+				this.gameConfiguration.groundHeight() -
+				this.gameConfiguration.soccerNetDistanceFromGround() -
+				(soccerNetPointZoneHeight / 2);
 			const soccerNetWidth = this.gameConfiguration.soccerNetWidth();
 			const soccerNetPostThickness = this.gameConfiguration.soccerNetPostThickness();
-			const soccerNetPostY = this.gameConfiguration.height() - this.gameConfiguration.groundHeight() - soccerNetPointZoneHeight - (soccerNetPostThickness / 2);
+			const soccerNetTopPostY = this.gameConfiguration.height() -
+				this.gameConfiguration.groundHeight() -
+				this.gameConfiguration.soccerNetDistanceFromGround() -
+				soccerNetPointZoneHeight -
+				(soccerNetPostThickness / 2);
+			const soccerNetBottomPostY = this.gameConfiguration.height() -
+				this.gameConfiguration.groundHeight() -
+				this.gameConfiguration.soccerNetDistanceFromGround() +
+				(soccerNetPostThickness / 2);
 			this.soccerNetHostPointZone = this.addBound(
 				soccerNetPointZoneWidth / 2,
 				soccerNetPointZoneY,
@@ -184,18 +195,32 @@ export default class FieldLimits {
 				this.level.collisionCategoryBallLimit,
 				[this.level.collisionCategoryBall]
 			);
-			const soccerNetHostPost = this.addBound(
+			const soccerNetHostTopPost = this.addBound(
 				soccerNetWidth / 2,
-				soccerNetPostY,
+				soccerNetTopPostY,
 				soccerNetWidth,
 				soccerNetPostThickness
 			);
 			this.applyCollisionCategory(
-				soccerNetHostPost,
+				soccerNetHostTopPost,
 				this.level.materialLimit,
 				this.level.collisionCategoryBallLimit,
 				[this.level.collisionCategoryBall]
 			);
+			if (this.gameConfiguration.hasSoccerNetBottomPost()) {
+				const soccerNetHostBottomPost = this.addBound(
+					soccerNetWidth / 2,
+					soccerNetBottomPostY,
+					soccerNetWidth,
+					soccerNetPostThickness
+				);
+				this.applyCollisionCategory(
+					soccerNetHostBottomPost,
+					this.level.materialLimit,
+					this.level.collisionCategoryBallLimit,
+					[this.level.collisionCategoryBall]
+				);
+			}
 			this.soccerNetClientPointZone = this.addBound(
 				this.gameConfiguration.width() - soccerNetPointZoneWidth / 2,
 				soccerNetPointZoneY,
@@ -208,18 +233,32 @@ export default class FieldLimits {
 				this.level.collisionCategoryBallLimit,
 				[this.level.collisionCategoryBall]
 			);
-			const soccerNetClientPost = this.addBound(
+			const soccerNetClientTopPost = this.addBound(
 				this.gameConfiguration.width() - soccerNetWidth / 2,
-				soccerNetPostY,
+				soccerNetTopPostY,
 				soccerNetWidth,
 				soccerNetPostThickness
 			);
 			this.applyCollisionCategory(
-				soccerNetClientPost,
+				soccerNetClientTopPost,
 				this.level.materialLimit,
 				this.level.collisionCategoryBallLimit,
 				[this.level.collisionCategoryBall]
 			);
+			if (this.gameConfiguration.hasSoccerNetBottomPost()) {
+				const soccerNetClientBottomPost = this.addBound(
+					this.gameConfiguration.width() - soccerNetWidth / 2,
+					soccerNetBottomPostY,
+					soccerNetWidth,
+					soccerNetPostThickness
+				);
+				this.applyCollisionCategory(
+					soccerNetClientBottomPost,
+					this.level.materialLimit,
+					this.level.collisionCategoryBallLimit,
+					[this.level.collisionCategoryBall]
+				);
+			}
 		}
 
 		const ceiling = this.addBound(

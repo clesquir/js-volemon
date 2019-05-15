@@ -205,6 +205,20 @@ const canSaveTournament = function(tournament) {
 const modeOptions = function() {
 	const mode = {};
 
+	addToMode(mode, 'world-gravity', 'overriddenWorldGravity');
+	addToMode(mode, 'world-restitution', 'overriddenWorldRestitution');
+	addToMode(mode, 'level-width', 'overriddenLevelWidth');
+	addToMode(mode, 'level-height', 'overriddenLevelHeight');
+	addToMode(mode, 'net-width', 'overriddenNetWidth');
+	addToMode(mode, 'net-height', 'overriddenNetHeight');
+	addToMode(mode, 'soccer-net-height', 'overriddenSoccerNetHeight');
+	addToMode(mode, 'soccer-net-distance-from-ground', 'overriddenSoccerNetDistanceFromGround');
+	addToMode(mode, 'ground-hit-enabled', 'overriddenGroundHitEnabled');
+	addToMode(mode, 'soccer-net-enabled', 'overriddenSoccerNetEnabled');
+	addToMode(mode, 'has-player-net-limit', 'overriddenHasPlayerNetLimit');
+	addToMode(mode, 'collides-with-teammate', 'overriddenCollidesWithTeammate');
+	addToMode(mode, 'collides-with-opponent', 'overriddenCollidesWithOpponent');
+
 	addToMode(mode, 'available-bonuses', 'overriddenAvailableBonuses');
 	addToMode(mode, 'available-bonuses-for-random', 'overriddenAvailableBonusesForRandom');
 	addToMode(mode, 'has-bonuses', 'overriddenHasBonuses');
@@ -253,18 +267,6 @@ const modeOptions = function() {
 	addToMode(mode, 'player-maximum-ball-hit', 'overriddenPlayerMaximumBallHit');
 	addToMode(mode, 'team-maximum-ball-hit', 'overriddenTeamMaximumBallHit');
 
-	addToMode(mode, 'net-width', 'overriddenNetWidth');
-	addToMode(mode, 'net-height', 'overriddenNetHeight');
-	addToMode(mode, 'level-width', 'overriddenLevelWidth');
-	addToMode(mode, 'level-height', 'overriddenLevelHeight');
-	addToMode(mode, 'ground-hit-enabled', 'overriddenGroundHitEnabled');
-	addToMode(mode, 'soccer-net-enabled', 'overriddenSoccerNetEnabled');
-	addToMode(mode, 'has-player-net-limit', 'overriddenHasPlayerNetLimit');
-	addToMode(mode, 'collides-with-teammate', 'overriddenCollidesWithTeammate');
-	addToMode(mode, 'collides-with-opponent', 'overriddenCollidesWithOpponent');
-
-	addToMode(mode, 'world-gravity', 'overriddenWorldGravity');
-	addToMode(mode, 'world-restitution', 'overriddenWorldRestitution');
 	addToMode(mode, 'player-x-velocity', 'overriddenPlayerXVelocity');
 	addToMode(mode, 'player-y-velocity', 'overriddenPlayerYVelocity');
 	addToMode(mode, 'player-dropshot-enabled', 'overriddenPlayerDropshotEnabled');

@@ -19,12 +19,12 @@ export const TournamentGameController = RouteController.extend({
 	},
 	data: function() {
 		const game = Games.findOne(this.params.gameId);
-		let eloScores;
+		let eloScores = EloScores.find({gameId: this.params.gameId});
 
-		if (isTwoVersusTwoGameMode(game.gameMode)) {
-			eloScores = TeamEloScores.find({gameId: this.params.gameId});
-		} else {
-			eloScores = EloScores.find({gameId: this.params.gameId});
+		if (game) {
+			if (isTwoVersusTwoGameMode(game.gameMode)) {
+				eloScores = TeamEloScores.find({gameId: this.params.gameId});
+			}
 		}
 
 		return {

@@ -474,6 +474,22 @@ export default abstract class GameConfiguration {
 		return this.levelConfiguration.groundHeight;
 	}
 
+	netWidth(): number {
+		if (this.hasTournament() && this.tournamentMode.overridesNetWidth()) {
+			return this.tournamentMode.netWidth();
+		}
+
+		return this.levelConfiguration.netWidth;
+	}
+
+	netHeight(): number {
+		if (this.hasTournament() && this.tournamentMode.overridesNetHeight()) {
+			return this.tournamentMode.netHeight();
+		}
+
+		return this.levelConfiguration.netHeight;
+	}
+
 	groundHitEnabled(): boolean {
 		if (this.hasTournament() && this.tournamentMode.overridesGroundHitEnabled()) {
 			return this.tournamentMode.groundHitEnabled();
@@ -494,10 +510,6 @@ export default abstract class GameConfiguration {
 		return this.levelConfiguration.soccerNetPointZoneWidth;
 	}
 
-	soccerNetPointZoneHeight(): number {
-		return this.levelConfiguration.soccerNetPointZoneHeight;
-	}
-
 	soccerNetPostThickness(): number {
 		return this.levelConfiguration.soccerNetPostThickness;
 	}
@@ -507,23 +519,23 @@ export default abstract class GameConfiguration {
 	}
 
 	soccerNetHeight(): number {
+		if (this.hasTournament() && this.tournamentMode.overridesSoccerNetHeight()) {
+			return this.tournamentMode.soccerNetHeight();
+		}
+
 		return this.levelConfiguration.soccerNetHeight;
 	}
 
-	netHeight(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesNetHeight()) {
-			return this.tournamentMode.netHeight();
+	soccerNetDistanceFromGround(): number {
+		if (this.hasTournament() && this.tournamentMode.overridesSoccerNetDistanceFromGround()) {
+			return this.tournamentMode.soccerNetDistanceFromGround();
 		}
 
-		return this.levelConfiguration.netHeight;
+		return 0;
 	}
 
-	netWidth(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesNetWidth()) {
-			return this.tournamentMode.netWidth();
-		}
-
-		return this.levelConfiguration.netWidth;
+	hasSoccerNetBottomPost(): boolean {
+		return this.soccerNetDistanceFromGround() > 0;
 	}
 
 	playerWidth(): number {
