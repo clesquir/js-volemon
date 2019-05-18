@@ -82,7 +82,7 @@ export default class Players {
 		for (let key of this.getPlayerKeys()) {
 			const player = this.getPlayerFromKey(key);
 
-			if (player && this.gameData.isUserCreator() && player.isFrozen) {
+			if (player && player.isFrozen) {
 				player.freeze();
 			}
 		}

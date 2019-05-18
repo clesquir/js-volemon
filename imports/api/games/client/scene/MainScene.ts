@@ -369,13 +369,13 @@ export default class MainScene {
 	}
 
 	private resumeOnTimerEnd() {
-		this.pauseGame();
-
 		if (this.gameData.hasGameStatusEndedWithAWinner()) {
+			this.pauseGame();
 			this.onGameEnd();
 		} else if (this.gameIsOnGoing()) {
 			this.bonuses.reset();
 			this.resetPlayersAndBall();
+			this.pauseGame();
 
 			this.artificialIntelligence.startPoint();
 			this.startCountdownTimer();
