@@ -150,7 +150,8 @@ Template.statistics.helpers({
 		if (Session.get(statisticName)) {
 			if (Object.keys(Session.get(statisticName)).length > 0) {
 				return 'Game date: ' + moment(Session.get(statisticName).startedAt).format('YYYY-MM-DD HH:mm') + '<br />' +
-					'Opponent: ' + Session.get(statisticName).playerName;
+					'Teammates: ' + Session.get(statisticName).teammateNames + '<br />' +
+					'Opponents: ' + Session.get(statisticName).opponentNames;
 			} else {
 				return '';
 			}

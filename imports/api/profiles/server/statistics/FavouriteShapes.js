@@ -35,12 +35,17 @@ export default class FavouriteShapes {
 	 * @param tournamentId
 	 */
 	static players(userId, tournamentId) {
+		const query = {
+			'players.id': userId,
+			status: {$in: [GAME_STATUS_FINISHED, GAME_STATUS_FORFEITED]}
+		};
+
+		if (tournamentId) {
+			query.tournamentId = tournamentId;
+		}
+
 		const games = Games.find(
-			{
-				'players.id': userId,
-				tournamentId: tournamentId,
-				status: {$in: [GAME_STATUS_FINISHED, GAME_STATUS_FORFEITED]}
-			},
+			query,
 			{
 				fields: {'players.id': 1, 'players.shape': 1, 'players.selectedShape': 1}
 			}

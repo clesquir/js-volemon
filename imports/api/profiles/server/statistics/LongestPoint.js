@@ -1,5 +1,5 @@
+import {opponentNames, teammateNames} from '/imports/api/games/games';
 import {Games} from '/imports/api/games/games.js';
-import {Players} from '/imports/api/games/players.js';
 import {GAME_STATUS_FINISHED} from '/imports/api/games/statusConstants.js';
 
 export default class LongestPoint {
@@ -16,26 +16,26 @@ export default class LongestPoint {
 
 		const games = Games.find(
 			query,
-			{fields: {_id: 1, pointsDuration: 1, startedAt: 1}}
+			{fields: {_id: 1, pointsDuration: 1, startedAt: 1, players: 1}}
 		);
 
 		let data = {};
 		games.forEach((game) => {
 			for (let pointDuration of game.pointsDuration) {
 				if (!data.duration || pointDuration > data.duration) {
+					const teammates = teammateNames(game, userId);
+					const opponents = opponentNames(game, userId);
+
 					data = {
 						gameId: game._id,
 						startedAt: game.startedAt,
-						duration: pointDuration
+						duration: pointDuration,
+						teammateNames: teammates.length > 0 ? teammates.join(' / ') : '-',
+						opponentNames: opponents.length > 0 ? opponents.join(' / ') : '-'
 					};
 				}
 			}
 		});
-
-		if (data.gameId) {
-			const player = Players.findOne({userId: {$ne: userId}, gameId: data.gameId});
-			data.playerName = player ? player.name : '-';
-		}
 
 		return data;
 	}

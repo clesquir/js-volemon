@@ -1,5 +1,5 @@
+import {opponentNames, teammateNames} from '/imports/api/games/games';
 import {Games} from '/imports/api/games/games.js';
-import {Players} from '/imports/api/games/players.js';
 import {GAME_STATUS_FINISHED} from '/imports/api/games/statusConstants.js';
 
 export default class LongestGame {
@@ -19,19 +19,21 @@ export default class LongestGame {
 			{
 				sort: [['gameDuration', 'desc']],
 				limit: 1,
-				fields: {_id: 1, startedAt: 1, gameDuration: 1}
+				fields: {_id: 1, startedAt: 1, gameDuration: 1, players: 1}
 			}
 		);
 
 		let data = {};
 		games.forEach((game) => {
-			const player = Players.findOne({userId: {$ne: userId}, gameId: game._id});
+			const teammates = teammateNames(game, userId);
+			const opponents = opponentNames(game, userId);
 
 			data = {
 				gameId: game._id,
 				startedAt: game.startedAt,
 				duration: game.gameDuration,
-				playerName: player ? player.name : '-'
+				teammateNames: teammates.length > 0 ? teammates.join(' / ') : '-',
+				opponentNames: opponents.length > 0 ? opponents.join(' / ') : '-'
 			};
 		});
 
