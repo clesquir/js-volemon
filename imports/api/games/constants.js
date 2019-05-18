@@ -55,12 +55,10 @@ export const ONE_VS_COMPUTER_GAME_MODE = '1vsCPU';
 export const ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE = '1vsMLCPU';
 export const ONE_VS_ONE_GAME_MODE = '1vs1';
 export const TWO_VS_TWO_GAME_MODE = '2vs2';
-export const TWO_VS_TWO_HUMAN_CPU_GAME_MODE = '2vs2-human-CPU';
 export const TOURNAMENT_GAME_SELECTION = 'tournament';
 
 export const isTwoVersusTwoGameMode = function(gameMode) {
 	return (
-		gameMode === TWO_VS_TWO_GAME_MODE ||
-		gameMode === TWO_VS_TWO_HUMAN_CPU_GAME_MODE
+		gameMode === TWO_VS_TWO_GAME_MODE
 	);
 };

@@ -1,6 +1,6 @@
 import MatchMakingGameConfiguration from '/imports/api/games/configuration/MatchMakingGameConfiguration';
 import {Games} from '/imports/api/games/games.js';
-import EloMatchMaker from '/imports/api/games/server/matchMaking/EloMatchMaker.js';
+import MatchMakerFactory from '/imports/api/games/server/matchMaking/MatchMakerFactory';
 import {PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
@@ -50,7 +50,7 @@ Meteor.methods({
 	addComputerToMatch: function(modeSelection, tournamentId) {
 		//Allow 1s before adding another CPU
 		if (computerAdded[modeSelection + '_' + tournamentId] === undefined) {
-			const matchMaker = new EloMatchMaker();
+			const matchMaker = MatchMakerFactory.fromConfiguration('random');
 
 			matchMaker.subscribe({id: 'CPU', name: 'CPU'}, modeSelection, tournamentId);
 
@@ -64,7 +64,7 @@ Meteor.methods({
 	addMachineLearningComputerToMatch: function(modeSelection, tournamentId) {
 		//Allow 1s before adding another CPU
 		if (computerAdded[modeSelection + '_' + tournamentId] === undefined) {
-			const matchMaker = new EloMatchMaker();
+			const matchMaker = MatchMakerFactory.fromConfiguration('random');
 
 			matchMaker.subscribe({id: 'CPU', isMachineLearning: true, name: 'ML CPU'}, modeSelection, tournamentId);
 
@@ -76,7 +76,7 @@ Meteor.methods({
 	},
 
 	startMatchMaking: function(modeSelection, tournamentId) {
-		const matchMaker = new EloMatchMaker();
+		const matchMaker = MatchMakerFactory.fromConfiguration('random');
 
 		const userConfiguration = UserConfigurations.findOne({userId: Meteor.userId()});
 		let userName = '';
@@ -88,7 +88,7 @@ Meteor.methods({
 	},
 
 	cancelMatchMaking: function(userId) {
-		const matchMaker = new EloMatchMaker();
+		const matchMaker = MatchMakerFactory.fromConfiguration('random');
 
 		if (!matchMaker.canUnsubscribe(userId)) {
 			return false;

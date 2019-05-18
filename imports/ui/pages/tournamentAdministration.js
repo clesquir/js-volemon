@@ -1,15 +1,10 @@
-import {
-	ONE_VS_ONE_GAME_MODE,
-	TWO_VS_TWO_GAME_MODE,
-	TWO_VS_TWO_HUMAN_CPU_GAME_MODE
-} from '/imports/api/games/constants.js';
+import {ONE_VS_ONE_GAME_MODE, TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import {isTournamentAdministrator, isTournamentEditor} from '/imports/api/users/userConfigurations.js';
 import ButtonEnabler from '/imports/ui/util/ButtonEnabler.js';
 import '/imports/ui/util/error-messages.js';
 import {removeErrorLabelContainer, validateFieldsPresenceAndMarkInvalid} from '/imports/ui/util/form.js';
 import {Router} from 'meteor/iron:router';
 import {Meteor} from 'meteor/meteor';
-import {Mongo} from "meteor/mongo";
 import {Session} from 'meteor/session';
 import {Template} from 'meteor/templating';
 import moment from 'moment';
@@ -20,8 +15,7 @@ Template.tournamentAdministration.helpers({
 	gameModes: function(tournament) {
 		return [
 			{id: ONE_VS_ONE_GAME_MODE, name: '1 VS 1', isSelected: tournament.gameMode === ONE_VS_ONE_GAME_MODE},
-			{id: TWO_VS_TWO_GAME_MODE, name: '2 VS 2', isSelected: tournament.gameMode === TWO_VS_TWO_GAME_MODE},
-			{id: TWO_VS_TWO_HUMAN_CPU_GAME_MODE, name: '2 VS 2 w/ CPU', isSelected: tournament.gameMode === TWO_VS_TWO_HUMAN_CPU_GAME_MODE},
+			{id: TWO_VS_TWO_GAME_MODE, name: '2 VS 2', isSelected: tournament.gameMode === TWO_VS_TWO_GAME_MODE}
 		];
 	},
 

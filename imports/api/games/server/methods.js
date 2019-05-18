@@ -13,7 +13,7 @@ import {Players} from '/imports/api/games/players.js';
 import GameCreator from '/imports/api/games/server/GameCreator.js';
 import GameInitiatorCollection from '/imports/api/games/server/GameInitiatorCollection.js';
 import {onPlayerQuit, replyRematch, startGame} from '/imports/api/games/server/gameSetup.js';
-import UserMatch from '/imports/api/games/server/matchMaking/UserMatch.js';
+import UserMatch from '/imports/api/games/server/matchMaking/UserMatch';
 import {finishGame} from '/imports/api/games/server/onGameFinished.js';
 import {
 	GAME_STATUS_FINISHED,

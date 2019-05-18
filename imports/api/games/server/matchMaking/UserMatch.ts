@@ -1,11 +1,9 @@
-import {Games} from '/imports/api/games/games.js';
-import {MatchMakers} from '/imports/api/games/matchMakers.js';
-import GameCreator from '/imports/api/games/server/GameCreator.js';
-import {Meteor} from "meteor/meteor";
-import {Random} from 'meteor/random';
+import {Games} from "../../games";
+import {MatchMakers} from "../../matchMakers";
+import GameCreator from "../GameCreator";
 
 export default class UserMatch {
-	static match(modeSelection, tournamentId, matchedUsers) {
+	static match(modeSelection: string, tournamentId: string, matchedUsers: {id: string, name: string, isMachineLearning?: boolean}[]) {
 		const gameId = GameCreator.fromMatchMaker(matchedUsers, modeSelection, tournamentId);
 
 		const userIds = [];
@@ -44,7 +42,7 @@ export default class UserMatch {
 		);
 	}
 
-	static removeMatch(gameId) {
+	static removeMatch(gameId: string) {
 		const game = Games.findOne(gameId);
 
 		if (game) {

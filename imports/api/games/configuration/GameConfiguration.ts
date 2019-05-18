@@ -35,7 +35,6 @@ import {
 	PLAYER_VERTICAL_MOVE_MULTIPLIER_BIG,
 	PLAYER_VERTICAL_MOVE_MULTIPLIER_INITIAL,
 	TWO_VS_TWO_GAME_MODE,
-	TWO_VS_TWO_HUMAN_CPU_GAME_MODE,
 	WORLD_GRAVITY,
 	WORLD_RESTITUTION
 } from '../constants';
@@ -639,7 +638,7 @@ export default abstract class GameConfiguration {
 
 	canIncludeComputer(): boolean {
 		if (this.hasTournament()) {
-			return this.tournament.gameMode !== TWO_VS_TWO_HUMAN_CPU_GAME_MODE;
+			return true;
 		} else {
 			return this.gameMode === TWO_VS_TWO_GAME_MODE;
 		}

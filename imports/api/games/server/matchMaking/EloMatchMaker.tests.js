@@ -1,6 +1,6 @@
 import {TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
 import {MatchMakers} from '/imports/api/games/matchMakers.js';
-import EloMatchMaker from '/imports/api/games/server/matchMaking/EloMatchMaker.js';
+import EloMatchMaker from '/imports/api/games/server/matchMaking/EloMatchMaker';
 import {Profiles} from '/imports/api/profiles/profiles';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {assert} from 'chai';
