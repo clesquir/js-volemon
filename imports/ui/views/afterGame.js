@@ -9,6 +9,7 @@ import {
 	playerHasNotRepliedRematch,
 	playerLeftGame
 } from '/imports/api/games/client/gameSetup.js';
+import {ONE_VS_COMPUTER_GAME_MODE, ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE} from '/imports/api/games/constants';
 import {isTwoVersusTwoGameMode} from '/imports/api/games/constants.js';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
@@ -205,6 +206,17 @@ Template.afterGame.helpers({
 		);
 	},
 
+	showMatchMaking() {
+		const tournament = Tournaments.findOne(this.game.tournamentId);
+
+		return (
+			isGamePlayer(Session.get('game')) &&
+			this.game.gameMode !== ONE_VS_COMPUTER_GAME_MODE &&
+			this.game.gameMode !== ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE &&
+			(!tournament || tournament.status.id === 'approved')
+		);
+	},
+
 	showWaitingForReply() {
 		const players = Players.find({gameId: Session.get('game')});
 
@@ -279,6 +291,13 @@ Template.afterGame.events({
 		Meteor.call('replyRematch', Session.get('game'), true, function() {
 			ButtonEnabler.enableButton(e.target);
 		});
+	},
+
+	'click [data-action="do-match-making"]:not([disabled])': function(e) {
+		const game = Games.findOne(Session.get('game'));
+
+		ButtonEnabler.disableButton(e.target);
+		Router.go('matchMaking', {modeSelection: game.modeSelection, tournamentId: game.tournamentId || 'none'});
 	},
 
 	'click [data-action="declined-game-rematch"]:not([disabled])': function(e) {

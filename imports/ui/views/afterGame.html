@@ -106,6 +106,9 @@
 						{{#if showAskForRematch}}
 							<div><a href="#" class="clickable-link" data-action="game-rematch">Ask for a rematch</a></div>
 						{{/if}}
+						{{#if showMatchMaking}}
+							<div><a href="#" class="clickable-link" data-action="do-match-making">Rematch with other players</a></div>
+						{{/if}}
 						<div><a href="{{pathFor 'home'}}" class="clickable-link">Go to the homepage</a></div>
 						{{#if isTournament}}
 							{{#if isTournamentPractice}}
