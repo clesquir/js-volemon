@@ -74,32 +74,30 @@
 			<p class="tournament-description">{{selectedTournamentDescription}}</p>
 		{{/if}}
 
-		{{#if showShapeSelection}}
-			<div class="shape-match-making">
-				<div class="shape-title">Shape:</div>
-				<div class="shape-selector">
-					{{#if shapeEditionAllowed}}
-						{{> shapeSelector selectedShape=selectedShape allowedListOfShapes=allowedListOfShapes}}
-					{{else}}
-						<div class="shape-selector-container shape-{{selectedShape}}">
-							<div class="shape-content-scroller"></div>
-						</div>
-					{{/if}}
-				</div>
-			</div>
-		{{/if}}
-
 		{{#if matchMakingStatus}}
 			<div class="match-making-status {{matchMakingStatusClass}}">{{matchMakingStatus}}</div>
 		{{/if}}
 
 		{{#if showListOfMatched}}
-			{{#each listOfMatched}}
-				<div class="matched-user matched-user-position-{{position}}">
-					{{name}}
-					<i class="matched-user-is-ready {{#if isReady}}matched-user-ready{{/if}} fa fa-check"></i>
-				</div>
-			{{/each}}
+			<div class="table-list constrained-table">
+				{{#each listOfMatched}}
+					<div class="table-list-row matched-user matched-user-position-{{position}}">
+						<div class="table-list-cell" style="flex: 0 0 35px;">
+							<i class="matched-user-is-ready {{#if isReady}}matched-user-ready{{/if}} fa fa-check"></i>
+						</div>
+						<div class="table-list-cell" style="flex: 0 0 70px;">
+							{{#if shapeEditionAllowed id}}
+								{{> shapeSelector selectedShape=selectedShape allowedListOfShapes=allowedListOfShapes}}
+							{{else}}
+								<div class="shape-selector-container shape-{{shape id}}">
+									<div class="shape-content-scroller"></div>
+								</div>
+							{{/if}}
+						</div>
+						<div class="table-list-cell">{{name}}</div>
+					</div>
+				{{/each}}
+			</div>
 		{{/if}}
 
 		{{#if showShare}}

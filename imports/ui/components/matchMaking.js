@@ -40,10 +40,6 @@ const showTournamentNotAvailable = function() {
 	);
 };
 
-const showShapeSelection = function() {
-	return !Session.get('matchMaking.isLoading');
-};
-
 const startMatchMaking = function() {
 	monitorWhenMatched();
 
@@ -261,10 +257,6 @@ Template.matchMaking.helpers({
 		return showTournamentNotAvailable();
 	},
 
-	showShapeSelection: function() {
-		return !showModeSelection() && !showTournamentNotAvailable() && showShapeSelection();
-	},
-
 	canIncludeComputer: function() {
 		if (!Session.get('matchMaking.modeSelection') || Session.get('matchMaking.gameId')) {
 			return false;
@@ -297,7 +289,11 @@ Template.matchMaking.helpers({
 		}
 	},
 
-	shapeEditionAllowed: function() {
+	shapeEditionAllowed: function(id) {
+		if (id !== Meteor.userId()) {
+			return false;
+		}
+
 		const configuration = new MatchMakingGameConfiguration(
 			Session.get('matchMaking.modeSelection'),
 			PlayableTournaments,
@@ -466,6 +462,20 @@ Template.matchMaking.helpers({
 		}
 
 		return [];
+	},
+
+	shape: function(id) {
+		const game = Games.findOne(Session.get('matchMaking.gameId'));
+
+		if (game && game.players) {
+			for (let player of game.players) {
+				if (player.id === id) {
+					return player.shape;
+				}
+			}
+		}
+
+		return '';
 	},
 
 	matchMakingStatusClass: function() {
