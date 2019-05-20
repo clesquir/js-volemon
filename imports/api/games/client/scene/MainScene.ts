@@ -255,7 +255,7 @@ export default class MainScene {
 		if (player && !player.killing && !player.killed) {
 			player.killing = true;
 
-			player.kill();
+			player.killWithAnimation();
 			this.bonuses.resetBonusesForPlayerKey(playerKey);
 
 			player.killing = false;

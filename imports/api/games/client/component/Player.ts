@@ -301,7 +301,7 @@ export default class Player {
 		}
 	}
 
-	kill() {
+	killWithAnimation() {
 		this.eyePupil.position.setTo(0);
 
 		const killingContainer = this.scene.game.add.sprite(
@@ -330,6 +330,10 @@ export default class Player {
 			}
 		);
 
+		this.kill();
+	}
+
+	kill() {
 		this.playerObject.destroy(true);
 		this.killed = true;
 	}

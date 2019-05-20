@@ -118,23 +118,18 @@ export default class Players {
 	}
 
 	moveClientPlayer(data: PositionData) {
-		if (data.killed) {
-			return;
-		}
-
 		let player = this.getPlayerFromKey(data.key);
 
-		if (!player && data.key.indexOf('robot-') === 0) {
-			//if robot has been removed do not recreate
-			if (this.removedRobots[data.key] !== true) {
-				return;
-			}
-
+		if (!player && data.key.indexOf('robot-') === 0 && !data.killed) {
 			player = this.createRobot(data.key, data.isHost);
 		}
 
 		if (!player) {
 			return;
+		}
+
+		if (data.killed) {
+			player.kill();
 		}
 
 		player.dropShots = data.doingDropShot;
@@ -236,7 +231,7 @@ export default class Players {
 	removeRobot(robotId: string) {
 		if (this.robots[robotId]) {
 			this.scene.removePlayer(robotId);
-			delete this.robots[robotId];
+			this.robots[robotId].killed = true;
 			this.removedRobots[robotId] = true;
 		}
 	}
