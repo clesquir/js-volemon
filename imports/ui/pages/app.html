@@ -62,7 +62,9 @@
 					{{#if currentUser}}
 						<a id="username-header-menu-open" class="username-header-menu-open">
 							<span class="logged-in-user-menu"><i class="fa fa-bars"></i></span>
-							<span class="logged-in-user-name-menu">{{username}} <i class="fa fa-caret-down small-icon"></i></span>
+							<span class="logged-in-user-name-menu">
+								<span class="logged-in-user-name">{{username}}</span> <i class="fa fa-caret-down small-icon"></i>
+							</span>
 						</a>
 						<div id="username-dialog-dropdown-list" class="username-dialog">
 							<a href="{{pathFor 'userSettings'}}" class="username-dialog-button">Settings</a>
