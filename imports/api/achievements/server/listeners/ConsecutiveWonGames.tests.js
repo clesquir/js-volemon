@@ -45,7 +45,7 @@ describe('AchievementListener#ConsecutiveWonGames', function() {
 		assert.equal(1, listener.numberSinceLastReset);
 	});
 
-	it('creates achievement to 0 if not created on player won', function() {
+	it('creates achievement to 0 if not created on player lost', function() {
 		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
 
 		assert.equal(0, UserAchievements.find().count());

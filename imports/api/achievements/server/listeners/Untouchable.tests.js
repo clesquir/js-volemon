@@ -1,0 +1,197 @@
+import {ACHIEVEMENT_UNTOUCHABLE} from '/imports/api/achievements/constants';
+import Untouchable from '/imports/api/achievements/server/listeners/Untouchable';
+import {UserAchievements} from '/imports/api/achievements/userAchievements';
+import PlayerLost from '/imports/api/games/events/PlayerLost';
+import PlayerWon from '/imports/api/games/events/PlayerWon';
+import {Games} from '/imports/api/games/games';
+import {assert} from 'chai';
+import StubCollections from 'meteor/hwillson:stub-collections';
+import {Random} from 'meteor/random';
+
+describe('AchievementListener#Untouchable', function() {
+	const gameId = Random.id(5);
+	const userId = Random.id(5);
+	const opponentUserId = Random.id(5);
+	const assertUntouchableUserAchievementNumberEquals = function(number) {
+		const achievement = UserAchievements.findOne();
+		assert.notEqual(undefined, achievement);
+
+		assert.strictEqual(userId, achievement.userId);
+		assert.strictEqual(ACHIEVEMENT_UNTOUCHABLE, achievement.achievementId);
+		assert.strictEqual(number, achievement.number);
+	};
+
+	before(function() {
+		StubCollections.add([Games, UserAchievements]);
+	});
+
+	beforeEach(function() {
+		StubCollections.stub();
+	});
+
+	afterEach(function() {
+		StubCollections.restore();
+	});
+
+	it('creates achievement to 1 if not created on player won', function() {
+		Games.insert({_id: gameId, createdBy: userId, maximumPoints: 5, players: [{id: userId}, {id: opponentUserId}]});
+
+		assert.equal(0, UserAchievements.find().count());
+		const listener = (new Untouchable()).forGame(gameId, userId);
+		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
+
+		assert.equal(1, UserAchievements.find().count());
+		assertUntouchableUserAchievementNumberEquals(1);
+		assert.equal(1, listener.numberSinceLastReset);
+	});
+
+	it('creates achievement to 0 if not created on player lost', function() {
+		Games.insert({_id: gameId, createdBy: userId, maximumPoints: 5, players: [{id: userId}, {id: opponentUserId}]});
+
+		assert.equal(0, UserAchievements.find().count());
+		const listener = (new Untouchable()).forGame(gameId, userId);
+		listener.onPlayerLost(new PlayerLost(gameId, userId, 5, 0));
+
+		assert.equal(1, UserAchievements.find().count());
+		assertUntouchableUserAchievementNumberEquals(0);
+		assert.equal(0, listener.numberSinceLastReset);
+	});
+
+	it('do not create achievement if not created if not gameId on player won', function() {
+		Games.insert({_id: gameId, createdBy: userId, maximumPoints: 5, players: [{id: userId}, {id: opponentUserId}]});
+
+		assert.equal(0, UserAchievements.find().count());
+		const listener = (new Untouchable()).forGame(gameId, userId);
+		listener.onPlayerWon(new PlayerWon(Random.id(5), userId, 5, 0));
+		assert.equal(0, UserAchievements.find().count());
+	});
+
+	it('do not create achievement if not created if not gameId on player lost', function() {
+		Games.insert({_id: gameId, createdBy: userId, players: [{id: userId}, {id: opponentUserId}]});
+
+		assert.equal(0, UserAchievements.find().count());
+		const listener = (new Untouchable()).forGame(gameId, userId);
+		listener.onPlayerLost(new PlayerLost(Random.id(5), userId, 5, 0));
+		assert.equal(0, UserAchievements.find().count());
+	});
+
+	it('do not create achievement if not created if userId is not the current user on player won', function() {
+		Games.insert({_id: gameId, createdBy: userId, maximumPoints: 5, players: [{id: userId}, {id: opponentUserId}]});
+
+		assert.equal(0, UserAchievements.find().count());
+		const listener = (new Untouchable()).forGame(gameId, userId);
+		listener.onPlayerWon(new PlayerWon(gameId, Random.id(5), 5, 0));
+		assert.equal(0, UserAchievements.find().count());
+	});
+
+	it('do not create achievement if not created if userId is not the current user on player lost', function() {
+		Games.insert({_id: gameId, createdBy: userId, maximumPoints: 5, players: [{id: userId}, {id: opponentUserId}]});
+
+		assert.equal(0, UserAchievements.find().count());
+		const listener = (new Untouchable()).forGame(gameId, userId);
+		listener.onPlayerLost(new PlayerLost(gameId, Random.id(5), 5, 0));
+		assert.equal(0, UserAchievements.find().count());
+	});
+
+	it('increment achievement on player won shutout for two consecutive games', function() {
+		Games.insert({_id: gameId, createdBy: userId, maximumPoints: 5, players: [{id: userId}, {id: opponentUserId}]});
+
+		assert.equal(0, UserAchievements.find().count());
+		let listener = (new Untouchable()).forGame(gameId, userId);
+		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
+
+		assert.equal(1, UserAchievements.find().count());
+		assertUntouchableUserAchievementNumberEquals(1);
+		assert.equal(1, listener.numberSinceLastReset);
+
+		listener = (new Untouchable()).forGame(gameId, userId);
+		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
+
+		assertUntouchableUserAchievementNumberEquals(2);
+		assert.equal(2, listener.numberSinceLastReset);
+	});
+
+	it('achievement will be incremented only if win streaks are greater than previous win streaks after a loss', function() {
+		Games.insert({_id: gameId, createdBy: userId, maximumPoints: 5, players: [{id: userId}, {id: opponentUserId}]});
+
+		assert.equal(0, UserAchievements.find().count());
+		let listener = (new Untouchable()).forGame(gameId, userId);
+		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
+
+		assert.equal(1, UserAchievements.find().count());
+		assertUntouchableUserAchievementNumberEquals(1);
+		assert.equal(1, listener.numberSinceLastReset);
+
+		listener = (new Untouchable()).forGame(gameId, userId);
+		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
+
+		assertUntouchableUserAchievementNumberEquals(2);
+		assert.equal(2, listener.numberSinceLastReset);
+
+		listener = (new Untouchable()).forGame(gameId, userId);
+		listener.onPlayerLost(new PlayerLost(gameId, userId, 5, 0));
+
+		assertUntouchableUserAchievementNumberEquals(2);
+		assert.equal(0, listener.numberSinceLastReset);
+
+		listener = (new Untouchable()).forGame(gameId, userId);
+		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
+
+		assertUntouchableUserAchievementNumberEquals(2);
+		assert.equal(1, listener.numberSinceLastReset);
+
+		listener = (new Untouchable()).forGame(gameId, userId);
+		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
+
+		assertUntouchableUserAchievementNumberEquals(2);
+		assert.equal(2, listener.numberSinceLastReset);
+
+		listener = (new Untouchable()).forGame(gameId, userId);
+		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
+
+		assertUntouchableUserAchievementNumberEquals(3);
+		assert.equal(3, listener.numberSinceLastReset);
+	});
+
+	it('achievement will be incremented only if win streaks are greater than previous win streaks after a win not shutout', function() {
+		Games.insert({_id: gameId, createdBy: userId, maximumPoints: 5, players: [{id: userId}, {id: opponentUserId}]});
+
+		assert.equal(0, UserAchievements.find().count());
+		let listener = (new Untouchable()).forGame(gameId, userId);
+		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
+
+		assert.equal(1, UserAchievements.find().count());
+		assertUntouchableUserAchievementNumberEquals(1);
+		assert.equal(1, listener.numberSinceLastReset);
+
+		listener = (new Untouchable()).forGame(gameId, userId);
+		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
+
+		assertUntouchableUserAchievementNumberEquals(2);
+		assert.equal(2, listener.numberSinceLastReset);
+
+		listener = (new Untouchable()).forGame(gameId, userId);
+		listener.onPlayerLost(new PlayerWon(gameId, userId, 5, 1));
+
+		assertUntouchableUserAchievementNumberEquals(2);
+		assert.equal(0, listener.numberSinceLastReset);
+
+		listener = (new Untouchable()).forGame(gameId, userId);
+		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
+
+		assertUntouchableUserAchievementNumberEquals(2);
+		assert.equal(1, listener.numberSinceLastReset);
+
+		listener = (new Untouchable()).forGame(gameId, userId);
+		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
+
+		assertUntouchableUserAchievementNumberEquals(2);
+		assert.equal(2, listener.numberSinceLastReset);
+
+		listener = (new Untouchable()).forGame(gameId, userId);
+		listener.onPlayerWon(new PlayerWon(gameId, userId, 5, 0));
+
+		assertUntouchableUserAchievementNumberEquals(3);
+		assert.equal(3, listener.numberSinceLastReset);
+	});
+});

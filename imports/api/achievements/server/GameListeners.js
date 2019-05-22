@@ -40,6 +40,7 @@ import TheyAreAllOver from '/imports/api/achievements/server/listeners/TheyAreAl
 import ToTheSky from '/imports/api/achievements/server/listeners/ToTheSky.js';
 import TripleColon from '/imports/api/achievements/server/listeners/TripleColon.js';
 import Undesirable from '/imports/api/achievements/server/listeners/Undesirable.js';
+import Untouchable from '/imports/api/achievements/server/listeners/Untouchable';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 
@@ -108,6 +109,7 @@ export default class GameListeners {
 			this.listeners.push((new GoneButNotForgotten()).forGame(this.gameId, player.userId));
 			this.listeners.push((new CrushingMetal()).forGame(this.gameId, player.userId));
 			this.listeners.push((new SteelPracticing()).forGame(this.gameId, player.userId));
+			this.listeners.push((new Untouchable()).forGame(this.gameId, player.userId));
 		});
 	}
 

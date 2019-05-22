@@ -44,10 +44,11 @@ import {
 	ACHIEVEMENT_TO_THE_SKY,
 	ACHIEVEMENT_TRIPLE_COLON,
 	ACHIEVEMENT_UNDESIRABLE,
+	ACHIEVEMENT_UNTOUCHABLE,
 	TYPE_MS,
 	TYPE_QUANTITY,
 	TYPE_TIMES
-} from '/imports/api/achievements/constants.js';
+} from '/imports/api/achievements/constants';
 
 export const INITIAL_ACHIVEMENTS = [
 	{
@@ -456,5 +457,15 @@ export const INITIAL_ACHIVEMENTS = [
 		"conditionalForTournamentGame": true,
 		"deniedForTwoVersusTwo": true,
 		"levels": [{"level": 1, "number": 10}, {"level": 2, "number": 20}, {"level": 3, "number": 30}]
-	}
+	},
+	{
+		"_id": ACHIEVEMENT_UNTOUCHABLE,
+		"isSecret": true,
+		"name": "Untouchable",
+		"description": "# of consecutive shutouts",
+		"type": TYPE_QUANTITY,
+		"displayOrder": 46,
+		"deniedForTwoVersusTwo": true,
+		"levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 25}]
+	},
 ];
