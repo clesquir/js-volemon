@@ -128,7 +128,7 @@ export default class Players {
 			return;
 		}
 
-		if (data.killed) {
+		if (data.killed && this.gameData.isUserViewer()) {
 			player.kill();
 		}
 
