@@ -17,6 +17,7 @@ import {
 	ACHIEVEMENT_GAMES_WON_UNDER_A_MINUTE,
 	ACHIEVEMENT_GAMES_WON_WITH_X_SHAPE,
 	ACHIEVEMENT_GONE_BUT_NOT_FORGOTTEN,
+	ACHIEVEMENT_HIT_THE_CEILING,
 	ACHIEVEMENT_HOW_TO_TIE_A_TIE,
 	ACHIEVEMENT_I_WAS_THERE_WAITING,
 	ACHIEVEMENT_INTOXICATED,
@@ -468,4 +469,13 @@ export const INITIAL_ACHIVEMENTS = [
 		"deniedForTwoVersusTwo": true,
 		"levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 25}]
 	},
+	{
+		"_id": ACHIEVEMENT_HIT_THE_CEILING,
+		"isSecret": true,
+		"name": "Hit the ceiling",
+		"description": "Bonuses combo: Small player, high player jumps, low gravity",
+		"type": TYPE_TIMES,
+		"displayOrder": 47,
+		"levels": [{"level": 1, "number": 10}, {"level": 2, "number": 20}, {"level": 3, "number": 40}]
+	}
 ];

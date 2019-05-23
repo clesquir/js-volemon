@@ -16,6 +16,7 @@ import GamesWonUnderAMinute from '/imports/api/achievements/server/listeners/Gam
 import GamesWonWithXShape from '/imports/api/achievements/server/listeners/GamesWonWithXShape.js';
 import GameTime from '/imports/api/achievements/server/listeners/GameTime.js';
 import GoneButNotForgotten from '/imports/api/achievements/server/listeners/GoneButNotForgotten.js';
+import HitTheCeiling from '/imports/api/achievements/server/listeners/HitTheCeiling';
 import HowToTieATie from '/imports/api/achievements/server/listeners/HowToTieATie.js';
 import Intoxicated from '/imports/api/achievements/server/listeners/Intoxicated.js';
 import InvincibleInALifetime from '/imports/api/achievements/server/listeners/InvincibleInALifetime.js';
@@ -110,6 +111,7 @@ export default class GameListeners {
 			this.listeners.push((new CrushingMetal()).forGame(this.gameId, player.userId));
 			this.listeners.push((new SteelPracticing()).forGame(this.gameId, player.userId));
 			this.listeners.push((new Untouchable()).forGame(this.gameId, player.userId));
+			this.listeners.push((new HitTheCeiling()).forGame(this.gameId, player.userId));
 		});
 	}
 
