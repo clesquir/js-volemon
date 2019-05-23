@@ -470,7 +470,7 @@ Template.matchMaking.helpers({
 		if (game && game.players) {
 			for (let player of game.players) {
 				if (player.id === id) {
-					return player.shape;
+					return player.selectedShape;
 				}
 			}
 		}
