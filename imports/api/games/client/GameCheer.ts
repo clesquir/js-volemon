@@ -59,7 +59,7 @@ export default class GameCheer {
 		if (!this.cheerFn[cheerFnIndex]) {
 			this.cheerFn[cheerFnIndex] = require('lodash.throttle')(
 				(forHost: boolean, disableCheerCallback: Function) => {
-					if (!this.gameInitiator) {
+					if (!this.gameInitiator || !this.gameInitiator.mainScene) {
 						return;
 					}
 

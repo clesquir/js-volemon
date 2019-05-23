@@ -34,7 +34,7 @@ export default class ClientGameInitiator {
 	private gameCreated: boolean = false;
 	private gameChangesTracker: Meteor.LiveQueryHandle;
 	private gameBoot: GameBoot;
-	mainScene: MainScene;
+	mainScene: MainScene = null;
 
 	constructor(
 		gameId: string,
