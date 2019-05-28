@@ -255,11 +255,14 @@ export default class Ball {
 
 		this.ballObject.body.setMaterial(this.level.materialBall);
 		this.ballObject.body.setCollisionGroup(this.level.collisionCategoryBall);
-		this.ballObject.body.collides(this.level.collisionCategoryBallLimit, this.scene.collideBallLimit, this.scene);
+		this.ballObject.body.collides(this.level.collisionCategoryBallBonusLimit, this.scene.onBallCollidesLimit, this.scene);
 		this.ballObject.body.collides(this.level.collisionCategoryBall);
-		this.ballObject.body.collides(this.level.collisionCategoryHost, this.scene.collidePlayerBall, this.scene);
-		this.ballObject.body.collides(this.level.collisionCategoryClient, this.scene.collidePlayerBall, this.scene);
+		this.ballObject.body.collides(this.level.collisionCategoryHost, this.scene.onBallCollidesPlayer, this.scene);
+		this.ballObject.body.collides(this.level.collisionCategoryClient, this.scene.onBallCollidesPlayer, this.scene);
 		this.ballObject.body.collides(this.level.collisionCategoryBonus);
+		if (this.gameConfiguration.hasSoccerNet()) {
+			this.ballObject.body.collides(this.level.collisionCategorySoccerNet, this.scene.onBallCollidesSoccerNet, this.scene);
+		}
 	}
 
 	private velocityX(): number {

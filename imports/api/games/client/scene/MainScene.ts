@@ -316,26 +316,30 @@ export default class MainScene {
 		this.bonuses.moveClientBonus(bonusIdentifier, data);
 	}
 
-	collidePlayerBall(ballBody: Phaser.Physics.P2.Body, playerBody: Phaser.Physics.P2.Body) {
+	onBallCollidesPlayer(ballBody: Phaser.Physics.P2.Body, playerBody: Phaser.Physics.P2.Body) {
 		const player: Player = playerBody.sprite.data.owner;
 		const ball: Ball = ballBody.sprite.data.owner;
 
 		this.players.onPlayerHitBall(player, ball);
 	}
 
-	collidePlayerBonus(bonusBody: Phaser.Physics.P2.Body, playerBody: Phaser.Physics.P2.Body) {
+	onBonusCollidesPlayer(bonusBody: Phaser.Physics.P2.Body, playerBody: Phaser.Physics.P2.Body) {
 		const player: Player = playerBody.sprite.data.owner;
 		const bonus: Bonus = bonusBody.sprite.data.owner;
 
 		this.bonuses.onPlayerHitBonus(player, bonus);
 	}
 
-	collideBallLimit(ballBody: Phaser.Physics.P2.Body, levelBody: Phaser.Physics.P2.Body) {
-		if (
-			(levelBody === this.level.ballGround() && this.gameConfiguration.groundHitEnabled()) ||
-			(levelBody === this.level.soccerNetHostPointZone() && this.gameConfiguration.hasSoccerNet()) ||
-			(levelBody === this.level.soccerNetClientPointZone() && this.gameConfiguration.hasSoccerNet())
-		) {
+	onBallCollidesLimit(ballBody: Phaser.Physics.P2.Body, levelBody: Phaser.Physics.P2.Body) {
+		if (this.gameConfiguration.groundHitEnabled() && levelBody === this.level.ballGround()) {
+			const ball: Ball = ballBody.sprite.data.owner;
+
+			this.onBallHitScoreZone(ball);
+		}
+	}
+
+	onBallCollidesSoccerNet(ballBody: Phaser.Physics.P2.Body, levelBody: Phaser.Physics.P2.Body) {
+		if (levelBody === this.level.soccerNetHostPointZone() || levelBody === this.level.soccerNetClientPointZone()) {
 			const ball: Ball = ballBody.sprite.data.owner;
 
 			this.onBallHitScoreZone(ball);

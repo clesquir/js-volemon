@@ -88,21 +88,34 @@
 						{{> numberSwitch id="net-height" label="Net height" default="70" isOn=(modeOverridden "overriddenNetHeight") value=(modeOverriddenValue "overriddenNetHeight") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
+					<h2>Soccer net overrides</h2>
+
 					<div class="splitted-configuration">
-						{{> numberSwitch id="soccer-net-height" label="Soccer net height" default="160" isOn=(modeOverridden "overriddenSoccerNetHeight") value=(modeOverriddenValue "overriddenSoccerNetHeight") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> selectSwitch id="soccer-net-enabled" label="Soccer net enabled" default="No" isOn=(modeOverridden "overriddenSoccerNetEnabled") options=booleanOptions value=(modeOverriddenValue "overriddenSoccerNetEnabled") isReadOnly=(canOnlyViewTournament tournament)}}
 						{{> numberSwitch id="soccer-net-distance-from-ground" label="Soccer net distance from ground" default="0" isOn=(modeOverridden "overriddenSoccerNetDistanceFromGround") value=(modeOverriddenValue "overriddenSoccerNetDistanceFromGround") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<div class="splitted-configuration">
-						{{> selectSwitch id="ground-hit-enabled" label="Ground hit enabled" default="Yes" isOn=(modeOverridden "overriddenGroundHitEnabled") options=booleanOptions value=(modeOverriddenValue "overriddenGroundHitEnabled") isReadOnly=(canOnlyViewTournament tournament)}}
-						{{> selectSwitch id="soccer-net-enabled" label="Soccer net enabled" default="No" isOn=(modeOverridden "overriddenSoccerNetEnabled") options=booleanOptions value=(modeOverriddenValue "overriddenSoccerNetEnabled") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="soccer-net-width" label="Soccer net width" default="40" isOn=(modeOverridden "overriddenSoccerNetWidth") value=(modeOverriddenValue "overriddenSoccerNetWidth") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="soccer-net-height" label="Soccer net height" default="160" isOn=(modeOverridden "overriddenSoccerNetHeight") value=(modeOverriddenValue "overriddenSoccerNetHeight") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
-					{{> selectSwitch id="has-player-net-limit" label="Player net limit" default="Yes" isOn=(modeOverridden "overriddenHasPlayerNetLimit") options=booleanOptions value=(modeOverriddenValue "overriddenHasPlayerNetLimit") isReadOnly=(canOnlyViewTournament tournament)}}
+					<h2>Collision overrides</h2>
 
 					<div class="splitted-configuration">
-						{{> selectSwitch id="collides-with-teammate" label="Collide with teammate" default="Yes" isOn=(modeOverridden "overriddenCollidesWithTeammate") options=booleanOptions value=(modeOverriddenValue "overriddenCollidesWithTeammate") isReadOnly=(canOnlyViewTournament tournament)}}
-						{{> selectSwitch id="collides-with-opponent" label="Collide with opponent" default="No" isOn=(modeOverridden "overriddenCollidesWithOpponent") options=booleanOptions value=(modeOverriddenValue "overriddenCollidesWithOpponent") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> selectSwitch id="ground-hit-enabled" label="Ground hit enabled" default="Yes" isOn=(modeOverridden "overriddenGroundHitEnabled") options=booleanOptions value=(modeOverriddenValue "overriddenGroundHitEnabled") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> selectSwitch id="has-player-net-limit" label="Player net limit" default="Yes" isOn=(modeOverridden "overriddenHasPlayerNetLimit") options=booleanOptions value=(modeOverriddenValue "overriddenHasPlayerNetLimit") isReadOnly=(canOnlyViewTournament tournament)}}
+					</div>
+
+					<div class="splitted-configuration">
+						{{> selectSwitch id="collides-with-teammate" label="Player collides with teammate" default="Yes" isOn=(modeOverridden "overriddenCollidesWithTeammate") options=booleanOptions value=(modeOverriddenValue "overriddenCollidesWithTeammate") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> selectSwitch id="collides-with-opponent" label="Player collides with opponent" default="No" isOn=(modeOverridden "overriddenCollidesWithOpponent") options=booleanOptions value=(modeOverriddenValue "overriddenCollidesWithOpponent") isReadOnly=(canOnlyViewTournament tournament)}}
+					</div>
+
+					<div class="splitted-configuration">
+						{{> selectSwitch id="ball-collides-with-soccer-net-posts" label="Ball collides with soccer net posts" default="Yes" isOn=(modeOverridden "overriddenBallCollidesWithSoccerNetPosts") options=booleanOptions value=(modeOverriddenValue "overriddenBallCollidesWithSoccerNetPosts") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> selectSwitch id="bonus-collides-with-soccer-net-posts" label="Bonus collides with soccer net posts" default="Yes" isOn=(modeOverridden "overriddenBonusCollidesWithSoccerNetPosts") options=booleanOptions value=(modeOverriddenValue "overriddenBonusCollidesWithSoccerNetPosts") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> selectSwitch id="player-collides-with-soccer-net-posts" label="Player collides with soccer net posts" default="No" isOn=(modeOverridden "overriddenPlayerCollidesWithSoccerNetPosts") options=booleanOptions value=(modeOverriddenValue "overriddenPlayerCollidesWithSoccerNetPosts") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<h2>Player overrides</h2>

@@ -14,10 +14,9 @@ export default class Level {
 	collisionCategoryClient: Phaser.Physics.P2.CollisionGroup;
 	collisionCategoryClientLimit: Phaser.Physics.P2.CollisionGroup;
 	collisionCategoryBall: Phaser.Physics.P2.CollisionGroup;
-	collisionCategoryBallLimit: Phaser.Physics.P2.CollisionGroup;
 	collisionCategoryBonus: Phaser.Physics.P2.CollisionGroup;
-	collisionCategoryBonusLimit: Phaser.Physics.P2.CollisionGroup;
-	collisionCategoryNet: Phaser.Physics.P2.CollisionGroup;
+	collisionCategoryBallBonusLimit: Phaser.Physics.P2.CollisionGroup;
+	collisionCategorySoccerNet: Phaser.Physics.P2.CollisionGroup;
 
 	materialPlayer: Phaser.Physics.P2.Material;
 	materialBall: Phaser.Physics.P2.Material;
@@ -103,6 +102,16 @@ export default class Level {
 		return this.fieldLimits.soccerNetClientPointZone;
 	}
 
+	isSoccerNetPost(body: Phaser.Physics.P2.Body): boolean {
+		for (let soccerNetPost of this.fieldLimits.soccerNetPosts) {
+			if (soccerNetPost === body) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	shakeGround() {
 		const move = 5;
 		const time = 20;
@@ -133,10 +142,9 @@ export default class Level {
 		this.collisionCategoryClient = this.scene.game.physics.p2.createCollisionGroup();
 		this.collisionCategoryClientLimit = this.scene.game.physics.p2.createCollisionGroup();
 		this.collisionCategoryBall = this.scene.game.physics.p2.createCollisionGroup();
-		this.collisionCategoryBallLimit = this.scene.game.physics.p2.createCollisionGroup();
 		this.collisionCategoryBonus = this.scene.game.physics.p2.createCollisionGroup();
-		this.collisionCategoryBonusLimit = this.scene.game.physics.p2.createCollisionGroup();
-		this.collisionCategoryNet = this.scene.game.physics.p2.createCollisionGroup();
+		this.collisionCategoryBallBonusLimit = this.scene.game.physics.p2.createCollisionGroup();
+		this.collisionCategorySoccerNet = this.scene.game.physics.p2.createCollisionGroup();
 	}
 
 	private createMaterials() {
@@ -173,7 +181,7 @@ export default class Level {
 		this.scene.game.physics.p2.createContactMaterial(
 			this.materialBonus,
 			this.materialNet,
-			<p2.ContactMaterialOptions>{restitution: 0.7}
+			<p2.ContactMaterialOptions>{restitution: this.gameConfiguration.netRestitution()}
 		);
 	}
 }

@@ -18,6 +18,7 @@ import {
 	GAME_MAXIMUM_POINTS,
 	HIGH_GRAVITY_MULTIPLIER,
 	LOW_GRAVITY_MULTIPLIER,
+	NET_RESTITUTION,
 	PLAYER_BIG_GRAVITY_SCALE,
 	PLAYER_BIG_MASS,
 	PLAYER_BIG_SCALE,
@@ -355,6 +356,10 @@ export default abstract class GameConfiguration {
 		return WORLD_RESTITUTION;
 	}
 
+	netRestitution(): number {
+		return NET_RESTITUTION;
+	}
+
 	maximumBonusesOnScreen(): number {
 		if (this.hasTournament() && this.tournamentMode.overridesMaximumBonusesOnScreen()) {
 			return this.tournamentMode.maximumBonusesOnScreen();
@@ -514,6 +519,10 @@ export default abstract class GameConfiguration {
 	}
 
 	soccerNetWidth(): number {
+		if (this.hasTournament() && this.tournamentMode.overridesSoccerNetWidth()) {
+			return this.tournamentMode.soccerNetWidth();
+		}
+
 		return this.levelConfiguration.soccerNetWidth;
 	}
 
@@ -650,6 +659,42 @@ export default abstract class GameConfiguration {
 		}
 
 		return true;
+	}
+
+	ballCollidesWithSoccerNetPosts(): boolean {
+		if (this.hasSoccerNet() === false) {
+			return false;
+		}
+
+		if (this.hasTournament() && this.tournamentMode.overridesBallCollidesWithSoccerNetPosts()) {
+			return this.tournamentMode.ballCollidesWithSoccerNetPosts();
+		}
+
+		return true;
+	}
+
+	bonusCollidesWithSoccerNetPosts(): boolean {
+		if (this.hasSoccerNet() === false) {
+			return false;
+		}
+
+		if (this.hasTournament() && this.tournamentMode.overridesBonusCollidesWithSoccerNetPosts()) {
+			return this.tournamentMode.bonusCollidesWithSoccerNetPosts();
+		}
+
+		return true;
+	}
+
+	playerCollidesWithSoccerNetPosts(): boolean {
+		if (this.hasSoccerNet() === false) {
+			return false;
+		}
+
+		if (this.hasTournament() && this.tournamentMode.overridesPlayerCollidesWithSoccerNetPosts()) {
+			return this.tournamentMode.playerCollidesWithSoccerNetPosts();
+		}
+
+		return false;
 	}
 
 	collidesWithTeammate(): boolean {

@@ -548,6 +548,10 @@ export default class Player {
 
 		this.playerObject.body.collides(this.level.collisionCategoryBall);
 		this.playerObject.body.collides(this.level.collisionCategoryBonus);
+
+		if (this.gameConfiguration.playerCollidesWithSoccerNetPosts()) {
+			this.playerObject.body.collides(this.level.collisionCategorySoccerNet);
+		}
 	}
 
 	private initEye(playerObject: Phaser.Sprite) {
@@ -639,7 +643,9 @@ export default class Player {
 	}
 
 	private canPlayerJumpOnBody(contactBody): boolean {
-		if (contactBody === this.scene.level.hostGround()) {
+		if (this.gameConfiguration.playerCollidesWithSoccerNetPosts() && this.scene.level.isSoccerNetPost(contactBody)) {
+			return true;
+		} else if (contactBody === this.scene.level.hostGround()) {
 			return this.isHost;
 		} else if (contactBody === this.scene.level.clientGround()) {
 			return !this.isHost;

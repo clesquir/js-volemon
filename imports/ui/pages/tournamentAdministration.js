@@ -205,11 +205,15 @@ const modeOptions = function() {
 	addToMode(mode, 'level-height', 'overriddenLevelHeight');
 	addToMode(mode, 'net-width', 'overriddenNetWidth');
 	addToMode(mode, 'net-height', 'overriddenNetHeight');
+	addToMode(mode, 'soccer-net-width', 'overriddenSoccerNetWidth');
 	addToMode(mode, 'soccer-net-height', 'overriddenSoccerNetHeight');
 	addToMode(mode, 'soccer-net-distance-from-ground', 'overriddenSoccerNetDistanceFromGround');
 	addToMode(mode, 'ground-hit-enabled', 'overriddenGroundHitEnabled');
 	addToMode(mode, 'soccer-net-enabled', 'overriddenSoccerNetEnabled');
 	addToMode(mode, 'has-player-net-limit', 'overriddenHasPlayerNetLimit');
+	addToMode(mode, 'ball-collides-with-soccer-net-posts', 'overriddenBallCollidesWithSoccerNetPosts');
+	addToMode(mode, 'bonus-collides-with-soccer-net-posts', 'overriddenBonusCollidesWithSoccerNetPosts');
+	addToMode(mode, 'player-collides-with-soccer-net-posts', 'overriddenPlayerCollidesWithSoccerNetPosts');
 	addToMode(mode, 'collides-with-teammate', 'overriddenCollidesWithTeammate');
 	addToMode(mode, 'collides-with-opponent', 'overriddenCollidesWithOpponent');
 

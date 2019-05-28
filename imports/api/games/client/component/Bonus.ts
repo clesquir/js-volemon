@@ -147,11 +147,14 @@ export default class Bonus {
 
 		this.bonusObject.body.setMaterial(this.level.materialBonus);
 		this.bonusObject.body.setCollisionGroup(this.level.collisionCategoryBonus);
-		this.bonusObject.body.collides(this.level.collisionCategoryBonusLimit);
+		this.bonusObject.body.collides(this.level.collisionCategoryBallBonusLimit);
 		this.bonusObject.body.collides(this.level.collisionCategoryBonus);
-		this.bonusObject.body.collides(this.level.collisionCategoryHost, this.scene.collidePlayerBonus, this.scene);
-		this.bonusObject.body.collides(this.level.collisionCategoryClient, this.scene.collidePlayerBonus, this.scene);
+		this.bonusObject.body.collides(this.level.collisionCategoryHost, this.scene.onBonusCollidesPlayer, this.scene);
+		this.bonusObject.body.collides(this.level.collisionCategoryClient, this.scene.onBonusCollidesPlayer, this.scene);
 		this.bonusObject.body.collides(this.level.collisionCategoryBall);
+		if (this.gameConfiguration.hasSoccerNet()) {
+			this.bonusObject.body.collides(this.level.collisionCategorySoccerNet);
+		}
 	}
 
 	private x(): number {

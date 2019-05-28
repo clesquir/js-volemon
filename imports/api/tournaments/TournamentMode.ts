@@ -5,11 +5,15 @@ export default class TournamentMode {
 	overriddenLevelHeight;
 	overriddenNetWidth;
 	overriddenNetHeight;
+	overriddenSoccerNetWidth;
 	overriddenSoccerNetHeight;
 	overriddenSoccerNetDistanceFromGround;
 	overriddenGroundHitEnabled;
 	overriddenSoccerNetEnabled;
 	overriddenHasPlayerNetLimit;
+	overriddenBallCollidesWithSoccerNetPosts;
+	overriddenBonusCollidesWithSoccerNetPosts;
+	overriddenPlayerCollidesWithSoccerNetPosts;
 	overriddenCollidesWithTeammate;
 	overriddenCollidesWithOpponent;
 
@@ -433,6 +437,14 @@ export default class TournamentMode {
 		return parseInt(this.overriddenNetHeight);
 	}
 
+	overridesSoccerNetWidth(): boolean {
+		return this.overriddenSoccerNetWidth !== undefined;
+	}
+
+	soccerNetWidth(): number {
+		return parseInt(this.overriddenSoccerNetWidth);
+	}
+
 	overridesSoccerNetHeight(): boolean {
 		return this.overriddenSoccerNetHeight !== undefined;
 	}
@@ -545,6 +557,30 @@ export default class TournamentMode {
 		return parseInt(this.overriddenHasPlayerNetLimit) === 1;
 	}
 
+	overridesBallCollidesWithSoccerNetPosts(): boolean {
+		return this.overriddenBallCollidesWithSoccerNetPosts !== undefined;
+	}
+
+	ballCollidesWithSoccerNetPosts(): boolean {
+		return parseInt(this.overriddenBallCollidesWithSoccerNetPosts) === 1;
+	}
+
+	overridesBonusCollidesWithSoccerNetPosts(): boolean {
+		return this.overriddenBonusCollidesWithSoccerNetPosts !== undefined;
+	}
+
+	bonusCollidesWithSoccerNetPosts(): boolean {
+		return parseInt(this.overriddenBonusCollidesWithSoccerNetPosts) === 1;
+	}
+
+	overridesPlayerCollidesWithSoccerNetPosts(): boolean {
+		return this.overriddenPlayerCollidesWithSoccerNetPosts !== undefined;
+	}
+
+	playerCollidesWithSoccerNetPosts(): boolean {
+		return parseInt(this.overriddenPlayerCollidesWithSoccerNetPosts) === 1;
+	}
+
 	overridesCollidesWithTeammate(): boolean {
 		return this.overriddenCollidesWithTeammate !== undefined;
 	}
@@ -571,11 +607,15 @@ export default class TournamentMode {
 		tournamentMode.overriddenNetHeight = mode.overriddenNetHeight;
 		tournamentMode.overriddenLevelWidth = mode.overriddenLevelWidth;
 		tournamentMode.overriddenLevelHeight = mode.overriddenLevelHeight;
+		tournamentMode.overriddenSoccerNetWidth = mode.overriddenSoccerNetWidth;
 		tournamentMode.overriddenSoccerNetHeight = mode.overriddenSoccerNetHeight;
 		tournamentMode.overriddenSoccerNetDistanceFromGround = mode.overriddenSoccerNetDistanceFromGround;
 		tournamentMode.overriddenGroundHitEnabled = mode.overriddenGroundHitEnabled;
 		tournamentMode.overriddenSoccerNetEnabled = mode.overriddenSoccerNetEnabled;
 		tournamentMode.overriddenHasPlayerNetLimit = mode.overriddenHasPlayerNetLimit;
+		tournamentMode.overriddenBallCollidesWithSoccerNetPosts = mode.overriddenBallCollidesWithSoccerNetPosts;
+		tournamentMode.overriddenBonusCollidesWithSoccerNetPosts = mode.overriddenBonusCollidesWithSoccerNetPosts;
+		tournamentMode.overriddenPlayerCollidesWithSoccerNetPosts = mode.overriddenPlayerCollidesWithSoccerNetPosts;
 		tournamentMode.overriddenCollidesWithTeammate = mode.overriddenCollidesWithTeammate;
 		tournamentMode.overriddenCollidesWithOpponent = mode.overriddenCollidesWithOpponent;
 
