@@ -514,8 +514,12 @@ export default abstract class GameConfiguration {
 		return this.levelConfiguration.soccerNetPointZoneWidth;
 	}
 
-	soccerNetPostThickness(): number {
-		return this.levelConfiguration.soccerNetPostThickness;
+	soccerNetHorizontalPostThickness(): number {
+		return this.levelConfiguration.soccerNetHorizontalPostThickness;
+	}
+
+	soccerNetVerticalPostThickness(): number {
+		return this.levelConfiguration.soccerNetVerticalPostThickness;
 	}
 
 	soccerNetWidth(): number {

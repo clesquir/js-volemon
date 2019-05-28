@@ -246,16 +246,16 @@ export default class FieldLimits {
 			this.gameConfiguration.soccerNetDistanceFromGround() -
 			(soccerNetPointZoneHeight / 2);
 		const soccerNetWidth = this.gameConfiguration.soccerNetWidth();
-		const soccerNetPostThickness = this.gameConfiguration.soccerNetPostThickness();
+		const soccerNetHorizontalPostThickness = this.gameConfiguration.soccerNetHorizontalPostThickness();
 		const soccerNetTopPostY = this.gameConfiguration.height() -
 			this.gameConfiguration.groundHeight() -
 			this.gameConfiguration.soccerNetDistanceFromGround() -
 			soccerNetPointZoneHeight -
-			(soccerNetPostThickness / 2);
+			(soccerNetHorizontalPostThickness / 2);
 		const soccerNetBottomPostY = this.gameConfiguration.height() -
 			this.gameConfiguration.groundHeight() -
 			this.gameConfiguration.soccerNetDistanceFromGround() +
-			(soccerNetPostThickness / 2);
+			(soccerNetHorizontalPostThickness / 2);
 
 		const postsColliders = [];
 		if (this.gameConfiguration.ballCollidesWithSoccerNetPosts()) {
@@ -286,7 +286,7 @@ export default class FieldLimits {
 			soccerNetWidth / 2,
 			soccerNetTopPostY,
 			soccerNetWidth,
-			soccerNetPostThickness
+			soccerNetHorizontalPostThickness
 		);
 		this.applyCollisionCategory(
 			soccerNetHostTopPost,
@@ -301,7 +301,7 @@ export default class FieldLimits {
 				soccerNetWidth / 2,
 				soccerNetBottomPostY,
 				soccerNetWidth,
-				soccerNetPostThickness
+				soccerNetHorizontalPostThickness
 			);
 			this.applyCollisionCategory(
 				soccerNetHostBottomPost,
@@ -329,7 +329,7 @@ export default class FieldLimits {
 			this.gameConfiguration.width() - soccerNetWidth / 2,
 			soccerNetTopPostY,
 			soccerNetWidth,
-			soccerNetPostThickness
+			soccerNetHorizontalPostThickness
 		);
 		this.applyCollisionCategory(
 			soccerNetClientTopPost,
@@ -344,7 +344,7 @@ export default class FieldLimits {
 				this.gameConfiguration.width() - soccerNetWidth / 2,
 				soccerNetBottomPostY,
 				soccerNetWidth,
-				soccerNetPostThickness
+				soccerNetHorizontalPostThickness
 			);
 			this.applyCollisionCategory(
 				soccerNetClientBottomPost,

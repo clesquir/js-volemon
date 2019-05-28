@@ -110,6 +110,7 @@ export default class SkinManager {
 		const soccerNetBottomPostY = this.gameConfiguration.height() -
 			this.gameConfiguration.groundHeight() -
 			this.gameConfiguration.soccerNetDistanceFromGround();
+		const soccerNetHorizontalPostThickness = this.gameConfiguration.soccerNetHorizontalPostThickness();
 
 		const hostNet = scene.game.add.tileSprite(
 			0,
@@ -124,9 +125,9 @@ export default class SkinManager {
 		scene.zIndexGroup.add(hostNet);
 		const hostHorizontalTopPost = scene.game.add.tileSprite(
 			0,
-			soccerNetY - this.gameConfiguration.soccerNetPostThickness(),
+			soccerNetY - soccerNetHorizontalPostThickness,
 			this.gameConfiguration.soccerNetWidth(),
-			this.gameConfiguration.soccerNetPostThickness(),
+			soccerNetHorizontalPostThickness,
 			this.skin.soccerPostComponent().key,
 			this.skin.soccerPostComponent().frame
 		);
@@ -138,7 +139,7 @@ export default class SkinManager {
 				0,
 				soccerNetBottomPostY,
 				this.gameConfiguration.soccerNetWidth(),
-				this.gameConfiguration.soccerNetPostThickness(),
+				soccerNetHorizontalPostThickness,
 				this.skin.soccerPostComponent().key,
 				this.skin.soccerPostComponent().frame
 			);
@@ -147,9 +148,9 @@ export default class SkinManager {
 			scene.zIndexGroup.add(hostHorizontalBottomPost);
 		}
 		const hostVerticalPost = scene.game.add.tileSprite(
-			this.gameConfiguration.soccerNetWidth() - this.gameConfiguration.soccerNetPostThickness(),
+			this.gameConfiguration.soccerNetWidth() - this.gameConfiguration.soccerNetVerticalPostThickness(),
 			soccerNetY,
-			this.gameConfiguration.soccerNetPostThickness(),
+			this.gameConfiguration.soccerNetVerticalPostThickness(),
 			this.gameConfiguration.soccerNetHeight(),
 			this.skin.soccerPostComponent().key,
 			this.skin.soccerPostComponent().frame
@@ -172,9 +173,9 @@ export default class SkinManager {
 		scene.zIndexGroup.add(clientNet);
 		const clientHorizontalPost = scene.game.add.tileSprite(
 			clientSoccerNetX,
-			soccerNetY - this.gameConfiguration.soccerNetPostThickness(),
+			soccerNetY - soccerNetHorizontalPostThickness,
 			this.gameConfiguration.soccerNetWidth(),
-			this.gameConfiguration.soccerNetPostThickness(),
+			soccerNetHorizontalPostThickness,
 			this.skin.soccerPostComponent().key,
 			this.skin.soccerPostComponent().frame
 		);
@@ -186,7 +187,7 @@ export default class SkinManager {
 				clientSoccerNetX,
 				soccerNetBottomPostY,
 				this.gameConfiguration.soccerNetWidth(),
-				this.gameConfiguration.soccerNetPostThickness(),
+				soccerNetHorizontalPostThickness,
 				this.skin.soccerPostComponent().key,
 				this.skin.soccerPostComponent().frame
 			);
@@ -197,7 +198,7 @@ export default class SkinManager {
 		const clientVerticalPost = scene.game.add.tileSprite(
 			clientSoccerNetX,
 			soccerNetY,
-			this.gameConfiguration.soccerNetPostThickness(),
+			this.gameConfiguration.soccerNetVerticalPostThickness(),
 			this.gameConfiguration.soccerNetHeight(),
 			this.skin.soccerPostComponent().key,
 			this.skin.soccerPostComponent().frame

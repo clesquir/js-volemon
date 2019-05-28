@@ -7,7 +7,8 @@ export default class LevelConfiguration {
 	netWidth: number = 0;
 	netHeight: number = 0;
 	soccerNetPointZoneWidth: number = 10;
-	soccerNetPostThickness: number = 10;
+	soccerNetHorizontalPostThickness: number = 10;
+	soccerNetVerticalPostThickness: number = 5;
 	soccerNetWidth: number = 40;
 	soccerNetHeight: number = 160;
 
