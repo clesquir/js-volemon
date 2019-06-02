@@ -40,8 +40,7 @@ describe('Ball#smash', function() {
 		let horizontalSpeed = 300;
 		let verticalSpeed = 200;
 
-		ball.ballObject.body.velocity.x = horizontalSpeed;
-		ball.ballObject.body.velocity.y = verticalSpeed;
+		ball.updateVelocity(horizontalSpeed, verticalSpeed);
 
 		ball.smash(true);
 
@@ -57,8 +56,7 @@ describe('Ball#smash', function() {
 		let horizontalSpeed = -300;
 		let verticalSpeed = 200;
 
-		ball.ballObject.body.velocity.x = horizontalSpeed;
-		ball.ballObject.body.velocity.y = verticalSpeed;
+		ball.updateVelocity(horizontalSpeed, verticalSpeed);
 
 		ball.smash(false);
 
@@ -74,8 +72,7 @@ describe('Ball#smash', function() {
 		let horizontalSpeed = 300;
 		let verticalSpeed = -200;
 
-		ball.ballObject.body.velocity.x = horizontalSpeed;
-		ball.ballObject.body.velocity.y = verticalSpeed;
+		ball.updateVelocity(horizontalSpeed, verticalSpeed);
 
 		ball.smash(true);
 
@@ -91,8 +88,7 @@ describe('Ball#smash', function() {
 		let horizontalSpeed = -300;
 		let verticalSpeed = -200;
 
-		ball.ballObject.body.velocity.x = horizontalSpeed;
-		ball.ballObject.body.velocity.y = verticalSpeed;
+		ball.updateVelocity(horizontalSpeed, verticalSpeed);
 
 		ball.smash(false);
 
@@ -108,8 +104,7 @@ describe('Ball#smash', function() {
 		let horizontalSpeed = -300;
 		let verticalSpeed = -200;
 
-		ball.ballObject.body.velocity.x = horizontalSpeed;
-		ball.ballObject.body.velocity.y = verticalSpeed;
+		ball.updateVelocity(horizontalSpeed, verticalSpeed);
 
 		ball.smash(true);
 
@@ -125,8 +120,7 @@ describe('Ball#smash', function() {
 		let horizontalSpeed = 300;
 		let verticalSpeed = -200;
 
-		ball.ballObject.body.velocity.x = horizontalSpeed;
-		ball.ballObject.body.velocity.y = verticalSpeed;
+		ball.updateVelocity(horizontalSpeed, verticalSpeed);
 
 		ball.smash(false);
 
