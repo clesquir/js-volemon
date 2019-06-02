@@ -108,7 +108,7 @@ export default class Ai extends Dev {
 			this.gameData.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
 
 			let pointSide = null;
-			if (this.mainScene.ball.x() < this.gameConfiguration.width() / 2 - this.gameConfiguration.netWidth()) {
+			if (this.mainScene.balls.firstBall().x() < this.gameConfiguration.width() / 2 - this.gameConfiguration.netWidth()) {
 				pointSide = CLIENT_POINTS_COLUMN;
 			} else if (ball.x() > this.gameConfiguration.width() / 2 + this.gameConfiguration.netWidth()) {
 				pointSide = HOST_POINTS_COLUMN;

@@ -48,15 +48,17 @@ export default class GameStreamInitiator {
 		this.stream.on('sendBundledData-' + gameId, (bundledData) => {
 			const timestamp = bundledData.timestamp;
 
-			if (bundledData.moveClientBall) {
-				bundledData.moveClientBall.timestamp = timestamp;
-				this.moveClientBall.call(this, bundledData.moveClientBall);
-			}
-
 			for (let key in bundledData) {
-				if (bundledData.hasOwnProperty(key) && key.indexOf('moveClientPlayer-') === 0) {
-					bundledData[key].timestamp = timestamp;
-					this.moveClientPlayer.call(this, bundledData[key]);
+				if (bundledData.hasOwnProperty(key)) {
+					if (key.indexOf('moveClientBall-') === 0) {
+						bundledData[key].timestamp = timestamp;
+						this.moveClientBall.call(this, bundledData[key]);
+					}
+
+					if (key.indexOf('moveClientPlayer-') === 0) {
+						bundledData[key].timestamp = timestamp;
+						this.moveClientPlayer.call(this, bundledData[key]);
+					}
 				}
 			}
 

@@ -1,7 +1,6 @@
 import GameData from "../../data/GameData";
 import GameConfiguration from "../../configuration/GameConfiguration";
 import MainScene from "../scene/MainScene";
-import Ball from "./Ball";
 import Level from "./Level";
 import {ArtificialIntelligenceData} from "../../artificialIntelligence/ArtificialIntelligenceData";
 import {ArtificialIntelligencePositionData} from "../../artificialIntelligence/ArtificialIntelligencePositionData";
@@ -171,14 +170,14 @@ export default class Player {
 		}
 	}
 
-	updateEye(ball: Ball) {
+	updateEye(ballX: number, ballY: number) {
 		if (this.killed) {
 			return;
 		}
 
 		//Move eyePupil
-		const dx = this.playerObject.x + this.eyeBall.x - ball.x();
-		const dy = this.playerObject.y + this.eyeBall.y - ball.y();
+		const dx = this.playerObject.x + this.eyeBall.x - ballX;
+		const dy = this.playerObject.y + this.eyeBall.y - ballY;
 		const r = Math.sqrt(dx * dx + dy * dy);
 		const max = this.eyeBallRadius - this.eyePupilRadius;
 		const x = (r < max) ? dx : dx * max / r;

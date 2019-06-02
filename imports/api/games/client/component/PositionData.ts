@@ -8,4 +8,5 @@ export declare type PositionData = {
 	isHost?: boolean;
 	isClient?: boolean;
 	doingDropShot?: boolean;
+	ballIncrement?: number;
 };

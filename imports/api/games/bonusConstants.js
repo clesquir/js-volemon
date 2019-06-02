@@ -1,6 +1,7 @@
 export const BONUS_SMALL_BALL = 'SmallBallBonus';
 export const BONUS_BIG_BALL = 'BigBallBonus';
 export const BONUS_INVISIBLE_BALL = 'InvisibleBallBonus';
+export const BONUS_CLONE_BALL = 'CloneBallBonus';
 export const BONUS_SMALL_MONSTER = 'SmallMonsterBonus';
 export const BONUS_BIG_MONSTER = 'BigMonsterBonus';
 export const BONUS_BIG_JUMP_MONSTER = 'BigJumpMonsterBonus';
@@ -38,6 +39,7 @@ export const ALL_BONUSES = [
 	BONUS_SMALL_BALL,
 	BONUS_BIG_BALL,
 	BONUS_INVISIBLE_BALL,
+	BONUS_CLONE_BALL,
 	BONUS_LOW_GRAVITY,
 	BONUS_HIGH_GRAVITY,
 	BONUS_NOTHING,
@@ -72,6 +74,7 @@ export const ALL_BONUSES_FOR_RANDOM = [
 	BONUS_SMALL_BALL,
 	BONUS_BIG_BALL,
 	BONUS_INVISIBLE_BALL,
+	BONUS_CLONE_BALL,
 	BONUS_LOW_GRAVITY,
 	BONUS_HIGH_GRAVITY,
 	BONUS_NOTHING,

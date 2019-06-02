@@ -35,13 +35,12 @@ describe('Ball#smash', function() {
 	it('normal smash calculations for host', function() {
 		const mainScene = gameBoot.gameBoot.mainScene;
 		mainScene.createComponents();
-		const ball = mainScene.ball;
+		const ball = mainScene.balls.firstBall();
 
 		let horizontalSpeed = 300;
 		let verticalSpeed = 200;
 
-		ball.ballObject.body.velocity.x = horizontalSpeed;
-		ball.ballObject.body.velocity.y = verticalSpeed;
+		ball.updateVelocity(horizontalSpeed, verticalSpeed);
 
 		ball.smash(true);
 
@@ -52,13 +51,12 @@ describe('Ball#smash', function() {
 	it('normal smash calculations for client', function() {
 		const mainScene = gameBoot.gameBoot.mainScene;
 		mainScene.createComponents();
-		const ball = mainScene.ball;
+		const ball = mainScene.balls.firstBall();
 
 		let horizontalSpeed = -300;
 		let verticalSpeed = 200;
 
-		ball.ballObject.body.velocity.x = horizontalSpeed;
-		ball.ballObject.body.velocity.y = verticalSpeed;
+		ball.updateVelocity(horizontalSpeed, verticalSpeed);
 
 		ball.smash(false);
 
@@ -69,13 +67,12 @@ describe('Ball#smash', function() {
 	it('ball is smashed towards ground if its vertical speed was negative for host', function() {
 		const mainScene = gameBoot.gameBoot.mainScene;
 		mainScene.createComponents();
-		const ball = mainScene.ball;
+		const ball = mainScene.balls.firstBall();
 
 		let horizontalSpeed = 300;
 		let verticalSpeed = -200;
 
-		ball.ballObject.body.velocity.x = horizontalSpeed;
-		ball.ballObject.body.velocity.y = verticalSpeed;
+		ball.updateVelocity(horizontalSpeed, verticalSpeed);
 
 		ball.smash(true);
 
@@ -86,13 +83,12 @@ describe('Ball#smash', function() {
 	it('ball is smashed towards ground if its vertical speed was negative for client', function() {
 		const mainScene = gameBoot.gameBoot.mainScene;
 		mainScene.createComponents();
-		const ball = mainScene.ball;
+		const ball = mainScene.balls.firstBall();
 
 		let horizontalSpeed = -300;
 		let verticalSpeed = -200;
 
-		ball.ballObject.body.velocity.x = horizontalSpeed;
-		ball.ballObject.body.velocity.y = verticalSpeed;
+		ball.updateVelocity(horizontalSpeed, verticalSpeed);
 
 		ball.smash(false);
 
@@ -103,13 +99,12 @@ describe('Ball#smash', function() {
 	it('ball direction is reversed if it is smashed by host', function() {
 		const mainScene = gameBoot.gameBoot.mainScene;
 		mainScene.createComponents();
-		const ball = mainScene.ball;
+		const ball = mainScene.balls.firstBall();
 
 		let horizontalSpeed = -300;
 		let verticalSpeed = -200;
 
-		ball.ballObject.body.velocity.x = horizontalSpeed;
-		ball.ballObject.body.velocity.y = verticalSpeed;
+		ball.updateVelocity(horizontalSpeed, verticalSpeed);
 
 		ball.smash(true);
 
@@ -120,13 +115,12 @@ describe('Ball#smash', function() {
 	it('ball direction is reversed if it is smashed by client', function() {
 		const mainScene = gameBoot.gameBoot.mainScene;
 		mainScene.createComponents();
-		const ball = mainScene.ball;
+		const ball = mainScene.balls.firstBall();
 
 		let horizontalSpeed = 300;
 		let verticalSpeed = -200;
 
-		ball.ballObject.body.velocity.x = horizontalSpeed;
-		ball.ballObject.body.velocity.y = verticalSpeed;
+		ball.updateVelocity(horizontalSpeed, verticalSpeed);
 
 		ball.smash(false);
 

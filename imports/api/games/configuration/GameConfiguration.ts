@@ -368,6 +368,18 @@ export default abstract class GameConfiguration {
 		return BONUS_MAXIMUM_ON_SCREEN;
 	}
 
+	overridesMaximumBonusesInAPoint(): boolean {
+		return (this.hasTournament() && this.tournamentMode.overridesMaximumBonusesInAPoint());
+	}
+
+	maximumBonusesInAPoint(): number {
+		if (!this.overridesMaximumBonusesInAPoint()) {
+			throw 'The maximum bonuses in a point is not overridden';
+		}
+
+		return this.tournamentMode.maximumBonusesInAPoint();
+	}
+
 	bonusSpawnMinimumFrequence(): number {
 		if (this.hasTournament() && this.tournamentMode.overridesBonusSpawnMinimumFrequence()) {
 			return this.tournamentMode.bonusSpawnMinimumFrequence();
