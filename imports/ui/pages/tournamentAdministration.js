@@ -222,6 +222,7 @@ const modeOptions = function() {
 	addToMode(mode, 'has-bonuses', 'overriddenHasBonuses');
 	addToMode(mode, 'bonus-duration', 'overriddenBonusDuration');
 	addToMode(mode, 'maximum-bonuses-on-screen', 'overriddenMaximumBonusesOnScreen');
+	addToMode(mode, 'maximum-bonuses-in-a-point', 'overriddenMaximumBonusesInAPoint');
 	addToMode(mode, 'bonus-spawn-minimum-frequence', 'overriddenBonusSpawnMinimumFrequence');
 	addToMode(mode, 'bonus-spawn-initial-minimum-frequence', 'overriddenBonusSpawnInitialMinimumFrequence');
 	addToMode(mode, 'bonus-spawn-initial-maximum-frequence', 'overriddenBonusSpawnInitialMaximumFrequence');

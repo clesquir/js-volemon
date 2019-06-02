@@ -37,6 +37,7 @@ export default class Bonuses {
 	lastBonusCreated: number = 0;
 	bonusFrequenceTime: number = 0;
 	lastGameRespawn: number = 0;
+	spawnedBonusesInPoint: number = 0;
 	bonuses: Bonus[] = [];
 	activeBonuses: BaseBonus[] = [];
 	removedBonuses: string[] = [];
@@ -122,6 +123,7 @@ export default class Bonuses {
 		this.regenerateLastBonusCreatedAndFrequenceTime();
 		this.applyActiveBonuses();
 		this.lastGameRespawn = Date.now();
+		this.spawnedBonusesInPoint = 0;
 	}
 
 	stopGame() {
@@ -563,23 +565,27 @@ export default class Bonuses {
 	}
 
 	scaleSmallBall() {
-		this.scene.ball.scaleSmall();
+		this.scene.balls.scaleSmall();
 	}
 
 	scaleBigBall() {
-		this.scene.ball.scaleBig();
+		this.scene.balls.scaleBig();
 	}
 
 	resetBallScale() {
-		this.scene.ball.resetScale();
+		this.scene.balls.resetScale();
 	}
 
 	hideBall() {
-		this.scene.ball.hide();
+		this.scene.balls.hide();
 	}
 
 	unhideBall() {
-		this.scene.ball.unhide();
+		this.scene.balls.unhide();
+	}
+
+	cloneBall() {
+		this.scene.balls.clone();
 	}
 
 	private bonusFromIdentifier(bonusIdentifier: string): Bonus | null {
@@ -689,7 +695,8 @@ export default class Bonuses {
 		if (
 			this.scene.gameResumed &&
 			Date.now() - this.lastBonusCreated >= frequenceTime &&
-			this.bonuses.length < this.gameConfiguration.maximumBonusesOnScreen()
+			this.bonuses.length < this.gameConfiguration.maximumBonusesOnScreen() &&
+			this.reachedMaximumBonusInPoint() === false
 		) {
 			this.createRandomBonus();
 		}
@@ -714,6 +721,8 @@ export default class Bonuses {
 				data
 			]
 		);
+
+		this.spawnedBonusesInPoint++;
 	}
 
 	private regenerateLastBonusCreatedAndFrequenceTime() {
@@ -722,5 +731,13 @@ export default class Bonuses {
 			this.bonusSpawnInitialMinimumFrequence,
 			this.bonusSpawnInitialMaximumFrequence
 		);
+	}
+
+	private reachedMaximumBonusInPoint(): boolean {
+		if (this.gameConfiguration.overridesMaximumBonusesInAPoint()) {
+			return this.spawnedBonusesInPoint >= this.gameConfiguration.maximumBonusesInAPoint();
+		}
+
+		return false;
 	}
 }

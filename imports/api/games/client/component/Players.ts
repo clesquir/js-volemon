@@ -88,11 +88,11 @@ export default class Players {
 		}
 	}
 
-	update(ball: Ball, bonuses: Bonuses) {
-		this.updateEyes(ball);
+	update(ballsData: ArtificialIntelligencePositionData[], bonuses: Bonuses) {
+		this.updateEyes(ballsData);
 		this.inputs();
 		this.moveComputers(
-			ball.artificialIntelligencePositionData(),
+			ballsData,
 			bonuses.artificialIntelligencePositionData()
 		);
 	}
@@ -367,12 +367,13 @@ export default class Players {
 		return player;
 	}
 
-	private updateEyes(ball: Ball) {
+	private updateEyes(ballsData: ArtificialIntelligencePositionData[]) {
 		for (let key of this.getPlayerKeys()) {
 			const player = this.getPlayerFromKey(key);
 
 			if (player) {
-				player.updateEye(ball);
+				const closestBall = this.closestBall(player, ballsData);
+				player.updateEye(closestBall.x, closestBall.y);
 			}
 		}
 	}
@@ -471,7 +472,7 @@ export default class Players {
 	}
 
 	private moveComputers(
-		ballData: ArtificialIntelligencePositionData,
+		ballsData: ArtificialIntelligencePositionData[],
 		bonusesData: ArtificialIntelligencePositionData[]
 	) {
 		//Creator user controls CPU
@@ -486,7 +487,7 @@ export default class Players {
 				if (this.gameIsOnGoing()) {
 					this.moveComputer(
 						player,
-						ballData,
+						this.closestBall(player, ballsData),
 						bonusesData
 					);
 				}
@@ -642,5 +643,28 @@ export default class Players {
 
 	private gameIsOnGoing(): boolean {
 		return this.gameData.isGameStatusStarted();
+	}
+
+	private closestBall(
+		player: Player,
+		ballsData: ArtificialIntelligencePositionData[]
+	): ArtificialIntelligencePositionData {
+		const playerData = player.positionData();
+		let closestBallDistance = Number.POSITIVE_INFINITY;
+		let closestBallData;
+
+		for (let ballData of ballsData) {
+			const distance = Math.sqrt(
+				Math.pow(Math.abs(playerData.x - ballData.x), 2) +
+				Math.pow(Math.abs(playerData.y - ballData.y), 2)
+			);
+
+			if (distance < closestBallDistance) {
+				closestBallDistance = distance;
+				closestBallData = ballData;
+			}
+		}
+
+		return closestBallData;
 	}
 }

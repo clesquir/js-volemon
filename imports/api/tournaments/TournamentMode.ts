@@ -18,6 +18,7 @@ export default class TournamentMode {
 	overriddenCollidesWithOpponent;
 
 	overriddenMaximumBonusesOnScreen;
+	overriddenMaximumBonusesInAPoint;
 	overriddenBonusSpawnMinimumFrequence;
 	overriddenBonusSpawnInitialMinimumFrequence;
 	overriddenBonusSpawnInitialMaximumFrequence;
@@ -98,6 +99,14 @@ export default class TournamentMode {
 
 	maximumBonusesOnScreen(): number {
 		return parseInt(this.overriddenMaximumBonusesOnScreen);
+	}
+
+	overridesMaximumBonusesInAPoint(): boolean {
+		return this.overriddenMaximumBonusesInAPoint !== undefined;
+	}
+
+	maximumBonusesInAPoint(): number {
+		return parseInt(this.overriddenMaximumBonusesInAPoint);
 	}
 
 	overridesBonusSpawnMinimumFrequence(): boolean {
@@ -620,6 +629,7 @@ export default class TournamentMode {
 		tournamentMode.overriddenCollidesWithOpponent = mode.overriddenCollidesWithOpponent;
 
 		tournamentMode.overriddenMaximumBonusesOnScreen = mode.overriddenMaximumBonusesOnScreen;
+		tournamentMode.overriddenMaximumBonusesInAPoint = mode.overriddenMaximumBonusesInAPoint;
 		tournamentMode.overriddenBonusSpawnMinimumFrequence = mode.overriddenBonusSpawnMinimumFrequence;
 		tournamentMode.overriddenBonusSpawnInitialMinimumFrequence = mode.overriddenBonusSpawnInitialMinimumFrequence;
 		tournamentMode.overriddenBonusSpawnInitialMaximumFrequence = mode.overriddenBonusSpawnInitialMaximumFrequence;

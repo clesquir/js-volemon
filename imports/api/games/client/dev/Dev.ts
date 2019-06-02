@@ -97,7 +97,7 @@ export default class Dev {
 
 		this.mainScene.artificialIntelligence.initFromData(this.mainScene, this.gameData, this.gameConfiguration);
 		this.createPlayersComponents();
-		this.mainScene.ball = this.mainScene.createBall();
+		this.mainScene.balls.create();
 
 		this.mainScene.countdown = new Countdown(
 			this.mainScene,
@@ -143,7 +143,7 @@ export default class Dev {
 
 	resetPlayersAndBall() {
 		this.mainScene.players.reset();
-		this.mainScene.ball.reset(this.gameData.lastPointTaken);
+		this.mainScene.balls.reset(this.gameData.lastPointTaken);
 	}
 
 	updateGame() {

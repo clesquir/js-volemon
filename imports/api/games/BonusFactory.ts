@@ -36,6 +36,7 @@ import {
 	BONUS_BIG_MONSTER,
 	BONUS_BOUNCE_MONSTER,
 	BONUS_CLOAKED_MONSTER,
+	BONUS_CLONE_BALL,
 	BONUS_CLOUD,
 	BONUS_CURE,
 	BONUS_FAST_MONSTER,
@@ -68,6 +69,7 @@ import GameConfiguration from "./configuration/GameConfiguration";
 import {Random} from 'meteor/random';
 import {BonusStreamData} from "./bonus/data/BonusStreamData";
 import BaseBonus from "./bonus/BaseBonus";
+import CloneBallBonus from "./bonus/CloneBallBonus";
 
 export default class BonusFactory {
 	static randomBonus(gameConfiguration: GameConfiguration): BaseBonus {
@@ -97,6 +99,7 @@ export default class BonusFactory {
 			BONUS_SMALL_BALL,
 			BONUS_BIG_BALL,
 			BONUS_INVISIBLE_BALL,
+			BONUS_CLONE_BALL,
 			BONUS_LOW_GRAVITY,
 			BONUS_HIGH_GRAVITY,
 			BONUS_ROBOT,
@@ -128,6 +131,7 @@ export default class BonusFactory {
 			BONUS_SMALL_BALL,
 			BONUS_BIG_BALL,
 			BONUS_INVISIBLE_BALL,
+			BONUS_CLONE_BALL,
 			BONUS_LOW_GRAVITY,
 			BONUS_HIGH_GRAVITY,
 			BONUS_ROBOT,
@@ -160,6 +164,8 @@ export default class BonusFactory {
 				return new BigBallBonus(bonusClass);
 			case BONUS_INVISIBLE_BALL:
 				return new InvisibleBallBonus(bonusClass);
+			case BONUS_CLONE_BALL:
+				return new CloneBallBonus(bonusClass);
 			case BONUS_SMALL_MONSTER:
 				return new SmallMonsterBonus(bonusClass);
 			case BONUS_BIG_MONSTER:

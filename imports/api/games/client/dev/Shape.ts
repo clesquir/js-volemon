@@ -65,7 +65,7 @@ export default class Shape extends Dev {
 			this.players['player' + playerIndex].reset();
 		}
 
-		this.mainScene.ball.reset(this.gameData.lastPointTaken);
+		this.mainScene.balls.reset(this.gameData.lastPointTaken);
 	}
 
 	createLevelComponents() {
@@ -78,11 +78,14 @@ export default class Shape extends Dev {
 
 		for (let i = 0; i < PLAYER_LIST_OF_SHAPES.length * 2; i++) {
 			let playerIndex = i + 1;
-			this.players['player' + playerIndex].updateEye(this.mainScene.ball);
+			this.players['player' + playerIndex].updateEye(
+				this.mainScene.balls.firstBall().x(),
+				this.mainScene.balls.firstBall().y()
+			);
 			this.players['player' + playerIndex].freeze();
 		}
 
-		this.mainScene.ball.freeze();
+		this.mainScene.balls.freeze();
 	}
 
 	private shapeKey(playerKey): number {

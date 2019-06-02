@@ -10,6 +10,7 @@ import Interpolation from "./Interpolation";
 import ServerNormalizedTime from "../ServerNormalizedTime";
 import VelocityConstraint from "./VelocityConstraint";
 import ShapeFactory from "./ShapeFactory";
+import {BallCloneData} from "./BallCloneData";
 
 export default class Ball {
 	scene: MainScene;
@@ -18,6 +19,7 @@ export default class Ball {
 	serverNormalizedTime: ServerNormalizedTime;
 	skinManager: SkinManager;
 	level: Level;
+	key: string;
 	interpolation: Interpolation;
 	velocityConstraint: VelocityConstraint;
 
@@ -38,7 +40,8 @@ export default class Ball {
 		gameConfiguration: GameConfiguration,
 		serverNormalizedTime: ServerNormalizedTime,
 		skinManager: SkinManager,
-		level: Level
+		level: Level,
+		key: string
 	) {
 		this.scene = scene;
 		this.gameData = gameData;
@@ -46,6 +49,7 @@ export default class Ball {
 		this.serverNormalizedTime = serverNormalizedTime;
 		this.skinManager = skinManager;
 		this.level = level;
+		this.key = key;
 
 		this.interpolation = new Interpolation(
 			this.scene,
@@ -56,8 +60,12 @@ export default class Ball {
 		this.init();
 	}
 
-	reset(lastPointTaken: string) {
+	destroy() {
 		this.ballObject.destroy();
+	}
+
+	reset(lastPointTaken: string) {
+		this.destroy();
 
 		this.init();
 
@@ -137,6 +145,23 @@ export default class Ball {
 		this.ballObject.alpha = 1;
 	}
 
+	cloneProperties(cloneData: BallCloneData) {
+		this.ballObject.body.x = cloneData.x;
+		this.ballObject.body.y = cloneData.y;
+		this.ballObject.body.velocity.x = cloneData.velocityX;
+		this.ballObject.body.velocity.y = cloneData.velocityY;
+		this.ballObject.alpha = cloneData.alpha;
+		this.currentScale = cloneData.scale;
+		this.currentMass = cloneData.mass;
+		this.currentGravityScale = cloneData.gravityScale;
+		this.applyScale();
+	}
+
+	updateVelocity(x: number, y: number) {
+		this.ballObject.body.velocity.x = x;
+		this.ballObject.body.velocity.y = y;
+	}
+
 	x(): number {
 		return this.ballObject.x;
 	}
@@ -145,12 +170,27 @@ export default class Ball {
 		return this.ballObject.y;
 	}
 
+	velocityDistance(): number {
+		return Math.sqrt(
+			Math.pow(Math.abs(this.ballObject.body.velocity.x), 2) +
+			Math.pow(Math.abs(this.ballObject.body.velocity.y), 2)
+		);
+	}
+
+	velocityAngle(): number {
+		return Math.atan2(
+			this.ballObject.body.velocity.y,
+			this.ballObject.body.velocity.x
+		);
+	}
+
 	diameter(): number {
 		return this.ballObject.height;
 	}
 
 	positionData(): PositionData {
 		return {
+			key: this.key,
 			x: this.ballObject.x,
 			y: this.ballObject.y,
 			velocityX: this.velocityX(),
@@ -168,6 +208,19 @@ export default class Ball {
 			velocityY: this.velocityY(),
 			width: this.ballObject.width,
 			height: this.ballObject.height,
+		};
+	}
+
+	ballCloneData(): BallCloneData {
+		return {
+			x: this.x(),
+			y: this.y(),
+			velocityX: this.velocityX(),
+			velocityY: this.velocityY(),
+			alpha: this.ballObject.alpha,
+			scale: this.currentScale,
+			mass: this.currentMass,
+			gravityScale: this.currentGravityScale,
 		};
 	}
 

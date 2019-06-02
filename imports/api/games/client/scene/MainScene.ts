@@ -8,7 +8,6 @@ import Level from "../component/Level";
 import Ball from "../component/Ball";
 import ArtificialIntelligence from "../../artificialIntelligence/ArtificialIntelligence";
 import {CLIENT_POINTS_COLUMN, DEPTH_ACTIVATION_ANIMATION, HOST_POINTS_COLUMN} from "../../constants";
-import {BALL_INTERVAL} from "../../emissionConstants";
 import {PositionData} from "../component/PositionData";
 import Countdown from "../component/Countdown";
 import Animations from "../component/Animations";
@@ -20,6 +19,7 @@ import {BonusPositionData} from "../../bonus/data/BonusPositionData";
 import ScaleManager from "../component/ScaleManager";
 import Player from "../component/Player";
 import Bonus from "../component/Bonus";
+import Balls from "../component/Balls";
 
 export default class MainScene {
 	game: Phaser.Game;
@@ -35,11 +35,11 @@ export default class MainScene {
 	level: Level;
 	artificialIntelligence: ArtificialIntelligence;
 	players: Players;
+	balls: Balls;
 	bonuses: Bonuses;
 	scaleManager: ScaleManager;
 
 	zIndexGroup: Phaser.Group;
-	ball: Ball;
 	countdown: Countdown;
 
 	gameInitiated: boolean = false;
@@ -47,8 +47,6 @@ export default class MainScene {
 	gameHasEnded: boolean = false;
 
 	lastPointAt: number = 0;
-	lastBallPositionData: PositionData;
-	lastBallUpdate: number = 0;
 
 	constructor(
 		game: Phaser.Game,
@@ -86,6 +84,16 @@ export default class MainScene {
 			this.animations,
 			this.level,
 			this.artificialIntelligence
+		);
+		this.balls = new Balls(
+			this,
+			this.gameData,
+			this.gameConfiguration,
+			this.skinManager,
+			this.streamBundler,
+			this.serverNormalizedTime,
+			this.animations,
+			this.level
 		);
 		this.bonuses = new Bonuses(
 			this,
@@ -126,25 +134,18 @@ export default class MainScene {
 
 	update() {
 		this.streamBundler.resetBundledStreams();
+
 		this.players.beforeUpdate();
+		this.balls.beforeUpdate();
 
-		//Do not allow ball movement if it is frozen
-		if (this.gameData.isUserCreator() && this.ball.isFrozen) {
-			this.ball.freeze();
-		}
-
-		this.players.update(this.ball, this.bonuses);
+		this.players.update(this.balls.artificialIntelligencePositionsData(), this.bonuses);
+		this.balls.update();
 		this.bonuses.update();
 		this.countdown.update();
-		this.ball.constrainVelocity();
 
 		if (!this.gameIsOnGoing()) {
 			this.stopGame();
 			this.onGameEnd();
-		}
-
-		if (this.gameData.isUserCreator()) {
-			this.sendBallPosition();
 		}
 
 		this.streamBundler.emitBundledStream(
@@ -278,11 +279,11 @@ export default class MainScene {
 	}
 
 	moveClientBall(data: PositionData) {
-		if (!this.gameInitiated || !this.ball || !this.gameIsOnGoing()) {
+		if (!this.gameInitiated || !this.gameIsOnGoing()) {
 			return;
 		}
 
-		this.ball.interpolate(data);
+		this.balls.moveClientBall(data);
 	}
 
 	createBonus(data: BonusStreamData) {
@@ -362,7 +363,7 @@ export default class MainScene {
 
 		this.artificialIntelligence.initFromData(this, this.gameData, this.gameConfiguration);
 		this.players.create();
-		this.ball = this.createBall();
+		this.balls.create();
 
 		this.countdown = new Countdown(
 			this,
@@ -397,19 +398,19 @@ export default class MainScene {
 
 	private pauseGame() {
 		this.gameResumed = false;
-		this.ball.freeze();
 		this.players.freeze();
+		this.balls.freeze();
 	}
 
 	private stopGame() {
 		this.players.stopGame();
-		this.ball.stopGame();
+		this.balls.stopGame();
 		this.bonuses.stopGame();
 	}
 
 	private resumeGame() {
-		this.ball.unfreeze();
 		this.players.unfreeze();
+		this.balls.unfreeze();
 		this.gameResumed = true;
 	}
 
@@ -421,41 +422,13 @@ export default class MainScene {
 		}
 	}
 
-	private createBall(): Ball {
-		return new Ball(
-			this,
-			this.gameData,
-			this.gameConfiguration,
-			this.serverNormalizedTime,
-			this.skinManager,
-			this.level
-		);
-	}
-
 	private gameIsOnGoing(): boolean {
 		return this.gameData.isGameStatusStarted();
 	}
 
-	private sendBallPosition() {
-		let ballPositionData = this.ball.positionData();
-		let ballInterval = BALL_INTERVAL;
-
-		if (JSON.stringify(this.lastBallPositionData) === JSON.stringify(ballPositionData)) {
-			ballInterval *= 2;
-		}
-		this.lastBallPositionData = Object.assign({}, ballPositionData);
-
-		this.lastBallUpdate = this.streamBundler.addToBundledStreamsAtFrequence(
-			this.lastBallUpdate,
-			ballInterval,
-			'moveClientBall',
-			ballPositionData
-		);
-	}
-
 	private resetPlayersAndBall() {
 		this.players.reset();
-		this.ball.reset(this.gameData.lastPointTaken);
+		this.balls.reset(this.gameData.lastPointTaken);
 	}
 
 	private onBallHitScoreZone(ball: Ball) {
