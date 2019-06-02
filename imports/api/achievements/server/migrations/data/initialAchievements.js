@@ -46,6 +46,7 @@ import {
 	ACHIEVEMENT_TRIPLE_COLON,
 	ACHIEVEMENT_UNDESIRABLE,
 	ACHIEVEMENT_UNTOUCHABLE,
+	ACHIEVEMENT_YOU_HAVE_GOT_BALLS,
 	TYPE_MS,
 	TYPE_QUANTITY,
 	TYPE_TIMES
@@ -477,5 +478,14 @@ export const INITIAL_ACHIVEMENTS = [
 		"type": TYPE_TIMES,
 		"displayOrder": 47,
 		"levels": [{"level": 1, "number": 10}, {"level": 2, "number": 20}, {"level": 3, "number": 40}]
+	},
+	{
+		"_id": ACHIEVEMENT_YOU_HAVE_GOT_BALLS,
+		"isSecret": true,
+		"name": "You've got balls!",
+		"description": "# of balls on screen",
+		"type": TYPE_QUANTITY,
+		"displayOrder": 48,
+		"levels": [{"level": 1, "number": 2}, {"level": 2, "number": 4}, {"level": 3, "number": 8}]
 	}
 ];
