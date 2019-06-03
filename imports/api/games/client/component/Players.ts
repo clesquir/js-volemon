@@ -373,7 +373,10 @@ export default class Players {
 
 			if (player) {
 				const closestBall = this.closestBall(player, ballsData);
-				player.updateEye(closestBall.x, closestBall.y);
+
+				if (closestBall) {
+					player.updateEye(closestBall.x, closestBall.y);
+				}
 			}
 		}
 	}
@@ -485,11 +488,15 @@ export default class Players {
 
 			if (player) {
 				if (this.gameIsOnGoing()) {
-					this.moveComputer(
-						player,
-						this.closestBall(player, ballsData),
-						bonusesData
-					);
+					const closestBall = this.closestBall(player, ballsData);
+
+					if (closestBall) {
+						this.moveComputer(
+							player,
+							closestBall,
+							bonusesData
+						);
+					}
 				}
 
 				this.sendPlayerPosition(player);
@@ -648,10 +655,10 @@ export default class Players {
 	private closestBall(
 		player: Player,
 		ballsData: ArtificialIntelligencePositionData[]
-	): ArtificialIntelligencePositionData {
+	): ArtificialIntelligencePositionData | null {
 		const playerData = player.positionData();
 		let closestBallDistance = Number.POSITIVE_INFINITY;
-		let closestBallData;
+		let closestBallData = null;
 
 		for (let ballData of ballsData) {
 			const distance = Math.sqrt(
