@@ -10,6 +10,7 @@ import ConsecutiveLostGames from '/imports/api/achievements/server/listeners/Con
 import ConsecutiveWonGames from '/imports/api/achievements/server/listeners/ConsecutiveWonGames';
 import CrushingMetal from '/imports/api/achievements/server/listeners/CrushingMetal';
 import DavidVsGoliath from '/imports/api/achievements/server/listeners/DavidVsGoliath';
+import FortuneTeller from '/imports/api/achievements/server/listeners/FortuneTeller';
 import FullStop from '/imports/api/achievements/server/listeners/FullStop';
 import GamesPlayed from '/imports/api/achievements/server/listeners/GamesPlayed';
 import GamesWonUnderAMinute from '/imports/api/achievements/server/listeners/GamesWonUnderAMinute';
@@ -114,6 +115,7 @@ export default class GameListeners {
 			this.listeners.push((new Untouchable()).forGame(this.gameId, player.userId));
 			this.listeners.push((new HitTheCeiling()).forGame(this.gameId, player.userId));
 			this.listeners.push((new YouHaveGotBalls()).forGame(this.gameId, player.userId));
+			this.listeners.push((new FortuneTeller()).forGame(this.gameId, player.userId));
 		});
 	}
 

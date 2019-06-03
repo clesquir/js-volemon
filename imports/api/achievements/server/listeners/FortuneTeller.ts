@@ -2,9 +2,9 @@ import GameListener from './GameListener';
 import BonusCaught from "../../../games/events/BonusCaught";
 import PointTaken from "../../../games/events/PointTaken";
 import {BONUS_CLONE_BALL} from "../../../games/bonusConstants";
-import {ACHIEVEMENT_YOU_HAVE_GOT_BALLS} from "../../constants";
+import {ACHIEVEMENT_FORTUNE_TELLER} from "../../constants";
 
-export default class YouHaveGotBalls extends GameListener {
+export default class FortuneTeller extends GameListener {
 	numberBallsOnScreen: number = 1;
 
 	addListeners() {
@@ -13,8 +13,8 @@ export default class YouHaveGotBalls extends GameListener {
 	}
 
 	removeListeners() {
-		this.removeListener(PointTaken.prototype.constructor.name, this.onPointTaken);
 		this.removeListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
+		this.removeListener(PointTaken.prototype.constructor.name, this.onPointTaken);
 	}
 
 	onBonusCaught(event: BonusCaught) {
@@ -42,6 +42,9 @@ export default class YouHaveGotBalls extends GameListener {
 
 	private cloneBall() {
 		this.numberBallsOnScreen *= 2;
-		this.updateNumberIfHigher(ACHIEVEMENT_YOU_HAVE_GOT_BALLS, this.numberBallsOnScreen);
+
+		if (this.numberBallsOnScreen === 8) {
+			this.incrementNumber(ACHIEVEMENT_FORTUNE_TELLER);
+		}
 	}
 }

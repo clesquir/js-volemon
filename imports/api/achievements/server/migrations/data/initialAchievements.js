@@ -11,6 +11,7 @@ import {
 	ACHIEVEMENT_CONSECUTIVE_WON_GAMES,
 	ACHIEVEMENT_CRUSHING_METAL,
 	ACHIEVEMENT_DAVID_VS_GOLIATH,
+	ACHIEVEMENT_FORTUNE_TELLER,
 	ACHIEVEMENT_FULL_STOP,
 	ACHIEVEMENT_GAME_TIME,
 	ACHIEVEMENT_GAMES_PLAYED,
@@ -486,6 +487,15 @@ export const INITIAL_ACHIVEMENTS = [
 		"description": "# of balls on screen",
 		"type": TYPE_QUANTITY,
 		"displayOrder": 48,
-		"levels": [{"level": 1, "number": 2}, {"level": 2, "number": 4}, {"level": 3, "number": 8}]
+		"levels": [{"level": 1, "number": 4}, {"level": 2, "number": 8}, {"level": 3, "number": 16}]
+	},
+	{
+		"_id": ACHIEVEMENT_FORTUNE_TELLER,
+		"isSecret": true,
+		"name": "Fortune teller",
+		"description": "# of times reaching 8 balls",
+		"type": TYPE_TIMES,
+		"displayOrder": 49,
+		"levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 20}]
 	}
 ];
