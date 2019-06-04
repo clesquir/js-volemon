@@ -133,6 +133,10 @@ Template.keymaps.helpers({
 			{
 				label: 'Dropshot',
 				action: 'down'
+			},
+			{
+				label: 'Display player names',
+				action: 'displayPlayerNames'
 			}
 		];
 	},
@@ -156,6 +160,7 @@ Template.keymaps.events({
 				mappings.left = 37;
 				mappings.right = 39;
 				mappings.down = 40;
+				mappings.displayPlayerNames = 'N'.charCodeAt(0);
 				Meteor.call('updateKeymaps', mappings);
 				break;
 			case 'WASD':
@@ -163,6 +168,7 @@ Template.keymaps.events({
 				mappings.left = 'A'.charCodeAt(0);
 				mappings.right = 'D'.charCodeAt(0);
 				mappings.down = 'S'.charCodeAt(0);
+				mappings.displayPlayerNames = 'N'.charCodeAt(0);
 				Meteor.call('updateKeymaps', mappings);
 				break;
 			case 'ZQSD':
@@ -170,6 +176,7 @@ Template.keymaps.events({
 				mappings.left = 'Q'.charCodeAt(0);
 				mappings.right = 'D'.charCodeAt(0);
 				mappings.down = 'S'.charCodeAt(0);
+				mappings.displayPlayerNames = 'N'.charCodeAt(0);
 				Meteor.call('updateKeymaps', mappings);
 				break;
 		}

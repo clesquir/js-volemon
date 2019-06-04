@@ -87,6 +87,10 @@ export default class MobileController implements DeviceController {
 		return this.events.down.length > 0;
 	}
 
+	displayPlayerNamesPressed(): boolean {
+		return false;
+	}
+
 	private onPressDown(originalEvent) {
 		const touches = originalEvent.changedTouches[0];
 		const realTarget = document.elementFromPoint(touches.clientX, touches.clientY);

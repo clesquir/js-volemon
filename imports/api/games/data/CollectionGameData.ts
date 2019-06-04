@@ -87,6 +87,16 @@ export default class CollectionGameData implements GameData {
 		return player.shape;
 	}
 
+	getPlayerNameFromKey(playerKey: string): string {
+		let player = this.gamePlayerFromKey(playerKey);
+
+		if (!player) {
+			return '';
+		}
+
+		return player.name;
+	}
+
 	getCurrentPlayerKey(): string {
 		return this.currentPlayerKey;
 	}

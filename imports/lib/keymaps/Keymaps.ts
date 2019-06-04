@@ -1,8 +1,28 @@
-export default class Keymaps {
-	mapping: {left: number, right: number, up: number, down: number};
+export declare type KeyMapping = {
+	left: number | null;
+	right: number | null;
+	up: number | null;
+	down: number | null;
+	displayPlayerNames: number | null;
+};
 
-	constructor(leftKeyCode, rightKeyCode, upKeyCode, downKeyCode) {
-		this.mapping = {left: leftKeyCode, right: rightKeyCode, up: upKeyCode, down: downKeyCode};
+export default class Keymaps {
+	mapping: KeyMapping;
+
+	constructor(
+		leftKeyCode: number,
+		rightKeyCode: number,
+		upKeyCode: number,
+		downKeyCode: number,
+		displayPlayerNames: number
+	) {
+		this.mapping = {
+			left: leftKeyCode,
+			right: rightKeyCode,
+			up: upKeyCode,
+			down: downKeyCode,
+			displayPlayerNames: displayPlayerNames
+		};
 	}
 
 	map(mapping: string, keyCode: number) {

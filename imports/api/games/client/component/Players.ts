@@ -69,12 +69,12 @@ export default class Players {
 	}
 
 	create() {
-		this.player1 = this.createPlayer('player1', true, '#a73030');
-		this.player2 = this.createPlayer('player2', false, '#274b7a');
+		this.player1 = this.createPlayer('player1', true, true, '#a73030');
+		this.player2 = this.createPlayer('player2', false, true, '#274b7a');
 
 		if (this.gameData.isTwoVersusTwo()) {
-			this.player3 = this.createPlayer('player3', true, '#d46969');
-			this.player4 = this.createPlayer('player4', false, '#437bc4');
+			this.player3 = this.createPlayer('player3', true, true, '#d46969');
+			this.player4 = this.createPlayer('player4', false, true, '#437bc4');
 		}
 	}
 
@@ -95,6 +95,10 @@ export default class Players {
 			ballsData,
 			bonuses.artificialIntelligencePositionData()
 		);
+
+		if (this.deviceController.displayPlayerNamesPressed()) {
+			this.displayPlayerNames();
+		}
 	}
 
 	freeze() {
@@ -215,7 +219,7 @@ export default class Players {
 
 	createRobot(robotId: string, isHost: boolean) {
 		this.gameData.addRobot(robotId);
-		this.robots[robotId] = this.createPlayer(robotId, isHost, null);
+		this.robots[robotId] = this.createPlayer(robotId, isHost, false, null);
 		this.artificialIntelligence.addComputerWithKey(
 			robotId,
 			isHost,
@@ -256,6 +260,16 @@ export default class Players {
 		ball.constrainVelocity();
 
 		this.incrementBallHitsOnBallHitPlayer(player, ball);
+	}
+
+	displayPlayerNames() {
+		for (let key of this.getPlayerKeys()) {
+			const player = this.getPlayerFromKey(key);
+
+			if (player && !player.killed) {
+				player.displayPlayerName();
+			}
+		}
 	}
 
 	hasInvincibleHost(): boolean {
@@ -349,7 +363,7 @@ export default class Players {
 		return playerKeys;
 	}
 
-	private createPlayer(key: string, isHost: boolean, color?: string): Player {
+	private createPlayer(key: string, isHost: boolean, displayPlayerName: boolean, color?: string): Player {
 		const player = new Player(
 			this.scene,
 			this.gameData,
@@ -359,6 +373,7 @@ export default class Players {
 			this.level,
 			key,
 			isHost,
+			displayPlayerName,
 			color
 		);
 

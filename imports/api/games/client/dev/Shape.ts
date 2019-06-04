@@ -55,7 +55,7 @@ export default class Shape extends Dev {
 				color = '#274b7a';
 			}
 
-			this.players['player' + playerIndex] = this.mainScene.players.createPlayer('player' + playerIndex, isHost, color);
+			this.players['player' + playerIndex] = this.mainScene.players.createPlayer('player' + playerIndex, isHost, false, color);
 		}
 	}
 

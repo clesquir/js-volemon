@@ -25,6 +25,7 @@ export default class Player {
 
 	container: Phaser.Group;
 	playerObject: Phaser.Sprite;
+	playerNameObject: Phaser.Text;
 
 	eyeBall: Phaser.Graphics;
 	eyePupil: Phaser.Graphics;
@@ -71,7 +72,9 @@ export default class Player {
 	stopped: boolean = false;
 
 	private isJumping: boolean = false;
-	private isJumpingTimer;
+	private isJumpingTimer: Phaser.TimerEvent;
+	private playerNameTimer: Phaser.TimerEvent;
+	private playerNameTween: Phaser.Tween;
 
 	constructor(
 		scene: MainScene,
@@ -82,6 +85,7 @@ export default class Player {
 		level: Level,
 		key: string,
 		isHost: boolean,
+		displayPlayerName: boolean,
 		color?: string
 	) {
 		this.scene = scene;
@@ -99,13 +103,15 @@ export default class Player {
 			this.serverNormalizedTime
 		);
 
-		this.init();
+		this.init(displayPlayerName);
 	}
 
 	reset() {
 		if (this.killed) {
 			this.killed = false;
-			this.init();
+			this.init(true);
+		} else {
+			this.displayPlayerName();
 		}
 
 		this.resetBallHits();
@@ -183,6 +189,24 @@ export default class Player {
 		const x = (r < max) ? dx : dx * max / r;
 		const y = (r < max) ? dy : dy * max / r;
 		this.eyePupil.position.setTo(x * -1, y * -1);
+	}
+
+	displayPlayerName() {
+		if (this.playerNameTimer) {
+			this.scene.game.time.events.remove(this.playerNameTimer);
+		}
+		if (this.playerNameTween) {
+			this.playerNameTween.stop(false);
+		}
+
+		this.playerNameObject.alpha = 0.75;
+		this.playerNameTimer = this.scene.game.time.events.add(
+			3000,
+			() => {
+				this.playerNameTween = this.scene.game.add.tween(this.playerNameObject).to({alpha: 0}, 1000);
+				this.playerNameTween.start();
+			}
+		);
 	}
 
 	stopGame() {
@@ -436,7 +460,7 @@ export default class Player {
 		};
 	}
 
-	private init() {
+	private init(displayPlayerName: boolean) {
 		const x = this.gameConfiguration.playerInitialXFromKey(this.key, this.isHost);
 		const y = this.gameConfiguration.playerInitialY();
 
@@ -480,6 +504,29 @@ export default class Player {
 		// @ts-ignore
 		this.playerObject.depth = DEPTH_COMPONENTS;
 		this.scene.zIndexGroup.add(this.playerObject);
+
+		if (this.playerNameObject) {
+			this.playerNameObject.destroy();
+		}
+		this.playerNameObject = this.scene.game.add.text(
+			0,
+			-this.playerObject.height * 0.75,
+			'  ' + this.gameData.getPlayerNameFromKey(this.key) + '  ',
+			{
+				font: "13px 'Oxygen Mono', sans-serif",
+				align: 'center',
+				fill: 'rgba(256, 256, 256, 1)'
+			}
+		);
+		this.playerNameObject.setShadow(0, 0, 'rgba(0, 0, 0, 1)', 5);
+		this.playerNameObject.smoothed = true;
+		this.playerNameObject.anchor.setTo(0.5, 1);
+		this.playerNameObject.alpha = 0;
+		this.playerObject.addChild(this.playerNameObject);
+
+		if (displayPlayerName) {
+			this.displayPlayerName();
+		}
 
 		this.playerObject.scale.setTo(this.initialScale);
 		this.initBody();

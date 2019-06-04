@@ -1,13 +1,20 @@
-import Keymaps from './Keymaps';
+import Keymaps, {KeyMapping} from './Keymaps';
 
 export default class CustomKeymaps extends Keymaps {
-	static fromUserKeymaps(userKeymaps: {left: number, right: number, up: number, down: number}): CustomKeymaps {
+	private static readonly leftKey = 37;
+	private static readonly rightKey = 39;
+	private static readonly upKey = 38;
+	private static readonly spaceKey = 32;
+	private static readonly nKey = 'N'.charCodeAt(0);
+
+	static fromUserKeymaps(userKeymaps: KeyMapping): CustomKeymaps {
 		if (userKeymaps) {
 			return new CustomKeymaps(
-				userKeymaps.left,
-				userKeymaps.right,
-				userKeymaps.up,
-				userKeymaps.down
+				userKeymaps.left || CustomKeymaps.leftKey,
+				userKeymaps.right || CustomKeymaps.rightKey,
+				userKeymaps.up || CustomKeymaps.upKey,
+				userKeymaps.down || CustomKeymaps.spaceKey,
+				userKeymaps.displayPlayerNames || CustomKeymaps.nKey
 			);
 		}
 
@@ -16,10 +23,11 @@ export default class CustomKeymaps extends Keymaps {
 
 	static defaultKeymaps(): CustomKeymaps {
 		return new CustomKeymaps(
-			37,
-			39,
-			38,
-			32
+			CustomKeymaps.leftKey,
+			CustomKeymaps.rightKey,
+			CustomKeymaps.upKey,
+			CustomKeymaps.spaceKey,
+			CustomKeymaps.nKey
 		);
 	}
 }
