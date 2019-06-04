@@ -16,14 +16,14 @@
 
 		<div id="keymap-list" class="table-list">
 			<div class="table-list-row table-list-header">
-				<div class="table-list-cell">Actions</div>
+				<div class="table-list-cell" style="flex: 0 0 190px;">Actions</div>
 				<div class="table-list-cell">Bindings</div>
 				<div class="table-list-cell button-cell">&nbsp;</div>
 			</div>
 
 			{{#each keymapActions}}
 				<div class="table-list-row">
-					<div class="table-list-cell">{{label}}</div>
+					<div class="table-list-cell" style="flex: 0 0 190px;">{{label}}</div>
 					<div class="table-list-cell">{{keymapValue action}}</div>
 					<div class="table-list-cell button-cell">
 						<i class="fa fa-pencil" data-action="keymap-add-binding" data-binding-for="{{action}}"></i>

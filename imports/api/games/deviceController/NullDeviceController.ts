@@ -28,4 +28,8 @@ export default class NullDeviceController implements DeviceController {
 	downPressed(): boolean {
 		return false;
 	}
+
+	displayPlayerNamesPressed(): boolean {
+		return false;
+	}
 }

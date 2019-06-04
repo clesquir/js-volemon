@@ -14,6 +14,8 @@ export default interface GameData {
 
 	getPlayerShapeFromKey(playerKey: string): string;
 
+	getPlayerNameFromKey(playerKey: string): string;
+
 	getCurrentPlayerKey(): string;
 
 	isCurrentPlayerKey(playerKey: string): boolean;

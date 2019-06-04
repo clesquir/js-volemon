@@ -14,4 +14,6 @@ export default interface DeviceController {
 	upPressed(): boolean;
 
 	downPressed(): boolean;
+
+	displayPlayerNamesPressed(): boolean;
 }

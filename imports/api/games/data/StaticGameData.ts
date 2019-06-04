@@ -37,6 +37,10 @@ export default class StaticGameData implements GameData {
 		return PLAYER_DEFAULT_SHAPE;
 	}
 
+	getPlayerNameFromKey(playerKey: string): string {
+		return 'NAME';
+	}
+
 	getCurrentPlayerKey(): string {
 		return this.currentPlayerKey;
 	}

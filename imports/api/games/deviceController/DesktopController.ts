@@ -1,10 +1,18 @@
 import DeviceController from "./DeviceController";
-import CustomKeymaps from "imports/lib/keymaps/CustomKeymaps";
-import Keymaps from "imports/lib/keymaps/Keymaps";
+import CustomKeymaps from "../../../lib/keymaps/CustomKeymaps";
+import Keymaps from "../../../lib/keymaps/Keymaps";
+
+declare type KeysPressed = {
+	left: string | null;
+	right: string | null;
+	up: string | null;
+	down: string | null;
+	displayPlayerNames: string | null;
+};
 
 export default class DesktopController implements DeviceController {
 	private keymaps: Keymaps;
-	private keys: {left: string, right: string, up: string, down: string} = {left: null, right: null, up: null, down: null};
+	private keys: KeysPressed = {left: null, right: null, up: null, down: null, displayPlayerNames: null};
 	private monitoringStarted: boolean = false;
 	private readonly onKeyDown;
 	private readonly onKeyUp;
@@ -78,5 +86,9 @@ export default class DesktopController implements DeviceController {
 
 	downPressed(): boolean {
 		return this.keys.down !== null;
+	}
+
+	displayPlayerNamesPressed(): boolean {
+		return this.keys.displayPlayerNames !== null;
 	}
 }
