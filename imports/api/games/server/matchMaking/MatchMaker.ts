@@ -6,7 +6,7 @@ import {ONE_VS_ONE_GAME_MODE, TOURNAMENT_GAME_SELECTION} from "../../constants";
 import {Tournaments} from "../../../tournaments/tournaments";
 
 export default class MatchMaker {
-	subscribe(user: {id: string}, modeSelection: string, tournamentId: string) {
+	subscribe(user: {id: string, connectionId: string}, modeSelection: string, tournamentId: string) {
 		let match = MatchMakers.findOne({modeSelection: modeSelection, tournamentId: tournamentId});
 
 		if (match) {
@@ -43,12 +43,12 @@ export default class MatchMaker {
 		return true;
 	}
 
-	unsubscribe(userId: string): boolean {
+	unsubscribe(userId: string, connectionId: string): boolean {
 		if (!this.canUnsubscribe(userId)) {
 			return false;
 		}
 
-		let match = MatchMakers.findOne({'usersToMatch.id': userId});
+		let match = MatchMakers.findOne({'usersToMatch.id': userId, 'usersToMatch.connectionId': connectionId});
 		if (match) {
 			MatchMakers.update(
 				{_id: match._id},
@@ -76,7 +76,7 @@ export default class MatchMaker {
 			}
 		}
 
-		match = MatchMakers.findOne({'matched.users.id': userId});
+		match = MatchMakers.findOne({'matched.users.id': userId, 'matched.users.connectionId': connectionId});
 		if (match) {
 			MatchMakers.update(
 				{_id: match._id},
@@ -173,7 +173,7 @@ export default class MatchMaker {
 		);
 	}
 
-	private addToUserToMatch(user: {id: string}, modeSelection: string, tournamentId: string) {
+	private addToUserToMatch(user: {id: string, connectionId: string}, modeSelection: string, tournamentId: string) {
 		//Add to the usersToMatch
 		MatchMakers.update(
 			{modeSelection: modeSelection, tournamentId: tournamentId},

@@ -3,7 +3,11 @@ import {MatchMakers} from "../../matchMakers";
 import GameCreator from "../GameCreator";
 
 export default class UserMatch {
-	static match(modeSelection: string, tournamentId: string, matchedUsers: {id: string, name: string, isMachineLearning?: boolean}[]) {
+	static match(
+		modeSelection: string,
+		tournamentId: string,
+		matchedUsers: {id: string, connectionId?: string, name: string, isMachineLearning?: boolean}[]
+	) {
 		const gameId = GameCreator.fromMatchMaker(matchedUsers, modeSelection, tournamentId);
 
 		const userIds = [];
@@ -14,6 +18,7 @@ export default class UserMatch {
 			matchedUsersWithInformation.push(
 				{
 					id: user.id,
+					connectionId: user.connectionId,
 					isMachineLearning: user.isMachineLearning,
 					name: user.name,
 					position: i + 1,

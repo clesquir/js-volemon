@@ -84,7 +84,11 @@ Meteor.methods({
 			userName = userConfiguration.name;
 		}
 
-		matchMaker.subscribe({id: Meteor.userId(), name: userName}, modeSelection, tournamentId);
+		matchMaker.subscribe(
+			{id: Meteor.userId(), connectionId: this.connection.id, name: userName},
+			modeSelection,
+			tournamentId
+		);
 	},
 
 	cancelMatchMaking: function(userId) {
@@ -94,6 +98,6 @@ Meteor.methods({
 			return false;
 		}
 
-		return matchMaker.unsubscribe(userId);
+		return matchMaker.unsubscribe(userId, this.connection.id);
 	}
 });

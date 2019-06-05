@@ -49,6 +49,8 @@ const startMatchMaking = function() {
 		Session.get('matchMaking.tournamentId'),
 		function(error) {}
 	);
+
+	Meteor.subscribe('matchMakingKeepAlive');
 };
 
 const userPresentInArray = function(users, userId) {
@@ -65,7 +67,12 @@ const monitorWhenMatched = function() {
 	matchMakingTracker = MatchMakers.find().observeChanges({
 		changed: (id, fields) => {
 			if (fields.hasOwnProperty('matched')) {
-				const match = MatchMakers.findOne({'matched.users.id': Meteor.userId()});
+				const match = MatchMakers.findOne(
+					{
+						'matched.users.id': Meteor.userId(),
+						'matched.users.connectionId': Meteor.connection._lastSessionId
+					}
+				);
 
 				if (match) {
 					for (let matched of match.matched) {
@@ -340,7 +347,12 @@ Template.matchMaking.helpers({
 			return false;
 		}
 
-		const match = MatchMakers.findOne({'matched.users.id': Meteor.userId()});
+		const match = MatchMakers.findOne(
+			{
+				'matched.users.id': Meteor.userId(),
+				'matched.users.connectionId': Meteor.connection._lastSessionId
+			}
+		);
 
 		if (!match) {
 			return false;
@@ -451,7 +463,12 @@ Template.matchMaking.helpers({
 	},
 
 	listOfMatched: function() {
-		const match = MatchMakers.findOne({'matched.users.id': Meteor.userId()});
+		const match = MatchMakers.findOne(
+			{
+				'matched.users.id': Meteor.userId(),
+				'matched.users.connectionId': Meteor.connection._lastSessionId
+			}
+		);
 
 		if (match) {
 			for (let matched of match.matched) {

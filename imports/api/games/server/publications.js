@@ -30,3 +30,14 @@ Meteor.publish('game', function(id) {
 		TeamEloScores.find({gameId: id})
 	];
 });
+
+Meteor.publish('matchMakingKeepAlive', function() {
+	this.ready();
+
+	this.onStop(() => {
+		Meteor.call(
+			'cancelMatchMaking',
+			this.userId
+		);
+	});
+});
