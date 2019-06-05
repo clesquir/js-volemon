@@ -7,4 +7,5 @@ export const EloScores = new EloScoresCollection('eloscores');
 
 if (Meteor.isServer) {
 	EloScores._ensureIndex({gameId: 1});
+	EloScores._ensureIndex({gameId: 1, userId: 1});
 }

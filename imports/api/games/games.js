@@ -4,6 +4,13 @@ class GamesCollection extends Mongo.Collection {}
 
 export const Games = new GamesCollection('games');
 
+if (Meteor.isServer) {
+	Games._ensureIndex({tournamentId: 1});
+	Games._ensureIndex({status: 1});
+	Games._ensureIndex({'players.id': 1, status: 1});
+	Games._ensureIndex({'players.id': 1, status: 1, tournamentId: 1});
+}
+
 export const teammateNames = function(game, userId) {
 	const teammates = [];
 	if (game.players[0].id === userId) {
