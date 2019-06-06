@@ -4,7 +4,7 @@ import {Meteor} from 'meteor/meteor';
 Meteor.methods({
 	pastTournaments: function(skip, limit) {
 		const tournaments = Tournaments.find(
-			{'status.id': 'approved', isPublished: true},
+			{'status.id': 'approved'},
 			{
 				sort: [['endDate', 'desc']],
 				skip: skip,
