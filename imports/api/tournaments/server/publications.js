@@ -16,7 +16,7 @@ Meteor.publish('playableTournaments', function(userId) {
 	const tournaments = Tournaments.find({
 		'status.id': 'approved',
 		'startDate': {'$lte': today.format('YYYY-MM-DD') + ' -04:00'},
-		'endDate': {'$gte': today.format('YYYY-MM-DD') + ' -04:00'}
+		'endDate': {'$gt': today.format('YYYY-MM-DD') + ' -04:00'}
 	});
 
 	tournaments.forEach((tournament) => {
@@ -56,7 +56,7 @@ Meteor.publish('activeTournaments', function() {
 	const tournaments = Tournaments.find({
 		'status.id': 'approved',
 		'startDate': {'$lte': today.format('YYYY-MM-DD') + ' -04:00'},
-		'endDate': {'$gte': today.format('YYYY-MM-DD') + ' -04:00'}
+		'endDate': {'$gt': today.format('YYYY-MM-DD') + ' -04:00'}
 	});
 
 	tournaments.forEach((tournament) => {
