@@ -2,8 +2,10 @@ import {
 	BALL_BIG_GRAVITY_SCALE,
 	BALL_BIG_MASS,
 	BALL_BIG_SCALE,
+	BALL_DEFAULT_RADIUS,
 	BALL_GRAVITY_SCALE,
 	BALL_MASS,
+	BALL_PROPORTION_FROM_HEIGHT,
 	BALL_SCALE,
 	BALL_SMALL_GRAVITY_SCALE,
 	BALL_SMALL_MASS,
@@ -22,6 +24,9 @@ import {
 	PLAYER_BIG_GRAVITY_SCALE,
 	PLAYER_BIG_MASS,
 	PLAYER_BIG_SCALE,
+	PLAYER_DEFAULT_HEIGHT,
+	PLAYER_DEFAULT_WIDTH,
+	PLAYER_DISTANCE_FROM_WALL,
 	PLAYER_GRAVITY_SCALE,
 	PLAYER_HORIZONTAL_MOVE_MULTIPLIER_FAST,
 	PLAYER_HORIZONTAL_MOVE_MULTIPLIER_INITIAL,
@@ -31,6 +36,7 @@ import {
 	PLAYER_SMALL_GRAVITY_SCALE,
 	PLAYER_SMALL_MASS,
 	PLAYER_SMALL_SCALE,
+	PLAYER_TEAMMATE_DISTANCE_FROM_WALL,
 	PLAYER_VELOCITY_X_ON_MOVE,
 	PLAYER_VELOCITY_Y_ON_JUMP,
 	PLAYER_VERTICAL_MOVE_MULTIPLIER_BIG,
@@ -563,15 +569,30 @@ export default abstract class GameConfiguration {
 	}
 
 	playerWidth(): number {
-		return this.levelConfiguration.playerWidth();
+		return PLAYER_DEFAULT_WIDTH;
 	}
 
 	playerHeight(): number {
-		return this.levelConfiguration.playerHeight();
+		return PLAYER_DEFAULT_HEIGHT;
 	}
 
-	playerInitialY(): number {
-		return this.levelConfiguration.playerInitialY();
+	playerInitialYFromKey(playerKey: string, isHost: boolean): number {
+		switch (playerKey) {
+			case 'player1':
+				return this.player1InitialY();
+			case 'player2':
+				return this.player2InitialY();
+			case 'player3':
+				return this.player3InitialY();
+			case 'player4':
+				return this.player4InitialY();
+		}
+
+		if (isHost) {
+			return this.player1InitialY();
+		} else {
+			return this.player2InitialY();
+		}
 	}
 
 	playerInitialXFromKey(playerKey: string, isHost: boolean): number {
@@ -593,16 +614,20 @@ export default abstract class GameConfiguration {
 		}
 	}
 
+	ballRadius(): number {
+		return BALL_DEFAULT_RADIUS;
+	}
+
 	ballInitialY(): number {
-		return this.levelConfiguration.ballInitialY();
+		return Math.round(BALL_PROPORTION_FROM_HEIGHT * (this.height() - this.groundHeight()));
 	}
 
 	ballInitialHostX(): number {
-		return this.levelConfiguration.ballInitialHostX();
+		return this.player1InitialX() + (this.playerWidth() / 4) + this.ballRadius();
 	}
 
 	ballInitialClientX(): number {
-		return this.levelConfiguration.ballInitialClientX();
+		return this.player2InitialX() - (this.playerWidth() / 4) - this.ballRadius();
 	}
 
 	playerXVelocity(): number {
@@ -730,18 +755,78 @@ export default abstract class GameConfiguration {
 	}
 
 	private player1InitialX(): number {
-		return this.levelConfiguration.player1InitialX();
+		if (this.hasTournament() && this.tournamentMode.overridesPlayerInitialDistanceFromWall()) {
+			return this.tournamentMode.playerInitialDistanceFromWall();
+		}
+
+		return PLAYER_DISTANCE_FROM_WALL;
 	}
 
 	private player2InitialX(): number {
-		return this.levelConfiguration.player2InitialX();
+		let distanceFromWall = PLAYER_DISTANCE_FROM_WALL;
+
+		if (this.hasTournament() && this.tournamentMode.overridesPlayerInitialDistanceFromWall()) {
+			distanceFromWall = this.tournamentMode.playerInitialDistanceFromWall();
+		}
+
+		return this.width() - distanceFromWall;
 	}
 
 	private player3InitialX(): number {
-		return this.levelConfiguration.player3InitialX();
+		if (this.hasTournament() && this.tournamentMode.overridesTeammateInitialDistanceFromWall()) {
+			return this.tournamentMode.teammateInitialDistanceFromWall();
+		}
+
+		return PLAYER_TEAMMATE_DISTANCE_FROM_WALL;
 	}
 
 	private player4InitialX(): number {
-		return this.levelConfiguration.player4InitialX();
+		let distanceFromWall = PLAYER_TEAMMATE_DISTANCE_FROM_WALL;
+
+		if (this.hasTournament() && this.tournamentMode.overridesTeammateInitialDistanceFromWall()) {
+			distanceFromWall = this.tournamentMode.teammateInitialDistanceFromWall();
+		}
+
+		return this.width() - distanceFromWall;
+	}
+
+	private player1InitialY(): number {
+		let distanceFromGround = 0;
+
+		if (this.hasTournament() && this.tournamentMode.overridesPlayerInitialDistanceFromGround()) {
+			distanceFromGround = this.tournamentMode.playerInitialDistanceFromGround();
+		}
+
+		return this.height() - this.groundHeight() - (this.playerHeight() / 2) - distanceFromGround;
+	}
+
+	private player2InitialY(): number {
+		let distanceFromGround = 0;
+
+		if (this.hasTournament() && this.tournamentMode.overridesPlayerInitialDistanceFromGround()) {
+			distanceFromGround = this.tournamentMode.playerInitialDistanceFromGround();
+		}
+
+		return this.height() - this.groundHeight() - (this.playerHeight() / 2) - distanceFromGround;
+	}
+
+	private player3InitialY(): number {
+		let distanceFromGround = 0;
+
+		if (this.hasTournament() && this.tournamentMode.overridesTeammateInitialDistanceFromGround()) {
+			distanceFromGround = this.tournamentMode.teammateInitialDistanceFromGround();
+		}
+
+		return this.height() - this.groundHeight() - (this.playerHeight() / 2) - distanceFromGround;
+	}
+
+	private player4InitialY(): number {
+		let distanceFromGround = 0;
+
+		if (this.hasTournament() && this.tournamentMode.overridesTeammateInitialDistanceFromGround()) {
+			distanceFromGround = this.tournamentMode.teammateInitialDistanceFromGround();
+		}
+
+		return this.height() - this.groundHeight() - (this.playerHeight() / 2) - distanceFromGround;
 	}
 }

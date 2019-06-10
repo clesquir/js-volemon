@@ -199,23 +199,74 @@ const canSaveTournament = function(tournament) {
 const modeOptions = function() {
 	const mode = {};
 
+	addToMode(mode, 'forfeit-minimum-points', 'overriddenForfeitMinimumPoints');
+	addToMode(mode, 'maximum-points', 'overriddenMaximumPoints');
+	addToMode(mode, 'player-maximum-ball-hit', 'overriddenPlayerMaximumBallHit');
+	addToMode(mode, 'team-maximum-ball-hit', 'overriddenTeamMaximumBallHit');
+	addToMode(mode, 'force-practice-with-computer', 'overriddenForcePracticeWithComputer');
+
 	addToMode(mode, 'world-gravity', 'overriddenWorldGravity');
 	addToMode(mode, 'world-restitution', 'overriddenWorldRestitution');
 	addToMode(mode, 'level-width', 'overriddenLevelWidth');
 	addToMode(mode, 'level-height', 'overriddenLevelHeight');
 	addToMode(mode, 'net-width', 'overriddenNetWidth');
 	addToMode(mode, 'net-height', 'overriddenNetHeight');
+
+	addToMode(mode, 'soccer-net-enabled', 'overriddenSoccerNetEnabled');
+	addToMode(mode, 'soccer-net-distance-from-ground', 'overriddenSoccerNetDistanceFromGround');
 	addToMode(mode, 'soccer-net-width', 'overriddenSoccerNetWidth');
 	addToMode(mode, 'soccer-net-height', 'overriddenSoccerNetHeight');
-	addToMode(mode, 'soccer-net-distance-from-ground', 'overriddenSoccerNetDistanceFromGround');
+
 	addToMode(mode, 'ground-hit-enabled', 'overriddenGroundHitEnabled');
-	addToMode(mode, 'soccer-net-enabled', 'overriddenSoccerNetEnabled');
 	addToMode(mode, 'has-player-net-limit', 'overriddenHasPlayerNetLimit');
+	addToMode(mode, 'collides-with-teammate', 'overriddenCollidesWithTeammate');
+	addToMode(mode, 'collides-with-opponent', 'overriddenCollidesWithOpponent');
 	addToMode(mode, 'ball-collides-with-soccer-net-posts', 'overriddenBallCollidesWithSoccerNetPosts');
 	addToMode(mode, 'bonus-collides-with-soccer-net-posts', 'overriddenBonusCollidesWithSoccerNetPosts');
 	addToMode(mode, 'player-collides-with-soccer-net-posts', 'overriddenPlayerCollidesWithSoccerNetPosts');
-	addToMode(mode, 'collides-with-teammate', 'overriddenCollidesWithTeammate');
-	addToMode(mode, 'collides-with-opponent', 'overriddenCollidesWithOpponent');
+
+	addToMode(mode, 'allowed-list-of-shapes', 'overriddenAllowedListOfShapes');
+	addToMode(mode, 'list-of-shapes', 'overriddenListOfShapes');
+	addToMode(mode, 'current-player-shape', 'overriddenCurrentPlayerShape');
+	addToMode(mode, 'opponent-player-shape', 'overriddenOpponentPlayerShape');
+
+	addToMode(mode, 'player-initial-distance-from-wall', 'overriddenPlayerInitialDistanceFromWall');
+	addToMode(mode, 'teammate-initial-distance-from-wall', 'overriddenTeammateInitialDistanceFromWall');
+	addToMode(mode, 'player-initial-distance-from-ground', 'overriddenPlayerInitialDistanceFromGround');
+	addToMode(mode, 'teammate-initial-distance-from-ground', 'overriddenTeammateInitialDistanceFromGround');
+
+	addToMode(mode, 'is-hidden-to-himself', 'overriddenIsHiddenToHimself');
+	addToMode(mode, 'is-hidden-to-opponent', 'overriddenIsHiddenToOpponent');
+	addToMode(mode, 'initial-player-scale', 'overriddenInitialPlayerScale');
+	addToMode(mode, 'small-player-scale', 'overriddenSmallPlayerScale');
+	addToMode(mode, 'big-player-scale', 'overriddenBigPlayerScale');
+	addToMode(mode, 'initial-player-scale-player1', 'overriddenInitialPlayerScale_player1');
+	addToMode(mode, 'initial-player-scale-player2', 'overriddenInitialPlayerScale_player2');
+	addToMode(mode, 'initial-player-scale-player3', 'overriddenInitialPlayerScale_player3');
+	addToMode(mode, 'initial-player-scale-player4', 'overriddenInitialPlayerScale_player4');
+	addToMode(mode, 'initial-player-mass', 'overriddenInitialPlayerMass');
+	addToMode(mode, 'small-player-mass', 'overriddenSmallPlayerMass');
+	addToMode(mode, 'big-player-mass', 'overriddenBigPlayerMass');
+	addToMode(mode, 'initial-player-mass-player1', 'overriddenInitialPlayerMass_player1');
+	addToMode(mode, 'initial-player-mass-player2', 'overriddenInitialPlayerMass_player2');
+	addToMode(mode, 'initial-player-mass-player3', 'overriddenInitialPlayerMass_player3');
+	addToMode(mode, 'initial-player-mass-player4', 'overriddenInitialPlayerMass_player4');
+	addToMode(mode, 'player-x-velocity', 'overriddenPlayerXVelocity');
+	addToMode(mode, 'player-y-velocity', 'overriddenPlayerYVelocity');
+	addToMode(mode, 'player-dropshot-enabled', 'overriddenPlayerDropshotEnabled');
+	addToMode(mode, 'player-smash-enabled', 'overriddenPlayerSmashEnabled');
+	addToMode(mode, 'player-vertical-move-multiplayer-big', 'overriddenPlayerVerticalMoveMultiplierBig');
+	addToMode(mode, 'player-horizontal-move-multiplayer-slow', 'overriddenPlayerHorizontalMoveMultiplierSlow');
+	addToMode(mode, 'player-horizontal-move-multiplayer-fast', 'overriddenPlayerHorizontalMoveMultiplierFast');
+
+	addToMode(mode, 'initial-ball-scale', 'overriddenInitialBallScale');
+	addToMode(mode, 'small-ball-scale', 'overriddenSmallBallScale');
+	addToMode(mode, 'big-ball-scale', 'overriddenBigBallScale');
+	addToMode(mode, 'initial-ball-mass', 'overriddenInitialBallMass');
+	addToMode(mode, 'small-ball-mass', 'overriddenSmallBallMass');
+	addToMode(mode, 'big-ball-mass', 'overriddenBigBallMass');
+	addToMode(mode, 'ball-rebound-on-player-enabled', 'overriddenBallReboundOnPlayerEnabled');
+	addToMode(mode, 'ball-velocity-on-rebound-on-player', 'overriddenBallVelocityOnReboundOnPlayer');
 
 	addToMode(mode, 'available-bonuses', 'overriddenAvailableBonuses');
 	addToMode(mode, 'available-bonuses-for-random', 'overriddenAvailableBonusesForRandom');
@@ -228,50 +279,6 @@ const modeOptions = function() {
 	addToMode(mode, 'bonus-spawn-initial-maximum-frequence', 'overriddenBonusSpawnInitialMaximumFrequence');
 	addToMode(mode, 'bonus-scale', 'overriddenBonusScale');
 	addToMode(mode, 'bonus-mass', 'overriddenBonusMass');
-
-	addToMode(mode, 'allowed-list-of-shapes', 'overriddenAllowedListOfShapes');
-	addToMode(mode, 'list-of-shapes', 'overriddenListOfShapes');
-	addToMode(mode, 'current-player-shape', 'overriddenCurrentPlayerShape');
-	addToMode(mode, 'opponent-player-shape', 'overriddenOpponentPlayerShape');
-	addToMode(mode, 'is-hidden-to-himself', 'overriddenIsHiddenToHimself');
-	addToMode(mode, 'is-hidden-to-opponent', 'overriddenIsHiddenToOpponent');
-	addToMode(mode, 'initial-player-scale', 'overriddenInitialPlayerScale');
-	addToMode(mode, 'initial-player-scale-player1', 'overriddenInitialPlayerScale_player1');
-	addToMode(mode, 'initial-player-scale-player2', 'overriddenInitialPlayerScale_player2');
-	addToMode(mode, 'initial-player-scale-player3', 'overriddenInitialPlayerScale_player3');
-	addToMode(mode, 'initial-player-scale-player4', 'overriddenInitialPlayerScale_player4');
-	addToMode(mode, 'small-player-scale', 'overriddenSmallPlayerScale');
-	addToMode(mode, 'big-player-scale', 'overriddenBigPlayerScale');
-	addToMode(mode, 'initial-ball-scale', 'overriddenInitialBallScale');
-	addToMode(mode, 'small-ball-scale', 'overriddenSmallBallScale');
-	addToMode(mode, 'big-ball-scale', 'overriddenBigBallScale');
-	addToMode(mode, 'initial-player-mass', 'overriddenInitialPlayerMass');
-	addToMode(mode, 'initial-player-mass-player1', 'overriddenInitialPlayerMass_player1');
-	addToMode(mode, 'initial-player-mass-player2', 'overriddenInitialPlayerMass_player2');
-	addToMode(mode, 'initial-player-mass-player3', 'overriddenInitialPlayerMass_player3');
-	addToMode(mode, 'initial-player-mass-player4', 'overriddenInitialPlayerMass_player4');
-	addToMode(mode, 'small-player-mass', 'overriddenSmallPlayerMass');
-	addToMode(mode, 'big-player-mass', 'overriddenBigPlayerMass');
-	addToMode(mode, 'player-vertical-move-multiplayer-big', 'overriddenPlayerVerticalMoveMultiplierBig');
-	addToMode(mode, 'player-horizontal-move-multiplayer-slow', 'overriddenPlayerHorizontalMoveMultiplierSlow');
-	addToMode(mode, 'player-horizontal-move-multiplayer-fast', 'overriddenPlayerHorizontalMoveMultiplierFast');
-	addToMode(mode, 'force-practice-with-computer', 'overriddenForcePracticeWithComputer');
-
-	addToMode(mode, 'initial-ball-mass', 'overriddenInitialBallMass');
-	addToMode(mode, 'small-ball-mass', 'overriddenSmallBallMass');
-	addToMode(mode, 'big-ball-mass', 'overriddenBigBallMass');
-
-	addToMode(mode, 'forfeit-minimum-points', 'overriddenForfeitMinimumPoints');
-	addToMode(mode, 'maximum-points', 'overriddenMaximumPoints');
-	addToMode(mode, 'player-maximum-ball-hit', 'overriddenPlayerMaximumBallHit');
-	addToMode(mode, 'team-maximum-ball-hit', 'overriddenTeamMaximumBallHit');
-
-	addToMode(mode, 'player-x-velocity', 'overriddenPlayerXVelocity');
-	addToMode(mode, 'player-y-velocity', 'overriddenPlayerYVelocity');
-	addToMode(mode, 'player-dropshot-enabled', 'overriddenPlayerDropshotEnabled');
-	addToMode(mode, 'player-smash-enabled', 'overriddenPlayerSmashEnabled');
-	addToMode(mode, 'ball-rebound-on-player-enabled', 'overriddenBallReboundOnPlayerEnabled');
-	addToMode(mode, 'ball-velocity-on-rebound-on-player', 'overriddenBallVelocityOnReboundOnPlayer');
 
 	return mode;
 };

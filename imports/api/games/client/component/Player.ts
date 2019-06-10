@@ -462,7 +462,7 @@ export default class Player {
 
 	private init(displayPlayerName: boolean) {
 		const x = this.gameConfiguration.playerInitialXFromKey(this.key, this.isHost);
-		const y = this.gameConfiguration.playerInitialY();
+		const y = this.gameConfiguration.playerInitialYFromKey(this.key, this.isHost);
 
 		this.initialXLocation = x;
 		this.initialYLocation = y;

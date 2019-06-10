@@ -118,7 +118,7 @@
 						{{> selectSwitch id="player-collides-with-soccer-net-posts" label="Player collides with soccer net posts" default="No" isOn=(modeOverridden "overriddenPlayerCollidesWithSoccerNetPosts") options=booleanOptions value=(modeOverriddenValue "overriddenPlayerCollidesWithSoccerNetPosts") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
-					<h2>Player overrides</h2>
+					<h2>Player shapes overrides</h2>
 
 					{{> multipleShapeSelectSwitch id="allowed-list-of-shapes" label="Available shapes" isOn=(modeOverridden "overriddenAllowedListOfShapes") hasRandom=true values=(modeOverriddenValue "overriddenAllowedListOfShapes") isReadOnly=(canOnlyViewTournament tournament)}}
 					{{> multipleShapeSelectSwitch id="list-of-shapes" label="Available shapes for random" isOn=(modeOverridden "overriddenListOfShapes") hasRandom=false values=(modeOverriddenValue "overriddenListOfShapes") isReadOnly=(canOnlyViewTournament tournament)}}
@@ -127,6 +127,20 @@
 						{{> selectSwitch id="current-player-shape" label="Current player shape display" isOn=(modeOverridden "overriddenCurrentPlayerShape") options=playerShapeDisplays value=(modeOverriddenValue "overriddenCurrentPlayerShape") isReadOnly=(canOnlyViewTournament tournament)}}
 						{{> selectSwitch id="opponent-player-shape" label="Opponent player shape display" isOn=(modeOverridden "overriddenOpponentPlayerShape") options=playerShapeDisplays value=(modeOverriddenValue "overriddenOpponentPlayerShape") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
+
+					<h2>Player position overrides</h2>
+
+					<div class="splitted-configuration">
+						{{> numberSwitch id="player-initial-distance-from-wall" label="Player initial distance from wall" default="140" isOn=(modeOverridden "overriddenPlayerInitialDistanceFromWall") value=(modeOverriddenValue "overriddenPlayerInitialDistanceFromWall") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="teammate-initial-distance-from-wall" label="Teammate initial distance from wall" default="340" isOn=(modeOverridden "overriddenTeammateInitialDistanceFromWall") value=(modeOverriddenValue "overriddenTeammateInitialDistanceFromWall") isReadOnly=(canOnlyViewTournament tournament)}}
+					</div>
+
+					<div class="splitted-configuration">
+						{{> numberSwitch id="player-initial-distance-from-ground" label="Player initial distance from ground" default="0" isOn=(modeOverridden "overriddenPlayerInitialDistanceFromGround") value=(modeOverriddenValue "overriddenPlayerInitialDistanceFromGround") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="teammate-initial-distance-from-ground" label="Teammate initial distance from ground" default="0" isOn=(modeOverridden "overriddenTeammateInitialDistanceFromGround") value=(modeOverriddenValue "overriddenTeammateInitialDistanceFromGround") isReadOnly=(canOnlyViewTournament tournament)}}
+					</div>
+
+					<h2>Player overrides</h2>
 
 					<div class="splitted-configuration">
 						{{> selectSwitch id="is-hidden-to-himself" label="Player hidden to himself" default="No" isOn=(modeOverridden "overriddenIsHiddenToHimself") options=booleanOptions value=(modeOverriddenValue "overriddenIsHiddenToHimself") isReadOnly=(canOnlyViewTournament tournament)}}

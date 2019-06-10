@@ -26,13 +26,14 @@ export default class Shape extends Dev {
 			);
 		};
 		let countPlayers = 0;
-		this.gameConfiguration.playerInitialY = () => {
+		this.gameConfiguration.playerInitialYFromKey = () => {
 			countPlayers++;
+			const initialY = this.gameConfiguration.player1InitialY();
 
 			if (countPlayers <= PLAYER_LIST_OF_SHAPES.length) {
-				return this.gameConfiguration.levelConfiguration.playerInitialY();
+				return initialY;
 			} else {
-				return this.gameConfiguration.levelConfiguration.playerInitialY() - this.gameConfiguration.playerHeight() - 20;
+				return initialY - this.gameConfiguration.playerHeight() - 20;
 			}
 		};
 		this.mainScene.players.getPlayerFromKey = (playerKey) => {
