@@ -107,12 +107,11 @@ export default class Player {
 	}
 
 	reset() {
-		if (this.killed) {
-			this.killed = false;
-			this.init(true);
-		} else {
-			this.displayPlayerName();
+		if (!this.killed) {
+			this.kill();
 		}
+
+		this.init(true);
 
 		this.resetBallHits();
 		this.resetPosition();
@@ -464,6 +463,7 @@ export default class Player {
 		const x = this.gameConfiguration.playerInitialXFromKey(this.key, this.isHost);
 		const y = this.gameConfiguration.playerInitialYFromKey(this.key, this.isHost);
 
+		this.killed = false;
 		this.initialXLocation = x;
 		this.initialYLocation = y;
 		this.initialScale = this.gameConfiguration.initialPlayerScale(this.key);

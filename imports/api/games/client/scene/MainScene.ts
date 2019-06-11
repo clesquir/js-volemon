@@ -318,6 +318,10 @@ export default class MainScene {
 	}
 
 	onBallCollidesPlayer(ballBody: Phaser.Physics.P2.Body, playerBody: Phaser.Physics.P2.Body) {
+		if (!playerBody.sprite) {
+			return;
+		}
+
 		const player: Player = playerBody.sprite.data.owner;
 		const ball: Ball = ballBody.sprite.data.owner;
 
@@ -325,6 +329,10 @@ export default class MainScene {
 	}
 
 	onBonusCollidesPlayer(bonusBody: Phaser.Physics.P2.Body, playerBody: Phaser.Physics.P2.Body) {
+		if (!playerBody.sprite) {
+			return;
+		}
+
 		const player: Player = playerBody.sprite.data.owner;
 		const bonus: Bonus = bonusBody.sprite.data.owner;
 
