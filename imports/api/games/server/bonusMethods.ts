@@ -1,13 +1,14 @@
+import BonusCaught from '../events/BonusCaught';
+import BonusCleared from '../events/BonusCleared';
+import BonusCreated from '../events/BonusCreated';
+import BonusRemoved from '../events/BonusRemoved';
+import {Games} from '../games';
+import {GAME_STATUS_STARTED} from '../statusConstants';
 import {Meteor} from 'meteor/meteor';
-import {Games} from '/imports/api/games/games.js';
-import BonusCaught from '/imports/api/games/events/BonusCaught.js';
-import BonusCreated from '/imports/api/games/events/BonusCreated.js';
-import BonusRemoved from '/imports/api/games/events/BonusRemoved.js';
-import {GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
-import {EventPublisher} from '/imports/lib/EventPublisher.js';
+import {EventPublisher} from "../../../lib/EventPublisher";
 
 Meteor.methods({
-	createBonus: function(gameId, data) {
+	createBonus: function(gameId: string, data: Object) {
 		EventPublisher.publish(
 			new BonusCreated(
 				gameId,
@@ -16,7 +17,16 @@ Meteor.methods({
 		);
 	},
 
-	addActiveBonusToGame: function(gameId, activatedAt, initialBonusClass, activationData) {
+	clearBonus: function(gameId: string, data: Object) {
+		EventPublisher.publish(
+			new BonusCleared(
+				gameId,
+				data
+			)
+		);
+	},
+
+	addActiveBonusToGame: function(gameId: string, activatedAt: number, initialBonusClass: string, activationData: Object) {
 		const game = Games.findOne(gameId);
 		const data = {};
 
@@ -51,7 +61,7 @@ Meteor.methods({
 		);
 	},
 
-	removeActiveBonusFromGame: function(gameId, bonusIdentifier) {
+	removeActiveBonusFromGame: function(gameId: string, bonusIdentifier: string) {
 		const game = Games.findOne(gameId);
 		const data = {
 			activeBonuses: []
@@ -79,8 +89,14 @@ Meteor.methods({
 
 		Games.update({_id: game._id}, {$set: data});
 
-		EventPublisher.publish(new BonusRemoved(
-			game._id, removedActivatedBonusClass, removedBonusTargetPlayerKey, removedBonusClass, removedActivatorPlayerKey
-		));
+		EventPublisher.publish(
+			new BonusRemoved(
+				game._id,
+				removedActivatedBonusClass,
+				removedBonusTargetPlayerKey,
+				removedBonusClass,
+				removedActivatorPlayerKey
+			)
+		);
 	}
 });

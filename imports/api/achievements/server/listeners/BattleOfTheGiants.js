@@ -3,7 +3,7 @@ import {ACHIEVEMENT_BATTLE_OF_THE_GIANTS} from '/imports/api/achievements/consta
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import BonusRemoved from '/imports/api/games/events/BonusRemoved.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
-import {BONUS_BIG_MONSTER} from '/imports/api/games/bonusConstants.js';
+import {BONUS_BIG_MONSTER} from '/imports/api/games/bonusConstants';
 
 export default class BattleOfTheGiants extends GameListener {
 	allowedFor2Vs2() {

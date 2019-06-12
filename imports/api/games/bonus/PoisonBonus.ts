@@ -27,4 +27,8 @@ export default class PoisonBonus extends MonsterBonus {
 
 		this.deactivate();
 	}
+
+	clear(bonuses: Bonuses) {
+		this.deactivate();
+	}
 };

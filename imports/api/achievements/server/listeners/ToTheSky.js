@@ -7,7 +7,7 @@ import {
 	BONUS_SMALL_MONSTER,
 	BONUS_BIG_JUMP_MONSTER,
 	BONUS_BOUNCE_MONSTER
-} from '/imports/api/games/bonusConstants.js';
+} from '/imports/api/games/bonusConstants';
 
 export default class ToTheSky extends GameListener {
 	addListeners() {

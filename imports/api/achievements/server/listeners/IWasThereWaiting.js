@@ -3,7 +3,7 @@ import {ACHIEVEMENT_I_WAS_THERE_WAITING} from '/imports/api/achievements/constan
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import BonusRemoved from '/imports/api/games/events/BonusRemoved.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
-import {BONUS_FREEZE_MONSTER} from '/imports/api/games/bonusConstants.js';
+import {BONUS_FREEZE_MONSTER} from '/imports/api/games/bonusConstants';
 
 export default class IWasThereWaiting extends GameListener {
 	allowedFor2Vs2() {

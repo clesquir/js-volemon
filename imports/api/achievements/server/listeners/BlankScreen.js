@@ -7,7 +7,7 @@ import {
 	BONUS_CLOAKED_MONSTER,
 	BONUS_INVISIBLE_BALL,
 	BONUS_INVISIBLE_MONSTER
-} from '/imports/api/games/bonusConstants.js';
+} from '/imports/api/games/bonusConstants';
 
 export default class BlankScreen extends GameListener {
 	allowedFor2Vs2() {

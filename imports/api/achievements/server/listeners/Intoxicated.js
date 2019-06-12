@@ -1,5 +1,5 @@
 import {ACHIEVEMENT_INTOXICATED} from '/imports/api/achievements/constants.js';
-import {BONUS_POISON} from '/imports/api/games/bonusConstants.js';
+import {BONUS_POISON} from '/imports/api/games/bonusConstants';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import GameListener from './GameListener.js';
 

@@ -161,6 +161,10 @@ export default class BaseBonus {
 		this.deactivate();
 	}
 
+	clear(bonuses: Bonuses) {
+		this.stop(bonuses);
+	}
+
 	shouldBeRemovedWhenKilling(): boolean {
 		return true;
 	}

@@ -1,5 +1,5 @@
 import {ACHIEVEMENT_UNDESIRABLE} from '/imports/api/achievements/constants.js';
-import Undesirable from '/imports/api/achievements/server/listeners/Undesirable.js';
+import Undesirable from '/imports/api/achievements/server/listeners/Undesirable';
 import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import BonusCreated from '/imports/api/games/events/BonusCreated.js';

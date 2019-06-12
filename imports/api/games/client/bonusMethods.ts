@@ -1,12 +1,15 @@
 import {Meteor} from 'meteor/meteor';
-import {Games} from '/imports/api/games/games.js';
-import {GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
+import {Games} from "../games";
+import {GAME_STATUS_STARTED} from "../statusConstants";
 
 Meteor.methods({
-	createBonus: function(gameId, data) {
+	createBonus: function(gameId: string, data: Object) {
 	},
 
-	addActiveBonusToGame: function(gameId, activatedAt, initialBonusClass, activationData) {
+	clearBonus: function(gameId: string, data: Object) {
+	},
+
+	addActiveBonusToGame: function(gameId: string, activatedAt: number, initialBonusClass: string, activationData: Object) {
 		const game = Games.findOne(gameId);
 		const data = {};
 
@@ -27,7 +30,7 @@ Meteor.methods({
 		}
 	},
 
-	removeActiveBonusFromGame: function(gameId, bonusIdentifier) {
+	removeActiveBonusFromGame: function(gameId: string, bonusIdentifier: string) {
 		const game = Games.findOne(gameId);
 		const data = {
 			activeBonuses: []
