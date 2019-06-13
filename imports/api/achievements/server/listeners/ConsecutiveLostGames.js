@@ -1,4 +1,4 @@
-import GameListener from './GameListener.js';
+import GameListener from './GameListener';
 import {ACHIEVEMENT_CONSECUTIVE_LOST_GAMES} from '/imports/api/achievements/constants.js';
 import PlayerLost from '/imports/api/games/events/PlayerLost.js';
 import PlayerWon from '/imports/api/games/events/PlayerWon.js';
@@ -24,7 +24,7 @@ export default class ConsecutiveLostGames extends GameListener {
 		) {
 			this.initNumberSinceLastReset(ACHIEVEMENT_CONSECUTIVE_LOST_GAMES);
 			this.incrementNumberIfHigherWithNumberSinceLastReset(ACHIEVEMENT_CONSECUTIVE_LOST_GAMES);
-			this.updatetNumberSinceLastReset(ACHIEVEMENT_CONSECUTIVE_LOST_GAMES);
+			this.updateNumberSinceLastReset(ACHIEVEMENT_CONSECUTIVE_LOST_GAMES);
 		}
 	}
 

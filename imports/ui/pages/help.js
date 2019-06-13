@@ -1,4 +1,4 @@
-import {ALL_BONUSES} from '/imports/api/games/bonusConstants.js';
+import {ALL_BONUSES} from '/imports/api/games/bonusConstants';
 import BonusFactory from '/imports/api/games/BonusFactory';
 import CardSwitcher from '/imports/lib/client/CardSwitcher.js';
 import {onMobileAndTablet} from '/imports/lib/utils.js';

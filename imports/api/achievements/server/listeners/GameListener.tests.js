@@ -2,7 +2,7 @@ import {Games} from '/imports/api/games/games.js';
 import {assert} from 'chai';
 import StubCollections from 'meteor/hwillson:stub-collections';
 import {Random} from 'meteor/random';
-import GameListener from './GameListener.js';
+import GameListener from './GameListener';
 
 describe('AchievementListener#GameListener', function() {
 	const gameId = Random.id(5);

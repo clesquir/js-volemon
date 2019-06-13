@@ -1,6 +1,17 @@
 import {Meteor} from 'meteor/meteor';
-import {Achievements} from '/imports/api/achievements/achievements.js';
-import {INITIAL_ACHIVEMENTS} from '/imports/api/achievements/server/migrations/data/initialAchievements.js';
+import {Achievements} from '../../achievements';
+import {INITIAL_ACHIVEMENTS} from './data/initialAchievements';
+
+declare type AchievementConfiguration = {
+	isSecret: boolean;
+	name: string;
+	description: string;
+	type: string;
+	displayOrder: number;
+	conditionalForTournamentGame: boolean;
+	deniedForTwoVersusTwo: boolean;
+	levels: {number: number}[];
+};
 
 Meteor.startup(function() {
 	/**
@@ -12,7 +23,7 @@ Meteor.startup(function() {
 		if (!actualAchievement) {
 			Achievements.insert(expectedAchievement);
 		} else {
-			const updates = {};
+			const updates = <AchievementConfiguration>{};
 
 			if (actualAchievement.isSecret !== expectedAchievement.isSecret) {
 				updates.isSecret = expectedAchievement.isSecret;

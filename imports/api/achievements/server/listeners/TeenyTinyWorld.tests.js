@@ -1,7 +1,7 @@
 import {ACHIEVEMENT_TEENY_TINY_WORLD} from '/imports/api/achievements/constants.js';
 import TeenyTinyWorld from '/imports/api/achievements/server/listeners/TeenyTinyWorld.js';
 import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
-import {BONUS_SMALL_BALL, BONUS_SMALL_MONSTER} from '/imports/api/games/bonusConstants.js';
+import {BONUS_SMALL_BALL, BONUS_SMALL_MONSTER} from '/imports/api/games/bonusConstants';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import BonusRemoved from '/imports/api/games/events/BonusRemoved.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';

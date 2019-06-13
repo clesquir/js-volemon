@@ -7,7 +7,7 @@ import '/imports/lib/rollbar/server/Init.js';
 import {ServerStreamInitiator} from '/imports/lib/stream/server/ServerStreamInitiator.js';
 import {Meteor} from 'meteor/meteor';
 import './migrations.js';
-import './register-api.js';
+import './register-api';
 
 Meteor.startup(() => {
 	AchievementsStartup.start();

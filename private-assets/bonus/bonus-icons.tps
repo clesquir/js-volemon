@@ -186,6 +186,7 @@
             <key type="filename">icons/big-monster.png</key>
             <key type="filename">icons/bonus-repellent.png</key>
             <key type="filename">icons/bounce-monster.png</key>
+            <key type="filename">icons/clear-bonuses.png</key>
             <key type="filename">icons/cloaked-monster.png</key>
             <key type="filename">icons/clone-ball.png</key>
             <key type="filename">icons/cloud.png</key>
@@ -266,6 +267,7 @@
             <filename>icons/small-monster.png</filename>
             <filename>icons/smoke-bomb.png</filename>
             <filename>icons/unfreeze-monster.png</filename>
+            <filename>icons/clear-bonuses.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

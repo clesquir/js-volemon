@@ -1,4 +1,4 @@
-import GameListener from './GameListener.js';
+import GameListener from './GameListener';
 import {ACHIEVEMENT_GAMES_PLAYED} from '/imports/api/achievements/constants.js';
 import GameFinished from '/imports/api/games/events/GameFinished.js';
 

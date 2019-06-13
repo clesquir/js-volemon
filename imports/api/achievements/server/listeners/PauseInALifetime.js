@@ -1,7 +1,7 @@
-import GameListener from './GameListener.js';
+import GameListener from './GameListener';
 import {ACHIEVEMENT_PAUSE_IN_A_LIFETIME} from '/imports/api/achievements/constants.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
-import {BONUS_FREEZE_MONSTER} from '/imports/api/games/bonusConstants.js';
+import {BONUS_FREEZE_MONSTER} from '/imports/api/games/bonusConstants';
 
 export default class PauseInALifetime extends GameListener {
 	addListeners() {

@@ -1,7 +1,7 @@
 import {ACHIEVEMENT_UNTOUCHABLE} from '/imports/api/achievements/constants';
 import PlayerLost from '/imports/api/games/events/PlayerLost';
 import PlayerWon from '/imports/api/games/events/PlayerWon';
-import GameListener from './GameListener.js';
+import GameListener from './GameListener';
 
 export default class Untouchable extends GameListener {
 	allowedFor2Vs2() {
@@ -31,7 +31,7 @@ export default class Untouchable extends GameListener {
 			if (event.loserPoints === 0) {
 				this.initNumberSinceLastReset(ACHIEVEMENT_UNTOUCHABLE);
 				this.incrementNumberIfHigherWithNumberSinceLastReset(ACHIEVEMENT_UNTOUCHABLE);
-				this.updatetNumberSinceLastReset(ACHIEVEMENT_UNTOUCHABLE);
+				this.updateNumberSinceLastReset(ACHIEVEMENT_UNTOUCHABLE);
 			} else {
 				this.resetNumberSinceLastReset();
 			}

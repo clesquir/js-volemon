@@ -1,5 +1,5 @@
 import moment from 'moment';
-import GameListener from './GameListener.js';
+import GameListener from './GameListener';
 import {ACHIEVEMENT_CONSECUTIVE_DAYS_PLAYED} from '/imports/api/achievements/constants.js';
 import GameFinished from '/imports/api/games/events/GameFinished.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';

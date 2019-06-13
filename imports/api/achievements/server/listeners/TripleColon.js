@@ -1,4 +1,4 @@
-import GameListener from './GameListener.js';
+import GameListener from './GameListener';
 import {ACHIEVEMENT_TRIPLE_COLON} from '/imports/api/achievements/constants.js';
 import PlayerWon from '/imports/api/games/events/PlayerWon.js';
 import {PLAYER_SHAPE_TRIPLE_COLON} from '/imports/api/games/shapeConstants.js'

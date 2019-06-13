@@ -1,7 +1,7 @@
-import GameListener from './GameListener.js';
+import GameListener from './GameListener';
 import {ACHIEVEMENT_INVINCIBLE_IN_A_LIFETIME} from '/imports/api/achievements/constants.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
-import {BONUS_INVINCIBLE_MONSTER} from '/imports/api/games/bonusConstants.js';
+import {BONUS_INVINCIBLE_MONSTER} from '/imports/api/games/bonusConstants';
 
 export default class InvincibleInALifetime extends GameListener {
 	allowedForTournamentGame() {

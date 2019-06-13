@@ -1,4 +1,4 @@
-import GameListener from './GameListener.js';
+import GameListener from './GameListener';
 import {ACHIEVEMENT_TO_THE_SKY} from '/imports/api/achievements/constants.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import BonusRemoved from '/imports/api/games/events/BonusRemoved.js';
@@ -7,7 +7,7 @@ import {
 	BONUS_SMALL_MONSTER,
 	BONUS_BIG_JUMP_MONSTER,
 	BONUS_BOUNCE_MONSTER
-} from '/imports/api/games/bonusConstants.js';
+} from '/imports/api/games/bonusConstants';
 
 export default class ToTheSky extends GameListener {
 	addListeners() {

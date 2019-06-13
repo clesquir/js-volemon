@@ -1,7 +1,7 @@
 import {ACHIEVEMENT_HOW_TO_TIE_A_TIE} from '/imports/api/achievements/constants.js';
 import {GAME_MAXIMUM_POINTS} from '/imports/api/games/constants.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
-import GameListener from './GameListener.js';
+import GameListener from './GameListener';
 
 export default class HowToTieATie extends GameListener {
 	allowedForTournamentGame() {

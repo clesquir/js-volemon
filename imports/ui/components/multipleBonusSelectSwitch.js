@@ -1,7 +1,7 @@
 import './multipleBonusSelectSwitch.html';
 import {ALL_BONUSES_FOR_RANDOM} from '/imports/api/games/bonusConstants';
 import BonusFactory from '/imports/api/games/BonusFactory';
-import {ALL_BONUSES} from '/imports/api/games/bonusConstants.js';
+import {ALL_BONUSES} from '/imports/api/games/bonusConstants';
 
 let textureAtlasFrames = [];
 

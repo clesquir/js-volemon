@@ -7,7 +7,7 @@ import MobileAddressBarHider from '/imports/lib/MobileAddressBarHider.js';
 import '/imports/lib/rollbar/client/Init.js';
 import WindowFocus from '/imports/lib/WindowFocus.js';
 import './connectionMonitor.js';
-import './register-api.js';
+import './register-api';
 import './routes.js';
 
 Meteor.startup(() => {

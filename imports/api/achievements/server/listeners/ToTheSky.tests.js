@@ -1,7 +1,7 @@
 import {ACHIEVEMENT_TO_THE_SKY} from '/imports/api/achievements/constants.js';
 import ToTheSky from '/imports/api/achievements/server/listeners/ToTheSky.js';
 import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
-import {BONUS_BIG_JUMP_MONSTER, BONUS_BOUNCE_MONSTER, BONUS_SMALL_MONSTER} from '/imports/api/games/bonusConstants.js';
+import {BONUS_BIG_JUMP_MONSTER, BONUS_BOUNCE_MONSTER, BONUS_SMALL_MONSTER} from '/imports/api/games/bonusConstants';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import BonusRemoved from '/imports/api/games/events/BonusRemoved.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';

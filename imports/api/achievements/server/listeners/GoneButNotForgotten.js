@@ -1,5 +1,5 @@
 import PlayerKilled from '/imports/api/games/events/PlayerKilled.js';
-import GameListener from './GameListener.js';
+import GameListener from './GameListener';
 import {ACHIEVEMENT_GONE_BUT_NOT_FORGOTTEN} from '/imports/api/achievements/constants.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
 

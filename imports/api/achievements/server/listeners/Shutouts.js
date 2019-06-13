@@ -1,7 +1,7 @@
 import {ACHIEVEMENT_SHUTOUTS} from '/imports/api/achievements/constants.js';
 import {GAME_MAXIMUM_POINTS} from '/imports/api/games/constants.js';
 import PlayerWon from '/imports/api/games/events/PlayerWon.js';
-import GameListener from './GameListener.js';
+import GameListener from './GameListener';
 
 export default class Shutouts extends GameListener {
 	allowedForTournamentGame() {

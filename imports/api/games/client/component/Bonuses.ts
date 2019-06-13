@@ -588,6 +588,42 @@ export default class Bonuses {
 		this.scene.balls.clone();
 	}
 
+	clearBonuses() {
+		//Remove activated bonuses
+		for (let bonusReference of this.activeBonuses) {
+			bonusReference.clear(this);
+			this.removeActiveBonus(bonusReference);
+
+			if (this.gameData.isUserCreator()) {
+				this.serverAdapter.send(
+					'clearBonus',
+					[
+						this.gameData.gameId,
+						bonusReference.dataToStream()
+					]
+				);
+			}
+		}
+		this.activeBonuses = [];
+
+		//Remove uncaught bonuses
+		for (let bonus of this.bonuses) {
+			this.removedBonuses.push(bonus.identifier);
+			bonus.destroy();
+
+			if (this.gameData.isUserCreator()) {
+				this.serverAdapter.send(
+					'clearBonus',
+					[
+						this.gameData.gameId,
+						bonus.bonusReference.dataToStream()
+					]
+				);
+			}
+		}
+		this.bonuses = [];
+	}
+
 	private bonusFromIdentifier(bonusIdentifier: string): Bonus | null {
 		for (let bonus of this.bonuses) {
 			if (bonus.identifier === bonusIdentifier) {
@@ -632,21 +668,25 @@ export default class Bonuses {
 			if (bonusReference.check(this, this.serverNormalizedTime.getServerTimestamp())) {
 				stillActiveBonuses.push(bonusReference);
 			} else {
-				if (this.gameData.isUserCreator()) {
-					this.serverAdapter.send(
-						'removeActiveBonusFromGame',
-						[
-							this.gameData.gameId,
-							bonusReference.getIdentifier()
-						]
-					);
-				}
-
-				this.bonusIndicators.removeActiveBonusWithIdentifier(bonusReference.activationIdentifier());
+				this.removeActiveBonus(bonusReference);
 			}
 		}
 
 		this.activeBonuses = stillActiveBonuses;
+	}
+
+	private removeActiveBonus(bonusReference: BaseBonus) {
+		if (this.gameData.isUserCreator()) {
+			this.serverAdapter.send(
+				'removeActiveBonusFromGame',
+				[
+					this.gameData.gameId,
+					bonusReference.getIdentifier()
+				]
+			);
+		}
+
+		this.bonusIndicators.removeActiveBonusWithIdentifier(bonusReference.activationIdentifier());
 	}
 
 	private applyActiveBonuses() {

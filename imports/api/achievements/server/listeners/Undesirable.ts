@@ -1,28 +1,30 @@
-import {ACHIEVEMENT_UNDESIRABLE} from '/imports/api/achievements/constants.js';
-import {BONUS_NOTHING} from '/imports/api/games/bonusConstants.js';
-import BonusCaught from '/imports/api/games/events/BonusCaught.js';
-import BonusCreated from '/imports/api/games/events/BonusCreated.js';
-import PointTaken from '/imports/api/games/events/PointTaken.js';
-import {getArrayMax, getUTCTimeStamp} from '/imports/lib/utils.js';
-import GameListener from './GameListener.js';
+import GameListener from "./GameListener";
+import BonusCreated from "../../../games/events/BonusCreated";
+import BonusCleared from "../../../games/events/BonusCleared";
+import BonusCaught from "../../../games/events/BonusCaught";
+import PointTaken from "../../../games/events/PointTaken";
+import {ACHIEVEMENT_UNDESIRABLE} from "../../constants";
+import {BONUS_NOTHING} from "../../../games/bonusConstants";
+import {getArrayMax, getUTCTimeStamp} from "../../../../lib/utils";
 
 export default class Undesirable extends GameListener {
+	private bonuses: {[id: string]: number} = {};
+
 	addListeners() {
 		this.addListener(BonusCreated.prototype.constructor.name, this.onBonusCreated);
+		this.addListener(BonusCleared.prototype.constructor.name, this.onBonusCleared);
 		this.addListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
 		this.addListener(PointTaken.prototype.constructor.name, this.onPointTaken);
 	}
 
 	removeListeners() {
 		this.removeListener(BonusCreated.prototype.constructor.name, this.onBonusCreated);
+		this.removeListener(BonusCleared.prototype.constructor.name, this.onBonusCleared);
 		this.removeListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
 		this.removeListener(PointTaken.prototype.constructor.name, this.onPointTaken);
 	}
 
-	/**
-	 * @param {BonusCreated} event
-	 */
-	onBonusCreated(event) {
+	onBonusCreated(event: BonusCreated) {
 		if (
 			event.gameId === this.gameId &&
 			this.userIsGamePlayer()
@@ -31,10 +33,16 @@ export default class Undesirable extends GameListener {
 		}
 	}
 
-	/**
-	 * @param {BonusCaught} event
-	 */
-	onBonusCaught(event) {
+	onBonusCleared(event: BonusCleared) {
+		if (
+			event.gameId === this.gameId &&
+			this.userIsGamePlayer()
+		) {
+			this.removeBonus(event.data.bonusIdentifier);
+		}
+	}
+
+	onBonusCaught(event: BonusCaught) {
 		if (
 			event.gameId === this.gameId &&
 			this.userIsGamePlayer()
@@ -43,10 +51,7 @@ export default class Undesirable extends GameListener {
 		}
 	}
 
-	/**
-	 * @param {PointTaken} event
-	 */
-	onPointTaken(event) {
+	onPointTaken(event: PointTaken) {
 		if (
 			event.gameId === this.gameId &&
 			this.userIsGamePlayer()
@@ -56,17 +61,11 @@ export default class Undesirable extends GameListener {
 		}
 	}
 
-	/**
-	 * @private
-	 */
-	initBonuses() {
+	private initBonuses() {
 		this.bonuses = {};
 	}
 
-	/**
-	 * @private
-	 */
-	addBonus(identifier, createdAt) {
+	private addBonus(identifier: string, createdAt: number) {
 		if (!this.bonuses) {
 			this.initBonuses();
 		}
@@ -76,10 +75,7 @@ export default class Undesirable extends GameListener {
 		}
 	}
 
-	/**
-	 * @private
-	 */
-	removeBonus(identifier) {
+	private removeBonus(identifier: string) {
 		if (this.bonuses && this.bonuses[identifier]) {
 			const elapsed = getUTCTimeStamp() - this.bonuses[identifier];
 			delete this.bonuses[identifier];
@@ -88,10 +84,7 @@ export default class Undesirable extends GameListener {
 		}
 	}
 
-	/**
-	 * @private
-	 */
-	removeAllBonuses() {
+	private removeAllBonuses() {
 		if (this.bonuses && Object.keys(this.bonuses).length > 0) {
 			const elapsedTimes = [];
 			for (let identifier in this.bonuses) {
@@ -104,12 +97,7 @@ export default class Undesirable extends GameListener {
 		}
 	}
 
-	/**
-	 * @private
-	 * @param identifier
-	 * @returns {boolean}
-	 */
-	bonusEnabled(identifier) {
+	private bonusEnabled(identifier: string): boolean {
 		return (identifier.indexOf(BONUS_NOTHING) === -1);
 	}
 }

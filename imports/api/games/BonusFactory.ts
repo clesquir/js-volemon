@@ -35,6 +35,7 @@ import {
 	BONUS_BIG_JUMP_MONSTER,
 	BONUS_BIG_MONSTER,
 	BONUS_BOUNCE_MONSTER,
+	BONUS_CLEAR_BONUSES,
 	BONUS_CLOAKED_MONSTER,
 	BONUS_CLONE_BALL,
 	BONUS_CLOUD,
@@ -70,6 +71,7 @@ import {Random} from 'meteor/random';
 import {BonusStreamData} from "./bonus/data/BonusStreamData";
 import BaseBonus from "./bonus/BaseBonus";
 import CloneBallBonus from "./bonus/CloneBallBonus";
+import ClearBonuses from "./bonus/ClearBonuses";
 
 export default class BonusFactory {
 	static randomBonus(gameConfiguration: GameConfiguration): BaseBonus {
@@ -102,6 +104,8 @@ export default class BonusFactory {
 			BONUS_CLONE_BALL,
 			BONUS_LOW_GRAVITY,
 			BONUS_HIGH_GRAVITY,
+			BONUS_NOTHING,
+			BONUS_CLEAR_BONUSES,
 			BONUS_ROBOT,
 			BONUS_SMALL_MONSTER,
 			BONUS_BIG_MONSTER,
@@ -121,7 +125,6 @@ export default class BonusFactory {
 			BONUS_CLOAKED_MONSTER,
 			BONUS_SHAPE_SHIFT,
 			BONUS_SMOKE_BOMB,
-			BONUS_NOTHING,
 			BONUS_RANDOM
 		];
 	}
@@ -134,6 +137,7 @@ export default class BonusFactory {
 			BONUS_CLONE_BALL,
 			BONUS_LOW_GRAVITY,
 			BONUS_HIGH_GRAVITY,
+			BONUS_CLEAR_BONUSES,
 			BONUS_ROBOT,
 			BONUS_SMALL_MONSTER,
 			BONUS_BIG_MONSTER,
@@ -166,6 +170,14 @@ export default class BonusFactory {
 				return new InvisibleBallBonus(bonusClass);
 			case BONUS_CLONE_BALL:
 				return new CloneBallBonus(bonusClass);
+			case BONUS_LOW_GRAVITY:
+				return new LowGravity(bonusClass);
+			case BONUS_HIGH_GRAVITY:
+				return new HighGravity(bonusClass);
+			case BONUS_NOTHING:
+				return new NothingBonus(bonusClass);
+			case BONUS_CLEAR_BONUSES:
+				return new ClearBonuses(bonusClass);
 			case BONUS_SMALL_MONSTER:
 				return new SmallMonsterBonus(bonusClass);
 			case BONUS_BIG_MONSTER:
@@ -208,10 +220,6 @@ export default class BonusFactory {
 				return new ReviveBonus(bonusClass);
 			case BONUS_INVINCIBLE_INSTANT_DEATH:
 				return new InvincibleInstantDeathBonus(bonusClass);
-			case BONUS_LOW_GRAVITY:
-				return new LowGravity(bonusClass);
-			case BONUS_HIGH_GRAVITY:
-				return new HighGravity(bonusClass);
 			case BONUS_POISON:
 				return new PoisonBonus(bonusClass);
 			case BONUS_CURE:
@@ -220,8 +228,6 @@ export default class BonusFactory {
 				return new RobotBonus(bonusClass);
 			case BONUS_RESET_BALL_HIT_COUNT:
 				return new ResetBallHitCountBonus(bonusClass);
-			case BONUS_NOTHING:
-				return new NothingBonus(bonusClass);
 			case BONUS_RANDOM:
 				return new RandomBonus(bonusClass);
 		}

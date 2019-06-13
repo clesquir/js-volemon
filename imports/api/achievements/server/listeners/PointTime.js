@@ -1,4 +1,4 @@
-import GameListener from './GameListener.js';
+import GameListener from './GameListener';
 import {ACHIEVEMENT_POINT_TIME} from '/imports/api/achievements/constants.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
 

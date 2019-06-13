@@ -1,4 +1,4 @@
-import GameListener from './GameListener.js';
+import GameListener from './GameListener';
 import {ACHIEVEMENT_BLANK_SCREEN} from '/imports/api/achievements/constants.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import BonusRemoved from '/imports/api/games/events/BonusRemoved.js';
@@ -7,7 +7,7 @@ import {
 	BONUS_CLOAKED_MONSTER,
 	BONUS_INVISIBLE_BALL,
 	BONUS_INVISIBLE_MONSTER
-} from '/imports/api/games/bonusConstants.js';
+} from '/imports/api/games/bonusConstants';
 
 export default class BlankScreen extends GameListener {
 	allowedFor2Vs2() {

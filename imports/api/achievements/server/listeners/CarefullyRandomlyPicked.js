@@ -1,7 +1,7 @@
 import {ACHIEVEMENT_CAREFULLY_RANDOMLY_PICKED} from '/imports/api/achievements/constants.js';
 import PlayerWon from '/imports/api/games/events/PlayerWon.js';
 import {PLAYER_LIST_OF_SHAPES, PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
-import GameListener from './GameListener.js';
+import GameListener from './GameListener';
 
 export default class CarefullyRandomlyPicked extends GameListener {
 	addListeners() {
