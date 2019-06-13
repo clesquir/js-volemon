@@ -1,4 +1,4 @@
-import GameListener from './GameListener.js';
+import GameListener from './GameListener';
 import {ACHIEVEMENT_RANDOM_IN_A_GAME} from '/imports/api/achievements/constants.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import {BONUS_RANDOM} from '/imports/api/games/bonusConstants';

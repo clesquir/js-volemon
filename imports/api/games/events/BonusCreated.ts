@@ -1,6 +1,6 @@
 import {BonusStreamData} from "../bonus/data/BonusStreamData";
 
-export default class BonusCleared {
+export default class BonusCreated {
 	gameId: string;
 	data: BonusStreamData;
 

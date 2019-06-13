@@ -1,11 +1,11 @@
-import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
-import {EventPublisher} from '/imports/lib/EventPublisher.js';
-import {getUTCTimeStamp} from '/imports/lib/utils.js';
+import {UserAchievements} from '../../userAchievements';
+import {EventPublisher} from '../../../../lib/EventPublisher';
+import {getUTCTimeStamp} from '../../../../lib/utils';
 
 export default class Listener {
-	constructor() {
-		this.userId = null;
-	}
+	userId: string = null;
+	numberSinceLastReset: number = 0;
+	userAchievement: any = null;
 
 	destroy() {
 		this.removeListeners();
@@ -14,29 +14,18 @@ export default class Listener {
 	addListeners() {
 	}
 
-	/**
-	 * @param {string} eventName
-	 * @param listener
-	 */
-	addListener(eventName, listener) {
+	addListener(eventName: string, listener: Function) {
 		EventPublisher.on(eventName, listener, this);
 	}
 
 	removeListeners() {
 	}
 
-	/**
-	 * @param {string} eventName
-	 * @param listener
-	 */
-	removeListener(eventName, listener) {
+	removeListener(eventName: string, listener: Function) {
 		EventPublisher.off(eventName, listener, this);
 	}
 
-	/**
-	 * @param {string} achievementId
-	 */
-	incrementNumber(achievementId) {
+	incrementNumber(achievementId: string) {
 		const userAchievement = this.getUserAchievement(achievementId);
 
 		let number = 1;
@@ -47,11 +36,7 @@ export default class Listener {
 		this.insertOrUpdateAchievement(userAchievement, achievementId, number);
 	}
 
-	/**
-	 * @param {string} achievementId
-	 * @param {int} number
-	 */
-	updateNumberIfHigher(achievementId, number) {
+	updateNumberIfHigher(achievementId: string, number: number) {
 		const userAchievement = this.getUserAchievement(achievementId);
 
 		if (!userAchievement) {
@@ -61,13 +46,7 @@ export default class Listener {
 		}
 	}
 
-	/**
-	 * @param {string} achievementId
-	 */
-	incrementNumberIfHigherWithNumberSinceLastReset(achievementId) {
-		if (this.numberSinceLastReset === undefined) {
-			this.resetNumberSinceLastReset();
-		}
+	incrementNumberIfHigherWithNumberSinceLastReset(achievementId: string) {
 		this.numberSinceLastReset = this.numberSinceLastReset + 1;
 
 		this.updateNumberIfHigher(achievementId, this.numberSinceLastReset);
@@ -77,10 +56,7 @@ export default class Listener {
 		this.numberSinceLastReset = 0;
 	}
 
-	/**
-	 * @param {string} achievementId
-	 */
-	initNumberSinceLastReset(achievementId) {
+	initNumberSinceLastReset(achievementId: string) {
 		const userAchievement = this.getUserAchievement(achievementId);
 
 		this.numberSinceLastReset = 0;
@@ -89,10 +65,7 @@ export default class Listener {
 		}
 	}
 
-	/**
-	 * @param {string} achievementId
-	 */
-	updatetNumberSinceLastReset(achievementId) {
+	updateNumberSinceLastReset(achievementId: string) {
 		const userAchievement = this.getUserAchievement(achievementId);
 
 		if (!userAchievement) {
@@ -102,13 +75,7 @@ export default class Listener {
 		}
 	}
 
-	/**
-	 * @protected
-	 * @param userAchievement
-	 * @param achievementId
-	 * @param number
-	 */
-	insertOrUpdateAchievement(userAchievement, achievementId, number) {
+	protected insertOrUpdateAchievement(userAchievement: any, achievementId: string, number: number) {
 		if (!userAchievement) {
 			this.insertAchievement(achievementId, {number: number});
 		} else {
@@ -116,12 +83,7 @@ export default class Listener {
 		}
 	}
 
-	/**
-	 * @protected
-	 * @param achievementId
-	 * @param data
-	 */
-	insertAchievement(achievementId, data) {
+	protected insertAchievement(achievementId: string, data: any) {
 		UserAchievements.insert(
 			Object.assign(
 				{
@@ -132,16 +94,12 @@ export default class Listener {
 				data
 			)
 		);
+
 		//Reinitialize storage
 		this.userAchievement = null;
 	}
 
-	/**
-	 * @protected
-	 * @param achievementId
-	 * @param data
-	 */
-	updateAchievement(achievementId, data) {
+	protected updateAchievement(achievementId: string, data: any) {
 		UserAchievements.update(
 			{
 				userId: this.userId,
@@ -156,16 +114,12 @@ export default class Listener {
 				)
 			}
 		);
+
 		//Reinitialize storage
 		this.userAchievement = null;
 	}
 
-	/**
-	 * @protected
-	 * @param achievementId
-	 * @returns {*}
-	 */
-	getUserAchievement(achievementId) {
+	protected getUserAchievement(achievementId: string): any {
 		if (!this.userAchievement) {
 			this.userAchievement = UserAchievements.findOne(
 				{

@@ -1,6 +1,6 @@
 import {ACHIEVEMENT_DAVID_VS_GOLIATH} from '/imports/api/achievements/constants.js';
 import PlayerWon from '/imports/api/games/events/PlayerWon.js';
-import GameListener from './GameListener.js';
+import GameListener from './GameListener';
 
 export default class DavidVsGoliath extends GameListener {
 	allowedFor2Vs2() {

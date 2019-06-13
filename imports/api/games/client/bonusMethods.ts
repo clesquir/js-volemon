@@ -1,12 +1,13 @@
 import {Meteor} from 'meteor/meteor';
 import {Games} from "../games";
 import {GAME_STATUS_STARTED} from "../statusConstants";
+import {BonusStreamData} from "../bonus/data/BonusStreamData";
 
 Meteor.methods({
-	createBonus: function(gameId: string, data: Object) {
+	createBonus: function(gameId: string, data: BonusStreamData) {
 	},
 
-	clearBonus: function(gameId: string, data: Object) {
+	clearBonus: function(gameId: string, data: BonusStreamData) {
 	},
 
 	addActiveBonusToGame: function(gameId: string, activatedAt: number, initialBonusClass: string, activationData: Object) {

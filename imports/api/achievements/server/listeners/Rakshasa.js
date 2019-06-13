@@ -1,4 +1,4 @@
-import GameListener from './GameListener.js';
+import GameListener from './GameListener';
 import {ACHIEVEMENT_RAKSHASA} from '/imports/api/achievements/constants.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import {BONUS_SHAPE_SHIFT} from '/imports/api/games/bonusConstants'

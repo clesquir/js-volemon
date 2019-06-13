@@ -648,7 +648,7 @@ export default class TournamentMode {
 		return parseFloat(this.overriddenBonusMass);
 	}
 
-	static fromTournament(tournament: any) {
+	static fromTournament(tournament: {mode: any}) {
 		const tournamentMode = new TournamentMode();
 		const mode = tournament.mode;
 

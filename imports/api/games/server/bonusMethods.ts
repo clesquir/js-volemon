@@ -6,9 +6,10 @@ import {Games} from '../games';
 import {GAME_STATUS_STARTED} from '../statusConstants';
 import {Meteor} from 'meteor/meteor';
 import {EventPublisher} from "../../../lib/EventPublisher";
+import {BonusStreamData} from "../bonus/data/BonusStreamData";
 
 Meteor.methods({
-	createBonus: function(gameId: string, data: Object) {
+	createBonus: function(gameId: string, data: BonusStreamData) {
 		EventPublisher.publish(
 			new BonusCreated(
 				gameId,
@@ -17,7 +18,7 @@ Meteor.methods({
 		);
 	},
 
-	clearBonus: function(gameId: string, data: Object) {
+	clearBonus: function(gameId: string, data: BonusStreamData) {
 		EventPublisher.publish(
 			new BonusCleared(
 				gameId,

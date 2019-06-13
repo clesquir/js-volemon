@@ -1,4 +1,4 @@
-import GameListener from './GameListener.js';
+import GameListener from './GameListener';
 import {ACHIEVEMENT_SUICIDAL_TENDENCIES} from '/imports/api/achievements/constants.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import {BONUS_RANDOM, BONUS_INSTANT_DEATH} from '/imports/api/games/bonusConstants';

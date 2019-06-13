@@ -1,18 +1,19 @@
-import {ONE_VS_COMPUTER_GAME_MODE, ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE} from '/imports/api/games/constants';
-import {GAME_MAXIMUM_POINTS, isTwoVersusTwoGameMode} from '/imports/api/games/constants.js';
-import {Games} from '/imports/api/games/games.js';
-import {Profiles} from '/imports/api/profiles/profiles.js';
-import TournamentMode from '/imports/api/tournaments/TournamentMode';
-import {Tournaments} from '/imports/api/tournaments/tournaments.js';
+import {ONE_VS_COMPUTER_GAME_MODE, ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE} from '../../../games/constants';
+import {GAME_MAXIMUM_POINTS, isTwoVersusTwoGameMode} from '../../../games/constants';
+import {Games} from '../../../games/games';
+import {Profiles} from '../../../profiles/profiles';
+import TournamentMode from '../../../tournaments/TournamentMode';
+import {Tournaments} from '../../../tournaments/tournaments';
 import Listener from './Listener';
 
 export default class GameListener extends Listener {
-	/**
-	 * @param gameId
-	 * @param userId
-	 * @returns {Listener}
-	 */
-	forGame(gameId, userId) {
+	gameId: string;
+	game: any;
+	tournament: {mode: any};
+	currentPlayerProfile: {eloRating: number};
+	oppositePlayerProfile: {eloRating: number};
+
+	forGame(gameId: string, userId: string): Listener {
 		this.gameId = gameId;
 		this.userId = userId;
 
@@ -23,7 +24,7 @@ export default class GameListener extends Listener {
 		return this;
 	}
 
-	allowedForGame() {
+	allowedForGame(): boolean {
 		if (this.isTournamentGame() && !this.allowedForTournamentGame()) {
 			return false;
 		}
@@ -37,19 +38,19 @@ export default class GameListener extends Listener {
 		return true;
 	}
 
-	allowedForTournamentGame() {
+	allowedForTournamentGame(): boolean {
 		return true;
 	}
 
-	allowedForPracticeGame() {
+	allowedForPracticeGame(): boolean {
 		return false;
 	}
 
-	allowedFor2Vs2() {
+	allowedFor2Vs2(): boolean {
 		return true;
 	}
 
-	getGame() {
+	getGame(): any {
 		if (!this.game) {
 			this.game = Games.findOne({_id: this.gameId});
 		}
@@ -57,7 +58,7 @@ export default class GameListener extends Listener {
 		return this.game;
 	}
 
-	getTournament() {
+	getTournament(): {mode: any} {
 		if (!this.tournament) {
 			const game = this.getGame();
 			this.tournament = Tournaments.findOne({_id: game.tournamentId});
@@ -66,7 +67,7 @@ export default class GameListener extends Listener {
 		return this.tournament;
 	}
 
-	getCurrentGamePlayer() {
+	getCurrentGamePlayer(): {selectedShape: string, shape: string} {
 		for (let player of this.getGame().players) {
 			if (player.id === this.userId) {
 				return player;
@@ -76,7 +77,7 @@ export default class GameListener extends Listener {
 		return null;
 	}
 
-	getCurrentPlayerProfile() {
+	getCurrentPlayerProfile(): {eloRating: number} {
 		if (!this.currentPlayerProfile) {
 			this.currentPlayerProfile = Profiles.findOne({userId: this.userId});
 		}
@@ -94,7 +95,7 @@ export default class GameListener extends Listener {
 		return null;
 	}
 
-	getOppositePlayerProfile() {
+	getOppositePlayerProfile(): {eloRating: number} {
 		if (!this.oppositePlayerProfile) {
 			const opponentPlayer = this.getOppositeGamePlayer();
 			this.oppositePlayerProfile = Profiles.findOne({userId: opponentPlayer.id});
@@ -103,17 +104,11 @@ export default class GameListener extends Listener {
 		return this.oppositePlayerProfile;
 	}
 
-	/**
-	 * @returns {boolean}
-	 */
-	userIsGamePlayer() {
+	userIsGamePlayer(): boolean {
 		return !!this.getCurrentGamePlayer();
 	}
 
-	/**
-	 * @returns {string|null}
-	 */
-	userPlayerKey() {
+	userPlayerKey(): string | null {
 		const game = this.getGame();
 
 		let userPlayerKey = null;
@@ -132,16 +127,13 @@ export default class GameListener extends Listener {
 		return userPlayerKey;
 	}
 
-	isTournamentGame() {
+	isTournamentGame(): boolean {
 		const game = this.getGame();
 
 		return game && !!game.tournamentId;
 	}
 
-	/**
-	 * @returns {TournamentMode}
-	 */
-	tournamentMode() {
+	tournamentMode(): TournamentMode {
 		if (!this.isTournamentGame()) {
 			throw 'This is not a tournament game';
 		}
@@ -150,31 +142,31 @@ export default class GameListener extends Listener {
 		return TournamentMode.fromTournament(tournament);
 	}
 
-	isPracticeGame() {
+	isPracticeGame(): boolean {
 		const game = this.getGame();
 
 		return game && !!game.isPracticeGame;
 	}
 
-	is1VsCpuGame() {
+	is1VsCpuGame(): boolean {
 		const game = this.getGame();
 
 		return (game && game.gameMode === ONE_VS_COMPUTER_GAME_MODE);
 	}
 
-	is1VsMLCpuGame() {
+	is1VsMLCpuGame(): boolean {
 		const game = this.getGame();
 
 		return (game && game.gameMode === ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE);
 	}
 
-	is2Vs2Game() {
+	is2Vs2Game(): boolean {
 		const game = this.getGame();
 
 		return (game && isTwoVersusTwoGameMode(game.gameMode));
 	}
 
-	gameMaximumPoints() {
+	gameMaximumPoints(): number {
 		const game = this.getGame();
 
 		if (game) {
@@ -184,7 +176,7 @@ export default class GameListener extends Listener {
 		return GAME_MAXIMUM_POINTS;
 	}
 
-	currentPlayerShape() {
+	currentPlayerShape(): string | null {
 		const player = this.getCurrentGamePlayer();
 
 		if (player) {
@@ -194,7 +186,7 @@ export default class GameListener extends Listener {
 		return null;
 	}
 
-	oppositePlayerShape() {
+	oppositePlayerShape(): string | null {
 		const player = this.getOppositeGamePlayer();
 
 		if (player) {
@@ -204,44 +196,36 @@ export default class GameListener extends Listener {
 		return null;
 	}
 
-	/**
-	 * @param {string} playerKey
-	 * @returns {boolean}
-	 */
-	playerKeyIsUser(playerKey) {
+	playerKeyIsUser(playerKey: string): boolean {
 		return playerKey === this.userPlayerKey();
 	}
 
-	playerKeyIsTeammate(playerKey) {
+	playerKeyIsTeammate(playerKey): boolean {
 		return (
 			playerKey !== this.userPlayerKey() &&
 			this.isPlayerHostSide() === this.isPlayerKeyHostSide(playerKey)
 		);
 	}
 
-	/**
-	 * @param {string} playerKey
-	 * @returns {boolean}
-	 */
-	playerKeyIsOpponent(playerKey) {
+	playerKeyIsOpponent(playerKey: string): boolean {
 		const userPlayerKey = this.userPlayerKey();
 
 		return userPlayerKey !== null && playerKey !== userPlayerKey;
 	}
 
-	isPlayerHostSide() {
+	isPlayerHostSide(): boolean {
 		return this.isPlayerKeyHostSide(this.userPlayerKey());
 	}
 
-	isPlayerKeyHostSide(playerKey) {
+	isPlayerKeyHostSide(playerKey: string): boolean {
 		return ('player1' === playerKey || 'player3' === playerKey);
 	}
 
-	isPlayerClientSide() {
+	isPlayerClientSide(): boolean {
 		return this.isPlayerKeyClientSide(this.userPlayerKey());
 	}
 
-	isPlayerKeyClientSide(playerKey) {
+	isPlayerKeyClientSide(playerKey: string): boolean {
 		return ('player2' === playerKey || 'player4' === playerKey);
 	}
 }

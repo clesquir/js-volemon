@@ -27,6 +27,7 @@ import {
 	ACHIEVEMENT_INVISIBLE_IN_A_LIFETIME,
 	ACHIEVEMENT_INVISIBLE_IN_A_POINT,
 	ACHIEVEMENT_LUDOMANIA,
+	ACHIEVEMENT_MISTER_CLEAN,
 	ACHIEVEMENT_NINJA,
 	ACHIEVEMENT_ONE_OF_THE_THREE,
 	ACHIEVEMENT_PAUSE_IN_A_GAME,
@@ -39,6 +40,7 @@ import {
 	ACHIEVEMENT_SHUTOUTS,
 	ACHIEVEMENT_SIMULTANEOUS_ACTIVATED_BONUSES,
 	ACHIEVEMENT_SNOOZER,
+	ACHIEVEMENT_SPRING_CLEANING,
 	ACHIEVEMENT_STEEL_PRACTICING,
 	ACHIEVEMENT_SUICIDAL_TENDENCIES,
 	ACHIEVEMENT_TEENY_TINY_WORLD,
@@ -51,7 +53,7 @@ import {
 	TYPE_MS,
 	TYPE_QUANTITY,
 	TYPE_TIMES
-} from '/imports/api/achievements/constants';
+} from '../../../constants';
 
 export const INITIAL_ACHIVEMENTS = [
 	{
@@ -497,5 +499,23 @@ export const INITIAL_ACHIVEMENTS = [
 		"type": TYPE_TIMES,
 		"displayOrder": 49,
 		"levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 20}]
+	},
+	{
+		"_id": ACHIEVEMENT_SPRING_CLEANING,
+		"isSecret": true,
+		"name": "Spring cleaning",
+		"description": "# of bonuses cleared at once",
+		"type": TYPE_QUANTITY,
+		"displayOrder": 50,
+		"levels": [{"level": 1, "number": 5}, {"level": 2, "number": 10}, {"level": 3, "number": 15}]
+	},
+	{
+		"_id": ACHIEVEMENT_MISTER_CLEAN,
+		"isSecret": true,
+		"name": "Mr. Clean",
+		"description": "# of bonuses cleared in a lifetime",
+		"type": TYPE_QUANTITY,
+		"displayOrder": 52,
+		"levels": [{"level": 1, "number": 250}, {"level": 2, "number": 750}, {"level": 3, "number": 1500}]
 	}
 ];

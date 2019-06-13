@@ -593,6 +593,16 @@ export default class Bonuses {
 		for (let bonusReference of this.activeBonuses) {
 			bonusReference.clear(this);
 			this.removeActiveBonus(bonusReference);
+
+			if (this.gameData.isUserCreator()) {
+				this.serverAdapter.send(
+					'clearBonus',
+					[
+						this.gameData.gameId,
+						bonusReference.dataToStream()
+					]
+				);
+			}
 		}
 		this.activeBonuses = [];
 

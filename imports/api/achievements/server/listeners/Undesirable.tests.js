@@ -2,7 +2,7 @@ import {ACHIEVEMENT_UNDESIRABLE} from '/imports/api/achievements/constants.js';
 import Undesirable from '/imports/api/achievements/server/listeners/Undesirable';
 import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
-import BonusCreated from '/imports/api/games/events/BonusCreated.js';
+import BonusCreated from '/imports/api/games/events/BonusCreated';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {Games} from '/imports/api/games/games.js';
 import {assert} from 'chai';
