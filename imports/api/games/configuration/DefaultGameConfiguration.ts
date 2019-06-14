@@ -1,9 +1,9 @@
 import {isTwoVersusTwoGameMode} from '../constants';
 import {Games} from '../games';
 import LevelConfiguration from '../levelConfiguration/LevelConfiguration';
-import TournamentMode from '../../tournaments/TournamentMode';
 import {Tournaments} from '../../tournaments/tournaments';
 import GameConfiguration from './GameConfiguration';
+import GameOverrideFactory from "../GameOverrideFactory";
 
 export default class DefaultGameConfiguration extends GameConfiguration {
 	gameId: string;
@@ -25,6 +25,10 @@ export default class DefaultGameConfiguration extends GameConfiguration {
 		this.gameMode = game.gameMode;
 		this.tournamentId = game.tournamentId;
 
+		if (GameOverrideFactory.gameModeHasGameOverride(this.gameMode)) {
+			this.gameOverride = GameOverrideFactory.fromGameMode(this.gameMode);
+		}
+
 		if (this.hasTournament()) {
 			this.initTournament();
 		}
@@ -34,17 +38,15 @@ export default class DefaultGameConfiguration extends GameConfiguration {
 
 	private initTournament() {
 		this.tournament = Tournaments.findOne({_id: this.tournamentId});
-
-		/** @type TournamentMode */
-		this.tournamentMode = TournamentMode.fromTournament(this.tournament);
+		this.gameOverride = GameOverrideFactory.fromTournament(this.tournament);
 	}
 
 	private initLevelConfiguration() {
-		if (this.hasTournament() && this.tournamentMode.overridesLevelSize()) {
+		if (this.hasGameOverride() && this.gameOverride.overridesLevelSize()) {
 			this.levelConfiguration = LevelConfiguration.defaultConfiguration();
 			this.levelConfiguration = LevelConfiguration.definedSize(
-				this.tournamentMode.overridesLevelWidth() ? this.tournamentMode.levelWidth() : this.levelConfiguration.width,
-				this.tournamentMode.overridesLevelHeight() ? this.tournamentMode.levelHeight() : this.levelConfiguration.height
+				this.gameOverride.overridesLevelWidth() ? this.gameOverride.levelWidth() : this.levelConfiguration.width,
+				this.gameOverride.overridesLevelHeight() ? this.gameOverride.levelHeight() : this.levelConfiguration.height
 			);
 		} else {
 			if (isTwoVersusTwoGameMode(this.gameMode)) {

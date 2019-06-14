@@ -4,10 +4,10 @@ import PlayerWon from '/imports/api/games/events/PlayerWon.js';
 import GameListener from './GameListener';
 
 export default class Shutouts extends GameListener {
-	allowedForTournamentGame() {
-		const tournamentMode = this.tournamentMode();
+	allowedForGameOverride() {
+		const gameOverride = this.gameOverride();
 
-		return !tournamentMode.overridesMaximumPoints() || tournamentMode.maximumPoints() === GAME_MAXIMUM_POINTS;
+		return !gameOverride.overridesMaximumPoints() || gameOverride.maximumPoints() === GAME_MAXIMUM_POINTS;
 	}
 
 	addListeners() {

@@ -24,7 +24,7 @@ export default class Environment extends Dev {
 		this.showBallHitCount = Session.get('dev.environment.ballHitCountEnabled');
 		this.isMatchPoint = Session.get('dev.environment.matchPointEnabled');
 		this.isDeucePoint = Session.get('dev.environment.deucePointEnabled');
-		this.gameConfiguration.levelConfiguration = LevelConfiguration.fromMode(Session.get('dev.environment.currentMode'));
+		this.gameConfiguration.levelConfiguration = LevelConfiguration.fromGameMode(Session.get('dev.environment.currentMode'));
 	}
 
 	overrideGame() {

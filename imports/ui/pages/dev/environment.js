@@ -37,8 +37,8 @@ Template.environment.helpers({
 	bonuses: function() {
 		return ALL_BONUSES;
 	},
-	modeIsSelected: function(mode) {
-		return Session.get('dev.environment.currentMode') === mode;
+	modeIsSelected: function(gameMode) {
+		return Session.get('dev.environment.currentMode') === gameMode;
 	},
 	netEnabled: function() {
 		return netEnabled.get();
@@ -73,8 +73,8 @@ Template.environment.events({
 		environment.createBonus($('#bonus-class')[0].value);
 	},
 
-	'click [data-action="change-mode"]': function(e) {
-		Session.set('dev.environment.currentMode', $(e.currentTarget).attr('data-mode-id'));
+	'click [data-action="change-game-mode"]': function(e) {
+		Session.set('dev.environment.currentMode', $(e.currentTarget).attr('data-game-mode-id'));
 
 		environment.stop();
 		environment = new Environment();

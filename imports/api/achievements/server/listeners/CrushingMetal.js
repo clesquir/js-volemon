@@ -1,18 +1,15 @@
 import {ACHIEVEMENT_CRUSHING_METAL} from '/imports/api/achievements/constants.js';
+import {ONE_VS_COMPUTER_GAME_MODE} from '/imports/api/games/constants';
 import PlayerWon from '/imports/api/games/events/PlayerWon.js';
 import GameListener from './GameListener';
 
 export default class CrushingMetal extends GameListener {
-	allowedForTournamentGame() {
-		return false;
+	allowedForGameMode(gameMode) {
+		return gameMode === ONE_VS_COMPUTER_GAME_MODE;
 	}
 
 	allowedForPracticeGame() {
 		return true;
-	}
-
-	allowedFor2Vs2() {
-		return false;
 	}
 
 	addListeners() {
@@ -31,8 +28,7 @@ export default class CrushingMetal extends GameListener {
 			event.gameId === this.gameId &&
 			event.userId === this.userId &&
 			event.winnerPoints === this.gameMaximumPoints() &&
-			event.loserPoints === 0 &&
-			this.is1VsCpuGame()
+			event.loserPoints === 0
 		) {
 			this.incrementNumber(ACHIEVEMENT_CRUSHING_METAL);
 		}

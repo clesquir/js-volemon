@@ -1,5 +1,5 @@
-import TournamentMode from '../../tournaments/TournamentMode';
 import GameConfiguration from './GameConfiguration';
+import GameOverrideFactory from "../GameOverrideFactory";
 
 export default class MatchMakingGameConfiguration extends GameConfiguration {
 	tournamentsCollection: any;
@@ -19,6 +19,10 @@ export default class MatchMakingGameConfiguration extends GameConfiguration {
 	}
 
 	private init() {
+		if (GameOverrideFactory.gameModeHasGameOverride(this.gameMode)) {
+			this.gameOverride = GameOverrideFactory.fromGameMode(this.gameMode);
+		}
+
 		if (this.hasTournament()) {
 			this.initTournament();
 		}
@@ -26,7 +30,6 @@ export default class MatchMakingGameConfiguration extends GameConfiguration {
 
 	private initTournament() {
 		this.tournament = this.tournamentsCollection.findOne({_id: this.tournamentId});
-
-		this.tournamentMode = TournamentMode.fromTournament(this.tournament);
+		this.gameOverride = GameOverrideFactory.fromTournament(this.tournament);
 	}
 }

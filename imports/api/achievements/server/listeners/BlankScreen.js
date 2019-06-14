@@ -1,17 +1,14 @@
-import GameListener from './GameListener';
 import {ACHIEVEMENT_BLANK_SCREEN} from '/imports/api/achievements/constants.js';
+import {BONUS_CLOAKED_MONSTER, BONUS_INVISIBLE_BALL, BONUS_INVISIBLE_MONSTER} from '/imports/api/games/bonusConstants';
+import {isTwoVersusTwoGameMode} from '/imports/api/games/constants';
 import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import BonusRemoved from '/imports/api/games/events/BonusRemoved.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
-import {
-	BONUS_CLOAKED_MONSTER,
-	BONUS_INVISIBLE_BALL,
-	BONUS_INVISIBLE_MONSTER
-} from '/imports/api/games/bonusConstants';
+import GameListener from './GameListener';
 
 export default class BlankScreen extends GameListener {
-	allowedFor2Vs2() {
-		return false;
+	allowedForGameMode(gameMode) {
+		return !isTwoVersusTwoGameMode(gameMode);
 	}
 
 	addListeners() {

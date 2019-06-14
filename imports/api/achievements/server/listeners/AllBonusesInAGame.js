@@ -5,10 +5,8 @@ import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import GameListener from './GameListener';
 
 export default class AllBonusesInAGame extends GameListener {
-	allowedForTournamentGame() {
-		const tournamentMode = this.tournamentMode();
-
-		return !tournamentMode.overridesAvailableBonuses();
+	allowedForGameOverride() {
+		return !this.gameOverride().overridesAvailableBonuses();
 	}
 
 	addListeners() {

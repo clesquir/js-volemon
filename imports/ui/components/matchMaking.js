@@ -7,6 +7,8 @@ import {
 	TOURNAMENT_GAME_SELECTION,
 	TWO_VS_TWO_GAME_MODE
 } from '/imports/api/games/constants.js';
+import OneVersusOneVolleyball from '/imports/api/games/gameOverride/OneVersusOneVolleyball';
+import TwoVersusTwoVolleyball from '/imports/api/games/gameOverride/TwoVersusTwoVolleyball';
 import {Games} from '/imports/api/games/games.js';
 import {MatchMakers} from '/imports/api/games/matchMakers.js';
 import {tournamentName} from "/imports/api/tournaments/utils.js";
@@ -391,7 +393,10 @@ Template.matchMaking.helpers({
 		return Session.get('matchMaking.playerIsReady') && !Session.get('matchMaking.kickedOut');
 	},
 
+	//@todo Do loop for all modes rather than listing them in html
+
 	selectedMode: function() {
+		//@todo Name/code should be done in GameOverrideFactory
 		switch (Session.get('matchMaking.modeSelection')) {
 			case ONE_VS_COMPUTER_GAME_MODE:
 				return '1 VS CPU';
@@ -399,8 +404,12 @@ Template.matchMaking.helpers({
 				return '1 VS Machine Learning CPU';
 			case ONE_VS_ONE_GAME_MODE:
 				return '1 VS 1';
+			case OneVersusOneVolleyball.gameModeCode():
+				return OneVersusOneVolleyball.gameModeName();
 			case TWO_VS_TWO_GAME_MODE:
 				return '2 VS 2';
+			case TwoVersusTwoVolleyball.gameModeCode():
+				return TwoVersusTwoVolleyball.gameModeName();
 			case TOURNAMENT_GAME_SELECTION:
 				const tournament = PlayableTournaments.findOne({_id: Session.get('matchMaking.tournamentId')});
 
@@ -505,9 +514,9 @@ Template.matchMaking.helpers({
 });
 
 Template.matchMaking.events({
-	'click [data-action=select-mode-selection]': function(e) {
+	'click [data-action=select-game-mode-selection]': function(e) {
 		Session.set('matchMaking.tournamentId', $(e.currentTarget).attr('data-tournament-id'));
-		Session.set('matchMaking.modeSelection', $(e.currentTarget).attr('data-mode-selection'));
+		Session.set('matchMaking.modeSelection', $(e.currentTarget).attr('data-game-mode-selection'));
 
 		Tooltips.hide();
 		startMatchMaking();

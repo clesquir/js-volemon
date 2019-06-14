@@ -8,8 +8,7 @@ declare type AchievementConfiguration = {
 	description: string;
 	type: string;
 	displayOrder: number;
-	conditionalForTournamentGame: boolean;
-	deniedForTwoVersusTwo: boolean;
+	conditionalForGame: boolean;
 	levels: {number: number}[];
 };
 
@@ -40,11 +39,8 @@ Meteor.startup(function() {
 			if (actualAchievement.displayOrder !== expectedAchievement.displayOrder) {
 				updates.displayOrder = expectedAchievement.displayOrder;
 			}
-			if (actualAchievement.conditionalForTournamentGame !== expectedAchievement.conditionalForTournamentGame) {
-				updates.conditionalForTournamentGame = expectedAchievement.conditionalForTournamentGame;
-			}
-			if (actualAchievement.deniedForTwoVersusTwo !== expectedAchievement.deniedForTwoVersusTwo) {
-				updates.deniedForTwoVersusTwo = expectedAchievement.deniedForTwoVersusTwo;
+			if (actualAchievement.conditionalForGame !== expectedAchievement.conditionalForGame) {
+				updates.conditionalForGame = expectedAchievement.conditionalForGame;
 			}
 			if (
 				actualAchievement.levels[0].number !== expectedAchievement.levels[0].number ||

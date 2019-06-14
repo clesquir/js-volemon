@@ -4,10 +4,10 @@ import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import {BONUS_INVINCIBLE_MONSTER} from '/imports/api/games/bonusConstants';
 
 export default class InvincibleInALifetime extends GameListener {
-	allowedForTournamentGame() {
-		const tournamentMode = this.tournamentMode();
+	allowedForGameOverride() {
+		const gameOverride = this.gameOverride();
 
-		return !tournamentMode.overridesAvailableBonuses();
+		return !gameOverride.overridesAvailableBonuses();
 	}
 
 	addListeners() {

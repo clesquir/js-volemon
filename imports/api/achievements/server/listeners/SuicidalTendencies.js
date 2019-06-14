@@ -28,11 +28,11 @@ export default class SuicidalTendencies extends GameListener {
 
 	hasInstantDeathBonusAvailable() {
 		if (this.isTournamentGame()) {
-			const tournamentMode = this.tournamentMode();
+			const gameOverride = this.gameOverride();
 
 			return (
-				tournamentMode.overridesAvailableBonuses() &&
-				tournamentMode.availableBonuses().indexOf(BONUS_INSTANT_DEATH) !== -1
+				gameOverride.overridesAvailableBonuses() &&
+				gameOverride.availableBonuses().indexOf(BONUS_INSTANT_DEATH) !== -1
 			);
 		}
 

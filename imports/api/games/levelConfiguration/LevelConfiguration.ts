@@ -26,8 +26,8 @@ export default class LevelConfiguration {
 		return new LevelConfiguration(1020, 680);
 	}
 
-	static fromMode(mode: string): LevelConfiguration {
-		if (isTwoVersusTwoGameMode(mode)) {
+	static fromGameMode(gameMode: string): LevelConfiguration {
+		if (isTwoVersusTwoGameMode(gameMode)) {
 			return LevelConfiguration.defaultTwoVersusTwoConfiguration();
 		}
 

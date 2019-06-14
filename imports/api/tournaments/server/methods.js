@@ -36,7 +36,7 @@ Meteor.methods({
 				editor: {id: userId, name: userConfiguration.name},
 				startDate: today.format('YYYY-MM-DD') + ' -04:00',
 				endDate: today.add(moment.duration({'days': 1})).format('YYYY-MM-DD') + ' -04:00',
-				mode: {},
+				gameOverride: {},
 				votes: [],
 				isPublished: false
 			}
@@ -99,7 +99,7 @@ Meteor.methods({
 		startDate,
 		endDate,
 		numberOfLostAllowed,
-		mode
+		gameOverride
 	) {
 		const userId = Meteor.userId();
 
@@ -131,7 +131,7 @@ Meteor.methods({
 					startDate: startDate + ' -04:00',
 					endDate: endDate + ' -04:00',
 					numberOfLostAllowed: numberOfLostAllowed,
-					mode: mode
+					gameOverride: gameOverride
 				}
 			}
 		);
@@ -163,7 +163,7 @@ Meteor.methods({
 						name: tournament.name,
 						description: tournament.description,
 						gameMode: tournament.gameMode,
-						mode: tournament.mode
+						gameOverride: tournament.gameOverride
 					}
 			}
 		);
