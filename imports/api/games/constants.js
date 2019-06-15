@@ -1,4 +1,4 @@
-import TwoVersusTwoVolleyball from '/imports/api/games/gameOverride/TwoVersusTwoVolleyball';
+import GameOverrideFactory from '/imports/api/games/GameOverrideFactory';
 
 export const GAME_FORFEIT_MINIMUM_POINTS = 3;
 export const GAME_MAXIMUM_POINTS = 5;
@@ -67,10 +67,8 @@ export const TWO_VS_TWO_GAME_MODE = '2vs2';
 export const TOURNAMENT_GAME_SELECTION = 'tournament';
 
 export const isTwoVersusTwoGameMode = function(gameMode) {
-	//@todo implement isOneVersusOneGameMode
-	//@todo GameOverrideFactory should provide the codes
 	return (
 		gameMode === TWO_VS_TWO_GAME_MODE ||
-		gameMode === TwoVersusTwoVolleyball.gameModeCode()
+		(GameOverrideFactory.gameModeHasGameOverride(gameMode) && GameOverrideFactory.isTwoVersusTwoGameMode(gameMode))
 	);
 };

@@ -18,17 +18,26 @@ import {
 	BONUS_SMALL_BALL,
 	BONUS_SMALL_MONSTER
 } from "../bonusConstants";
+import GameOverrideMode from "./GameOverrideMode";
 
-export default class OneVersusOneVolleyball {
-	static gameModeCode(): string {
+export default class OneVersusOneVolleyball implements GameOverrideMode {
+	gameModeCode(): string {
 		return '1vs1volleyball';
 	}
 
-	static gameModeName(): string {
-		return '1 VS 1: Volleyball';
+	gameModeName(): string {
+		return 'Volleyball';
 	}
 
-	static gameOverride(): any {
+	isOneVersusOne(): boolean {
+		return true;
+	}
+
+	isTwoVersusTwo(): boolean {
+		return false;
+	}
+
+	gameOverride(): any {
 		return {
 			"overriddenPlayerMaximumBallHit": "3",
 			"overriddenTeamMaximumBallHit": "3",
@@ -79,5 +88,9 @@ export default class OneVersusOneVolleyball {
 				BONUS_RESET_BALL_HIT_COUNT,
 			],
 		};
+	}
+
+	static create(): OneVersusOneVolleyball {
+		return new OneVersusOneVolleyball();
 	}
 }

@@ -21,6 +21,8 @@ import {
 	HIGH_GRAVITY_MULTIPLIER,
 	LOW_GRAVITY_MULTIPLIER,
 	NET_RESTITUTION,
+	ONE_VS_COMPUTER_GAME_MODE,
+	ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE,
 	PLAYER_BIG_GRAVITY_SCALE,
 	PLAYER_BIG_MASS,
 	PLAYER_BIG_SCALE,
@@ -41,7 +43,6 @@ import {
 	PLAYER_VELOCITY_Y_ON_JUMP,
 	PLAYER_VERTICAL_MOVE_MULTIPLIER_BIG,
 	PLAYER_VERTICAL_MOVE_MULTIPLIER_INITIAL,
-	TWO_VS_TWO_GAME_MODE,
 	WORLD_GRAVITY,
 	WORLD_RESTITUTION
 } from '../constants';
@@ -691,11 +692,10 @@ export default abstract class GameConfiguration {
 	}
 
 	canIncludeComputer(): boolean {
-		if (this.hasGameOverride()) {
-			return true;
-		} else {
-			return this.gameMode === TWO_VS_TWO_GAME_MODE;
-		}
+		return (
+			this.gameMode !== ONE_VS_COMPUTER_GAME_MODE &&
+			this.gameMode !== ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE
+		);
 	}
 
 	hasPlayerNetLimit(): boolean {
