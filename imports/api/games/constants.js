@@ -1,3 +1,5 @@
+import GameOverrideFactory from '/imports/api/games/GameOverrideFactory';
+
 export const GAME_FORFEIT_MINIMUM_POINTS = 3;
 export const GAME_MAXIMUM_POINTS = 5;
 export const HOST_POINTS_COLUMN = 'hostPoints';
@@ -66,6 +68,7 @@ export const TOURNAMENT_GAME_SELECTION = 'tournament';
 
 export const isTwoVersusTwoGameMode = function(gameMode) {
 	return (
-		gameMode === TWO_VS_TWO_GAME_MODE
+		gameMode === TWO_VS_TWO_GAME_MODE ||
+		(GameOverrideFactory.gameModeHasGameOverride(gameMode) && GameOverrideFactory.isTwoVersusTwoGameMode(gameMode))
 	);
 };

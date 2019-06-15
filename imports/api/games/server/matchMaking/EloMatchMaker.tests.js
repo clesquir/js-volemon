@@ -92,7 +92,7 @@ describe('EloMatchMaker', function() {
 		Tournaments.insert({
 			_id: tournamentId,
 			gameMode : TWO_VS_TWO_GAME_MODE,
-			mode: {},
+			gameOverride: {},
 			status: {id: 'approved', name: 'Approved'},
 			startDate: '2000-01-01 -04:00',
 			endDate: '2900-12-31 -04:00',

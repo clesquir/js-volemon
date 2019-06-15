@@ -3,56 +3,25 @@
 		{{#if showModeSelection}}
 			<h1>Select a game mode</h1>
 
-			<div class="match-making-body match-selection-items">
-				<div class="match-selection" data-action="select-mode-selection" data-mode-selection="1vsCPU">
+			{{#each matchSelectionItems}}
+				<div class="match-selection" data-action="select-game-mode-selection" data-game-mode-selection="{{gameModeCode}}" data-tournament-id="{{gameModeTournamentId}}">
 					<div class="match-selection-item match-selection-title">
-						<div>1 VS CPU</div>
-					</div>
-				</div>
+						<div class="card-cell card-title card-cell-ellipsis">
+							<div>
+								<div>{{gameModeName}}</div>
 
-				<div class="match-selection" data-action="select-mode-selection" data-mode-selection="1vsMLCPU">
-					<div class="match-selection-item match-selection-title">
-						<div>1 VS Machine Learning CPU</div>
-					</div>
-				</div>
-
-				<div class="match-selection" data-action="select-mode-selection" data-mode-selection="1vs1">
-					<div class="match-selection-item match-selection-title">
-						<div>1 VS 1</div>
-						<div class="currently-waiting-match-making {{#if hasPlayersWaiting '1vs1' null}}has-players-waiting-match-making{{/if}}" data-tooltip="{{playersWaiting '1vs1' null}}">
-							<div class="currently-waiting-match-making-number">{{numberOfPlayersWaiting "1vs1" null}}</div>
-							<i class="currently-waiting-match-making-icon fa fa-user-circle"></i>
-						</div>
-					</div>
-				</div>
-
-				<div class="match-selection" data-action="select-mode-selection" data-mode-selection="2vs2">
-					<div class="match-selection-item match-selection-title">
-						<div>2 VS 2</div>
-						<div class="currently-waiting-match-making {{#if hasPlayersWaiting '2vs2' null}}has-players-waiting-match-making{{/if}}" data-tooltip="{{playersWaiting '2vs2' null}}">
-							<div class="currently-waiting-match-making-number">{{numberOfPlayersWaiting "2vs2" null}}</div>
-							<i class="currently-waiting-match-making-icon fa fa-user-circle"></i>
-						</div>
-					</div>
-				</div>
-
-				{{#each tournaments}}
-					<div class="match-selection" data-action="select-mode-selection" data-mode-selection="tournament" data-tournament-id="{{_id}}">
-						<div class="match-selection-item match-selection-title">
-							<div class="card-cell card-title card-cell-ellipsis">
-								<div>
-									<div>{{name}}</div>
-									<div class="currently-waiting-match-making {{#if hasPlayersWaiting 'tournament' this._id}}has-players-waiting-match-making{{/if}}" data-tooltip="{{playersWaiting 'tournament' this._id}}">
-										<div class="currently-waiting-match-making-number">{{numberOfPlayersWaiting "tournament" this._id}}</div>
+								{{#if showPlayersWaitingIndicator}}
+									<div class="currently-waiting-match-making {{#if hasPlayersWaiting gameModeCode gameModeTournamentId}}has-players-waiting-match-making{{/if}}" data-tooltip="{{playersWaiting gameModeCode gameModeTournamentId}}">
+										<div class="currently-waiting-match-making-number">{{numberOfPlayersWaiting gameModeCode gameModeTournamentId}}</div>
 										<i class="currently-waiting-match-making-icon fa fa-user-circle"></i>
 									</div>
-								</div>
+								{{/if}}
 							</div>
 						</div>
-						<div class="match-selection-item match-selection-description">{{description}}</div>
 					</div>
-				{{/each}}
-			</div>
+					<div class="match-selection-item match-selection-description">{{gameModeDescription}}</div>
+				</div>
+			{{/each}}
 		{{/if}}
 
 		{{#if showTournamentNotAvailable}}

@@ -1,11 +1,11 @@
+import GameOverrideFactory from '/imports/api/games/GameOverrideFactory';
 import {INITIAL_ELO_RATING} from '/imports/api/profiles/constants.js';
-import TournamentMode from '/imports/api/tournaments/TournamentMode';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {getWinRateFromNumbers} from '/imports/lib/utils.js';
 import {Meteor} from 'meteor/meteor';
-import moment from 'moment';
 import {Session} from 'meteor/session';
 import {Template} from 'meteor/templating';
+import moment from 'moment';
 
 import './statistics.html';
 
@@ -115,9 +115,9 @@ Template.statistics.helpers({
 			const tournament = Tournaments.findOne({_id: tournamentId});
 
 			if (tournament) {
-				const mode = TournamentMode.fromTournament(tournament);
+				const override = GameOverrideFactory.fromTournament(tournament);
 
-				return !mode.overridesMaximumPoints() || mode.maximumPoints() > 1;
+				return !override.overridesMaximumPoints() || override.maximumPoints() > 1;
 			}
 		}
 

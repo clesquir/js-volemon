@@ -4,10 +4,10 @@ import BonusCaught from '/imports/api/games/events/BonusCaught.js';
 import {BONUS_RANDOM} from '/imports/api/games/bonusConstants';
 
 export default class RandomInAGame extends GameListener {
-	allowedForTournamentGame() {
-		const tournamentMode = this.tournamentMode();
+	allowedForGameOverride() {
+		const gameOverride = this.gameOverride();
 
-		return !tournamentMode.overridesAvailableBonuses() || tournamentMode.availableBonuses().length > 1;
+		return !gameOverride.overridesAvailableBonuses() || gameOverride.availableBonuses().length > 1;
 	}
 
 	addListeners() {

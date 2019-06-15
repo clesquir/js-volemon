@@ -2,10 +2,11 @@ import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGa
 import {isTwoVersusTwoGameMode, ONE_VS_ONE_GAME_MODE} from '/imports/api/games/constants.js';
 import GameForfeited from '/imports/api/games/events/GameForfeited.js';
 import GameTimedOut from '/imports/api/games/events/GameTimedOut.js';
+import GameOverrideFactory from '/imports/api/games/GameOverrideFactory';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
-import ServerGameInitiator from '/imports/api/games/server/ServerGameInitiator';
 import {finishGame} from '/imports/api/games/server/onGameFinished.js';
+import ServerGameInitiator from '/imports/api/games/server/ServerGameInitiator';
 import {PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_RANDOM} from '/imports/api/games/shapeConstants.js';
 import {
 	GAME_STATUS_FORFEITED,
@@ -48,14 +49,20 @@ export const createGame = function(
 	}
 
 	let gameMode = ONE_VS_ONE_GAME_MODE;
+	let gameOverride = null;
 	if (tournamentId) {
 		const tournament = Tournaments.findOne(tournamentId);
 
-		if (tournament && tournament.gameMode) {
+		if (tournament) {
 			gameMode = tournament.gameMode;
+			gameOverride = tournament.gameOverride;
 		}
 	} else {
 		gameMode = modeSelection;
+
+		if (GameOverrideFactory.gameModeHasGameOverride(gameMode)) {
+			gameOverride = GameOverrideFactory.fromGameMode(gameMode);
+		}
 	}
 
 	do {
@@ -63,6 +70,7 @@ export const createGame = function(
 			id = Games.insert({
 				_id: Random.id(10),
 				gameMode: gameMode,
+				gameOverride: gameOverride,
 				modeSelection: modeSelection,
 				tournamentId: tournamentId,
 				status: GAME_STATUS_REGISTRATION,

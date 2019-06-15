@@ -1,4 +1,4 @@
-export default class TournamentMode {
+export default class GameOverride {
 	overriddenForfeitMinimumPoints;
 	overriddenMaximumPoints;
 	overriddenPlayerMaximumBallHit;
@@ -648,98 +648,97 @@ export default class TournamentMode {
 		return parseFloat(this.overriddenBonusMass);
 	}
 
-	static fromTournament(tournament: {mode: any}) {
-		const tournamentMode = new TournamentMode();
-		const mode = tournament.mode;
+	static fromData(data: any): GameOverride {
+		const gameOverride = new GameOverride();
 
-		tournamentMode.overriddenForfeitMinimumPoints = mode.overriddenForfeitMinimumPoints;
-		tournamentMode.overriddenMaximumPoints = mode.overriddenMaximumPoints;
-		tournamentMode.overriddenPlayerMaximumBallHit = mode.overriddenPlayerMaximumBallHit;
-		tournamentMode.overriddenTeamMaximumBallHit = mode.overriddenTeamMaximumBallHit;
-		tournamentMode.overriddenForcePracticeWithComputer = mode.overriddenForcePracticeWithComputer;
+		gameOverride.overriddenForfeitMinimumPoints = data.overriddenForfeitMinimumPoints;
+		gameOverride.overriddenMaximumPoints = data.overriddenMaximumPoints;
+		gameOverride.overriddenPlayerMaximumBallHit = data.overriddenPlayerMaximumBallHit;
+		gameOverride.overriddenTeamMaximumBallHit = data.overriddenTeamMaximumBallHit;
+		gameOverride.overriddenForcePracticeWithComputer = data.overriddenForcePracticeWithComputer;
 
-		tournamentMode.overriddenWorldGravity = mode.overriddenWorldGravity;
-		tournamentMode.overriddenWorldRestitution = mode.overriddenWorldRestitution;
-		tournamentMode.overriddenLevelWidth = mode.overriddenLevelWidth;
-		tournamentMode.overriddenLevelHeight = mode.overriddenLevelHeight;
-		tournamentMode.overriddenNetWidth = mode.overriddenNetWidth;
-		tournamentMode.overriddenNetHeight = mode.overriddenNetHeight;
+		gameOverride.overriddenWorldGravity = data.overriddenWorldGravity;
+		gameOverride.overriddenWorldRestitution = data.overriddenWorldRestitution;
+		gameOverride.overriddenLevelWidth = data.overriddenLevelWidth;
+		gameOverride.overriddenLevelHeight = data.overriddenLevelHeight;
+		gameOverride.overriddenNetWidth = data.overriddenNetWidth;
+		gameOverride.overriddenNetHeight = data.overriddenNetHeight;
 
-		tournamentMode.overriddenSoccerNetEnabled = mode.overriddenSoccerNetEnabled;
-		tournamentMode.overriddenSoccerNetDistanceFromGround = mode.overriddenSoccerNetDistanceFromGround;
-		tournamentMode.overriddenSoccerNetWidth = mode.overriddenSoccerNetWidth;
-		tournamentMode.overriddenSoccerNetHeight = mode.overriddenSoccerNetHeight;
+		gameOverride.overriddenSoccerNetEnabled = data.overriddenSoccerNetEnabled;
+		gameOverride.overriddenSoccerNetDistanceFromGround = data.overriddenSoccerNetDistanceFromGround;
+		gameOverride.overriddenSoccerNetWidth = data.overriddenSoccerNetWidth;
+		gameOverride.overriddenSoccerNetHeight = data.overriddenSoccerNetHeight;
 
-		tournamentMode.overriddenGroundHitEnabled = mode.overriddenGroundHitEnabled;
-		tournamentMode.overriddenHasPlayerNetLimit = mode.overriddenHasPlayerNetLimit;
-		tournamentMode.overriddenCollidesWithOpponent = mode.overriddenCollidesWithOpponent;
-		tournamentMode.overriddenCollidesWithTeammate = mode.overriddenCollidesWithTeammate;
-		tournamentMode.overriddenBallCollidesWithSoccerNetPosts = mode.overriddenBallCollidesWithSoccerNetPosts;
-		tournamentMode.overriddenBonusCollidesWithSoccerNetPosts = mode.overriddenBonusCollidesWithSoccerNetPosts;
-		tournamentMode.overriddenPlayerCollidesWithSoccerNetPosts = mode.overriddenPlayerCollidesWithSoccerNetPosts;
+		gameOverride.overriddenGroundHitEnabled = data.overriddenGroundHitEnabled;
+		gameOverride.overriddenHasPlayerNetLimit = data.overriddenHasPlayerNetLimit;
+		gameOverride.overriddenCollidesWithOpponent = data.overriddenCollidesWithOpponent;
+		gameOverride.overriddenCollidesWithTeammate = data.overriddenCollidesWithTeammate;
+		gameOverride.overriddenBallCollidesWithSoccerNetPosts = data.overriddenBallCollidesWithSoccerNetPosts;
+		gameOverride.overriddenBonusCollidesWithSoccerNetPosts = data.overriddenBonusCollidesWithSoccerNetPosts;
+		gameOverride.overriddenPlayerCollidesWithSoccerNetPosts = data.overriddenPlayerCollidesWithSoccerNetPosts;
 
-		tournamentMode.overriddenAllowedListOfShapes = mode.overriddenAllowedListOfShapes;
-		tournamentMode.overriddenListOfShapes = mode.overriddenListOfShapes;
-		tournamentMode.overriddenCurrentPlayerShape = mode.overriddenCurrentPlayerShape;
-		tournamentMode.overriddenOpponentPlayerShape = mode.overriddenOpponentPlayerShape;
+		gameOverride.overriddenAllowedListOfShapes = data.overriddenAllowedListOfShapes;
+		gameOverride.overriddenListOfShapes = data.overriddenListOfShapes;
+		gameOverride.overriddenCurrentPlayerShape = data.overriddenCurrentPlayerShape;
+		gameOverride.overriddenOpponentPlayerShape = data.overriddenOpponentPlayerShape;
 
-		tournamentMode.overriddenPlayerInitialDistanceFromWall = mode.overriddenPlayerInitialDistanceFromWall;
-		tournamentMode.overriddenTeammateInitialDistanceFromWall = mode.overriddenTeammateInitialDistanceFromWall;
-		tournamentMode.overriddenPlayerInitialDistanceFromGround = mode.overriddenPlayerInitialDistanceFromGround;
-		tournamentMode.overriddenTeammateInitialDistanceFromGround = mode.overriddenTeammateInitialDistanceFromGround;
+		gameOverride.overriddenPlayerInitialDistanceFromWall = data.overriddenPlayerInitialDistanceFromWall;
+		gameOverride.overriddenTeammateInitialDistanceFromWall = data.overriddenTeammateInitialDistanceFromWall;
+		gameOverride.overriddenPlayerInitialDistanceFromGround = data.overriddenPlayerInitialDistanceFromGround;
+		gameOverride.overriddenTeammateInitialDistanceFromGround = data.overriddenTeammateInitialDistanceFromGround;
 
-		tournamentMode.overriddenIsHiddenToHimself = mode.overriddenIsHiddenToHimself;
-		tournamentMode.overriddenIsHiddenToOpponent = mode.overriddenIsHiddenToOpponent;
-		tournamentMode.overriddenPlayerXVelocity = mode.overriddenPlayerXVelocity;
-		tournamentMode.overriddenPlayerYVelocity = mode.overriddenPlayerYVelocity;
-		tournamentMode.overriddenPlayerDropshotEnabled = mode.overriddenPlayerDropshotEnabled;
-		tournamentMode.overriddenPlayerSmashEnabled = mode.overriddenPlayerSmashEnabled;
-		tournamentMode.overriddenBallReboundOnPlayerEnabled = mode.overriddenBallReboundOnPlayerEnabled;
-		tournamentMode.overriddenBallVelocityOnReboundOnPlayer = mode.overriddenBallVelocityOnReboundOnPlayer;
-		tournamentMode.overriddenInitialPlayerScale = mode.overriddenInitialPlayerScale;
-		tournamentMode.overriddenSmallPlayerScale = mode.overriddenSmallPlayerScale;
-		tournamentMode.overriddenBigPlayerScale = mode.overriddenBigPlayerScale;
-		tournamentMode.overriddenInitialPlayerScale_player1 = mode.overriddenInitialPlayerScale_player1;
-		tournamentMode.overriddenInitialPlayerScale_player2 = mode.overriddenInitialPlayerScale_player2;
-		tournamentMode.overriddenInitialPlayerScale_player3 = mode.overriddenInitialPlayerScale_player3;
-		tournamentMode.overriddenInitialPlayerScale_player4 = mode.overriddenInitialPlayerScale_player4;
-		tournamentMode.overriddenInitialPlayerGravityScale = mode.overriddenInitialPlayerGravityScale;
-		tournamentMode.overriddenInitialPlayerGravityScale_player1 = mode.overriddenInitialPlayerGravityScale_player1;
-		tournamentMode.overriddenInitialPlayerGravityScale_player2 = mode.overriddenInitialPlayerGravityScale_player2;
-		tournamentMode.overriddenInitialPlayerGravityScale_player3 = mode.overriddenInitialPlayerGravityScale_player3;
-		tournamentMode.overriddenInitialPlayerGravityScale_player4 = mode.overriddenInitialPlayerGravityScale_player4;
-		tournamentMode.overriddenInitialPlayerMass = mode.overriddenInitialPlayerMass;
-		tournamentMode.overriddenSmallPlayerMass = mode.overriddenSmallPlayerMass;
-		tournamentMode.overriddenBigPlayerMass = mode.overriddenBigPlayerMass;
-		tournamentMode.overriddenInitialPlayerMass_player1 = mode.overriddenInitialPlayerMass_player1;
-		tournamentMode.overriddenInitialPlayerMass_player2 = mode.overriddenInitialPlayerMass_player2;
-		tournamentMode.overriddenInitialPlayerMass_player3 = mode.overriddenInitialPlayerMass_player3;
-		tournamentMode.overriddenInitialPlayerMass_player4 = mode.overriddenInitialPlayerMass_player4;
-		tournamentMode.overriddenPlayerVerticalMoveMultiplierBig = mode.overriddenPlayerVerticalMoveMultiplierBig;
-		tournamentMode.overriddenPlayerHorizontalMoveMultiplierSlow = mode.overriddenPlayerHorizontalMoveMultiplierSlow;
-		tournamentMode.overriddenPlayerHorizontalMoveMultiplierFast = mode.overriddenPlayerHorizontalMoveMultiplierFast;
+		gameOverride.overriddenIsHiddenToHimself = data.overriddenIsHiddenToHimself;
+		gameOverride.overriddenIsHiddenToOpponent = data.overriddenIsHiddenToOpponent;
+		gameOverride.overriddenPlayerXVelocity = data.overriddenPlayerXVelocity;
+		gameOverride.overriddenPlayerYVelocity = data.overriddenPlayerYVelocity;
+		gameOverride.overriddenPlayerDropshotEnabled = data.overriddenPlayerDropshotEnabled;
+		gameOverride.overriddenPlayerSmashEnabled = data.overriddenPlayerSmashEnabled;
+		gameOverride.overriddenBallReboundOnPlayerEnabled = data.overriddenBallReboundOnPlayerEnabled;
+		gameOverride.overriddenBallVelocityOnReboundOnPlayer = data.overriddenBallVelocityOnReboundOnPlayer;
+		gameOverride.overriddenInitialPlayerScale = data.overriddenInitialPlayerScale;
+		gameOverride.overriddenSmallPlayerScale = data.overriddenSmallPlayerScale;
+		gameOverride.overriddenBigPlayerScale = data.overriddenBigPlayerScale;
+		gameOverride.overriddenInitialPlayerScale_player1 = data.overriddenInitialPlayerScale_player1;
+		gameOverride.overriddenInitialPlayerScale_player2 = data.overriddenInitialPlayerScale_player2;
+		gameOverride.overriddenInitialPlayerScale_player3 = data.overriddenInitialPlayerScale_player3;
+		gameOverride.overriddenInitialPlayerScale_player4 = data.overriddenInitialPlayerScale_player4;
+		gameOverride.overriddenInitialPlayerGravityScale = data.overriddenInitialPlayerGravityScale;
+		gameOverride.overriddenInitialPlayerGravityScale_player1 = data.overriddenInitialPlayerGravityScale_player1;
+		gameOverride.overriddenInitialPlayerGravityScale_player2 = data.overriddenInitialPlayerGravityScale_player2;
+		gameOverride.overriddenInitialPlayerGravityScale_player3 = data.overriddenInitialPlayerGravityScale_player3;
+		gameOverride.overriddenInitialPlayerGravityScale_player4 = data.overriddenInitialPlayerGravityScale_player4;
+		gameOverride.overriddenInitialPlayerMass = data.overriddenInitialPlayerMass;
+		gameOverride.overriddenSmallPlayerMass = data.overriddenSmallPlayerMass;
+		gameOverride.overriddenBigPlayerMass = data.overriddenBigPlayerMass;
+		gameOverride.overriddenInitialPlayerMass_player1 = data.overriddenInitialPlayerMass_player1;
+		gameOverride.overriddenInitialPlayerMass_player2 = data.overriddenInitialPlayerMass_player2;
+		gameOverride.overriddenInitialPlayerMass_player3 = data.overriddenInitialPlayerMass_player3;
+		gameOverride.overriddenInitialPlayerMass_player4 = data.overriddenInitialPlayerMass_player4;
+		gameOverride.overriddenPlayerVerticalMoveMultiplierBig = data.overriddenPlayerVerticalMoveMultiplierBig;
+		gameOverride.overriddenPlayerHorizontalMoveMultiplierSlow = data.overriddenPlayerHorizontalMoveMultiplierSlow;
+		gameOverride.overriddenPlayerHorizontalMoveMultiplierFast = data.overriddenPlayerHorizontalMoveMultiplierFast;
 
-		tournamentMode.overriddenInitialBallScale = mode.overriddenInitialBallScale;
-		tournamentMode.overriddenSmallBallScale = mode.overriddenSmallBallScale;
-		tournamentMode.overriddenBigBallScale = mode.overriddenBigBallScale;
-		tournamentMode.overriddenInitialBallGravityScale = mode.overriddenInitialBallGravityScale;
-		tournamentMode.overriddenInitialBallMass = mode.overriddenInitialBallMass;
-		tournamentMode.overriddenSmallBallMass = mode.overriddenSmallBallMass;
-		tournamentMode.overriddenBigBallMass = mode.overriddenBigBallMass;
-		tournamentMode.overriddenBonusScale = mode.overriddenBonusScale;
-		tournamentMode.overriddenBonusGravityScale = mode.overriddenBonusGravityScale;
-		tournamentMode.overriddenBonusMass = mode.overriddenBonusMass;
+		gameOverride.overriddenInitialBallScale = data.overriddenInitialBallScale;
+		gameOverride.overriddenSmallBallScale = data.overriddenSmallBallScale;
+		gameOverride.overriddenBigBallScale = data.overriddenBigBallScale;
+		gameOverride.overriddenInitialBallGravityScale = data.overriddenInitialBallGravityScale;
+		gameOverride.overriddenInitialBallMass = data.overriddenInitialBallMass;
+		gameOverride.overriddenSmallBallMass = data.overriddenSmallBallMass;
+		gameOverride.overriddenBigBallMass = data.overriddenBigBallMass;
+		gameOverride.overriddenBonusScale = data.overriddenBonusScale;
+		gameOverride.overriddenBonusGravityScale = data.overriddenBonusGravityScale;
+		gameOverride.overriddenBonusMass = data.overriddenBonusMass;
 
-		tournamentMode.overriddenAvailableBonuses = mode.overriddenAvailableBonuses;
-		tournamentMode.overriddenAvailableBonusesForRandom = mode.overriddenAvailableBonusesForRandom;
-		tournamentMode.overriddenHasBonuses = mode.overriddenHasBonuses;
-		tournamentMode.overriddenBonusDuration = mode.overriddenBonusDuration;
-		tournamentMode.overriddenMaximumBonusesOnScreen = mode.overriddenMaximumBonusesOnScreen;
-		tournamentMode.overriddenMaximumBonusesInAPoint = mode.overriddenMaximumBonusesInAPoint;
-		tournamentMode.overriddenBonusSpawnMinimumFrequence = mode.overriddenBonusSpawnMinimumFrequence;
-		tournamentMode.overriddenBonusSpawnInitialMinimumFrequence = mode.overriddenBonusSpawnInitialMinimumFrequence;
-		tournamentMode.overriddenBonusSpawnInitialMaximumFrequence = mode.overriddenBonusSpawnInitialMaximumFrequence;
+		gameOverride.overriddenAvailableBonuses = data.overriddenAvailableBonuses;
+		gameOverride.overriddenAvailableBonusesForRandom = data.overriddenAvailableBonusesForRandom;
+		gameOverride.overriddenHasBonuses = data.overriddenHasBonuses;
+		gameOverride.overriddenBonusDuration = data.overriddenBonusDuration;
+		gameOverride.overriddenMaximumBonusesOnScreen = data.overriddenMaximumBonusesOnScreen;
+		gameOverride.overriddenMaximumBonusesInAPoint = data.overriddenMaximumBonusesInAPoint;
+		gameOverride.overriddenBonusSpawnMinimumFrequence = data.overriddenBonusSpawnMinimumFrequence;
+		gameOverride.overriddenBonusSpawnInitialMinimumFrequence = data.overriddenBonusSpawnInitialMinimumFrequence;
+		gameOverride.overriddenBonusSpawnInitialMaximumFrequence = data.overriddenBonusSpawnInitialMaximumFrequence;
 
-		return tournamentMode;
+		return gameOverride;
 	}
 }

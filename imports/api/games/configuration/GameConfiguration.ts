@@ -21,6 +21,8 @@ import {
 	HIGH_GRAVITY_MULTIPLIER,
 	LOW_GRAVITY_MULTIPLIER,
 	NET_RESTITUTION,
+	ONE_VS_COMPUTER_GAME_MODE,
+	ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE,
 	PLAYER_BIG_GRAVITY_SCALE,
 	PLAYER_BIG_MASS,
 	PLAYER_BIG_SCALE,
@@ -41,7 +43,6 @@ import {
 	PLAYER_VELOCITY_Y_ON_JUMP,
 	PLAYER_VERTICAL_MOVE_MULTIPLIER_BIG,
 	PLAYER_VERTICAL_MOVE_MULTIPLIER_INITIAL,
-	TWO_VS_TWO_GAME_MODE,
 	WORLD_GRAVITY,
 	WORLD_RESTITUTION
 } from '../constants';
@@ -52,54 +53,58 @@ import {
 	BONUS_SPAWN_MINIMUM_FREQUENCE
 } from '../emissionConstants';
 import {PLAYER_ALLOWED_LIST_OF_SHAPES, PLAYER_LIST_OF_SHAPES} from '../shapeConstants';
-import TournamentMode from "../../tournaments/TournamentMode";
+import GameOverride from "../GameOverride";
 import LevelConfiguration from "../levelConfiguration/LevelConfiguration";
 
 export default abstract class GameConfiguration {
 	gameMode: string = null;
 	tournamentId: string = null;
 	tournament: any = null;
-	tournamentMode: TournamentMode = null;
+	gameOverride: GameOverride = null;
 	levelConfiguration: LevelConfiguration = null;
 
 	hasTournament(): boolean {
 		return !!this.tournamentId;
 	}
 
+	hasGameOverride(): boolean {
+		return !!this.gameOverride;
+	}
+
 	forfeitMinimumPoints(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesForfeitMinimumPoints()) {
-			return this.tournamentMode.forfeitMinimumPoints();
+		if (this.hasGameOverride() && this.gameOverride.overridesForfeitMinimumPoints()) {
+			return this.gameOverride.forfeitMinimumPoints();
 		}
 
 		return GAME_FORFEIT_MINIMUM_POINTS;
 	}
 
 	maximumPoints(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesMaximumPoints()) {
-			return this.tournamentMode.maximumPoints();
+		if (this.hasGameOverride() && this.gameOverride.overridesMaximumPoints()) {
+			return this.gameOverride.maximumPoints();
 		}
 
 		return GAME_MAXIMUM_POINTS;
 	}
 
 	listOfShapes(): string[] {
-		if (this.hasTournament() && this.tournamentMode.overridesListOfShapes()) {
-			return this.tournamentMode.listOfShapes();
+		if (this.hasGameOverride() && this.gameOverride.overridesListOfShapes()) {
+			return this.gameOverride.listOfShapes();
 		}
 
 		return PLAYER_LIST_OF_SHAPES;
 	}
 
 	allowedListOfShapes(): string[] {
-		if (this.hasTournament() && this.tournamentMode.overridesAllowedListOfShapes()) {
-			return this.tournamentMode.allowedListOfShapes();
+		if (this.hasGameOverride() && this.gameOverride.overridesAllowedListOfShapes()) {
+			return this.gameOverride.allowedListOfShapes();
 		}
 
 		return PLAYER_ALLOWED_LIST_OF_SHAPES;
 	}
 
 	overridesCurrentPlayerShape(): boolean {
-		return (this.hasTournament() && this.tournamentMode.overridesCurrentPlayerShape());
+		return (this.hasGameOverride() && this.gameOverride.overridesCurrentPlayerShape());
 	}
 
 	currentPlayerShape(): string {
@@ -107,11 +112,11 @@ export default abstract class GameConfiguration {
 			throw 'The shape is not overridden';
 		}
 
-		return this.tournamentMode.currentPlayerShape();
+		return this.gameOverride.currentPlayerShape();
 	}
 
 	overridesOpponentPlayerShape(): boolean {
-		return (this.hasTournament() && this.tournamentMode.overridesOpponentPlayerShape());
+		return (this.hasGameOverride() && this.gameOverride.overridesOpponentPlayerShape());
 	}
 
 	opponentPlayerShape(): string {
@@ -119,36 +124,36 @@ export default abstract class GameConfiguration {
 			throw 'The shape is not overridden';
 		}
 
-		return this.tournamentMode.opponentPlayerShape();
+		return this.gameOverride.opponentPlayerShape();
 	}
 
 	initialPlayerScale(key: string): number {
-		if (this.hasTournament() && this.tournamentMode.overridesInitialPlayerScale(key)) {
-			return this.tournamentMode.initialPlayerScale(key);
+		if (this.hasGameOverride() && this.gameOverride.overridesInitialPlayerScale(key)) {
+			return this.gameOverride.initialPlayerScale(key);
 		}
 
 		return PLAYER_SCALE;
 	}
 
 	smallPlayerScale(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesSmallPlayerScale()) {
-			return this.tournamentMode.smallPlayerScale();
+		if (this.hasGameOverride() && this.gameOverride.overridesSmallPlayerScale()) {
+			return this.gameOverride.smallPlayerScale();
 		}
 
 		return PLAYER_SMALL_SCALE;
 	}
 
 	bigPlayerScale(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesBigPlayerScale()) {
-			return this.tournamentMode.bigPlayerScale();
+		if (this.hasGameOverride() && this.gameOverride.overridesBigPlayerScale()) {
+			return this.gameOverride.bigPlayerScale();
 		}
 
 		return PLAYER_BIG_SCALE;
 	}
 
 	initialPlayerGravityScale(key: string): number {
-		if (this.hasTournament() && this.tournamentMode.overridesInitialPlayerGravityScale(key)) {
-			return this.tournamentMode.initialPlayerGravityScale(key);
+		if (this.hasGameOverride() && this.gameOverride.overridesInitialPlayerGravityScale(key)) {
+			return this.gameOverride.initialPlayerGravityScale(key);
 		}
 
 		return PLAYER_GRAVITY_SCALE;
@@ -163,24 +168,24 @@ export default abstract class GameConfiguration {
 	}
 
 	initialPlayerMass(key: string): number {
-		if (this.hasTournament() && this.tournamentMode.overridesInitialPlayerMass(key)) {
-			return this.tournamentMode.initialPlayerMass(key);
+		if (this.hasGameOverride() && this.gameOverride.overridesInitialPlayerMass(key)) {
+			return this.gameOverride.initialPlayerMass(key);
 		}
 
 		return PLAYER_MASS;
 	}
 
 	smallPlayerMass(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesSmallPlayerMass()) {
-			return this.tournamentMode.smallPlayerMass();
+		if (this.hasGameOverride() && this.gameOverride.overridesSmallPlayerMass()) {
+			return this.gameOverride.smallPlayerMass();
 		}
 
 		return PLAYER_SMALL_MASS;
 	}
 
 	bigPlayerMass(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesBigPlayerMass()) {
-			return this.tournamentMode.bigPlayerMass();
+		if (this.hasGameOverride() && this.gameOverride.overridesBigPlayerMass()) {
+			return this.gameOverride.bigPlayerMass();
 		}
 
 		return PLAYER_BIG_MASS;
@@ -191,8 +196,8 @@ export default abstract class GameConfiguration {
 	}
 
 	bigVerticalMoveMultiplier(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesPlayerVerticalMoveMultiplierBig()) {
-			return this.tournamentMode.playerVerticalMoveMultiplierBig();
+		if (this.hasGameOverride() && this.gameOverride.overridesPlayerVerticalMoveMultiplierBig()) {
+			return this.gameOverride.playerVerticalMoveMultiplierBig();
 		}
 
 		return PLAYER_VERTICAL_MOVE_MULTIPLIER_BIG;
@@ -203,48 +208,48 @@ export default abstract class GameConfiguration {
 	}
 
 	slowHorizontalMoveMultiplier(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesPlayerHorizontalMoveMultiplierSlow()) {
-			return this.tournamentMode.playerHorizontalMoveMultiplierSlow();
+		if (this.hasGameOverride() && this.gameOverride.overridesPlayerHorizontalMoveMultiplierSlow()) {
+			return this.gameOverride.playerHorizontalMoveMultiplierSlow();
 		}
 
 		return PLAYER_HORIZONTAL_MOVE_MULTIPLIER_SLOW;
 	}
 
 	fastHorizontalMoveMultiplier(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesPlayerHorizontalMoveMultiplierFast()) {
-			return this.tournamentMode.playerHorizontalMoveMultiplierFast();
+		if (this.hasGameOverride() && this.gameOverride.overridesPlayerHorizontalMoveMultiplierFast()) {
+			return this.gameOverride.playerHorizontalMoveMultiplierFast();
 		}
 
 		return PLAYER_HORIZONTAL_MOVE_MULTIPLIER_FAST;
 	}
 
 	initialBallScale(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesInitialBallScale()) {
-			return this.tournamentMode.initialBallScale();
+		if (this.hasGameOverride() && this.gameOverride.overridesInitialBallScale()) {
+			return this.gameOverride.initialBallScale();
 		}
 
 		return BALL_SCALE;
 	}
 
 	smallBallScale(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesSmallBallScale()) {
-			return this.tournamentMode.smallBallScale();
+		if (this.hasGameOverride() && this.gameOverride.overridesSmallBallScale()) {
+			return this.gameOverride.smallBallScale();
 		}
 
 		return BALL_SMALL_SCALE;
 	}
 
 	bigBallScale(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesBigBallScale()) {
-			return this.tournamentMode.bigBallScale();
+		if (this.hasGameOverride() && this.gameOverride.overridesBigBallScale()) {
+			return this.gameOverride.bigBallScale();
 		}
 
 		return BALL_BIG_SCALE;
 	}
 
 	initialBallGravityScale(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesInitialBallGravityScale()) {
-			return this.tournamentMode.initialBallGravityScale();
+		if (this.hasGameOverride() && this.gameOverride.overridesInitialBallGravityScale()) {
+			return this.gameOverride.initialBallGravityScale();
 		}
 
 		return BALL_GRAVITY_SCALE;
@@ -259,24 +264,24 @@ export default abstract class GameConfiguration {
 	}
 
 	initialBallMass(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesInitialBallMass()) {
-			return this.tournamentMode.initialBallMass();
+		if (this.hasGameOverride() && this.gameOverride.overridesInitialBallMass()) {
+			return this.gameOverride.initialBallMass();
 		}
 
 		return BALL_MASS;
 	}
 
 	smallBallMass(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesSmallBallMass()) {
-			return this.tournamentMode.smallBallMass();
+		if (this.hasGameOverride() && this.gameOverride.overridesSmallBallMass()) {
+			return this.gameOverride.smallBallMass();
 		}
 
 		return BALL_SMALL_MASS;
 	}
 
 	bigBallMass(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesBigBallMass()) {
-			return this.tournamentMode.bigBallMass();
+		if (this.hasGameOverride() && this.gameOverride.overridesBigBallMass()) {
+			return this.gameOverride.bigBallMass();
 		}
 
 		return BALL_BIG_MASS;
@@ -291,56 +296,56 @@ export default abstract class GameConfiguration {
 	}
 
 	bonusScale(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesBonusScale()) {
-			return this.tournamentMode.bonusScale();
+		if (this.hasGameOverride() && this.gameOverride.overridesBonusScale()) {
+			return this.gameOverride.bonusScale();
 		}
 
 		return BONUS_SCALE;
 	}
 
 	bonusGravityScale(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesBonusGravityScale()) {
-			return this.tournamentMode.bonusGravityScale();
+		if (this.hasGameOverride() && this.gameOverride.overridesBonusGravityScale()) {
+			return this.gameOverride.bonusGravityScale();
 		}
 
 		return BONUS_GRAVITY_SCALE;
 	}
 
 	bonusMass(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesBonusMass()) {
-			return this.tournamentMode.bonusMass();
+		if (this.hasGameOverride() && this.gameOverride.overridesBonusMass()) {
+			return this.gameOverride.bonusMass();
 		}
 
 		return BONUS_MASS;
 	}
 
 	isHiddenToHimself(): boolean {
-		if (this.hasTournament() && this.tournamentMode.overridesIsHiddenToHimself()) {
-			return this.tournamentMode.isHiddenToHimself();
+		if (this.hasGameOverride() && this.gameOverride.overridesIsHiddenToHimself()) {
+			return this.gameOverride.isHiddenToHimself();
 		}
 
 		return false;
 	}
 
 	isHiddenToOpponent(): boolean {
-		if (this.hasTournament() && this.tournamentMode.overridesIsHiddenToOpponent()) {
-			return this.tournamentMode.isHiddenToOpponent();
+		if (this.hasGameOverride() && this.gameOverride.overridesIsHiddenToOpponent()) {
+			return this.gameOverride.isHiddenToOpponent();
 		}
 
 		return false;
 	}
 
 	hasBonuses(): boolean {
-		if (this.hasTournament() && this.tournamentMode.overridesHasBonuses()) {
-			return this.tournamentMode.hasBonuses();
+		if (this.hasGameOverride() && this.gameOverride.overridesHasBonuses()) {
+			return this.gameOverride.hasBonuses();
 		}
 
 		return true;
 	}
 
 	worldGravity(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesWorldGravity()) {
-			return this.tournamentMode.worldGravity();
+		if (this.hasGameOverride() && this.gameOverride.overridesWorldGravity()) {
+			return this.gameOverride.worldGravity();
 		}
 
 		return WORLD_GRAVITY;
@@ -355,8 +360,8 @@ export default abstract class GameConfiguration {
 	}
 
 	worldRestitution(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesWorldRestitution()) {
-			return this.tournamentMode.worldRestitution();
+		if (this.hasGameOverride() && this.gameOverride.overridesWorldRestitution()) {
+			return this.gameOverride.worldRestitution();
 		}
 
 		return WORLD_RESTITUTION;
@@ -367,15 +372,15 @@ export default abstract class GameConfiguration {
 	}
 
 	maximumBonusesOnScreen(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesMaximumBonusesOnScreen()) {
-			return this.tournamentMode.maximumBonusesOnScreen();
+		if (this.hasGameOverride() && this.gameOverride.overridesMaximumBonusesOnScreen()) {
+			return this.gameOverride.maximumBonusesOnScreen();
 		}
 
 		return BONUS_MAXIMUM_ON_SCREEN;
 	}
 
 	overridesMaximumBonusesInAPoint(): boolean {
-		return (this.hasTournament() && this.tournamentMode.overridesMaximumBonusesInAPoint());
+		return (this.hasGameOverride() && this.gameOverride.overridesMaximumBonusesInAPoint());
 	}
 
 	maximumBonusesInAPoint(): number {
@@ -383,35 +388,35 @@ export default abstract class GameConfiguration {
 			throw 'The maximum bonuses in a point is not overridden';
 		}
 
-		return this.tournamentMode.maximumBonusesInAPoint();
+		return this.gameOverride.maximumBonusesInAPoint();
 	}
 
 	bonusSpawnMinimumFrequence(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesBonusSpawnMinimumFrequence()) {
-			return this.tournamentMode.bonusSpawnMinimumFrequence();
+		if (this.hasGameOverride() && this.gameOverride.overridesBonusSpawnMinimumFrequence()) {
+			return this.gameOverride.bonusSpawnMinimumFrequence();
 		}
 
 		return BONUS_SPAWN_MINIMUM_FREQUENCE;
 	}
 
 	bonusSpawnInitialMinimumFrequence(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesBonusSpawnInitialMinimumFrequence()) {
-			return this.tournamentMode.bonusSpawnInitialMinimumFrequence();
+		if (this.hasGameOverride() && this.gameOverride.overridesBonusSpawnInitialMinimumFrequence()) {
+			return this.gameOverride.bonusSpawnInitialMinimumFrequence();
 		}
 
 		return BONUS_SPAWN_INITIAL_MINIMUM_FREQUENCE;
 	}
 
 	bonusSpawnInitialMaximumFrequence(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesBonusSpawnInitialMaximumFrequence()) {
-			return this.tournamentMode.bonusSpawnInitialMaximumFrequence();
+		if (this.hasGameOverride() && this.gameOverride.overridesBonusSpawnInitialMaximumFrequence()) {
+			return this.gameOverride.bonusSpawnInitialMaximumFrequence();
 		}
 
 		return BONUS_SPAWN_INITIAL_MAXIMUM_FREQUENCE;
 	}
 
 	overridesAvailableBonuses(): boolean {
-		return (this.hasTournament() && this.tournamentMode.overridesAvailableBonuses());
+		return (this.hasGameOverride() && this.gameOverride.overridesAvailableBonuses());
 	}
 
 	availableBonuses(): string[] {
@@ -419,11 +424,11 @@ export default abstract class GameConfiguration {
 			throw 'The available bonuses are not overridden';
 		}
 
-		return this.tournamentMode.availableBonuses();
+		return this.gameOverride.availableBonuses();
 	}
 
 	overridesAvailableBonusesForRandom(): boolean {
-		return (this.hasTournament() && this.tournamentMode.overridesAvailableBonusesForRandom());
+		return (this.hasGameOverride() && this.gameOverride.overridesAvailableBonusesForRandom());
 	}
 
 	availableBonusesForRandom(): string[] {
@@ -431,11 +436,11 @@ export default abstract class GameConfiguration {
 			throw 'The available bonuses for random are not overridden';
 		}
 
-		return this.tournamentMode.availableBonusesForRandom();
+		return this.gameOverride.availableBonusesForRandom();
 	}
 
 	overridesBonusDuration(): boolean {
-		return (this.hasTournament() && this.tournamentMode.overridesBonusDuration());
+		return (this.hasGameOverride() && this.gameOverride.overridesBonusDuration());
 	}
 
 	bonusDuration(): number {
@@ -443,11 +448,11 @@ export default abstract class GameConfiguration {
 			throw 'The bonus duration is not overridden';
 		}
 
-		return this.tournamentMode.bonusDuration();
+		return this.gameOverride.bonusDuration();
 	}
 
 	overridesPlayerMaximumBallHit(): boolean {
-		return (this.hasTournament() && this.tournamentMode.overridesPlayerMaximumBallHit());
+		return (this.hasGameOverride() && this.gameOverride.overridesPlayerMaximumBallHit());
 	}
 
 	playerMaximumBallHit(): number {
@@ -455,7 +460,7 @@ export default abstract class GameConfiguration {
 			throw 'The playerMaximumBallHit is not overridden';
 		}
 
-		return this.tournamentMode.playerMaximumBallHit();
+		return this.gameOverride.playerMaximumBallHit();
 	}
 
 	exceedsPlayerMaximumBallHit(numberBallHits): boolean {
@@ -466,7 +471,7 @@ export default abstract class GameConfiguration {
 	}
 
 	overridesTeamMaximumBallHit(): boolean {
-		return (this.hasTournament() && this.tournamentMode.overridesTeamMaximumBallHit());
+		return (this.hasGameOverride() && this.gameOverride.overridesTeamMaximumBallHit());
 	}
 
 	teamMaximumBallHit(): number {
@@ -474,7 +479,7 @@ export default abstract class GameConfiguration {
 			throw 'The teamMaximumBallHit is not overridden';
 		}
 
-		return this.tournamentMode.teamMaximumBallHit();
+		return this.gameOverride.teamMaximumBallHit();
 	}
 
 	exceedsTeamMaximumBallHit(numberBallHits): boolean {
@@ -497,32 +502,32 @@ export default abstract class GameConfiguration {
 	}
 
 	netWidth(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesNetWidth()) {
-			return this.tournamentMode.netWidth();
+		if (this.hasGameOverride() && this.gameOverride.overridesNetWidth()) {
+			return this.gameOverride.netWidth();
 		}
 
 		return this.levelConfiguration.netWidth;
 	}
 
 	netHeight(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesNetHeight()) {
-			return this.tournamentMode.netHeight();
+		if (this.hasGameOverride() && this.gameOverride.overridesNetHeight()) {
+			return this.gameOverride.netHeight();
 		}
 
 		return this.levelConfiguration.netHeight;
 	}
 
 	groundHitEnabled(): boolean {
-		if (this.hasTournament() && this.tournamentMode.overridesGroundHitEnabled()) {
-			return this.tournamentMode.groundHitEnabled();
+		if (this.hasGameOverride() && this.gameOverride.overridesGroundHitEnabled()) {
+			return this.gameOverride.groundHitEnabled();
 		}
 
 		return true;
 	}
 
 	hasSoccerNet(): boolean {
-		if (this.hasTournament() && this.tournamentMode.overridesSoccerNetEnabled()) {
-			return this.tournamentMode.soccerNetEnabled();
+		if (this.hasGameOverride() && this.gameOverride.overridesSoccerNetEnabled()) {
+			return this.gameOverride.soccerNetEnabled();
 		}
 
 		return false;
@@ -541,24 +546,24 @@ export default abstract class GameConfiguration {
 	}
 
 	soccerNetWidth(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesSoccerNetWidth()) {
-			return this.tournamentMode.soccerNetWidth();
+		if (this.hasGameOverride() && this.gameOverride.overridesSoccerNetWidth()) {
+			return this.gameOverride.soccerNetWidth();
 		}
 
 		return this.levelConfiguration.soccerNetWidth;
 	}
 
 	soccerNetHeight(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesSoccerNetHeight()) {
-			return this.tournamentMode.soccerNetHeight();
+		if (this.hasGameOverride() && this.gameOverride.overridesSoccerNetHeight()) {
+			return this.gameOverride.soccerNetHeight();
 		}
 
 		return this.levelConfiguration.soccerNetHeight;
 	}
 
 	soccerNetDistanceFromGround(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesSoccerNetDistanceFromGround()) {
-			return this.tournamentMode.soccerNetDistanceFromGround();
+		if (this.hasGameOverride() && this.gameOverride.overridesSoccerNetDistanceFromGround()) {
+			return this.gameOverride.soccerNetDistanceFromGround();
 		}
 
 		return 0;
@@ -631,72 +636,71 @@ export default abstract class GameConfiguration {
 	}
 
 	playerXVelocity(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesPlayerXVelocity()) {
-			return this.tournamentMode.playerXVelocity();
+		if (this.hasGameOverride() && this.gameOverride.overridesPlayerXVelocity()) {
+			return this.gameOverride.playerXVelocity();
 		}
 
 		return PLAYER_VELOCITY_X_ON_MOVE;
 	}
 
 	playerYVelocity(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesPlayerYVelocity()) {
-			return this.tournamentMode.playerYVelocity();
+		if (this.hasGameOverride() && this.gameOverride.overridesPlayerYVelocity()) {
+			return this.gameOverride.playerYVelocity();
 		}
 
 		return PLAYER_VELOCITY_Y_ON_JUMP;
 	}
 
 	playerDropshotEnabled(): boolean {
-		if (this.hasTournament() && this.tournamentMode.overridesPlayerDropshotEnabled()) {
-			return this.tournamentMode.playerDropshotEnabled();
+		if (this.hasGameOverride() && this.gameOverride.overridesPlayerDropshotEnabled()) {
+			return this.gameOverride.playerDropshotEnabled();
 		}
 
 		return true;
 	}
 
 	playerSmashEnabled(): boolean {
-		if (this.hasTournament() && this.tournamentMode.overridesPlayerSmashEnabled()) {
-			return this.tournamentMode.playerSmashEnabled();
+		if (this.hasGameOverride() && this.gameOverride.overridesPlayerSmashEnabled()) {
+			return this.gameOverride.playerSmashEnabled();
 		}
 
 		return true;
 	}
 
 	ballReboundOnPlayerEnabled(): boolean {
-		if (this.hasTournament() && this.tournamentMode.overridesBallReboundOnPlayerEnabled()) {
-			return this.tournamentMode.ballReboundOnPlayerEnabled();
+		if (this.hasGameOverride() && this.gameOverride.overridesBallReboundOnPlayerEnabled()) {
+			return this.gameOverride.ballReboundOnPlayerEnabled();
 		}
 
 		return true;
 	}
 
 	ballVelocityOnReboundOnPlayer(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesBallVelocityOnReboundOnPlayer()) {
-			return this.tournamentMode.ballVelocityOnReboundOnPlayer();
+		if (this.hasGameOverride() && this.gameOverride.overridesBallVelocityOnReboundOnPlayer()) {
+			return this.gameOverride.ballVelocityOnReboundOnPlayer();
 		}
 
 		return BALL_VERTICAL_SPEED_ON_PLAYER_HIT;
 	}
 
 	forcePracticeWithComputer(): boolean {
-		if (this.hasTournament() && this.tournamentMode.overridesForcePracticeWithComputer()) {
-			return this.tournamentMode.forcePracticeWithComputer();
+		if (this.hasGameOverride() && this.gameOverride.overridesForcePracticeWithComputer()) {
+			return this.gameOverride.forcePracticeWithComputer();
 		}
 
 		return true;
 	}
 
 	canIncludeComputer(): boolean {
-		if (this.hasTournament()) {
-			return true;
-		} else {
-			return this.gameMode === TWO_VS_TWO_GAME_MODE;
-		}
+		return (
+			this.gameMode !== ONE_VS_COMPUTER_GAME_MODE &&
+			this.gameMode !== ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE
+		);
 	}
 
 	hasPlayerNetLimit(): boolean {
-		if (this.hasTournament() && this.tournamentMode.overridesHasPlayerNetLimit()) {
-			return this.tournamentMode.hasPlayerNetLimit();
+		if (this.hasGameOverride() && this.gameOverride.overridesHasPlayerNetLimit()) {
+			return this.gameOverride.hasPlayerNetLimit();
 		}
 
 		return true;
@@ -707,8 +711,8 @@ export default abstract class GameConfiguration {
 			return false;
 		}
 
-		if (this.hasTournament() && this.tournamentMode.overridesBallCollidesWithSoccerNetPosts()) {
-			return this.tournamentMode.ballCollidesWithSoccerNetPosts();
+		if (this.hasGameOverride() && this.gameOverride.overridesBallCollidesWithSoccerNetPosts()) {
+			return this.gameOverride.ballCollidesWithSoccerNetPosts();
 		}
 
 		return true;
@@ -719,8 +723,8 @@ export default abstract class GameConfiguration {
 			return false;
 		}
 
-		if (this.hasTournament() && this.tournamentMode.overridesBonusCollidesWithSoccerNetPosts()) {
-			return this.tournamentMode.bonusCollidesWithSoccerNetPosts();
+		if (this.hasGameOverride() && this.gameOverride.overridesBonusCollidesWithSoccerNetPosts()) {
+			return this.gameOverride.bonusCollidesWithSoccerNetPosts();
 		}
 
 		return true;
@@ -731,32 +735,32 @@ export default abstract class GameConfiguration {
 			return false;
 		}
 
-		if (this.hasTournament() && this.tournamentMode.overridesPlayerCollidesWithSoccerNetPosts()) {
-			return this.tournamentMode.playerCollidesWithSoccerNetPosts();
+		if (this.hasGameOverride() && this.gameOverride.overridesPlayerCollidesWithSoccerNetPosts()) {
+			return this.gameOverride.playerCollidesWithSoccerNetPosts();
 		}
 
 		return false;
 	}
 
 	collidesWithTeammate(): boolean {
-		if (this.hasTournament() && this.tournamentMode.overridesCollidesWithTeammate()) {
-			return this.tournamentMode.collidesWithTeammate();
+		if (this.hasGameOverride() && this.gameOverride.overridesCollidesWithTeammate()) {
+			return this.gameOverride.collidesWithTeammate();
 		}
 
 		return true;
 	}
 
 	collidesWithOpponent(): boolean {
-		if (this.hasTournament() && this.tournamentMode.overridesCollidesWithOpponent()) {
-			return this.tournamentMode.collidesWithOpponent();
+		if (this.hasGameOverride() && this.gameOverride.overridesCollidesWithOpponent()) {
+			return this.gameOverride.collidesWithOpponent();
 		}
 
 		return false;
 	}
 
 	private player1InitialX(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesPlayerInitialDistanceFromWall()) {
-			return this.tournamentMode.playerInitialDistanceFromWall();
+		if (this.hasGameOverride() && this.gameOverride.overridesPlayerInitialDistanceFromWall()) {
+			return this.gameOverride.playerInitialDistanceFromWall();
 		}
 
 		return PLAYER_DISTANCE_FROM_WALL;
@@ -765,16 +769,16 @@ export default abstract class GameConfiguration {
 	private player2InitialX(): number {
 		let distanceFromWall = PLAYER_DISTANCE_FROM_WALL;
 
-		if (this.hasTournament() && this.tournamentMode.overridesPlayerInitialDistanceFromWall()) {
-			distanceFromWall = this.tournamentMode.playerInitialDistanceFromWall();
+		if (this.hasGameOverride() && this.gameOverride.overridesPlayerInitialDistanceFromWall()) {
+			distanceFromWall = this.gameOverride.playerInitialDistanceFromWall();
 		}
 
 		return this.width() - distanceFromWall;
 	}
 
 	private player3InitialX(): number {
-		if (this.hasTournament() && this.tournamentMode.overridesTeammateInitialDistanceFromWall()) {
-			return this.tournamentMode.teammateInitialDistanceFromWall();
+		if (this.hasGameOverride() && this.gameOverride.overridesTeammateInitialDistanceFromWall()) {
+			return this.gameOverride.teammateInitialDistanceFromWall();
 		}
 
 		return PLAYER_TEAMMATE_DISTANCE_FROM_WALL;
@@ -783,8 +787,8 @@ export default abstract class GameConfiguration {
 	private player4InitialX(): number {
 		let distanceFromWall = PLAYER_TEAMMATE_DISTANCE_FROM_WALL;
 
-		if (this.hasTournament() && this.tournamentMode.overridesTeammateInitialDistanceFromWall()) {
-			distanceFromWall = this.tournamentMode.teammateInitialDistanceFromWall();
+		if (this.hasGameOverride() && this.gameOverride.overridesTeammateInitialDistanceFromWall()) {
+			distanceFromWall = this.gameOverride.teammateInitialDistanceFromWall();
 		}
 
 		return this.width() - distanceFromWall;
@@ -793,8 +797,8 @@ export default abstract class GameConfiguration {
 	private player1InitialY(): number {
 		let distanceFromGround = 0;
 
-		if (this.hasTournament() && this.tournamentMode.overridesPlayerInitialDistanceFromGround()) {
-			distanceFromGround = this.tournamentMode.playerInitialDistanceFromGround();
+		if (this.hasGameOverride() && this.gameOverride.overridesPlayerInitialDistanceFromGround()) {
+			distanceFromGround = this.gameOverride.playerInitialDistanceFromGround();
 		}
 
 		return this.height() - this.groundHeight() - (this.playerHeight() / 2) - distanceFromGround;
@@ -803,8 +807,8 @@ export default abstract class GameConfiguration {
 	private player2InitialY(): number {
 		let distanceFromGround = 0;
 
-		if (this.hasTournament() && this.tournamentMode.overridesPlayerInitialDistanceFromGround()) {
-			distanceFromGround = this.tournamentMode.playerInitialDistanceFromGround();
+		if (this.hasGameOverride() && this.gameOverride.overridesPlayerInitialDistanceFromGround()) {
+			distanceFromGround = this.gameOverride.playerInitialDistanceFromGround();
 		}
 
 		return this.height() - this.groundHeight() - (this.playerHeight() / 2) - distanceFromGround;
@@ -813,8 +817,8 @@ export default abstract class GameConfiguration {
 	private player3InitialY(): number {
 		let distanceFromGround = 0;
 
-		if (this.hasTournament() && this.tournamentMode.overridesTeammateInitialDistanceFromGround()) {
-			distanceFromGround = this.tournamentMode.teammateInitialDistanceFromGround();
+		if (this.hasGameOverride() && this.gameOverride.overridesTeammateInitialDistanceFromGround()) {
+			distanceFromGround = this.gameOverride.teammateInitialDistanceFromGround();
 		}
 
 		return this.height() - this.groundHeight() - (this.playerHeight() / 2) - distanceFromGround;
@@ -823,8 +827,8 @@ export default abstract class GameConfiguration {
 	private player4InitialY(): number {
 		let distanceFromGround = 0;
 
-		if (this.hasTournament() && this.tournamentMode.overridesTeammateInitialDistanceFromGround()) {
-			distanceFromGround = this.tournamentMode.teammateInitialDistanceFromGround();
+		if (this.hasGameOverride() && this.gameOverride.overridesTeammateInitialDistanceFromGround()) {
+			distanceFromGround = this.gameOverride.teammateInitialDistanceFromGround();
 		}
 
 		return this.height() - this.groundHeight() - (this.playerHeight() / 2) - distanceFromGround;

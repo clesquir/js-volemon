@@ -1,10 +1,11 @@
 import {ACHIEVEMENT_DAVID_VS_GOLIATH} from '/imports/api/achievements/constants.js';
+import {isTwoVersusTwoGameMode} from '/imports/api/games/constants';
 import PlayerWon from '/imports/api/games/events/PlayerWon.js';
 import GameListener from './GameListener';
 
 export default class DavidVsGoliath extends GameListener {
-	allowedFor2Vs2() {
-		return false;
+	allowedForGameMode(gameMode) {
+		return !isTwoVersusTwoGameMode(gameMode);
 	}
 
 	addListeners() {

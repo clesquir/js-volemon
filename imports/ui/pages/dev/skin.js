@@ -41,8 +41,8 @@ Template.skin.helpers({
 		return Session.get('dev.skin.currentSkin') === id;
 	},
 
-	modeIsSelected: function(mode) {
-		return Session.get('dev.skin.currentMode') === mode;
+	modeIsSelected: function(gameMode) {
+		return Session.get('dev.skin.currentMode') === gameMode;
 	},
 
 	pluginEnabled: function() {
@@ -167,8 +167,8 @@ Template.skin.events({
 		skin.start();
 	},
 
-	'click [data-action="change-mode"]': function(e) {
-		Session.set('dev.skin.currentMode', $(e.currentTarget).attr('data-mode-id'));
+	'click [data-action="change-game-mode"]': function(e) {
+		Session.set('dev.skin.currentMode', $(e.currentTarget).attr('data-game-mode-id'));
 
 		skin.stop();
 		skin = new Skin();

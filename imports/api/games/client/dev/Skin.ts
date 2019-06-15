@@ -20,7 +20,7 @@ export default class Skin extends Dev {
 	}
 
 	beforeStart() {
-		this.gameConfiguration.levelConfiguration = LevelConfiguration.fromMode(Session.get('dev.skin.currentMode'));
+		this.gameConfiguration.levelConfiguration = LevelConfiguration.fromGameMode(Session.get('dev.skin.currentMode'));
 
 		const weatherPlugin = new WeatherPlugin();
 		weatherPlugin.init();

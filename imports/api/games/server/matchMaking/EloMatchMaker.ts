@@ -1,9 +1,7 @@
 import {
 	isTwoVersusTwoGameMode,
 	ONE_VS_COMPUTER_GAME_MODE,
-	ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE,
-	ONE_VS_ONE_GAME_MODE,
-	TWO_VS_TWO_GAME_MODE
+	ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE
 } from "../../constants";
 import MatchMaker from "./MatchMaker";
 import {INITIAL_ELO_RATING} from "../../../profiles/constants";
@@ -13,54 +11,51 @@ export default class EloMatchMaker extends MatchMaker {
 	protected matchedUsers(match: any): {id: string, name: string, isMachineLearning?: boolean}[] {
 		let gameMode = this.gameMode(match);
 
-		switch (gameMode) {
-			case ONE_VS_COMPUTER_GAME_MODE:
-				return [match.usersToMatch[0], {id: 'CPU', name: 'CPU'}];
-			case ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE:
-				return [match.usersToMatch[0], {id: 'CPU', isMachineLearning: true, name: 'ML CPU'}];
-			case ONE_VS_ONE_GAME_MODE:
-				if (match.usersToMatch.length === 2) {
-					const matchedUsers = this.sortByEloRating(
+		if (gameMode === ONE_VS_COMPUTER_GAME_MODE) {
+			return [match.usersToMatch[0], {id: 'CPU', name: 'CPU'}];
+		} else if (gameMode === ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE) {
+			return [match.usersToMatch[0], {id: 'CPU', isMachineLearning: true, name: 'ML CPU'}];
+		} else if (isTwoVersusTwoGameMode(gameMode)) {
+			if (match.usersToMatch.length === 4) {
+				let matchedUsers = [];
+
+				if (this.numberOfMatchedComputers(match.usersToMatch) === 2) {
+					const matchedComputers = this.getMatchedComputers(match.usersToMatch);
+					const matchedHumans = this.sortByEloRating(
+						gameMode,
+						this.getMatchedHumans(match.usersToMatch),
+						match.tournamentId
+					);
+
+					matchedUsers = [
+						matchedComputers[0],
+						matchedHumans[0],
+						matchedComputers[1],
+						matchedHumans[1],
+					];
+				} else {
+					matchedUsers = this.sortByEloRating(
 						gameMode,
 						match.usersToMatch,
 						match.tournamentId
 					);
-
-					//Highest is host
-					return [matchedUsers[1], matchedUsers[0]];
 				}
-				break;
-			case TWO_VS_TWO_GAME_MODE:
-				if (match.usersToMatch.length === 4) {
-					let matchedUsers = [];
 
-					if (this.numberOfMatchedComputers(match.usersToMatch) === 2) {
-						const matchedComputers = this.getMatchedComputers(match.usersToMatch);
-						const matchedHumans = this.sortByEloRating(
-							gameMode,
-							this.getMatchedHumans(match.usersToMatch),
-							match.tournamentId
-						);
+				//Match highest 3 with lowest 0 and both middle together
+				//Highest will be the host
+				return [matchedUsers[3], matchedUsers[1], matchedUsers[0], matchedUsers[2]];
+			}
+		} else {
+			if (match.usersToMatch.length === 2) {
+				const matchedUsers = this.sortByEloRating(
+					gameMode,
+					match.usersToMatch,
+					match.tournamentId
+				);
 
-						matchedUsers = [
-							matchedComputers[0],
-							matchedHumans[0],
-							matchedComputers[1],
-							matchedHumans[1],
-						];
-					} else {
-						matchedUsers = this.sortByEloRating(
-							gameMode,
-							match.usersToMatch,
-							match.tournamentId
-						);
-					}
-
-					//Match highest 3 with lowest 0 and both middle together
-					//Highest will be the host
-					return [matchedUsers[3], matchedUsers[1], matchedUsers[0], matchedUsers[2]];
-				}
-				break;
+				//Highest is host
+				return [matchedUsers[1], matchedUsers[0]];
+			}
 		}
 
 		return [];

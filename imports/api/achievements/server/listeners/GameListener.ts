@@ -1,15 +1,15 @@
-import {ONE_VS_COMPUTER_GAME_MODE, ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE} from '../../../games/constants';
 import {GAME_MAXIMUM_POINTS, isTwoVersusTwoGameMode} from '../../../games/constants';
+import GameOverride from '../../../games/GameOverride';
 import {Games} from '../../../games/games';
 import {Profiles} from '../../../profiles/profiles';
-import TournamentMode from '../../../tournaments/TournamentMode';
 import {Tournaments} from '../../../tournaments/tournaments';
 import Listener from './Listener';
+import GameOverrideFactory from "../../../games/GameOverrideFactory";
 
 export default class GameListener extends Listener {
 	gameId: string;
 	game: any;
-	tournament: {mode: any};
+	tournament: {gameOverride: any};
 	currentPlayerProfile: {eloRating: number};
 	oppositePlayerProfile: {eloRating: number};
 
@@ -25,29 +25,29 @@ export default class GameListener extends Listener {
 	}
 
 	allowedForGame(): boolean {
-		if (this.isTournamentGame() && !this.allowedForTournamentGame()) {
+		if (!this.allowedForGameMode(this.gameMode())) {
+			return false;
+		}
+		if (this.hasGameOverride() && !this.allowedForGameOverride()) {
 			return false;
 		}
 		if (this.isPracticeGame() && !this.allowedForPracticeGame()) {
 			return false;
 		}
-		if (this.is2Vs2Game() && !this.allowedFor2Vs2()) {
-			return false;
-		}
 
 		return true;
 	}
 
-	allowedForTournamentGame(): boolean {
+	allowedForGameMode(gameMode: string): boolean {
+		return true;
+	}
+
+	allowedForGameOverride(): boolean {
 		return true;
 	}
 
 	allowedForPracticeGame(): boolean {
 		return false;
-	}
-
-	allowedFor2Vs2(): boolean {
-		return true;
 	}
 
 	getGame(): any {
@@ -58,7 +58,17 @@ export default class GameListener extends Listener {
 		return this.game;
 	}
 
-	getTournament(): {mode: any} {
+	gameMode(): string {
+		const game = this.getGame();
+
+		if (game) {
+			return game.gameMode;
+		}
+
+		return null;
+	}
+
+	getTournament(): {gameOverride: any} {
 		if (!this.tournament) {
 			const game = this.getGame();
 			this.tournament = Tournaments.findOne({_id: game.tournamentId});
@@ -133,13 +143,20 @@ export default class GameListener extends Listener {
 		return game && !!game.tournamentId;
 	}
 
-	tournamentMode(): TournamentMode {
-		if (!this.isTournamentGame()) {
-			throw 'This is not a tournament game';
+	hasGameOverride(): boolean {
+		return (
+			GameOverrideFactory.gameModeHasGameOverride(this.gameMode()) ||
+			this.isTournamentGame()
+		);
+	}
+
+	gameOverride(): GameOverride {
+		if (GameOverrideFactory.gameModeHasGameOverride(this.gameMode())) {
+			return GameOverrideFactory.fromGameMode(this.gameMode());
 		}
 
 		const tournament = this.getTournament();
-		return TournamentMode.fromTournament(tournament);
+		return GameOverrideFactory.fromTournament(tournament);
 	}
 
 	isPracticeGame(): boolean {
@@ -148,22 +165,8 @@ export default class GameListener extends Listener {
 		return game && !!game.isPracticeGame;
 	}
 
-	is1VsCpuGame(): boolean {
-		const game = this.getGame();
-
-		return (game && game.gameMode === ONE_VS_COMPUTER_GAME_MODE);
-	}
-
-	is1VsMLCpuGame(): boolean {
-		const game = this.getGame();
-
-		return (game && game.gameMode === ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE);
-	}
-
 	is2Vs2Game(): boolean {
-		const game = this.getGame();
-
-		return (game && isTwoVersusTwoGameMode(game.gameMode));
+		return isTwoVersusTwoGameMode(this.gameMode());
 	}
 
 	gameMaximumPoints(): number {

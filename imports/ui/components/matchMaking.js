@@ -7,6 +7,7 @@ import {
 	TOURNAMENT_GAME_SELECTION,
 	TWO_VS_TWO_GAME_MODE
 } from '/imports/api/games/constants.js';
+import GameOverrideFactory from '/imports/api/games/GameOverrideFactory';
 import {Games} from '/imports/api/games/games.js';
 import {MatchMakers} from '/imports/api/games/matchMakers.js';
 import {tournamentName} from "/imports/api/tournaments/utils.js";
@@ -391,8 +392,108 @@ Template.matchMaking.helpers({
 		return Session.get('matchMaking.playerIsReady') && !Session.get('matchMaking.kickedOut');
 	},
 
+	matchSelectionItems: function() {
+		const tournaments = PlayableTournaments.find({}, {sort: [['startDate', 'asc']]});
+		const gameModes = [
+			{
+				gameModeCode: ONE_VS_COMPUTER_GAME_MODE,
+				gameModeTournamentId: null,
+				gameModeName: '1 VS CPU',
+				gameModeDescription: '',
+				showPlayersWaitingIndicator: false,
+			},
+			{
+				gameModeCode: ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE,
+				gameModeTournamentId: null,
+				gameModeName: '1 VS Machine Learning CPU',
+				gameModeDescription: '',
+				showPlayersWaitingIndicator: false,
+			},
+		];
+
+		//1v1
+		gameModes.push(
+			{
+				gameModeCode: ONE_VS_ONE_GAME_MODE,
+				gameModeTournamentId: null,
+				gameModeName: '1 VS 1',
+				gameModeDescription: '',
+				showPlayersWaitingIndicator: true,
+			}
+		);
+
+		const oneVersusOneGameOverrideModes = GameOverrideFactory.oneVersusOneGameOverrideModes();
+		for (let mode of oneVersusOneGameOverrideModes) {
+			gameModes.push(
+				{
+					gameModeCode: mode.gameModeCode(),
+					gameModeTournamentId: null,
+					gameModeName: '1 VS 1: ' + mode.gameModeName(),
+					gameModeDescription: '',
+					showPlayersWaitingIndicator: true,
+				}
+			);
+		}
+
+		tournaments.forEach(function(tournament) {
+			if (tournament.gameMode === ONE_VS_ONE_GAME_MODE) {
+				gameModes.push(
+					{
+						gameModeCode: 'tournament',
+						gameModeTournamentId: tournament._id,
+						gameModeName: tournamentName(tournament),
+						gameModeDescription: tournament.description,
+						showPlayersWaitingIndicator: true,
+					}
+				);
+			}
+		});
+
+		//2v2
+		gameModes.push(
+			{
+				gameModeCode: TWO_VS_TWO_GAME_MODE,
+				gameModeTournamentId: null,
+				gameModeName: '2 VS 2',
+				gameModeDescription: '',
+				showPlayersWaitingIndicator: true,
+			}
+		);
+
+		const twoVersusTwoGameOverrideModes = GameOverrideFactory.twoVersusTwoGameOverrideModes();
+		for (let mode of twoVersusTwoGameOverrideModes) {
+			gameModes.push(
+				{
+					gameModeCode: mode.gameModeCode(),
+					gameModeTournamentId: null,
+					gameModeName: '2 VS 2: ' + mode.gameModeName(),
+					gameModeDescription: '',
+					showPlayersWaitingIndicator: true,
+				}
+			);
+		}
+
+		tournaments.forEach(function(tournament) {
+			if (tournament.gameMode === TWO_VS_TWO_GAME_MODE) {
+				gameModes.push(
+					{
+						gameModeCode: 'tournament',
+						gameModeTournamentId: tournament._id,
+						gameModeName: tournamentName(tournament),
+						gameModeDescription: tournament.description,
+						showPlayersWaitingIndicator: true,
+					}
+				);
+			}
+		});
+
+		return gameModes;
+	},
+
 	selectedMode: function() {
-		switch (Session.get('matchMaking.modeSelection')) {
+		const modeSelection = Session.get('matchMaking.modeSelection');
+
+		switch (modeSelection) {
 			case ONE_VS_COMPUTER_GAME_MODE:
 				return '1 VS CPU';
 			case ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE:
@@ -405,6 +506,15 @@ Template.matchMaking.helpers({
 				const tournament = PlayableTournaments.findOne({_id: Session.get('matchMaking.tournamentId')});
 
 				return tournament && tournamentName(tournament);
+			default:
+				if (GameOverrideFactory.gameModeHasGameOverride(modeSelection)) {
+					let gameMode = '1 VS 1';
+					if (GameOverrideFactory.gameOverrideModeFromGameMode(modeSelection).isTwoVersusTwo()) {
+						gameMode = '2 VS 2';
+					}
+
+					return gameMode + ': ' + GameOverrideFactory.nameFromGameMode(modeSelection);
+				}
 		}
 
 		return '';
@@ -505,9 +615,9 @@ Template.matchMaking.helpers({
 });
 
 Template.matchMaking.events({
-	'click [data-action=select-mode-selection]': function(e) {
+	'click [data-action=select-game-mode-selection]': function(e) {
 		Session.set('matchMaking.tournamentId', $(e.currentTarget).attr('data-tournament-id'));
-		Session.set('matchMaking.modeSelection', $(e.currentTarget).attr('data-mode-selection'));
+		Session.set('matchMaking.modeSelection', $(e.currentTarget).attr('data-game-mode-selection'));
 
 		Tooltips.hide();
 		startMatchMaking();

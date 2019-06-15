@@ -1,11 +1,12 @@
 import {ACHIEVEMENT_UNTOUCHABLE} from '/imports/api/achievements/constants';
+import {isTwoVersusTwoGameMode} from '/imports/api/games/constants';
 import PlayerLost from '/imports/api/games/events/PlayerLost';
 import PlayerWon from '/imports/api/games/events/PlayerWon';
 import GameListener from './GameListener';
 
 export default class Untouchable extends GameListener {
-	allowedFor2Vs2() {
-		return false;
+	allowedForGameMode(gameMode) {
+		return !isTwoVersusTwoGameMode(gameMode);
 	}
 
 	addListeners() {

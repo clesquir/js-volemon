@@ -1,18 +1,15 @@
 import {ACHIEVEMENT_STEEL_PRACTICING} from '/imports/api/achievements/constants.js';
 import PlayerWon from '/imports/api/games/events/PlayerWon.js';
+import {ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE} from '/imports/api/games/constants';
 import GameListener from './GameListener';
 
 export default class SteelPracticing extends GameListener {
-	allowedForTournamentGame() {
-		return false;
+	allowedForGameMode(gameMode) {
+		return gameMode === ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE;
 	}
 
 	allowedForPracticeGame() {
 		return true;
-	}
-
-	allowedFor2Vs2() {
-		return false;
 	}
 
 	addListeners() {
@@ -31,8 +28,7 @@ export default class SteelPracticing extends GameListener {
 			event.gameId === this.gameId &&
 			event.userId === this.userId &&
 			event.winnerPoints === this.gameMaximumPoints() &&
-			event.loserPoints === 0 &&
-			this.is1VsMLCpuGame()
+			event.loserPoints === 0
 		) {
 			this.incrementNumber(ACHIEVEMENT_STEEL_PRACTICING);
 		}
