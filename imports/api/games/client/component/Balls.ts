@@ -111,6 +111,13 @@ export default class Balls {
 	}
 
 	reset(lastPointTaken: string) {
+		this.clearClonedBalls();
+
+		const firstBall = this.firstBall();
+		firstBall.reset(lastPointTaken);
+	}
+
+	clearClonedBalls() {
 		const firstBall = this.firstBall();
 
 		//Remove all balls but the main one
@@ -126,7 +133,6 @@ export default class Balls {
 		this.balls = {};
 		this.balls[firstBall.key] = firstBall;
 		this.ballIncrement = 1;
-		firstBall.reset(lastPointTaken);
 	}
 
 	scaleSmall() {

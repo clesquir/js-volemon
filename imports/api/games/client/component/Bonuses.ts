@@ -622,6 +622,8 @@ export default class Bonuses {
 			}
 		}
 		this.bonuses = [];
+
+		this.scene.balls.clearClonedBalls();
 	}
 
 	private bonusFromIdentifier(bonusIdentifier: string): Bonus | null {
