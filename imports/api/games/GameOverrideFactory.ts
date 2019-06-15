@@ -81,6 +81,8 @@ export default class GameOverrideFactory {
 	}
 
 	private static gameOverrideModes(): GameOverrideMode[] {
+		//Do not allow it yet
+		return [];
 		return [
 			OneVersusOneVolleyball.create(),
 			OneVersusOneSoccer.create(),
