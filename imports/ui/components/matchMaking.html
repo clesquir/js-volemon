@@ -31,8 +31,8 @@
 		{{/if}}
 
 		{{#if showSelectedModeTitle}}
-			<h1 class="tournament-name">
-				<div>{{selectedMode}}</div>
+			<h1 class="selected-mode-title">
+				<div>{{selectedModeTitle}}</div>
 				{{#if showCurrentWaitingForMode}}
 					<div class="currently-waiting-match-making {{#if hasPlayersWaiting modeSelection tournamentId}}has-players-waiting-match-making{{/if}}" data-tooltip="{{playersWaiting modeSelection tournamentId}}" data-tooltip-direction="s">
 						<div class="currently-waiting-match-making-number">{{numberOfPlayersWaiting modeSelection tournamentId}}</div>
@@ -40,7 +40,7 @@
 					</div>
 				{{/if}}
 			</h1>
-			<p class="tournament-description">{{selectedTournamentDescription}}</p>
+			<p class="selected-mode-description">{{selectedTournamentDescription}}</p>
 		{{/if}}
 
 		{{#if matchMakingStatus}}
