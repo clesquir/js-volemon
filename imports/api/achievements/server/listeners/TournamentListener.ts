@@ -1,4 +1,4 @@
-import moment from 'moment';
+import * as moment from 'moment';
 import {Tournaments} from '../../../tournaments/tournaments';
 import Listener from './Listener';
 
