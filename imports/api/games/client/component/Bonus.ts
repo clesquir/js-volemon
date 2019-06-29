@@ -145,6 +145,7 @@ export default class Bonus {
 		this.bonusObject.body.mass = this.gameConfiguration.bonusMass();
 		this.bonusObject.body.data.gravityScale = this.currentGravityScale;
 
+		this.bonusObject.body.damping = 0;
 		this.bonusObject.body.setMaterial(this.level.materialBonus);
 		this.bonusObject.body.setCollisionGroup(this.level.collisionCategoryBonus);
 		this.bonusObject.body.collides(this.level.collisionCategoryBallBonusLimit);
