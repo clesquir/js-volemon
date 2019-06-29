@@ -1,5 +1,5 @@
 import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGameConfiguration';
-import {isTwoVersusTwoGameMode, ONE_VS_ONE_GAME_MODE} from '/imports/api/games/constants.js';
+import {isOneVersusOneGameMode, isTwoVersusTwoGameMode, ONE_VS_ONE_GAME_MODE} from '/imports/api/games/constants';
 import GameForfeited from '/imports/api/games/events/GameForfeited.js';
 import GameTimedOut from '/imports/api/games/events/GameTimedOut.js';
 import GameOverrideFactory from '/imports/api/games/GameOverrideFactory';
@@ -130,7 +130,7 @@ export const joinGame = function(user, gameId, isReady = false) {
 		}
 	}
 
-	if (game.gameMode === ONE_VS_ONE_GAME_MODE && game.players.length >= 2) {
+	if (isOneVersusOneGameMode(game.gameMode) && game.players.length >= 2) {
 		throw new Meteor.Error('not-allowed', 'Maximum players reached');
 	} else if (isTwoVersusTwoGameMode(game.gameMode) && game.players.length >= 4) {
 		throw new Meteor.Error('not-allowed', 'Maximum players reached');
@@ -327,15 +327,11 @@ export const onPlayerQuit = function(player) {
 				}
 			} else {
 				if (player.userId === game.players[0].id) {
-					if (game.gameMode === ONE_VS_ONE_GAME_MODE) {
-						winnerUserIds.push(game.players[1].id);
-					}
+					winnerUserIds.push(game.players[1].id);
 					loserUserIds.push(game.players[0].id);
 				} else {
 					winnerUserIds.push(game.players[0].id);
-					if (game.gameMode === ONE_VS_ONE_GAME_MODE) {
-						loserUserIds.push(game.players[1].id);
-					}
+					loserUserIds.push(game.players[1].id);
 				}
 			}
 

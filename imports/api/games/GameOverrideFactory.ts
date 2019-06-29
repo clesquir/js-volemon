@@ -6,6 +6,18 @@ import TwoVersusTwoSoccer from "./gameOverride/TwoVersusTwoSoccer";
 import GameOverrideMode from "./gameOverride/GameOverrideMode";
 
 export default class GameOverrideFactory {
+	static isOneVersusOnwGameMode(gameMode: string): boolean {
+		const oneVersusOneGameOverrideModes = this.oneVersusOneGameOverrideModes();
+
+		for (let gameOverrideMode of oneVersusOneGameOverrideModes) {
+			if (gameOverrideMode.gameModeCode() === gameMode) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	static isTwoVersusTwoGameMode(gameMode: string): boolean {
 		const twoVersusTwoGameOverrideModes = this.twoVersusTwoGameOverrideModes();
 

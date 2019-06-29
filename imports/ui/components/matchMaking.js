@@ -1,6 +1,7 @@
 import GameNotifier from '/imports/api/games/client/GameNotifier';
 import MatchMakingGameConfiguration from '/imports/api/games/configuration/MatchMakingGameConfiguration';
 import {
+	isOneVersusOneGameMode,
 	ONE_VS_COMPUTER_GAME_MODE,
 	ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE,
 	ONE_VS_ONE_GAME_MODE,
@@ -446,7 +447,7 @@ Template.matchMaking.helpers({
 		}
 
 		tournaments.forEach(function(tournament) {
-			if (tournament.gameMode === ONE_VS_ONE_GAME_MODE) {
+			if (isOneVersusOneGameMode(tournament.gameMode)) {
 				gameModes.push(
 					{
 						gameModeCode: 'tournament',

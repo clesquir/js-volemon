@@ -66,6 +66,14 @@ export const ONE_VS_ONE_GAME_MODE = '1vs1';
 export const TWO_VS_TWO_GAME_MODE = '2vs2';
 export const TOURNAMENT_GAME_SELECTION = 'tournament';
 
+export const isOneVersusOneGameMode = function(gameMode) {
+	return (
+		gameMode === ONE_VS_ONE_GAME_MODE ||
+		(GameOverrideFactory.gameModeHasGameOverride(gameMode) && GameOverrideFactory.isOneVersusOnwGameMode(gameMode))
+	);
+};
+
+
 export const isTwoVersusTwoGameMode = function(gameMode) {
 	return (
 		gameMode === TWO_VS_TWO_GAME_MODE ||

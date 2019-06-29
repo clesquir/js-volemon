@@ -3,8 +3,7 @@ import {
 	CLIENT_SIDE,
 	HOST_POINTS_COLUMN,
 	HOST_SIDE,
-	isTwoVersusTwoGameMode,
-	ONE_VS_ONE_GAME_MODE
+	isTwoVersusTwoGameMode
 } from '/imports/api/games/constants.js';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {Games} from '/imports/api/games/games.js';
@@ -340,23 +339,23 @@ Meteor.methods({
 				case HOST_POINTS_COLUMN:
 					winnerUserIds.push(game.players[0].id);
 
-					if (game.gameMode === ONE_VS_ONE_GAME_MODE) {
-						loserUserIds.push(game.players[1].id);
-					} else if (isTwoVersusTwoGameMode(game.gameMode)) {
+					if (isTwoVersusTwoGameMode(game.gameMode)) {
 						loserUserIds.push(game.players[1].id);
 						winnerUserIds.push(game.players[2].id);
 						loserUserIds.push(game.players[3].id);
+					} else {
+						loserUserIds.push(game.players[1].id);
 					}
 					break;
 				case CLIENT_POINTS_COLUMN:
 					loserUserIds.push(game.players[0].id);
 
-					if (game.gameMode === ONE_VS_ONE_GAME_MODE) {
-						winnerUserIds.push(game.players[1].id);
-					} else if (isTwoVersusTwoGameMode(game.gameMode)) {
+					if (isTwoVersusTwoGameMode(game.gameMode)) {
 						winnerUserIds.push(game.players[1].id);
 						winnerUserIds.push(game.players[3].id);
 						loserUserIds.push(game.players[2].id);
+					} else {
+						winnerUserIds.push(game.players[1].id);
 					}
 					break;
 			}
