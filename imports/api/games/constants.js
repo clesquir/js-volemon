@@ -51,8 +51,8 @@ export const WORLD_GRAVITY = 770;
 export const WORLD_RESTITUTION = 1;
 export const NET_RESTITUTION = 0.7;
 export const CONSTRAINED_VELOCITY = 1000;
-export const HIGH_GRAVITY_MULTIPLIER = 2.71;
-export const LOW_GRAVITY_MULTIPLIER = 0.54;
+export const HIGH_GRAVITY_MULTIPLIER = 2.45;
+export const LOW_GRAVITY_MULTIPLIER = 0.52;
 
 export const DEPTH_COMPONENTS = 0;
 export const DEPTH_LEVEL = 1;
