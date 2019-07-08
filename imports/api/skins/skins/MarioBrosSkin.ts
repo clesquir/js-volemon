@@ -4,10 +4,14 @@ export default class MarioBrosSkin implements Skin {
 	init() {
 	}
 
+	key(): string {
+		return 'mario-bros-skin';
+	}
+
 	atlasJSONHash(): { key: string, imagePath: string, jsonPath: string }[] {
 		return [
 			{
-				key: 'mario-bros-skin',
+				key: this.key(),
 				imagePath: '/assets/skin/mario-bros/texture-atlas.png',
 				jsonPath: '/assets/skin/mario-bros/texture-atlas.json'
 			}
@@ -25,7 +29,7 @@ export default class MarioBrosSkin implements Skin {
 	backgroundComponents(xSize: number, ySize: number): { key: string, frame?: string, animation?: { frame: string, frames: string[], speed: number }, x: number, y: number, width: number, height: number }[] {
 		return [
 			{
-				key: 'mario-bros-skin',
+				key: this.key(),
 				frame: 'background-mountain',
 				x: 145,
 				y: ySize - 158,
@@ -33,7 +37,7 @@ export default class MarioBrosSkin implements Skin {
 				height: 88
 			},
 			{
-				key: 'mario-bros-skin',
+				key: this.key(),
 				frame: 'background-bush',
 				x: xSize - 350,
 				y: ySize - 110,
@@ -41,7 +45,7 @@ export default class MarioBrosSkin implements Skin {
 				height: 40
 			},
 			{
-				key: 'mario-bros-skin',
+				key: this.key(),
 				frame: 'background-cloud',
 				x: xSize - 290,
 				y: 86,
@@ -53,7 +57,7 @@ export default class MarioBrosSkin implements Skin {
 
 	ballComponent(): { key: string, frame?: string, animation?: { frame: string, frames: string[], speed: number } } {
 		return {
-			key: 'mario-bros-skin',
+			key: this.key(),
 			animation: {
 				frame: 'ball',
 				frames: ['ball-1', 'ball-2', 'ball-3', 'ball-4'],
@@ -64,21 +68,21 @@ export default class MarioBrosSkin implements Skin {
 
 	netComponent(): { key: string; frame: string } {
 		return {
-			key: 'mario-bros-skin',
+			key: this.key(),
 			frame: 'net'
 		};
 	}
 
 	soccerNetComponent(): { key: string; frame: string } {
 		return {
-			key: 'mario-bros-skin',
+			key: this.key(),
 			frame: 'soccer-net'
 		};
 	}
 
 	soccerPostComponent(): { key: string; frame: string } {
 		return {
-			key: 'mario-bros-skin',
+			key: this.key(),
 			frame: 'soccer-post'
 		};
 	}
@@ -86,7 +90,7 @@ export default class MarioBrosSkin implements Skin {
 	groundComponents(): { key: string; frame: string, height?: number }[] {
 		return [
 			{
-				key: 'mario-bros-skin',
+				key: this.key(),
 				frame: 'ground'
 			}
 		];
@@ -94,7 +98,7 @@ export default class MarioBrosSkin implements Skin {
 
 	confettisComponent(): { clientFrames: string[]; hostFrames: string[]; key: string } {
 		return {
-			key: 'mario-bros-skin',
+			key: this.key(),
 			hostFrames: ['confettis-goomba-light'],
 			clientFrames: ['confettis-goomba-dark']
 		};

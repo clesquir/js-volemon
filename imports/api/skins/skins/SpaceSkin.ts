@@ -4,10 +4,14 @@ export default class SpaceSkin implements Skin {
 	init() {
 	}
 
+	key(): string {
+		return 'space-skin';
+	}
+
 	atlasJSONHash(): { key: string, imagePath: string, jsonPath: string }[] {
 		return [
 			{
-				key: 'space-skin',
+				key: this.key(),
 				imagePath: '/assets/skin/space/texture-atlas.png',
 				jsonPath: '/assets/skin/space/texture-atlas.json'
 			}
@@ -37,7 +41,7 @@ export default class SpaceSkin implements Skin {
 
 	ballComponent(): { key: string, frame?: string, animation?: { frame: string, frames: string[], speed: number } } {
 		return {
-			key: 'space-skin',
+			key: this.key(),
 			animation: {
 				frame: 'ball',
 				frames: ['ball-1', 'ball-2', 'ball-3'],
@@ -48,21 +52,21 @@ export default class SpaceSkin implements Skin {
 
 	netComponent(): { key: string; frame: string } {
 		return {
-			key: 'space-skin',
+			key: this.key(),
 			frame: 'net'
 		};
 	}
 
 	soccerNetComponent(): { key: string; frame: string } {
 		return {
-			key: 'space-skin',
+			key: this.key(),
 			frame: 'soccer-net'
 		};
 	}
 
 	soccerPostComponent(): { key: string; frame: string } {
 		return {
-			key: 'space-skin',
+			key: this.key(),
 			frame: 'soccer-post'
 		};
 	}
@@ -70,7 +74,7 @@ export default class SpaceSkin implements Skin {
 	groundComponents(): { key: string; frame: string, height?: number }[] {
 		return [
 			{
-				key: 'space-skin',
+				key: this.key(),
 				frame: 'ground'
 			}
 		];
@@ -78,7 +82,7 @@ export default class SpaceSkin implements Skin {
 
 	confettisComponent(): { clientFrames: string[]; hostFrames: string[]; key: string } {
 		return {
-			key: 'space-skin',
+			key: this.key(),
 			hostFrames: ['explosion-1', 'explosion-2'],
 			clientFrames: ['explosion-1', 'explosion-2']
 		};

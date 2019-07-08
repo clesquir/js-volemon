@@ -4,7 +4,7 @@
         <key>fileFormatVersion</key>
         <int>4</int>
         <key>texturePackerVersion</key>
-        <string>4.12.1</string>
+        <string>5.0.0</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -201,6 +201,19 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">juju-world/bumper.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>12,11,23,23</rect>
+                <key>scale9Paddings</key>
+                <rect>12,11,23,23</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">juju-world/confettis-chateau-beard.png</key>
             <key type="filename">juju-world/confettis-chateau-nipple.png</key>
             <key type="filename">juju-world/confettis-juju-nipple.png</key>
@@ -276,6 +289,7 @@
             <filename>juju-world/net.png</filename>
             <filename>juju-world/soccer-net.png</filename>
             <filename>juju-world/soccer-post.png</filename>
+            <filename>juju-world/bumper.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

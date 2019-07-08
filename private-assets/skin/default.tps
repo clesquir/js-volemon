@@ -4,7 +4,7 @@
         <key>fileFormatVersion</key>
         <int>4</int>
         <key>texturePackerVersion</key>
-        <string>4.12.1</string>
+        <string>5.0.0</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -194,6 +194,19 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">default/bumper.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>12,11,23,23</rect>
+                <key>scale9Paddings</key>
+                <rect>12,11,23,23</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">default/confettis-blue-1.png</key>
             <key type="filename">default/confettis-blue-2.png</key>
             <key type="filename">default/confettis-blue-3.png</key>
@@ -274,6 +287,7 @@
             <filename>default/net.png</filename>
             <filename>default/soccer-net.png</filename>
             <filename>default/soccer-post.png</filename>
+            <filename>default/bumper.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

@@ -15,6 +15,7 @@ export const BONUS_INVINCIBLE_MONSTER = 'InvincibleMonsterBonus';
 export const BONUS_INVISIBLE_MONSTER = 'InvisibleMonsterBonus';
 export const BONUS_INVISIBLE_OPPONENT_MONSTER = 'InvisibleOpponentMonsterBonus';
 export const BONUS_CLOUD = 'CloudBonus';
+export const BONUS_BUMPERS = 'BumpersBonus';
 export const BONUS_NO_JUMP_MONSTER = 'NoJumpMonsterBonus';
 export const BONUS_BOUNCE_MONSTER = 'BounceMonsterBonus';
 export const BONUS_CLOAKED_MONSTER = 'CloakedMonsterBonus';
@@ -37,6 +38,7 @@ export const ALL_BONUSES = [
 	BONUS_RANDOM,
 	BONUS_CLOUD,
 	BONUS_SMOKE_BOMB,
+	BONUS_BUMPERS,
 	BONUS_SMALL_BALL,
 	BONUS_BIG_BALL,
 	BONUS_INVISIBLE_BALL,
@@ -73,6 +75,7 @@ export const ALL_BONUSES = [
 export const ALL_BONUSES_FOR_RANDOM = [
 	BONUS_CLOUD,
 	BONUS_SMOKE_BOMB,
+	BONUS_BUMPERS,
 	BONUS_SMALL_BALL,
 	BONUS_BIG_BALL,
 	BONUS_INVISIBLE_BALL,

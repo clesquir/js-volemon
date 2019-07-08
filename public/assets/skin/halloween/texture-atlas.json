@@ -2,15 +2,23 @@
 
 {
 	"filename": "ball",
-	"frame": {"x":191,"y":83,"w":24,"h":24},
+	"frame": {"x":245,"y":83,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
 	"sourceSize": {"w":24,"h":24}
 },
 {
+	"filename": "bumper",
+	"frame": {"x":191,"y":83,"w":47,"h":45},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":47,"h":45},
+	"sourceSize": {"w":47,"h":45}
+},
+{
 	"filename": "confettis-1",
-	"frame": {"x":245,"y":83,"w":10,"h":12},
+	"frame": {"x":290,"y":135,"w":10,"h":12},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":6,"y":13,"w":10,"h":12},
@@ -18,7 +26,7 @@
 },
 {
 	"filename": "confettis-2",
-	"frame": {"x":232,"y":106,"w":15,"h":19},
+	"frame": {"x":210,"y":135,"w":15,"h":19},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":3,"y":7,"w":15,"h":19},
@@ -26,7 +34,7 @@
 },
 {
 	"filename": "confettis-3",
-	"frame": {"x":191,"y":114,"w":15,"h":23},
+	"frame": {"x":245,"y":114,"w":15,"h":23},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":3,"y":2,"w":15,"h":23},
@@ -34,7 +42,7 @@
 },
 {
 	"filename": "confettis-4",
-	"frame": {"x":213,"y":114,"w":12,"h":22},
+	"frame": {"x":191,"y":135,"w":12,"h":22},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":4,"y":0,"w":12,"h":22},
@@ -42,7 +50,7 @@
 },
 {
 	"filename": "confettis-5",
-	"frame": {"x":232,"y":132,"w":9,"h":16},
+	"frame": {"x":276,"y":83,"w":9,"h":16},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":6,"y":0,"w":9,"h":16},
@@ -66,7 +74,7 @@
 },
 {
 	"filename": "soccer-net",
-	"frame": {"x":222,"y":83,"w":16,"h":16},
+	"frame": {"x":267,"y":114,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
@@ -74,7 +82,7 @@
 },
 {
 	"filename": "soccer-post",
-	"frame": {"x":191,"y":144,"w":10,"h":10},
+	"frame": {"x":232,"y":144,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -103,6 +111,6 @@
 	"format": "RGBA8888",
 	"size": {"w":456,"h":189},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:7c80fc20d85d26d41e02e440c686b0e5:8417fe6c4b1751b60ef849a8ed9889c8:a973cd4a72d4c90ced76930eac7fdc63$"
+	"smartupdate": "$TexturePacker:SmartUpdate:84e225baaa6470a19124189fd2dbfcdc:c73f82f35b59d0fae5a17c53066426c1:a973cd4a72d4c90ced76930eac7fdc63$"
 }
 }

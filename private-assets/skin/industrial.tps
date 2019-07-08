@@ -4,7 +4,7 @@
         <key>fileFormatVersion</key>
         <int>4</int>
         <key>texturePackerVersion</key>
-        <string>4.12.1</string>
+        <string>5.0.0</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -194,6 +194,19 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">industrial/bumper.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>12,11,23,23</rect>
+                <key>scale9Paddings</key>
+                <rect>12,11,23,23</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">industrial/ground.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -310,6 +323,7 @@
             <filename>industrial/spark-4.png</filename>
             <filename>industrial/soccer-net.png</filename>
             <filename>industrial/soccer-post.png</filename>
+            <filename>industrial/bumper.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

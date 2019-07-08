@@ -4,7 +4,7 @@
         <key>fileFormatVersion</key>
         <int>4</int>
         <key>texturePackerVersion</key>
-        <string>4.12.1</string>
+        <string>5.0.0</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -212,6 +212,19 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">devalto/bumper.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>12,11,23,23</rect>
+                <key>scale9Paddings</key>
+                <rect>12,11,23,23</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">devalto/confettis-logalto.png</key>
             <key type="filename">devalto/soccer-post.png</key>
             <struct type="IndividualSpriteSettings">
@@ -292,6 +305,7 @@
             <filename>devalto/net.png</filename>
             <filename>devalto/soccer-net.png</filename>
             <filename>devalto/soccer-post.png</filename>
+            <filename>devalto/bumper.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

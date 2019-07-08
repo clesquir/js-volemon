@@ -2,7 +2,7 @@
 
 {
 	"filename": "background-bush",
-	"frame": {"x":244,"y":73,"w":120,"h":40},
+	"frame": {"x":6,"y":168,"w":120,"h":40},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":120,"h":40},
@@ -10,7 +10,7 @@
 },
 {
 	"filename": "background-cloud",
-	"frame": {"x":228,"y":6,"w":160,"h":60},
+	"frame": {"x":6,"y":101,"w":160,"h":60},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":160,"h":60},
@@ -26,7 +26,7 @@
 },
 {
 	"filename": "ball-1",
-	"frame": {"x":213,"y":83,"w":24,"h":24},
+	"frame": {"x":213,"y":6,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -34,7 +34,7 @@
 },
 {
 	"filename": "ball-2",
-	"frame": {"x":418,"y":6,"w":24,"h":24},
+	"frame": {"x":213,"y":37,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -42,7 +42,7 @@
 },
 {
 	"filename": "ball-3",
-	"frame": {"x":418,"y":37,"w":24,"h":24},
+	"frame": {"x":213,"y":68,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -50,15 +50,23 @@
 },
 {
 	"filename": "ball-4",
-	"frame": {"x":418,"y":68,"w":24,"h":24},
+	"frame": {"x":180,"y":153,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
 	"sourceSize": {"w":24,"h":24}
 },
 {
+	"filename": "bumper",
+	"frame": {"x":173,"y":101,"w":47,"h":45},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":47,"h":45},
+	"sourceSize": {"w":47,"h":45}
+},
+{
 	"filename": "confettis-goomba-dark",
-	"frame": {"x":6,"y":101,"w":10,"h":10},
+	"frame": {"x":203,"y":184,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -66,7 +74,7 @@
 },
 {
 	"filename": "confettis-goomba-light",
-	"frame": {"x":23,"y":101,"w":10,"h":10},
+	"frame": {"x":220,"y":176,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -74,7 +82,7 @@
 },
 {
 	"filename": "ground",
-	"frame": {"x":371,"y":73,"w":40,"h":40},
+	"frame": {"x":133,"y":168,"w":40,"h":40},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":40},
@@ -82,7 +90,7 @@
 },
 {
 	"filename": "net",
-	"frame": {"x":213,"y":6,"w":8,"h":70},
+	"frame": {"x":227,"y":99,"w":8,"h":70},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":8,"h":70},
@@ -90,7 +98,7 @@
 },
 {
 	"filename": "soccer-net",
-	"frame": {"x":395,"y":6,"w":16,"h":16},
+	"frame": {"x":180,"y":184,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
@@ -98,7 +106,7 @@
 },
 {
 	"filename": "soccer-post",
-	"frame": {"x":40,"y":101,"w":10,"h":10},
+	"frame": {"x":220,"y":193,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -109,8 +117,8 @@
 	"version": "1.0",
 	"image": "texture-atlas.png",
 	"format": "RGBA8888",
-	"size": {"w":448,"h":119},
+	"size": {"w":243,"h":214},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:de59b3393e6a725d417f1592561281fb:cd11016fc1eccaf2e994359f5e93515d:a973cd4a72d4c90ced76930eac7fdc63$"
+	"smartupdate": "$TexturePacker:SmartUpdate:62756b6b3da2f29b557c201234b4aa00:6dd8f9f8e88332fe473be9e897cae20f:a973cd4a72d4c90ced76930eac7fdc63$"
 }
 }

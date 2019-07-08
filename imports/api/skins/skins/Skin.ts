@@ -1,6 +1,8 @@
 export default interface Skin {
 	init();
 
+	key(): string;
+
 	atlasJSONHash(): { key: string, imagePath: string, jsonPath: string }[];
 
 	imagesToLoad(xSize: number, ySize: number): { key: string, path: string }[];

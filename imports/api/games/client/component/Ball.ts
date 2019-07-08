@@ -313,6 +313,7 @@ export default class Ball {
 		this.ballObject.body.collides(this.level.collisionCategoryHost, this.scene.onBallCollidesPlayer, this.scene);
 		this.ballObject.body.collides(this.level.collisionCategoryClient, this.scene.onBallCollidesPlayer, this.scene);
 		this.ballObject.body.collides(this.level.collisionCategoryBonus);
+		this.ballObject.body.collides(this.level.collisionCategoryBumper);
 		if (this.gameConfiguration.hasSoccerNet()) {
 			this.ballObject.body.collides(this.level.collisionCategorySoccerNet, this.scene.onBallCollidesSoccerNet, this.scene);
 		}
