@@ -5,10 +5,14 @@ export default class DevaltoSkin implements Skin {
 	init() {
 	}
 
+	key(): string {
+		return 'devalto-skin';
+	}
+
 	atlasJSONHash(): { key: string, imagePath: string, jsonPath: string }[] {
 		return [
 			{
-				key: 'devalto-skin',
+				key: this.key(),
 				imagePath: '/assets/skin/devalto/texture-atlas.png',
 				jsonPath: '/assets/skin/devalto/texture-atlas.json'
 			}
@@ -62,28 +66,28 @@ export default class DevaltoSkin implements Skin {
 		);
 
 		return {
-			key: 'devalto-skin',
+			key: this.key(),
 			frame: 'ball-' + ballImage
 		};
 	}
 
 	netComponent(): { key: string; frame: string } {
 		return {
-			key: 'devalto-skin',
+			key: this.key(),
 			frame: 'net'
 		};
 	}
 
 	soccerNetComponent(): { key: string; frame: string } {
 		return {
-			key: 'devalto-skin',
+			key: this.key(),
 			frame: 'soccer-net'
 		};
 	}
 
 	soccerPostComponent(): { key: string; frame: string } {
 		return {
-			key: 'devalto-skin',
+			key: this.key(),
 			frame: 'soccer-post'
 		};
 	}
@@ -91,7 +95,7 @@ export default class DevaltoSkin implements Skin {
 	groundComponents(): { key: string; frame: string, height?: number }[] {
 		return [
 			{
-				key: 'devalto-skin',
+				key: this.key(),
 				frame: 'ground'
 			}
 		];
@@ -99,7 +103,7 @@ export default class DevaltoSkin implements Skin {
 
 	confettisComponent(): { clientFrames: string[]; hostFrames: string[]; key: string } {
 		return {
-			key: 'devalto-skin',
+			key: this.key(),
 			hostFrames: ['confettis-logalto'],
 			clientFrames: ['confettis-logalto']
 		};

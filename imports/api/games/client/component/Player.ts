@@ -594,6 +594,7 @@ export default class Player {
 
 		this.playerObject.body.collides(this.level.collisionCategoryBall);
 		this.playerObject.body.collides(this.level.collisionCategoryBonus);
+		this.playerObject.body.collides(this.level.collisionCategoryBumper);
 
 		if (this.gameConfiguration.playerCollidesWithSoccerNetPosts()) {
 			this.playerObject.body.collides(this.level.collisionCategorySoccerNet);

@@ -4,7 +4,7 @@
         <key>fileFormatVersion</key>
         <int>4</int>
         <key>texturePackerVersion</key>
-        <string>4.12.1</string>
+        <string>5.0.0</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -194,6 +194,19 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">halloween/bumper.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>12,11,23,23</rect>
+                <key>scale9Paddings</key>
+                <rect>12,11,23,23</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">halloween/confettis-1.png</key>
             <key type="filename">halloween/confettis-2.png</key>
             <key type="filename">halloween/confettis-3.png</key>
@@ -304,6 +317,7 @@
             <filename>halloween/tombs-2.png</filename>
             <filename>halloween/soccer-net.png</filename>
             <filename>halloween/soccer-post.png</filename>
+            <filename>halloween/bumper.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

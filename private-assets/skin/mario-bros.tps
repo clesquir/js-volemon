@@ -4,7 +4,7 @@
         <key>fileFormatVersion</key>
         <int>4</int>
         <key>texturePackerVersion</key>
-        <string>4.12.1</string>
+        <string>5.0.0</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -236,6 +236,19 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">mario-bros/bumper.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>12,11,23,23</rect>
+                <key>scale9Paddings</key>
+                <rect>12,11,23,23</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">mario-bros/confettis-goomba-dark.png</key>
             <key type="filename">mario-bros/confettis-goomba-light.png</key>
             <key type="filename">mario-bros/soccer-post.png</key>
@@ -306,6 +319,7 @@
             <filename>mario-bros/net.png</filename>
             <filename>mario-bros/soccer-net.png</filename>
             <filename>mario-bros/soccer-post.png</filename>
+            <filename>mario-bros/bumper.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

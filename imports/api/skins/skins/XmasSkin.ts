@@ -4,10 +4,14 @@ export default class XmasSkin implements Skin {
 	init() {
 	}
 
+	key(): string {
+		return 'xmas-skin';
+	}
+
 	atlasJSONHash(): { key: string, imagePath: string, jsonPath: string }[] {
 		return [
 			{
-				key: 'xmas-skin',
+				key: this.key(),
 				imagePath: '/assets/skin/xmas/texture-atlas.png',
 				jsonPath: '/assets/skin/xmas/texture-atlas.json'
 			}
@@ -37,28 +41,28 @@ export default class XmasSkin implements Skin {
 
 	ballComponent(): { key: string, frame?: string, animation?: { frame: string, frames: string[], speed: number } } {
 		return {
-			key: 'xmas-skin',
+			key: this.key(),
 			frame: 'ball'
 		};
 	}
 
 	netComponent(): { key: string; frame: string } {
 		return {
-			key: 'xmas-skin',
+			key: this.key(),
 			frame: 'net'
 		};
 	}
 
 	soccerNetComponent(): { key: string; frame: string } {
 		return {
-			key: 'xmas-skin',
+			key: this.key(),
 			frame: 'soccer-net'
 		};
 	}
 
 	soccerPostComponent(): { key: string; frame: string } {
 		return {
-			key: 'xmas-skin',
+			key: this.key(),
 			frame: 'soccer-post'
 		};
 	}
@@ -66,7 +70,7 @@ export default class XmasSkin implements Skin {
 	groundComponents(): { key: string; frame: string, height?: number }[] {
 		return [
 			{
-				key: 'xmas-skin',
+				key: this.key(),
 				frame: 'ground'
 			}
 		];
@@ -74,7 +78,7 @@ export default class XmasSkin implements Skin {
 
 	confettisComponent(): { clientFrames: string[]; hostFrames: string[]; key: string } {
 		return {
-			key: 'xmas-skin',
+			key: this.key(),
 			hostFrames: ['confettis-1', 'confettis-2', 'confettis-3', 'confettis-4'],
 			clientFrames: ['confettis-1', 'confettis-2', 'confettis-3', 'confettis-4']
 		};

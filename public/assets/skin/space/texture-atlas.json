@@ -2,7 +2,7 @@
 
 {
 	"filename": "ball-1",
-	"frame": {"x":253,"y":290,"w":25,"h":25},
+	"frame": {"x":263,"y":83,"w":25,"h":25},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":25,"h":25},
@@ -10,7 +10,7 @@
 },
 {
 	"filename": "ball-2",
-	"frame": {"x":253,"y":322,"w":25,"h":25},
+	"frame": {"x":263,"y":115,"w":25,"h":25},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":25,"h":25},
@@ -18,11 +18,19 @@
 },
 {
 	"filename": "ball-3",
-	"frame": {"x":253,"y":354,"w":25,"h":25},
+	"frame": {"x":263,"y":147,"w":25,"h":25},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":25,"h":25},
 	"sourceSize": {"w":25,"h":25}
+},
+{
+	"filename": "bumper",
+	"frame": {"x":253,"y":213,"w":47,"h":45},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":47,"h":45},
+	"sourceSize": {"w":47,"h":45}
 },
 {
 	"filename": "explosion-1",
@@ -42,7 +50,7 @@
 },
 {
 	"filename": "ground",
-	"frame": {"x":253,"y":213,"w":25,"h":70},
+	"frame": {"x":263,"y":6,"w":25,"h":70},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":25,"h":70},
@@ -50,7 +58,7 @@
 },
 {
 	"filename": "net",
-	"frame": {"x":263,"y":23,"w":8,"h":71},
+	"frame": {"x":253,"y":265,"w":8,"h":71},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":8,"h":71},
@@ -58,7 +66,7 @@
 },
 {
 	"filename": "soccer-net",
-	"frame": {"x":253,"y":386,"w":16,"h":16},
+	"frame": {"x":263,"y":179,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
@@ -66,7 +74,7 @@
 },
 {
 	"filename": "soccer-post",
-	"frame": {"x":263,"y":6,"w":10,"h":10},
+	"frame": {"x":286,"y":179,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -77,8 +85,8 @@
 	"version": "1.0",
 	"image": "texture-atlas.png",
 	"format": "RGBA8888",
-	"size": {"w":284,"h":417},
+	"size": {"w":306,"h":417},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:241c499ab1871a728b72aa92cbd25326:a34153daaed248d7a33ec1489964d33c:a973cd4a72d4c90ced76930eac7fdc63$"
+	"smartupdate": "$TexturePacker:SmartUpdate:0d51b46353323368e072c866be4203d4:ea4fb39d51a9196ee02937eca4fd5e2d:a973cd4a72d4c90ced76930eac7fdc63$"
 }
 }

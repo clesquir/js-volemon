@@ -2,11 +2,19 @@
 
 {
 	"filename": "ball",
-	"frame": {"x":868,"y":64,"w":24,"h":24},
+	"frame": {"x":6,"y":83,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
 	"sourceSize": {"w":24,"h":24}
+},
+{
+	"filename": "bumper",
+	"frame": {"x":868,"y":6,"w":47,"h":45},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":47,"h":45},
+	"sourceSize": {"w":47,"h":45}
 },
 {
 	"filename": "ground",
@@ -26,7 +34,7 @@
 },
 {
 	"filename": "soccer-net",
-	"frame": {"x":959,"y":57,"w":16,"h":16},
+	"frame": {"x":61,"y":83,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
@@ -34,7 +42,7 @@
 },
 {
 	"filename": "soccer-post",
-	"frame": {"x":959,"y":80,"w":10,"h":10},
+	"frame": {"x":84,"y":83,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -42,7 +50,7 @@
 },
 {
 	"filename": "spark-1",
-	"frame": {"x":899,"y":64,"w":17,"h":20},
+	"frame": {"x":37,"y":83,"w":17,"h":20},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":17,"h":20},
@@ -50,7 +58,7 @@
 },
 {
 	"filename": "spark-2",
-	"frame": {"x":923,"y":57,"w":29,"h":34},
+	"frame": {"x":922,"y":6,"w":29,"h":34},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":29,"h":34},
@@ -58,7 +66,7 @@
 },
 {
 	"filename": "spark-3",
-	"frame": {"x":916,"y":6,"w":39,"h":44},
+	"frame": {"x":916,"y":58,"w":39,"h":44},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":39,"h":44},
@@ -66,7 +74,7 @@
 },
 {
 	"filename": "spark-4",
-	"frame": {"x":868,"y":6,"w":41,"h":51},
+	"frame": {"x":868,"y":58,"w":41,"h":51},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":41,"h":51},
@@ -77,8 +85,8 @@
 	"version": "1.0",
 	"image": "texture-atlas.png",
 	"format": "RGBA8888",
-	"size": {"w":981,"h":97},
+	"size": {"w":961,"h":115},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:57b27542ea9fe4554f25dd0faa0413da:8bf674c70d931c727c953d18ba679752:a973cd4a72d4c90ced76930eac7fdc63$"
+	"smartupdate": "$TexturePacker:SmartUpdate:46515a307c732700a9d22eee68a6acf7:7dde054ab52a2a7de1c8fe905eeee994:a973cd4a72d4c90ced76930eac7fdc63$"
 }
 }

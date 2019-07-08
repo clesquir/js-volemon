@@ -4,10 +4,14 @@ export default class JujuWorldSkin implements Skin {
 	init() {
 	}
 
+	key(): string {
+		return 'juju-world-skin';
+	}
+
 	atlasJSONHash(): { key: string, imagePath: string, jsonPath: string }[] {
 		return [
 			{
-				key: 'juju-world-skin',
+				key: this.key(),
 				imagePath: '/assets/skin/juju-world/texture-atlas.png',
 				jsonPath: '/assets/skin/juju-world/texture-atlas.json'
 			}
@@ -37,7 +41,7 @@ export default class JujuWorldSkin implements Skin {
 
 	ballComponent(): { key: string, frame?: string, animation?: { frame: string, frames: string[], speed: number } } {
 		return {
-			key: 'juju-world-skin',
+			key: this.key(),
 			animation: {
 				frame: 'ball',
 				frames: ['ball-1', 'ball-2', 'ball-3', 'ball-4', 'ball-5', 'ball-6', 'ball-7', 'ball-8'],
@@ -48,21 +52,21 @@ export default class JujuWorldSkin implements Skin {
 
 	netComponent(): { key: string; frame: string } {
 		return {
-			key: 'juju-world-skin',
+			key: this.key(),
 			frame: 'net'
 		};
 	}
 
 	soccerNetComponent(): { key: string; frame: string } {
 		return {
-			key: 'juju-world-skin',
+			key: this.key(),
 			frame: 'soccer-net'
 		};
 	}
 
 	soccerPostComponent(): { key: string; frame: string } {
 		return {
-			key: 'juju-world-skin',
+			key: this.key(),
 			frame: 'soccer-post'
 		};
 	}
@@ -70,7 +74,7 @@ export default class JujuWorldSkin implements Skin {
 	groundComponents(): { key: string; frame: string, height?: number }[] {
 		return [
 			{
-				key: 'juju-world-skin',
+				key: this.key(),
 				frame: 'ground'
 			}
 		];
@@ -78,7 +82,7 @@ export default class JujuWorldSkin implements Skin {
 
 	confettisComponent(): { clientFrames: string[]; hostFrames: string[]; key: string } {
 		return {
-			key: 'juju-world-skin',
+			key: this.key(),
 			hostFrames: ['confettis-juju-nipple', 'confettis-kwak'],
 			clientFrames: ['confettis-chateau-nipple', 'confettis-chateau-beard']
 		};

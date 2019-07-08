@@ -2,15 +2,23 @@
 
 {
 	"filename": "ball",
-	"frame": {"x":201,"y":6,"w":24,"h":24},
+	"frame": {"x":201,"y":58,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
 	"sourceSize": {"w":24,"h":24}
 },
 {
+	"filename": "bumper",
+	"frame": {"x":201,"y":6,"w":47,"h":45},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":47,"h":45},
+	"sourceSize": {"w":47,"h":45}
+},
+{
 	"filename": "confettis-1",
-	"frame": {"x":224,"y":46,"w":16,"h":15},
+	"frame": {"x":6,"y":83,"w":16,"h":15},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":15},
@@ -18,7 +26,7 @@
 },
 {
 	"filename": "confettis-2",
-	"frame": {"x":201,"y":60,"w":16,"h":15},
+	"frame": {"x":29,"y":83,"w":16,"h":15},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":15},
@@ -26,7 +34,7 @@
 },
 {
 	"filename": "confettis-3",
-	"frame": {"x":224,"y":68,"w":16,"h":15},
+	"frame": {"x":52,"y":83,"w":16,"h":15},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":15},
@@ -34,7 +42,7 @@
 },
 {
 	"filename": "confettis-4",
-	"frame": {"x":232,"y":6,"w":14,"h":16},
+	"frame": {"x":232,"y":81,"w":14,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":14,"h":16},
@@ -58,7 +66,7 @@
 },
 {
 	"filename": "soccer-net",
-	"frame": {"x":201,"y":37,"w":16,"h":16},
+	"frame": {"x":232,"y":58,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
@@ -66,7 +74,7 @@
 },
 {
 	"filename": "soccer-post",
-	"frame": {"x":232,"y":29,"w":10,"h":10},
+	"frame": {"x":75,"y":83,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -77,8 +85,8 @@
 	"version": "1.0",
 	"image": "texture-atlas.png",
 	"format": "RGBA8888",
-	"size": {"w":252,"h":89},
+	"size": {"w":254,"h":104},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:4e58a17594149ba33a1fe035c1964e7d:9d3d4ae2fb77b222cf237b0c2d917f4a:a973cd4a72d4c90ced76930eac7fdc63$"
+	"smartupdate": "$TexturePacker:SmartUpdate:249a1e21032c56fa14b0a4ad98dc0847:ec2b1f5d913ea4331ee677b9f3045ff6:a973cd4a72d4c90ced76930eac7fdc63$"
 }
 }

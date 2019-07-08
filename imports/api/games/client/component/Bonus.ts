@@ -153,6 +153,7 @@ export default class Bonus {
 		this.bonusObject.body.collides(this.level.collisionCategoryHost, this.scene.onBonusCollidesPlayer, this.scene);
 		this.bonusObject.body.collides(this.level.collisionCategoryClient, this.scene.onBonusCollidesPlayer, this.scene);
 		this.bonusObject.body.collides(this.level.collisionCategoryBall);
+		this.bonusObject.body.collides(this.level.collisionCategoryBumper);
 		if (this.gameConfiguration.hasSoccerNet()) {
 			this.bonusObject.body.collides(this.level.collisionCategorySoccerNet);
 		}

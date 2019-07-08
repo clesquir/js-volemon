@@ -99,6 +99,7 @@ export default class MainScene {
 			this,
 			this.gameData,
 			this.gameConfiguration,
+			this.skinManager,
 			this.streamBundler,
 			this.serverNormalizedTime,
 			this.serverAdapter,

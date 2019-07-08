@@ -28,6 +28,10 @@ export default class SkinManager {
 		}
 	}
 
+	skinKey(): string {
+		return this.skin.key();
+	}
+
 	backgroundColor(): string {
 		return this.skin.backgroundColor();
 	}

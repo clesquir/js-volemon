@@ -35,6 +35,7 @@ import {
 	BONUS_BIG_JUMP_MONSTER,
 	BONUS_BIG_MONSTER,
 	BONUS_BOUNCE_MONSTER,
+	BONUS_BUMPERS,
 	BONUS_CLEAR_BONUSES,
 	BONUS_CLOAKED_MONSTER,
 	BONUS_CLONE_BALL,
@@ -72,6 +73,7 @@ import {BonusStreamData} from "./bonus/data/BonusStreamData";
 import BaseBonus from "./bonus/BaseBonus";
 import CloneBallBonus from "./bonus/CloneBallBonus";
 import ClearBonuses from "./bonus/ClearBonuses";
+import BumpersBonus from "./bonus/BumpersBonus";
 
 export default class BonusFactory {
 	static randomBonus(gameConfiguration: GameConfiguration): BaseBonus {
@@ -120,11 +122,12 @@ export default class BonusFactory {
 			BONUS_POISON,
 			BONUS_REPELLENT,
 			BONUS_CLOUD,
+			BONUS_SMOKE_BOMB,
+			BONUS_BUMPERS,
 			BONUS_NO_JUMP_MONSTER,
 			BONUS_BOUNCE_MONSTER,
 			BONUS_CLOAKED_MONSTER,
 			BONUS_SHAPE_SHIFT,
-			BONUS_SMOKE_BOMB,
 			BONUS_RANDOM
 		];
 	}
@@ -151,11 +154,12 @@ export default class BonusFactory {
 			BONUS_POISON,
 			BONUS_REPELLENT,
 			BONUS_CLOUD,
+			BONUS_SMOKE_BOMB,
+			BONUS_BUMPERS,
 			BONUS_NO_JUMP_MONSTER,
 			BONUS_BOUNCE_MONSTER,
 			BONUS_CLOAKED_MONSTER,
 			BONUS_SHAPE_SHIFT,
-			BONUS_SMOKE_BOMB,
 			BONUS_INVINCIBLE_MONSTER,
 		];
 	}
@@ -204,6 +208,10 @@ export default class BonusFactory {
 				return new InvisibleOpponentMonsterBonus(bonusClass);
 			case BONUS_CLOUD:
 				return new CloudBonus(bonusClass);
+			case BONUS_SMOKE_BOMB:
+				return new SmokeBombBonus(bonusClass);
+			case BONUS_BUMPERS:
+				return new BumpersBonus(bonusClass);
 			case BONUS_NO_JUMP_MONSTER:
 				return new NoJumpMonsterBonus(bonusClass);
 			case BONUS_BOUNCE_MONSTER:
@@ -212,8 +220,6 @@ export default class BonusFactory {
 				return new CloakedMonsterBonus(bonusClass);
 			case BONUS_SHAPE_SHIFT:
 				return new ShapeShiftMonsterBonus(bonusClass);
-			case BONUS_SMOKE_BOMB:
-				return new SmokeBombBonus(bonusClass);
 			case BONUS_INSTANT_DEATH:
 				return new InstantDeathBonus(bonusClass);
 			case BONUS_REVIVE:

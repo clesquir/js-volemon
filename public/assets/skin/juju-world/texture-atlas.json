@@ -2,7 +2,7 @@
 
 {
 	"filename": "ball-1",
-	"frame": {"x":868,"y":6,"w":24,"h":24},
+	"frame": {"x":6,"y":83,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -10,7 +10,7 @@
 },
 {
 	"filename": "ball-2",
-	"frame": {"x":868,"y":37,"w":24,"h":24},
+	"frame": {"x":37,"y":83,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -18,7 +18,7 @@
 },
 {
 	"filename": "ball-3",
-	"frame": {"x":899,"y":6,"w":24,"h":24},
+	"frame": {"x":68,"y":83,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -26,7 +26,7 @@
 },
 {
 	"filename": "ball-4",
-	"frame": {"x":899,"y":37,"w":24,"h":24},
+	"frame": {"x":99,"y":83,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -34,7 +34,7 @@
 },
 {
 	"filename": "ball-5",
-	"frame": {"x":930,"y":6,"w":24,"h":24},
+	"frame": {"x":130,"y":83,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -42,7 +42,7 @@
 },
 {
 	"filename": "ball-6",
-	"frame": {"x":930,"y":37,"w":24,"h":24},
+	"frame": {"x":161,"y":83,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -50,7 +50,7 @@
 },
 {
 	"filename": "ball-7",
-	"frame": {"x":961,"y":6,"w":24,"h":24},
+	"frame": {"x":192,"y":83,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
@@ -58,15 +58,23 @@
 },
 {
 	"filename": "ball-8",
-	"frame": {"x":961,"y":37,"w":24,"h":24},
+	"frame": {"x":223,"y":83,"w":24,"h":24},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":24},
 	"sourceSize": {"w":24,"h":24}
 },
 {
+	"filename": "bumper",
+	"frame": {"x":853,"y":6,"w":47,"h":45},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":47,"h":45},
+	"sourceSize": {"w":47,"h":45}
+},
+{
 	"filename": "confettis-chateau-beard",
-	"frame": {"x":868,"y":68,"w":10,"h":10},
+	"frame": {"x":277,"y":83,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -74,7 +82,7 @@
 },
 {
 	"filename": "confettis-chateau-nipple",
-	"frame": {"x":885,"y":68,"w":10,"h":10},
+	"frame": {"x":294,"y":83,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -82,7 +90,7 @@
 },
 {
 	"filename": "confettis-juju-nipple",
-	"frame": {"x":902,"y":68,"w":10,"h":10},
+	"frame": {"x":311,"y":83,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -90,7 +98,7 @@
 },
 {
 	"filename": "confettis-kwak",
-	"frame": {"x":919,"y":68,"w":10,"h":10},
+	"frame": {"x":328,"y":83,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -106,7 +114,7 @@
 },
 {
 	"filename": "net",
-	"frame": {"x":853,"y":6,"w":8,"h":70},
+	"frame": {"x":907,"y":6,"w":8,"h":70},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":8,"h":70},
@@ -114,7 +122,7 @@
 },
 {
 	"filename": "soccer-net",
-	"frame": {"x":992,"y":6,"w":16,"h":16},
+	"frame": {"x":254,"y":83,"w":16,"h":16},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
@@ -122,7 +130,7 @@
 },
 {
 	"filename": "soccer-post",
-	"frame": {"x":936,"y":68,"w":10,"h":10},
+	"frame": {"x":345,"y":83,"w":10,"h":10},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":10,"h":10},
@@ -133,8 +141,8 @@
 	"version": "1.0",
 	"image": "texture-atlas.png",
 	"format": "RGBA8888",
-	"size": {"w":1014,"h":84},
+	"size": {"w":921,"h":113},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:a0de63f43f79cedb7a16171343eac3eb:68ef6653998c3679c6b5beea25271502:a973cd4a72d4c90ced76930eac7fdc63$"
+	"smartupdate": "$TexturePacker:SmartUpdate:a030dc341529797b8dcaf14d774c5be1:03c6dafe20533f6f5cf3a89dc7205d1e:a973cd4a72d4c90ced76930eac7fdc63$"
 }
 }

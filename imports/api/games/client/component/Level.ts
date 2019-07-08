@@ -17,12 +17,14 @@ export default class Level {
 	collisionCategoryBonus: Phaser.Physics.P2.CollisionGroup;
 	collisionCategoryBallBonusLimit: Phaser.Physics.P2.CollisionGroup;
 	collisionCategorySoccerNet: Phaser.Physics.P2.CollisionGroup;
+	collisionCategoryBumper: Phaser.Physics.P2.CollisionGroup;
 
 	materialPlayer: Phaser.Physics.P2.Material;
 	materialBall: Phaser.Physics.P2.Material;
 	materialBonus: Phaser.Physics.P2.Material;
 	materialLimit: Phaser.Physics.P2.Material;
 	materialNet: Phaser.Physics.P2.Material;
+	materialBumper: Phaser.Physics.P2.Material;
 
 	groundComponents: Phaser.TileSprite[] = [];
 	fieldLimits: FieldLimits;
@@ -145,6 +147,7 @@ export default class Level {
 		this.collisionCategoryBonus = this.scene.game.physics.p2.createCollisionGroup();
 		this.collisionCategoryBallBonusLimit = this.scene.game.physics.p2.createCollisionGroup();
 		this.collisionCategorySoccerNet = this.scene.game.physics.p2.createCollisionGroup();
+		this.collisionCategoryBumper = this.scene.game.physics.p2.createCollisionGroup();
 	}
 
 	private createMaterials() {
@@ -153,6 +156,7 @@ export default class Level {
 		this.materialBonus = this.scene.game.physics.p2.createMaterial('bonus');
 		this.materialLimit = this.scene.game.physics.p2.createMaterial('limit');
 		this.materialNet = this.scene.game.physics.p2.createMaterial('net');
+		this.materialBumper = this.scene.game.physics.p2.createMaterial('bumper');
 	}
 
 	private createContactMaterials() {
@@ -160,6 +164,11 @@ export default class Level {
 			this.materialBall,
 			this.materialLimit,
 			<p2.ContactMaterialOptions>{restitution: this.gameConfiguration.worldRestitution()}
+		);
+		this.scene.game.physics.p2.createContactMaterial(
+			this.materialBall,
+			this.materialBumper,
+			<p2.ContactMaterialOptions>{restitution: this.gameConfiguration.bumperRestitution()}
 		);
 
 		this.scene.game.physics.p2.createContactMaterial(
@@ -182,6 +191,11 @@ export default class Level {
 			this.materialBonus,
 			this.materialNet,
 			<p2.ContactMaterialOptions>{restitution: this.gameConfiguration.netRestitution()}
+		);
+		this.scene.game.physics.p2.createContactMaterial(
+			this.materialBonus,
+			this.materialBumper,
+			<p2.ContactMaterialOptions>{restitution: this.gameConfiguration.bumperRestitution()}
 		);
 	}
 }

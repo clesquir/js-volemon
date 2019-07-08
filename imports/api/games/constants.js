@@ -47,18 +47,22 @@ export const BONUS_MASS = 1;
 export const BONUS_SCALE = 1;
 export const BONUS_GRAVITY_SCALE = 0.5;
 
+export const BUMPER_RADIUS = 12;
+
 export const WORLD_GRAVITY = 770;
 export const WORLD_RESTITUTION = 1;
 export const NET_RESTITUTION = 0.7;
+export const BUMPER_RESTITUTION = 1.2;
 export const CONSTRAINED_VELOCITY = 1000;
 export const HIGH_GRAVITY_MULTIPLIER = 2.45;
 export const LOW_GRAVITY_MULTIPLIER = 0.52;
 
 export const DEPTH_COMPONENTS = 0;
 export const DEPTH_LEVEL = 1;
-export const DEPTH_CLOUDS = 2;
-export const DEPTH_BONUS_INDICATOR = 3;
-export const DEPTH_ACTIVATION_ANIMATION = 4;
+export const DEPTH_BUMPERS = 2;
+export const DEPTH_CLOUDS = 3;
+export const DEPTH_BONUS_INDICATOR = 4;
+export const DEPTH_ACTIVATION_ANIMATION = 5;
 
 export const ONE_VS_COMPUTER_GAME_MODE = '1vsCPU';
 export const ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE = '1vsMLCPU';

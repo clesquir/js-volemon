@@ -16,6 +16,8 @@ import {
 	BONUS_MASS,
 	BONUS_RADIUS,
 	BONUS_SCALE,
+	BUMPER_RADIUS,
+	BUMPER_RESTITUTION,
 	GAME_FORFEIT_MINIMUM_POINTS,
 	GAME_MAXIMUM_POINTS,
 	HIGH_GRAVITY_MULTIPLIER,
@@ -369,6 +371,14 @@ export default abstract class GameConfiguration {
 
 	netRestitution(): number {
 		return NET_RESTITUTION;
+	}
+
+	bumperRestitution(): number {
+		return BUMPER_RESTITUTION;
+	}
+
+	bumperRadius(): number {
+		return BUMPER_RADIUS;
 	}
 
 	maximumBonusesOnScreen(): number {

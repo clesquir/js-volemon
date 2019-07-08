@@ -19,11 +19,14 @@ import BaseBonus from "../../bonus/BaseBonus";
 import ServerAdapter from "../serverAdapter/ServerAdapter";
 import {BonusPositionData} from "../../bonus/data/BonusPositionData";
 import BonusIndicators from "./BonusIndicators";
+import BumpersGenerator from "./BumpersGenerator";
+import SkinManager from "./SkinManager";
 
 export default class Bonuses {
 	scene: MainScene;
 	gameData: GameData;
 	gameConfiguration: GameConfiguration;
+	skinManager: SkinManager;
 	streamBundler: StreamBundler;
 	serverNormalizedTime: ServerNormalizedTime;
 	serverAdapter: ServerAdapter;
@@ -32,6 +35,7 @@ export default class Bonuses {
 	players: Players;
 	bonusIndicators: BonusIndicators;
 	cloudsGenerator: CloudsGenerator;
+	bumpersGenerator: BumpersGenerator;
 
 	lastBonusUpdate: number = 0;
 	lastBonusCreated: number = 0;
@@ -50,6 +54,7 @@ export default class Bonuses {
 		scene: MainScene,
 		gameData: GameData,
 		gameConfiguration: GameConfiguration,
+		skinManager: SkinManager,
 		streamBundler: StreamBundler,
 		serverNormalizedTime: ServerNormalizedTime,
 		serverAdapter: ServerAdapter,
@@ -60,6 +65,7 @@ export default class Bonuses {
 		this.scene = scene;
 		this.gameData = gameData;
 		this.gameConfiguration = gameConfiguration;
+		this.skinManager = skinManager;
 		this.streamBundler = streamBundler;
 		this.serverNormalizedTime = serverNormalizedTime;
 		this.serverAdapter = serverAdapter;
@@ -77,6 +83,13 @@ export default class Bonuses {
 			this.scene,
 			this.gameData,
 			this.gameConfiguration
+		);
+		this.bumpersGenerator = new BumpersGenerator(
+			this.scene,
+			this.gameData,
+			this.gameConfiguration,
+			this.skinManager,
+			this.level
 		);
 
 		this.bonusSpawnMinimumFrequence = this.gameConfiguration.bonusSpawnMinimumFrequence();
@@ -290,6 +303,16 @@ export default class Bonuses {
 
 	hideSmokeBomb(smokeBombIdentifier: string) {
 		this.cloudsGenerator.hideSmokeBomb(smokeBombIdentifier);
+	}
+
+	enableBumpers() {
+		this.bumpersGenerator.enable();
+
+		this.scene.sortWorldComponents();
+	}
+
+	disableBumpers() {
+		this.bumpersGenerator.disable();
 	}
 
 	applyHighGravity() {
