@@ -13,13 +13,5 @@ export default interface Skin {
 
 	ballComponent(): { key: string, frame?: string, animation?: { frame: string, frames: string[], speed: number } };
 
-	netComponent(): { key: string, frame: string };
-
-	soccerNetComponent(): { key: string; frame: string };
-
-	soccerPostComponent(): { key: string; frame: string };
-
-	groundComponents(): { key: string, frame: string, height?: number }[];
-
 	confettisComponent(): { key: string, hostFrames: string[], clientFrames: string[] };
 }

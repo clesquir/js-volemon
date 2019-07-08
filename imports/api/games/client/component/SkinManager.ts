@@ -60,7 +60,12 @@ export default class SkinManager {
 		const groundTileSprites = [];
 		let groundComponents = [];
 
-		groundComponents = groundComponents.concat(this.skin.groundComponents());
+		groundComponents.push(
+			{
+				key: this.skin.key(),
+				frame: 'ground'
+			}
+		);
 
 		for (let plugin of this.plugins) {
 			groundComponents = groundComponents.concat(plugin.groundComponents());
@@ -97,8 +102,8 @@ export default class SkinManager {
 			this.gameConfiguration.height() - this.gameConfiguration.groundHeight() - this.gameConfiguration.netHeight(),
 			this.gameConfiguration.netWidth(),
 			this.gameConfiguration.netHeight(),
-			this.skin.netComponent().key,
-			this.skin.netComponent().frame
+			this.skin.key(),
+			'net'
 		);
 
 		// @ts-ignore
@@ -115,14 +120,16 @@ export default class SkinManager {
 			this.gameConfiguration.groundHeight() -
 			this.gameConfiguration.soccerNetDistanceFromGround();
 		const soccerNetHorizontalPostThickness = this.gameConfiguration.soccerNetHorizontalPostThickness();
+		const soccerNetFrame = 'soccer-net';
+		const soccerPostFrame = 'soccer-post';
 
 		const hostNet = scene.game.add.tileSprite(
 			0,
 			soccerNetY,
 			this.gameConfiguration.soccerNetWidth(),
 			this.gameConfiguration.soccerNetHeight(),
-			this.skin.soccerNetComponent().key,
-			this.skin.soccerNetComponent().frame
+			this.skin.key(),
+			soccerNetFrame
 		);
 		// @ts-ignore
 		hostNet.depth = DEPTH_LEVEL;
@@ -132,8 +139,8 @@ export default class SkinManager {
 			soccerNetY - soccerNetHorizontalPostThickness,
 			this.gameConfiguration.soccerNetWidth(),
 			soccerNetHorizontalPostThickness,
-			this.skin.soccerPostComponent().key,
-			this.skin.soccerPostComponent().frame
+			this.skin.key(),
+			soccerPostFrame
 		);
 		// @ts-ignore
 		hostHorizontalTopPost.depth = DEPTH_LEVEL;
@@ -144,8 +151,8 @@ export default class SkinManager {
 				soccerNetBottomPostY,
 				this.gameConfiguration.soccerNetWidth(),
 				soccerNetHorizontalPostThickness,
-				this.skin.soccerPostComponent().key,
-				this.skin.soccerPostComponent().frame
+				this.skin.key(),
+				soccerPostFrame
 			);
 			// @ts-ignore
 			hostHorizontalBottomPost.depth = DEPTH_LEVEL;
@@ -156,8 +163,8 @@ export default class SkinManager {
 			soccerNetY,
 			this.gameConfiguration.soccerNetVerticalPostThickness(),
 			this.gameConfiguration.soccerNetHeight(),
-			this.skin.soccerPostComponent().key,
-			this.skin.soccerPostComponent().frame
+			this.skin.key(),
+			soccerPostFrame
 		);
 		// @ts-ignore
 		hostVerticalPost.depth = DEPTH_LEVEL;
@@ -169,8 +176,8 @@ export default class SkinManager {
 			soccerNetY,
 			this.gameConfiguration.soccerNetWidth(),
 			this.gameConfiguration.soccerNetHeight(),
-			this.skin.soccerNetComponent().key,
-			this.skin.soccerNetComponent().frame
+			this.skin.key(),
+			soccerNetFrame
 		);
 		// @ts-ignore
 		clientNet.depth = DEPTH_LEVEL;
@@ -180,8 +187,8 @@ export default class SkinManager {
 			soccerNetY - soccerNetHorizontalPostThickness,
 			this.gameConfiguration.soccerNetWidth(),
 			soccerNetHorizontalPostThickness,
-			this.skin.soccerPostComponent().key,
-			this.skin.soccerPostComponent().frame
+			this.skin.key(),
+			soccerPostFrame
 		);
 		// @ts-ignore
 		clientHorizontalPost.depth = DEPTH_LEVEL;
@@ -192,8 +199,8 @@ export default class SkinManager {
 				soccerNetBottomPostY,
 				this.gameConfiguration.soccerNetWidth(),
 				soccerNetHorizontalPostThickness,
-				this.skin.soccerPostComponent().key,
-				this.skin.soccerPostComponent().frame
+				this.skin.key(),
+				soccerPostFrame
 			);
 			// @ts-ignore
 			clientHorizontalPost.depth = DEPTH_LEVEL;
@@ -204,8 +211,8 @@ export default class SkinManager {
 			soccerNetY,
 			this.gameConfiguration.soccerNetVerticalPostThickness(),
 			this.gameConfiguration.soccerNetHeight(),
-			this.skin.soccerPostComponent().key,
-			this.skin.soccerPostComponent().frame
+			this.skin.key(),
+			soccerPostFrame
 		);
 		// @ts-ignore
 		clientVerticalPost.depth = DEPTH_LEVEL;
