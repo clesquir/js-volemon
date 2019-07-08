@@ -58,6 +58,12 @@ export default class Skin extends Dev {
 		this.clearTimer();
 	}
 
+	resumeOnTimerEnd() {
+		super.resumeOnTimerEnd();
+
+		this.mainScene.bonuses.enableBumpers();
+	}
+
 	initTimer() {
 		this.startTime = Date.now();
 		this.timerUpdater = Meteor.setInterval(() => {
