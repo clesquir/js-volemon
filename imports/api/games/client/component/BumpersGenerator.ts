@@ -76,6 +76,8 @@ export default class BumpersGenerator {
 		this.scene.game.physics.p2.enable(bumper, this.scene.game.config.enableDebug);
 		bumper.body.static = true;
 
+		bumper.data.isBumper = true;
+
 		// @ts-ignore
 		bumper.depth = DEPTH_BUMPERS;
 		this.scene.zIndexGroup.add(bumper);

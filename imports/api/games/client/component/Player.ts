@@ -702,6 +702,8 @@ export default class Player {
 			} else if (contactBody.sprite.data.isHost !== this.isHost) {
 				return this.gameConfiguration.collidesWithOpponent();
 			}
+		} else if (contactBody.sprite && contactBody.sprite.data && contactBody.sprite.data.isBumper) {
+			return true;
 		}
 	}
 

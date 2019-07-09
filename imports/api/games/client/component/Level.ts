@@ -181,6 +181,11 @@ export default class Level {
 			this.materialLimit,
 			<p2.ContactMaterialOptions>{stiffness: 1e20, relaxation: 3, friction: 0}
 		);
+		this.scene.game.physics.p2.createContactMaterial(
+			this.materialPlayer,
+			this.materialBumper,
+			<p2.ContactMaterialOptions>{restitution: this.gameConfiguration.bumperRestitution()}
+		);
 
 		this.scene.game.physics.p2.createContactMaterial(
 			this.materialBonus,
