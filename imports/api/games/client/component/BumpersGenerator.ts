@@ -53,7 +53,7 @@ export default class BumpersGenerator {
 
 		for (let bumper of this.bumpers) {
 			bumper.body.setCollisionGroup(this.level.collisionCategoryBumper);
-			this.scene.game.add.tween(bumper.scale).to({x: 1, y: 1}, this.animationDuration).start();
+			this.scene.game.add.tween(bumper.scale).to({x: this.bumperScale(), y: this.bumperScale()}, this.animationDuration).start();
 		}
 	}
 
@@ -83,7 +83,7 @@ export default class BumpersGenerator {
 		this.scene.zIndexGroup.add(bumper);
 
 		bumper.body.clearShapes();
-		bumper.body.addCircle(this.gameConfiguration.bumperRadius());
+		bumper.body.addCircle(this.gameConfiguration.bumperRadius() * this.bumperScale());
 		bumper.scale.setTo(0);
 
 		bumper.body.setMaterial(this.level.materialBumper);
@@ -100,8 +100,12 @@ export default class BumpersGenerator {
 		const time = 100;
 
 		this.scene.game.add.tween(bumper.scale)
-			.to({x: 1.2, y: 1.2}, time)
-			.to({x: 1, y: 1}, time)
+			.to({x: this.bumperScale() * 1.2, y: this.bumperScale() * 1.2}, time)
+			.to({x: this.bumperScale(), y: this.bumperScale()}, time)
 			.start();
+	}
+
+	private bumperScale(): number {
+		return this.gameConfiguration.bumperScale();
 	}
 }

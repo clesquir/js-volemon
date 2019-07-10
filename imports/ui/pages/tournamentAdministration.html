@@ -239,6 +239,8 @@
 						{{> numberSwitch id="bonus-scale" label="Bonus scale" default="1" isOn=(modeOverridden "overriddenBonusScale") value=(modeOverriddenValue "overriddenBonusScale") isReadOnly=(canOnlyViewTournament tournament)}}
 						{{> numberSwitch id="bonus-mass" label="Bonus mass" default="1" isOn=(modeOverridden "overriddenBonusMass") value=(modeOverriddenValue "overriddenBonusMass") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
+
+					{{> numberSwitch id="bumper-scale" label="Bumper scale" default="1" isOn=(modeOverridden "overriddenBumperScale") value=(modeOverriddenValue "overriddenBumperScale") isReadOnly=(canOnlyViewTournament tournament)}}
 				</div>
 
 				{{#if currentUser}}

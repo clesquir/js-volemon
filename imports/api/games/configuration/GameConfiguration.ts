@@ -470,6 +470,14 @@ export default abstract class GameConfiguration {
 		return this.gameOverride.bonusDuration();
 	}
 
+	bumperScale(): number {
+		if (this.hasGameOverride() && this.gameOverride.overridesBumperScale()) {
+			return this.gameOverride.bumperScale();
+		}
+
+		return 1;
+	}
+
 	overridesPlayerMaximumBallHit(): boolean {
 		return (this.hasGameOverride() && this.gameOverride.overridesPlayerMaximumBallHit());
 	}

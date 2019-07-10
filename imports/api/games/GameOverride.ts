@@ -87,6 +87,7 @@ export default class GameOverride {
 	overriddenBonusScale;
 	overriddenBonusGravityScale;
 	overriddenBonusMass;
+	overriddenBumperScale;
 
 	overridesForfeitMinimumPoints(): boolean {
 		return this.overriddenForfeitMinimumPoints !== undefined;
@@ -657,6 +658,14 @@ export default class GameOverride {
 		return parseFloat(this.overriddenBonusMass);
 	}
 
+	overridesBumperScale(): boolean {
+		return this.overriddenBumperScale !== undefined;
+	}
+
+	bumperScale(): number {
+		return parseFloat(this.overriddenBumperScale);
+	}
+
 	static fromData(data: any): GameOverride {
 		const gameOverride = new GameOverride();
 
@@ -748,6 +757,7 @@ export default class GameOverride {
 		gameOverride.overriddenBonusScale = data.overriddenBonusScale;
 		gameOverride.overriddenBonusGravityScale = data.overriddenBonusGravityScale;
 		gameOverride.overriddenBonusMass = data.overriddenBonusMass;
+		gameOverride.overriddenBumperScale = data.overriddenBumperScale;
 
 		return gameOverride;
 	}

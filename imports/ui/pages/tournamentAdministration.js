@@ -280,6 +280,7 @@ const modeOptions = function() {
 	addToMode(gameOverride, 'bonus-warp-distance-from-center', 'overriddenBonusWarpDistanceFromCenter');
 	addToMode(gameOverride, 'bonus-scale', 'overriddenBonusScale');
 	addToMode(gameOverride, 'bonus-mass', 'overriddenBonusMass');
+	addToMode(gameOverride, 'bumper-scale', 'overriddenBumperScale');
 
 	return gameOverride;
 };
