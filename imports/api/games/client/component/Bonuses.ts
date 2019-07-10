@@ -770,7 +770,7 @@ export default class Bonuses {
 	private createRandomBonus() {
 		const bonus = BonusFactory.randomBonus(this.gameConfiguration);
 		const data = bonus.dataToStream();
-		const distanceFromCenter = this.gameConfiguration.netWidth() / 2 + 2;
+		const distanceFromCenter = this.gameConfiguration.bonusWarpDistanceFromCenter();
 		data.initialX = this.gameConfiguration.width() / 2 + <number><any>Random.choice([-distanceFromCenter, distanceFromCenter]);
 
 		//Create the bonus for host

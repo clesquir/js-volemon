@@ -83,6 +83,7 @@ export default class GameOverride {
 	overriddenBonusSpawnMinimumFrequence;
 	overriddenBonusSpawnInitialMinimumFrequence;
 	overriddenBonusSpawnInitialMaximumFrequence;
+	overriddenBonusWarpDistanceFromCenter;
 	overriddenBonusScale;
 	overriddenBonusGravityScale;
 	overriddenBonusMass;
@@ -624,6 +625,14 @@ export default class GameOverride {
 		return parseInt(this.overriddenBonusSpawnInitialMaximumFrequence);
 	}
 
+	overridesBonusWarpDistanceFromCenter(): boolean {
+		return this.overriddenBonusWarpDistanceFromCenter !== undefined;
+	}
+
+	bonusWarpDistanceFromCenter(): number {
+		return parseInt(this.overriddenBonusWarpDistanceFromCenter);
+	}
+
 	overridesBonusScale(): boolean {
 		return this.overriddenBonusScale !== undefined;
 	}
@@ -725,9 +734,6 @@ export default class GameOverride {
 		gameOverride.overriddenInitialBallMass = data.overriddenInitialBallMass;
 		gameOverride.overriddenSmallBallMass = data.overriddenSmallBallMass;
 		gameOverride.overriddenBigBallMass = data.overriddenBigBallMass;
-		gameOverride.overriddenBonusScale = data.overriddenBonusScale;
-		gameOverride.overriddenBonusGravityScale = data.overriddenBonusGravityScale;
-		gameOverride.overriddenBonusMass = data.overriddenBonusMass;
 
 		gameOverride.overriddenAvailableBonuses = data.overriddenAvailableBonuses;
 		gameOverride.overriddenAvailableBonusesForRandom = data.overriddenAvailableBonusesForRandom;
@@ -738,6 +744,10 @@ export default class GameOverride {
 		gameOverride.overriddenBonusSpawnMinimumFrequence = data.overriddenBonusSpawnMinimumFrequence;
 		gameOverride.overriddenBonusSpawnInitialMinimumFrequence = data.overriddenBonusSpawnInitialMinimumFrequence;
 		gameOverride.overriddenBonusSpawnInitialMaximumFrequence = data.overriddenBonusSpawnInitialMaximumFrequence;
+		gameOverride.overriddenBonusWarpDistanceFromCenter = data.overriddenBonusWarpDistanceFromCenter;
+		gameOverride.overriddenBonusScale = data.overriddenBonusScale;
+		gameOverride.overriddenBonusGravityScale = data.overriddenBonusGravityScale;
+		gameOverride.overriddenBonusMass = data.overriddenBonusMass;
 
 		return gameOverride;
 	}

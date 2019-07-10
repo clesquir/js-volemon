@@ -277,6 +277,7 @@ const modeOptions = function() {
 	addToMode(gameOverride, 'bonus-spawn-minimum-frequence', 'overriddenBonusSpawnMinimumFrequence');
 	addToMode(gameOverride, 'bonus-spawn-initial-minimum-frequence', 'overriddenBonusSpawnInitialMinimumFrequence');
 	addToMode(gameOverride, 'bonus-spawn-initial-maximum-frequence', 'overriddenBonusSpawnInitialMaximumFrequence');
+	addToMode(gameOverride, 'bonus-warp-distance-from-center', 'overriddenBonusWarpDistanceFromCenter');
 	addToMode(gameOverride, 'bonus-scale', 'overriddenBonusScale');
 	addToMode(gameOverride, 'bonus-mass', 'overriddenBonusMass');
 

@@ -16,6 +16,7 @@ import {
 	BONUS_MASS,
 	BONUS_RADIUS,
 	BONUS_SCALE,
+	BONUS_WARP_DISTANCE_FROM_CENTER,
 	BUMPER_RADIUS,
 	BUMPER_RESTITUTION,
 	GAME_FORFEIT_MINIMUM_POINTS,
@@ -423,6 +424,14 @@ export default abstract class GameConfiguration {
 		}
 
 		return BONUS_SPAWN_INITIAL_MAXIMUM_FREQUENCE;
+	}
+
+	bonusWarpDistanceFromCenter(): number {
+		if (this.hasGameOverride() && this.gameOverride.overridesBonusWarpDistanceFromCenter()) {
+			return this.gameOverride.bonusWarpDistanceFromCenter();
+		}
+
+		return BONUS_WARP_DISTANCE_FROM_CENTER;
 	}
 
 	overridesAvailableBonuses(): boolean {

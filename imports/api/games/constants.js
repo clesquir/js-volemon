@@ -41,6 +41,7 @@ export const BALL_SMALL_GRAVITY_SCALE = 0.5;
 export const BALL_DEFAULT_RADIUS = 12;
 export const BALL_PROPORTION_FROM_HEIGHT = 0.3875;
 
+export const BONUS_WARP_DISTANCE_FROM_CENTER = 6;
 export const BONUS_INDICATOR_RADIUS = 15;
 export const BONUS_RADIUS = 15;
 export const BONUS_MASS = 1;

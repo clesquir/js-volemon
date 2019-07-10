@@ -233,6 +233,8 @@
 						{{> numberSwitch id="bonus-spawn-initial-maximum-frequence" label="Bonus spawn initial max frequence (ms)" default="15,000" isOn=(modeOverridden "overriddenBonusSpawnInitialMaximumFrequence") value=(modeOverriddenValue "overriddenBonusSpawnInitialMaximumFrequence") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
+					{{> numberSwitch id="bonus-warp-distance-from-center" label="Bonus warp distance from center" default="6" isOn=(modeOverridden "overriddenBonusWarpDistanceFromCenter") value=(modeOverriddenValue "overriddenBonusWarpDistanceFromCenter") isReadOnly=(canOnlyViewTournament tournament)}}
+
 					<div class="splitted-configuration">
 						{{> numberSwitch id="bonus-scale" label="Bonus scale" default="1" isOn=(modeOverridden "overriddenBonusScale") value=(modeOverriddenValue "overriddenBonusScale") isReadOnly=(canOnlyViewTournament tournament)}}
 						{{> numberSwitch id="bonus-mass" label="Bonus mass" default="1" isOn=(modeOverridden "overriddenBonusMass") value=(modeOverriddenValue "overriddenBonusMass") isReadOnly=(canOnlyViewTournament tournament)}}
