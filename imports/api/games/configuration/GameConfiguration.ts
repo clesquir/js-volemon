@@ -23,7 +23,8 @@ import {
 	GAME_MAXIMUM_POINTS,
 	HIGH_GRAVITY_MULTIPLIER,
 	LOW_GRAVITY_MULTIPLIER,
-	NET_RESTITUTION,
+	NET_BALL_RESTITUTION,
+	NET_BONUS_RESTITUTION,
 	ONE_VS_COMPUTER_GAME_MODE,
 	ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE,
 	PLAYER_BIG_GRAVITY_SCALE,
@@ -49,12 +50,7 @@ import {
 	WORLD_GRAVITY,
 	WORLD_RESTITUTION
 } from '../constants';
-import {
-	BONUS_MAXIMUM_ON_SCREEN,
-	BONUS_SPAWN_INITIAL_MAXIMUM_FREQUENCE,
-	BONUS_SPAWN_INITIAL_MINIMUM_FREQUENCE,
-	BONUS_SPAWN_MINIMUM_FREQUENCE
-} from '../emissionConstants';
+import {BONUS_MAXIMUM_ON_SCREEN, BONUS_SPAWN_INITIAL_MAXIMUM_FREQUENCE, BONUS_SPAWN_INITIAL_MINIMUM_FREQUENCE, BONUS_SPAWN_MINIMUM_FREQUENCE} from '../emissionConstants';
 import {PLAYER_ALLOWED_LIST_OF_SHAPES, PLAYER_LIST_OF_SHAPES} from '../shapeConstants';
 import GameOverride from "../GameOverride";
 import LevelConfiguration from "../levelConfiguration/LevelConfiguration";
@@ -370,11 +366,27 @@ export default abstract class GameConfiguration {
 		return WORLD_RESTITUTION;
 	}
 
-	netRestitution(): number {
-		return NET_RESTITUTION;
+	netBallRestitution(): number {
+		if (this.hasGameOverride() && this.gameOverride.overridesNetBallRestitution()) {
+			return this.gameOverride.netBallRestitution();
+		}
+
+		return NET_BALL_RESTITUTION;
+	}
+
+	netBonusRestitution(): number {
+		if (this.hasGameOverride() && this.gameOverride.overridesNetBonusRestitution()) {
+			return this.gameOverride.netBonusRestitution();
+		}
+
+		return NET_BONUS_RESTITUTION;
 	}
 
 	bumperRestitution(): number {
+		if (this.hasGameOverride() && this.gameOverride.overridesBumperRestitution()) {
+			return this.gameOverride.bumperRestitution();
+		}
+
 		return BUMPER_RESTITUTION;
 	}
 

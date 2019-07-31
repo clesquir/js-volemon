@@ -207,6 +207,9 @@ const modeOptions = function() {
 
 	addToMode(gameOverride, 'world-gravity', 'overriddenWorldGravity');
 	addToMode(gameOverride, 'world-restitution', 'overriddenWorldRestitution');
+	addToMode(gameOverride, 'net-ball-restitution', 'overriddenNetBallRestitution');
+	addToMode(gameOverride, 'net-bonus-restitution', 'overriddenNetBonusRestitution');
+	addToMode(gameOverride, 'bumper-restitution', 'overriddenBumperRestitution');
 	addToMode(gameOverride, 'level-width', 'overriddenLevelWidth');
 	addToMode(gameOverride, 'level-height', 'overriddenLevelHeight');
 	addToMode(gameOverride, 'net-width', 'overriddenNetWidth');

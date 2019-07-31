@@ -7,6 +7,9 @@ export default class GameOverride {
 
 	overriddenWorldGravity;
 	overriddenWorldRestitution;
+	overriddenNetBallRestitution;
+	overriddenNetBonusRestitution;
+	overriddenBumperRestitution;
 	overriddenLevelWidth;
 	overriddenLevelHeight;
 	overriddenNetWidth;
@@ -143,6 +146,30 @@ export default class GameOverride {
 
 	worldRestitution(): number {
 		return parseFloat(this.overriddenWorldRestitution);
+	}
+
+	overridesNetBallRestitution(): boolean {
+		return this.overriddenNetBallRestitution !== undefined;
+	}
+
+	netBallRestitution(): number {
+		return parseFloat(this.overriddenNetBallRestitution);
+	}
+
+	overridesNetBonusRestitution(): boolean {
+		return this.overriddenNetBonusRestitution !== undefined;
+	}
+
+	netBonusRestitution(): number {
+		return parseFloat(this.overriddenNetBonusRestitution);
+	}
+
+	overridesBumperRestitution(): boolean {
+		return this.overriddenBumperRestitution !== undefined;
+	}
+
+	bumperRestitution(): number {
+		return parseFloat(this.overriddenBumperRestitution);
 	}
 
 	overridesLevelSize(): boolean {
@@ -677,6 +704,9 @@ export default class GameOverride {
 
 		gameOverride.overriddenWorldGravity = data.overriddenWorldGravity;
 		gameOverride.overriddenWorldRestitution = data.overriddenWorldRestitution;
+		gameOverride.overriddenNetBallRestitution = data.overriddenNetBallRestitution;
+		gameOverride.overriddenNetBonusRestitution = data.overriddenNetBonusRestitution;
+		gameOverride.overriddenBumperRestitution = data.overriddenBumperRestitution;
 		gameOverride.overriddenLevelWidth = data.overriddenLevelWidth;
 		gameOverride.overriddenLevelHeight = data.overriddenLevelHeight;
 		gameOverride.overriddenNetWidth = data.overriddenNetWidth;

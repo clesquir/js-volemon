@@ -52,7 +52,8 @@ export const BUMPER_RADIUS = 12;
 
 export const WORLD_GRAVITY = 770;
 export const WORLD_RESTITUTION = 1;
-export const NET_RESTITUTION = 0.7;
+export const NET_BALL_RESTITUTION = 0;
+export const NET_BONUS_RESTITUTION = 0.7;
 export const BUMPER_RESTITUTION = 1.2;
 export const CONSTRAINED_VELOCITY = 1000;
 export const HIGH_GRAVITY_MULTIPLIER = 2.45;

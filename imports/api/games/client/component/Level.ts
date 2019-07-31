@@ -167,6 +167,11 @@ export default class Level {
 		);
 		this.scene.game.physics.p2.createContactMaterial(
 			this.materialBall,
+			this.materialNet,
+			<p2.ContactMaterialOptions>{restitution: this.gameConfiguration.netBallRestitution()}
+		);
+		this.scene.game.physics.p2.createContactMaterial(
+			this.materialBall,
 			this.materialBumper,
 			<p2.ContactMaterialOptions>{restitution: this.gameConfiguration.bumperRestitution()}
 		);
@@ -195,7 +200,7 @@ export default class Level {
 		this.scene.game.physics.p2.createContactMaterial(
 			this.materialBonus,
 			this.materialNet,
-			<p2.ContactMaterialOptions>{restitution: this.gameConfiguration.netRestitution()}
+			<p2.ContactMaterialOptions>{restitution: this.gameConfiguration.netBonusRestitution()}
 		);
 		this.scene.game.physics.p2.createContactMaterial(
 			this.materialBonus,

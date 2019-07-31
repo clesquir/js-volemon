@@ -79,6 +79,12 @@
 					</div>
 
 					<div class="splitted-configuration">
+						{{> numberSwitch id="net-ball-restitution" label="Net/ball restitution" default="0" isOn=(modeOverridden "overriddenNetBallRestitution") value=(modeOverriddenValue "overriddenNetBallRestitution") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="net-bonus-restitution" label="Net/bonus restitution" default="0.7" isOn=(modeOverridden "overriddenNetBonusRestitution") value=(modeOverriddenValue "overriddenNetBonusRestitution") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="bumper-restitution" label="Bumper restitution" default="1.2" isOn=(modeOverridden "overriddenBumperRestitution") value=(modeOverriddenValue "overriddenBumperRestitution") isReadOnly=(canOnlyViewTournament tournament)}}
+					</div>
+
+					<div class="splitted-configuration">
 						{{> numberSwitch id="level-width" label="Level width" default="1v1: 840, 2v2: 1020" isOn=(modeOverridden "overriddenLevelWidth") value=(modeOverriddenValue "overriddenLevelWidth") isReadOnly=(canOnlyViewTournament tournament)}}
 						{{> numberSwitch id="level-height" label="Level height" default="1v1: 560, 2v2: 680" isOn=(modeOverridden "overriddenLevelHeight") value=(modeOverriddenValue "overriddenLevelHeight") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
