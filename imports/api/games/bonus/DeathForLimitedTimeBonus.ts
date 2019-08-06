@@ -19,4 +19,8 @@ export default class DeathForLimitedTimeBonus extends BaseBonus {
 
 		this.deactivate();
 	}
+
+	shouldBeRemovedWhenKilling(): boolean {
+		return false;
+	}
 };
