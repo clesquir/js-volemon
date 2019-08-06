@@ -16,5 +16,7 @@ export default class DeathForLimitedTimeBonus extends BaseBonus {
 
 	stop(bonuses: Bonuses) {
 		bonuses.revivePlayer.call(bonuses, this.activatorPlayerKey);
+
+		this.deactivate();
 	}
 };
