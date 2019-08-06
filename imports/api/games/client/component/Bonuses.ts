@@ -534,6 +534,10 @@ export default class Bonuses {
 	}
 
 	revivePlayer(playerKey: string) {
+		this.players.revivePlayer(playerKey);
+	}
+
+	reviveTeammatePlayer(playerKey: string) {
 		this.players.reviveTeammatePlayer(playerKey);
 	}
 

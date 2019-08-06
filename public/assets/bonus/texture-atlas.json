@@ -89,7 +89,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "drunk-monster",
+	"filename": "death-for-limited-time",
 	"frame": {"x":457,"y":6,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -97,7 +97,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "fast-monster",
+	"filename": "drunk-monster",
 	"frame": {"x":498,"y":6,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -105,7 +105,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "freeze-monster",
+	"filename": "fast-monster",
 	"frame": {"x":539,"y":6,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -113,7 +113,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "high-gravity",
+	"filename": "freeze-monster",
 	"frame": {"x":580,"y":6,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -121,7 +121,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "instant-death",
+	"filename": "high-gravity",
 	"frame": {"x":621,"y":6,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -129,7 +129,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "invincible-instant-death",
+	"filename": "instant-death",
 	"frame": {"x":662,"y":6,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -137,7 +137,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "invincible-monster",
+	"filename": "invincible-instant-death",
 	"frame": {"x":703,"y":6,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -145,7 +145,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "invisible-ball",
+	"filename": "invincible-monster",
 	"frame": {"x":744,"y":6,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -153,7 +153,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "invisible-monster",
+	"filename": "invisible-ball",
 	"frame": {"x":785,"y":6,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -161,7 +161,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "invisible-opponent-monster",
+	"filename": "invisible-monster",
 	"frame": {"x":826,"y":6,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -169,7 +169,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "junk-food-monster",
+	"filename": "invisible-opponent-monster",
 	"frame": {"x":867,"y":6,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -177,7 +177,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "low-gravity",
+	"filename": "junk-food-monster",
 	"frame": {"x":908,"y":6,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -185,7 +185,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "no-jump-monster",
+	"filename": "low-gravity",
 	"frame": {"x":949,"y":6,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -193,7 +193,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "nothing",
+	"filename": "no-jump-monster",
 	"frame": {"x":990,"y":6,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -201,7 +201,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "poison",
+	"filename": "nothing",
 	"frame": {"x":1031,"y":6,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -209,7 +209,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "random",
+	"filename": "poison",
 	"frame": {"x":1072,"y":6,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -217,7 +217,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "reset-ball-hit-count",
+	"filename": "random",
 	"frame": {"x":1113,"y":6,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -225,7 +225,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "reverse-move-monster",
+	"filename": "reset-ball-hit-count",
 	"frame": {"x":1154,"y":6,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -233,7 +233,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "revive",
+	"filename": "reverse-move-monster",
 	"frame": {"x":1195,"y":6,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -241,7 +241,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "robot",
+	"filename": "revive",
 	"frame": {"x":1236,"y":6,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -249,7 +249,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "shape-shift-monster",
+	"filename": "robot",
 	"frame": {"x":1277,"y":6,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -257,7 +257,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "slow-monster",
+	"filename": "shape-shift-monster",
 	"frame": {"x":1318,"y":6,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -265,7 +265,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "small-ball",
+	"filename": "slow-monster",
 	"frame": {"x":1359,"y":6,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -273,7 +273,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "small-monster",
+	"filename": "small-ball",
 	"frame": {"x":1400,"y":6,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -281,7 +281,7 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "smoke-bomb",
+	"filename": "small-monster",
 	"frame": {"x":1441,"y":6,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -289,8 +289,16 @@
 	"sourceSize": {"w":34,"h":34}
 },
 {
-	"filename": "unfreeze-monster",
+	"filename": "smoke-bomb",
 	"frame": {"x":1482,"y":6,"w":34,"h":34},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":34},
+	"sourceSize": {"w":34,"h":34}
+},
+{
+	"filename": "unfreeze-monster",
+	"frame": {"x":1523,"y":6,"w":34,"h":34},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":34},
@@ -301,8 +309,8 @@
 	"version": "1.0",
 	"image": "texture-atlas.png",
 	"format": "RGBA8888",
-	"size": {"w":1522,"h":46},
+	"size": {"w":1563,"h":46},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:cbdcba2f9c34252c441eebca3bc6f284:a44141ba1e7d9e89e6f361feb1ddac5e:a973cd4a72d4c90ced76930eac7fdc63$"
+	"smartupdate": "$TexturePacker:SmartUpdate:e0917de580fa526e7e74ea0633220044:bfd5fa12f717008a3634914d8216a50b:a973cd4a72d4c90ced76930eac7fdc63$"
 }
 }

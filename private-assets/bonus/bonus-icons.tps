@@ -4,7 +4,7 @@
         <key>fileFormatVersion</key>
         <int>4</int>
         <key>texturePackerVersion</key>
-        <string>5.0.0</string>
+        <string>5.1.0</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -192,6 +192,7 @@
             <key type="filename">icons/clone-ball.png</key>
             <key type="filename">icons/cloud.png</key>
             <key type="filename">icons/cure.png</key>
+            <key type="filename">icons/death-for-limited-time.png</key>
             <key type="filename">icons/drunk-monster.png</key>
             <key type="filename">icons/fast-monster.png</key>
             <key type="filename">icons/freeze-monster.png</key>
@@ -270,6 +271,7 @@
             <filename>icons/unfreeze-monster.png</filename>
             <filename>icons/clear-bonuses.png</filename>
             <filename>icons/bumpers.png</filename>
+            <filename>icons/death-for-limited-time.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

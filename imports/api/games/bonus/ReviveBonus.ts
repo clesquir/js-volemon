@@ -15,6 +15,6 @@ export default class ReviveBonus extends BaseBonus {
 	}
 
 	start(bonuses: Bonuses) {
-		bonuses.revivePlayer.call(bonuses, this.activatorPlayerKey);
+		bonuses.reviveTeammatePlayer.call(bonuses, this.activatorPlayerKey);
 	}
 };

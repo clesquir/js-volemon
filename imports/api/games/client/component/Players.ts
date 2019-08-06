@@ -190,6 +190,15 @@ export default class Players {
 		}
 	}
 
+	revivePlayer(playerKey: string) {
+		const player = this.getPlayerFromKey(playerKey);
+
+		if (player && player.killed) {
+			player.revive();
+			return;
+		}
+	}
+
 	reviveTeammatePlayer(playerKey: string) {
 		const player = this.getPlayerFromKey(playerKey);
 		let teammatePlayers = [];
