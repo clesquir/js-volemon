@@ -114,13 +114,22 @@ export default class Level {
 		return false;
 	}
 
-	shakeGround() {
-		const move = 5;
-		const time = 20;
+	nuke() {
+		this.scene.game.camera.flash(0xffffff, 1000);
+		this.shakeGround();
+	}
 
+	shakeGround(time: number = 20, move: number = 5) {
 		for (let groundComponent of this.groundComponents) {
-			const initialX = groundComponent.x;
-			const initialY = groundComponent.y;
+			if (groundComponent.data.initialX === undefined) {
+				groundComponent.data.initialX = groundComponent.x;
+			}
+			if (groundComponent.data.initialY === undefined) {
+				groundComponent.data.initialY = groundComponent.y;
+			}
+
+			const initialX = groundComponent.data.initialX;
+			const initialY = groundComponent.data.initialY;
 
 			this.scene.game.add.tween(groundComponent)
 				.to({y: "-" + move}, time).to({y: "+" + move * 2}, time * 2).to({y: "-" + move}, time)

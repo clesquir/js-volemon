@@ -232,6 +232,18 @@ export default class MainScene {
 		}
 	}
 
+	nukeAllPlayers() {
+		if (this.gameResumed === true) {
+			const players = [].concat(this.players.hostPlayerKeys(true), this.players.clientPlayerKeys(true));
+
+			for (let player of players) {
+				this.killPlayer(player);
+			}
+
+			this.level.nuke();
+		}
+	}
+
 	killPlayer(playerKey: string) {
 		const player = this.players.getPlayerFromKey(playerKey);
 

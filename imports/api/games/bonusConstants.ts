@@ -24,6 +24,7 @@ export const BONUS_SHAPE_SHIFT = 'ShapeShiftMonsterBonus';
 export const BONUS_SMOKE_BOMB = 'SmokeBomb';
 export const BONUS_INSTANT_DEATH = 'InstantDeath';
 export const BONUS_DEATH_FOR_LIMITED_TIME = 'DeathForLimitedTimeBonus';
+export const BONUS_NUKE = 'NukeBonus';
 export const BONUS_REVIVE = 'ReviveBonus';
 export const BONUS_INVINCIBLE_INSTANT_DEATH = 'InvincibleInstantDeathBonus';
 export const BONUS_NOTHING = 'NothingBonus';
@@ -66,6 +67,7 @@ export const ALL_BONUSES = [
 	BONUS_INVINCIBLE_MONSTER,
 	BONUS_INSTANT_DEATH,
 	BONUS_DEATH_FOR_LIMITED_TIME,
+	BONUS_NUKE,
 	BONUS_REVIVE,
 	BONUS_INVINCIBLE_INSTANT_DEATH,
 	BONUS_POISON,
@@ -104,6 +106,7 @@ export const ALL_BONUSES_FOR_RANDOM = [
 	BONUS_INVINCIBLE_MONSTER,
 	BONUS_INSTANT_DEATH,
 	BONUS_DEATH_FOR_LIMITED_TIME,
+	BONUS_NUKE,
 	BONUS_REVIVE,
 	BONUS_INVINCIBLE_INSTANT_DEATH,
 	BONUS_POISON,

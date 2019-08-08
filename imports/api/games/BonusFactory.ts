@@ -54,6 +54,7 @@ import {
 	BONUS_LOW_GRAVITY,
 	BONUS_NO_JUMP_MONSTER,
 	BONUS_NOTHING,
+	BONUS_NUKE,
 	BONUS_POISON,
 	BONUS_RANDOM,
 	BONUS_REPELLENT,
@@ -76,6 +77,7 @@ import CloneBallBonus from "./bonus/CloneBallBonus";
 import ClearBonuses from "./bonus/ClearBonuses";
 import BumpersBonus from "./bonus/BumpersBonus";
 import DeathForLimitedTimeBonus from "./bonus/DeathForLimitedTimeBonus";
+import NukeBonus from "./bonus/NukeBonus";
 
 export default class BonusFactory {
 	static randomBonus(gameConfiguration: GameConfiguration): BaseBonus {
@@ -226,6 +228,8 @@ export default class BonusFactory {
 				return new InstantDeathBonus(bonusClass);
 			case BONUS_DEATH_FOR_LIMITED_TIME:
 				return new DeathForLimitedTimeBonus(bonusClass);
+			case BONUS_NUKE:
+				return new NukeBonus(bonusClass);
 			case BONUS_REVIVE:
 				return new ReviveBonus(bonusClass);
 			case BONUS_INVINCIBLE_INSTANT_DEATH:

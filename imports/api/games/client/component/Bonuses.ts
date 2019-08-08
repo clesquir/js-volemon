@@ -533,6 +533,10 @@ export default class Bonuses {
 		this.scene.killPlayer(playerKey);
 	}
 
+	nukeAllPlayers() {
+		this.scene.nukeAllPlayers();
+	}
+
 	revivePlayer(playerKey: string) {
 		this.players.revivePlayer(playerKey);
 	}

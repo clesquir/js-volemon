@@ -207,6 +207,7 @@
             <key type="filename">icons/low-gravity.png</key>
             <key type="filename">icons/no-jump-monster.png</key>
             <key type="filename">icons/nothing.png</key>
+            <key type="filename">icons/nuke.png</key>
             <key type="filename">icons/poison.png</key>
             <key type="filename">icons/random.png</key>
             <key type="filename">icons/reset-ball-hit-count.png</key>
@@ -272,6 +273,7 @@
             <filename>icons/clear-bonuses.png</filename>
             <filename>icons/bumpers.png</filename>
             <filename>icons/death-for-limited-time.png</filename>
+            <filename>icons/nuke.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
