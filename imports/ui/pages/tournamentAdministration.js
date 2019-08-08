@@ -1,5 +1,9 @@
 import {ONE_VS_ONE_GAME_MODE, TWO_VS_TWO_GAME_MODE} from '/imports/api/games/constants.js';
-import {isTournamentAdministrator, isTournamentEditor} from '/imports/api/users/userConfigurations.js';
+import {
+	hasApproveTournamentAccess,
+	isTournamentAdministrator,
+	isTournamentEditor
+} from '/imports/api/users/userConfigurations.js';
 import ButtonEnabler from '/imports/ui/util/ButtonEnabler.js';
 import '/imports/ui/util/error-messages.js';
 import {removeErrorLabelContainer, validateFieldsPresenceAndMarkInvalid} from '/imports/ui/util/form.js';
@@ -40,7 +44,7 @@ Template.tournamentAdministration.helpers({
 	},
 
 	canApproveTournament: function(tournament) {
-		return tournament.status.id === 'submitted' && isTournamentAdministrator();
+		return tournament.status.id === 'submitted' && hasApproveTournamentAccess();
 	},
 
 	booleanOptions: function() {

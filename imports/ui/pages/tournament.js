@@ -2,7 +2,7 @@ import {MatchMakers} from '/imports/api/games/matchMakers.js';
 import RankChart from '/imports/api/ranks/client/RankChart.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
 import {canPlayTournament, isTournamentActive, tournamentName} from '/imports/api/tournaments/utils.js';
-import {isTournamentAdministrator, isTournamentEditor} from '/imports/api/users/userConfigurations.js';
+import {hasEditTournamentAccess, isTournamentAdministrator} from '/imports/api/users/userConfigurations.js';
 import CardSwitcher from '/imports/lib/client/CardSwitcher.js';
 import {timeElapsedSince} from '/imports/lib/utils.js';
 import {loadStatistics} from '/imports/ui/views/statistics.js';
@@ -65,7 +65,7 @@ Template.tournament.helpers({
 	},
 
 	canEditTournament: function() {
-		return isTournamentEditor() || isTournamentAdministrator();
+		return hasEditTournamentAccess();
 	},
 
 	isTournamentAdministrator: function() {

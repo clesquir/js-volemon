@@ -1,14 +1,18 @@
 import {tournamentName} from "/imports/api/tournaments/utils.js";
-import {isTournamentAdministrator, isTournamentEditor} from '/imports/api/users/userConfigurations.js';
+import {
+	hasCreateTournamentAccess,
+	isTournamentAdministrator,
+	isTournamentEditor
+} from '/imports/api/users/userConfigurations.js';
 import {timeDifference, timeElapsedSince} from '/imports/lib/utils.js';
 import {Router} from 'meteor/iron:router';
 import {Meteor} from 'meteor/meteor';
-import moment from 'moment';
 import {Mongo} from 'meteor/mongo';
 import {ReactiveDict} from 'meteor/reactive-dict';
 import {ReactiveVar} from 'meteor/reactive-var';
 import {Session} from "meteor/session";
 import {Template} from 'meteor/templating';
+import moment from 'moment';
 
 import './tournaments.html';
 
@@ -103,7 +107,7 @@ Template.tournaments.helpers({
 	},
 
 	canCreateTournament: function() {
-		return isTournamentEditor() || isTournamentAdministrator();
+		return hasCreateTournamentAccess();
 	},
 
 	canOnlyViewTournament: function() {

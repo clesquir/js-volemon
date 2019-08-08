@@ -1,5 +1,6 @@
 import {ONE_VS_ONE_GAME_MODE} from '/imports/api/games/constants.js';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
+import {hasApproveTournamentAccess, hasCreateTournamentAccess} from '/imports/api/users/userConfigurations';
 import {
 	isTournamentAdministrator,
 	isTournamentEditor,
@@ -17,7 +18,7 @@ Meteor.methods({
 			throw new Meteor.Error(401, 'You need to login to create a tournament');
 		}
 
-		if (!isTournamentEditor() && !isTournamentAdministrator()) {
+		if (!hasCreateTournamentAccess()) {
 			throw new Meteor.Error('not-allowed', 'You cannot create a tournament');
 		}
 
@@ -144,7 +145,7 @@ Meteor.methods({
 			throw new Meteor.Error(401, 'You need to login to create a tournament');
 		}
 
-		if (!isTournamentEditor() && !isTournamentAdministrator()) {
+		if (!hasCreateTournamentAccess()) {
 			throw new Meteor.Error('not-allowed', 'You cannot create a tournament');
 		}
 
@@ -267,7 +268,7 @@ Meteor.methods({
 			throw new Meteor.Error(401, 'You need to login to update a tournament');
 		}
 
-		if (!isTournamentAdministrator()) {
+		if (!hasApproveTournamentAccess()) {
 			throw new Meteor.Error('not-allowed', 'You cannot approve a tournament');
 		}
 
