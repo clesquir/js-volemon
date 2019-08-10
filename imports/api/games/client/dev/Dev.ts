@@ -7,12 +7,13 @@ import Ball from "../component/Ball";
 import MainScene from "../scene/MainScene";
 import Countdown from "../component/Countdown";
 import StaticGameData from "../../data/StaticGameData";
-import ServerNormalizedTime from "../ServerNormalizedTime";
 import DesktopController from "../../deviceController/DesktopController";
 import StaticGameConfiguration from "../../configuration/StaticGameConfiguration";
 import NullStreamBundler from "../streamBundler/NullStreamBundler";
 import ServerAdapter from "../serverAdapter/ServerAdapter";
 import NullServerAdapter from "../serverAdapter/NullServerAdapter";
+import NormalizedTime from "../../../../lib/normalizedTime/NormalizedTime";
+import ClientServerOffsetNormalizedTime from "../../../../lib/normalizedTime/ClientServerOffsetNormalizedTime";
 
 export default class Dev {
 	gameBoot: GameBoot;
@@ -21,7 +22,7 @@ export default class Dev {
 	gameConfiguration: GameConfiguration;
 	skinManager: SkinManager;
 	streamBundler: StreamBundler;
-	serverNormalizedTime: ServerNormalizedTime;
+	normalizedTime: NormalizedTime;
 	serverAdapter: ServerAdapter;
 	mainScene: MainScene | any;
 	debug: boolean = true;
@@ -37,8 +38,8 @@ export default class Dev {
 		this.skinManager = SkinManager.withDefaults(this.gameConfiguration);
 		this.skinManager.init();
 		this.streamBundler = new NullStreamBundler();
-		this.serverNormalizedTime = new ServerNormalizedTime();
-		this.serverNormalizedTime.init();
+		this.normalizedTime = new ClientServerOffsetNormalizedTime();
+		this.normalizedTime.init();
 		this.serverAdapter = new NullServerAdapter();
 	}
 
@@ -51,7 +52,7 @@ export default class Dev {
 			this.gameConfiguration,
 			this.skinManager,
 			this.streamBundler,
-			this.serverNormalizedTime,
+			this.normalizedTime,
 			this.serverAdapter
 		);
 		this.gameBoot.start(
@@ -77,7 +78,7 @@ export default class Dev {
 	}
 
 	overrideGame() {
-		this.gameData.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
+		this.gameData.lastPointAt = this.normalizedTime.getTime();
 		this.streamBundler.emitStream = () => {};
 		this.mainScene.bonuses.createBonusIfTimeHasElapsed = () => {};
 		this.mainScene.createComponents = () => {this.createComponents();};
@@ -103,7 +104,7 @@ export default class Dev {
 			this.mainScene,
 			this.gameData,
 			this.gameConfiguration,
-			this.serverNormalizedTime
+			this.normalizedTime
 		);
 	}
 
@@ -128,7 +129,7 @@ export default class Dev {
 
 			this.mainScene.gameResumed = false;
 
-			this.gameData.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
+			this.gameData.lastPointAt = this.normalizedTime.getTime();
 			this.mainScene.level.shakeGround();
 			this.resumeOnTimerEnd();
 		}

@@ -1,7 +1,8 @@
 import {Meteor} from 'meteor/meteor';
 import {TimeSync} from 'meteor/mizzao:timesync';
+import NormalizedTime from "./NormalizedTime";
 
-export default class ServerNormalizedTime {
+export default class ClientServerOffsetNormalizedTime implements NormalizedTime {
 	serverOffset: number;
 	private timeSyncTimeout: number;
 
@@ -18,7 +19,7 @@ export default class ServerNormalizedTime {
 		this.serverOffset = undefined;
 	}
 
-	getServerTimestamp() {
+	getTime(): number {
 		let serverOffset = 0;
 
 		if (this.serverOffset !== undefined) {

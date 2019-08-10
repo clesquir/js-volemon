@@ -6,7 +6,6 @@ import GameConfiguration from "../configuration/GameConfiguration";
 import GameData from "../data/GameData";
 import SkinManager from "./component/SkinManager";
 import StreamBundler from "./streamBundler/StreamBundler";
-import ServerNormalizedTime from "./ServerNormalizedTime";
 import Stream from "../../../lib/stream/Stream";
 import {GameBoot} from "./boot/GameBoot";
 import MeteorServerAdapter from "./serverAdapter/MeteorServerAdapter";
@@ -16,6 +15,7 @@ import {Session} from 'meteor/session';
 import {EventPublisher} from "../../../lib/EventPublisher";
 import PointTaken from "../events/PointTaken";
 import GameStatusChanged from "../events/GameStatusChanged";
+import NormalizedTime from "../../../lib/normalizedTime/NormalizedTime";
 
 export default class ClientGameInitiator {
 	gameId: string;
@@ -24,7 +24,7 @@ export default class ClientGameInitiator {
 	gameConfiguration: GameConfiguration;
 	skinManager: SkinManager;
 	streamBundler: StreamBundler;
-	serverNormalizedTime: ServerNormalizedTime;
+	normalizedTime: NormalizedTime;
 	stream: Stream;
 	gameNotifier: GameNotifier;
 
@@ -40,7 +40,7 @@ export default class ClientGameInitiator {
 		gameConfiguration: GameConfiguration,
 		skinManager: SkinManager,
 		streamBundler: StreamBundler,
-		serverNormalizedTime: ServerNormalizedTime,
+		normalizedTime: NormalizedTime,
 		stream: Stream,
 		gameNotifier: GameNotifier
 	) {
@@ -50,7 +50,7 @@ export default class ClientGameInitiator {
 		this.gameConfiguration = gameConfiguration;
 		this.skinManager = skinManager;
 		this.streamBundler = streamBundler;
-		this.serverNormalizedTime = serverNormalizedTime;
+		this.normalizedTime = normalizedTime;
 		this.stream = stream;
 		this.gameNotifier = gameNotifier;
 
@@ -111,7 +111,7 @@ export default class ClientGameInitiator {
 			this.gameConfiguration,
 			this.skinManager,
 			this.streamBundler,
-			this.serverNormalizedTime,
+			this.normalizedTime,
 			new MeteorServerAdapter()
 		);
 		this.gameBoot.start(

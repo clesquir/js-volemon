@@ -2,11 +2,11 @@ import DeviceController from "../../deviceController/DeviceController";
 import GameData from "../../data/GameData";
 import SkinManager from "../component/SkinManager";
 import StreamBundler from "../streamBundler/StreamBundler";
-import ServerNormalizedTime from "../ServerNormalizedTime";
 import GameConfiguration from "../../configuration/GameConfiguration";
 import ServerAdapter from "../serverAdapter/ServerAdapter";
 import {GameBoot} from "./GameBoot";
 import {PLAYER_LIST_OF_SHAPES} from "../../shapeConstants";
+import NormalizedTime from "../../../../lib/normalizedTime/NormalizedTime";
 
 export class TestGameBoot {
 	deviceController: DeviceController;
@@ -14,7 +14,7 @@ export class TestGameBoot {
 	gameConfiguration: GameConfiguration;
 	skinManager: SkinManager;
 	streamBundler: StreamBundler;
-	serverNormalizedTime: ServerNormalizedTime;
+	normalizedTime: NormalizedTime;
 	serverAdapter: ServerAdapter;
 	gameBoot: GameBoot;
 
@@ -24,7 +24,7 @@ export class TestGameBoot {
 		gameConfiguration: GameConfiguration,
 		skinManager: SkinManager,
 		streamBundler: StreamBundler,
-		serverNormalizedTime: ServerNormalizedTime,
+		normalizedTime: NormalizedTime,
 		serverAdapter: ServerAdapter
 	) {
 		this.deviceController = deviceController;
@@ -32,7 +32,7 @@ export class TestGameBoot {
 		this.gameConfiguration = gameConfiguration;
 		this.skinManager = skinManager;
 		this.streamBundler = streamBundler;
-		this.serverNormalizedTime = serverNormalizedTime;
+		this.normalizedTime = normalizedTime;
 		this.serverAdapter = serverAdapter;
 
 		this.gameBoot = new GameBoot(
@@ -41,7 +41,7 @@ export class TestGameBoot {
 			this.gameConfiguration,
 			this.skinManager,
 			this.streamBundler,
-			this.serverNormalizedTime,
+			this.normalizedTime,
 			this.serverAdapter
 		);
 	}

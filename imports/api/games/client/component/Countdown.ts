@@ -1,13 +1,13 @@
 import GameData from "../../data/GameData";
-import ServerNormalizedTime from "../ServerNormalizedTime";
 import MainScene from "../scene/MainScene";
 import GameConfiguration from "../../configuration/GameConfiguration";
+import NormalizedTime from "../../../../lib/normalizedTime/NormalizedTime";
 
 export default class Countdown {
 	scene: MainScene;
 	gameData: GameData;
 	gameConfiguration: GameConfiguration;
-	serverNormalizedTime: ServerNormalizedTime;
+	normalizedTime: NormalizedTime;
 
 	countdownText: Phaser.Text;
 	countdownTimer: Phaser.Timer;
@@ -17,12 +17,12 @@ export default class Countdown {
 		scene: MainScene,
 		gameData: GameData,
 		gameConfiguration: GameConfiguration,
-		serverNormalizedTime: ServerNormalizedTime
+		normalizedTime: NormalizedTime
 	) {
 		this.scene = scene;
 		this.gameData = gameData;
 		this.gameConfiguration = gameConfiguration;
-		this.serverNormalizedTime = serverNormalizedTime;
+		this.normalizedTime = normalizedTime;
 
 		this.init();
 	}
@@ -36,7 +36,7 @@ export default class Countdown {
 		}
 
 		//Calculate what's left
-		let timerLeft = timerDuration - (this.serverNormalizedTime.getServerTimestamp() - this.gameData.lastPointAt) / 1000;
+		let timerLeft = timerDuration - (this.normalizedTime.getTime() - this.gameData.lastPointAt) / 1000;
 		if (timerLeft > timerDuration) {
 			timerLeft = timerDuration;
 		}

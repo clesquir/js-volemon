@@ -3,7 +3,6 @@ import MainScene from "../scene/MainScene";
 import GameData from "../../data/GameData";
 import GameConfiguration from "../../configuration/GameConfiguration";
 import StreamBundler from "../streamBundler/StreamBundler";
-import ServerNormalizedTime from "../ServerNormalizedTime";
 import BonusFactory from "../../BonusFactory";
 import {ArtificialIntelligencePositionData} from "../../artificialIntelligence/ArtificialIntelligencePositionData";
 import {BONUS_INTERVAL} from "../../emissionConstants";
@@ -21,6 +20,7 @@ import {BonusPositionData} from "../../bonus/data/BonusPositionData";
 import BonusIndicators from "./BonusIndicators";
 import BumpersGenerator from "./BumpersGenerator";
 import SkinManager from "./SkinManager";
+import NormalizedTime from "../../../../lib/normalizedTime/NormalizedTime";
 
 export default class Bonuses {
 	scene: MainScene;
@@ -28,7 +28,7 @@ export default class Bonuses {
 	gameConfiguration: GameConfiguration;
 	skinManager: SkinManager;
 	streamBundler: StreamBundler;
-	serverNormalizedTime: ServerNormalizedTime;
+	normalizedTime: NormalizedTime;
 	serverAdapter: ServerAdapter;
 	animations: Animations;
 	level: Level;
@@ -56,7 +56,7 @@ export default class Bonuses {
 		gameConfiguration: GameConfiguration,
 		skinManager: SkinManager,
 		streamBundler: StreamBundler,
-		serverNormalizedTime: ServerNormalizedTime,
+		normalizedTime: NormalizedTime,
 		serverAdapter: ServerAdapter,
 		animations: Animations,
 		level: Level,
@@ -67,7 +67,7 @@ export default class Bonuses {
 		this.gameConfiguration = gameConfiguration;
 		this.skinManager = skinManager;
 		this.streamBundler = streamBundler;
-		this.serverNormalizedTime = serverNormalizedTime;
+		this.normalizedTime = normalizedTime;
 		this.serverAdapter = serverAdapter;
 		this.animations = animations;
 		this.level = level;
@@ -77,7 +77,7 @@ export default class Bonuses {
 			this.scene,
 			this.gameData,
 			this.gameConfiguration,
-			this.serverNormalizedTime
+			this.normalizedTime
 		);
 		this.cloudsGenerator = new CloudsGenerator(
 			this.scene,
@@ -163,7 +163,7 @@ export default class Bonuses {
 			this.scene,
 			this.gameData,
 			this.gameConfiguration,
-			this.serverNormalizedTime,
+			this.normalizedTime,
 			this.level,
 			bonusReference,
 			data.initialX,
@@ -249,7 +249,7 @@ export default class Bonuses {
 		BonusIndicator.activateAnimation(
 			this.scene,
 			this.gameConfiguration,
-			this.serverNormalizedTime,
+			this.normalizedTime,
 			bonusReferenceToActivate,
 			x,
 			y,
@@ -698,7 +698,7 @@ export default class Bonuses {
 		const stillActiveBonuses = [];
 
 		for (let bonusReference of this.activeBonuses) {
-			if (bonusReference.check(this, this.serverNormalizedTime.getServerTimestamp())) {
+			if (bonusReference.check(this, this.normalizedTime.getTime())) {
 				stillActiveBonuses.push(bonusReference);
 			} else {
 				this.removeActiveBonus(bonusReference);

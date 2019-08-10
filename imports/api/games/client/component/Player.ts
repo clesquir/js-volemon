@@ -7,15 +7,15 @@ import {ArtificialIntelligencePositionData} from "../../artificialIntelligence/A
 import {PositionData} from "./PositionData";
 import Animations from "./Animations";
 import Interpolation from "./Interpolation";
-import ServerNormalizedTime from "../ServerNormalizedTime";
 import {DEPTH_ACTIVATION_ANIMATION, DEPTH_COMPONENTS} from "../../constants";
 import ShapeFactory from "./ShapeFactory";
+import NormalizedTime from "../../../../lib/normalizedTime/NormalizedTime";
 
 export default class Player {
 	scene: MainScene;
 	gameData: GameData;
 	gameConfiguration: GameConfiguration;
-	serverNormalizedTime: ServerNormalizedTime;
+	normalizedTime: NormalizedTime;
 	animations: Animations;
 	level: Level;
 	key: string;
@@ -80,7 +80,7 @@ export default class Player {
 		scene: MainScene,
 		gameData: GameData,
 		gameConfiguration: GameConfiguration,
-		serverNormalizedTime: ServerNormalizedTime,
+		normalizedTime: NormalizedTime,
 		animations: Animations,
 		level: Level,
 		key: string,
@@ -91,7 +91,7 @@ export default class Player {
 		this.scene = scene;
 		this.gameConfiguration = gameConfiguration;
 		this.gameData = gameData;
-		this.serverNormalizedTime = serverNormalizedTime;
+		this.normalizedTime = normalizedTime;
 		this.animations = animations;
 		this.level = level;
 		this.key = key;
@@ -100,7 +100,7 @@ export default class Player {
 
 		this.interpolation = new Interpolation(
 			this.scene,
-			this.serverNormalizedTime
+			this.normalizedTime
 		);
 
 		this.init(displayPlayerName);

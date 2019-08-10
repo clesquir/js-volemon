@@ -1,6 +1,5 @@
-import {gameData, serverNormalizedTime} from '/imports/api/games/client/routeInitiator.js';
+import {gameData, normalizedTime} from '/imports/api/games/client/routeInitiator.js';
 import {isTwoVersusTwoGameMode} from '/imports/api/games/constants.js';
-import {Players} from '/imports/api/games/players.js';
 import {isGamePlayer, isGameStatusStarted} from '/imports/api/games/utils.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
 import {onMobileAndTablet, padNumber} from '/imports/lib/utils.js';
@@ -107,8 +106,8 @@ Template.gameCanvas.helpers({
 		}
 
 		let serverOffset = '-';
-		if (serverNormalizedTime) {
-			serverOffset = serverNormalizedTime.serverOffset + 'ms';
+		if (normalizedTime) {
+			serverOffset = normalizedTime.serverOffset + 'ms';
 		}
 
 		return webRTCUsage + '<br />' + 'Server offset: ' + serverOffset;

@@ -1,4 +1,3 @@
-import ServerNormalizedTime from "../ServerNormalizedTime";
 import BaseBonus from "../../bonus/BaseBonus";
 import {ArtificialIntelligencePositionData} from "../../artificialIntelligence/ArtificialIntelligencePositionData";
 import {BonusPositionData} from "../../bonus/data/BonusPositionData";
@@ -10,12 +9,13 @@ import GameData from "../../data/GameData";
 import Interpolation from "./Interpolation";
 import VelocityConstraint from "./VelocityConstraint";
 import {DEPTH_COMPONENTS} from "../../constants";
+import NormalizedTime from "../../../../lib/normalizedTime/NormalizedTime";
 
 export default class Bonus {
 	scene: MainScene;
 	gameData: GameData;
 	gameConfiguration: GameConfiguration;
-	serverNormalizedTime: ServerNormalizedTime;
+	normalizedTime: NormalizedTime;
 	level: Level;
 	bonusReference: BaseBonus;
 	initialX: number;
@@ -31,7 +31,7 @@ export default class Bonus {
 		scene: MainScene,
 		gameData: GameData,
 		gameConfiguration: GameConfiguration,
-		serverNormalizedTime: ServerNormalizedTime,
+		normalizedTime: NormalizedTime,
 		level: Level,
 		bonusReference: BaseBonus,
 		initialX: number,
@@ -40,7 +40,7 @@ export default class Bonus {
 		this.scene = scene;
 		this.gameData = gameData;
 		this.gameConfiguration = gameConfiguration;
-		this.serverNormalizedTime = serverNormalizedTime;
+		this.normalizedTime = normalizedTime;
 		this.level = level;
 		this.bonusReference = bonusReference;
 		this.initialX = initialX;
@@ -48,7 +48,7 @@ export default class Bonus {
 
 		this.interpolation = new Interpolation(
 			this.scene,
-			this.serverNormalizedTime
+			this.normalizedTime
 		);
 		this.velocityConstraint = new VelocityConstraint();
 
@@ -107,7 +107,7 @@ export default class Bonus {
 		const payload = {
 			identifier: this.identifier,
 			player: playerKey,
-			activatedAt: this.serverNormalizedTime.getServerTimestamp(),
+			activatedAt: this.normalizedTime.getTime(),
 			x: this.x(),
 			y: this.y(),
 			beforeActivationData: {}

@@ -1,19 +1,19 @@
 import MainScene from "../scene/MainScene";
-import ServerNormalizedTime from "../ServerNormalizedTime";
+import NormalizedTime from "../../../../lib/normalizedTime/NormalizedTime";
 
 export default class Interpolation {
 	private readonly scene: MainScene;
-	private readonly serverNormalizedTime: ServerNormalizedTime;
+	private readonly normalizedTime: NormalizedTime;
 
 	private readonly minimumForInterpolation = 10;
 	private readonly minimumForSlidingInterpolation = 25;
 
 	constructor(
 		scene: MainScene,
-		serverNormalizedTime: ServerNormalizedTime
+		normalizedTime: NormalizedTime
 	) {
 		this.scene = scene;
-		this.serverNormalizedTime = serverNormalizedTime;
+		this.normalizedTime = normalizedTime;
 	}
 
 	interpolateMoveTo(
@@ -22,8 +22,8 @@ export default class Interpolation {
 		canMoveCallback: Function,
 		slideToLocation: boolean = false
 	) {
-		const serverNormalizedTimestamp = this.serverNormalizedTime.getServerTimestamp();
-		const difference = serverNormalizedTimestamp - data.timestamp;
+		const normalizedTimestamp = this.normalizedTime.getTime();
+		const difference = normalizedTimestamp - data.timestamp;
 
 		if (difference < this.minimumForInterpolation) {
 			this.moveToInterpolatedPosition(gameObject, data, canMoveCallback);
@@ -34,7 +34,7 @@ export default class Interpolation {
 			}
 
 			const interpolatedData = Object.assign({}, data);
-			this.interpolateFromTimestamp(gameObject, serverNormalizedTimestamp + maxTime, interpolatedData);
+			this.interpolateFromTimestamp(gameObject, normalizedTimestamp + maxTime, interpolatedData);
 
 			if (!slideToLocation) {
 				this.moveToInterpolatedPosition(gameObject, interpolatedData, canMoveCallback);

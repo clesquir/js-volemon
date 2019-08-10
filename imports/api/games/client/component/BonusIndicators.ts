@@ -3,13 +3,13 @@ import GameData from "../../data/GameData";
 import GameConfiguration from "../../configuration/GameConfiguration";
 import BaseBonus from "../../bonus/BaseBonus";
 import BonusIndicator from "./BonusIndicator";
-import ServerNormalizedTime from "../ServerNormalizedTime";
+import NormalizedTime from "../../../../lib/normalizedTime/NormalizedTime";
 
 export default class BonusIndicators {
 	scene: MainScene;
 	gameData: GameData;
 	gameConfiguration: GameConfiguration;
-	serverNormalizedTime: ServerNormalizedTime;
+	normalizedTime: NormalizedTime;
 
 	bonusIndicators: BonusIndicator[] = [];
 
@@ -17,12 +17,12 @@ export default class BonusIndicators {
 		scene: MainScene,
 		gameData: GameData,
 		gameConfiguration: GameConfiguration,
-		serverNormalizedTime: ServerNormalizedTime
+		normalizedTime: NormalizedTime
 	) {
 		this.scene = scene;
 		this.gameData = gameData;
 		this.gameConfiguration = gameConfiguration;
-		this.serverNormalizedTime = serverNormalizedTime;
+		this.normalizedTime = normalizedTime;
 	}
 
 	update(activeBonuses: BaseBonus[]) {
@@ -70,7 +70,7 @@ export default class BonusIndicators {
 					bonusIndicator = new BonusIndicator(
 						this.scene,
 						this.gameConfiguration,
-						this.serverNormalizedTime,
+						this.normalizedTime,
 						bonusReference,
 						x,
 						y,

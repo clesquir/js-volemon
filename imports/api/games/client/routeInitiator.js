@@ -7,7 +7,6 @@ import GameNotifier from '/imports/api/games/client/GameNotifier';
 import GameReaction from '/imports/api/games/client/GameReaction';
 import GameRematch from '/imports/api/games/client/GameRematch';
 import GameTimer from '/imports/api/games/client/GameTimer';
-import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime';
 import GameStreamBundler from '/imports/api/games/client/streamBundler/GameStreamBundler';
 import NullStreamBundler from '/imports/api/games/client/streamBundler/NullStreamBundler';
 import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGameConfiguration';
@@ -22,6 +21,8 @@ import {UserKeymaps} from '/imports/api/users/userKeymaps';
 import {EventPublisher} from '/imports/lib/EventPublisher';
 import PageUnload from '/imports/lib/events/PageUnload';
 import CustomKeymaps from '/imports/lib/keymaps/CustomKeymaps';
+import ClientServerOffsetNormalizedTime from '/imports/lib/normalizedTime/ClientServerOffsetNormalizedTime';
+import NormalizedTime from '/imports/lib/normalizedTime/NormalizedTime';
 import ClientStreamFactory from '/imports/lib/stream/client/ClientStreamFactory';
 import StreamConfiguration from '/imports/lib/stream/StreamConfiguration';
 import {onMobileAndTablet} from '/imports/lib/utils';
@@ -32,8 +33,8 @@ import {Session} from 'meteor/session';
 let deviceController = null;
 /** @type {GameData} */
 export let gameData = null;
-/** @type {ServerNormalizedTime} */
-export let serverNormalizedTime = null;
+/** @type {NormalizedTime} */
+export let normalizedTime = null;
 /** @type {Stream} */
 let stream = null;
 /** @type {ClientGameInitiator}|null */
@@ -105,14 +106,14 @@ const initGame = function(gameId) {
 	//Destroy if existent
 	destroyGame(gameId);
 
-	serverNormalizedTime = new ServerNormalizedTime();
-	serverNormalizedTime.init();
+	normalizedTime = new ClientServerOffsetNormalizedTime();
+	normalizedTime.init();
 
 	stream = ClientStreamFactory.fromConfiguration(StreamConfiguration.alias());
 	stream.init();
 	stream.connect(gameId);
 
-	gameData = new CollectionGameData(gameId, serverNormalizedTime, Meteor.userId());
+	gameData = new CollectionGameData(gameId, normalizedTime, Meteor.userId());
 	gameData.init();
 
 	const gameConfiguration = new DefaultGameConfiguration(gameId);
@@ -145,7 +146,7 @@ const initGame = function(gameId) {
 		gameConfiguration,
 		skinManager,
 		streamBundler,
-		serverNormalizedTime,
+		normalizedTime,
 		stream,
 		new GameNotifier()
 	);
@@ -176,9 +177,9 @@ const quitGame = function(gameId) {
 
 const destroyGame = function(gameId) {
 	if (gameId) {
-		if (serverNormalizedTime) {
-			serverNormalizedTime.stop();
-			serverNormalizedTime = null;
+		if (normalizedTime) {
+			normalizedTime.stop();
+			normalizedTime = null;
 		}
 		if (gameInitiator) {
 			gameInitiator.stop();

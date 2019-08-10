@@ -9,10 +9,10 @@ import {PLAYER_INTERVAL} from "../../emissionConstants";
 import DeviceController from "../../deviceController/DeviceController";
 import StreamBundler from "../streamBundler/StreamBundler";
 import {PositionData} from "./PositionData";
-import ServerNormalizedTime from "../ServerNormalizedTime";
 import Animations from "./Animations";
 import {ArtificialIntelligencePositionData} from "../../artificialIntelligence/ArtificialIntelligencePositionData";
 import Bonuses from "./Bonuses";
+import NormalizedTime from "../../../../lib/normalizedTime/NormalizedTime";
 
 export default class Players {
 	scene: MainScene;
@@ -20,7 +20,7 @@ export default class Players {
 	gameData: GameData;
 	gameConfiguration: GameConfiguration;
 	streamBundler: StreamBundler;
-	serverNormalizedTime: ServerNormalizedTime;
+	normalizedTime: NormalizedTime;
 	animations: Animations;
 	level: Level;
 	artificialIntelligence: ArtificialIntelligence;
@@ -48,7 +48,7 @@ export default class Players {
 		gameData: GameData,
 		gameConfiguration: GameConfiguration,
 		streamBundler: StreamBundler,
-		serverNormalizedTime: ServerNormalizedTime,
+		normalizedTime: NormalizedTime,
 		animations: Animations,
 		level: Level,
 		artificialIntelligence: ArtificialIntelligence
@@ -58,7 +58,7 @@ export default class Players {
 		this.gameData = gameData;
 		this.gameConfiguration = gameConfiguration;
 		this.streamBundler = streamBundler;
-		this.serverNormalizedTime = serverNormalizedTime;
+		this.normalizedTime = normalizedTime;
 		this.animations = animations;
 		this.level = level;
 		this.artificialIntelligence = artificialIntelligence;
@@ -377,7 +377,7 @@ export default class Players {
 			this.scene,
 			this.gameData,
 			this.gameConfiguration,
-			this.serverNormalizedTime,
+			this.normalizedTime,
 			this.animations,
 			this.level,
 			key,
@@ -658,7 +658,7 @@ export default class Players {
 			this.scene.showBallHitCount(x, y, teamNumberBallHits, color);
 
 			//Send to client
-			const serverTimestamp = this.serverNormalizedTime.getServerTimestamp();
+			const serverTimestamp = this.normalizedTime.getTime();
 			this.streamBundler.emitStream(
 				'showBallHitCount-' + this.gameData.gameId,
 				{
