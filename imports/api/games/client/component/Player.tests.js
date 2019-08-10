@@ -146,7 +146,7 @@ describe('Player#isInFrontOfPlayer', function() {
 	const gameConfiguration = new StaticGameConfiguration();
 	const gameData = new StaticGameData();
 	const streamBundler = new CountStreamBundler();
-	const normalizedTime = new NormalizedTime();
+	const normalizedTime = new StaticNormalizedTime();
 	const skinManager = SkinManager.withDefaults(gameConfiguration);
 	const serverAdapter = new NullServerAdapter();
 
@@ -237,7 +237,7 @@ describe('Player#move', function() {
 	const gameConfiguration = new StaticGameConfiguration();
 	const gameData = new StaticGameData();
 	const streamBundler = new CountStreamBundler();
-	const normalizedTime = new NormalizedTime();
+	const normalizedTime = new StaticNormalizedTime();
 	const skinManager = SkinManager.withDefaults(gameConfiguration);
 	const serverAdapter = new NullServerAdapter();
 
