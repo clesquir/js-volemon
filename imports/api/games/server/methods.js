@@ -5,6 +5,7 @@ import {
 	HOST_SIDE,
 	isTwoVersusTwoGameMode
 } from '/imports/api/games/constants.js';
+import GameStatusChanged from '/imports/api/games/events/GameStatusChanged';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {Games} from '/imports/api/games/games.js';
 import {MatchMakers} from '/imports/api/games/matchMakers.js';
@@ -219,6 +220,8 @@ Meteor.methods({
 			if (activePlayers.count() === 0) {
 				//Stop streaming
 				GameInitiatorCollection.unset(gameId);
+			} else {
+				GameInitiatorCollection.stop(gameId);
 			}
 		}
 	},
@@ -333,6 +336,8 @@ Meteor.methods({
 		EventPublisher.publish(new PointTaken(game._id, pointDuration, pointScoredByHost, hostPoints, clientPoints));
 
 		if (isGameFinished) {
+			EventPublisher.publish(new GameStatusChanged(game._id, GAME_STATUS_FINISHED));
+
 			const winnerUserIds = [];
 			const loserUserIds = [];
 			switch (columnName) {
@@ -361,6 +366,8 @@ Meteor.methods({
 			}
 
 			finishGame(game._id, winnerUserIds, loserUserIds);
+
+			GameInitiatorCollection.stop(gameId);
 		}
 	},
 

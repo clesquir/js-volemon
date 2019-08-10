@@ -178,4 +178,12 @@ export default class StaticGameData implements GameData {
 
 	updateActiveBonuses(activeBonuses) {
 	}
+
+	matchTimeElapsed(): number {
+		return 0;
+	}
+
+	pointTimeElapsed(): number {
+		return 0;
+	}
 }

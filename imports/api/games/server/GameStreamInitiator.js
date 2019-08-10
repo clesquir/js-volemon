@@ -1,6 +1,5 @@
 import {startKeepAlive} from '/imports/api/games/server/keepAlive.js';
 import PlayerKilled from '/imports/api/games/events/PlayerKilled.js';
-import {Meteor} from 'meteor/meteor';
 import {EventPublisher} from '/imports/lib/EventPublisher.js';
 
 export default class GameStreamInitiator {
@@ -32,7 +31,7 @@ export default class GameStreamInitiator {
 		startKeepAlive(this.gameId, this.stream);
 	}
 
-	stop() {
+	destroy() {
 		this.stream.off('cheer-' + this.gameId);
 		this.stream.off('reaction-' + this.gameId);
 		this.stream.off('sendBundledData-' + this.gameId);

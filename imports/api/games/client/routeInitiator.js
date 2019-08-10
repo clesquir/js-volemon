@@ -1,8 +1,12 @@
+import ClientGameInitiator from '/imports/api/games/client/ClientGameInitiator';
+import SkinManager from '/imports/api/games/client/component/SkinManager';
 import {destroyConnectionIndicator, updateConnectionIndicator} from '/imports/api/games/client/connectionIndicator';
 import GameCheer from '/imports/api/games/client/GameCheer';
+import CollectionObserverGameDataUpdater from '/imports/api/games/client/gameDataUpdater/CollectionObserverGameDataUpdater';
 import GameNotifier from '/imports/api/games/client/GameNotifier';
 import GameReaction from '/imports/api/games/client/GameReaction';
 import GameRematch from '/imports/api/games/client/GameRematch';
+import GameTimer from '/imports/api/games/client/GameTimer';
 import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime';
 import GameStreamBundler from '/imports/api/games/client/streamBundler/GameStreamBundler';
 import NullStreamBundler from '/imports/api/games/client/streamBundler/NullStreamBundler';
@@ -21,8 +25,6 @@ import CustomKeymaps from '/imports/lib/keymaps/CustomKeymaps';
 import ClientStreamFactory from '/imports/lib/stream/client/ClientStreamFactory';
 import StreamConfiguration from '/imports/lib/stream/StreamConfiguration';
 import {onMobileAndTablet} from '/imports/lib/utils';
-import ClientGameInitiator from '/imports/api/games/client/ClientGameInitiator';
-import SkinManager from '/imports/api/games/client/component/SkinManager';
 import {Meteor} from 'meteor/meteor';
 import {Session} from 'meteor/session';
 
@@ -36,6 +38,10 @@ export let serverNormalizedTime = null;
 let stream = null;
 /** @type {ClientGameInitiator}|null */
 let gameInitiator = null;
+/** @type {GameDataUpdater}|null */
+let gameDataUpdater = null;
+/** @type {GameTimer}|null */
+let gameTimer = null;
 /** @type {GameRematch}|null */
 let gameRematch = null;
 /** @type {GameReaction} */
@@ -99,11 +105,14 @@ const initGame = function(gameId) {
 	//Destroy if existent
 	destroyGame(gameId);
 
+	serverNormalizedTime = new ServerNormalizedTime();
+	serverNormalizedTime.init();
+
 	stream = ClientStreamFactory.fromConfiguration(StreamConfiguration.alias());
 	stream.init();
 	stream.connect(gameId);
 
-	gameData = new CollectionGameData(gameId, Meteor.userId());
+	gameData = new CollectionGameData(gameId, serverNormalizedTime, Meteor.userId());
 	gameData.init();
 
 	const gameConfiguration = new DefaultGameConfiguration(gameId);
@@ -129,9 +138,6 @@ const initGame = function(gameId) {
 	);
 	skinManager.init();
 
-	serverNormalizedTime = new ServerNormalizedTime();
-	serverNormalizedTime.init();
-
 	gameInitiator = new ClientGameInitiator(
 		gameId,
 		deviceController,
@@ -144,6 +150,12 @@ const initGame = function(gameId) {
 		new GameNotifier()
 	);
 	gameInitiator.init();
+
+	gameDataUpdater = new CollectionObserverGameDataUpdater(gameData);
+	gameDataUpdater.init();
+
+	gameTimer = new GameTimer(gameData);
+	gameTimer.init();
 
 	gameRematch = new GameRematch(gameId, gameData);
 	gameRematch.init();
@@ -171,6 +183,14 @@ const destroyGame = function(gameId) {
 		if (gameInitiator) {
 			gameInitiator.stop();
 			gameInitiator = null;
+		}
+		if (gameDataUpdater) {
+			gameDataUpdater.stop();
+			gameDataUpdater = null;
+		}
+		if (gameTimer) {
+			gameTimer.stop();
+			gameTimer = null;
 		}
 		if (gameRematch) {
 			gameRematch.stop();

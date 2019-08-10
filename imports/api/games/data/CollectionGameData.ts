@@ -12,9 +12,12 @@ import {Tournaments} from '../../tournaments/tournaments';
 import GameData from "./GameData";
 import {Players} from "../players";
 import {Games} from "../games";
+import {serverNormalizedTime} from "../client/routeInitiator";
+import ServerNormalizedTime from "../client/ServerNormalizedTime";
 
 export default class CollectionGameData implements GameData {
 	gameId: string;
+	private readonly serverNormalizedTime: ServerNormalizedTime;
 	currentUserId: string;
 	_activeBonuses: any[] = [];
 	robots: {[id: string]: {id: string}} = {};
@@ -46,8 +49,13 @@ export default class CollectionGameData implements GameData {
 	lastPointAt: number;
 	lastPointTaken: string;
 
-	constructor(gameId: string, currentUserId: string) {
+	constructor(
+		gameId: string,
+		serverNormalizedTime: ServerNormalizedTime,
+		currentUserId: string
+	) {
 		this.gameId = gameId;
+		this.serverNormalizedTime = serverNormalizedTime;
 		this.currentUserId = currentUserId;
 	}
 
@@ -241,6 +249,14 @@ export default class CollectionGameData implements GameData {
 
 	updateActiveBonuses(activeBonuses) {
 		this._activeBonuses = activeBonuses;
+	}
+
+	matchTimeElapsed(): number {
+		return this.serverNormalizedTime.getServerTimestamp() - this.startedAt;
+	}
+
+	pointTimeElapsed(): number {
+		return this.serverNormalizedTime.getServerTimestamp() - this.lastPointAt;
 	}
 
 	private gamePlayerFromKey(playerKey: string) {

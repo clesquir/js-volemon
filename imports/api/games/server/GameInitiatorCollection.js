@@ -6,9 +6,15 @@ export default class GameInitiatorCollection {
 		return gameInitiators;
 	}
 
-	static unset(gameId) {
+	static stop(gameId) {
 		if (gameInitiators[gameId]) {
 			gameInitiators[gameId].stop();
+		}
+	}
+
+	static unset(gameId) {
+		if (gameInitiators[gameId]) {
+			gameInitiators[gameId].destroy();
 			delete gameInitiators[gameId];
 		}
 	}

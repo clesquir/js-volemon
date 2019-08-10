@@ -87,4 +87,8 @@ export default interface GameData {
 	updateStatus(status);
 
 	updateActiveBonuses(activeBonuses);
+
+	matchTimeElapsed(): number;
+
+	pointTimeElapsed(): number;
 }

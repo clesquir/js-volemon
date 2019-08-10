@@ -30,8 +30,12 @@ export default class ServerGameInitiator {
 	}
 
 	stop() {
-		this.gameStreamInitiator.stop();
-		this.achievementListeners.stop();
 		this.replayPersister.stop();
+	}
+
+	destroy() {
+		this.gameStreamInitiator.destroy();
+		this.achievementListeners.destroy();
+		this.replayPersister.destroy();
 	}
 }

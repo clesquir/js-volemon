@@ -1,3 +1,4 @@
+import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {PLAYER_DEFAULT_SHAPE, PLAYER_SHAPE_CROWN, PLAYER_SHAPE_RECTANGLE} from '/imports/api/games/shapeConstants.js';
@@ -23,7 +24,7 @@ describe('CollectionGameData#getPlayerShapeFromKey', function() {
 		const gameId = Random.id(5);
 		Games.insert({_id: gameId, players: []});
 
-		const gameData = new CollectionGameData(gameId, Random.id(5));
+		const gameData = new CollectionGameData(gameId, new ServerNormalizedTime(), Random.id(5));
 		gameData.init();
 		assert.strictEqual(PLAYER_DEFAULT_SHAPE, gameData.getPlayerShapeFromKey('player1'));
 	});
@@ -32,7 +33,7 @@ describe('CollectionGameData#getPlayerShapeFromKey', function() {
 		const gameId = Random.id(5);
 		Games.insert({_id: gameId, players: []});
 
-		const gameData = new CollectionGameData(gameId, Random.id(5));
+		const gameData = new CollectionGameData(gameId, new ServerNormalizedTime(), Random.id(5));
 		gameData.init();
 		assert.strictEqual(PLAYER_DEFAULT_SHAPE, gameData.getPlayerShapeFromKey('player2'));
 	});
@@ -47,7 +48,7 @@ describe('CollectionGameData#getPlayerShapeFromKey', function() {
 			userId: createdByUserId
 		});
 
-		const gameData = new CollectionGameData(gameId, Random.id(5));
+		const gameData = new CollectionGameData(gameId, new ServerNormalizedTime(), Random.id(5));
 		gameData.init();
 		assert.strictEqual(PLAYER_SHAPE_RECTANGLE, gameData.getPlayerShapeFromKey('player1'));
 	});
@@ -57,7 +58,7 @@ describe('CollectionGameData#getPlayerShapeFromKey', function() {
 		Games.insert({_id: gameId, createdBy: 1, players: [{id: 1, shape: PLAYER_SHAPE_CROWN}, {id: 2, shape: PLAYER_SHAPE_RECTANGLE}]});
 		Players.insert({_id: Random.id(5), gameId: gameId, userId: 2});
 
-		const gameData = new CollectionGameData(gameId, Random.id(5));
+		const gameData = new CollectionGameData(gameId, new ServerNormalizedTime(), Random.id(5));
 		gameData.init();
 		assert.strictEqual(PLAYER_SHAPE_RECTANGLE, gameData.getPlayerShapeFromKey('player2'));
 	});

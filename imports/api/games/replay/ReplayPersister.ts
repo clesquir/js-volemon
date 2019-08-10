@@ -1,6 +1,14 @@
 import {Meteor} from 'meteor/meteor';
 import {Replays} from "../replays";
 import Stream from "../../../lib/stream/Stream";
+import {EventPublisher} from "../../../lib/EventPublisher";
+import GameStatusChanged from "../events/GameStatusChanged";
+import PointTaken from "../events/PointTaken";
+
+export enum ReplayType {
+	STREAM,
+	EVENT_PUBLISHER,
+}
 
 export default class ReplayPersister {
 	private readonly gameId: string;
@@ -14,13 +22,15 @@ export default class ReplayPersister {
 
 	init() {
 		this.replayRows = [];
-		this.collectEvent('showBallHitPoint');
-		this.collectEvent('showBallHitCount');
-		this.collectEvent('activateBonus');
-		this.collectEvent('killPlayer');
-		this.collectEvent('sendBundledData');
-		this.collectEvent('reaction');
-		this.collectEvent('cheer');
+		this.collectStreamEvent('showBallHitPoint');
+		this.collectStreamEvent('showBallHitCount');
+		this.collectStreamEvent('activateBonus');
+		this.collectStreamEvent('killPlayer');
+		this.collectStreamEvent('sendBundledData');
+		this.collectStreamEvent('reaction');
+		this.collectStreamEvent('cheer');
+		EventPublisher.on(GameStatusChanged.prototype.constructor.name, this.collectEventPublisherEvent, this);
+		EventPublisher.on(PointTaken.prototype.constructor.name, this.collectEventPublisherEvent, this);
 	}
 
 	start() {
@@ -34,7 +44,21 @@ export default class ReplayPersister {
 		this.replayRows = [];
 	}
 
-	private collectEvent(eventName: string) {
+	destroy() {
+		this.stop();
+
+		EventPublisher.off(PointTaken.prototype.constructor.name, this.collectEventPublisherEvent, this);
+		EventPublisher.off(GameStatusChanged.prototype.constructor.name, this.collectEventPublisherEvent, this);
+		this.stream.off('cheer-' + this.gameId);
+		this.stream.off('reaction-' + this.gameId);
+		this.stream.off('sendBundledData-' + this.gameId);
+		this.stream.off('killPlayer-' + this.gameId);
+		this.stream.off('activateBonus-' + this.gameId);
+		this.stream.off('showBallHitCount-' + this.gameId);
+		this.stream.off('showBallHitPoint-' + this.gameId);
+	}
+
+	private collectStreamEvent(eventName: string) {
 		this.stream.on(
 			eventName + '-' + this.gameId,
 			Meteor.bindEnvironment(
@@ -43,12 +67,25 @@ export default class ReplayPersister {
 						{
 							gameId: this.gameId,
 							timestamp: data.timestamp,
+							type: ReplayType.STREAM,
 							eventName: eventName + '-' + this.gameId,
 							data: data
 						}
 					);
 				}
 			)
+		);
+	}
+
+	private collectEventPublisherEvent(event) {
+		this.replayRows.push(
+			{
+				gameId: this.gameId,
+				timestamp: (new Date()).getTime(),
+				type: ReplayType.EVENT_PUBLISHER,
+				eventName: event.constructor.name,
+				event: event
+			}
 		);
 	}
 }

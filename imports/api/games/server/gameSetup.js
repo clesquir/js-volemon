@@ -1,6 +1,7 @@
 import DefaultGameConfiguration from '/imports/api/games/configuration/DefaultGameConfiguration';
 import {isOneVersusOneGameMode, isTwoVersusTwoGameMode, ONE_VS_ONE_GAME_MODE} from '/imports/api/games/constants';
 import GameForfeited from '/imports/api/games/events/GameForfeited.js';
+import GameStatusChanged from '/imports/api/games/events/GameStatusChanged';
 import GameTimedOut from '/imports/api/games/events/GameTimedOut.js';
 import GameOverrideFactory from '/imports/api/games/GameOverrideFactory';
 import {Games} from '/imports/api/games/games.js';
@@ -214,6 +215,7 @@ export const startGame = function(gameId, gameInitiators) {
 	};
 
 	Games.update({_id: gameId}, {$set: data});
+	EventPublisher.publish(new GameStatusChanged(game._id, GAME_STATUS_STARTED));
 
 	if (gameInitiators[gameId]) {
 		gameInitiators[gameId].start();
