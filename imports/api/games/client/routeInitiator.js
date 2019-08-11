@@ -32,9 +32,9 @@ import {Session} from 'meteor/session';
 /** @type {DeviceController} */
 let deviceController = null;
 /** @type {GameData} */
-export let gameData = null;
+let gameData = null;
 /** @type {NormalizedTime} */
-export let normalizedTime = null;
+let normalizedTime = null;
 /** @type {Stream} */
 let stream = null;
 /** @type {ClientGameInitiator}|null */
@@ -106,7 +106,7 @@ const initGame = function(gameId) {
 	//Destroy if existent
 	destroyGame(gameId);
 
-	normalizedTime = new ClientServerOffsetNormalizedTime();
+	normalizedTime = ClientServerOffsetNormalizedTime.get();
 	normalizedTime.init();
 
 	stream = ClientStreamFactory.fromConfiguration(StreamConfiguration.alias());

@@ -10,4 +10,8 @@ export default class StaticNormalizedTime implements NormalizedTime {
 	getTime(): number {
 		return 0;
 	}
+
+	getOffset(): number {
+		return 0;
+	}
 }

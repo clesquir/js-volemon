@@ -38,7 +38,7 @@ export default class Dev {
 		this.skinManager = SkinManager.withDefaults(this.gameConfiguration);
 		this.skinManager.init();
 		this.streamBundler = new NullStreamBundler();
-		this.normalizedTime = new ClientServerOffsetNormalizedTime();
+		this.normalizedTime = ClientServerOffsetNormalizedTime.get();
 		this.normalizedTime.init();
 		this.serverAdapter = new NullServerAdapter();
 	}

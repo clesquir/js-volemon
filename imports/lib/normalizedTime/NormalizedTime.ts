@@ -4,4 +4,6 @@ export default interface NormalizedTime {
 	stop();
 
 	getTime(): number;
+
+	getOffset(): number;
 }

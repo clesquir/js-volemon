@@ -1,7 +1,8 @@
-import {gameData, normalizedTime} from '/imports/api/games/client/routeInitiator.js';
 import {isTwoVersusTwoGameMode} from '/imports/api/games/constants.js';
+import {isDeucePoint, isMatchPoint} from '/imports/api/games/utils';
 import {isGamePlayer, isGameStatusStarted} from '/imports/api/games/utils.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
+import ClientServerOffsetNormalizedTime from '/imports/lib/normalizedTime/ClientServerOffsetNormalizedTime';
 import {onMobileAndTablet, padNumber} from '/imports/lib/utils.js';
 import {Meteor} from 'meteor/meteor';
 import {Session} from 'meteor/session';
@@ -105,19 +106,16 @@ Template.gameCanvas.helpers({
 				break;
 		}
 
-		let serverOffset = '-';
-		if (normalizedTime) {
-			serverOffset = normalizedTime.serverOffset + 'ms';
-		}
+		const serverOffset = ClientServerOffsetNormalizedTime.get().getOffset() + 'ms';
 
 		return webRTCUsage + '<br />' + 'Server offset: ' + serverOffset;
 	},
 
 	classForMatchPoint() {
-		if (gameData && gameData.isGameStatusStarted()) {
-			if (gameData.isDeucePoint()) {
+		if (isGameStatusStarted(this.game.status)) {
+			if (isDeucePoint(this.game.hostPoints, this.game.clientPoints, this.game.maximumPoints)) {
 				return 'deuce-point-frame';
-			} else if (gameData.isMatchPoint()) {
+			} else if (isMatchPoint(this.game.hostPoints, this.game.clientPoints, this.game.maximumPoints)) {
 				return 'match-point-frame';
 			}
 		}

@@ -37,9 +37,12 @@ export default class ReplayPersister {
 	}
 
 	stop() {
-		for (let replayRow of this.replayRows) {
-			Replays.insert(replayRow);
-		}
+		Replays.insert(
+			{
+				gameId: this.gameId,
+				rows: this.replayRows
+			}
+		);
 
 		this.replayRows = [];
 	}
@@ -65,7 +68,6 @@ export default class ReplayPersister {
 				(data) => {
 					this.replayRows.push(
 						{
-							gameId: this.gameId,
 							timestamp: data.timestamp,
 							type: ReplayType.STREAM,
 							eventName: eventName + '-' + this.gameId,
@@ -80,7 +82,6 @@ export default class ReplayPersister {
 	private collectEventPublisherEvent(event) {
 		this.replayRows.push(
 			{
-				gameId: this.gameId,
 				timestamp: (new Date()).getTime(),
 				type: ReplayType.EVENT_PUBLISHER,
 				eventName: event.constructor.name,
