@@ -6,6 +6,7 @@ import GameStatusChanged from "../events/GameStatusChanged";
 import PointTaken from "../events/PointTaken";
 import BonusCaught from "../events/BonusCaught";
 import BonusRemoved from "../events/BonusRemoved";
+import {Games} from "../games";
 
 export enum ReplayType {
 	STREAM,
@@ -62,6 +63,10 @@ export default class ReplayPersister {
 				rows: this.replayRows
 			}
 		);
+
+		if (this.replayRows.length) {
+			Games.update({_id: this.gameId}, {$set: {hasReplays: true}});
+		}
 
 		this.replayRows = [];
 	}

@@ -103,6 +103,13 @@
 
 					{{#if showActionAfterGame}}
 						<strong>What do you want to do next?</strong>
+						{{#if hasReplays}}
+							{{#if isTournament}}
+								<div><a href="{{pathFor 'tournamentGameReplay' tournamentId=this.game.tournamentId gameId=this.game._id}}" class="clickable-link">Watch the replay</a></div>
+							{{else}}
+								<div><a href="{{pathFor 'gameReplay' _id=this.game._id}}" class="clickable-link">Watch the replay</a></div>
+							{{/if}}
+						{{/if}}
 						{{#if showAskForRematch}}
 							<div><a href="#" class="clickable-link" data-action="game-rematch">Ask for a rematch</a></div>
 						{{/if}}

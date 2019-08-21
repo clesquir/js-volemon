@@ -199,6 +199,10 @@ Template.afterGame.helpers({
 		);
 	},
 
+	hasReplays() {
+		return this.game.hasReplays === true;
+	},
+
 	showAskForRematch() {
 		const players = Players.find({gameId: Session.get('game')});
 

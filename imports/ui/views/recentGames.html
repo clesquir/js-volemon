@@ -11,6 +11,13 @@
 						{{/if}}
 					</div>
 				</div>
+				<div class="recent-games-action-buttons">
+					{{#if hasReplays}}
+						<a class="action-button" data-action="watch-game-replay" data-game-id="{{_id}}" data-tooltip="Watch the replay">
+							<i class="fa fa-film"></i>
+						</a>
+					{{/if}}
+				</div>
 				<div class="card-row card-row-top">
 					<div class="card-cell card-title card-cell-ellipsis">{{{hostNames}}}</div>
 					<div class="card-cell card-title card-cell-ellipsis">{{{clientNames}}}</div>

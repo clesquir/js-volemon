@@ -38,3 +38,19 @@
 		filter: invert(100%);
 	}
 }
+
+.recent-game-item {
+	position: relative;
+
+	.recent-games-action-buttons {
+		position: absolute;
+		right: 7px;
+		top: 5px;
+		font-size: 15px;
+		background: lighten(@table-header-color, 22.5%);
+
+		a + a {
+			margin-left: 2px;
+		}
+	}
+}
