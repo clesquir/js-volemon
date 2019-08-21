@@ -2,7 +2,7 @@ import {ACHIEVEMENT_RAKSHASA} from '/imports/api/achievements/constants.js';
 import Rakshasa from '/imports/api/achievements/server/listeners/Rakshasa.js';
 import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
 import {BONUS_SHAPE_SHIFT} from '/imports/api/games/bonusConstants'
-import BonusCaught from '/imports/api/games/events/BonusCaught.js';
+import BonusCaught from '/imports/api/games/events/BonusCaught';
 import {Games} from '/imports/api/games/games.js';
 import {assert} from 'chai';
 import StubCollections from 'meteor/hwillson:stub-collections';

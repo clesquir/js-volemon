@@ -1,4 +1,5 @@
 import {isTwoVersusTwoGameMode} from '/imports/api/games/constants.js';
+import CurrentGame from '/imports/api/games/CurrentGame';
 import {isDeucePoint, isMatchPoint} from '/imports/api/games/utils';
 import {isGamePlayer, isGameStatusStarted} from '/imports/api/games/utils.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
@@ -13,7 +14,7 @@ const he = require('he');
 
 Template.gameCanvas.helpers({
 	hostPoints: function() {
-		return padNumber(this.game.hostPoints);
+		return padNumber(CurrentGame.getHostPoints());
 	},
 
 	hostNames: function() {
@@ -26,7 +27,7 @@ Template.gameCanvas.helpers({
 	},
 
 	clientPoints: function() {
-		return padNumber(this.game.clientPoints);
+		return padNumber(CurrentGame.getClientPoints());
 	},
 
 	clientNames: function() {
@@ -47,7 +48,7 @@ Template.gameCanvas.helpers({
 	},
 
 	hasViewer: function() {
-		return this.game.viewers.length > 0;
+		return !CurrentGame.getIsReplay() && this.game.viewers.length > 0;
 	},
 
 	viewers: function() {
@@ -65,11 +66,11 @@ Template.gameCanvas.helpers({
 	},
 
 	isGamePlayer: function() {
-		return isGamePlayer(Session.get('game'));
+		return !CurrentGame.getIsReplay() && isGamePlayer(Session.get('game'));
 	},
 
 	getFinishedStatusClass: function() {
-		if (!isGameStatusStarted(this.game.status)) {
+		if (!isGameStatusStarted(CurrentGame.getStatus())) {
 			return 'finished-game-status';
 		}
 	},
@@ -85,7 +86,7 @@ Template.gameCanvas.helpers({
 	},
 
 	showAfterGame() {
-		return !isGameStatusStarted(this.game.status);
+		return !isGameStatusStarted(CurrentGame.getStatus());
 	},
 
 	connectionClass() {
@@ -112,10 +113,10 @@ Template.gameCanvas.helpers({
 	},
 
 	classForMatchPoint() {
-		if (isGameStatusStarted(this.game.status)) {
-			if (isDeucePoint(this.game.hostPoints, this.game.clientPoints, this.game.maximumPoints)) {
+		if (isGameStatusStarted(CurrentGame.getStatus())) {
+			if (isDeucePoint(CurrentGame.getHostPoints(), CurrentGame.getClientPoints(), this.game.maximumPoints)) {
 				return 'deuce-point-frame';
-			} else if (isMatchPoint(this.game.hostPoints, this.game.clientPoints, this.game.maximumPoints)) {
+			} else if (isMatchPoint(CurrentGame.getHostPoints(), CurrentGame.getClientPoints(), this.game.maximumPoints)) {
 				return 'match-point-frame';
 			}
 		}

@@ -1,4 +1,4 @@
-import {onRenderGameController, onStopGameController} from '/imports/api/games/client/routeInitiator.js';
+import RouteInitiator from '/imports/api/games/client/RouteInitiator';
 import {isTwoVersusTwoGameMode} from '/imports/api/games/constants';
 import {EloScores} from '/imports/api/games/eloscores.js';
 import {Games} from '/imports/api/games/games.js';
@@ -42,10 +42,12 @@ export const GameController = RouteController.extend({
 		this.render('game');
 
 		Template.game.rendered = function() {
-			onRenderGameController();
+			RouteInitiator.get().onControllerRender(Session.get('game'));
 
 			Template.game.rendered = null;
 		};
 	},
-	onStop: onStopGameController
+	onStop: function() {
+		RouteInitiator.get().onControllerStop(this);
+	}
 });

@@ -1,8 +1,8 @@
 import {ACHIEVEMENT_I_WAS_THERE_WAITING} from '/imports/api/achievements/constants.js';
 import {BONUS_FREEZE_MONSTER} from '/imports/api/games/bonusConstants';
 import {isTwoVersusTwoGameMode} from '/imports/api/games/constants';
-import BonusCaught from '/imports/api/games/events/BonusCaught.js';
-import BonusRemoved from '/imports/api/games/events/BonusRemoved.js';
+import BonusCaught from '/imports/api/games/events/BonusCaught';
+import BonusRemoved from '/imports/api/games/events/BonusRemoved';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
 import GameListener from './GameListener';
 

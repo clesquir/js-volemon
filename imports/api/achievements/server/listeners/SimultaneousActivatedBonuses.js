@@ -1,7 +1,7 @@
 import GameListener from './GameListener';
 import {ACHIEVEMENT_SIMULTANEOUS_ACTIVATED_BONUSES} from '/imports/api/achievements/constants.js';
-import BonusCaught from '/imports/api/games/events/BonusCaught.js';
-import BonusRemoved from '/imports/api/games/events/BonusRemoved.js';
+import BonusCaught from '/imports/api/games/events/BonusCaught';
+import BonusRemoved from '/imports/api/games/events/BonusRemoved';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
 
 export default class SimultaneousActivatedBonuses extends GameListener {

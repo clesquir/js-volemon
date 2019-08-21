@@ -86,6 +86,12 @@ export default interface GameData {
 
 	updateStatus(status);
 
+	addToActiveBonuses(activeBonus: any);
+
+	removeFromActiveBonuses(identifier: string);
+
+	removeFromActiveBonuses(identifier: string);
+
 	updateActiveBonuses(activeBonuses);
 
 	matchTimeElapsed(): number;

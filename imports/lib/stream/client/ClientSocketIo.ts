@@ -1,13 +1,16 @@
 import {Meteor} from 'meteor/meteor';
-import Stream from '/imports/lib/stream/Stream.js';
-import ClientP2P from '/imports/lib/p2p/client/ClientP2P.js';
-import SocketIo from '/imports/lib/socket/SocketIo.js';
+import Stream from "../Stream";
+import ClientP2P from "../../p2p/client/ClientP2P";
+import SocketIo from "../../socket/SocketIo";
 
-export default class ClientSocketIo extends Stream {
-	/**
-	 * @param {string} channel
-	 */
-	connect(channel) {
+export default class ClientSocketIo implements Stream {
+	private socketAdapter;
+	private p2pAdapter;
+
+	init() {
+	}
+
+	connect(channel: string) {
 		// Socket io client
 		const PORT = window.socketPort || 8080;
 		let url = `http://localhost:${PORT}`;
@@ -26,35 +29,22 @@ export default class ClientSocketIo extends Stream {
 		});
 	}
 
-	/**
-	 * @param {string} channel
-	 */
-	disconnect(channel) {
+	disconnect(channel: string) {
 		if (this.supportsP2P()) {
 			this.p2pAdapter.disconnect();
 		}
 		this.socketAdapter.disconnect();
 	}
 
-	/**
-	 * @return {boolean}
-	 */
-	connectedToP2P() {
+	connectedToP2P(): boolean {
 		return this.p2pAdapter.connectedToP2P();
 	}
 
-	/**
-	 * @return {boolean}
-	 */
-	supportsP2P() {
+	supportsP2P(): boolean {
 		return this.p2pAdapter.supportsP2P();
 	}
 
-	/**
-	 * @param {string} eventName
-	 * @param {*} payload
-	 */
-	emit(eventName, payload) {
+	emit(eventName: string, payload) {
 		payload.fromSocketId = this.socketAdapter.id;
 
 		if (this.supportsP2P()) {
@@ -66,11 +56,10 @@ export default class ClientSocketIo extends Stream {
 		this.socketAdapter.emit(eventName, payload);
 	}
 
-	/**
-	 * @param {string} eventName
-	 * @param {Function} callback
-	 */
-	on(eventName, callback) {
+	broadcastOnEvent(eventName: string) {
+	}
+
+	on(eventName: string, callback: Function) {
 		if (this.supportsP2P()) {
 			this.p2pAdapter.on(eventName, callback);
 		} else {
@@ -78,10 +67,7 @@ export default class ClientSocketIo extends Stream {
 		}
 	}
 
-	/**
-	 * @param {string} eventName Event name to remove listeners on
-	 */
-	off(eventName) {
+	off(eventName: string) {
 		if (this.supportsP2P()) {
 			this.p2pAdapter.off(eventName);
 		}

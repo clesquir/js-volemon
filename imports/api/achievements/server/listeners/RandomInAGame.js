@@ -1,6 +1,6 @@
 import GameListener from './GameListener';
 import {ACHIEVEMENT_RANDOM_IN_A_GAME} from '/imports/api/achievements/constants.js';
-import BonusCaught from '/imports/api/games/events/BonusCaught.js';
+import BonusCaught from '/imports/api/games/events/BonusCaught';
 import {BONUS_RANDOM} from '/imports/api/games/bonusConstants';
 
 export default class RandomInAGame extends GameListener {

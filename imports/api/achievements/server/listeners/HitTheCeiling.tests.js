@@ -1,7 +1,11 @@
 import {ACHIEVEMENT_HIT_THE_CEILING} from '/imports/api/achievements/constants';
 import HitTheCeiling from '/imports/api/achievements/server/listeners/HitTheCeiling';
 import {UserAchievements} from '/imports/api/achievements/userAchievements';
-import {BONUS_BIG_JUMP_MONSTER, BONUS_LOW_GRAVITY, BONUS_SMALL_MONSTER} from '/imports/api/games/bonusConstants';
+import {
+	BONUS_BIG_JUMP_MONSTER,
+	BONUS_LOW_GRAVITY,
+	BONUS_SMALL_MONSTER
+} from '/imports/api/games/bonusConstants';
 import BonusCaught from '/imports/api/games/events/BonusCaught';
 import BonusRemoved from '/imports/api/games/events/BonusRemoved';
 import PointTaken from '/imports/api/games/events/PointTaken';
@@ -80,23 +84,23 @@ describe('AchievementListener#HitTheCeiling', function() {
 		assert.equal(0, UserAchievements.find().count());
 
 		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, {activatedBonusClass: BONUS_SMALL_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_SMALL_MONSTER, activatorPlayerKey: 'player1'}));
-		listener.onBonusRemoved(new BonusRemoved(gameId, BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER));
+		listener.onBonusRemoved(new BonusRemoved(gameId, Random.id(5), BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER));
 		assert.equal(0, UserAchievements.find().count());
 
 		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, {activatedBonusClass: BONUS_BIG_JUMP_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BIG_JUMP_MONSTER, activatorPlayerKey: 'player1'}));
-		listener.onBonusRemoved(new BonusRemoved(gameId, BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER));
+		listener.onBonusRemoved(new BonusRemoved(gameId, Random.id(5), BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER));
 		assert.equal(0, UserAchievements.find().count());
 
 		listener.onBonusCaught(new BonusCaught(gameId, BONUS_LOW_GRAVITY, {activatedBonusClass: BONUS_LOW_GRAVITY, bonusClass: BONUS_LOW_GRAVITY}));
-		listener.onBonusRemoved(new BonusRemoved(gameId, BONUS_LOW_GRAVITY, 'player1', BONUS_LOW_GRAVITY, 'player1', BONUS_LOW_GRAVITY));
+		listener.onBonusRemoved(new BonusRemoved(gameId, Random.id(5), BONUS_LOW_GRAVITY, 'player1', BONUS_LOW_GRAVITY, 'player1', BONUS_LOW_GRAVITY));
 		assert.equal(0, UserAchievements.find().count());
 
 		listener.onBonusCaught(new BonusCaught(gameId, BONUS_BIG_JUMP_MONSTER, {activatedBonusClass: BONUS_BIG_JUMP_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_BIG_JUMP_MONSTER, activatorPlayerKey: 'player1'}));
-		listener.onBonusRemoved(new BonusRemoved(gameId, BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER));
+		listener.onBonusRemoved(new BonusRemoved(gameId, Random.id(5), BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER, 'player1', BONUS_BIG_JUMP_MONSTER));
 		assert.equal(0, UserAchievements.find().count());
 
 		listener.onBonusCaught(new BonusCaught(gameId, BONUS_SMALL_MONSTER, {activatedBonusClass: BONUS_SMALL_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_SMALL_MONSTER, activatorPlayerKey: 'player1'}));
-		listener.onBonusRemoved(new BonusRemoved(gameId, BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER));
+		listener.onBonusRemoved(new BonusRemoved(gameId, Random.id(5), BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER, 'player1', BONUS_SMALL_MONSTER));
 		assert.equal(0, UserAchievements.find().count());
 	});
 

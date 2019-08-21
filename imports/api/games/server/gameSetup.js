@@ -339,9 +339,11 @@ export const onPlayerQuit = function(player) {
 
 			finishGame(game._id, winnerUserIds, loserUserIds);
 			EventPublisher.publish(new GameForfeited(game._id));
+			EventPublisher.publish(new GameStatusChanged(game._id, GAME_STATUS_FORFEITED));
 		} else if (game.status === GAME_STATUS_STARTED) {
 			Games.update({_id: game._id}, {$set: {status: GAME_STATUS_TIMEOUT}});
 			EventPublisher.publish(new GameTimedOut(game._id));
+			EventPublisher.publish(new GameStatusChanged(game._id, GAME_STATUS_TIMEOUT));
 		}
 	}
 };

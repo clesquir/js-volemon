@@ -11,6 +11,7 @@ import {
 } from '/imports/api/games/client/gameSetup.js';
 import {ONE_VS_COMPUTER_GAME_MODE, ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE} from '/imports/api/games/constants';
 import {isTwoVersusTwoGameMode} from '/imports/api/games/constants.js';
+import CurrentGame from '/imports/api/games/CurrentGame';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import {
@@ -27,9 +28,9 @@ import {playersCanPlayTournament} from '/imports/api/tournaments/utils.js';
 import CardSwitcher from '/imports/lib/client/CardSwitcher.js';
 import ButtonEnabler from '/imports/ui/util/ButtonEnabler.js';
 import {Meteor} from 'meteor/meteor';
-import moment from 'moment';
 import {Session} from 'meteor/session';
 import {Template} from 'meteor/templating';
+import moment from 'moment';
 
 import './afterGame.html';
 
@@ -55,7 +56,7 @@ Template.afterGame.onRendered(function() {
 
 Template.afterGame.helpers({
 	isGamePlayer: function() {
-		return isGamePlayer(Session.get('game'));
+		return !CurrentGame.getIsReplay() && isGamePlayer(Session.get('game'));
 	},
 
 	gameIsFinished: function() {
@@ -184,6 +185,10 @@ Template.afterGame.helpers({
 	},
 
 	showActionAfterGame() {
+		if (CurrentGame.getIsReplay()) {
+			return false;
+		}
+
 		const players = Players.find({gameId: Session.get('game')});
 
 		return (

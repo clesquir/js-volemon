@@ -1,6 +1,6 @@
 import GameListener from './GameListener';
 import {ACHIEVEMENT_NINJA} from '/imports/api/achievements/constants.js';
-import BonusCaught from '/imports/api/games/events/BonusCaught.js';
+import BonusCaught from '/imports/api/games/events/BonusCaught';
 import GameFinished from '/imports/api/games/events/GameFinished.js';
 
 export default class Ninja extends GameListener {

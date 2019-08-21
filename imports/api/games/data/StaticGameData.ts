@@ -176,6 +176,12 @@ export default class StaticGameData implements GameData {
 	updateStatus(status) {
 	}
 
+	addToActiveBonuses(identifier: string) {
+	}
+
+	removeFromActiveBonuses(identifier: string) {
+	}
+
 	updateActiveBonuses(activeBonuses) {
 	}
 

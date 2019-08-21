@@ -6,6 +6,8 @@ import StreamBundler from "../streamBundler/StreamBundler";
 import GameConfiguration from "../../configuration/GameConfiguration";
 import ServerAdapter from "../serverAdapter/ServerAdapter";
 import NormalizedTime from "../../../../lib/normalizedTime/NormalizedTime";
+import {EventPublisher} from "../../../../lib/EventPublisher";
+import GamePlayStateCreated from "../../events/GamePlayStateCreated";
 
 // @ts-ignore
 window.PIXI = require('phaser-ce/build/custom/pixi');
@@ -125,6 +127,7 @@ export class GameBoot {
 			preload: () => {},
 			create: () => {
 				this.mainScene.create.call(this.mainScene);
+				EventPublisher.publish(new GamePlayStateCreated(this.gameData.gameId));
 			},
 			update: () => {
 				this.mainScene.update.call(this.mainScene);

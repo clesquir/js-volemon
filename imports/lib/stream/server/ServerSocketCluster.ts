@@ -1,6 +1,13 @@
-import Stream from '/imports/lib/stream/Stream.js';
+import Stream from "../Stream";
 
-export default class ServerSocketCluster extends Stream {
+export default class ServerSocketCluster implements Stream {
+	private sockets;
+	private broadcastedListeners;
+	private socketBroadcasts;
+	private listeners;
+	private socketCluster;
+	private workerIds: string[];
+
 	init() {
 		this.sockets = {};
 		this.broadcastedListeners = {};
@@ -43,11 +50,21 @@ export default class ServerSocketCluster extends Stream {
 		//p2p needs to be implemented
 	}
 
-	/**
-	 * @param {string} eventName
-	 * @param {*} payload
-	 */
-	emit(eventName, payload) {
+	connect(channel: string) {
+	}
+
+	disconnect(channel: string) {
+	}
+
+	supportsP2P(): boolean {
+		return false;
+	}
+
+	connectedToP2P(): boolean {
+		return false;
+	}
+
+	emit(eventName: string, payload) {
 		this.sendToWorkers(
 			{
 				action: 'emit',
@@ -57,10 +74,7 @@ export default class ServerSocketCluster extends Stream {
 		);
 	}
 
-	/**
-	 * @param {string} eventName
-	 */
-	broadcastOnEvent(eventName) {
+	broadcastOnEvent(eventName: string) {
 		this.sendToWorkers(
 			{
 				action: 'broadcastOnEvent',
@@ -69,11 +83,7 @@ export default class ServerSocketCluster extends Stream {
 		);
 	}
 
-	/**
-	 * @param {string} eventName
-	 * @param {Function} callback
-	 */
-	on(eventName, callback) {
+	on(eventName: string, callback: Function) {
 		if (this.listeners[eventName] === undefined) {
 			this.listeners[eventName] = [];
 		}
@@ -87,10 +97,7 @@ export default class ServerSocketCluster extends Stream {
 		);
 	}
 
-	/**
-	 * @param {string} eventName Event name to remove listeners on
-	 */
-	off(eventName) {
+	off(eventName: string) {
 		this.sendToWorkers(
 			{
 				action: 'off',
@@ -99,7 +106,7 @@ export default class ServerSocketCluster extends Stream {
 		);
 	}
 
-	sendToWorkers(data) {
+	private sendToWorkers(data) {
 		for (let workerId of this.workerIds) {
 			this.socketCluster.sendToWorker(workerId, data);
 		}

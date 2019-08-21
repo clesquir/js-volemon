@@ -13,6 +13,7 @@ import GameData from "./GameData";
 import {Players} from "../players";
 import {Games} from "../games";
 import NormalizedTime from "../../../lib/normalizedTime/NormalizedTime";
+import CurrentGame from "../CurrentGame";
 
 export default class CollectionGameData implements GameData {
 	gameId: string;
@@ -228,10 +229,14 @@ export default class CollectionGameData implements GameData {
 
 	updateHostPoints(hostPoints: number) {
 		this.hostPoints = hostPoints;
+
+		CurrentGame.updateHostPoints(hostPoints);
 	}
 
 	updateClientPoints(clientPoints: number) {
 		this.clientPoints = clientPoints;
+
+		CurrentGame.updateClientPoints(clientPoints);
 	}
 
 	updateLastPointTaken(lastPointTaken: string) {
@@ -244,6 +249,24 @@ export default class CollectionGameData implements GameData {
 
 	updateStatus(status: string) {
 		this.status = status;
+
+		CurrentGame.updateStatus(status);
+	}
+
+	addToActiveBonuses(activeBonus: any) {
+		this.updateActiveBonuses([].concat(this._activeBonuses, activeBonus));
+	}
+
+	removeFromActiveBonuses(identifier: string) {
+		const activeBonuses = [];
+
+		for (let activeBonus of this._activeBonuses) {
+			if (activeBonus.identifier !== identifier) {
+				activeBonuses.push(activeBonus);
+			}
+		}
+
+		this.updateActiveBonuses(activeBonuses);
 	}
 
 	updateActiveBonuses(activeBonuses) {
