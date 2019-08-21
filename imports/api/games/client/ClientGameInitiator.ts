@@ -16,6 +16,7 @@ import {EventPublisher} from "../../../lib/EventPublisher";
 import PointTaken from "../events/PointTaken";
 import GameStatusChanged from "../events/GameStatusChanged";
 import NormalizedTime from "../../../lib/normalizedTime/NormalizedTime";
+import GameReplayStarted from "../events/GameReplayStarted";
 
 export default class ClientGameInitiator {
 	gameId: string;
@@ -64,6 +65,7 @@ export default class ClientGameInitiator {
 			this.createNewGameWhenReady();
 		}
 
+		EventPublisher.on(GameReplayStarted.prototype.constructor.name, this.onGameReplayStarted, this);
 		EventPublisher.on(GameStatusChanged.prototype.constructor.name, this.onGameStatusChanged, this);
 		EventPublisher.on(PointTaken.prototype.constructor.name, this.onPointTaken, this);
 	}
@@ -71,6 +73,7 @@ export default class ClientGameInitiator {
 	stop() {
 		EventPublisher.off(PointTaken.prototype.constructor.name, this.onPointTaken, this);
 		EventPublisher.off(GameStatusChanged.prototype.constructor.name, this.onGameStatusChanged, this);
+		EventPublisher.off(GameReplayStarted.prototype.constructor.name, this.onGameReplayStarted, this);
 
 		if (this.hasActiveGame()) {
 			this.gameBoot.stop();
@@ -125,6 +128,12 @@ export default class ClientGameInitiator {
 		let player = Players.findOne({gameId: this.gameId, userId: Meteor.userId()});
 		if (!player) {
 			Meteor.call('addGameViewer', this.gameId, Meteor.userId());
+		}
+	}
+
+	private onGameReplayStarted() {
+		if (this.hasActiveGame()) {
+			this.mainScene.onGameReplayStarted();
 		}
 	}
 

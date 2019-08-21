@@ -159,6 +159,12 @@ export default class MainScene {
 		this.scaleManager.destroy();
 	}
 
+	onGameReplayStarted() {
+		if (this.gameInitiated) {
+			this.resumeOnTimerEnd();
+		}
+	}
+
 	onPointTaken() {
 		if (this.gameInitiated) {
 			this.lastPointAt = this.normalizedTime.getTime();

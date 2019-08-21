@@ -12,6 +12,7 @@ import {Games} from "../games";
 import BonusCaught from "../events/BonusCaught";
 import BonusRemoved from "../events/BonusRemoved";
 import {GAME_STATUS_STARTED} from "../statusConstants";
+import GameReplayStarted from "../events/GameReplayStarted";
 
 enum ReplayReaderState {
 	STOPPED,
@@ -55,7 +56,7 @@ export default class ReplayReader {
 		const replay = Replays.findOne({gameId: this.gameId});
 
 		this.restartState();
-		EventPublisher.publish(new PointTaken(this.gameId, 0, false, 0, 0));
+		EventPublisher.publish(new GameReplayStarted(this.gameId));
 
 		if (replay && replay.rows.length > 0) {
 			this.rows = replay.rows;

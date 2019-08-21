@@ -324,6 +324,10 @@ Meteor.methods({
 
 		Games.update({_id: game._id}, {$set: data});
 
+		if (isGameFinished) {
+			EventPublisher.publish(new GameStatusChanged(game._id, GAME_STATUS_FINISHED));
+		}
+
 		let hostPoints = game.hostPoints;
 		if (data[HOST_POINTS_COLUMN] !== undefined) {
 			hostPoints = data[HOST_POINTS_COLUMN];
@@ -336,8 +340,6 @@ Meteor.methods({
 		EventPublisher.publish(new PointTaken(game._id, pointDuration, pointScoredByHost, hostPoints, clientPoints));
 
 		if (isGameFinished) {
-			EventPublisher.publish(new GameStatusChanged(game._id, GAME_STATUS_FINISHED));
-
 			const winnerUserIds = [];
 			const loserUserIds = [];
 			switch (columnName) {
