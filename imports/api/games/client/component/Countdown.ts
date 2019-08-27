@@ -42,6 +42,10 @@ export default class Countdown {
 		}
 
 		if (timerLeft > 0) {
+			if (this.countdownTimer) {
+				this.countdownTimer.stop(true);
+			}
+
 			this.countdownTimer = this.scene.game.time.create();
 
 			this.countdownTimer.add(
