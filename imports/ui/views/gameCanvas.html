@@ -53,6 +53,10 @@
 			<div class="connection-indicator-light {{connectionClass}}" data-tooltip="{{connectionInformation}}"></div>
 		</div>
 
+		{{#if showReplayControls}}
+			{{> gameReplayControls game=game}}
+		{{/if}}
+
 	</div>
 
 	{{#if showMobileController}}

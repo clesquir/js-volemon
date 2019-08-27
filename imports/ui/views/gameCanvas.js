@@ -85,6 +85,10 @@ Template.gameCanvas.helpers({
 		}
 	},
 
+	showReplayControls() {
+		return CurrentGame.getIsReplay();
+	},
+
 	showAfterGame() {
 		return !isGameStatusStarted(CurrentGame.getStatus());
 	},

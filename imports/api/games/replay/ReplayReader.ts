@@ -28,6 +28,7 @@ export default class ReplayReader {
 	private state: ReplayReaderState = ReplayReaderState.STOPPED;
 	private game;
 	private rows: any[];
+	private replayTimer: number = null;
 
 	constructor(gameId: string) {
 		this.gameId = gameId;
@@ -43,23 +44,25 @@ export default class ReplayReader {
 
 	init() {
 		this.state = ReplayReaderState.PLAYING;
-		EventPublisher.on(GamePlayStateCreated.prototype.constructor.name, this.play, this);
+		EventPublisher.on(GamePlayStateCreated.prototype.constructor.name, this.restart, this);
 	}
 
 	destroy() {
 		this.state = ReplayReaderState.STOPPED;
-		EventPublisher.off(GamePlayStateCreated.prototype.constructor.name, this.play, this);
+		EventPublisher.off(GamePlayStateCreated.prototype.constructor.name, this.restart, this);
 	}
 
-	play() {
+	restart() {
 		this.game = Games.findOne({_id: this.gameId});
 		const replay = Replays.findOne({gameId: this.gameId});
 
+		Meteor.clearTimeout(this.replayTimer);
 		this.restartState();
-		EventPublisher.publish(new GameReplayStarted(this.gameId));
 
 		if (replay && replay.rows.length > 0) {
 			this.rows = replay.rows;
+
+			EventPublisher.publish(new GameReplayStarted(this.gameId));
 			this.playNextEvent(0);
 		}
 	}
@@ -68,7 +71,7 @@ export default class ReplayReader {
 		return getUTCTimeStamp();
 	}
 
-	playNextEvent(index) {
+	private playNextEvent(index) {
 		if (this.state === ReplayReaderState.STOPPED) {
 			return;
 		}
@@ -82,7 +85,7 @@ export default class ReplayReader {
 		const lastTimestamp = this.rows[index - 1] ? this.rows[index - 1].timestamp : this.initialStartedAt;
 		const timeout = row.timestamp - lastTimestamp;
 
-		setTimeout(() => {
+		this.replayTimer = Meteor.setTimeout(() => {
 			switch (row.type) {
 				case ReplayType.STREAM:
 					this.replayStream(row);

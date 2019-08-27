@@ -57,6 +57,7 @@ import '/imports/ui/views/afterGame';
 import '/imports/ui/views/eloRanking';
 import '/imports/ui/views/eloRatingChange';
 import '/imports/ui/views/gameCanvas';
+import '/imports/ui/views/gameReplayControls';
 import '/imports/ui/views/gameSetup';
 import '/imports/ui/views/gamesList';
 import '/imports/ui/views/privacyPolicy';

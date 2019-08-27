@@ -52,6 +52,10 @@ export default class ReplayRouteInitiator {
 		Session.set('gameLoadingMask', null);
 	}
 
+	restartReplay() {
+		this.replayReader.restart();
+	}
+
 	private initGame(gameId: string) {
 		//Destroy if existent
 		this.destroyGame(gameId);

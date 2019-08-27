@@ -1,0 +1,25 @@
+.game-replay-controls {
+	padding: 5px;
+	background: @card-background-color;
+
+	.game-replay-controls-components {
+		display: flex;
+	}
+
+	.game-replay-button {
+		font-size: 1.5rem;
+		cursor: pointer;
+		opacity: 0.8;
+		width: 32px;
+		height: 32px;
+		transition: opacity 0.25s ease-in-out;
+
+		&:hover {
+			opacity: 1;
+		}
+	}
+
+	.game-replay-slider {
+		flex: 1 1 auto;
+	}
+}
