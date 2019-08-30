@@ -1,11 +1,11 @@
 export default class BonusCaught {
-	gameId: string;
-	initialBonusClass: string;
-	activatedBonusClass: string;
-	targetPlayerKey: string;
-	bonusClass: string;
-	activatorPlayerKey: string;
-	activationData: any;
+	readonly gameId: string;
+	readonly initialBonusClass: string;
+	readonly activatedBonusClass: string;
+	readonly targetPlayerKey: string;
+	readonly bonusClass: string;
+	readonly activatorPlayerKey: string;
+	readonly activationData: any;
 
 	constructor(gameId: string, initialBonusClass: string, activationData: any) {
 		this.gameId = gameId;

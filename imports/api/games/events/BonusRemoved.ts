@@ -1,10 +1,10 @@
 export default class BonusRemoved {
-	gameId: string;
-	identifier: string;
-	activatedBonusClass: string;
-	targetPlayerKey: string;
-	bonusClass: string;
-	activatorPlayerKey: string;
+	readonly gameId: string;
+	readonly identifier: string;
+	readonly activatedBonusClass: string;
+	readonly targetPlayerKey: string;
+	readonly bonusClass: string;
+	readonly activatorPlayerKey: string;
 
 	constructor(
 		gameId: string,
