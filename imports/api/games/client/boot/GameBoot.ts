@@ -3,9 +3,11 @@ import DeviceController from "../../deviceController/DeviceController";
 import GameData from "../../data/GameData";
 import SkinManager from "../component/SkinManager";
 import StreamBundler from "../streamBundler/StreamBundler";
-import ServerNormalizedTime from "../ServerNormalizedTime";
 import GameConfiguration from "../../configuration/GameConfiguration";
 import ServerAdapter from "../serverAdapter/ServerAdapter";
+import NormalizedTime from "../../../../lib/normalizedTime/NormalizedTime";
+import {EventPublisher} from "../../../../lib/EventPublisher";
+import GamePlayStateCreated from "../../events/GamePlayStateCreated";
 
 // @ts-ignore
 window.PIXI = require('phaser-ce/build/custom/pixi');
@@ -27,7 +29,7 @@ export class GameBoot {
 	gameConfiguration: GameConfiguration;
 	skinManager: SkinManager;
 	streamBundler: StreamBundler;
-	serverNormalizedTime: ServerNormalizedTime;
+	normalizedTime: NormalizedTime;
 	serverAdapter: ServerAdapter;
 
 	game: Phaser.Game;
@@ -39,7 +41,7 @@ export class GameBoot {
 		gameConfiguration: GameConfiguration,
 		skinManager: SkinManager,
 		streamBundler: StreamBundler,
-		serverNormalizedTime: ServerNormalizedTime,
+		normalizedTime: NormalizedTime,
 		serverAdapter: ServerAdapter
 	) {
 		this.deviceController = deviceController;
@@ -47,7 +49,7 @@ export class GameBoot {
 		this.gameConfiguration = gameConfiguration;
 		this.skinManager = skinManager;
 		this.streamBundler = streamBundler;
-		this.serverNormalizedTime = serverNormalizedTime;
+		this.normalizedTime = normalizedTime;
 		this.serverAdapter = serverAdapter;
 	}
 
@@ -90,7 +92,7 @@ export class GameBoot {
 			this.gameConfiguration,
 			this.skinManager,
 			this.streamBundler,
-			this.serverNormalizedTime,
+			this.normalizedTime,
 			this.serverAdapter
 		);
 
@@ -125,6 +127,7 @@ export class GameBoot {
 			preload: () => {},
 			create: () => {
 				this.mainScene.create.call(this.mainScene);
+				EventPublisher.publish(new GamePlayStateCreated(this.gameData.gameId));
 			},
 			update: () => {
 				this.mainScene.update.call(this.mainScene);

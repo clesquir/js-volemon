@@ -12,9 +12,12 @@ import {Tournaments} from '../../tournaments/tournaments';
 import GameData from "./GameData";
 import {Players} from "../players";
 import {Games} from "../games";
+import NormalizedTime from "../../../lib/normalizedTime/NormalizedTime";
+import CurrentGame from "../CurrentGame";
 
 export default class CollectionGameData implements GameData {
 	gameId: string;
+	private readonly normalizedTime: NormalizedTime;
 	currentUserId: string;
 	_activeBonuses: any[] = [];
 	robots: {[id: string]: {id: string}} = {};
@@ -45,9 +48,15 @@ export default class CollectionGameData implements GameData {
 	startedAt: number;
 	lastPointAt: number;
 	lastPointTaken: string;
+	gameDuration: number;
 
-	constructor(gameId: string, currentUserId: string) {
+	constructor(
+		gameId: string,
+		normalizedTime: NormalizedTime,
+		currentUserId: string
+	) {
 		this.gameId = gameId;
+		this.normalizedTime = normalizedTime;
 		this.currentUserId = currentUserId;
 	}
 
@@ -62,6 +71,7 @@ export default class CollectionGameData implements GameData {
 		this.tournamentId = game.tournamentId;
 
 		this.updateStartedAt(game.startedAt);
+		this.updateGameDuration(game.gameDuration);
 		this.updateHostPoints(game.hostPoints);
 		this.updateClientPoints(game.clientPoints);
 		this.updateLastPointTaken(game.lastPointTaken);
@@ -221,10 +231,14 @@ export default class CollectionGameData implements GameData {
 
 	updateHostPoints(hostPoints: number) {
 		this.hostPoints = hostPoints;
+
+		CurrentGame.updateHostPoints(hostPoints);
 	}
 
 	updateClientPoints(clientPoints: number) {
 		this.clientPoints = clientPoints;
+
+		CurrentGame.updateClientPoints(clientPoints);
 	}
 
 	updateLastPointTaken(lastPointTaken: string) {
@@ -237,10 +251,36 @@ export default class CollectionGameData implements GameData {
 
 	updateStatus(status: string) {
 		this.status = status;
+
+		CurrentGame.updateStatus(status);
+	}
+
+	addToActiveBonuses(activeBonus: any) {
+		this.updateActiveBonuses([].concat(this._activeBonuses, activeBonus));
+	}
+
+	removeFromActiveBonuses(identifier: string) {
+		const activeBonuses = [];
+
+		for (let activeBonus of this._activeBonuses) {
+			if (activeBonus.identifier !== identifier) {
+				activeBonuses.push(activeBonus);
+			}
+		}
+
+		this.updateActiveBonuses(activeBonuses);
 	}
 
 	updateActiveBonuses(activeBonuses) {
 		this._activeBonuses = activeBonuses;
+	}
+
+	matchTimeElapsed(): number {
+		return this.normalizedTime.getTime() - this.startedAt;
+	}
+
+	pointTimeElapsed(): number {
+		return this.normalizedTime.getTime() - this.lastPointAt;
 	}
 
 	private gamePlayerFromKey(playerKey: string) {
@@ -341,5 +381,9 @@ export default class CollectionGameData implements GameData {
 
 	private updateStartedAt(startedAt: number) {
 		this.startedAt = startedAt;
+	}
+
+	private updateGameDuration(gameDuration: number) {
+		this.gameDuration = gameDuration;
 	}
 }

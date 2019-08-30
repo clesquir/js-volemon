@@ -23,6 +23,7 @@ export default class StaticGameData implements GameData {
 	startedAt: number;
 	lastPointAt: number;
 	lastPointTaken: string;
+	gameDuration: number = 0;
 	hostPoints: number = 0;
 	clientPoints: number = 0;
 
@@ -176,6 +177,20 @@ export default class StaticGameData implements GameData {
 	updateStatus(status) {
 	}
 
+	addToActiveBonuses(identifier: string) {
+	}
+
+	removeFromActiveBonuses(identifier: string) {
+	}
+
 	updateActiveBonuses(activeBonuses) {
+	}
+
+	matchTimeElapsed(): number {
+		return 0;
+	}
+
+	pointTimeElapsed(): number {
+		return 0;
 	}
 }

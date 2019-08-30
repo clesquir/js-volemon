@@ -102,6 +102,18 @@ Template.recentGames.helpers({
 });
 
 Template.recentGames.events({
+	'click [data-action="watch-game-replay"]': function(e) {
+		const game = RecentGames.findOne({_id: $(e.currentTarget).attr('data-game-id')});
+
+		if (game) {
+			if (game.tournamentId) {
+				Router.go(Router.routes['tournamentGameReplay'].url({tournamentId: game.tournamentId, gameId: game._id}));
+			} else {
+				Router.go(Router.routes['gameReplay'].url({_id: game._id}));
+			}
+		}
+	},
+
 	'click [data-action="show-more-games"]': function(e) {
 		e.preventDefault();
 

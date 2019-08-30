@@ -7,16 +7,16 @@ import {ArtificialIntelligencePositionData} from "../../artificialIntelligence/A
 import {PositionData} from "./PositionData";
 import GameData from "../../data/GameData";
 import Interpolation from "./Interpolation";
-import ServerNormalizedTime from "../ServerNormalizedTime";
 import VelocityConstraint from "./VelocityConstraint";
 import ShapeFactory from "./ShapeFactory";
 import {BallCloneData} from "./BallCloneData";
+import NormalizedTime from "../../../../lib/normalizedTime/NormalizedTime";
 
 export default class Ball {
 	scene: MainScene;
 	gameData: GameData;
 	gameConfiguration: GameConfiguration;
-	serverNormalizedTime: ServerNormalizedTime;
+	normalizedTime: NormalizedTime;
 	skinManager: SkinManager;
 	level: Level;
 	key: string;
@@ -38,7 +38,7 @@ export default class Ball {
 		scene: MainScene,
 		gameData: GameData,
 		gameConfiguration: GameConfiguration,
-		serverNormalizedTime: ServerNormalizedTime,
+		normalizedTime: NormalizedTime,
 		skinManager: SkinManager,
 		level: Level,
 		key: string
@@ -46,14 +46,14 @@ export default class Ball {
 		this.scene = scene;
 		this.gameData = gameData;
 		this.gameConfiguration = gameConfiguration;
-		this.serverNormalizedTime = serverNormalizedTime;
+		this.normalizedTime = normalizedTime;
 		this.skinManager = skinManager;
 		this.level = level;
 		this.key = key;
 
 		this.interpolation = new Interpolation(
 			this.scene,
-			this.serverNormalizedTime
+			this.normalizedTime
 		);
 		this.velocityConstraint = new VelocityConstraint();
 

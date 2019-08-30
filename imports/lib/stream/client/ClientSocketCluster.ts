@@ -1,12 +1,14 @@
 import {Meteor} from 'meteor/meteor';
-import Stream from '/imports/lib/stream/Stream.js';
-import {browserSupportsWebRTC} from '/imports/lib/utils.js';
+import Stream from "../Stream";
+import {browserSupportsWebRTC} from "../../utils";
 
-export default class ClientSocketCluster extends Stream {
-	/**
-	 * @param {string} channel
-	 */
-	connect(channel) {
+export default class ClientSocketCluster implements Stream {
+	private socketAdapter;
+
+	init() {
+	}
+
+	connect(channel: string) {
 		const port = window.socketPort || 8080;
 		let url = `localhost`;
 		if (Meteor.settings.public.SOCKET_URL) {
@@ -26,49 +28,32 @@ export default class ClientSocketCluster extends Stream {
 		});
 	}
 
-	/**
-	 * @param {string} channel
-	 */
-	disconnect(channel) {
+	disconnect(channel: string) {
 		this.socketAdapter.off('connect');
 		this.socketAdapter.disconnect();
 	}
 
-	/**
-	 * @return {boolean}
-	 */
-	connectedToP2P() {
+	connectedToP2P(): boolean {
 		return false;
 	}
 
-	/**
-	 * @return {boolean}
-	 */
-	supportsP2P() {
+	supportsP2P(): boolean {
 		return browserSupportsWebRTC();
 	}
 
-	/**
-	 * @param {string} eventName
-	 * @param {*} payload
-	 */
-	emit(eventName, payload) {
+	emit(eventName: string, payload) {
 		payload.webRTCUnsupportedClient = true;
 		this.socketAdapter.emit(eventName, payload);
 	}
 
-	/**
-	 * @param {string} eventName
-	 * @param {Function} callback
-	 */
-	on(eventName, callback) {
+	broadcastOnEvent(eventName: string) {
+	}
+
+	on(eventName: string, callback: Function) {
 		this.socketAdapter.on(eventName, callback);
 	}
 
-	/**
-	 * @param {string} eventName Event name to remove listeners on
-	 */
-	off(eventName) {
+	off(eventName: string) {
 		this.socketAdapter.off(eventName);
 	}
 }

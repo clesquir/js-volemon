@@ -2,7 +2,6 @@ import MainScene from "../scene/MainScene";
 import GameData from "../../data/GameData";
 import GameConfiguration from "../../configuration/GameConfiguration";
 import StreamBundler from "../streamBundler/StreamBundler";
-import ServerNormalizedTime from "../ServerNormalizedTime";
 import Animations from "./Animations";
 import Level from "./Level";
 import Ball from "./Ball";
@@ -10,6 +9,7 @@ import {ArtificialIntelligencePositionData} from "../../artificialIntelligence/A
 import {PositionData} from "./PositionData";
 import {BALL_INTERVAL} from "../../emissionConstants";
 import SkinManager from "./SkinManager";
+import NormalizedTime from "../../../../lib/normalizedTime/NormalizedTime";
 
 export default class Balls {
 	scene: MainScene;
@@ -17,7 +17,7 @@ export default class Balls {
 	gameConfiguration: GameConfiguration;
 	skinManager: SkinManager;
 	streamBundler: StreamBundler;
-	serverNormalizedTime: ServerNormalizedTime;
+	normalizedTime: NormalizedTime;
 	animations: Animations;
 	level: Level;
 
@@ -33,7 +33,7 @@ export default class Balls {
 		gameConfiguration: GameConfiguration,
 		skinManager: SkinManager,
 		streamBundler: StreamBundler,
-		serverNormalizedTime: ServerNormalizedTime,
+		normalizedTime: NormalizedTime,
 		animations: Animations,
 		level: Level
 	) {
@@ -42,7 +42,7 @@ export default class Balls {
 		this.gameConfiguration = gameConfiguration;
 		this.skinManager = skinManager;
 		this.streamBundler = streamBundler;
-		this.serverNormalizedTime = serverNormalizedTime;
+		this.normalizedTime = normalizedTime;
 		this.animations = animations;
 		this.level = level;
 	}
@@ -230,7 +230,7 @@ export default class Balls {
 			this.scene,
 			this.gameData,
 			this.gameConfiguration,
-			this.serverNormalizedTime,
+			this.normalizedTime,
 			this.skinManager,
 			this.level,
 			key

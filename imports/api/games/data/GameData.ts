@@ -5,6 +5,7 @@ export default interface GameData {
 	startedAt: number;
 	lastPointAt: number;
 	lastPointTaken: string;
+	gameDuration: number;
 	hostPoints: number;
 	clientPoints: number;
 
@@ -86,5 +87,15 @@ export default interface GameData {
 
 	updateStatus(status);
 
+	addToActiveBonuses(activeBonus: any);
+
+	removeFromActiveBonuses(identifier: string);
+
+	removeFromActiveBonuses(identifier: string);
+
 	updateActiveBonuses(activeBonuses);
+
+	matchTimeElapsed(): number;
+
+	pointTimeElapsed(): number;
 }

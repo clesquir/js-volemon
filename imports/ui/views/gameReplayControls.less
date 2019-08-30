@@ -1,0 +1,87 @@
+.game-replay-controls {
+	position: absolute;
+	width: 100%;
+	background: @card-background-color;
+
+	.game-replay-controls-components {
+		display: flex;
+	}
+
+	.game-replay-button {
+		font-size: 1.5rem;
+		cursor: pointer;
+		opacity: 0.8;
+		width: 32px;
+		height: 32px;
+		transition: opacity 0.25s ease-in-out;
+
+		&:hover {
+			opacity: 1;
+		}
+	}
+
+	.game-replay-slider {
+		flex: 1 1 auto;
+		display: flex;
+		padding: 0 10px 0 0;
+
+		@timeline-height: 3px;
+		@timeline-hover-height: 5px;
+		@timeline-indicator-diameter: 12px;
+
+		#game-replay-slider-time-spent {
+			width: 0;
+			display: flex;
+			align-items: center;
+
+			&:after {
+				flex: 1 1 auto;
+				height: @timeline-height;
+				content: '';
+				background-color: @header-border-bottom-color;
+			}
+		}
+
+		.game-replay-slider-time-left {
+			flex: 1 1 auto;
+			display: flex;
+			align-items: center;
+
+			&:after {
+				flex: 1 1 auto;
+				height: @timeline-height;
+				content: '';
+				background-color: @background-color;
+			}
+		}
+
+		.game-replay-slider-indicator {
+			position: relative;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			&:after {
+				@transition-time: 0.2s;
+				position: absolute;
+				content: '';
+				width: 0;
+				height: 0;
+				border-radius: @timeline-indicator-diameter;
+				background-color: @header-border-bottom-color;
+				transition: width @transition-time linear, height @transition-time linear;
+			}
+		}
+
+		&:hover {
+			#game-replay-slider-time-spent:after, .game-replay-slider-time-left:after {
+				height: @timeline-hover-height;
+			}
+
+			.game-replay-slider-indicator:after {
+				width: @timeline-indicator-diameter;
+				height: @timeline-indicator-diameter;
+			}
+		}
+	}
+}

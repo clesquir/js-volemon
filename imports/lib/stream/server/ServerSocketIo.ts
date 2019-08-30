@@ -1,8 +1,17 @@
-import Stream from '/imports/lib/stream/Stream.js';
-import ServerP2P from '/imports/lib/p2p/server/ServerP2P.js';
-import SocketIo from '../../socket/SocketIo';
+import Stream from "../Stream";
+import ServerP2P from "../../p2p/server/ServerP2P";
+import SocketIo from "../../socket/SocketIo";
+import Socket from "../../socket/Socket";
 
-export default class ServerSocketIo extends Stream {
+export default class ServerSocketIo implements Stream {
+	private sockets;
+	private socketsRoom;
+	private socketBroadcasts;
+	private broadcastedListeners;
+	private listeners;
+	private io;
+	private p2pAdapter;
+
 	init() {
 		this.sockets = {};
 		this.socketsRoom = {};
@@ -47,18 +56,25 @@ export default class ServerSocketIo extends Stream {
 		}
 	}
 
-	/**
-	 * @param {string} eventName
-	 * @param {*} payload
-	 */
-	emit(eventName, payload) {
+	connect(channel: string) {
+	}
+
+	disconnect(channel: string) {
+	}
+
+	supportsP2P(): boolean {
+		return false;
+	}
+
+	connectedToP2P(): boolean {
+		return false;
+	}
+
+	emit(eventName: string, payload) {
 		this.io.emit(eventName, payload);
 	}
 
-	/**
-	 * @param {string} eventName
-	 */
-	broadcastOnEvent(eventName) {
+	broadcastOnEvent(eventName: string) {
 		this.broadcastedListeners[eventName] = true;
 
 		const sockets = this.sockets;
@@ -70,11 +86,7 @@ export default class ServerSocketIo extends Stream {
 		}
 	}
 
-	/**
-	 * @param {string} eventName
-	 * @param {Function} callback
-	 */
-	on(eventName, callback) {
+	on(eventName: string, callback: Function) {
 		if (this.listeners[eventName] === undefined) {
 			this.listeners[eventName] = [];
 		}
@@ -88,10 +100,7 @@ export default class ServerSocketIo extends Stream {
 		}
 	}
 
-	/**
-	 * @param {Socket} socket
-	 */
-	attachAllListeners(socket) {
+	attachAllListeners(socket: Socket) {
 		/**
 		 * Attach broadcasts
 		 */
@@ -113,12 +122,7 @@ export default class ServerSocketIo extends Stream {
 		}
 	}
 
-	/**
-	 * @param {string} eventName
-	 * @param {Socket} socket
-	 * @returns {Function}
-	 */
-	broadcastListener(eventName, socket) {
+	broadcastListener(eventName: string, socket): Function {
 		if (this.socketBroadcasts[socket.id] === undefined) {
 			this.socketBroadcasts[socket.id] = {};
 		}
@@ -133,10 +137,7 @@ export default class ServerSocketIo extends Stream {
 		return this.socketBroadcasts[socket.id][eventName];
 	}
 
-	/**
-	 * @param {string} eventName Event name to remove listeners on
-	 */
-	off(eventName) {
+	off(eventName: string) {
 		const sockets = this.sockets;
 
 		for (let socketId in sockets) {

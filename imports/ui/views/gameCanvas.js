@@ -1,8 +1,9 @@
-import {gameData, serverNormalizedTime} from '/imports/api/games/client/routeInitiator.js';
 import {isTwoVersusTwoGameMode} from '/imports/api/games/constants.js';
-import {Players} from '/imports/api/games/players.js';
+import CurrentGame from '/imports/api/games/CurrentGame';
+import {isDeucePoint, isMatchPoint} from '/imports/api/games/utils';
 import {isGamePlayer, isGameStatusStarted} from '/imports/api/games/utils.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
+import ClientServerOffsetNormalizedTime from '/imports/lib/normalizedTime/ClientServerOffsetNormalizedTime';
 import {onMobileAndTablet, padNumber} from '/imports/lib/utils.js';
 import {Meteor} from 'meteor/meteor';
 import {Session} from 'meteor/session';
@@ -13,7 +14,7 @@ const he = require('he');
 
 Template.gameCanvas.helpers({
 	hostPoints: function() {
-		return padNumber(this.game.hostPoints);
+		return padNumber(CurrentGame.getHostPoints());
 	},
 
 	hostNames: function() {
@@ -26,7 +27,7 @@ Template.gameCanvas.helpers({
 	},
 
 	clientPoints: function() {
-		return padNumber(this.game.clientPoints);
+		return padNumber(CurrentGame.getClientPoints());
 	},
 
 	clientNames: function() {
@@ -47,7 +48,7 @@ Template.gameCanvas.helpers({
 	},
 
 	hasViewer: function() {
-		return this.game.viewers.length > 0;
+		return !CurrentGame.getIsReplay() && this.game.viewers.length > 0;
 	},
 
 	viewers: function() {
@@ -65,11 +66,11 @@ Template.gameCanvas.helpers({
 	},
 
 	isGamePlayer: function() {
-		return isGamePlayer(Session.get('game'));
+		return !CurrentGame.getIsReplay() && isGamePlayer(Session.get('game'));
 	},
 
 	getFinishedStatusClass: function() {
-		if (!isGameStatusStarted(this.game.status)) {
+		if (!isGameStatusStarted(CurrentGame.getStatus())) {
 			return 'finished-game-status';
 		}
 	},
@@ -84,8 +85,12 @@ Template.gameCanvas.helpers({
 		}
 	},
 
+	showReplayControls() {
+		return CurrentGame.getIsReplay();
+	},
+
 	showAfterGame() {
-		return !isGameStatusStarted(this.game.status);
+		return !isGameStatusStarted(CurrentGame.getStatus());
 	},
 
 	connectionClass() {
@@ -106,19 +111,16 @@ Template.gameCanvas.helpers({
 				break;
 		}
 
-		let serverOffset = '-';
-		if (serverNormalizedTime) {
-			serverOffset = serverNormalizedTime.serverOffset + 'ms';
-		}
+		const serverOffset = ClientServerOffsetNormalizedTime.get().getOffset() + 'ms';
 
 		return webRTCUsage + '<br />' + 'Server offset: ' + serverOffset;
 	},
 
 	classForMatchPoint() {
-		if (gameData && gameData.isGameStatusStarted()) {
-			if (gameData.isDeucePoint()) {
+		if (isGameStatusStarted(CurrentGame.getStatus())) {
+			if (isDeucePoint(CurrentGame.getHostPoints(), CurrentGame.getClientPoints(), this.game.maximumPoints)) {
 				return 'deuce-point-frame';
-			} else if (gameData.isMatchPoint()) {
+			} else if (isMatchPoint(CurrentGame.getHostPoints(), CurrentGame.getClientPoints(), this.game.maximumPoints)) {
 				return 'match-point-frame';
 			}
 		}

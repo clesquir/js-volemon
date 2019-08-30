@@ -1,10 +1,10 @@
 import MainScene from "../scene/MainScene";
 import GameConfiguration from "../../configuration/GameConfiguration";
-import ServerNormalizedTime from "../ServerNormalizedTime";
 import BaseBonus from "../../bonus/BaseBonus";
 import {Random} from 'meteor/random';
 import Animations from "./Animations";
 import {DEPTH_ACTIVATION_ANIMATION, DEPTH_BONUS_INDICATOR} from "../../constants";
+import NormalizedTime from "../../../../lib/normalizedTime/NormalizedTime";
 
 export default class BonusIndicator {
 	private readonly initialColor: number = 0x000000;
@@ -16,7 +16,7 @@ export default class BonusIndicator {
 
 	scene: MainScene;
 	gameConfiguration: GameConfiguration;
-	serverNormalizedTime: ServerNormalizedTime;
+	normalizedTime: NormalizedTime;
 	bonusReference: BaseBonus;
 	initialX: number;
 	initialY: number;
@@ -31,7 +31,7 @@ export default class BonusIndicator {
 	constructor(
 		scene: MainScene,
 		gameConfiguration: GameConfiguration,
-		serverNormalizedTime: ServerNormalizedTime,
+		normalizedTime: NormalizedTime,
 		bonusReference: BaseBonus,
 		initialX: number,
 		initialY: number,
@@ -39,7 +39,7 @@ export default class BonusIndicator {
 	) {
 		this.scene = scene;
 		this.gameConfiguration = gameConfiguration;
-		this.serverNormalizedTime = serverNormalizedTime;
+		this.normalizedTime = normalizedTime;
 		this.bonusReference = bonusReference;
 		this.initialX = initialX;
 		this.initialY = initialY;
@@ -49,7 +49,7 @@ export default class BonusIndicator {
 	static activateAnimation(
 		scene: MainScene,
 		gameConfiguration: GameConfiguration,
-		serverNormalizedTime: ServerNormalizedTime,
+		normalizedTime: NormalizedTime,
 		bonusReference: BaseBonus,
 		initialX: number,
 		initialY: number,
@@ -58,7 +58,7 @@ export default class BonusIndicator {
 		const bonusIndicator = new BonusIndicator(
 			scene,
 			gameConfiguration,
-			serverNormalizedTime,
+			normalizedTime,
 			bonusReference,
 			initialX,
 			initialY,
@@ -173,7 +173,7 @@ export default class BonusIndicator {
 
 	private progress(): number {
 		return 1 - (
-			(this.serverNormalizedTime.getServerTimestamp() - this.bonusReference.activatedAt) /
+			(this.normalizedTime.getTime() - this.bonusReference.activatedAt) /
 			this.bonusReference.getDuration()
 		);
 	}

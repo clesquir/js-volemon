@@ -1,11 +1,11 @@
 import {TestGameBoot} from '/imports/api/games/client/boot/TestGameBoot';
 import SkinManager from '/imports/api/games/client/component/SkinManager';
 import NullServerAdapter from '/imports/api/games/client/serverAdapter/NullServerAdapter';
-import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime';
 import CountStreamBundler from '/imports/api/games/client/streamBundler/CountStreamBundler';
 import StaticShapesGameConfiguration from '/imports/api/games/configuration/StaticShapesGameConfiguration';
 import StaticGameData from '/imports/api/games/data/StaticGameData';
 import NullDeviceController from '/imports/api/games/deviceController/NullDeviceController';
+import StaticNormalizedTime from '/imports/lib/normalizedTime/StaticNormalizedTime';
 import {assert} from 'chai';
 import {BONUS_SHAPE_SHIFT} from '../../bonusConstants';
 import ShapeShiftMonsterBonus from '../ShapeShiftMonsterBonus';
@@ -15,7 +15,7 @@ describe('ShapeShiftMonsterBonus', function() {
 	const gameConfiguration = new StaticShapesGameConfiguration();
 	const gameData = new StaticGameData();
 	const streamBundler = new CountStreamBundler();
-	const serverNormalizedTime = new ServerNormalizedTime();
+	const normalizedTime = new StaticNormalizedTime();
 	const skinManager = SkinManager.withDefaults(gameConfiguration);
 	const serverAdapter = new NullServerAdapter();
 
@@ -25,7 +25,7 @@ describe('ShapeShiftMonsterBonus', function() {
 		gameConfiguration,
 		skinManager,
 		streamBundler,
-		serverNormalizedTime,
+		normalizedTime,
 		serverAdapter
 	);
 	gameBoot.init();

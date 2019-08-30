@@ -1,8 +1,8 @@
 import {ACHIEVEMENT_SIMULTANEOUS_ACTIVATED_BONUSES} from '/imports/api/achievements/constants.js';
 import SimultaneousActivatedBonuses from '/imports/api/achievements/server/listeners/SimultaneousActivatedBonuses.js';
 import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
-import BonusCaught from '/imports/api/games/events/BonusCaught.js';
-import BonusRemoved from '/imports/api/games/events/BonusRemoved.js';
+import BonusCaught from '/imports/api/games/events/BonusCaught';
+import BonusRemoved from '/imports/api/games/events/BonusRemoved';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {Games} from '/imports/api/games/games.js';
 import {assert} from 'chai';
@@ -87,7 +87,7 @@ describe('AchievementListener#SimultaneousActivatedBonuses', function() {
 		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: 'a', targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
 		assert.strictEqual(1, listener.numberOfActivatedBonuses());
 
-		listener.onBonusRemoved(new BonusRemoved(gameId, 'a', 'player1', 'a', 'player1'));
+		listener.onBonusRemoved(new BonusRemoved(gameId, Random.id(5), 'a', 'player1', 'a', 'player1'));
 		assert.strictEqual(0, listener.numberOfActivatedBonuses());
 	});
 
@@ -98,7 +98,7 @@ describe('AchievementListener#SimultaneousActivatedBonuses', function() {
 		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: 'a', targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
 		assert.strictEqual(1, listener.numberOfActivatedBonuses());
 
-		listener.onBonusRemoved(new BonusRemoved(gameId, 'b', 'player1', 'b', 'player1'));
+		listener.onBonusRemoved(new BonusRemoved(gameId, Random.id(5), 'b', 'player1', 'b', 'player1'));
 		assert.strictEqual(1, listener.numberOfActivatedBonuses());
 	});
 
@@ -109,7 +109,7 @@ describe('AchievementListener#SimultaneousActivatedBonuses', function() {
 		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: 'a', targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
 		assert.strictEqual(1, listener.numberOfActivatedBonuses());
 
-		listener.onBonusRemoved(new BonusRemoved(Random.id(5), 'a', 'player1', 'a', 'player1'));
+		listener.onBonusRemoved(new BonusRemoved(Random.id(5), Random.id(5), 'a', 'player1', 'a', 'player1'));
 		assert.strictEqual(1, listener.numberOfActivatedBonuses());
 	});
 
@@ -120,7 +120,7 @@ describe('AchievementListener#SimultaneousActivatedBonuses', function() {
 		listener.onBonusCaught(new BonusCaught(gameId, 'a', {activatedBonusClass: 'a', targetPlayerKey: 'player1', bonusClass: 'a', activatorPlayerKey: 'player1'}));
 		assert.strictEqual(1, listener.numberOfActivatedBonuses());
 
-		listener.onBonusRemoved(new BonusRemoved(gameId, 'a', 'player2', 'a', 'player2'));
+		listener.onBonusRemoved(new BonusRemoved(gameId, Random.id(5), 'a', 'player2', 'a', 'player2'));
 		assert.strictEqual(1, listener.numberOfActivatedBonuses());
 	});
 

@@ -1,5 +1,6 @@
-import {gameCheer, gameReaction} from '/imports/api/games/client/routeInitiator.js';
+import RouteInitiator from '/imports/api/games/client/RouteInitiator';
 import {isTwoVersusTwoGameMode} from '/imports/api/games/constants.js';
+import CurrentGame from '/imports/api/games/CurrentGame';
 import {Games} from '/imports/api/games/games.js';
 import {Session} from 'meteor/session';
 import {Template} from 'meteor/templating';
@@ -16,18 +17,26 @@ Template.reactions.helpers({
 
 Template.reactions.events({
 	'click [data-action="trigger-reaction-list"]': function() {
-		gameReaction.toggleSelectorDisplay();
+		if (!CurrentGame.getIsReplay()) {
+			RouteInitiator.get().toggleReactionSelector();
+		}
 	},
 
 	'click [data-action="send-reaction"]': function(e) {
-		gameReaction.onReactionSelection($(e.currentTarget));
+		if (!CurrentGame.getIsReplay()) {
+			RouteInitiator.get().onReactionSelection($(e.currentTarget));
+		}
 	},
 
 	'click [data-action="cheer-host"]': function() {
-		gameCheer.cheerPlayer(true);
+		if (!CurrentGame.getIsReplay()) {
+			RouteInitiator.get().cheerPlayer(true);
+		}
 	},
 
 	'click [data-action="cheer-client"]': function() {
-		gameCheer.cheerPlayer(false);
+		if (!CurrentGame.getIsReplay()) {
+			RouteInitiator.get().cheerPlayer(false);
+		}
 	}
 });

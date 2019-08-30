@@ -89,7 +89,7 @@ export default class Ai extends Dev {
 	stopPoint() {
 		this.mainScene.gameResumed = false;
 
-		this.gameData.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
+		this.gameData.lastPointAt = this.normalizedTime.getTime();
 
 		this.mainScene.artificialIntelligence.stopPoint(null);
 
@@ -105,7 +105,7 @@ export default class Ai extends Dev {
 		if (this.mainScene.gameResumed === true) {
 			this.mainScene.gameResumed = false;
 
-			this.gameData.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
+			this.gameData.lastPointAt = this.normalizedTime.getTime();
 
 			let pointSide = null;
 			if (this.mainScene.balls.firstBall().x() < this.gameConfiguration.width() / 2 - this.gameConfiguration.netWidth()) {

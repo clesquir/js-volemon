@@ -1,6 +1,6 @@
 import GameListener from './GameListener';
 import {ACHIEVEMENT_BONUSES_IN_A_LIFETIME} from '/imports/api/achievements/constants.js';
-import BonusCaught from '/imports/api/games/events/BonusCaught.js';
+import BonusCaught from '/imports/api/games/events/BonusCaught';
 
 export default class BonusesInALifetime extends GameListener {
 	addListeners() {

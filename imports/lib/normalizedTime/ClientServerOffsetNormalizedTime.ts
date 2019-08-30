@@ -1,11 +1,23 @@
 import {Meteor} from 'meteor/meteor';
 import {TimeSync} from 'meteor/mizzao:timesync';
+import NormalizedTime from "./NormalizedTime";
 
-export default class ServerNormalizedTime {
-	serverOffset: number;
+export default class ClientServerOffsetNormalizedTime implements NormalizedTime {
+	private static instance: ClientServerOffsetNormalizedTime;
+	private serverOffset: number;
 	private timeSyncTimeout: number;
 
+	static get(): ClientServerOffsetNormalizedTime {
+		if (!this.instance) {
+			this.instance = new ClientServerOffsetNormalizedTime();
+		}
+
+		return this.instance;
+	}
+
 	init() {
+		this.stop();
+
 		this.serverOffset = TimeSync.serverOffset();
 		this.timeSyncTimeout = Meteor.setInterval(() => {
 			TimeSync.resync();
@@ -18,13 +30,17 @@ export default class ServerNormalizedTime {
 		this.serverOffset = undefined;
 	}
 
-	getServerTimestamp() {
+	getTime(): number {
+		return Date.now() + this.getOffset();
+	}
+
+	getOffset(): number {
 		let serverOffset = 0;
 
 		if (this.serverOffset !== undefined) {
 			serverOffset = this.serverOffset;
 		}
 
-		return Date.now() + serverOffset;
+		return serverOffset;
 	}
 }

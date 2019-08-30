@@ -1,8 +1,8 @@
 import {BonusStreamData} from "../bonus/data/BonusStreamData";
 
 export default class BonusCleared {
-	gameId: string;
-	data: BonusStreamData;
+	readonly gameId: string;
+	readonly data: BonusStreamData;
 
 	constructor(gameId: string, data: BonusStreamData) {
 		this.gameId = gameId;

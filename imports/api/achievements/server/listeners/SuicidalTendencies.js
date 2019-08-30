@@ -1,6 +1,6 @@
 import GameListener from './GameListener';
 import {ACHIEVEMENT_SUICIDAL_TENDENCIES} from '/imports/api/achievements/constants.js';
-import BonusCaught from '/imports/api/games/events/BonusCaught.js';
+import BonusCaught from '/imports/api/games/events/BonusCaught';
 import {BONUS_RANDOM, BONUS_INSTANT_DEATH} from '/imports/api/games/bonusConstants';
 
 export default class SuicidalTendencies extends GameListener {

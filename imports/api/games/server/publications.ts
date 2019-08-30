@@ -1,9 +1,10 @@
-import {EloScores} from '/imports/api/games/eloscores.js';
-import {Games} from '/imports/api/games/games.js';
-import {Players} from '/imports/api/games/players.js';
-import {GAME_STATUS_STARTED} from '/imports/api/games/statusConstants.js';
-import {TeamEloScores} from '/imports/api/games/teameloscores';
-import {Tournaments} from '/imports/api/tournaments/tournaments.js';
+import {EloScores} from "../eloscores";
+import {Games} from "../games";
+import {Players} from "../players";
+import {Replays} from "../replays";
+import {GAME_STATUS_STARTED} from "../statusConstants";
+import {TeamEloScores} from "../teameloscores";
+import {Tournaments} from "../../tournaments/tournaments";
 import {Meteor} from 'meteor/meteor';
 
 Meteor.publish('games', function() {
@@ -28,6 +29,12 @@ Meteor.publish('game', function(id) {
 		Players.find({gameId: id}),
 		EloScores.find({gameId: id}),
 		TeamEloScores.find({gameId: id})
+	];
+});
+
+Meteor.publish('gameReplay', function(id) {
+	return [
+		Replays.find({gameId: id}),
 	];
 });
 

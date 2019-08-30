@@ -1,7 +1,7 @@
 import {TestGameBoot} from '/imports/api/games/client/boot/TestGameBoot';
 import SkinManager from '/imports/api/games/client/component/SkinManager';
 import NullServerAdapter from '/imports/api/games/client/serverAdapter/NullServerAdapter';
-import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime';
+import StaticNormalizedTime from '/imports/lib/normalizedTime/StaticNormalizedTime';
 import CountStreamBundler from '/imports/api/games/client/streamBundler/CountStreamBundler';
 import StaticGameConfiguration from '/imports/api/games/configuration/StaticGameConfiguration';
 import StaticGameData from '/imports/api/games/data/StaticGameData';
@@ -14,7 +14,7 @@ describe('Bonuses#createBonusIfTimeHasElapsed', function() {
 	const gameData = new StaticGameData();
 	gameData.hasBonuses = true;
 	const streamBundler = new CountStreamBundler();
-	const serverNormalizedTime = new ServerNormalizedTime();
+	const normalizedTime = new StaticNormalizedTime();
 	const skinManager = SkinManager.withDefaults(gameConfiguration);
 	const serverAdapter = new NullServerAdapter();
 
@@ -24,7 +24,7 @@ describe('Bonuses#createBonusIfTimeHasElapsed', function() {
 		gameConfiguration,
 		skinManager,
 		streamBundler,
-		serverNormalizedTime,
+		normalizedTime,
 		serverAdapter
 	);
 	gameBoot.init();

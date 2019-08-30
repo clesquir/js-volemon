@@ -22,6 +22,7 @@ Meteor.methods({
 			{
 				sort: [['startedAt', 'desc']],
 				fields: {
+					'_id': 1,
 					'gameMode': 1,
 					'players': 1,
 					'hostPoints': 1,
@@ -29,6 +30,7 @@ Meteor.methods({
 					'createdBy': 1,
 					'startedAt': 1,
 					'tournamentId': 1,
+					'hasReplays': 1,
 				},
 				skip: skip,
 				limit: limit

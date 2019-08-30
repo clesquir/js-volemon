@@ -3,7 +3,6 @@ import GameData from "../../data/GameData";
 import GameConfiguration from "../../configuration/GameConfiguration";
 import SkinManager from "../component/SkinManager";
 import StreamBundler from "../streamBundler/StreamBundler";
-import ServerNormalizedTime from "../ServerNormalizedTime";
 import Level from "../component/Level";
 import Ball from "../component/Ball";
 import ArtificialIntelligence from "../../artificialIntelligence/ArtificialIntelligence";
@@ -20,6 +19,7 @@ import ScaleManager from "../component/ScaleManager";
 import Player from "../component/Player";
 import Bonus from "../component/Bonus";
 import Balls from "../component/Balls";
+import NormalizedTime from "../../../../lib/normalizedTime/NormalizedTime";
 
 export default class MainScene {
 	game: Phaser.Game;
@@ -28,7 +28,7 @@ export default class MainScene {
 	gameConfiguration: GameConfiguration;
 	skinManager: SkinManager;
 	streamBundler: StreamBundler;
-	serverNormalizedTime: ServerNormalizedTime;
+	normalizedTime: NormalizedTime;
 	serverAdapter: ServerAdapter;
 
 	animations: Animations;
@@ -55,7 +55,7 @@ export default class MainScene {
 		gameConfiguration: GameConfiguration,
 		skinManager: SkinManager,
 		streamBundler: StreamBundler,
-		serverNormalizedTime: ServerNormalizedTime,
+		normalizedTime: NormalizedTime,
 		serverAdapter: ServerAdapter
 	) {
 		this.game = game;
@@ -64,7 +64,7 @@ export default class MainScene {
 		this.gameConfiguration = gameConfiguration;
 		this.skinManager = skinManager;
 		this.streamBundler = streamBundler;
-		this.serverNormalizedTime = serverNormalizedTime;
+		this.normalizedTime = normalizedTime;
 		this.serverAdapter = serverAdapter;
 
 		this.animations = new Animations(this);
@@ -80,7 +80,7 @@ export default class MainScene {
 			this.gameData,
 			this.gameConfiguration,
 			this.streamBundler,
-			this.serverNormalizedTime,
+			this.normalizedTime,
 			this.animations,
 			this.level,
 			this.artificialIntelligence
@@ -91,7 +91,7 @@ export default class MainScene {
 			this.gameConfiguration,
 			this.skinManager,
 			this.streamBundler,
-			this.serverNormalizedTime,
+			this.normalizedTime,
 			this.animations,
 			this.level
 		);
@@ -101,7 +101,7 @@ export default class MainScene {
 			this.gameConfiguration,
 			this.skinManager,
 			this.streamBundler,
-			this.serverNormalizedTime,
+			this.normalizedTime,
 			this.serverAdapter,
 			this.animations,
 			this.level,
@@ -151,7 +151,7 @@ export default class MainScene {
 
 		this.streamBundler.emitBundledStream(
 			'sendBundledData-' + this.gameData.gameId,
-			this.serverNormalizedTime.getServerTimestamp()
+			this.normalizedTime.getTime()
 		);
 	}
 
@@ -159,9 +159,15 @@ export default class MainScene {
 		this.scaleManager.destroy();
 	}
 
+	onGameReplayStarted() {
+		if (this.gameInitiated) {
+			this.resumeOnTimerEnd();
+		}
+	}
+
 	onPointTaken() {
 		if (this.gameInitiated) {
-			this.lastPointAt = this.serverNormalizedTime.getServerTimestamp();
+			this.lastPointAt = this.normalizedTime.getTime();
 			this.level.shakeGround();
 			this.resumeOnTimerEnd();
 		}
@@ -251,7 +257,7 @@ export default class MainScene {
 			this.removePlayer(playerKey);
 
 			//Send to client
-			const serverTimestamp = this.serverNormalizedTime.getServerTimestamp();
+			const serverTimestamp = this.normalizedTime.getTime();
 			this.streamBundler.emitStream(
 				'killPlayer-' + this.gameData.gameId,
 				{
@@ -390,7 +396,7 @@ export default class MainScene {
 			this,
 			this.gameData,
 			this.gameConfiguration,
-			this.serverNormalizedTime
+			this.normalizedTime
 		);
 	}
 
@@ -470,7 +476,7 @@ export default class MainScene {
 					y: ball.y(),
 					diameter: ball.diameter()
 				},
-				this.serverNormalizedTime.getServerTimestamp()
+				this.normalizedTime.getTime()
 			);
 			this.showBallHitPoint(
 				ball.x(),

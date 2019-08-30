@@ -6,8 +6,8 @@ import {
 	BONUS_INVISIBLE_BALL,
 	BONUS_INVISIBLE_MONSTER
 } from '/imports/api/games/bonusConstants';
-import BonusCaught from '/imports/api/games/events/BonusCaught.js';
-import BonusRemoved from '/imports/api/games/events/BonusRemoved.js';
+import BonusCaught from '/imports/api/games/events/BonusCaught';
+import BonusRemoved from '/imports/api/games/events/BonusRemoved';
 import PointTaken from '/imports/api/games/events/PointTaken.js';
 import {Games} from '/imports/api/games/games.js';
 import {assert} from 'chai';
@@ -234,7 +234,7 @@ describe('AchievementListener#BlankScreen', function() {
 
 		listener.onBonusCaught(new BonusCaught(gameId, BONUS_INVISIBLE_BALL, {activatedBonusClass: BONUS_INVISIBLE_BALL, targetPlayerKey: 'player1', bonusClass: BONUS_INVISIBLE_BALL, activatorPlayerKey: 'player1'}));
 		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusRemoved(new BonusRemoved(gameId, BONUS_INVISIBLE_BALL, 'player1', BONUS_INVISIBLE_BALL, 'player1'));
+		listener.onBonusRemoved(new BonusRemoved(gameId, Random.id(5), BONUS_INVISIBLE_BALL, 'player1', BONUS_INVISIBLE_BALL, 'player1'));
 
 		listener.onBonusCaught(new BonusCaught(gameId, BONUS_INVISIBLE_MONSTER, {activatedBonusClass: BONUS_INVISIBLE_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_INVISIBLE_MONSTER, activatorPlayerKey: 'player1'}));
 		assert.equal(0, UserAchievements.find().count());
@@ -260,7 +260,7 @@ describe('AchievementListener#BlankScreen', function() {
 
 		listener.onBonusCaught(new BonusCaught(gameId, BONUS_CLOAKED_MONSTER, {activatedBonusClass: BONUS_CLOAKED_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_CLOAKED_MONSTER, activatorPlayerKey: 'player1'}));
 		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusRemoved(new BonusRemoved(gameId, BONUS_CLOAKED_MONSTER, 'player1', BONUS_CLOAKED_MONSTER, 'player1'));
+		listener.onBonusRemoved(new BonusRemoved(gameId, Random.id(5), BONUS_CLOAKED_MONSTER, 'player1', BONUS_CLOAKED_MONSTER, 'player1'));
 
 		listener.onBonusCaught(new BonusCaught(gameId, BONUS_INVISIBLE_MONSTER, {activatedBonusClass: BONUS_INVISIBLE_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_INVISIBLE_MONSTER, activatorPlayerKey: 'player2'}));
 		assert.equal(0, UserAchievements.find().count());
@@ -280,7 +280,7 @@ describe('AchievementListener#BlankScreen', function() {
 
 		listener.onBonusCaught(new BonusCaught(gameId, BONUS_INVISIBLE_MONSTER, {activatedBonusClass: BONUS_INVISIBLE_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_INVISIBLE_MONSTER, activatorPlayerKey: 'player1'}));
 		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusRemoved(new BonusRemoved(gameId, BONUS_INVISIBLE_MONSTER, 'player1', BONUS_INVISIBLE_MONSTER, 'player1'));
+		listener.onBonusRemoved(new BonusRemoved(gameId, Random.id(5), BONUS_INVISIBLE_MONSTER, 'player1', BONUS_INVISIBLE_MONSTER, 'player1'));
 
 		listener.onBonusCaught(new BonusCaught(gameId, BONUS_INVISIBLE_MONSTER, {activatedBonusClass: BONUS_INVISIBLE_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_INVISIBLE_MONSTER, activatorPlayerKey: 'player2'}));
 		assert.equal(0, UserAchievements.find().count());
@@ -300,7 +300,7 @@ describe('AchievementListener#BlankScreen', function() {
 
 		listener.onBonusCaught(new BonusCaught(gameId, BONUS_CLOAKED_MONSTER, {activatedBonusClass: BONUS_CLOAKED_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_CLOAKED_MONSTER, activatorPlayerKey: 'player2'}));
 		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusRemoved(new BonusRemoved(gameId, BONUS_CLOAKED_MONSTER, 'player2', BONUS_CLOAKED_MONSTER, 'player2'));
+		listener.onBonusRemoved(new BonusRemoved(gameId, Random.id(5), BONUS_CLOAKED_MONSTER, 'player2', BONUS_CLOAKED_MONSTER, 'player2'));
 
 		listener.onBonusCaught(new BonusCaught(gameId, BONUS_INVISIBLE_MONSTER, {activatedBonusClass: BONUS_INVISIBLE_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_INVISIBLE_MONSTER, activatorPlayerKey: 'player1'}));
 		assert.equal(0, UserAchievements.find().count());
@@ -320,7 +320,7 @@ describe('AchievementListener#BlankScreen', function() {
 
 		listener.onBonusCaught(new BonusCaught(gameId, BONUS_INVISIBLE_MONSTER, {activatedBonusClass: BONUS_INVISIBLE_MONSTER, targetPlayerKey: 'player2', bonusClass: BONUS_INVISIBLE_MONSTER, activatorPlayerKey: 'player2'}));
 		assert.equal(0, UserAchievements.find().count());
-		listener.onBonusRemoved(new BonusRemoved(gameId, BONUS_INVISIBLE_MONSTER, 'player2', BONUS_INVISIBLE_MONSTER, 'player2'));
+		listener.onBonusRemoved(new BonusRemoved(gameId, Random.id(5), BONUS_INVISIBLE_MONSTER, 'player2', BONUS_INVISIBLE_MONSTER, 'player2'));
 
 		listener.onBonusCaught(new BonusCaught(gameId, BONUS_INVISIBLE_MONSTER, {activatedBonusClass: BONUS_INVISIBLE_MONSTER, targetPlayerKey: 'player1', bonusClass: BONUS_INVISIBLE_MONSTER, activatorPlayerKey: 'player1'}));
 		assert.equal(0, UserAchievements.find().count());

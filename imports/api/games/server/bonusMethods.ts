@@ -93,6 +93,7 @@ Meteor.methods({
 		EventPublisher.publish(
 			new BonusRemoved(
 				game._id,
+				bonusIdentifier,
 				removedActivatedBonusClass,
 				removedBonusTargetPlayerKey,
 				removedBonusClass,

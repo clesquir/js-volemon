@@ -51,7 +51,7 @@ import {Games} from '../../games/games';
 import {Players} from '../../games/players';
 
 export default class GameListeners {
-	private gameId: string;
+	private readonly gameId: string;
 	private listeners: Listener[];
 
 	constructor(gameId: string) {
@@ -124,7 +124,7 @@ export default class GameListeners {
 		});
 	}
 
-	stop() {
+	destroy() {
 		this.listeners.forEach(function(achievement: Listener) {
 			achievement.destroy();
 		});

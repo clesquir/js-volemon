@@ -2,7 +2,7 @@ import {assert} from 'chai';
 import {TestGameBoot} from '/imports/api/games/client/boot/TestGameBoot';
 import SkinManager from '/imports/api/games/client/component/SkinManager';
 import NullServerAdapter from '/imports/api/games/client/serverAdapter/NullServerAdapter';
-import ServerNormalizedTime from '/imports/api/games/client/ServerNormalizedTime';
+import StaticNormalizedTime from '/imports/lib/normalizedTime/StaticNormalizedTime';
 import CountStreamBundler from '/imports/api/games/client/streamBundler/CountStreamBundler';
 import StaticGameConfiguration from '/imports/api/games/configuration/StaticGameConfiguration';
 import StaticGameData from '/imports/api/games/data/StaticGameData';
@@ -13,7 +13,7 @@ describe('Player#isJumpingForward', function() {
 	const gameConfiguration = new StaticGameConfiguration();
 	const gameData = new StaticGameData();
 	const streamBundler = new CountStreamBundler();
-	const serverNormalizedTime = new ServerNormalizedTime();
+	const normalizedTime = new StaticNormalizedTime();
 	const skinManager = SkinManager.withDefaults(gameConfiguration);
 	const serverAdapter = new NullServerAdapter();
 
@@ -23,7 +23,7 @@ describe('Player#isJumpingForward', function() {
 		gameConfiguration,
 		skinManager,
 		streamBundler,
-		serverNormalizedTime,
+		normalizedTime,
 		serverAdapter
 	);
 	gameBoot.init();
@@ -146,7 +146,7 @@ describe('Player#isInFrontOfPlayer', function() {
 	const gameConfiguration = new StaticGameConfiguration();
 	const gameData = new StaticGameData();
 	const streamBundler = new CountStreamBundler();
-	const serverNormalizedTime = new ServerNormalizedTime();
+	const normalizedTime = new StaticNormalizedTime();
 	const skinManager = SkinManager.withDefaults(gameConfiguration);
 	const serverAdapter = new NullServerAdapter();
 
@@ -156,7 +156,7 @@ describe('Player#isInFrontOfPlayer', function() {
 		gameConfiguration,
 		skinManager,
 		streamBundler,
-		serverNormalizedTime,
+		normalizedTime,
 		serverAdapter
 	);
 	gameBoot.init();
@@ -237,7 +237,7 @@ describe('Player#move', function() {
 	const gameConfiguration = new StaticGameConfiguration();
 	const gameData = new StaticGameData();
 	const streamBundler = new CountStreamBundler();
-	const serverNormalizedTime = new ServerNormalizedTime();
+	const normalizedTime = new StaticNormalizedTime();
 	const skinManager = SkinManager.withDefaults(gameConfiguration);
 	const serverAdapter = new NullServerAdapter();
 
@@ -247,7 +247,7 @@ describe('Player#move', function() {
 		gameConfiguration,
 		skinManager,
 		streamBundler,
-		serverNormalizedTime,
+		normalizedTime,
 		serverAdapter
 	);
 	gameBoot.init();
