@@ -19,12 +19,12 @@ export const TournamentGameReplayController = RouteController.extend({
 		TournamentGameController.prototype.onBeforeAction.call(this);
 	},
 	action: function() {
-		this.render('tournamentGame');
+		this.render('tournamentGameReplay');
 
-		Template.tournamentGame.rendered = function() {
+		Template.tournamentGameReplay.rendered = function() {
 			ReplayRouteInitiator.get().onControllerRender(Session.get('game'));
 
-			Template.tournamentGame.rendered = null;
+			Template.tournamentGameReplay.rendered = null;
 		};
 	},
 	onStop: function() {

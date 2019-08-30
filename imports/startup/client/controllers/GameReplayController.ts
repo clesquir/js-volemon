@@ -19,12 +19,12 @@ export const GameReplayController = RouteController.extend({
 		GameController.prototype.onBeforeAction.call(this);
 	},
 	action: function() {
-		this.render('game');
+		this.render('gameReplay');
 
-		Template.game.rendered = function() {
+		Template.gameReplay.rendered = function() {
 			ReplayRouteInitiator.get().onControllerRender(Session.get('game'));
 
-			Template.game.rendered = null;
+			Template.gameReplay.rendered = null;
 		};
 	},
 	onStop: function() {
