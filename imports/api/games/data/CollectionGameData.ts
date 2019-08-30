@@ -48,6 +48,7 @@ export default class CollectionGameData implements GameData {
 	startedAt: number;
 	lastPointAt: number;
 	lastPointTaken: string;
+	gameDuration: number;
 
 	constructor(
 		gameId: string,
@@ -70,6 +71,7 @@ export default class CollectionGameData implements GameData {
 		this.tournamentId = game.tournamentId;
 
 		this.updateStartedAt(game.startedAt);
+		this.updateGameDuration(game.gameDuration);
 		this.updateHostPoints(game.hostPoints);
 		this.updateClientPoints(game.clientPoints);
 		this.updateLastPointTaken(game.lastPointTaken);
@@ -379,5 +381,9 @@ export default class CollectionGameData implements GameData {
 
 	private updateStartedAt(startedAt: number) {
 		this.startedAt = startedAt;
+	}
+
+	private updateGameDuration(gameDuration: number) {
+		this.gameDuration = gameDuration;
 	}
 }

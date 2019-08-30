@@ -27,6 +27,7 @@ export default class ReplayReader {
 	private initialStartedAt: number = null;
 	private state: ReplayReaderState = ReplayReaderState.STOPPED;
 	private game;
+	private rowIndex: number = 0;
 	private rows: any[];
 	private replayTimer: number = null;
 
@@ -63,7 +64,7 @@ export default class ReplayReader {
 			this.rows = replay.rows;
 
 			EventPublisher.publish(new GameReplayStarted(this.gameId));
-			this.playNextEvent(0);
+			this.playReplayRow();
 		}
 	}
 
@@ -71,21 +72,23 @@ export default class ReplayReader {
 		return getUTCTimeStamp();
 	}
 
-	private playNextEvent(index) {
+	private playReplayRow() {
 		if (this.state === ReplayReaderState.STOPPED) {
 			return;
 		}
 
-		if (index >= this.rows.length) {
+		if (this.rowIndex >= this.rows.length) {
 			this.state = ReplayReaderState.STOPPED;
 			return;
 		}
 
-		const row = this.rows[index];
-		const lastTimestamp = this.rows[index - 1] ? this.rows[index - 1].timestamp : this.initialStartedAt;
+		const row = this.rows[this.rowIndex];
+		const lastTimestamp = this.rows[this.rowIndex - 1] ? this.rows[this.rowIndex - 1].timestamp : this.initialStartedAt;
 		const timeout = row.timestamp - lastTimestamp;
 
 		this.replayTimer = Meteor.setTimeout(() => {
+			this.updateTimeSpent(row);
+
 			switch (row.type) {
 				case ReplayType.STREAM:
 					this.replayStream(row);
@@ -94,7 +97,8 @@ export default class ReplayReader {
 					this.replayEvent(row);
 			}
 
-			this.playNextEvent(index + 1);
+			this.rowIndex++;
+			this.playReplayRow();
 		}, timeout);
 	}
 
@@ -110,6 +114,9 @@ export default class ReplayReader {
 		this.gameData.updateActiveBonuses([]);
 		this.gameData.updateLastPointTaken(null);
 		this.gameData.updateLastPointAt(this.gameData.startedAt);
+
+		this.rowIndex = 0;
+		this.state = ReplayReaderState.PLAYING;
 	}
 
 	private replayStream(row: ReplayedStream) {
@@ -178,5 +185,17 @@ export default class ReplayReader {
 		}
 
 		return rowData;
+	}
+
+	private updateTimeSpent(row) {
+		let progress = (row.timestamp - this.initialStartedAt) / this.gameData.gameDuration * 100;
+
+		if (progress < 0) {
+			progress = 0;
+		} else if (progress > 100) {
+			progress = 100;
+		}
+
+		$('#game-replay-slider-time-spent').width(`${progress.toFixed(4)}%`);
 	}
 }

@@ -38,27 +38,26 @@
 .received-reaction-container {
 	position: absolute;
 	width: 100%;
+	height: 0;
 	display: flex;
-	z-index: 1;
+	justify-content: space-around;
 
 	.mixin-horizontal-breakpoint-tablet({
 		top: 0;
 	});
 
 	.received-reaction {
-		position: absolute;
-		width: 50%;
-		bottom: -20px;
+		margin-top: -25px;
 		display: flex;
 		justify-content: center;
+
+		.mixin-horizontal-breakpoint-tablet({
+			margin-top: 5px;
+		});
 
 		&.received-reaction-2vs2 {
 			width: 25%;
 		}
-
-		.mixin-horizontal-breakpoint-tablet({
-			top: 0;
-		});
 
 		.received-reaction-item {
 			transition: transform 0.2s ease-in-out;
@@ -88,22 +87,6 @@
 				}
 			}
 		}
-	}
-
-	#reaction-from-player1 {
-		left: 0;
-	}
-
-	#reaction-from-player2 {
-		right: 0;
-	}
-
-	#reaction-from-player3 {
-		left: 25%;
-	}
-
-	#reaction-from-player4 {
-		right: 25%;
 	}
 }
 
@@ -157,7 +140,6 @@
 .cheer-item {
 	position: absolute;
 	top: 10%;
-	z-index: 1;
 	transition: all 0.5s ease-in-out;
 	transform: scale(0.75);
 

@@ -26,14 +26,6 @@
 			<div class="point-timer">{{pointTimer}}</div>
 		</div>
 
-		<div class="viewers-container">
-			{{#if hasViewer}}
-				<span data-tooltip="{{viewersList}}" data-tooltip-direction="s">
-					{{viewers}}<i class="fa fa-eye"></i>
-				</span>
-			{{/if}}
-		</div>
-
 		{{! Game container }}
 
 		<div id="game-container" class="page game {{classForMatchPoint}}">
@@ -47,15 +39,23 @@
 			{{> afterGame game=game playersCollection=playersCollection eloScoresCollection=eloScoresCollection tournamentEloScoresCollection=tournamentEloScoresCollection}}
 		{{/if}}
 
-		{{> reactions isGamePlayer=isGamePlayer hasViewer=hasViewer}}
-
-		<div class="connection-indicator">
-			<div class="connection-indicator-light {{connectionClass}}" data-tooltip="{{connectionInformation}}"></div>
+		<div class="viewers-container">
+			{{#if hasViewer}}
+				<span data-tooltip="{{viewersList}}" data-tooltip-direction="s">
+					{{viewers}}<i class="fa fa-eye"></i>
+				</span>
+			{{/if}}
 		</div>
 
 		{{#if showReplayControls}}
 			{{> gameReplayControls game=game}}
 		{{/if}}
+
+		{{> reactions isGamePlayer=isGamePlayer hasViewer=hasViewer}}
+
+		<div class="connection-indicator">
+			<div class="connection-indicator-light {{connectionClass}}" data-tooltip="{{connectionInformation}}"></div>
+		</div>
 
 	</div>
 

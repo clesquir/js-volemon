@@ -5,6 +5,7 @@ export default interface GameData {
 	startedAt: number;
 	lastPointAt: number;
 	lastPointTaken: string;
+	gameDuration: number;
 	hostPoints: number;
 	clientPoints: number;
 

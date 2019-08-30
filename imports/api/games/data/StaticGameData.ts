@@ -23,6 +23,7 @@ export default class StaticGameData implements GameData {
 	startedAt: number;
 	lastPointAt: number;
 	lastPointTaken: string;
+	gameDuration: number = 0;
 	hostPoints: number = 0;
 	clientPoints: number = 0;
 
