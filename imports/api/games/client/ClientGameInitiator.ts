@@ -71,8 +71,6 @@ export default class ClientGameInitiator {
 	}
 
 	stop() {
-		console.trace('stop?');
-
 		EventPublisher.off(PointTaken.getClassName(), this.onPointTaken, this);
 		EventPublisher.off(GameStatusChanged.getClassName(), this.onGameStatusChanged, this);
 		EventPublisher.off(GameReplayStarted.getClassName(), this.onGameReplayStarted, this);

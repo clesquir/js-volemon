@@ -1,6 +1,26 @@
 import {assert} from 'chai';
 import sinon from 'sinon';
-import EventPublisher from '/imports/lib/EventPublisher.js';
+import EventPublisher from '/imports/lib/EventPublisher';
+
+class EventA {
+	static getClassName() {
+		return 'EventA';
+	}
+
+	getClassName() {
+		return EventA.getClassName();
+	}
+}
+
+class EventB {
+	static getClassName() {
+		return 'EventB';
+	}
+
+	getClassName() {
+		return EventB.getClassName();
+	}
+}
 
 describe('EventPublisher', function() {
 	const beforeTestListeners = EventPublisher.listeners;
@@ -311,8 +331,6 @@ describe('EventPublisher', function() {
 	});
 
 	it('publishes to all listeners with eventName', function() {
-		const eventNameA = 'eventNameA';
-		const eventNameB = 'eventNameB';
 		const callbackA = sinon.spy();
 		const callbackB = sinon.spy();
 		const callbackC = sinon.spy();
@@ -320,14 +338,14 @@ describe('EventPublisher', function() {
 		const scopeA = {};
 		const scopeB = {};
 
-		EventPublisher.on(eventNameA, callbackA, scopeA);
-		EventPublisher.on(eventNameA, callbackB, scopeB);
-		EventPublisher.on(eventNameB, callbackC, scopeA);
-		EventPublisher.on(eventNameB, callbackD, scopeB);
+		EventPublisher.on(EventA.getClassName(), callbackA, scopeA);
+		EventPublisher.on(EventA.getClassName(), callbackB, scopeB);
+		EventPublisher.on(EventB.getClassName(), callbackC, scopeA);
+		EventPublisher.on(EventB.getClassName(), callbackD, scopeB);
 
-		const eventA = new (class eventNameA {})();
+		const eventA = new EventA();
 		EventPublisher.publish(eventA);
-		const eventB = new (class eventNameB {})();
+		const eventB = new EventB();
 		EventPublisher.publish(eventB);
 
 		assert.isTrue(callbackA.calledOnce);
@@ -341,13 +359,12 @@ describe('EventPublisher', function() {
 	});
 
 	it('does not do anything when publishing listeners for unregistered event', function() {
-		const eventNameA = 'eventNameA';
 		const callbackA = sinon.spy();
 		const scopeA = {};
 
-		EventPublisher.on(eventNameA, callbackA, scopeA);
+		EventPublisher.on(EventA.getClassName(), callbackA, scopeA);
 
-		const eventB = new (class eventNameB {})();
+		const eventB = new EventB();
 		EventPublisher.publish(eventB);
 
 		assert.isTrue(callbackA.notCalled);
