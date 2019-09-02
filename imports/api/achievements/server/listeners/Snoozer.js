@@ -1,7 +1,7 @@
 import {ACHIEVEMENT_SNOOZER} from '/imports/api/achievements/constants.js';
 import {GAME_MAXIMUM_POINTS} from '/imports/api/games/constants.js';
-import PlayerWon from '/imports/api/games/events/PlayerWon.js';
-import PointTaken from '/imports/api/games/events/PointTaken.js';
+import PlayerWon from '/imports/api/games/events/PlayerWon';
+import PointTaken from '/imports/api/games/events/PointTaken';
 import GameListener from './GameListener';
 
 export default class Snoozer extends GameListener {
@@ -12,13 +12,13 @@ export default class Snoozer extends GameListener {
 	}
 
 	addListeners() {
-		this.addListener(PointTaken.prototype.constructor.name, this.onPointTaken);
-		this.addListener(PlayerWon.prototype.constructor.name, this.onPlayerWon);
+		this.addListener(PointTaken.getClassName(), this.onPointTaken);
+		this.addListener(PlayerWon.getClassName(), this.onPlayerWon);
 	}
 
 	removeListeners() {
-		this.removeListener(PointTaken.prototype.constructor.name, this.onPointTaken);
-		this.removeListener(PlayerWon.prototype.constructor.name, this.onPlayerWon);
+		this.removeListener(PointTaken.getClassName(), this.onPointTaken);
+		this.removeListener(PlayerWon.getClassName(), this.onPlayerWon);
 	}
 
 	/**

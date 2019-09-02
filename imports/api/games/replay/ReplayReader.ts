@@ -2,7 +2,7 @@ import Stream from "../../../lib/stream/Stream";
 import GameData from "../data/GameData";
 import {Replays} from "../replays";
 import {ReplayedEvent, ReplayedStream, ReplayType} from "./ReplayPersister";
-import {EventPublisher} from "../../../lib/EventPublisher";
+import EventPublisher from "../../../lib/EventPublisher";
 import GameStatusChanged from "../events/GameStatusChanged";
 import PointTaken from "../events/PointTaken";
 import {getUTCTimeStamp} from "../../../lib/utils";
@@ -45,12 +45,12 @@ export default class ReplayReader {
 
 	init() {
 		this.state = ReplayReaderState.PLAYING;
-		EventPublisher.on(GamePlayStateCreated.prototype.constructor.name, this.restart, this);
+		EventPublisher.on(GamePlayStateCreated.getClassName(), this.restart, this);
 	}
 
 	destroy() {
 		this.state = ReplayReaderState.STOPPED;
-		EventPublisher.off(GamePlayStateCreated.prototype.constructor.name, this.restart, this);
+		EventPublisher.off(GamePlayStateCreated.getClassName(), this.restart, this);
 	}
 
 	restart() {
@@ -125,7 +125,7 @@ export default class ReplayReader {
 
 	private replayEvent(row: ReplayedEvent) {
 		switch (row.eventName) {
-			case GameStatusChanged.prototype.constructor.name:
+			case GameStatusChanged.getClassName():
 				this.gameData.updateStatus(row.event.status);
 
 				EventPublisher.publish(
@@ -135,7 +135,7 @@ export default class ReplayReader {
 					)
 				);
 				break;
-			case BonusCaught.prototype.constructor.name:
+			case BonusCaught.getClassName():
 				this.gameData.addToActiveBonuses(
 					Object.assign(
 						{
@@ -148,10 +148,10 @@ export default class ReplayReader {
 					)
 				);
 				break;
-			case BonusRemoved.prototype.constructor.name:
+			case BonusRemoved.getClassName():
 				this.gameData.removeFromActiveBonuses(row.event.identifier);
 				break;
-			case PointTaken.prototype.constructor.name:
+			case PointTaken.getClassName():
 				this.gameData.updateActiveBonuses([]);
 				this.gameData.updateHostPoints(row.event.hostPoints);
 				this.gameData.updateClientPoints(row.event.clientPoints);

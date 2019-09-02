@@ -1,6 +1,6 @@
 import {ACHIEVEMENT_CRUSHING_METAL} from '/imports/api/achievements/constants.js';
 import {ONE_VS_COMPUTER_GAME_MODE} from '/imports/api/games/constants';
-import PlayerWon from '/imports/api/games/events/PlayerWon.js';
+import PlayerWon from '/imports/api/games/events/PlayerWon';
 import GameListener from './GameListener';
 
 export default class CrushingMetal extends GameListener {
@@ -13,11 +13,11 @@ export default class CrushingMetal extends GameListener {
 	}
 
 	addListeners() {
-		this.addListener(PlayerWon.prototype.constructor.name, this.onPlayerWon);
+		this.addListener(PlayerWon.getClassName(), this.onPlayerWon);
 	}
 
 	removeListeners() {
-		this.removeListener(PlayerWon.prototype.constructor.name, this.onPlayerWon);
+		this.removeListener(PlayerWon.getClassName(), this.onPlayerWon);
 	}
 
 	/**

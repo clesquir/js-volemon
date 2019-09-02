@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import sinon from 'sinon';
-import {EventPublisher} from '/imports/lib/EventPublisher.js';
+import EventPublisher from '/imports/lib/EventPublisher.js';
 
 describe('EventPublisher', function() {
 	const beforeTestListeners = EventPublisher.listeners;

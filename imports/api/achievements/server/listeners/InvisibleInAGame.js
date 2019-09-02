@@ -5,11 +5,11 @@ import {BONUS_INVISIBLE_MONSTER} from '/imports/api/games/bonusConstants';
 
 export default class InvisibleInAGame extends GameListener {
 	addListeners() {
-		this.addListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
+		this.addListener(BonusCaught.getClassName(), this.onBonusCaught);
 	}
 
 	removeListeners() {
-		this.removeListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
+		this.removeListener(BonusCaught.getClassName(), this.onBonusCaught);
 	}
 
 	/**

@@ -1,6 +1,6 @@
 import GameData from "../data/GameData";
 import * as moment from 'moment';
-import {EventPublisher} from "../../../lib/EventPublisher";
+import EventPublisher from "../../../lib/EventPublisher";
 import LastPointUpdated from "../events/LastPointUpdated";
 
 export default class GameTimer {
@@ -16,11 +16,11 @@ export default class GameTimer {
 	init() {
 		this.initTimer();
 
-		EventPublisher.on(LastPointUpdated.prototype.constructor.name, this.updateTimer, this);
+		EventPublisher.on(LastPointUpdated.getClassName(), this.updateTimer, this);
 	}
 
 	stop() {
-		EventPublisher.off(LastPointUpdated.prototype.constructor.name, this.updateTimer, this);
+		EventPublisher.off(LastPointUpdated.getClassName(), this.updateTimer, this);
 
 		this.clearTimer();
 	}

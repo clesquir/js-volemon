@@ -1,5 +1,5 @@
 import {ACHIEVEMENT_STEEL_PRACTICING} from '/imports/api/achievements/constants.js';
-import PlayerWon from '/imports/api/games/events/PlayerWon.js';
+import PlayerWon from '/imports/api/games/events/PlayerWon';
 import {ONE_VS_MACHINE_LEARNING_COMPUTER_GAME_MODE} from '/imports/api/games/constants';
 import GameListener from './GameListener';
 
@@ -13,11 +13,11 @@ export default class SteelPracticing extends GameListener {
 	}
 
 	addListeners() {
-		this.addListener(PlayerWon.prototype.constructor.name, this.onPlayerWon);
+		this.addListener(PlayerWon.getClassName(), this.onPlayerWon);
 	}
 
 	removeListeners() {
-		this.removeListener(PlayerWon.prototype.constructor.name, this.onPlayerWon);
+		this.removeListener(PlayerWon.getClassName(), this.onPlayerWon);
 	}
 
 	/**

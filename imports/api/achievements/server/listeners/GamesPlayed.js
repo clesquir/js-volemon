@@ -1,6 +1,6 @@
 import GameListener from './GameListener';
 import {ACHIEVEMENT_GAMES_PLAYED} from '/imports/api/achievements/constants.js';
-import GameFinished from '/imports/api/games/events/GameFinished.js';
+import GameFinished from '/imports/api/games/events/GameFinished';
 
 export default class GamesPlayed extends GameListener {
 	allowedForPracticeGame() {
@@ -8,11 +8,11 @@ export default class GamesPlayed extends GameListener {
 	}
 
 	addListeners() {
-		this.addListener(GameFinished.prototype.constructor.name, this.onGameFinished);
+		this.addListener(GameFinished.getClassName(), this.onGameFinished);
 	}
 
 	removeListeners() {
-		this.removeListener(GameFinished.prototype.constructor.name, this.onGameFinished);
+		this.removeListener(GameFinished.getClassName(), this.onGameFinished);
 	}
 
 	/**

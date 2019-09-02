@@ -1,15 +1,15 @@
 import {ACHIEVEMENT_SERIAL_WINNER} from '/imports/api/achievements/constants.js';
-import TournamentFinished from '/imports/api/tournaments/events/TournamentFinished.js';
+import TournamentFinished from '/imports/api/tournaments/events/TournamentFinished';
 import {TournamentProfiles} from '/imports/api/tournaments/tournamentProfiles.js';
 import TournamentListener from './TournamentListener';
 
 export default class SerialWinner extends TournamentListener {
 	addListeners() {
-		this.addListener(TournamentFinished.prototype.constructor.name, this.onTournamentFinished);
+		this.addListener(TournamentFinished.getClassName(), this.onTournamentFinished);
 	}
 
 	removeListeners() {
-		this.removeListener(TournamentFinished.prototype.constructor.name, this.onTournamentFinished);
+		this.removeListener(TournamentFinished.getClassName(), this.onTournamentFinished);
 	}
 
 	/**

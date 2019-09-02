@@ -1,17 +1,17 @@
-import PlayerKilled from '/imports/api/games/events/PlayerKilled.js';
+import PlayerKilled from '/imports/api/games/events/PlayerKilled';
 import GameListener from './GameListener';
 import {ACHIEVEMENT_GONE_BUT_NOT_FORGOTTEN} from '/imports/api/achievements/constants.js';
-import PointTaken from '/imports/api/games/events/PointTaken.js';
+import PointTaken from '/imports/api/games/events/PointTaken';
 
 export default class GoneButNotForgotten extends GameListener {
 	addListeners() {
-		this.addListener(PointTaken.prototype.constructor.name, this.onPointTaken);
-		this.addListener(PlayerKilled.prototype.constructor.name, this.onPlayerKilled);
+		this.addListener(PointTaken.getClassName(), this.onPointTaken);
+		this.addListener(PlayerKilled.getClassName(), this.onPlayerKilled);
 	}
 
 	removeListeners() {
-		this.removeListener(PlayerKilled.prototype.constructor.name, this.onPlayerKilled);
-		this.removeListener(PointTaken.prototype.constructor.name, this.onPointTaken);
+		this.removeListener(PlayerKilled.getClassName(), this.onPlayerKilled);
+		this.removeListener(PointTaken.getClassName(), this.onPointTaken);
 	}
 
 	/**

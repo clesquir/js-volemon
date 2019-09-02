@@ -6,11 +6,11 @@ import {PLAYER_LIST_OF_SHAPES} from '/imports/api/games/shapeConstants.js'
 
 export default class Rakshasa extends GameListener {
 	addListeners() {
-		this.addListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
+		this.addListener(BonusCaught.getClassName(), this.onBonusCaught);
 	}
 
 	removeListeners() {
-		this.removeListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
+		this.removeListener(BonusCaught.getClassName(), this.onBonusCaught);
 	}
 
 	/**

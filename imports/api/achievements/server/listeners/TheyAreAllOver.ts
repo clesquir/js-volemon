@@ -9,17 +9,17 @@ export default class TheyAreAllOver extends GameListener {
 	private numberBonusesOnScreen: number = 0;
 
 	addListeners() {
-		this.addListener(BonusCreated.prototype.constructor.name, this.onBonusCreated);
-		this.addListener(BonusCleared.prototype.constructor.name, this.onBonusCleared);
-		this.addListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
-		this.addListener(PointTaken.prototype.constructor.name, this.onPointTaken);
+		this.addListener(BonusCreated.getClassName(), this.onBonusCreated);
+		this.addListener(BonusCleared.getClassName(), this.onBonusCleared);
+		this.addListener(BonusCaught.getClassName(), this.onBonusCaught);
+		this.addListener(PointTaken.getClassName(), this.onPointTaken);
 	}
 
 	removeListeners() {
-		this.removeListener(BonusCreated.prototype.constructor.name, this.onBonusCreated);
-		this.removeListener(BonusCleared.prototype.constructor.name, this.onBonusCleared);
-		this.removeListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
-		this.removeListener(PointTaken.prototype.constructor.name, this.onPointTaken);
+		this.removeListener(BonusCreated.getClassName(), this.onBonusCreated);
+		this.removeListener(BonusCleared.getClassName(), this.onBonusCleared);
+		this.removeListener(BonusCaught.getClassName(), this.onBonusCaught);
+		this.removeListener(PointTaken.getClassName(), this.onPointTaken);
 	}
 
 	onBonusCreated(event: BonusCreated) {

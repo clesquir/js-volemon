@@ -1,14 +1,14 @@
 import GameListener from './GameListener';
 import {ACHIEVEMENT_GAME_TIME} from '/imports/api/achievements/constants.js';
-import GameFinished from '/imports/api/games/events/GameFinished.js';
+import GameFinished from '/imports/api/games/events/GameFinished';
 
 export default class GameTime extends GameListener {
 	addListeners() {
-		this.addListener(GameFinished.prototype.constructor.name, this.onGameFinished);
+		this.addListener(GameFinished.getClassName(), this.onGameFinished);
 	}
 
 	removeListeners() {
-		this.removeListener(GameFinished.prototype.constructor.name, this.onGameFinished);
+		this.removeListener(GameFinished.getClassName(), this.onGameFinished);
 	}
 
 	/**

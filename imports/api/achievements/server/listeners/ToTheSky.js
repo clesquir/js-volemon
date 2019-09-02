@@ -2,7 +2,7 @@ import GameListener from './GameListener';
 import {ACHIEVEMENT_TO_THE_SKY} from '/imports/api/achievements/constants.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught';
 import BonusRemoved from '/imports/api/games/events/BonusRemoved';
-import PointTaken from '/imports/api/games/events/PointTaken.js';
+import PointTaken from '/imports/api/games/events/PointTaken';
 import {
 	BONUS_SMALL_MONSTER,
 	BONUS_BIG_JUMP_MONSTER,
@@ -11,15 +11,15 @@ import {
 
 export default class ToTheSky extends GameListener {
 	addListeners() {
-		this.addListener(PointTaken.prototype.constructor.name, this.onPointTaken);
-		this.addListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
-		this.addListener(BonusRemoved.prototype.constructor.name, this.onBonusRemoved);
+		this.addListener(PointTaken.getClassName(), this.onPointTaken);
+		this.addListener(BonusCaught.getClassName(), this.onBonusCaught);
+		this.addListener(BonusRemoved.getClassName(), this.onBonusRemoved);
 	}
 
 	removeListeners() {
-		this.removeListener(BonusRemoved.prototype.constructor.name, this.onBonusRemoved);
-		this.removeListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
-		this.removeListener(PointTaken.prototype.constructor.name, this.onPointTaken);
+		this.removeListener(BonusRemoved.getClassName(), this.onBonusRemoved);
+		this.removeListener(BonusCaught.getClassName(), this.onBonusCaught);
+		this.removeListener(PointTaken.getClassName(), this.onPointTaken);
 	}
 
 	/**

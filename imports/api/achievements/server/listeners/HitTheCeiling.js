@@ -7,15 +7,15 @@ import GameListener from './GameListener';
 
 export default class HitTheCeiling extends GameListener {
 	addListeners() {
-		this.addListener(PointTaken.prototype.constructor.name, this.onPointTaken);
-		this.addListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
-		this.addListener(BonusRemoved.prototype.constructor.name, this.onBonusRemoved);
+		this.addListener(PointTaken.getClassName(), this.onPointTaken);
+		this.addListener(BonusCaught.getClassName(), this.onBonusCaught);
+		this.addListener(BonusRemoved.getClassName(), this.onBonusRemoved);
 	}
 
 	removeListeners() {
-		this.removeListener(BonusRemoved.prototype.constructor.name, this.onBonusRemoved);
-		this.removeListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
-		this.removeListener(PointTaken.prototype.constructor.name, this.onPointTaken);
+		this.removeListener(BonusRemoved.getClassName(), this.onBonusRemoved);
+		this.removeListener(BonusCaught.getClassName(), this.onBonusCaught);
+		this.removeListener(PointTaken.getClassName(), this.onPointTaken);
 	}
 
 	/**

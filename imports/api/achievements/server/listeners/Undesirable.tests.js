@@ -3,7 +3,7 @@ import Undesirable from '/imports/api/achievements/server/listeners/Undesirable'
 import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught';
 import BonusCreated from '/imports/api/games/events/BonusCreated';
-import PointTaken from '/imports/api/games/events/PointTaken.js';
+import PointTaken from '/imports/api/games/events/PointTaken';
 import {Games} from '/imports/api/games/games.js';
 import {assert} from 'chai';
 import StubCollections from 'meteor/hwillson:stub-collections';

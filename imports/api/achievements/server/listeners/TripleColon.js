@@ -1,15 +1,15 @@
 import GameListener from './GameListener';
 import {ACHIEVEMENT_TRIPLE_COLON} from '/imports/api/achievements/constants.js';
-import PlayerWon from '/imports/api/games/events/PlayerWon.js';
+import PlayerWon from '/imports/api/games/events/PlayerWon';
 import {PLAYER_SHAPE_TRIPLE_COLON} from '/imports/api/games/shapeConstants.js'
 
 export default class TripleColon extends GameListener {
 	addListeners() {
-		this.addListener(PlayerWon.prototype.constructor.name, this.onPlayerWon);
+		this.addListener(PlayerWon.getClassName(), this.onPlayerWon);
 	}
 
 	removeListeners() {
-		this.removeListener(PlayerWon.prototype.constructor.name, this.onPlayerWon);
+		this.removeListener(PlayerWon.getClassName(), this.onPlayerWon);
 	}
 
 	/**

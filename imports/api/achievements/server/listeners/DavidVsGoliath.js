@@ -1,6 +1,6 @@
 import {ACHIEVEMENT_DAVID_VS_GOLIATH} from '/imports/api/achievements/constants.js';
 import {isTwoVersusTwoGameMode} from '/imports/api/games/constants';
-import PlayerWon from '/imports/api/games/events/PlayerWon.js';
+import PlayerWon from '/imports/api/games/events/PlayerWon';
 import GameListener from './GameListener';
 
 export default class DavidVsGoliath extends GameListener {
@@ -9,11 +9,11 @@ export default class DavidVsGoliath extends GameListener {
 	}
 
 	addListeners() {
-		this.addListener(PlayerWon.prototype.constructor.name, this.onPlayerWon);
+		this.addListener(PlayerWon.getClassName(), this.onPlayerWon);
 	}
 
 	removeListeners() {
-		this.removeListener(PlayerWon.prototype.constructor.name, this.onPlayerWon);
+		this.removeListener(PlayerWon.getClassName(), this.onPlayerWon);
 	}
 
 	/**

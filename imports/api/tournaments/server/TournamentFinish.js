@@ -6,9 +6,9 @@ import {
 	GAME_STATUS_STARTED,
 	GAME_STATUS_TIMEOUT
 } from '/imports/api/games/statusConstants.js';
-import TournamentFinished from '/imports/api/tournaments/events/TournamentFinished.js';
+import TournamentFinished from '/imports/api/tournaments/events/TournamentFinished';
 import {Tournaments} from '/imports/api/tournaments/tournaments.js';
-import {EventPublisher} from '/imports/lib/EventPublisher.js';
+import EventPublisher from '/imports/lib/EventPublisher.js';
 
 //Every two hours
 const CHECK_DELAY = 7200000;

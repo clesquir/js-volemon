@@ -7,13 +7,13 @@ export default class MisterClean extends GameListener {
 	private numberOfBonusesCleared: number = 0;
 
 	addListeners() {
-		this.addListener(BonusCleared.prototype.constructor.name, this.onBonusCleared);
-		this.addListener(GameFinished.prototype.constructor.name, this.onGameFinished);
+		this.addListener(BonusCleared.getClassName(), this.onBonusCleared);
+		this.addListener(GameFinished.getClassName(), this.onGameFinished);
 	}
 
 	removeListeners() {
-		this.removeListener(GameFinished.prototype.constructor.name, this.onGameFinished);
-		this.removeListener(BonusCleared.prototype.constructor.name, this.onBonusCleared);
+		this.removeListener(GameFinished.getClassName(), this.onGameFinished);
+		this.removeListener(BonusCleared.getClassName(), this.onBonusCleared);
 	}
 
 	onBonusCleared(event: BonusCleared) {

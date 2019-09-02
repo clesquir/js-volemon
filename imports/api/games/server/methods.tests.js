@@ -1,10 +1,10 @@
 import {HOST_POINTS_COLUMN, ONE_VS_ONE_GAME_MODE} from '/imports/api/games/constants.js';
 import {EloScores} from '/imports/api/games/eloscores.js';
-import GameFinished from '/imports/api/games/events/GameFinished.js';
-import GameForfeited from '/imports/api/games/events/GameForfeited.js';
-import PlayerLost from '/imports/api/games/events/PlayerLost.js';
-import PlayerWon from '/imports/api/games/events/PlayerWon.js';
-import PointTaken from '/imports/api/games/events/PointTaken.js';
+import GameFinished from '/imports/api/games/events/GameFinished';
+import GameForfeited from '/imports/api/games/events/GameForfeited';
+import PlayerLost from '/imports/api/games/events/PlayerLost';
+import PlayerWon from '/imports/api/games/events/PlayerWon';
+import PointTaken from '/imports/api/games/events/PointTaken';
 import {Games} from '/imports/api/games/games.js';
 import {Players} from '/imports/api/games/players.js';
 import '/imports/api/games/server/methods.js';
@@ -15,7 +15,7 @@ import {
 	GAME_STATUS_TIMEOUT
 } from '/imports/api/games/statusConstants.js';
 import {Profiles} from '/imports/api/profiles/profiles.js';
-import {EventPublisher} from '/imports/lib/EventPublisher.js';
+import EventPublisher from '/imports/lib/EventPublisher.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 import {assert} from 'chai';
 import {Meteor} from 'meteor/meteor';
@@ -547,10 +547,10 @@ describe('GameMethods#quitGame', function() {
 		let playerLostCalled = false;
 		let gameFinishedCalled = false;
 		let gameForfeitedCalled = false;
-		EventPublisher.on(PlayerWon.prototype.constructor.name, function() {playerWonCalled = true;}, this);
-		EventPublisher.on(PlayerLost.prototype.constructor.name, function() {playerLostCalled = true;}, this);
-		EventPublisher.on(GameFinished.prototype.constructor.name, function() {gameFinishedCalled = true;}, this);
-		EventPublisher.on(GameForfeited.prototype.constructor.name, function() {gameForfeitedCalled = true;}, this);
+		EventPublisher.on(PlayerWon.getClassName(), function() {playerWonCalled = true;}, this);
+		EventPublisher.on(PlayerLost.getClassName(), function() {playerLostCalled = true;}, this);
+		EventPublisher.on(GameFinished.getClassName(), function() {gameFinishedCalled = true;}, this);
+		EventPublisher.on(GameForfeited.getClassName(), function() {gameForfeitedCalled = true;}, this);
 
 		Meteor.call('quitGame', gameId, userId1, function(error) {
 			try {
@@ -781,10 +781,10 @@ describe('GameMethods#addGamePoints', function() {
 		let playerWonCalled = false;
 		let playerLostCalled = false;
 		let gameFinishedCalled = false;
-		EventPublisher.on(PointTaken.prototype.constructor.name, function() {pointTakenCalled = true;}, this);
-		EventPublisher.on(PlayerWon.prototype.constructor.name, function() {playerWonCalled = true;}, this);
-		EventPublisher.on(PlayerLost.prototype.constructor.name, function() {playerLostCalled = true;}, this);
-		EventPublisher.on(GameFinished.prototype.constructor.name, function() {gameFinishedCalled = true;}, this);
+		EventPublisher.on(PointTaken.getClassName(), function() {pointTakenCalled = true;}, this);
+		EventPublisher.on(PlayerWon.getClassName(), function() {playerWonCalled = true;}, this);
+		EventPublisher.on(PlayerLost.getClassName(), function() {playerLostCalled = true;}, this);
+		EventPublisher.on(GameFinished.getClassName(), function() {gameFinishedCalled = true;}, this);
 
 		Meteor.call('addGamePoints', gameId, HOST_POINTS_COLUMN, function(error) {
 			try {

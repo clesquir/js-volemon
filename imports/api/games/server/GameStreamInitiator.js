@@ -1,6 +1,6 @@
 import {startKeepAlive} from '/imports/api/games/server/keepAlive.js';
-import PlayerKilled from '/imports/api/games/events/PlayerKilled.js';
-import {EventPublisher} from '/imports/lib/EventPublisher.js';
+import PlayerKilled from '/imports/api/games/events/PlayerKilled';
+import EventPublisher from '/imports/lib/EventPublisher.js';
 
 export default class GameStreamInitiator {
 	/**

@@ -8,11 +8,11 @@ export default class SpringCleaning extends GameListener {
 	private readonly maximumTime: number = 500;
 
 	addListeners() {
-		this.addListener(BonusCleared.prototype.constructor.name, this.onBonusCleared);
+		this.addListener(BonusCleared.getClassName(), this.onBonusCleared);
 	}
 
 	removeListeners() {
-		this.removeListener(BonusCleared.prototype.constructor.name, this.onBonusCleared);
+		this.removeListener(BonusCleared.getClassName(), this.onBonusCleared);
 	}
 
 	onBonusCleared(event: BonusCleared) {

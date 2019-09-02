@@ -1,17 +1,17 @@
 import Event from '../../../lib/events/Event';
 
-export default class GamePlayStateCreated implements Event {
-	readonly gameId: string;
+export default class GameTimedOut implements Event {
+	gameId: string;
 
 	constructor(gameId: string) {
 		this.gameId = gameId;
 	}
 
 	static getClassName(): string {
-		return 'GamePlayStateCreated';
+		return 'GameTimedOut';
 	}
 
 	getClassName(): string {
-		return GamePlayStateCreated.getClassName();
+		return GameTimedOut.getClassName();
 	}
 }

@@ -12,7 +12,7 @@ import MeteorServerAdapter from "./serverAdapter/MeteorServerAdapter";
 import MainScene from "./scene/MainScene";
 import {Meteor} from 'meteor/meteor';
 import {Session} from 'meteor/session';
-import {EventPublisher} from "../../../lib/EventPublisher";
+import EventPublisher from "../../../lib/EventPublisher";
 import PointTaken from "../events/PointTaken";
 import GameStatusChanged from "../events/GameStatusChanged";
 import NormalizedTime from "../../../lib/normalizedTime/NormalizedTime";
@@ -65,15 +65,17 @@ export default class ClientGameInitiator {
 			this.createNewGameWhenReady();
 		}
 
-		EventPublisher.on(GameReplayStarted.prototype.constructor.name, this.onGameReplayStarted, this);
-		EventPublisher.on(GameStatusChanged.prototype.constructor.name, this.onGameStatusChanged, this);
-		EventPublisher.on(PointTaken.prototype.constructor.name, this.onPointTaken, this);
+		EventPublisher.on(GameReplayStarted.getClassName(), this.onGameReplayStarted, this);
+		EventPublisher.on(GameStatusChanged.getClassName(), this.onGameStatusChanged, this);
+		EventPublisher.on(PointTaken.getClassName(), this.onPointTaken, this);
 	}
 
 	stop() {
-		EventPublisher.off(PointTaken.prototype.constructor.name, this.onPointTaken, this);
-		EventPublisher.off(GameStatusChanged.prototype.constructor.name, this.onGameStatusChanged, this);
-		EventPublisher.off(GameReplayStarted.prototype.constructor.name, this.onGameReplayStarted, this);
+		console.trace('stop?');
+
+		EventPublisher.off(PointTaken.getClassName(), this.onPointTaken, this);
+		EventPublisher.off(GameStatusChanged.getClassName(), this.onGameStatusChanged, this);
+		EventPublisher.off(GameReplayStarted.getClassName(), this.onGameReplayStarted, this);
 
 		if (this.hasActiveGame()) {
 			this.gameBoot.stop();

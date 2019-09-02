@@ -1,17 +1,17 @@
 import GameListener from './GameListener';
 import {ACHIEVEMENT_CONSECUTIVE_LOST_GAMES} from '/imports/api/achievements/constants.js';
-import PlayerLost from '/imports/api/games/events/PlayerLost.js';
-import PlayerWon from '/imports/api/games/events/PlayerWon.js';
+import PlayerLost from '/imports/api/games/events/PlayerLost';
+import PlayerWon from '/imports/api/games/events/PlayerWon';
 
 export default class ConsecutiveLostGames extends GameListener {
 	addListeners() {
-		this.addListener(PlayerLost.prototype.constructor.name, this.onPlayerLost);
-		this.addListener(PlayerWon.prototype.constructor.name, this.onPlayerWon);
+		this.addListener(PlayerLost.getClassName(), this.onPlayerLost);
+		this.addListener(PlayerWon.getClassName(), this.onPlayerWon);
 	}
 
 	removeListeners() {
-		this.removeListener(PlayerLost.prototype.constructor.name, this.onPlayerLost);
-		this.removeListener(PlayerWon.prototype.constructor.name, this.onPlayerWon);
+		this.removeListener(PlayerLost.getClassName(), this.onPlayerLost);
+		this.removeListener(PlayerWon.getClassName(), this.onPlayerWon);
 	}
 
 	/**

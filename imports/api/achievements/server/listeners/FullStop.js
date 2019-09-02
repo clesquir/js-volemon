@@ -1,7 +1,7 @@
 import {ACHIEVEMENT_FULL_STOP} from '/imports/api/achievements/constants.js';
 import {isTwoVersusTwoGameMode} from '/imports/api/games/constants';
 import {GAME_MAXIMUM_POINTS} from '/imports/api/games/constants.js';
-import PlayerWon from '/imports/api/games/events/PlayerWon.js';
+import PlayerWon from '/imports/api/games/events/PlayerWon';
 import {PLAYER_SHAPE_DOT} from '/imports/api/games/shapeConstants.js'
 import GameListener from './GameListener';
 
@@ -17,11 +17,11 @@ export default class FullStop extends GameListener {
 	}
 
 	addListeners() {
-		this.addListener(PlayerWon.prototype.constructor.name, this.onPlayerWon);
+		this.addListener(PlayerWon.getClassName(), this.onPlayerWon);
 	}
 
 	removeListeners() {
-		this.removeListener(PlayerWon.prototype.constructor.name, this.onPlayerWon);
+		this.removeListener(PlayerWon.getClassName(), this.onPlayerWon);
 	}
 
 	/**

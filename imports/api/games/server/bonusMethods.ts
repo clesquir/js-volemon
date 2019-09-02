@@ -5,7 +5,7 @@ import BonusRemoved from '../events/BonusRemoved';
 import {Games} from '../games';
 import {GAME_STATUS_STARTED} from '../statusConstants';
 import {Meteor} from 'meteor/meteor';
-import {EventPublisher} from "../../../lib/EventPublisher";
+import EventPublisher from "../../../lib/EventPublisher";
 import {BonusStreamData} from "../bonus/data/BonusStreamData";
 
 Meteor.methods({

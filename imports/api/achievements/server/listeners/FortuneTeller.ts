@@ -8,13 +8,13 @@ export default class FortuneTeller extends GameListener {
 	numberBallsOnScreen: number = 1;
 
 	addListeners() {
-		this.addListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
-		this.addListener(PointTaken.prototype.constructor.name, this.onPointTaken);
+		this.addListener(BonusCaught.getClassName(), this.onBonusCaught);
+		this.addListener(PointTaken.getClassName(), this.onPointTaken);
 	}
 
 	removeListeners() {
-		this.removeListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
-		this.removeListener(PointTaken.prototype.constructor.name, this.onPointTaken);
+		this.removeListener(BonusCaught.getClassName(), this.onBonusCaught);
+		this.removeListener(PointTaken.getClassName(), this.onPointTaken);
 	}
 
 	onBonusCaught(event: BonusCaught) {

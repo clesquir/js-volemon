@@ -4,7 +4,7 @@ import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
 import {BONUS_BIG_MONSTER} from '/imports/api/games/bonusConstants';
 import BonusCaught from '/imports/api/games/events/BonusCaught';
 import BonusRemoved from '/imports/api/games/events/BonusRemoved';
-import PointTaken from '/imports/api/games/events/PointTaken.js';
+import PointTaken from '/imports/api/games/events/PointTaken';
 import {Games} from '/imports/api/games/games.js';
 import {assert} from 'chai';
 import StubCollections from 'meteor/hwillson:stub-collections';

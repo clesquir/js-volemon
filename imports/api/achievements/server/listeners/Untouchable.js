@@ -10,13 +10,13 @@ export default class Untouchable extends GameListener {
 	}
 
 	addListeners() {
-		this.addListener(PlayerWon.prototype.constructor.name, this.onPlayerWon);
-		this.addListener(PlayerLost.prototype.constructor.name, this.onPlayerLost);
+		this.addListener(PlayerWon.getClassName(), this.onPlayerWon);
+		this.addListener(PlayerLost.getClassName(), this.onPlayerLost);
 	}
 
 	removeListeners() {
-		this.removeListener(PlayerWon.prototype.constructor.name, this.onPlayerWon);
-		this.removeListener(PlayerLost.prototype.constructor.name, this.onPlayerLost);
+		this.removeListener(PlayerWon.getClassName(), this.onPlayerWon);
+		this.removeListener(PlayerLost.getClassName(), this.onPlayerLost);
 	}
 
 	/**

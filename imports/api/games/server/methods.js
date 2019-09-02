@@ -6,7 +6,7 @@ import {
 	isTwoVersusTwoGameMode
 } from '/imports/api/games/constants.js';
 import GameStatusChanged from '/imports/api/games/events/GameStatusChanged';
-import PointTaken from '/imports/api/games/events/PointTaken.js';
+import PointTaken from '/imports/api/games/events/PointTaken';
 import {Games} from '/imports/api/games/games.js';
 import {MatchMakers} from '/imports/api/games/matchMakers.js';
 import {Players} from '/imports/api/games/players.js';
@@ -21,7 +21,7 @@ import {
 	GAME_STATUS_STARTED
 } from '/imports/api/games/statusConstants.js';
 import {UserConfigurations} from '/imports/api/users/userConfigurations.js';
-import {EventPublisher} from '/imports/lib/EventPublisher.js';
+import EventPublisher from '/imports/lib/EventPublisher.js';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 import {Meteor} from 'meteor/meteor';
 

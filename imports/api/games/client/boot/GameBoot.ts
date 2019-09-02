@@ -6,7 +6,7 @@ import StreamBundler from "../streamBundler/StreamBundler";
 import GameConfiguration from "../../configuration/GameConfiguration";
 import ServerAdapter from "../serverAdapter/ServerAdapter";
 import NormalizedTime from "../../../../lib/normalizedTime/NormalizedTime";
-import {EventPublisher} from "../../../../lib/EventPublisher";
+import EventPublisher from "../../../../lib/EventPublisher";
 import GamePlayStateCreated from "../../events/GamePlayStateCreated";
 
 // @ts-ignore

@@ -2,7 +2,7 @@ import {ACHIEVEMENT_NINJA} from '/imports/api/achievements/constants.js';
 import Ninja from '/imports/api/achievements/server/listeners/Ninja.js';
 import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught';
-import GameFinished from '/imports/api/games/events/GameFinished.js';
+import GameFinished from '/imports/api/games/events/GameFinished';
 import {Games} from '/imports/api/games/games.js';
 import {assert} from 'chai';
 import StubCollections from 'meteor/hwillson:stub-collections';

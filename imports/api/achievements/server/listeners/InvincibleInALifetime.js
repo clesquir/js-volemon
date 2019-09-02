@@ -11,11 +11,11 @@ export default class InvincibleInALifetime extends GameListener {
 	}
 
 	addListeners() {
-		this.addListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
+		this.addListener(BonusCaught.getClassName(), this.onBonusCaught);
 	}
 
 	removeListeners() {
-		this.removeListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
+		this.removeListener(BonusCaught.getClassName(), this.onBonusCaught);
 	}
 
 	/**

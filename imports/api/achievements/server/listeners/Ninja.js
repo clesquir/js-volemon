@@ -1,7 +1,7 @@
 import GameListener from './GameListener';
 import {ACHIEVEMENT_NINJA} from '/imports/api/achievements/constants.js';
 import BonusCaught from '/imports/api/games/events/BonusCaught';
-import GameFinished from '/imports/api/games/events/GameFinished.js';
+import GameFinished from '/imports/api/games/events/GameFinished';
 
 export default class Ninja extends GameListener {
 	allowedForGameOverride() {
@@ -11,13 +11,13 @@ export default class Ninja extends GameListener {
 	}
 
 	addListeners() {
-		this.addListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
-		this.addListener(GameFinished.prototype.constructor.name, this.onGameFinished);
+		this.addListener(BonusCaught.getClassName(), this.onBonusCaught);
+		this.addListener(GameFinished.getClassName(), this.onGameFinished);
 	}
 
 	removeListeners() {
-		this.removeListener(GameFinished.prototype.constructor.name, this.onGameFinished);
-		this.removeListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
+		this.removeListener(GameFinished.getClassName(), this.onGameFinished);
+		this.removeListener(BonusCaught.getClassName(), this.onBonusCaught);
 	}
 
 	/**

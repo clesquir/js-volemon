@@ -1,14 +1,14 @@
 import GameListener from './GameListener';
 import {ACHIEVEMENT_POINT_TIME} from '/imports/api/achievements/constants.js';
-import PointTaken from '/imports/api/games/events/PointTaken.js';
+import PointTaken from '/imports/api/games/events/PointTaken';
 
 export default class PointTime extends GameListener {
 	addListeners() {
-		this.addListener(PointTaken.prototype.constructor.name, this.onPointTaken);
+		this.addListener(PointTaken.getClassName(), this.onPointTaken);
 	}
 
 	removeListeners() {
-		this.removeListener(PointTaken.prototype.constructor.name, this.onPointTaken);
+		this.removeListener(PointTaken.getClassName(), this.onPointTaken);
 	}
 
 	/**

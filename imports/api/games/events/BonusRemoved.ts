@@ -1,4 +1,6 @@
-export default class BonusRemoved {
+import Event from '../../../lib/events/Event';
+
+export default class BonusRemoved implements Event {
 	readonly gameId: string;
 	readonly identifier: string;
 	readonly activatedBonusClass: string;
@@ -20,5 +22,13 @@ export default class BonusRemoved {
 		this.targetPlayerKey = targetPlayerKey;
 		this.bonusClass = bonusClass;
 		this.activatorPlayerKey = activatorPlayerKey;
+	}
+
+	static getClassName(): string {
+		return 'BonusRemoved';
+	}
+
+	getClassName(): string {
+		return BonusRemoved.getClassName();
 	}
 }

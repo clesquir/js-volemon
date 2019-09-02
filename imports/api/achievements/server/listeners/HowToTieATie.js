@@ -1,6 +1,6 @@
 import {ACHIEVEMENT_HOW_TO_TIE_A_TIE} from '/imports/api/achievements/constants.js';
 import {GAME_MAXIMUM_POINTS} from '/imports/api/games/constants.js';
-import PointTaken from '/imports/api/games/events/PointTaken.js';
+import PointTaken from '/imports/api/games/events/PointTaken';
 import GameListener from './GameListener';
 
 export default class HowToTieATie extends GameListener {
@@ -11,11 +11,11 @@ export default class HowToTieATie extends GameListener {
 	}
 
 	addListeners() {
-		this.addListener(PointTaken.prototype.constructor.name, this.onPointTaken);
+		this.addListener(PointTaken.getClassName(), this.onPointTaken);
 	}
 
 	removeListeners() {
-		this.removeListener(PointTaken.prototype.constructor.name, this.onPointTaken);
+		this.removeListener(PointTaken.getClassName(), this.onPointTaken);
 	}
 
 	/**

@@ -1,7 +1,7 @@
 import SkinStartup from '/imports/api/skins/client/Startup.js';
 import UserStartup from '/imports/api/users/client/Startup.js';
-import {EventPublisher} from '/imports/lib/EventPublisher.js';
-import PageUnload from '/imports/lib/events/PageUnload.js';
+import EventPublisher from '/imports/lib/EventPublisher.js';
+import PageUnload from '/imports/lib/events/PageUnload';
 import InternetConnectionDetector from '/imports/lib/InternetConnectionDetector.js';
 import MobileAddressBarHider from '/imports/lib/MobileAddressBarHider.js';
 import '/imports/lib/rollbar/client/Init.js';

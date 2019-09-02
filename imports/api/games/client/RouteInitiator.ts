@@ -21,7 +21,7 @@ import PluginFactory from "../../skins/plugins/PluginFactory";
 import SkinFactory from "../../skins/skins/SkinFactory";
 import {UserConfigurations} from "../../users/userConfigurations";
 import {UserKeymaps} from "../../users/userKeymaps";
-import {EventPublisher} from "../../../lib/EventPublisher";
+import EventPublisher from "../../../lib/EventPublisher";
 import PageUnload from "../../../lib/events/PageUnload";
 import CustomKeymaps from "../../../lib/keymaps/CustomKeymaps";
 import ClientServerOffsetNormalizedTime from "../../../lib/normalizedTime/ClientServerOffsetNormalizedTime";
@@ -61,11 +61,7 @@ export default class RouteInitiator {
 		this.initGame(gameId);
 		updateConnectionIndicator(this.stream);
 
-		EventPublisher.on(
-			PageUnload.prototype.constructor.name,
-			this.unbindOnPageLeft,
-			this
-		);
+		EventPublisher.on(PageUnload.getClassName(), this.unbindOnPageLeft, this);
 
 		window.onbeforeunload = (e) => {
 			this.beforeActiveGameUnload(e);
@@ -87,11 +83,7 @@ export default class RouteInitiator {
 
 		window.onbeforeunload = undefined;
 
-		EventPublisher.off(
-			PageUnload.prototype.constructor.name,
-			this.unbindOnPageLeft,
-			this
-		);
+		EventPublisher.off(PageUnload.getClassName(), this.unbindOnPageLeft, this);
 	}
 
 	toggleReactionSelector() {

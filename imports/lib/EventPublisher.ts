@@ -1,15 +1,22 @@
-export const EventPublisher = {
-	listeners: {},
+import Event from './events/Event';
 
-	on: function(eventName, callback, scope) {
+declare type EventListener = {
+	callback: Function,
+	scope?: any
+}
+
+export default class EventPublisher {
+	static listeners: {[id: string]: EventListener[]} = {};
+
+	static on(eventName: string, callback: Function, scope: any) {
 		if (!this.listeners[eventName]) {
 			this.listeners[eventName] = [];
 		}
 
 		this.listeners[eventName].push({callback: callback, scope: scope});
-	},
+	}
 
-	off: function(eventName, listenerToRemove, scope) {
+	static off(eventName: string, listenerToRemove: Function, scope: any) {
 		if (!this.listeners[eventName]) {
 			return;
 		}
@@ -26,10 +33,10 @@ export const EventPublisher = {
 		} else {
 			this.listeners[eventName] = listeners;
 		}
-	},
+	}
 
-	publish: function(event) {
-		const eventName = event.constructor.name;
+	static publish(event: Event) {
+		const eventName = event.getClassName();
 
 		if (!this.listeners[eventName]) {
 			return;

@@ -1,7 +1,7 @@
 import GameDataUpdater from "./GameDataUpdater";
 import {Games} from "../../games";
 import GameData from "../../data/GameData";
-import {EventPublisher} from "../../../../lib/EventPublisher";
+import EventPublisher from "../../../../lib/EventPublisher";
 import GameStatusChanged from "../../events/GameStatusChanged";
 import {CLIENT_POINTS_COLUMN, HOST_POINTS_COLUMN} from "../../constants";
 import LastPointUpdated from "../../events/LastPointUpdated";

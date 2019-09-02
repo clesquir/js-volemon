@@ -1,5 +1,5 @@
 import {UserAchievements} from '../../userAchievements';
-import {EventPublisher} from '../../../../lib/EventPublisher';
+import EventPublisher from '../../../../lib/EventPublisher';
 import {getUTCTimeStamp} from '../../../../lib/utils';
 
 export default class Listener {

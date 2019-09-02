@@ -3,7 +3,7 @@ import {BONUS_SMALL_BALL, BONUS_SMALL_MONSTER} from '/imports/api/games/bonusCon
 import {isTwoVersusTwoGameMode} from '/imports/api/games/constants';
 import BonusCaught from '/imports/api/games/events/BonusCaught';
 import BonusRemoved from '/imports/api/games/events/BonusRemoved';
-import PointTaken from '/imports/api/games/events/PointTaken.js';
+import PointTaken from '/imports/api/games/events/PointTaken';
 import GameListener from './GameListener';
 
 export default class TeenyTinyWorld extends GameListener {
@@ -12,15 +12,15 @@ export default class TeenyTinyWorld extends GameListener {
 	}
 
 	addListeners() {
-		this.addListener(PointTaken.prototype.constructor.name, this.onPointTaken);
-		this.addListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
-		this.addListener(BonusRemoved.prototype.constructor.name, this.onBonusRemoved);
+		this.addListener(PointTaken.getClassName(), this.onPointTaken);
+		this.addListener(BonusCaught.getClassName(), this.onBonusCaught);
+		this.addListener(BonusRemoved.getClassName(), this.onBonusRemoved);
 	}
 
 	removeListeners() {
-		this.removeListener(BonusRemoved.prototype.constructor.name, this.onBonusRemoved);
-		this.removeListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
-		this.removeListener(PointTaken.prototype.constructor.name, this.onPointTaken);
+		this.removeListener(BonusRemoved.getClassName(), this.onBonusRemoved);
+		this.removeListener(BonusCaught.getClassName(), this.onBonusCaught);
+		this.removeListener(PointTaken.getClassName(), this.onPointTaken);
 	}
 
 	/**

@@ -3,7 +3,7 @@ import InvisibleInAPoint from '/imports/api/achievements/server/listeners/Invisi
 import {UserAchievements} from '/imports/api/achievements/userAchievements.js';
 import {BONUS_INVISIBLE_MONSTER, BONUS_INVISIBLE_OPPONENT_MONSTER} from '/imports/api/games/bonusConstants';
 import BonusCaught from '/imports/api/games/events/BonusCaught';
-import PointTaken from '/imports/api/games/events/PointTaken.js';
+import PointTaken from '/imports/api/games/events/PointTaken';
 import {Games} from '/imports/api/games/games.js';
 import {assert} from 'chai';
 import StubCollections from 'meteor/hwillson:stub-collections';

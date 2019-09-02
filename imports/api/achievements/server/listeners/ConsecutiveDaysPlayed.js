@@ -1,7 +1,7 @@
 import moment from 'moment';
 import GameListener from './GameListener';
 import {ACHIEVEMENT_CONSECUTIVE_DAYS_PLAYED} from '/imports/api/achievements/constants.js';
-import GameFinished from '/imports/api/games/events/GameFinished.js';
+import GameFinished from '/imports/api/games/events/GameFinished';
 import {getUTCTimeStamp} from '/imports/lib/utils.js';
 
 export default class ConsecutiveDaysPlayed extends GameListener {
@@ -10,11 +10,11 @@ export default class ConsecutiveDaysPlayed extends GameListener {
 	}
 
 	addListeners() {
-		this.addListener(GameFinished.prototype.constructor.name, this.onGameFinished);
+		this.addListener(GameFinished.getClassName(), this.onGameFinished);
 	}
 
 	removeListeners() {
-		this.removeListener(GameFinished.prototype.constructor.name, this.onGameFinished);
+		this.removeListener(GameFinished.getClassName(), this.onGameFinished);
 	}
 
 	/**

@@ -4,11 +4,11 @@ import BonusCaught from '/imports/api/games/events/BonusCaught';
 
 export default class BonusesInALifetime extends GameListener {
 	addListeners() {
-		this.addListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
+		this.addListener(BonusCaught.getClassName(), this.onBonusCaught);
 	}
 
 	removeListeners() {
-		this.removeListener(BonusCaught.prototype.constructor.name, this.onBonusCaught);
+		this.removeListener(BonusCaught.getClassName(), this.onBonusCaught);
 	}
 
 	/**

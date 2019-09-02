@@ -1,7 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Replays} from "../replays";
 import Stream from "../../../lib/stream/Stream";
-import {EventPublisher} from "../../../lib/EventPublisher";
+import EventPublisher from "../../../lib/EventPublisher";
 import GameStatusChanged from "../events/GameStatusChanged";
 import PointTaken from "../events/PointTaken";
 import BonusCaught from "../events/BonusCaught";
@@ -47,10 +47,10 @@ export default class ReplayPersister {
 		this.collectStreamEvent('sendBundledData');
 		this.collectStreamEvent('reaction');
 		this.collectStreamEvent('cheer');
-		EventPublisher.on(GameStatusChanged.prototype.constructor.name, this.collectEventPublisherEvent, this);
-		EventPublisher.on(PointTaken.prototype.constructor.name, this.collectEventPublisherEvent, this);
-		EventPublisher.on(BonusCaught.prototype.constructor.name, this.collectEventPublisherEvent, this);
-		EventPublisher.on(BonusRemoved.prototype.constructor.name, this.collectEventPublisherEvent, this);
+		EventPublisher.on(GameStatusChanged.getClassName(), this.collectEventPublisherEvent, this);
+		EventPublisher.on(PointTaken.getClassName(), this.collectEventPublisherEvent, this);
+		EventPublisher.on(BonusCaught.getClassName(), this.collectEventPublisherEvent, this);
+		EventPublisher.on(BonusRemoved.getClassName(), this.collectEventPublisherEvent, this);
 	}
 
 	start() {
@@ -74,10 +74,10 @@ export default class ReplayPersister {
 	destroy() {
 		this.stop();
 
-		EventPublisher.off(BonusRemoved.prototype.constructor.name, this.collectEventPublisherEvent, this);
-		EventPublisher.off(BonusCaught.prototype.constructor.name, this.collectEventPublisherEvent, this);
-		EventPublisher.off(PointTaken.prototype.constructor.name, this.collectEventPublisherEvent, this);
-		EventPublisher.off(GameStatusChanged.prototype.constructor.name, this.collectEventPublisherEvent, this);
+		EventPublisher.off(BonusRemoved.getClassName(), this.collectEventPublisherEvent, this);
+		EventPublisher.off(BonusCaught.getClassName(), this.collectEventPublisherEvent, this);
+		EventPublisher.off(PointTaken.getClassName(), this.collectEventPublisherEvent, this);
+		EventPublisher.off(GameStatusChanged.getClassName(), this.collectEventPublisherEvent, this);
 		this.stream.off('cheer-' + this.gameId);
 		this.stream.off('reaction-' + this.gameId);
 		this.stream.off('sendBundledData-' + this.gameId);

@@ -3,7 +3,7 @@ import PlayerLost from '../events/PlayerLost';
 import PlayerWon from '../events/PlayerWon';
 import {Games} from '../games';
 import EloRatingCalculator from '../../../lib/EloRatingCalculator';
-import {EventPublisher} from '../../../lib/EventPublisher';
+import EventPublisher from '../../../lib/EventPublisher';
 import {getUTCTimeStamp} from "../../../lib/utils";
 import EloScoreCreator from "./EloScoreCreator";
 import ProfileUpdater from "../../profiles/server/ProfileUpdater";
