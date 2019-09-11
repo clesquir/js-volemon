@@ -53,3 +53,31 @@ Several dev pages have been developed to better test:
  * Environment: http://localhost:3000/dev/environment
  * Shape: http://localhost:3000/dev/shape
  * Skin: http://localhost:3000/dev/skin
+
+## Apply backup from production
+
+```
+ssh root@volemon.cloudalto.net
+docker exec -it mongodb bash -c 'mongodump -d meteor -o /dump'
+docker cp mongodb:/dump ~/dump/
+exit
+scp -r root@volemon.cloudalto.net:dump/ ~/
+mongorestore -h 127.0.0.1 --port 3001 --drop -d meteor ~/dump/dump/meteor
+```
+
+## Remove one user
+
+```
+db.users.remove({userId: "userId"})
+db.userprofiles.remove({userId: "userId"})
+db.userconfigurations.remove({userId: "userId"})
+db.userreactions.remove({userId: "userId"})
+db.userkeymaps.remove({userId: "userId"})
+db.userachievements.remove({userId: "userId"})
+db.eloscores.remove({userId: "userId"})
+db.teameloscores.remove({userId: "userId"})
+db.tournamenteloscores.remove({userId: "userId"})
+db.profiles.remove({userId: "userId"})
+db.tournamentprofiles.remove({userId: "userId"})
+db.players.remove({userId: "userId"})
+```
