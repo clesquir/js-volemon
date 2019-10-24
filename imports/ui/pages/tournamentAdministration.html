@@ -94,6 +94,8 @@
 						{{> numberSwitch id="net-height" label="Net height" default="72" isOn=(modeOverridden "overriddenNetHeight") value=(modeOverriddenValue "overriddenNetHeight") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
+					{{> selectSwitch id="start-point-with-bumpers" label="Start point with bumpers" default="No" isOn=(modeOverridden "overriddenStartPointWithBumpers") options=booleanOptions value=(modeOverriddenValue "overriddenStartPointWithBumpers") isReadOnly=(canOnlyViewTournament tournament)}}
+
 					<h2>Soccer net overrides</h2>
 
 					<div class="splitted-configuration">

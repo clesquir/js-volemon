@@ -409,6 +409,10 @@ export default class MainScene {
 			this.resetPlayersAndBall();
 			this.pauseGame();
 
+			if (this.gameConfiguration.startPointWithBumpers()) {
+				this.bonuses.enableBumpers();
+			}
+
 			this.artificialIntelligence.startPoint();
 			this.startCountdownTimer();
 		}

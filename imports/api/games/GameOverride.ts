@@ -14,6 +14,7 @@ export default class GameOverride {
 	overriddenLevelHeight;
 	overriddenNetWidth;
 	overriddenNetHeight;
+	overriddenStartPointWithBumpers;
 
 	overriddenSoccerNetEnabled;
 	overriddenSoccerNetDistanceFromGround;
@@ -206,6 +207,10 @@ export default class GameOverride {
 
 	netHeight(): number {
 		return parseInt(this.overriddenNetHeight);
+	}
+
+	startPointWithBumpers(): boolean {
+		return parseInt(this.overriddenStartPointWithBumpers) === 1;
 	}
 
 	overridesSoccerNetEnabled(): boolean {
@@ -711,6 +716,7 @@ export default class GameOverride {
 		gameOverride.overriddenLevelHeight = data.overriddenLevelHeight;
 		gameOverride.overriddenNetWidth = data.overriddenNetWidth;
 		gameOverride.overriddenNetHeight = data.overriddenNetHeight;
+		gameOverride.overriddenStartPointWithBumpers = data.overriddenStartPointWithBumpers;
 
 		gameOverride.overriddenSoccerNetEnabled = data.overriddenSoccerNetEnabled;
 		gameOverride.overriddenSoccerNetDistanceFromGround = data.overriddenSoccerNetDistanceFromGround;
