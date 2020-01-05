@@ -61,11 +61,12 @@ export default class ReplayPersister {
 			{
 				gameId: this.gameId,
 				rows: this.replayRows
-			}
+			},
+			() => {/*This callback converts to async*/}
 		);
 
 		if (this.replayRows.length) {
-			Games.update({_id: this.gameId}, {$set: {hasReplays: true}});
+			Games.update({_id: this.gameId}, {$set: {hasReplays: true}}, {}, () => {/*This callback converts to async*/});
 		}
 
 		this.replayRows = [];
