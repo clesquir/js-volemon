@@ -92,7 +92,8 @@ export default class Listener {
 					modifiedAt: getUTCTimeStamp()
 				},
 				data
-			)
+			),
+			() => {/*This callback converts to async*/}
 		);
 
 		//Reinitialize storage
@@ -112,7 +113,8 @@ export default class Listener {
 					},
 					data
 				)
-			}
+			},
+			{}, () => {/*This callback converts to async*/}
 		);
 
 		//Reinitialize storage

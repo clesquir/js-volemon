@@ -29,7 +29,11 @@ const updateKeepAlive = function(movedPlayer, gameId) {
 			lastKeepAliveUpdateByPlayerIds[movedPlayer.id],
 			KEEP_ALIVE_INTERVAL,
 			() => {
-				Players.update({gameId: gameId, userId: movedPlayer.id}, {$set: {lastKeepAlive: getUTCTimeStamp()}});
+				Players.update(
+					{gameId: gameId, userId: movedPlayer.id},
+					{$set: {lastKeepAlive: getUTCTimeStamp()}},
+					{}, () => {/*This callback converts to async*/}
+				);
 			}
 		);
 	}

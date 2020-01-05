@@ -172,7 +172,8 @@ Meteor.methods({
 
 		Games.update(
 			{_id: gameId},
-			{$push: {viewers: viewer}}
+			{$push: {viewers: viewer}},
+			{}, () => {/*This callback converts to async*/}
 		);
 	},
 
@@ -185,12 +186,14 @@ Meteor.methods({
 
 		Games.update(
 			{_id: gameId},
-			{$pull: {'viewers': {id: this.connection.id}}}
+			{$pull: {'viewers': {id: this.connection.id}}},
+			{}, () => {/*This callback converts to async*/}
 		);
 
 		Games.update(
 			{_id: gameId},
-			{$pull: {'viewers': {userId: userId}}}
+			{$pull: {'viewers': {userId: userId}}},
+			{}, () => {/*This callback converts to async*/}
 		);
 	},
 
