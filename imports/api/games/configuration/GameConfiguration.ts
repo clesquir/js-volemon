@@ -797,6 +797,14 @@ export default abstract class GameConfiguration {
 		return false;
 	}
 
+	startPointWithBumpers(): boolean {
+		if (this.hasGameOverride()) {
+			return this.gameOverride.startPointWithBumpers();
+		}
+
+		return false;
+	}
+
 	private player1InitialX(): number {
 		if (this.hasGameOverride() && this.gameOverride.overridesPlayerInitialDistanceFromWall()) {
 			return this.gameOverride.playerInitialDistanceFromWall();

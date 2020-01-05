@@ -218,6 +218,7 @@ const modeOptions = function() {
 	addToMode(gameOverride, 'level-height', 'overriddenLevelHeight');
 	addToMode(gameOverride, 'net-width', 'overriddenNetWidth');
 	addToMode(gameOverride, 'net-height', 'overriddenNetHeight');
+	addToMode(gameOverride, 'start-point-with-bumpers', 'overriddenStartPointWithBumpers');
 
 	addToMode(gameOverride, 'soccer-net-enabled', 'overriddenSoccerNetEnabled');
 	addToMode(gameOverride, 'soccer-net-distance-from-ground', 'overriddenSoccerNetDistanceFromGround');

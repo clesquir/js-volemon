@@ -94,6 +94,8 @@
 						{{> numberSwitch id="net-height" label="Net height" default="72" isOn=(modeOverridden "overriddenNetHeight") value=(modeOverriddenValue "overriddenNetHeight") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
+					{{> selectSwitch id="start-point-with-bumpers" label="Start point with bumpers" default="No" isOn=(modeOverridden "overriddenStartPointWithBumpers") options=booleanOptions value=(modeOverriddenValue "overriddenStartPointWithBumpers") isReadOnly=(canOnlyViewTournament tournament)}}
+
 					<h2>Soccer net overrides</h2>
 
 					<div class="splitted-configuration">
@@ -215,7 +217,7 @@
 
 					<div class="splitted-configuration">
 						{{> selectSwitch id="ball-rebound-on-player-enabled" label="Ball rebounds on player" default="Yes" isOn=(modeOverridden "overriddenBallReboundOnPlayerEnabled") options=booleanOptions value=(modeOverriddenValue "overriddenBallReboundOnPlayerEnabled") isReadOnly=(canOnlyViewTournament tournament)}}
-						{{> numberSwitch id="ball-velocity-on-rebound-on-player" label="Ball velocity on rebound on player" default="-280" isOn=(modeOverridden "overriddenBallVelocityOnReboundOnPlayer") value=(modeOverriddenValue "overriddenBallVelocityOnReboundOnPlayer") isReadOnly=(canOnlyViewTournament tournament)}}
+						{{> numberSwitch id="ball-velocity-on-rebound-on-player" label="Ball velocity on rebound on player" default="-410" isOn=(modeOverridden "overriddenBallVelocityOnReboundOnPlayer") value=(modeOverriddenValue "overriddenBallVelocityOnReboundOnPlayer") isReadOnly=(canOnlyViewTournament tournament)}}
 					</div>
 
 					<h2>Bonus overrides</h2>
