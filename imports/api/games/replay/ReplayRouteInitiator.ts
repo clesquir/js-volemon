@@ -42,8 +42,8 @@ export default class ReplayRouteInitiator {
 		return this.instance;
 	}
 
-	onControllerRender(gameId: string) {
-		this.initGame(gameId);
+	onControllerRender(gameId: string, replayData: {rows: any[]}) {
+		this.initGame(gameId, replayData);
 	}
 
 	onControllerStop() {
@@ -56,13 +56,13 @@ export default class ReplayRouteInitiator {
 		this.replayReader.restart();
 	}
 
-	private initGame(gameId: string) {
+	private initGame(gameId: string, replayData: {rows: any[]}) {
 		//Destroy if existent
 		this.destroyGame(gameId);
 
 		CurrentGame.set(Games.findOne({_id: gameId}), true);
 
-		this.replayReader = new ReplayReader(gameId);
+		this.replayReader = new ReplayReader(gameId, replayData);
 
 		this.normalizedTime = new ReplayNormalizedTime(this.replayReader);
 		this.normalizedTime.init();

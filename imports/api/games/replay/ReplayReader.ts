@@ -1,6 +1,5 @@
 import Stream from "../../../lib/stream/Stream";
 import GameData from "../data/GameData";
-import {Replays} from "../replays";
 import {ReplayedEvent, ReplayedStream, ReplayType} from "./ReplayPersister";
 import EventPublisher from "../../../lib/EventPublisher";
 import GameStatusChanged from "../events/GameStatusChanged";
@@ -8,7 +7,6 @@ import PointTaken from "../events/PointTaken";
 import {getUTCTimeStamp} from "../../../lib/utils";
 import {CLIENT_SIDE, HOST_SIDE} from "../constants";
 import GamePlayStateCreated from "../events/GamePlayStateCreated";
-import {Games} from "../games";
 import BonusCaught from "../events/BonusCaught";
 import BonusRemoved from "../events/BonusRemoved";
 import {GAME_STATUS_STARTED} from "../statusConstants";
@@ -21,18 +19,18 @@ enum ReplayReaderState {
 
 export default class ReplayReader {
 	private readonly gameId: string;
+	private readonly replayData: {rows: any[]};
 	private stream: Stream;
 	private gameData: GameData;
 
 	private initialStartedAt: number = null;
 	private state: ReplayReaderState = ReplayReaderState.STOPPED;
-	private game;
 	private rowIndex: number = 0;
-	private rows: any[];
 	private replayTimer: number = null;
 
-	constructor(gameId: string) {
+	constructor(gameId: string, replayData: {rows: any[]}) {
 		this.gameId = gameId;
+		this.replayData = replayData;
 	}
 
 	inject(
@@ -54,18 +52,11 @@ export default class ReplayReader {
 	}
 
 	restart() {
-		this.game = Games.findOne({_id: this.gameId});
-		const replay = Replays.findOne({gameId: this.gameId});
-
 		Meteor.clearTimeout(this.replayTimer);
 		this.restartState();
 
-		if (replay && replay.rows.length > 0) {
-			this.rows = replay.rows;
-
-			EventPublisher.publish(new GameReplayStarted(this.gameId));
-			this.playReplayRow();
-		}
+		EventPublisher.publish(new GameReplayStarted(this.gameId));
+		this.playReplayRow();
 	}
 
 	currentTime() {
@@ -77,13 +68,14 @@ export default class ReplayReader {
 			return;
 		}
 
-		if (this.rowIndex >= this.rows.length) {
+		const rows = this.replayData.rows;
+		if (this.rowIndex >= rows.length) {
 			this.state = ReplayReaderState.STOPPED;
 			return;
 		}
 
-		const row = this.rows[this.rowIndex];
-		const lastTimestamp = this.rows[this.rowIndex - 1] ? this.rows[this.rowIndex - 1].timestamp : this.initialStartedAt;
+		const row = rows[this.rowIndex];
+		const lastTimestamp = rows[this.rowIndex - 1] ? rows[this.rowIndex - 1].timestamp : this.initialStartedAt;
 		const timeout = row.timestamp - lastTimestamp;
 
 		this.replayTimer = Meteor.setTimeout(() => {

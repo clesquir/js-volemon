@@ -8,8 +8,7 @@ import {RouteController} from 'meteor/iron:router';
 export const GameReplayController = RouteController.extend({
 	waitOn: function() {
 		return [
-			Meteor.subscribe('game', this.params._id),
-			Meteor.subscribe('gameReplay', this.params._id)
+			Meteor.subscribe('game', this.params._id)
 		];
 	},
 	data: function() {
@@ -21,8 +20,14 @@ export const GameReplayController = RouteController.extend({
 	action: function() {
 		this.render('gameReplay');
 
-		Template.gameReplay.rendered = function() {
-			ReplayRouteInitiator.get().onControllerRender(Session.get('game'));
+		Template.gameReplay.rendered = () => {
+			Session.set('appLoadingMask', true);
+			Session.set('appLoadingMask.text', 'Fetching replay...');
+
+			Meteor.call('gameReplay', this.params._id, (error, replayData) => {
+				ReplayRouteInitiator.get().onControllerRender(Session.get('game'), replayData);
+				Session.set('appLoadingMask', false);
+			});
 
 			Template.gameReplay.rendered = null;
 		};

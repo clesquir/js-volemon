@@ -1,8 +1,9 @@
 import '/imports/api/achievements/server/publications';
-import '/imports/api/games/server/bonusMethods';
+import '../../api/games/server/bonusMethods';
 import '/imports/api/games/server/matchMakingMethods';
 import '/imports/api/games/server/methods';
-import '/imports/api/games/server/publications';
+import '../../api/games/server/publications';
+import '../../api/games/server/replayMethods';
 import '/imports/api/games/server/matchMakingPublications';
 import '/imports/api/games/server/recentGamesMethods';
 import '/imports/api/profiles/server/methods';
