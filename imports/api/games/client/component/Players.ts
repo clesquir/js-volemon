@@ -562,6 +562,7 @@ export default class Players {
 			this.scene.gameResumed === true &&
 			this.gameData.isUserCreator()
 		) {
+			player.numberBallHitsInGame++;
 			player.lastBallHit = (new Date()).getTime();
 
 			let playerNumberBallHits = 0;

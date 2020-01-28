@@ -64,6 +64,7 @@ export default class Player {
 	lastBallHit: number = 0;
 	numberBallHits: number = 0;
 	ballHitsStopped: boolean = false;
+	numberBallHitsInGame: number = 0;
 
 	isInvincible: boolean = false;
 	canActivateBonuses: boolean = true;
